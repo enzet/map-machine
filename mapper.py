@@ -1,7 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*- from __future__ import unicode_literals
 
-# Author: Sergey Vartnov
+"""
+Simple tool for drawing OSM data.
+
+Author: Sergey Vartnov
+"""
 
 import os
 import re
