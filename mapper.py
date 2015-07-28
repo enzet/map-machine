@@ -41,7 +41,7 @@ output_file = svg.SVG(open(sys.argv[2], 'w+'))
 
 w, h = 2000, 2000
 
-background_color = 'EEEEEE'
+background_color = '000000'  # 'EEEEEE'
 grass_color = 'C8DC94'
 sand_color = 'F0E0D0'
 beach_color = 'F0E0C0'
@@ -52,10 +52,13 @@ water_color = 'AACCFF'
 water_border_color = '6688BB'
 wood_color = 'B8CC84'
 
-undraw = ['operator', 'contact:facebook', 'contact:phone', 'opening_hours', 
-          'cuisine', 'network',  'website', 'contact:website', 'phone', 
-          'branch', 'route_ref', 'addr:flats', 'brand', 'ref', 'addr:street', 
-          'wikipedia', 'description', 'layer', 'level']
+tags_to_write = ['operator', 'opening_hours', 'cuisine', 'network',  'website', 
+                 'phone', 'branch', 'route_ref', 'brand', 'ref', 'wikipedia', 
+                 'description', 'level', 'wikidata', 'name']
+
+prefix_to_write = ['addr', 'contact', 'name', 'operator', 'wikipedia']
+
+tags_to_skip = ['note', 'layer']
 
 output_file.begin(w, h)
 output_file.rect(0, 0, w, h, color=background_color)
@@ -75,8 +78,12 @@ def get_d_from_file(file_name):
     if path:
         return path, x, y
     else:
-        print 'No such icon: ' + file_name
+        # print 'No such icon: ' + file_name
+        # TODO: add to missed icons
         return 'M 4,4 L 4,10 10,10 10,4 4,4', 0, 0
+
+    # Old style.
+
     if os.path.isfile('icons/' + file_name + '.svg'):
         file_name = 'icons/' + file_name + '.svg'
         size = 16
@@ -138,8 +145,11 @@ def draw_path(nodes, style, shift=Vector()):
     output_file.write('" style="' + style + '" />\n')
 
 def draw_point_shape(name, x, y, fill):
-    shape, xx, yy = get_d_from_file(name)
-    draw_point(shape, x, y, fill, size=16, xx=xx, yy=yy)
+    if not isinstance(name, list):
+        name = [name]
+    for one_name in name:
+        shape, xx, yy = get_d_from_file(one_name)
+        draw_point(shape, x, y, fill, size=16, xx=xx, yy=yy)
 
 def draw_point(shape, x, y, fill, size=16, xx=0, yy=0):
     x = int(float(x))
@@ -449,7 +459,12 @@ def draw_raw_nodes():
         output_file.circle(flinged.x, flinged.y, 0.2, color='FFFFFF')
 
 def no_draw(key):
-    return key in undraw or 'name' in key or 'addr' in key
+    if key in tags_to_write or key in tags_to_skip:
+        return True
+    for prefix in prefix_to_write:
+        if key[:len(prefix) + 1] == prefix + ':':
+            return True
+    return False
 
 def draw_nodes():
     print 'Draw nodes...'
@@ -461,102 +476,122 @@ def draw_nodes():
         y = `flinged.y`
         text_y = 0
         if 'tags' in node:
-            pairs = node['tags']
+            p = node['tags']
         else:
-            pairs = {}
+            p = {}
         fill = '444444'
-        if 'colour' in pairs:
-            if pairs['colour'] == 'blue':
+        if 'colour' in p:
+            if p['colour'] == 'blue':
                 fill='2233AA'
                 radius=3
 
-        if pairs == {}:
+        if p == {}:
             pass
-        elif 'amenity' in pairs:
+        elif 'amenity' in p:
             k = 'amenity'
-            v = pairs['amenity']
-            if v in ['bench', 'bicycle_parking', 'cafe', 'waste_basket', 'clinic',
-                     'restaurant', 'pharmacy', 'drinking_water', 'toilets',
-                     'theatre', 'bar', 'bank', 'pub', 'post_office']:
+            v = p['amenity']
+            processed = set([k])
+            if v in ['bench', 'bicycle_parking', 'cafe', 'waste_basket', 
+                     'clinic', 'restaurant', 'pharmacy', 'drinking_water', 
+                     'toilets', 'theatre', 'bar', 'bank', 'pub', 'post_office']:
                 draw_point_shape(v, x, y, fill)
             elif v == 'fast_food':
-                main = 'fast_food'
-                if 'operator' in pairs:
-                    if pairs['operator'] == "McDonald's":
-                        main = 'mcdonalds'
-                if 'operator:en' in pairs:
-                    if pairs['operator:en'] == "McDonald's":
-                        main = 'mcdonalds'
-                draw_point_shape(main, x, y, fill)
+                shape = 'fast_food'
+                if 'operator' in p:
+                    if p['operator'] == "McDonald's":
+                        shape = 'mcdonalds'
+                        processed.add('operator')
+                if 'operator:en' in p:
+                    if p['operator:en'] == "McDonald's":
+                        shape = 'mcdonalds'
+                        processed.add('operator:en')
+                draw_point_shape(shape, x, y, fill)
             elif v == 'shop':
-                if 'shop' in pairs:
-                    if pairs['shop'] in ['fishing']:
-                        draw_point_shape('shop_' + pairs['shop'], x, y, fill)
+                if 'shop' in p:
+                    if p['shop'] in ['fishing']:
+                        draw_point_shape('shop_' + p['shop'], x, y, fill)
             elif v == 'fountain':
                 draw_point_shape('fountain', x, y, water_border_color)
             elif v == 'recycling':
-                if not 'recycling_type' in pairs:
+                if not 'recycling_type' in p:
                     draw_point_shape('recycling', x, y, fill)
             else:
-                point(k, v, flinged.x, flinged.y, fill, text_y)
-                text_y += 10
-            for k in pairs:
-                if 'karaoke' in pairs:
-                    if pairs['karaoke'] == 'yes':
+                processed.remove(k)
+            for k in p:
+                if 'karaoke' in p:
+                    if p['karaoke'] == 'yes':
                         draw_point_shape('microphone', flinged.x + 16, y, fill)
                     else:
-                        point(k, pairs[k], x, y, fill, text_y)
-                elif not no_draw(k) and k != 'amenity':
-                    point(k, pairs[k], x, y, fill, text_y)
+                        point(k, p[k], x, y, fill, text_y)
+                elif not no_draw(k) and not (k in processed):
+                    point(k, p[k], x, y, fill, text_y)
                     text_y += 10
-        elif 'natural' in pairs:
+        elif 'natural' in p:
             k = 'natural'
-            v = pairs['natural']
+            v = p['natural']
+            processed = set([k])
             if v == 'tree':
-                main = 'tree'
-                if 'leaf_type' in pairs and pairs['leaf_type'] in ['broadleaved', 'needleleaved']:
-                    main = pairs['leaf_type']
-                if 'denotation' in pairs and pairs['denotation'] == 'urban':
-                    draw_point_shape([main, 'urban_tree_pot'], x, y, wood_color)
-                else:
-                    draw_point_shape(main, x, y, wood_color)
+                shape = 'tree'
+                if 'leaf_type' in p and p['leaf_type'] in ['broadleaved', 'needleleaved']:
+                    shape = p['leaf_type']
+                    processed.add(p['leaf_type'])
+                if 'denotation' in p and p['denotation'] == 'urban':
+                    draw_point_shape([shape, 'urban_tree_pot'], x, y, wood_color)
+                    processed.add('denotation')
             elif v == 'cave_entrance':
                 draw_point_shape('cave', x, y, fill)
             elif v == 'bush':
                 draw_point_shape('bush', x, y, wood_color)
             else:
-                point(k, v, flinged.x, flinged.y, fill, text_y)
-                text_y += 10
-        elif 'entrance' in pairs:
+                processed.remove(k)
+            for k in p:
+                if not no_draw(k) and not (k in processed):
+                    point(k, p[k], x, y, fill, text_y)
+                    text_y += 10
+        elif 'entrance' in p:
             k = 'entrance'
-            v = pairs['entrance']
+            v = p['entrance']
+            processed = set([k])
             if v == 'yes':
                 draw_point_shape('entrance', x, y, fill)
             elif v == 'staircase':
                 draw_point_shape('staircase', x, y, fill)
-        elif 'highway' in pairs:
+            else:
+                processed.remove(k)
+            for k in p:
+                if not no_draw(k) and not (k in processed):
+                    point(k, p[k], x, y, fill, text_y)
+                    text_y += 10
+        elif 'highway' in p:
             k = 'highway'
-            v = pairs['highway']
+            v = p['highway']
+            processed = set([k])
             if v == 'crossing':
                 shape = 'crossing'
-                if 'crossing' in pairs:
-                    if pairs['crossing'] == 'zebra':
+                if 'crossing' in p:
+                    if p['crossing'] == 'zebra':
                         shape = 'zebra'
-                elif 'crossing_ref' in pairs:
-                    if pairs['crossing_ref'] == 'zebra':
+                elif 'crossing_ref' in p:
+                    if p['crossing_ref'] == 'zebra':
                         shape = 'zebra'
                 draw_point_shape(shape, x, y, fill)
             elif v == 'street_lamp':
                 draw_point_shape('street_lamp', x, y, fill)
+            else:
+                processed.remove(k)
+            for k in p:
+                if not no_draw(k) and not (k in processed):
+                    point(k, p[k], x, y, fill, text_y)
+                    text_y += 10
         else:
-            for k in pairs:
+            for k in p:
                 if not no_draw(k):
-                    point(k, pairs[k], x, y, fill, text_y)
+                    point(k, p[k], x, y, fill, text_y)
                     text_y += 10
             
 
         for k in []:
-            v = pairs[k]
+            v = p[k]
             if k == 'amenity':
                 if v in ['bench', 'bicycle_parking', 'cafe', 'waste_basket', 
                          'restaurant', 'pharmacy', 'drinking_water', 'toilets',
@@ -586,7 +621,7 @@ def draw_nodes():
                 elif v == 'traffic_signals': 
                     draw_point_shape('traffic_signal', x, y, fill)
                 elif v == 'crossing':    
-                    if not ('crossing' in pairs):
+                    if not ('crossing' in p):
                         draw_point_shape('crossing', x, y, fill)
                 else:
                     point(k, v, flinged.x, flinged.y, fill, text_y)
@@ -626,7 +661,7 @@ def draw_nodes():
                     draw_point_shape('monument', x, y, fill)
             elif k == 'tourism':
                 if v == 'artwork':
-                    if not ('artwork_type' in pairs):
+                    if not ('artwork_type' in p):
                         draw_point_shape('monument', x, y, fill)
                 if v == 'attraction':
                     draw_point_shape('monument', x, y, fill)

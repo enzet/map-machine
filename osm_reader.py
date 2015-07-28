@@ -5,6 +5,7 @@ Author: Sergey Vartanov
 """
 
 import datetime
+import sys
 
 
 def parse_node_full(node_data, silent=False):
@@ -93,25 +94,35 @@ def parse_osm_file(file_name, silent=False):
     node_map = {}
     way_map = {}
     relation_map = {}
+    with open(file_name) as f:
+        for lines_number, l in enumerate(f):
+            pass
     input_file = open(file_name)
     line = input_file.readline()
+    line_number = 0
     while line != '':
+        line_number += 1
+        if line_number % 10000 == 0:
+            p = line_number / float(lines_number)
+            l = int(p * 100)
+            print 'Line ' + str(int(p * 1000) / 10) + ' %: [' + (l * '=') + ((100 - l) * ' ') + '].'
+            sys.stdout.write("\033[F")
 
         # Node parsing.
 
-        if line[:6] == ' <node':
+        if line[:6] in [' <node', '\t<node']:
             if line[-3] == '/':
                 node = parse_node(line[7:-3])
                 node_map[node['id']] = node
             else:
                 element = parse_node(line[7:-2])
                 element['tags'] = {}
-        elif line == ' </node>\n':
+        elif line in [' </node>\n', '\t</node>\n']:
             node_map[element['id']] = element
 
         # Way parsing.
 
-        elif line[:5] == ' <way':
+        elif line[:5] in [' <way', '\t<way']:
             if line[-3] == '/':
                 way = parse_way(line[6:-3])
                 node_map[node['id']] = node
@@ -119,12 +130,12 @@ def parse_osm_file(file_name, silent=False):
                 element = parse_way(line[6:-2])
                 element['tags'] = {}
                 element['nodes'] = []
-        elif line == ' </way>\n':
+        elif line == [' </way>\n', '\t</way>\n']:
             way_map[element['id']] = element
 
         # Relation parsing.
 
-        elif line[:10] == ' <relation':
+        elif line[:10] in [' <relation', '\t<relation']:
             if line[-3] == '/':
                 relation = parse_relation(line[11:-3])
                 relation_map[relation['id']] = relation
@@ -132,24 +143,26 @@ def parse_osm_file(file_name, silent=False):
                 element = parse_relation(line[11:-2])
                 element['tags'] = {}
                 element['members'] = []
-        elif line == ' </relation>\n':
+        elif line in [' </relation>\n', '\t</relation>\n']:
             relation_map[element['id']] = element
 
         # Elements parsing.
 
-        elif line[:6] == '  <tag':
+        elif line[:6] in ['  <tag', '\t\t<tag']:
             k, v = parse_tag(line[7:-3])
             element['tags'][k] = v
-        elif line[:5] == '  <nd':
+        elif line[:5] in ['  <nd', '\t\t<nd']:
             element['nodes'].append(int(line[11:-4]))
-        elif line[:5] == '  <member':
+        elif line[:5] in ['  <member', '\t\t<member']:
             member = parse_member(line[10:-3])
             element['members'].append(member)
         line = input_file.readline()
     input_file.close()
     if not silent:
         print 'File readed in ' + \
-                str(datetime.datetime.now() - start_time) + '.'
+            str(datetime.datetime.now() - start_time) + '.'
+        print 'Nodes: ' + str(len(node_map)) + ', ways: ' + \
+            str(len(way_map)) + ', relations: ' + str(len(relation_map)) + '.'
     return node_map, way_map, relation_map
 
 
