@@ -495,6 +495,8 @@ def to_write(key):
 def draw_nodes():
     print 'Draw nodes...'
 
+    # yaml.load(open('tags.yml'))
+
     for node_id in node_map:
         node = node_map[node_id]
         flinged = flinger.fling(Geo(node['lat'], node['lon']))
@@ -581,10 +583,6 @@ def draw_nodes():
                 shapes.append('train')
             else:
                 processed.remove(k)
-            for k in p:
-                if 'roof:material' in p and p['roof:material'] == 'metal':
-                    draw_point_shape('metal_roof', flinged.x + 16, y, fill)
-                    processed.add('roof:material')
         elif 'natural' in p:
             k = 'natural'
             v = p['natural']
