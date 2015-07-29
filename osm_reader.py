@@ -125,12 +125,12 @@ def parse_osm_file(file_name, silent=False):
         elif line[:5] in [' <way', '\t<way']:
             if line[-3] == '/':
                 way = parse_way(line[6:-3])
-                node_map[node['id']] = node
+                way_map[node['id']] = way
             else:
                 element = parse_way(line[6:-2])
                 element['tags'] = {}
                 element['nodes'] = []
-        elif line == [' </way>\n', '\t</way>\n']:
+        elif line in [' </way>\n', '\t</way>\n']:
             way_map[element['id']] = element
 
         # Relation parsing.
