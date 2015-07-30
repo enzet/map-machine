@@ -7,14 +7,17 @@ Simple tool for working with OpenStreetMap data.
 Author: Sergey Vartanov (me@enzet.ru).
 """
 
+import copy
 import datetime
 import os
 import re
 import sys
 import xml.dom.minidom
+import yaml
 
 import extract_icon
 import osm_reader
+import ui
 
 from flinger import GeoFlinger, Geo
 
@@ -39,7 +42,7 @@ node_map, way_map, relation_map = osm_reader.parse_osm_file(input_file_name)
 
 output_file = svg.SVG(open(sys.argv[2], 'w+'))
 
-w, h = 2000, 2000
+w, h = 2650, 2650
 
 background_color = 'EEEEEE'
 grass_color = 'C8DC94'
@@ -56,7 +59,8 @@ tags_to_write = ['operator', 'opening_hours', 'cuisine', 'network',  'website',
                  'phone', 'branch', 'route_ref', 'brand', 'ref', 'wikipedia', 
                  'description', 'level', 'wikidata', 'name', 'alt_name', 
                  'image', 'fax', 'old_name', 'artist_name', 'int_name',
-                 'official_name', 'full_name', 'email', 'designation']
+                 'official_name', 'full_name', 'email', 'designation', 
+                 'min_height', 'height']
 
 prefix_to_write = ['addr', 'contact', 'name', 'operator', 'wikipedia', 
                    'alt_name', 'description', 'old_name', 'inscription', 
@@ -280,7 +284,10 @@ def draw_ways():
 
         # Post part.
 
+        way_number = 0
         for way in layer['l']:
+            way_number += 1
+            ui.write_line(way_number, len(layer['l']))
             text_y = 0
             c = line_center(way['nodes'])
             if way['tags']['landuse'] == 'grass':
@@ -466,8 +473,6 @@ def draw_ways():
             style += 'fill:none;stroke:#FF0000;stroke-width:0.5;stroke-dahsarray:10,20;'
             draw_path(way['nodes'], style)
 
-print 'Done.'
-
 # Nodes drawing
 
 def draw_raw_nodes():
@@ -492,12 +497,59 @@ def to_write(key):
             return True
     return False
 
+def get_icon(tags, scheme, fill='444444'):
+    main_icon = None
+    extra_icons = []
+    processed = set()
+    for element in scheme['tags']:
+        matched = True
+        for tag in element['tags']:
+            if not tag in tags:
+                matched = False
+                break
+            if element['tags'][tag] != '*' and element['tags'][tag] != tags[tag]:
+                matched = False
+                break
+        if 'no_tags' in element:
+            for no_tag in element['no_tags']:
+                if no_tag in tags.keys():
+                    matched = False
+                    break
+        if matched:
+            if 'draw' in element and not element['draw']:
+                processed = set(element['tags'].keys())
+            if 'icon' in element:
+                main_icon = copy.deepcopy(element['icon'])
+                processed = set(element['tags'].keys())
+            if 'over_icon' in element:
+                main_icon += element['over_icon']
+                for key in element['tags'].keys():
+                    processed.add(key)
+            if 'add_icon' in element:
+                extra_icons += element['add_icon']
+                for key in element['tags'].keys():
+                    processed.add(key)
+            if 'color' in element:
+                fill = scheme['colors'][element['color']]
+                for key in element['tags'].keys():
+                    processed.add(key)
+    if main_icon:
+        return [main_icon] + extra_icons, fill, processed
+    else:
+        return [], fill, processed
+
 def draw_nodes():
     print 'Draw nodes...'
 
-    # yaml.load(open('tags.yml'))
+    scheme = yaml.load(open('tags.yml'))
 
-    for node_id in node_map:
+    node_number = 0
+
+    s = sorted(node_map.keys(), key=lambda x: -node_map[x]['lat'])
+
+    for node_id in s:
+        node_number += 1
+        ui.write_line(node_number, len(node_map))
         node = node_map[node_id]
         flinged = flinger.fling(Geo(node['lat'], node['lon']))
         x = flinged.x
@@ -507,205 +559,8 @@ def draw_nodes():
             p = node['tags']
         else:
             p = {}
-        fill = '444444'
-        processed = set([])
 
-        if 'colour' in p or 'color' in p:
-            k = 'color' if 'color' in p else 'colour'
-            v = p[k]
-            processed.add(k)
-            if v == 'blue':
-                fill='2233AA'
-            elif v == 'lightblue':
-                fill='2288CC'
-            elif v == 'red':
-                fill='CC0000'
-            elif v == 'violet':
-                fill='75507B'
-            elif v == 'green':
-                fill='4E9A06'
-            elif v == 'yellow':
-                fill='EDD400'
-            else:
-                processed.remove(k)
-
-        shapes = []
-
-        if p == {}:
-            pass
-        elif 'amenity' in p:
-            k = 'amenity'
-            v = p['amenity']
-            processed.add(k)
-            if v in ['bench', 'bicycle_parking', 'cafe', 'waste_basket', 
-                     'clinic', 'restaurant', 'pharmacy', 'drinking_water', 
-                     'toilets', 'theatre', 'bar', 'bank', 'pub', 'post_office']:
-                shapes.append(v)
-            elif v == 'fast_food':
-                shape = 'fast_food'
-                if 'operator' in p:
-                    if p['operator'] == "McDonald's":
-                        shape = 'mcdonalds'
-                        processed.add('operator')
-                if 'operator:en' in p:
-                    if p['operator:en'] == "McDonald's":
-                        shape = 'mcdonalds'
-                        processed.add('operator:en')
-                shapes.append(shape)
-            elif v == 'shop':
-                if 'shop' in p:
-                    if p['shop'] in ['fishing']:
-                        draw_point_shape('shop_' + p['shop'], x, y, fill)
-            elif v == 'fountain':
-                shapes.append('fountain')
-                fill = water_border_color
-            elif v == 'recycling':
-                if not 'recycling_type' in p:
-                    shapes.append('recycling')
-            else:
-                processed.remove(k)
-            for k in p:
-                if 'karaoke' in p and p['karaoke'] == 'yes':
-                    draw_point_shape('microphone', flinged.x + 16, y, fill)
-                    processed.add('karaoke')
-        elif 'building' in p:
-            k = 'building'
-            v = p['building']
-            for k in p:
-                if 'roof:material' in p and p['roof:material'] == 'metal':
-                    draw_point_shape('metal_roof', flinged.x + 16, y, fill)
-                    processed.add('roof:material')
-        elif 'railway' in p:
-            k = 'railway'
-            v = p['railway']
-            processed.add(k)
-            if v == 'subway_entrance':
-                shapes.append('train')
-            else:
-                processed.remove(k)
-        elif 'natural' in p:
-            k = 'natural'
-            v = p['natural']
-            processed.add(k)
-            if v == 'tree':
-                shape = 'tree'
-                if 'leaf_type' in p and p['leaf_type'] in ['broadleaved', 'needleleaved']:
-                    shape = p['leaf_type']
-                    processed.add('leaf_type')
-                if 'type' in p and p['type'] == 'conifer':
-                    shape = 'needleleaved'
-                    processed.add('type')
-                if 'denotation' in p:
-                    if p['denotation'] == 'urban':
-                        draw_point_shape([shape, 'urban_tree_pot'], x, y, wood_color)
-                        processed.add('denotation')
-                    elif p['denotation'] == 'avenue':
-                        draw_point_shape([shape, 'avenue_tree'], x, y, wood_color)
-                        processed.add('denotation')
-            elif v == 'cave_entrance':
-                shapes.append('cave')
-            elif v == 'bush':
-                shapes.append('bush')
-                fill = wood_color
-            else:
-                processed.remove(k)
-        elif 'entrance' in p:
-            k = 'entrance'
-            v = p['entrance']
-            processed.add(k)
-            if v == 'yes':
-                shapes.append('entrance')
-            elif v == 'main':
-                shapes.append('main_entrance')
-            elif v == 'staircase':
-                shapes.append('staircase')
-            else:
-                processed.remove(k)
-        elif 'highway' in p:
-            k = 'highway'
-            v = p['highway']
-            processed.add(k)
-            if v == 'crossing':
-                shape = 'crossing'
-                if 'crossing' in p:
-                    if p['crossing'] == 'zebra':
-                        shape = 'zebra'
-                        processed.add('crossing')
-                    elif p['crossing'] == 'uncontrolled':
-                        draw_point_shape('no_traffic_signals', x + 16, y, fill)
-                        processed.add('crossing')
-                    elif p['crossing'] == 'traffic_signals':
-                        draw_point_shape('traffic_signals', x + 16, y, fill)
-                        processed.add('crossing')
-                elif 'crossing_ref' in p:
-                    if p['crossing_ref'] == 'zebra':
-                        shape = 'zebra'
-                        processed.add('crossing_ref')
-                shapes.append(shape)
-            elif v == 'traffic_signals':
-                shapes.append('traffic_signals')
-            elif v == 'street_lamp':
-                shapes.append('street_lamp')
-            else:
-                processed.remove(k)
-        elif 'historic' in p:
-            k = 'historic'
-            v = p['historic']
-            processed.add(k)
-            if v == 'memorial':
-                shape = v
-                if v in p:
-                    if p[v] == 'statue':
-                        shape = p[v]
-                        processed.add(v)
-                    elif p[v] == 'plaque':
-                        shape = p[v]
-                        processed.add(v)
-                shapes.append(shape)
-            elif v == 'tomb':
-                shape = v
-                if v in p:
-                    if p[v] == 'mausoleum':
-                        shape = p[v]
-                        processed.add(v)
-                shapes.append(shape)
-            else:
-                processed.remove(k)
-        elif 'barrier' in p:
-            k = 'barrier'
-            v = p['barrier']
-            processed.add(k)
-            if v == 'gate':
-                shapes.append('gate')
-            elif v == 'lift_gate':
-                shapes.append('lift_gate')
-            elif v == 'turnstile':
-                shapes.append('turnstile')
-            else:
-                processed.remove(k)
-        elif 'man_made' in p:
-            k = 'man_made'
-            v = p['man_made']
-            processed.add(k)
-            if v == 'pole':
-                shapes.append('pole')
-            elif v == 'flagpole':
-                shapes.append('flagpole')
-            else:
-                processed.remove(k)
-        elif 'tourism' in p:
-            k = 'tourism'
-            v = p['tourism']
-            processed.add(k)
-            if v == 'attraction':
-                shape = v
-                if v in p:
-                    if p[v] == 'amusement_ride':
-                        shape = p[v]
-                        processed.add(v)
-                shapes.append(shape)
-            else:
-                processed.remove(k)
+        shapes, fill, processed = get_icon(p, scheme)
 
         for k in []:  # p:
             if to_write(k):
@@ -713,25 +568,15 @@ def draw_nodes():
                 text_y += 10
 
         for k in p:
-            if k == 'foot' and p[k] == 'yes':
-                shapes.append('foot')
-                processed.add(k)
-            elif k == 'bicycle' and p[k] == 'yes':
-                shapes.append('bicycle')
-                processed.add(k)
-            elif k == 'internet_access' and p[k] == 'wlan':
-                shapes.append('wlan')
-                processed.add(k)
-            elif not no_draw(k) and not k in processed:
+            if not no_draw(k) and not k in processed:
                 point(k, p[k], x, y, fill, text_y)
                 text_y += 10
-            
+
         xxx = -(len(shapes) - 1) * 8
         for shape in shapes:
             draw_point_shape(shape, x + xxx, y, fill)
             xxx += 16
-
-print 'Done.'
+    ui.write_line(-1, len(node_map))
 
 #draw_raw_nodes()
 #draw_raw_ways()
@@ -742,7 +587,7 @@ icons = extract_icon.IconExtractor('icons.svg')
 
 #sys.exit(0)
 
-draw_ways()
+#draw_ways()
 draw_nodes()
 
 if flinger.space.x == 0:
@@ -751,11 +596,10 @@ if flinger.space.x == 0:
 
 output_file.end()
 
-print '\nMissing tags:\n'
-top_missed_tags = reversed(sorted(missed_tags.keys(), key=lambda x: -missed_tags[x]))
-for tag in top_missed_tags:
-    if tag[:4] == 'node':
-        print tag + ' (' + str(missed_tags[tag]) + ')'
+print '\nTop missed tags:\n'
+top_missed_tags = sorted(missed_tags.keys(), key=lambda x: -missed_tags[x])
+for tag in top_missed_tags[:10]:
+    print tag + ' (' + str(missed_tags[tag]) + ')'
 
 sys.exit(0)
 

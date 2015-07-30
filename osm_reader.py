@@ -5,6 +5,7 @@ Author: Sergey Vartanov
 """
 
 import datetime
+import ui
 import sys
 
 
@@ -102,11 +103,7 @@ def parse_osm_file(file_name, silent=False):
     line_number = 0
     while line != '':
         line_number += 1
-        if line_number % 10000 == 0:
-            p = line_number / float(lines_number)
-            l = int(p * 100)
-            print 'Line ' + str(int(p * 1000) / 10) + ' %: [' + (l * '=') + ((100 - l) * ' ') + '].'
-            sys.stdout.write("\033[F")
+        ui.write_line(line_number, lines_number)
 
         # Node parsing.
 
@@ -158,11 +155,12 @@ def parse_osm_file(file_name, silent=False):
             element['members'].append(member)
         line = input_file.readline()
     input_file.close()
+
+    ui.write_line(-1, lines_number)  # Complete progress bar.
+
     if not silent:
         print 'File readed in ' + \
             str(datetime.datetime.now() - start_time) + '.'
         print 'Nodes: ' + str(len(node_map)) + ', ways: ' + \
             str(len(way_map)) + ', relations: ' + str(len(relation_map)) + '.'
     return node_map, way_map, relation_map
-
-

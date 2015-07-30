@@ -3,10 +3,12 @@ colors:
   # Color names
 
   'blue': '2233AA'
+  'gray': '888888'
+  'green': '4E9A06'
+  'grey': '888888'
   'lightblue': '2288CC'
   'red': 'CC0000'
   'violet': '75507B'
-  'green': '4E9A06'
   'yellow': 'EDD400'
 
   # Entity
@@ -20,10 +22,18 @@ colors:
   'parking': 'DDCC99'
   'water': 'AACCFF'
   'water_border': '6688BB'
+  'wood': 'B8CC84'
 
 tags:
+
+- tags: {place: quarter}
+  draw: false
 - tags: {amenity: bench}
   icon: [bench]
+- tags: {amenity: bench, backrest: 'yes'}
+  icon: [bench_backrest]
+- tags: {amenity: bench, backrest: 'no'}
+  icon: [bench_no_backrest]
 - tags: {amenity: bicycle_parking}
   icon: [bicycle_parking]
 - tags: {amenity: cafe}
@@ -50,16 +60,18 @@ tags:
   icon: [pub]
 - tags: {amenity: post_office}
   icon: [post_office]
-- tags: {amenity: fast_food, 'operator:en': McDonald's}
+- tags: {amenity: fast_food, 'operator:en': "McDonald's"}
   icon: [mcdonalds]
 - tags: {amenity: fast_food}
   icon: [fast_food]
 - tags: {amenity: shop, shop: fishing}
   icon: [fishing]
+- tags: {shop: gift}
+  icon: [gift]
 - tags: {amenity: fountain}
-  icon: [fontain]
+  icon: [fountain]
   color: water_border
-- tags: {amenity: '*', karaoke: yes}
+- tags: {amenity: '*', karaoke: 'yes'}
   add_icon: [microphone]
 - tags: {building: '*', 'roof:material': metal}
   icon: [metal_roof]
@@ -67,24 +79,30 @@ tags:
   icon: [train]
 - tags: {natural: tree}
   icon: [tree]
+  color: wood
 - tags: {natural: tree, leaf_type: broadleaved}
   icon: [broadleaved]
+  color: wood
 - tags: {natural: tree, leaf_type: needleleaved}
   icon: [needleleaved]
+  color: wood
 - tags: {natural: tree, type: conifer}
   icon: [needleleaved]
+  color: wood
 - tags: {natural: tree, denotation: urban}
   over_icon: [urban_tree_pot]
   under_icon: [tree, broadleaved, needleleaved]
-- tags: {natural: tree, denotation: avenue_tree}
+- tags: {natural: tree, denotation: avenue}
   over_icon: [avenue_tree]
   under_icon: [tree, broadleaved, needleleaved]
-- tags: {entrance: yes}
+- tags: {entrance: 'yes'}
   icon: [entrance]
 - tags: {entrance: main}
   icon: [main_entrance]
 - tags: {entrance: staircase}
   icon: [staircase]
+- tags: {highway: bus_stop}
+  icon: [bus_stop]
 - tags: {highway: crossing}
   icon: [crossing]
 - tags: {highway: crossing, crossing: uncontrolled}
@@ -98,6 +116,8 @@ tags:
 - tags: {historic: memorial}
   icon: [memorial]
 - tags: {historic: memorial, memorial: statue}
+  icon: [statue]
+- tags: {tourism: artwork, artwork_type: statue}
   icon: [statue]
 - tags: {historic: memorial, memorial: plaque}
   icon: [plaque]
@@ -113,15 +133,58 @@ tags:
   icon: [turnstile]
 - tags: {man_made: pole}
   icon: [pole]
+- tags: {man_made: pole, highway: street_lamp}
+  icon: [pole_lamp]
 - tags: {man_made: flagpole}
   icon: [flagpole]
 - tags: {tourism: attraction}
   icon: [attraction]
 - tags: {tourism: attraction, attraction: amusement_ride}
   icon: [amusement_ride]
-- tags: {foot: yes}
-  icon: [foot]
-- tags: {bicycle: yes}
-  icon: [bicycle]
+
+- tags: {foot: 'yes'}
+  add_icon: [foot]
+- tags: {foot: 'no'}
+  add_icon: [no_foot]
+- tags: {bicycle: 'yes'}
+  add_icon: [bicycle]
+- tags: {bicycle: 'no'}
+  add_icon: [no_bicycle]
+- tags: {internet_access: wlan, 'internet_access:fee': 'no'}
+  add_icon: [free_wlan]
 - tags: {internet_access: wlan}
-  icon: [wlan]
+  no_tags: {'internet_access:fee'}
+  add_icon: [wlan]
+- tags: {material: wood}
+  add_icon: [wood]
+- tags: {bus: 'yes'}
+  add_icon: [bus]
+- tags: {trolleybus: 'yes'}
+  add_icon: [trolleybus]
+- tags: {access: private}
+  add_icon: [private]
+
+- tags: {color: blue}
+  color: blue
+- tags: {colour: blue}
+  color: blue
+- tags: {color: lightblue}
+  color: lightblue
+- tags: {colour: lightblue}
+  color: lightblue
+- tags: {color: red}
+  color: red
+- tags: {colour: red}
+  color: red
+- tags: {color: violet}
+  color: violet
+- tags: {colour: violet}
+  color: violet
+- tags: {color: green}
+  color: green
+- tags: {colour: green}
+  color: green
+- tags: {color: yellow}
+  color: yellow
+- tags: {colour: yellow}
+  color: yellow
