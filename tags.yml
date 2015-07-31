@@ -5,13 +5,21 @@ colors:
   'black': '000000'
   'blue': '2233AA'
   'brown': '964B00'
+  'darkgreen': '446722'
   'gray': '888888'
   'green': '4E9A06'
   'grey': '888888'
   'lightblue': '2288CC'
+  'lightgreen': '73D216'
   'maroon': '800000'
+  'orange': 'FCAF3E'
+  'pink': '9D52A9'
+  'purple': '9D52A9'
   'red': 'CC0000'
+  'silver': 'AAAAAA'
+  'tan': 'D2B48C'  # Wikipedia
   'violet': '75507B'
+  'white': 'FFFFFF'
   'yellow': 'EDD400'
 
   # Entity
@@ -201,48 +209,3 @@ tags:
   add_icon: [trolleybus]
 - tags: {access: private}
   add_icon: [private]
-
-- tags: {color: blue}
-  color: blue
-- tags: {colour: blue}
-  color: blue
-- tags: {color: lightblue}
-  color: lightblue
-- tags: {colour: lightblue}
-  color: lightblue
-- tags: {color: red}
-  color: red
-- tags: {colour: red}
-  color: red
-- tags: {color: violet}
-  color: violet
-- tags: {colour: violet}
-  color: violet
-- tags: {color: green}
-  color: green
-- tags: {colour: green}
-  color: green
-- tags: {color: yellow}
-  color: yellow
-- tags: {colour: yellow}
-  color: yellow
-- tags: {color: black}
-  color: black
-- tags: {colour: black}
-  color: black
-- tags: {color: maroon}
-  color: maroon
-- tags: {colour: maroon}
-  color: maroon
-- tags: {color: gray}
-  color: gray
-- tags: {colour: gray}
-  color: gray
-- tags: {color: grey}
-  color: grey
-- tags: {colour: grey}
-  color: grey
-- tags: {color: brown}
-  color: brown
-- tags: {colour: brown}
-  color: brown

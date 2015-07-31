@@ -530,6 +530,18 @@ def get_icon(tags, scheme, fill='444444'):
                 fill = scheme['colors'][element['color']]
                 for key in element['tags'].keys():
                     processed.add(key)
+    if 'color' in tags:
+        if tags['color'] in scheme['colors']:
+            fill = scheme['colors'][tags['color']]
+            processed.add('color')
+        else:
+            print 'No color ' + tags['color'] + '.'
+    if 'colour' in tags:
+        if tags['colour'] in scheme['colors']:
+            fill = scheme['colors'][tags['colour']]
+            processed.add('colour')
+        else:
+            print 'No color ' + tags['colour'] + '.'
     if main_icon:
         returned = [main_icon] + extra_icons, fill, processed
     else:
@@ -548,6 +560,8 @@ def draw_nodes(show_missed_tags=False, overlap=14):
         points = []
 
     node_number = 0
+    processed_tags = 0
+    skipped_tags = 0
 
     s = sorted(node_map.keys(), key=lambda x: -node_map[x]['lat'])
 
@@ -565,6 +579,8 @@ def draw_nodes(show_missed_tags=False, overlap=14):
             p = {}
 
         shapes, fill, processed = get_icon(p, scheme)
+        processed_tags += len(processed)
+        skipped_tags += len(p) - len(processed)
 
         for k in []:  # p:
             if to_write(k):
@@ -597,6 +613,9 @@ def draw_nodes(show_missed_tags=False, overlap=14):
                 xxx += 16
     ui.write_line(-1, len(node_map))
     print 'Nodes drawed in ' + str(datetime.datetime.now() - start_time) + '.'
+    print 'Tags processed: ' + str(processed_tags) + ', tags skipped: ' + \
+        str(skipped_tags) + ' (' + \
+        str(processed_tags / float(processed_tags + skipped_tags) * 100) + ' %).'
 
 #draw_raw_nodes()
 #draw_raw_ways()
