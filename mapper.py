@@ -582,7 +582,7 @@ def draw_nodes(show_missed_tags=False, overlap=14):
         if overlap != 0:
             for shape in shapes:
                 has_space = True
-                for p in points:
+                for p in points[-1000:]:
                     if x + xxx - overlap <= p.x <= x + xxx + overlap and \
                             y - overlap <= p.y <= y + overlap:
                         has_space = False
@@ -608,10 +608,10 @@ icons = extract_icon.IconExtractor('icons.svg')
 #sys.exit(0)
 
 #draw_ways()
-draw_nodes(show_missed_tags=True, overlap=12)
+#draw_nodes(show_missed_tags=True, overlap=12)
 
 #draw_ways()
-#draw_nodes()
+draw_nodes()
 
 if flinger.space.x == 0:
     output_file.rect(0, 0, w, flinger.space.y, color='FFFFFF')

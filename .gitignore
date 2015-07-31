@@ -1,0 +1,19 @@
+# Input files
+
+*.bz2
+*.osm
+*.xml
+
+# Temporary files
+
+*.swp
+
+# Generated files
+
+*.png
+*.pyc
+*.svg
+
+# Test scheme files
+
+*.tm2
