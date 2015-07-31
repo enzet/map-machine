@@ -9,7 +9,7 @@ import ui
 import sys
 
 
-def parse_node_full(node_data, silent=False):
+def parse_node_full(node_datae):
     """
     Parse full node parameters using regular expressions: id, visible, version, 
     etc. For faster parsing use parse_node().
@@ -23,22 +23,21 @@ def parse_node_full(node_data, silent=False):
                 'user': m.group(5), 'uid': m.group(6), 
                 'lat': float(m.group(7)), 'lon': float(m.group(8))}
     else:
-        if not silent:
-            print 'Error: cannot parse node data: ' + node_data + '.'
+        print 'Error: cannot parse node data: ' + node_data + '.'
         return None
 
 def parse_node(text):
     """
     Just parse node identifier, latitude, and longitude.
     """
-    id = text[4:text.find('"', 6)]
-    lat_index = text.find('lat')
-    lon_index = text.find('lon')
+    node_id = text[4:text.find('"', 6)]
+    lat_index = text.find('lat="')
+    lon_index = text.find('lon="')
     lat = text[lat_index + 5:text.find('"', lat_index + 7)]
     lon = text[lon_index + 5:text.find('"', lon_index + 7)]
-    return {'id': int(id), 'lat': float(lat), 'lon': float(lon)}
+    return {'id': int(node_id), 'lat': float(lat), 'lon': float(lon)}
 
-def parse_way_full(way_data, silent=False):
+def parse_way_full(way_data):
     """
     Parse full way parameters using regular expressions: id, visible, version,
     etc. For faster parsing use parse_way().
@@ -50,8 +49,7 @@ def parse_way_full(way_data, silent=False):
                 'changeset': m.group(3), 'timestamp': m.group(4), 
                 'user': m.group(5), 'uid': m.group(6)}
     else:
-        if not silent:
-            print 'Error: cannot parse way data: ' + way_data + '.'
+        print 'Error: cannot parse way data: ' + way_data + '.'
         return None
 
 def parse_way(text):
@@ -88,10 +86,28 @@ def parse_tag(text):
     v = text[v_index + 3:text.find('"', v_index + 4)]
     return k, v
 
-def parse_osm_file(file_name, silent=False):
-    if not silent:
-        print 'Reading OSM file ' + file_name
+def parse_osm_file(file_name):
+    print 'Reading OSM file ' + file_name
     start_time = datetime.datetime.now()
+    try:
+        node_map, way_map, relation_map = parse_osm_file_fast(file_name)
+    except Exception as e:
+        print '\033[31mFast parsing failed.\033[0m'
+        a = raw_input('Do you want to use slow but correct XML parsing? [y/n] ')
+        if a in ['y', 'yes']:
+            start_time = datetime.datetime.now()
+            input_file = open(input_file_name)
+            content = xml.dom.minidom.parse(input_file)
+            input_file.close()
+        else:
+            return None, None, None
+    print 'File readed in ' + \
+        str(datetime.datetime.now() - start_time) + '.'
+    print 'Nodes: ' + str(len(node_map)) + ', ways: ' + \
+        str(len(way_map)) + ', relations: ' + str(len(relation_map)) + '.'
+    return node_map, way_map, relation_map
+
+def parse_osm_file_fast(file_name):
     node_map = {}
     way_map = {}
     relation_map = {}
@@ -158,9 +174,4 @@ def parse_osm_file(file_name, silent=False):
 
     ui.write_line(-1, lines_number)  # Complete progress bar.
 
-    if not silent:
-        print 'File readed in ' + \
-            str(datetime.datetime.now() - start_time) + '.'
-        print 'Nodes: ' + str(len(node_map)) + ', ways: ' + \
-            str(len(way_map)) + ', relations: ' + str(len(relation_map)) + '.'
     return node_map, way_map, relation_map

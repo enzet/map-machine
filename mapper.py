@@ -32,12 +32,6 @@ if not os.path.isfile(input_file_name):
     print 'Fatal: no such file: ' + input_file_name + '.'
     sys.exit(1)
 
-#start_time = datetime.datetime.now()
-#input_file = open(input_file_name)
-#content = xml.dom.minidom.parse(input_file)
-#input_file.close()
-#print 'File readed in ' + str(datetime.datetime.now() - start_time) + '.'
-
 node_map, way_map, relation_map = osm_reader.parse_osm_file(input_file_name)
 
 output_file = svg.SVG(open(sys.argv[2], 'w+'))
@@ -60,7 +54,7 @@ tags_to_write = ['operator', 'opening_hours', 'cuisine', 'network',  'website',
                  'description', 'level', 'wikidata', 'name', 'alt_name', 
                  'image', 'fax', 'old_name', 'artist_name', 'int_name',
                  'official_name', 'full_name', 'email', 'designation', 
-                 'min_height', 'height']
+                 'min_height', 'height', 'inscription', 'start_date']
 
 prefix_to_write = ['addr', 'contact', 'name', 'operator', 'wikipedia', 
                    'alt_name', 'description', 'old_name', 'inscription', 
@@ -372,9 +366,9 @@ def draw_ways():
             elif v == 'residential': style += '8'
             elif v == 'service': style += '7'
             elif v == 'track': style += '3'
-            elif v in ['footway', 'pedestrian']: style += '2'
+            elif v in ['footway', 'pedestrian']: style += '1;stroke-dasharray:3,3;stroke-linecap:butt;stroke:#888888'
             elif v == 'steps': style += '5;stroke-dasharray:1,2;stroke-linecap:butt'
-            elif v == 'path': style += '1;stroke-dasharray:5,5;stroke-linecap:round'
+            elif v == 'path': style += '1;stroke-dasharray:5,5;stroke-linecap:butt'
             else:
                 continue
             style += ';'
@@ -498,6 +492,9 @@ def to_write(key):
     return False
 
 def get_icon(tags, scheme, fill='444444'):
+    tags_hash = ','.join(tags.keys()) + ':' + ','.join(tags.values())
+    if tags_hash in scheme['cache']:
+        return scheme['cache'][tags_hash]
     main_icon = None
     extra_icons = []
     processed = set()
@@ -534,14 +531,21 @@ def get_icon(tags, scheme, fill='444444'):
                 for key in element['tags'].keys():
                     processed.add(key)
     if main_icon:
-        return [main_icon] + extra_icons, fill, processed
+        returned = [main_icon] + extra_icons, fill, processed
     else:
-        return [], fill, processed
+        returned = [], fill, processed
+    scheme['cache'][tags_hash] = returned
+    return returned
 
-def draw_nodes():
+def draw_nodes(show_missed_tags=False, overlap=14):
     print 'Draw nodes...'
 
+    start_time = datetime.datetime.now()
+
     scheme = yaml.load(open('tags.yml'))
+    scheme['cache'] = {}
+    if overlap != 0:
+        points = []
 
     node_number = 0
 
@@ -567,16 +571,32 @@ def draw_nodes():
                 draw_text(k + ': ' + p[k], x, y + 18 + text_y, '444444')
                 text_y += 10
 
-        for k in p:
-            if not no_draw(k) and not k in processed:
-                point(k, p[k], x, y, fill, text_y)
-                text_y += 10
+        if show_missed_tags:
+            for k in p:
+                if not no_draw(k) and not k in processed:
+                    point(k, p[k], x, y, fill, text_y)
+                    text_y += 10
 
         xxx = -(len(shapes) - 1) * 8
-        for shape in shapes:
-            draw_point_shape(shape, x + xxx, y, fill)
-            xxx += 16
+
+        if overlap != 0:
+            for shape in shapes:
+                has_space = True
+                for p in points:
+                    if x + xxx - overlap <= p.x <= x + xxx + overlap and \
+                            y - overlap <= p.y <= y + overlap:
+                        has_space = False
+                        break
+                if has_space:
+                    draw_point_shape(shape, x + xxx, y, fill)
+                    points.append(Vector(x + xxx, y))
+                    xxx += 16
+        else:
+            for shape in shapes:
+                draw_point_shape(shape, x + xxx, y, fill)
+                xxx += 16
     ui.write_line(-1, len(node_map))
+    print 'Nodes drawed in ' + str(datetime.datetime.now() - start_time) + '.'
 
 #draw_raw_nodes()
 #draw_raw_ways()
@@ -588,7 +608,10 @@ icons = extract_icon.IconExtractor('icons.svg')
 #sys.exit(0)
 
 #draw_ways()
-draw_nodes()
+draw_nodes(show_missed_tags=True, overlap=12)
+
+#draw_ways()
+#draw_nodes()
 
 if flinger.space.x == 0:
     output_file.rect(0, 0, w, flinger.space.y, color='FFFFFF')

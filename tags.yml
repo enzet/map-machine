@@ -2,11 +2,14 @@ colors:
 
   # Color names
 
+  'black': '000000'
   'blue': '2233AA'
+  'brown': '964B00'
   'gray': '888888'
   'green': '4E9A06'
   'grey': '888888'
   'lightblue': '2288CC'
+  'maroon': '800000'
   'red': 'CC0000'
   'violet': '75507B'
   'yellow': 'EDD400'
@@ -58,6 +61,8 @@ tags:
   icon: [bank]
 - tags: {amenity: pub}
   icon: [pub]
+- tags: {amenity: kindergarten}
+  icon: [kindergarten]
 - tags: {amenity: post_office}
   icon: [post_office]
 - tags: {amenity: fast_food, 'operator:en': "McDonald's"}
@@ -66,6 +71,8 @@ tags:
   icon: [fast_food]
 - tags: {amenity: shop, shop: fishing}
   icon: [fishing]
+- tags: {amenity: shop, shop: convenience}
+  icon: [shop_convenience]
 - tags: {shop: gift}
   icon: [gift]
 - tags: {amenity: fountain}
@@ -75,8 +82,6 @@ tags:
   add_icon: [microphone]
 - tags: {building: '*', 'roof:material': metal}
   icon: [metal_roof]
-- tags: {railway: subway_entrance}
-  icon: [train]
 - tags: {natural: tree}
   icon: [tree]
   color: wood
@@ -95,15 +100,34 @@ tags:
 - tags: {natural: tree, denotation: avenue}
   over_icon: [avenue_tree]
   under_icon: [tree, broadleaved, needleleaved]
+
+  # Entrance
 - tags: {entrance: 'yes'}
   icon: [entrance]
 - tags: {entrance: main}
   icon: [main_entrance]
 - tags: {entrance: staircase}
   icon: [staircase]
+- tags: {railway: subway_entrance}
+  icon: [train]
+- tags: {railway: subway_entrance, entrance: 'yes'}
+  icon: [train]
+
 - tags: {highway: bus_stop}
   icon: [bus_stop]
+- tags: {highway: bus_stop, shelter: 'yes'}
+  icon: [bus_stop_with_shelter]
+- tags: {highway: bus_stop, bench: 'yes'}
+  icon: [bus_stop_with_bench]
+- tags: {highway: bus_stop, bench: 'yes', shelter: 'no'}
+  icon: [bus_stop_with_bench]
+- tags: {highway: bus_stop, shelter: 'yes', bench: 'yes'}
+  icon: [bus_stop_with_shelter_and_bench]
 - tags: {highway: crossing}
+  icon: [crossing]
+- tags: {highway: crossing, crossing: zebra}
+  icon: [crossing]
+- tags: {highway: crossing, crossing_ref: zebra}
   icon: [crossing]
 - tags: {highway: crossing, crossing: uncontrolled}
   add_icon: [no_traffic_signals]
@@ -111,6 +135,8 @@ tags:
   add_icon: [traffic_signals]
 - tags: {highway: traffic_signals}
   icon: [traffic_signals]
+- tags: {traffic_calming: bump}
+  icon: [bump]
 - tags: {highway: street_lamp}
   icon: [street_lamp]
 - tags: {historic: memorial}
@@ -118,6 +144,8 @@ tags:
 - tags: {historic: memorial, memorial: statue}
   icon: [statue]
 - tags: {tourism: artwork, artwork_type: statue}
+  icon: [statue]
+- tags: {tourism: artwork, artwork_type: sculpture}
   icon: [statue]
 - tags: {historic: memorial, memorial: plaque}
   icon: [plaque]
@@ -141,6 +169,16 @@ tags:
   icon: [attraction]
 - tags: {tourism: attraction, attraction: amusement_ride}
   icon: [amusement_ride]
+- tags: {public_transport: platform}
+  icon: [railway_platform]
+- tags: {barrier: entrance}
+  icon: [entrance]
+- tags: {amenity: atm}
+  icon: [atm]
+- tags: {public_transport: stop_position}
+  icon: [public_transport_stop]
+- tags: {crossing_ref: toucan}
+  icon: [toucan_crossing]
 
 - tags: {foot: 'yes'}
   add_icon: [foot]
@@ -188,3 +226,23 @@ tags:
   color: yellow
 - tags: {colour: yellow}
   color: yellow
+- tags: {color: black}
+  color: black
+- tags: {colour: black}
+  color: black
+- tags: {color: maroon}
+  color: maroon
+- tags: {colour: maroon}
+  color: maroon
+- tags: {color: gray}
+  color: gray
+- tags: {colour: gray}
+  color: gray
+- tags: {color: grey}
+  color: grey
+- tags: {colour: grey}
+  color: grey
+- tags: {color: brown}
+  color: brown
+- tags: {colour: brown}
+  color: brown
