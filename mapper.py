@@ -26,18 +26,6 @@ sys.path.append('lib')
 import svg
 from vector import Vector
 
-input_file_name = sys.argv[1]
-
-if not os.path.isfile(input_file_name):
-    print 'Fatal: no such file: ' + input_file_name + '.'
-    sys.exit(1)
-
-node_map, way_map, relation_map = osm_reader.parse_osm_file(input_file_name)
-
-output_file = svg.SVG(open(sys.argv[2], 'w+'))
-
-w, h = 2650, 2650
-
 background_color = 'EEEEEE'
 grass_color = 'C8DC94'
 sand_color = 'F0E0D0'
@@ -49,33 +37,39 @@ water_color = 'AACCFF'
 water_border_color = '6688BB'
 wood_color = 'B8CC84'
 
-tags_to_write = ['operator', 'opening_hours', 'cuisine', 'network',  'website', 
+tags_to_write = set(['operator', 'opening_hours', 'cuisine', 'network',  'website', 
                  'phone', 'branch', 'route_ref', 'brand', 'ref', 'wikipedia', 
                  'description', 'level', 'wikidata', 'name', 'alt_name', 
                  'image', 'fax', 'old_name', 'artist_name', 'int_name',
                  'official_name', 'full_name', 'email', 'designation', 
-                 'min_height', 'height', 'inscription', 'start_date']
+                 'min_height', 'height', 'inscription', 'start_date', 
+                 'created_by', 'naptan:verified', 'url', 'naptan:AtcoCode',
+                 'naptan:Landmark', 'naptan:Indicator', 'collection_times',
+                 'naptan:Street', 'naptan:PlusbusZoneRef', 'naptan:Crossing',
+                 'local_ref', 'naptan:CommonName', 'survey:date', 
+                 'naptan:NaptanCode', 'postal_code', 'uk_postcode_centroid',
+                 'fhrs:rating_date', 'fhrs:local_authority_id', 'destination',
+                 'fhrs:id', 'naptan:ShortCommonName', 'flickr', 'royal_cypher',
+                 'is_in', 'booth', 'naptan:AltStreet', 'media:commons', 
+                 'ref_no', 'uri', 'fhrs:inspectiondate', 'telephone', 
+                 'naptan:AltCommonName', 'end_date', 'facebook', 'naptan:Notes',
+                 'voltage', 'last_collection', 'twitter', 'ele', 'information',
+                 'phone_1', 'cyclestreets_id',
+                 # To draw
+                 'naptan:Bearing', 'species', 'taxon', 'seats', 'capacity',
+                 'fhrs:rating', 'fhrs:confidence_management', 'fhrs:hygiene',
+                 'genus', 'platforms', 'naptan:BusStopType'])
 
-prefix_to_write = ['addr', 'contact', 'name', 'operator', 'wikipedia', 
+prefix_to_write = set(['addr', 'contact', 'name', 'operator', 'wikipedia', 
                    'alt_name', 'description', 'old_name', 'inscription', 
-                   'route_ref', 'is_in', 'website']
+                   'route_ref', 'is_in', 'website',
+                   # To draw
+                   'species', 'taxon'])
 
-tags_to_skip = ['note', 'layer', 'source', 'building:part', 'fixme', 'comment']
+tags_to_skip = set(['note', 'layer', 'source', 'building:part', 'fixme', 'comment',
+                'FIXME', 'source_ref', 'naptan:verified:note'])
 
-prefix_to_skip = ['source']
-
-output_file.begin(w, h)
-output_file.rect(0, 0, w, h, color=background_color)
-
-minimum = Geo(180, 180)
-maximum = Geo(-180, -180)
-
-if len(sys.argv) > 3:
-    min1 = Geo(float(sys.argv[5]), float(sys.argv[3]))
-    max1 = Geo(float(sys.argv[6]), float(sys.argv[4]))
-
-authors = {}
-missed_tags = {}
+prefix_to_skip = set(['source'])
 
 def get_d_from_file(file_name):
     path, x, y = icons.get_path(file_name)
@@ -124,14 +118,6 @@ def get_min_max(node_map):
         if node['lon'] > maximum.lon: maximum.lon = node['lon']
         if node['lon'] < minimum.lon: minimum.lon = node['lon']
     return minimum, maximum
-
-
-minimum, maximum = get_min_max(node_map)
-
-if len(sys.argv) > 3:
-    flinger = GeoFlinger(min1, max1, Vector(0, 0), Vector(w, h))
-else:
-    flinger = GeoFlinger(minimum, maximum, Vector(25, 25), Vector(975, 975))
 
 
 def draw_path(nodes, style, shift=Vector()):
@@ -185,10 +171,6 @@ def draw_text(text, x, y, fill):
             '" style="font-size:10;text-anchor:middle;font-family:Myriad Pro;fill:#' + fill + ';">' + text + '</text>')
 
 def point(k, v, x, y, fill, text_y):
-    if ('node ' + k + ': ' + v) in missed_tags:
-        missed_tags['node ' + k + ': ' + v] += 1
-    else:
-        missed_tags['node ' + k + ': ' + v] = 1
     text = k + ': ' + v
     if type(text) == unicode:
         text = text.encode('utf-8')
@@ -206,11 +188,11 @@ def construct_layers():
         way = way_map[way_id]
         if not ('layer' in way['tags']):
             way['tags']['layer'] = 0
-        if not (int(way['tags']['layer']) in layers):
-            layers[int(way['tags']['layer'])] = \
+        if not (float(way['tags']['layer']) in layers):
+            layers[float(way['tags']['layer'])] = \
                 {'b': [], 'h1': [], 'h2': [], 'r': [], 'n': [], 'l': [],
                  'a': [], 'le': [], 'ba': [], 'bo': [], 'w': []}
-        layer = layers[int(way['tags']['layer'])]
+        layer = layers[float(way['tags']['layer'])]
         if 'building' in way['tags']:
             layer['b'].append(way)
         if 'natural' in way['tags']:
@@ -241,8 +223,6 @@ def construct_layers():
         #        print 'Unknown kind of way:', way['tags']
     return layers
 
-
-layers = construct_layers()
 
 def draw_raw_ways():
     for way_id in way_map:
@@ -478,7 +458,7 @@ def draw_raw_nodes():
 def no_draw(key):
     if key in tags_to_write or key in tags_to_skip:
         return True
-    for prefix in prefix_to_write + prefix_to_skip:
+    for prefix in prefix_to_write.union(prefix_to_skip):
         if key[:len(prefix) + 1] == prefix + ':':
             return True
     return False
@@ -549,7 +529,7 @@ def get_icon(tags, scheme, fill='444444'):
     scheme['cache'][tags_hash] = returned
     return returned
 
-def draw_nodes(show_missed_tags=False, overlap=14):
+def draw_nodes(show_missed_tags=False, overlap=14, draw=True):
     print 'Draw nodes...'
 
     start_time = datetime.datetime.now()
@@ -579,13 +559,29 @@ def draw_nodes(show_missed_tags=False, overlap=14):
             p = {}
 
         shapes, fill, processed = get_icon(p, scheme)
-        processed_tags += len(processed)
-        skipped_tags += len(p) - len(processed)
+
+        for k in p:
+            if k in processed or no_draw(k):
+                processed_tags += 1
+            else:
+                skipped_tags += 1
 
         for k in []:  # p:
             if to_write(k):
                 draw_text(k + ': ' + p[k], x, y + 18 + text_y, '444444')
                 text_y += 10
+
+        if show_missed_tags:
+            for k in p:
+                v = p[k]
+                if not no_draw(k) and not k in processed:
+                    if ('node ' + k + ': ' + v) in missed_tags:
+                        missed_tags['node ' + k + ': ' + v] += 1
+                    else:
+                        missed_tags['node ' + k + ': ' + v] = 1
+
+        if not draw:
+            continue
 
         if show_missed_tags:
             for k in p:
@@ -617,20 +613,56 @@ def draw_nodes(show_missed_tags=False, overlap=14):
         str(skipped_tags) + ' (' + \
         str(processed_tags / float(processed_tags + skipped_tags) * 100) + ' %).'
 
+# Actions
+
+input_file_name = sys.argv[1]
+
+if not os.path.isfile(input_file_name):
+    print 'Fatal: no such file: ' + input_file_name + '.'
+    sys.exit(1)
+
+node_map, way_map, relation_map = osm_reader.parse_osm_file(input_file_name, 
+    parse_ways=False, parse_relations=False)
+
+output_file = svg.SVG(open(sys.argv[2], 'w+'))
+
+w, h = 2650, 2650
+
+output_file.begin(w, h)
+output_file.rect(0, 0, w, h, color=background_color)
+
+minimum = Geo(180, 180)
+maximum = Geo(-180, -180)
+
+if len(sys.argv) > 3:
+    min1 = Geo(float(sys.argv[5]), float(sys.argv[3]))
+    max1 = Geo(float(sys.argv[6]), float(sys.argv[4]))
+
+authors = {}
+missed_tags = {}
+
+if len(sys.argv) > 3:
+    flinger = GeoFlinger(min1, max1, Vector(0, 0), Vector(w, h))
+else:
+    print 'Compute borders...'
+    minimum, maximum = get_min_max(node_map)
+    flinger = GeoFlinger(minimum, maximum, Vector(25, 25), Vector(975, 975))
+    print 'Done.'
+
+#layers = construct_layers()
+
 #draw_raw_nodes()
 #draw_raw_ways()
-
-text_y = 0
 
 icons = extract_icon.IconExtractor('icons.svg')
 
 #sys.exit(0)
 
 #draw_ways()
-#draw_nodes(show_missed_tags=True, overlap=12)
+draw_nodes(show_missed_tags=False, overlap=12, draw=True)
 
 #draw_ways()
-draw_nodes()
+#draw_nodes()
 
 if flinger.space.x == 0:
     output_file.rect(0, 0, w, flinger.space.y, color='FFFFFF')
@@ -638,10 +670,12 @@ if flinger.space.x == 0:
 
 output_file.end()
 
-print '\nTop missed tags:\n'
 top_missed_tags = sorted(missed_tags.keys(), key=lambda x: -missed_tags[x])
-for tag in top_missed_tags[:10]:
-    print tag + ' (' + str(missed_tags[tag]) + ')'
+missed_tags_file = open('missed_tags.yml', 'w+')
+for tag in top_missed_tags:
+    missed_tags_file.write('- {tag: "' + tag + '", count: ' + \
+        str(missed_tags[tag]) + '}\n')
+missed_tags_file.close()
 
 sys.exit(0)
 

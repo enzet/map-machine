@@ -86,19 +86,26 @@ def parse_tag(text):
     v = text[v_index + 3:text.find('"', v_index + 4)]
     return k, v
 
-def parse_osm_file(file_name):
-    print 'Reading OSM file ' + file_name
+def parse_osm_file(file_name, parse_nodes=True, parse_ways=True, 
+        parse_relations=True):
     start_time = datetime.datetime.now()
     try:
-        node_map, way_map, relation_map = parse_osm_file_fast(file_name)
+        node_map, way_map, relation_map = parse_osm_file_fast(file_name, 
+            parse_nodes=parse_nodes, parse_ways=parse_ways, 
+            parse_relations=parse_relations)
     except Exception as e:
+        print e
         print '\033[31mFast parsing failed.\033[0m'
         a = raw_input('Do you want to use slow but correct XML parsing? [y/n] ')
         if a in ['y', 'yes']:
             start_time = datetime.datetime.now()
+            print 'Opening OSM file ' + file_name + '...'
             input_file = open(input_file_name)
+            print 'Done.'
+            print 'Parsing OSM file ' + file_name + '...'
             content = xml.dom.minidom.parse(input_file)
             input_file.close()
+            print 'Done.'
         else:
             return None, None, None
     print 'File readed in ' + \
@@ -107,13 +114,17 @@ def parse_osm_file(file_name):
         str(len(way_map)) + ', relations: ' + str(len(relation_map)) + '.'
     return node_map, way_map, relation_map
 
-def parse_osm_file_fast(file_name):
+def parse_osm_file_fast(file_name, parse_nodes=True, parse_ways=True, 
+        parse_relations=True):
     node_map = {}
     way_map = {}
     relation_map = {}
+    print 'Line number counting for ' + file_name + '...'
     with open(file_name) as f:
         for lines_number, l in enumerate(f):
             pass
+    print 'Done.'
+    print 'Parsing OSM file ' + file_name + '...'
     input_file = open(file_name)
     line = input_file.readline()
     line_number = 0
@@ -124,6 +135,11 @@ def parse_osm_file_fast(file_name):
         # Node parsing.
 
         if line[:6] in [' <node', '\t<node']:
+            if not parse_nodes:
+                if parse_ways or parse_relations:
+                    continue
+                else:
+                    break
             if line[-3] == '/':
                 node = parse_node(line[7:-3])
                 node_map[node['id']] = node
@@ -136,6 +152,11 @@ def parse_osm_file_fast(file_name):
         # Way parsing.
 
         elif line[:5] in [' <way', '\t<way']:
+            if not parse_ways:
+                if parse_relations:
+                    continue
+                else:
+                    break
             if line[-3] == '/':
                 way = parse_way(line[6:-3])
                 way_map[node['id']] = way
@@ -149,6 +170,8 @@ def parse_osm_file_fast(file_name):
         # Relation parsing.
 
         elif line[:10] in [' <relation', '\t<relation']:
+            if not parse_relations:
+                break
             if line[-3] == '/':
                 relation = parse_relation(line[11:-3])
                 relation_map[relation['id']] = relation

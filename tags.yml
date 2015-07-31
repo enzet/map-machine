@@ -6,10 +6,12 @@ colors:
   'blue': '2233AA'
   'brown': '964B00'
   'darkgreen': '446722'
+  'gold': 'FFD700'  # Wikipedia
   'gray': '888888'
   'green': '4E9A06'
   'grey': '888888'
   'lightblue': '2288CC'
+  'slate_blue': '2288CC'  # The same
   'lightgreen': '73D216'
   'maroon': '800000'
   'orange': 'FCAF3E'
@@ -28,6 +30,7 @@ colors:
   'grass': 'C8DC94'
   'sand': 'F0E0D0'
   'beach': 'F0E0C0'
+  'deciduous': 'FCAF3E'
   'desert': 'F0E0D0'
   'playground': '884400'
   'parking': 'DDCC99'
@@ -57,10 +60,14 @@ tags:
   icon: [restaurant]
 - tags: {amenity: pharmacy}
   icon: [pharmacy]
+- tags: {amenity: post_box}
+  icon: [post_box]
 - tags: {amenity: drinking_water}
   icon: [drinking_water]
 - tags: {amenity: toilets}
   icon: [toilets]
+- tags: {amenity: telephone}
+  icon: [telephone]
 - tags: {amenity: theatre}
   icon: [theatre]
 - tags: {amenity: bar}
@@ -90,6 +97,9 @@ tags:
   add_icon: [microphone]
 - tags: {building: '*', 'roof:material': metal}
   icon: [metal_roof]
+
+  # Trees
+
 - tags: {natural: tree}
   icon: [tree]
   color: wood
@@ -102,6 +112,8 @@ tags:
 - tags: {natural: tree, type: conifer}
   icon: [needleleaved]
   color: wood
+- tags: {natural: tree, leaf_cycle: deciduous}
+  color: deciduous
 - tags: {natural: tree, denotation: urban}
   over_icon: [urban_tree_pot]
   under_icon: [tree, broadleaved, needleleaved]
@@ -110,6 +122,7 @@ tags:
   under_icon: [tree, broadleaved, needleleaved]
 
   # Entrance
+
 - tags: {entrance: 'yes'}
   icon: [entrance]
 - tags: {entrance: main}
@@ -141,6 +154,10 @@ tags:
   add_icon: [no_traffic_signals]
 - tags: {highway: crossing, crossing: traffic_signals}
   add_icon: [traffic_signals]
+- tags: {highway: mini_roundabout}
+  icon: [mini_roundabout]
+- tags: {highway: turning_circle}
+  icon: [turning_circle]
 - tags: {highway: traffic_signals}
   icon: [traffic_signals]
 - tags: {traffic_calming: bump}
@@ -163,12 +180,20 @@ tags:
   icon: [mausoleum]
 - tags: {barrier: gate}
   icon: [gate]
+- tags: {barrier: bollard}
+  icon: [bollard]
 - tags: {barrier: lift_gate}
   icon: [lift_gate]
 - tags: {barrier: turnstile}
   icon: [turnstile]
+- tags: {barrier: stile}
+  icon: [stile]
 - tags: {man_made: pole}
   icon: [pole]
+- tags: {power: pole}
+  icon: [pole]
+- tags: {power: tower}
+  icon: [power_tower]
 - tags: {man_made: pole, highway: street_lamp}
   icon: [pole_lamp]
 - tags: {man_made: flagpole}
@@ -209,3 +234,7 @@ tags:
   add_icon: [trolleybus]
 - tags: {access: private}
   add_icon: [private]
+- tags: {direction: clockwise}
+  add_icon: [clockwise]
+- tags: {smoking: 'no'}
+  add_icon: [no_smoking]
