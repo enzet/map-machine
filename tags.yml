@@ -84,6 +84,8 @@ tags:
   icon: [fast_food]
 - tags: {amenity: shop, shop: fishing}
   icon: [fishing]
+- tags: {shop: convenience}
+  icon: [shop_convenience]
 - tags: {amenity: shop, shop: convenience}
   icon: [shop_convenience]
 - tags: {amenity: shop, shop: kiosk}
@@ -95,6 +97,14 @@ tags:
   color: water_border
 - tags: {amenity: '*', karaoke: 'yes'}
   add_icon: [microphone]
+- tags: {amenity: place_of_warship, religion: chiristian}
+  icon: [christian]
+- tags: {amenity: place_of_warship, religion: muslim}
+  icon: [muslim]
+- tags: {amenity: place_of_warship, religion: buddhist}
+  icon: [buddhist]
+- tags: {amenity: place_of_warship, religion: hindu}
+  icon: [hindu]
 - tags: {building: '*', 'roof:material': metal}
   icon: [metal_roof]
 

@@ -375,6 +375,8 @@ def draw_ways():
                 #floors = float(way['tags']['building:levels'])
             draw_path(way['nodes'], 'fill:#D0D0C0;stroke:#AAAAAA;opacity:1.0;')
             c = line_center(way['nodes'])
+            shapes, fill, processed = get_icon(way['tags'], scheme, '444444')
+            draw_shapes(shapes, True, points, c.x, c.y, fill, True, way['tags'], processed)
             for tag in way['tags']:
                 v = way['tags'][tag]
                 if tag == 'building':
@@ -471,8 +473,22 @@ def to_write(key):
             return True
     return False
 
+def get_color(color, scheme):
+    if color in scheme['colors']:
+        return scheme['colors'][color]
+    else:
+        m = re.match('^(\\#)?(?P<color1>[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])' + \
+            '(?P<color2>[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])?$', color)
+        if m:
+            if 'color2' in m.groups():
+                return m.group('color1') + m.group('color2')
+            else:
+                return ''.join(map(lambda x: x + x, m.group('color1')))
+    return '444444'
+
 def get_icon(tags, scheme, fill='444444'):
-    tags_hash = ','.join(tags.keys()) + ':' + ','.join(tags.values())
+    tags_hash = ','.join(tags.keys()) + ':' + \
+        ','.join(map(lambda x: str(x), tags.values()))
     if tags_hash in scheme['cache']:
         return scheme['cache'][tags_hash]
     main_icon = None
@@ -510,18 +526,13 @@ def get_icon(tags, scheme, fill='444444'):
                 fill = scheme['colors'][element['color']]
                 for key in element['tags'].keys():
                     processed.add(key)
-    if 'color' in tags:
-        if tags['color'] in scheme['colors']:
-            fill = scheme['colors'][tags['color']]
-            processed.add('color')
-        else:
-            print 'No color ' + tags['color'] + '.'
-    if 'colour' in tags:
-        if tags['colour'] in scheme['colors']:
-            fill = scheme['colors'][tags['colour']]
-            processed.add('colour')
-        else:
-            print 'No color ' + tags['colour'] + '.'
+    for color_name in ['color', 'colour', 'building:colour']:
+        if color_name in tags:
+            fill = get_color(tags[color_name], scheme)
+            if fill != '444444':
+                processed.add(color_name)
+            else:
+                print 'No color ' + tags[color_name] + '.'
     if main_icon:
         returned = [main_icon] + extra_icons, fill, processed
     else:
@@ -529,15 +540,37 @@ def get_icon(tags, scheme, fill='444444'):
     scheme['cache'][tags_hash] = returned
     return returned
 
+def draw_shapes(shapes, overlap, points, x, y, fill, show_missed_tags, tags, processed):
+    text_y = 0
+    xxx = -(len(shapes) - 1) * 8
+
+    if overlap != 0:
+        for shape in shapes:
+            has_space = True
+            for p in points[-1000:]:
+                if x + xxx - overlap <= p.x <= x + xxx + overlap and \
+                        y - overlap <= p.y <= y + overlap:
+                    has_space = False
+                    break
+            if has_space:
+                draw_point_shape(shape, x + xxx, y, fill)
+                points.append(Vector(x + xxx, y))
+                xxx += 16
+    else:
+        for shape in shapes:
+            draw_point_shape(shape, x + xxx, y, fill)
+            xxx += 16
+
+    if show_missed_tags:
+        for k in tags:
+            if not no_draw(k) and not k in processed:
+                point(k, tags[k], x, y, fill, text_y)
+                text_y += 10
+
 def draw_nodes(show_missed_tags=False, overlap=14, draw=True):
     print 'Draw nodes...'
 
     start_time = datetime.datetime.now()
-
-    scheme = yaml.load(open('tags.yml'))
-    scheme['cache'] = {}
-    if overlap != 0:
-        points = []
 
     node_number = 0
     processed_tags = 0
@@ -552,28 +585,27 @@ def draw_nodes(show_missed_tags=False, overlap=14, draw=True):
         flinged = flinger.fling(Geo(node['lat'], node['lon']))
         x = flinged.x
         y = flinged.y
-        text_y = 0
         if 'tags' in node:
-            p = node['tags']
+            tags = node['tags']
         else:
-            p = {}
+            tags = {}
 
-        shapes, fill, processed = get_icon(p, scheme)
+        shapes, fill, processed = get_icon(tags, scheme)
 
-        for k in p:
+        for k in tags:
             if k in processed or no_draw(k):
                 processed_tags += 1
             else:
                 skipped_tags += 1
 
-        for k in []:  # p:
+        for k in []:  # tags:
             if to_write(k):
-                draw_text(k + ': ' + p[k], x, y + 18 + text_y, '444444')
+                draw_text(k + ': ' + tags[k], x, y + 18 + text_y, '444444')
                 text_y += 10
 
         if show_missed_tags:
-            for k in p:
-                v = p[k]
+            for k in tags:
+                v = tags[k]
                 if not no_draw(k) and not k in processed:
                     if ('node ' + k + ': ' + v) in missed_tags:
                         missed_tags['node ' + k + ': ' + v] += 1
@@ -583,30 +615,8 @@ def draw_nodes(show_missed_tags=False, overlap=14, draw=True):
         if not draw:
             continue
 
-        if show_missed_tags:
-            for k in p:
-                if not no_draw(k) and not k in processed:
-                    point(k, p[k], x, y, fill, text_y)
-                    text_y += 10
+        draw_shapes(shapes, overlap, points, x, y, fill, show_missed_tags, tags, processed)
 
-        xxx = -(len(shapes) - 1) * 8
-
-        if overlap != 0:
-            for shape in shapes:
-                has_space = True
-                for p in points[-1000:]:
-                    if x + xxx - overlap <= p.x <= x + xxx + overlap and \
-                            y - overlap <= p.y <= y + overlap:
-                        has_space = False
-                        break
-                if has_space:
-                    draw_point_shape(shape, x + xxx, y, fill)
-                    points.append(Vector(x + xxx, y))
-                    xxx += 16
-        else:
-            for shape in shapes:
-                draw_point_shape(shape, x + xxx, y, fill)
-                xxx += 16
     ui.write_line(-1, len(node_map))
     print 'Nodes drawed in ' + str(datetime.datetime.now() - start_time) + '.'
     print 'Tags processed: ' + str(processed_tags) + ', tags skipped: ' + \
@@ -649,16 +659,23 @@ else:
     flinger = GeoFlinger(minimum, maximum, Vector(25, 25), Vector(975, 975))
     print 'Done.'
 
-#layers = construct_layers()
+layers = construct_layers()
 
 #draw_raw_nodes()
 #draw_raw_ways()
 
 icons = extract_icon.IconExtractor('icons.svg')
+points = []
 
 #sys.exit(0)
 
-#draw_ways()
+scheme = yaml.load(open('tags.yml'))
+scheme['cache'] = {}
+w3c_colors = yaml.load(open('colors.yml'))
+for color_name in w3c_colors:
+    scheme['colors'][color_name] = w3c_colors[color_name]
+
+draw_ways()
 draw_nodes(show_missed_tags=True, overlap=12, draw=True)
 
 #draw_ways()
