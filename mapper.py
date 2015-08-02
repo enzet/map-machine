@@ -62,9 +62,9 @@ tags_to_write = set(['operator', 'opening_hours', 'cuisine', 'network',  'websit
 
 prefix_to_write = set(['addr', 'contact', 'name', 'operator', 'wikipedia', 
                    'alt_name', 'description', 'old_name', 'inscription', 
-                   'route_ref', 'is_in', 'website',
+                   'route_ref', 'is_in', 'website', 'ref',
                    # To draw
-                   'species', 'taxon'])
+                   'species', 'taxon', 'genus'])
 
 tags_to_skip = set(['note', 'layer', 'source', 'building:part', 'fixme', 'comment',
                 'FIXME', 'source_ref', 'naptan:verified:note'])
@@ -622,7 +622,7 @@ if not os.path.isfile(input_file_name):
     sys.exit(1)
 
 node_map, way_map, relation_map = osm_reader.parse_osm_file(input_file_name, 
-    parse_ways=False, parse_relations=False)
+    parse_ways=True, parse_relations=True)
 
 output_file = svg.SVG(open(sys.argv[2], 'w+'))
 
@@ -659,7 +659,7 @@ icons = extract_icon.IconExtractor('icons.svg')
 #sys.exit(0)
 
 #draw_ways()
-draw_nodes(show_missed_tags=False, overlap=12, draw=True)
+draw_nodes(show_missed_tags=True, overlap=12, draw=True)
 
 #draw_ways()
 #draw_nodes()

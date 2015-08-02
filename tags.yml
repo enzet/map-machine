@@ -80,14 +80,14 @@ tags:
   icon: [kindergarten]
 - tags: {amenity: post_office}
   icon: [post_office]
-- tags: {amenity: fast_food, 'operator:en': "McDonald's"}
-  icon: [mcdonalds]
 - tags: {amenity: fast_food}
   icon: [fast_food]
 - tags: {amenity: shop, shop: fishing}
   icon: [fishing]
 - tags: {amenity: shop, shop: convenience}
   icon: [shop_convenience]
+- tags: {amenity: shop, shop: kiosk}
+  icon: [kiosk]
 - tags: {shop: gift}
   icon: [gift]
 - tags: {amenity: fountain}
@@ -236,5 +236,7 @@ tags:
   add_icon: [private]
 - tags: {direction: clockwise}
   add_icon: [clockwise]
+- tags: {direction: contrclockwise}
+  add_icon: [contrclockwise]
 - tags: {smoking: 'no'}
   add_icon: [no_smoking]
