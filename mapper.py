@@ -67,7 +67,7 @@ prefix_to_write = set(['addr', 'contact', 'name', 'operator', 'wikipedia',
                    'species', 'taxon', 'genus'])
 
 tags_to_skip = set(['note', 'layer', 'source', 'building:part', 'fixme', 'comment',
-                'FIXME', 'source_ref', 'naptan:verified:note'])
+        'FIXME', 'source_ref', 'naptan:verified:note', 'building:levels'])
 
 prefix_to_skip = set(['source'])
 
@@ -99,7 +99,7 @@ def get_d_from_file(file_name):
         size = 10
     else:
         print 'Unknown file:', file_name
-        return 'M 4,4 L 4,10 10,10 10,4 4,4', 16
+        return 'M 4,4 L 4,10 10,10 10,4 z', 16
     f = open(file_name).read().split('\n')
     for line in f:
         m = re.match('.* d="(?P<path>[AaMmCcLlZz0-9Ee., -]*)".*', line)
@@ -147,8 +147,18 @@ def draw_point_shape(name, x, y, fill):
 def draw_point_outline(shape, x, y, fill, size=16, xx=0, yy=0):
     x = int(float(x))
     y = int(float(y))
+    outline_fill = 'FFFFFF'
+    opacity = 0.5
+    r = int(fill[0:2], 16)
+    g = int(fill[2:4], 16)
+    b = int(fill[4:6], 16)
+    if r + g > 430 or g + b > 500 or r + b > 400:
+        outline_fill = '000000'
+        opacity = 0.3
     output_file.write('<path d="' + shape + \
-            '" style="fill:#FFFFFF;opacity:0.5;stroke:#FFFFFF;stroke-width:3;stroke-linejoin:round;" transform="translate(' + \
+        '" style="fill:#' + outline_fill + ';opacity:' + str(opacity) + ';' + \
+        'stroke:#' + outline_fill + ';stroke-width:3;stroke-linejoin:round;" ' + \
+        'transform="translate(' + \
          str(x - size / 2.0 - xx * 16) + ',' + str(y - size / 2.0 - yy * 16) + ')" />\n')
 
 def draw_point(shape, x, y, fill, size=16, xx=0, yy=0):

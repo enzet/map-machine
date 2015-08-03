@@ -42,6 +42,8 @@ tags:
 
 - tags: {place: quarter}
   draw: false
+- tags: {building: 'yes'}
+  icon: [building]
 - tags: {amenity: bench}
   icon: [bench]
 - tags: {amenity: bench, backrest: 'yes'}
@@ -84,6 +86,10 @@ tags:
   icon: [fast_food]
 - tags: {amenity: shop, shop: fishing}
   icon: [fishing]
+- tags: {shop: clothes}
+  icon: [shop_clothes]
+- tags: {amenity: shop, shop: clothes}
+  icon: [clothes]
 - tags: {shop: convenience}
   icon: [shop_convenience]
 - tags: {amenity: shop, shop: convenience}
@@ -97,16 +103,16 @@ tags:
   color: water_border
 - tags: {amenity: '*', karaoke: 'yes'}
   add_icon: [microphone]
-- tags: {amenity: place_of_warship, religion: chiristian}
+- tags: {amenity: place_of_worship, religion: christian}
   icon: [christian]
-- tags: {amenity: place_of_warship, religion: muslim}
+- tags: {amenity: place_of_worship, religion: muslim}
   icon: [muslim]
-- tags: {amenity: place_of_warship, religion: buddhist}
+- tags: {amenity: place_of_worship, religion: buddhist}
   icon: [buddhist]
-- tags: {amenity: place_of_warship, religion: hindu}
+- tags: {amenity: place_of_worship, religion: hindu}
   icon: [hindu]
 - tags: {building: '*', 'roof:material': metal}
-  icon: [metal_roof]
+  add_icon: [metal_roof]
 
   # Trees
 
