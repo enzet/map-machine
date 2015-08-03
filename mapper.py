@@ -78,7 +78,7 @@ def get_d_from_file(file_name):
     else:
         # print 'No such icon: ' + file_name
         # TODO: add to missed icons
-        return 'M 4,4 L 4,10 10,10 10,4 4,4', 0, 0
+        return 'M 4,4 L 4,10 10,10 10,4 z', 0, 0
 
     # Old style.
 
@@ -152,7 +152,8 @@ def draw_point_outline(shape, x, y, fill, size=16, xx=0, yy=0):
     r = int(fill[0:2], 16)
     g = int(fill[2:4], 16)
     b = int(fill[4:6], 16)
-    if r + g > 430 or g + b > 500 or r + b > 400:
+    Y = 0.2126 * r + 0.7152 * g + 0.0722 * b
+    if Y > 200:
         outline_fill = '000000'
         opacity = 0.3
     output_file.write('<path d="' + shape + \
@@ -635,16 +636,21 @@ def draw_nodes(show_missed_tags=False, overlap=14, draw=True):
 
 # Actions
 
-input_file_name = sys.argv[1]
+options = ui.parse_options(sys.argv)
+
+if not options:
+    sys.exit(1)
+
+input_file_name = options['input_file_name']
 
 if not os.path.isfile(input_file_name):
     print 'Fatal: no such file: ' + input_file_name + '.'
     sys.exit(1)
 
 node_map, way_map, relation_map = osm_reader.parse_osm_file(input_file_name, 
-    parse_ways=True, parse_relations=True)
+    parse_ways=options['draw_ways'], parse_relations=False)
 
-output_file = svg.SVG(open(sys.argv[2], 'w+'))
+output_file = svg.SVG(open(options['output_file_name'], 'w+'))
 
 w, h = 2650, 2650
 
@@ -654,12 +660,20 @@ output_file.rect(0, 0, w, h, color=background_color)
 minimum = Geo(180, 180)
 maximum = Geo(-180, -180)
 
-if len(sys.argv) > 3:
-    min1 = Geo(float(sys.argv[5]), float(sys.argv[3]))
-    max1 = Geo(float(sys.argv[6]), float(sys.argv[4]))
+if 'boundary_box' in options:
+    bb = options['boundary_box']
+    min1 = Geo(bb[2], bb[0])
+    max1 = Geo(bb[3], bb[1])
 
 authors = {}
 missed_tags = {}
+points = []
+
+scheme = yaml.load(open('tags.yml'))
+scheme['cache'] = {}
+w3c_colors = yaml.load(open('colors.yml'))
+for color_name in w3c_colors:
+    scheme['colors'][color_name] = w3c_colors[color_name]
 
 if len(sys.argv) > 3:
     flinger = GeoFlinger(min1, max1, Vector(0, 0), Vector(w, h))
@@ -669,27 +683,15 @@ else:
     flinger = GeoFlinger(minimum, maximum, Vector(25, 25), Vector(975, 975))
     print 'Done.'
 
-layers = construct_layers()
-
-#draw_raw_nodes()
-#draw_raw_ways()
+if options['draw_ways']:
+    layers = construct_layers()
 
 icons = extract_icon.IconExtractor('icons.svg')
-points = []
 
-#sys.exit(0)
-
-scheme = yaml.load(open('tags.yml'))
-scheme['cache'] = {}
-w3c_colors = yaml.load(open('colors.yml'))
-for color_name in w3c_colors:
-    scheme['colors'][color_name] = w3c_colors[color_name]
-
-draw_ways()
-draw_nodes(show_missed_tags=True, overlap=12, draw=True)
-
-#draw_ways()
-#draw_nodes()
+if options['draw_ways']:
+    draw_ways()
+draw_nodes(show_missed_tags=options['show_missed_tags'], 
+           overlap=options['overlap'], draw=options['draw_nodes'])
 
 if flinger.space.x == 0:
     output_file.rect(0, 0, w, flinger.space.y, color='FFFFFF')

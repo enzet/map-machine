@@ -94,6 +94,8 @@ tags:
   icon: [shop_convenience]
 - tags: {amenity: shop, shop: convenience}
   icon: [shop_convenience]
+- tags: {building: store}
+  icon: [shop_convenience]
 - tags: {amenity: shop, shop: kiosk}
   icon: [kiosk]
 - tags: {shop: gift}
