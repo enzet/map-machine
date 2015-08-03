@@ -29,6 +29,8 @@ def parse_options(args):
             options['draw_ways'] = False
         elif arg in ['--show-missed-tags']:
             options['show_missed_tags'] = True
+        elif arg in ['--no-show-missed-tags']:
+            options['show_missed_tags'] = False
         elif arg in ['--overlap']:
             options['overlap'] = int(next(args))
         else:

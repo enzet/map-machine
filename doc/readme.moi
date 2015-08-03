@@ -1,0 +1,14 @@
+\2 {Map generation} {map_generation}
+
+\b {Requirements}: Python 2.7.
+
+\code
+{python mapper.py -i \formal {input OSM XML file name} -o \formal {output SVG file name} }
+
+\3 {Options}
+
+\table
+{
+    {{\tt {-bbox}, \tt {--boundary-box}} {Boundary box to draw}}
+    {{\tt {--show-missed-tags}} {Show not drawed tags as text}}
+}

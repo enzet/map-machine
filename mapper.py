@@ -253,7 +253,7 @@ def line_center(node_ids):
     return Vector((ma.x + mi.x) / 2.0, (ma.y + mi.y) / 2.0)
 
 
-def draw_ways():
+def draw_ways(show_missed_tags=False):
     for level in sorted(layers.keys()):
         layer = layers[level]
         #for entity in ['b', 'h1', 'h2', 'r', 'n', 'l', 'a', 'le', 'ba']:
@@ -387,7 +387,7 @@ def draw_ways():
             draw_path(way['nodes'], 'fill:#D0D0C0;stroke:#AAAAAA;opacity:1.0;')
             c = line_center(way['nodes'])
             shapes, fill, processed = get_icon(way['tags'], scheme, '444444')
-            draw_shapes(shapes, True, points, c.x, c.y, fill, True, way['tags'], processed)
+            draw_shapes(shapes, True, points, c.x, c.y, fill, show_missed_tags, way['tags'], processed)
             for tag in way['tags']:
                 v = way['tags'][tag]
                 if tag == 'building':
@@ -689,7 +689,7 @@ if options['draw_ways']:
 icons = extract_icon.IconExtractor('icons.svg')
 
 if options['draw_ways']:
-    draw_ways()
+    draw_ways(show_missed_tags=options['show_missed_tags'])
 draw_nodes(show_missed_tags=options['show_missed_tags'], 
            overlap=options['overlap'], draw=options['draw_nodes'])
 
