@@ -27,17 +27,23 @@ import svg
 from vector import Vector
 
 background_color = 'EEEEEE'
+building_color = 'D4D4D4'  # 'D0D0C0'
+building_border_color = 'C4C4C4'  # 'AAAAAA'
+construction_color = 'CCCCCC'
 grass_color = 'C8DC94'
 sand_color = 'F0E0D0'
 beach_color = 'F0E0C0'
 desert_color = 'F0E0D0'
-playground_color = '884400'
 parking_color = 'DDCC99'
+playground_color = '884400'
+primary_border_color = '888888'  # 'AA8800'
+primary_color = 'FFFFFF'  # 'FFDD66'
 water_color = 'AACCFF'
 water_border_color = '6688BB'
 wood_color = 'B8CC84'
 
-tags_to_write = set(['operator', 'opening_hours', 'cuisine', 'network',  'website', 
+tags_to_write = set(['operator', 'opening_hours', 'cuisine', 'network',  
+                 'website', 'website_2', 'STIF:zone',
                  'phone', 'branch', 'route_ref', 'brand', 'ref', 'wikipedia', 
                  'description', 'level', 'wikidata', 'name', 'alt_name', 
                  'image', 'fax', 'old_name', 'artist_name', 'int_name',
@@ -54,7 +60,7 @@ tags_to_write = set(['operator', 'opening_hours', 'cuisine', 'network',  'websit
                  'ref_no', 'uri', 'fhrs:inspectiondate', 'telephone', 
                  'naptan:AltCommonName', 'end_date', 'facebook', 'naptan:Notes',
                  'voltage', 'last_collection', 'twitter', 'ele', 'information',
-                 'phone_1', 'cyclestreets_id',
+                 'phone_1', 'cyclestreets_id', 'cladr:code',
                  # To draw
                  'naptan:Bearing', 'species', 'taxon', 'seats', 'capacity',
                  'fhrs:rating', 'fhrs:confidence_management', 'fhrs:hygiene',
@@ -288,6 +294,9 @@ def draw_ways(show_missed_tags=False):
                 style = 'fill:#' + parking_color + ';stroke:none;'
                 draw_path(way['nodes'], style)
                 draw_point_shape('parking', c.x, c.y, '444444')
+            elif way['tags']['landuse'] == 'construction':
+                style = 'fill:#' + construction_color + ';stroke:none;'
+                draw_path(way['nodes'], style)
             elif way['tags']['landuse'] in ['residential', 'commercial']:
                 continue
             else:
@@ -350,7 +359,7 @@ def draw_ways(show_missed_tags=False):
             style = 'fill:none;stroke:#AAAAAA;stroke-dasharray:none;stroke-linejoin:round;stroke-linecap:round;stroke-width:'
             if v == 'motorway': style += '30'
             elif v == 'trunk': style += '25'
-            elif v == 'primary': style += '20;stroke:#AA8800'
+            elif v == 'primary': style += '20;stroke:#' + primary_border_color
             elif v == 'secondary': style += '13'
             elif v == 'tertiary': style += '11'
             elif v == 'unclassified': style += '9'
@@ -369,7 +378,7 @@ def draw_ways(show_missed_tags=False):
             style = 'fill:none;stroke:#FFFFFF;stroke-linecap:round;stroke-linejoin:round;stroke-width:'
             if v == 'motorway': style += '28'
             elif v == 'trunk': style += '23'
-            elif v == 'primary': style += '19;stroke:#FFDD66'
+            elif v == 'primary': style += '19;stroke:#' + primary_color
             elif v == 'secondary': style += '11'
             elif v == 'tertiary': style += '9'
             elif v == 'unclassified': style += '7'
@@ -384,58 +393,11 @@ def draw_ways(show_missed_tags=False):
             text_y = 0
             #if 'building:levels' in way['tags']:
                 #floors = float(way['tags']['building:levels'])
-            draw_path(way['nodes'], 'fill:#D0D0C0;stroke:#AAAAAA;opacity:1.0;')
+            draw_path(way['nodes'], 'fill:#' + building_color + ';stroke:#' + building_border_color + ';opacity:1.0;')
             c = line_center(way['nodes'])
             shapes, fill, processed = get_icon(way['tags'], scheme, '444444')
             draw_shapes(shapes, True, points, c.x, c.y, fill, show_missed_tags, way['tags'], processed)
-            for tag in way['tags']:
-                v = way['tags'][tag]
-                if tag == 'building':
-                    if v == 'yes':
-                        pass
-                    elif v == 'apartments':
-                        draw_point_shape('apartments', c.x, c.y, '444444')
-                    elif v == 'kindergarten':
-                        draw_point_shape('playground', c.x, c.y, '444444')
-                elif tag == 'amenity':
-                    if v == 'cafe':
-                        draw_point_shape('cafe', c.x, c.y, '444444')
-                    elif v == 'theatre':
-                        draw_point_shape('theatre', c.x, c.y, '444444')
-                    elif v == 'fast_food':
-                        draw_point_shape('fast_food', c.x, c.y, '444444')
-                    elif v == 'snack_cart':
-                        draw_point_shape('cafe', c.x, c.y, '444444')
-                elif tag == 'shop':
-                    if v == 'clothes':
-                        draw_point_shape('shop_clothes', c.x, c.y, '444444')
-                    elif v == 'gift':
-                        draw_point_shape('shop_gift', c.x, c.y, '444444')
-                elif tag == 'power':
-                    draw_point_shape('electricity', c.x, c.y, '444444')
-                #elif tag in ['name', 'addr:housenumber', 'cladr:code', 
-                #             'addr:city', 'addr:street', 'website',
-                #             'wikidata'] or \
-                #        'name' in tag or 'wikipedia' in tag:
-                #    draw_text(v, str(c.x), str(c.y + 18 + text_y), '444444')
-                #    text_y += 10
-                #elif tag == 'addr:country':
-                #    if v == 'RU':
-                #        draw_text('Россия', str(c.x), str(c.y + 18 + text_y), '444444')
-                #    else:
-                #        draw_text(v, str(c.x), str(c.y + 18 + text_y), '444444')
-                #    text_y += 10
-                elif tag in ['layer', 'height']:
-                    pass
-                elif tag in ['building:levels']:
-                    pass
-                else:
-                    kk = tag
-                    vv = v
-                    if ('way ' + kk + ': ' + vv) in missed_tags:
-                        missed_tags['way ' + kk + ': ' + vv] += 1
-                    else:
-                        missed_tags['way ' + kk + ': ' + vv] = 1
+            icons_to_draw.append({'shapes': shapes, 'x': c.x, 'y': c.y, 'fill': fill, 'priority': 1})
         for way in layer['le']:
             c = line_center(way['nodes'])
             if way['tags']['leisure'] == 'playground':
@@ -654,6 +616,10 @@ output_file = svg.SVG(open(options['output_file_name'], 'w+'))
 
 w, h = 2650, 2650
 
+if 'size' in options:
+    w = options['size'][0]
+    h = options['size'][1]
+
 output_file.begin(w, h)
 output_file.rect(0, 0, w, h, color=background_color)
 
@@ -668,6 +634,7 @@ if 'boundary_box' in options:
 authors = {}
 missed_tags = {}
 points = []
+icons_to_draw = []  # {shape, x, y, priority}
 
 scheme = yaml.load(open('tags.yml'))
 scheme['cache'] = {}

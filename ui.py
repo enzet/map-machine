@@ -33,6 +33,8 @@ def parse_options(args):
             options['show_missed_tags'] = False
         elif arg in ['--overlap']:
             options['overlap'] = int(next(args))
+        elif arg in ['-s', '--size']:
+            options['size'] = map(lambda x: float(x), next(args).split(','))
         else:
             print 'Unknown option: ' + arg
             return None

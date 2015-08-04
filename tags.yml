@@ -32,6 +32,7 @@ colors:
   'beach': 'F0E0C0'
   'deciduous': 'FCAF3E'
   'desert': 'F0E0D0'
+  'evergreen': 'B8CC84'
   'playground': '884400'
   'parking': 'DDCC99'
   'water': 'AACCFF'
@@ -43,7 +44,7 @@ tags:
 - tags: {place: quarter}
   draw: false
 - tags: {building: 'yes'}
-  icon: [building]
+  draw: false
 - tags: {amenity: bench}
   icon: [bench]
 - tags: {amenity: bench, backrest: 'yes'}
@@ -96,6 +97,8 @@ tags:
   icon: [shop_convenience]
 - tags: {building: store}
   icon: [shop_convenience]
+- tags: {building: apartments}
+  icon: [apartments]
 - tags: {amenity: shop, shop: kiosk}
   icon: [kiosk]
 - tags: {shop: gift}
@@ -132,6 +135,8 @@ tags:
   color: wood
 - tags: {natural: tree, leaf_cycle: deciduous}
   color: deciduous
+- tags: {natural: tree, leaf_cycle: evergreen}
+  color: evergreen
 - tags: {natural: tree, denotation: urban}
   over_icon: [urban_tree_pot]
   under_icon: [tree, broadleaved, needleleaved]
