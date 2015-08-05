@@ -3,12 +3,28 @@
 \b {Requirements}: Python 2.7.
 
 \code
-{python mapper.py -i \formal {input OSM XML file name} -o \formal {output SVG file name} }
+{python mapper.py -i \formal {input OSM XML file name} -o \formal {output SVG file name}}
+
+\image {https://raw.github.com/enzet/OSM/master/map.png} {Sample map}
 
 \3 {Options}
 
 \table
 {
-    {{\tt {-bbox}, \tt {--boundary-box}} {Boundary box to draw}}
-    {{\tt {--show-missed-tags}} {Show not drawed tags as text}}
+    {
+        {\tt {-bbox}, \tt {--boundary-box}} 
+        {\tt {\formal {longitude 1},\formal {longitude 2},\formal {latitude 1},\formal {latitude 2}}}
+        {Boundary box to draw}
+    }
+    {
+        {\tt {-s}, \tt {--size}} 
+        {\tt {\formal {x},\formal {y}}}
+        {Result image size}
+    }
 }
+
+\2 {Icons}
+
+Double size:
+
+\image {https://raw.github.com/enzet/OSM/master/grid.png} {Icons}

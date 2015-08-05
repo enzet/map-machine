@@ -43,7 +43,7 @@ water_border_color = '6688BB'
 wood_color = 'B8CC84'
 
 tags_to_write = set(['operator', 'opening_hours', 'cuisine', 'network',  
-                 'website', 'website_2', 'STIF:zone',
+                 'website', 'website_2', 'STIF:zone', 'opening_hours:url',
                  'phone', 'branch', 'route_ref', 'brand', 'ref', 'wikipedia', 
                  'description', 'level', 'wikidata', 'name', 'alt_name', 
                  'image', 'fax', 'old_name', 'artist_name', 'int_name',
@@ -82,7 +82,7 @@ def get_d_from_file(file_name):
     if path:
         return path, x, y
     else:
-        # print 'No such icon: ' + file_name
+        print 'No such icon: ' + file_name
         # TODO: add to missed icons
         return 'M 4,4 L 4,10 10,10 10,4 z', 0, 0
 
@@ -661,8 +661,8 @@ draw_nodes(show_missed_tags=options['show_missed_tags'],
            overlap=options['overlap'], draw=options['draw_nodes'])
 
 if flinger.space.x == 0:
-    output_file.rect(0, 0, w, flinger.space.y, color='FFFFFF')
-    output_file.rect(0, h - flinger.space.y, w, flinger.space.y, color='FFFFFF')
+    output_file.rect(0, 0, w, flinger.space.y, color='AAAAAA')
+    output_file.rect(0, h - flinger.space.y, w, flinger.space.y, color='AAAAAA')
 
 output_file.end()
 
