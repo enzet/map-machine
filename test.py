@@ -4,6 +4,8 @@ Author: Sergey Vartanov (me@enzet.ru).
 
 import copy
 import extract_icon
+import process
+import os
 import sys
 import yaml
 
@@ -13,37 +15,12 @@ sys.path.append('lib')
 
 import svg
 
-def get_icon(tags):
-    main_icon = None
-    extra_icons = []
-    for element in scheme['tags']:
-        matched = True
-        for tag in element['tags']:
-            if not tag in tags:
-                matched = False
-                break
-            if element['tags'][tag] != '*' and \
-                    element['tags'][tag] != tags[tag]:
-                matched = False
-                break
-        if matched:
-            print 'matched', element
-            if 'icon' in element:
-                main_icon = copy.deepcopy(element['icon'])
-            if 'over_icon' in element:
-                main_icon += element['over_icon']
-            if 'add_icon' in element:
-                extra_icons += element['add_icon']
-    if main_icon:
-        return [main_icon] + extra_icons
-    else:
-        return []
-
 def draw_icon(icon):
     output_file.write('<path d="' + icon['path'] + '" ' + \
         'style="fill:#444444;stroke:none;' + \
         'stroke-width:3;stroke-linejoin:round;" ' + \
         'transform="translate(' + icon['x'] + ',' + icon['y'] + ')" />\n')
+
 
 # Actions
 
@@ -56,23 +33,37 @@ extracter = extract_icon.IconExtractor('icons.svg')
 x = step / 2
 y = step / 2
 
-to_draw = {}
+to_draw = []
 
 for element in scheme['tags']:
     if 'icon' in element:
-        to_draw[','.join(element['icon'])] = element['icon']
+        if not (set(element['icon']) in to_draw):
+            to_draw.append(set(element['icon']))
     if 'add_icon' in element:
-        to_draw[','.join(element['add_icon'])] = element['add_icon']
+        if not (set(element['add_icon']) in to_draw):
+            to_draw.append(set(element['add_icon']))
     if 'over_icon' in element:
-        for icon in element['under_icon']:
-            to_draw[','.join([icon] + element['over_icon'])] = [icon] + \
-                element['over_icon']
+        with_icons = []
+        if 'under_icon' in element:
+            for icon in element['under_icon']:
+                if not (set([icon] + element['over_icon']) in to_draw):
+                    to_draw.append(set([icon] + element['over_icon']))
+        if 'under_icon' in element and 'with_icon' in element:
+            for icon in element['under_icon']:
+                for icon2 in element['with_icon']:
+                    if not (set([icon] + [icon2] + element['over_icon']) in to_draw):
+                        to_draw.append(set([icon] + [icon2] + element['over_icon']))
+                for icon2 in element['with_icon']:
+                    for icon3 in element['with_icon']:
+                        if icon2 != icon3 and icon2 != icon and icon3 != icon:
+                            if not (set([icon] + [icon2] + [icon3] + element['over_icon']) in to_draw):
+                                to_draw.append(set([icon] + [icon2] + [icon3] + element['over_icon']))
 
 icons = []
 height = 24
+number = 0
 
-for icon_key in to_draw.keys():
-    icons_to_draw = to_draw[icon_key]
+for icons_to_draw in to_draw:
     drawed = False
     for icon in icons_to_draw:
         path, xx, yy = extracter.get_path(icon)
@@ -84,6 +75,7 @@ for icon_key in to_draw.keys():
         else:
             print '\033[31m' + icon + '\033[0m'
     if drawed:
+        number += 1
         x += step
         if x > width - 8:
             x = step / 2
@@ -95,5 +87,7 @@ output_file.begin(width, height)
 
 for icon in icons:
     draw_icon(icon)
+
+print 'Icons: ' + str(number) + '.'
 
 output_file.end()

@@ -10,6 +10,7 @@ Author: Sergey Vartanov (me@enzet.ru).
 import copy
 import datetime
 import os
+import process
 import re
 import sys
 import xml.dom.minidom
@@ -82,7 +83,7 @@ def get_d_from_file(file_name):
     if path:
         return path, x, y
     else:
-        print 'No such icon: ' + file_name
+        # print 'No such icon: ' + file_name
         # TODO: add to missed icons
         return 'M 4,4 L 4,10 10,10 10,4 z', 0, 0
 
@@ -395,7 +396,7 @@ def draw_ways(show_missed_tags=False):
                 #floors = float(way['tags']['building:levels'])
             draw_path(way['nodes'], 'fill:#' + building_color + ';stroke:#' + building_border_color + ';opacity:1.0;')
             c = line_center(way['nodes'])
-            shapes, fill, processed = get_icon(way['tags'], scheme, '444444')
+            shapes, fill, processed = process.get_icon(way['tags'], scheme, '444444')
             draw_shapes(shapes, True, points, c.x, c.y, fill, show_missed_tags, way['tags'], processed)
             icons_to_draw.append({'shapes': shapes, 'x': c.x, 'y': c.y, 'fill': fill, 'priority': 1})
         for way in layer['le']:
@@ -445,73 +446,6 @@ def to_write(key):
         if key[:len(prefix) + 1] == prefix + ':':
             return True
     return False
-
-def get_color(color, scheme):
-    if color in scheme['colors']:
-        return scheme['colors'][color]
-    else:
-        m = re.match('^(\\#)?(?P<color1>[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])' + \
-            '(?P<color2>[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])?$', color)
-        if m:
-            if 'color2' in m.groups():
-                return m.group('color1') + m.group('color2')
-            else:
-                return ''.join(map(lambda x: x + x, m.group('color1')))
-    return '444444'
-
-def get_icon(tags, scheme, fill='444444'):
-    tags_hash = ','.join(tags.keys()) + ':' + \
-        ','.join(map(lambda x: str(x), tags.values()))
-    if tags_hash in scheme['cache']:
-        return scheme['cache'][tags_hash]
-    main_icon = None
-    extra_icons = []
-    processed = set()
-    for element in scheme['tags']:
-        matched = True
-        for tag in element['tags']:
-            if not tag in tags:
-                matched = False
-                break
-            if element['tags'][tag] != '*' and element['tags'][tag] != tags[tag]:
-                matched = False
-                break
-        if 'no_tags' in element:
-            for no_tag in element['no_tags']:
-                if no_tag in tags.keys():
-                    matched = False
-                    break
-        if matched:
-            if 'draw' in element and not element['draw']:
-                processed = set(element['tags'].keys())
-            if 'icon' in element:
-                main_icon = copy.deepcopy(element['icon'])
-                processed = set(element['tags'].keys())
-            if 'over_icon' in element:
-                main_icon += element['over_icon']
-                for key in element['tags'].keys():
-                    processed.add(key)
-            if 'add_icon' in element:
-                extra_icons += element['add_icon']
-                for key in element['tags'].keys():
-                    processed.add(key)
-            if 'color' in element:
-                fill = scheme['colors'][element['color']]
-                for key in element['tags'].keys():
-                    processed.add(key)
-    for color_name in ['color', 'colour', 'building:colour']:
-        if color_name in tags:
-            fill = get_color(tags[color_name], scheme)
-            if fill != '444444':
-                processed.add(color_name)
-            else:
-                print 'No color ' + tags[color_name] + '.'
-    if main_icon:
-        returned = [main_icon] + extra_icons, fill, processed
-    else:
-        returned = [], fill, processed
-    scheme['cache'][tags_hash] = returned
-    return returned
 
 def draw_shapes(shapes, overlap, points, x, y, fill, show_missed_tags, tags, processed):
     text_y = 0
@@ -563,7 +497,7 @@ def draw_nodes(show_missed_tags=False, overlap=14, draw=True):
         else:
             tags = {}
 
-        shapes, fill, processed = get_icon(tags, scheme)
+        shapes, fill, processed = process.get_icon(tags, scheme)
 
         for k in tags:
             if k in processed or no_draw(k):
@@ -661,8 +595,8 @@ draw_nodes(show_missed_tags=options['show_missed_tags'],
            overlap=options['overlap'], draw=options['draw_nodes'])
 
 if flinger.space.x == 0:
-    output_file.rect(0, 0, w, flinger.space.y, color='AAAAAA')
-    output_file.rect(0, h - flinger.space.y, w, flinger.space.y, color='AAAAAA')
+    output_file.rect(0, 0, w, flinger.space.y, color='FFFFFF')
+    output_file.rect(0, h - flinger.space.y, w, flinger.space.y, color='FFFFFF')
 
 output_file.end()
 
