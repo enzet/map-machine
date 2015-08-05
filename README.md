@@ -3,9 +3,9 @@ Map generation
 
 **Requirements**: Python 2.7.
 
-    python mapper.py -i &lt;input OSM XML file name&gt; -o &lt;output SVG file name&gt;
+    python mapper.py -i <input OSM XML file name> -o <output SVG file name>
 
-![https://raw.github.com/enzet/OSM/master/map.png](Sample map)
+![https://github.com/enzet/OSM/raw/master/map.png](Sample map)
 
 ### Options ###
 
@@ -30,5 +30,5 @@ Icons
 
 Double size:
 
-![https://raw.github.com/enzet/OSM/master/grid.png](Icons)
+![https://github.com/enzet/OSM/raw/master/grid.png](Icons)
 

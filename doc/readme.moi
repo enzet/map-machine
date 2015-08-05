@@ -3,9 +3,9 @@
 \b {Requirements}: Python 2.7.
 
 \code
-{python mapper.py -i \formal {input OSM XML file name} -o \formal {output SVG file name}}
+{python mapper.py -i <input OSM XML file name> -o <output SVG file name>}
 
-\image {https://raw.github.com/enzet/OSM/master/map.png} {Sample map}
+\image {https://github.com/enzet/OSM/raw/master/map.png} {Sample map}
 
 \3 {Options}
 
@@ -27,4 +27,4 @@
 
 Double size:
 
-\image {https://raw.github.com/enzet/OSM/master/grid.png} {Icons}
+\image {https://github.com/enzet/OSM/raw/master/grid.png} {Icons}
