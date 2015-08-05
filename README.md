@@ -5,7 +5,7 @@ Map generation
 
     python mapper.py -i <input OSM XML file name> -o <output SVG file name>
 
-![https://github.com/enzet/OSM/raw/master/map.png](Sample map)
+![Sample map](map.png)
 
 ### Options ###
 
@@ -30,5 +30,5 @@ Icons
 
 Double size:
 
-![https://github.com/enzet/OSM/raw/master/grid.png](Icons)
+![Icons](grid.png)
 

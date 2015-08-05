@@ -5,7 +5,7 @@
 \code
 {python mapper.py -i <input OSM XML file name> -o <output SVG file name>}
 
-\image {https://github.com/enzet/OSM/raw/master/map.png} {Sample map}
+\image {map.png} {Sample map}
 
 \3 {Options}
 
@@ -27,4 +27,4 @@
 
 Double size:
 
-\image {https://github.com/enzet/OSM/raw/master/grid.png} {Icons}
+\image {grid.png} {Icons}
