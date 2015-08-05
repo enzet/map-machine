@@ -1,30 +1,43 @@
+Röntgen project focuses on displaying every \href {http://openstreetmap.org} {OpenStreetMap} data tag on the map. 
+
+\2 {Why do we need yet another map style?}
+
+It is actually not just another map style since it is \b {not} \i {a map for users} but \i {map for OpenStreetMap contributors}. Suppose, you spent time adding colors for building walls, benches and shelters for bus stops but they do not represented on the map. Röntgen helps to display all changes you made.
+
 \2 {Map generation} {map_generation}
+
+\image {map.png} {Sample map}
 
 \b {Requirements}: Python 2.7.
 
+There are simple Python renderer that generates SVG map from OpenStreetMap data. You can run it using:
+
 \code
 {python mapper.py -i <input OSM XML file name> -o <output SVG file name>}
-
-\image {map.png} {Sample map}
 
 \3 {Options}
 
 \table
 {
+    {{Option} {Value} {Description}}
     {
         {\tt {-bbox}, \tt {--boundary-box}} 
-        {\tt {\formal {longitude 1},\formal {longitude 2},\formal {latitude 1},\formal {latitude 2}}}
+        {\tt {\formal {longitude 1},\formal {longitude 2},\formal {latitude 1},\formal {latitude 2}} (decimal float)}
         {Boundary box to draw}
     }
     {
         {\tt {-s}, \tt {--size}} 
-        {\tt {\formal {x},\formal {y}}}
+        {\tt {\formal {width},\formal {height}} (pixels)}
         {Result image size}
     }
 }
 
-\2 {Icons}
+\2 {Icon set}
+
+If tag is drawable it is displayed using icon combination and colors.
 
 Double size:
 
 \image {grid.png} {Icons}
+
+Feel free to request new icons via issues for whatever you want to see on the map. No matter how frequently the tag is used in OpenStreetMap since final goal is to cover all tags. However, common used tags have priority, other things being equal.
