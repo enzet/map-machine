@@ -8,7 +8,7 @@ It is actually not just another map style since it is **not** *a map for users* 
 Map generation
 --------------
 
-![Sample map](map.png)
+![Sample map](doc/map.png)
 
 **Requirements**: Python 2.7.
 
@@ -47,7 +47,7 @@ If tag is drawable it is displayed using icon combination and colors.
 
 Double size:
 
-![Icons](grid.png)
+![Icons](doc/grid.png)
 
 Feel free to request new icons via issues for whatever you want to see on the map. No matter how frequently the tag is used in OpenStreetMap since final goal is to cover all tags. However, common used tags have priority, other things being equal.
 

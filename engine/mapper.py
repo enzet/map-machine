@@ -22,7 +22,7 @@ import ui
 
 from flinger import GeoFlinger, Geo
 
-sys.path.append('lib')
+sys.path.append('../lib')
 
 import svg
 from vector import Vector
@@ -42,6 +42,11 @@ primary_color = 'FFFFFF'  # 'FFDD66'
 water_color = 'AACCFF'
 water_border_color = '6688BB'
 wood_color = 'B8CC84'
+
+icons_file_name = '../icons/icons.svg'
+tags_file_name = '../data/tags.yml'
+colors_file_name = '../data/colors.yml'
+missed_tags_file_name = '../missed_tags_file_name.yml'
 
 tags_to_write = set(['operator', 'opening_hours', 'cuisine', 'network',  
                  'website', 'website_2', 'STIF:zone', 'opening_hours:url',
@@ -86,32 +91,6 @@ def get_d_from_file(file_name):
         # print 'No such icon: ' + file_name
         # TODO: add to missed icons
         return 'M 4,4 L 4,10 10,10 10,4 z', 0, 0
-
-    # Old style.
-
-    if os.path.isfile('icons/' + file_name + '.svg'):
-        file_name = 'icons/' + file_name + '.svg'
-        size = 16
-    elif os.path.isfile('icons/' + file_name + '.16.svg'):
-        file_name = 'icons/' + file_name + '.16.svg'
-        size = 16
-    elif os.path.isfile('icons/' + file_name + '-12.svg'):
-        file_name = 'icons/' + file_name + '-12.svg'
-        size = 12
-    elif os.path.isfile('icons/' + file_name + '.12.svg'):
-        file_name = 'icons/' + file_name + '.12.svg'
-        size = 12
-    elif os.path.isfile('icons/' + file_name + '.10.svg'):
-        file_name = 'icons/' + file_name + '.10.svg'
-        size = 10
-    else:
-        print 'Unknown file:', file_name
-        return 'M 4,4 L 4,10 10,10 10,4 z', 16
-    f = open(file_name).read().split('\n')
-    for line in f:
-        m = re.match('.* d="(?P<path>[AaMmCcLlZz0-9Ee., -]*)".*', line)
-        if m:
-            return m.group('path'), size
 
 
 def get_min_max(node_map):
@@ -570,9 +549,9 @@ missed_tags = {}
 points = []
 icons_to_draw = []  # {shape, x, y, priority}
 
-scheme = yaml.load(open('tags.yml'))
+scheme = yaml.load(open(tags_file_name))
 scheme['cache'] = {}
-w3c_colors = yaml.load(open('colors.yml'))
+w3c_colors = yaml.load(open(colors_file_name))
 for color_name in w3c_colors:
     scheme['colors'][color_name] = w3c_colors[color_name]
 
@@ -587,7 +566,7 @@ else:
 if options['draw_ways']:
     layers = construct_layers()
 
-icons = extract_icon.IconExtractor('icons.svg')
+icons = extract_icon.IconExtractor(icons_file_name)
 
 if options['draw_ways']:
     draw_ways(show_missed_tags=options['show_missed_tags'])
@@ -601,7 +580,7 @@ if flinger.space.x == 0:
 output_file.end()
 
 top_missed_tags = sorted(missed_tags.keys(), key=lambda x: -missed_tags[x])
-missed_tags_file = open('missed_tags.yml', 'w+')
+missed_tags_file = open(missed_tags_file_name, 'w+')
 for tag in top_missed_tags:
     missed_tags_file.write('- {tag: "' + tag + '", count: ' + \
         str(missed_tags[tag]) + '}\n')

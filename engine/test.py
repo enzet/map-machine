@@ -9,11 +9,15 @@ import os
 import sys
 import yaml
 
-scheme = yaml.load(open('tags.yml'))
+tags_file_name = '../data/tags.yml'
 
-sys.path.append('lib')
+scheme = yaml.load(open(tags_file_name))
+
+sys.path.append('../lib')
 
 import svg
+
+icons_file_name = '../icons/icons.svg'
 
 def draw_icon(icon):
     output_file.write('<path d="' + icon['path'] + '" ' + \
@@ -28,7 +32,7 @@ step = 24
 
 width = step * 10
 
-extracter = extract_icon.IconExtractor('icons.svg')
+extracter = extract_icon.IconExtractor(icons_file_name)
 
 x = step / 2
 y = step / 2

@@ -7,7 +7,7 @@ Author: Sergey Vartanov (me@enzet.ru)
 import math
 import sys
 
-sys.path.append('lib')
+sys.path.append('../lib')
 
 from vector import Vector
 
