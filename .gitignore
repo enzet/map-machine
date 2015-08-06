@@ -13,6 +13,7 @@
 *.png
 *.pyc
 *.svg
+missed_tags.yml
 
 # Test scheme files
 
