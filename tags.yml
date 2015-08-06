@@ -1,29 +1,5 @@
 colors:
 
-  # Color names
-
-  'black': '000000'
-  'blue': '2233AA'
-  'brown': '964B00'
-  'darkgreen': '446722'
-  'gold': 'FFD700'  # Wikipedia
-  'gray': '888888'
-  'green': '4E9A06'
-  'grey': '888888'
-  'lightblue': '2288CC'
-  'slate_blue': '2288CC'  # The same
-  'lightgreen': '73D216'
-  'maroon': '800000'
-  'orange': 'FCAF3E'
-  'pink': '9D52A9'
-  'purple': '9D52A9'
-  'red': 'CC0000'
-  'silver': 'AAAAAA'
-  'tan': 'D2B48C'  # Wikipedia
-  'violet': '75507B'
-  'white': 'FFFFFF'
-  'yellow': 'EDD400'
-
   # Entity
 
   'background': 'EEEEEE'
@@ -39,71 +15,122 @@ colors:
   'water_border': '6688BB'
   'wood': 'B8CC84'
 
+  # Colors not in W3C
+
+  'rose': 'FF007F'  # Wikipedia
+  'slate_blue': '6A5ACD'  # W3C slateblue
+
 tags:
 
+  # No draw
+
+- tags: {type: multipolygon}
+  draw: false
 - tags: {place: quarter}
   draw: false
 - tags: {building: 'yes'}
   draw: false
+
+  # Street amenity
+
+- tags: {amenity: atm}
+  icon: [atm]
 - tags: {amenity: bench}
   icon: [bench]
 - tags: {amenity: bench, backrest: 'yes'}
   icon: [bench_backrest]
 - tags: {amenity: bench, backrest: 'no'}
   icon: [bench_no_backrest]
+- tags: {amenity: clock}
+  icon: [clock]
+- tags: {amenity: cinema}
+  icon: [film]
+- tags: {highway: street_lamp}
+  icon: [street_lamp]
+- tags: {amenity: waste_basket}
+  icon: [waste_basket]
+- tags: {amenity: telephone}
+  icon: [telephone]
+- tags: {emergency: phone}
+  icon: [sos_phone]
+- tags: {amenity: fountain}
+  icon: [fountain]
+  color: water_border
+- tags: {amenity: toilets}
+  icon: [toilets]
+- tags: {amenity: post_box}
+  icon: [letter]
+- tags: {amenity: prison}
+  icon: [prison]
+- tags: {man_made: pole}
+  icon: [pole]
+- tags: {power: pole}
+  icon: [pole]
+- tags: {power: tower}
+  icon: [power_tower]
+- tags: {man_made: pole, highway: street_lamp}
+  icon: [pole_lamp]
+- tags: {man_made: flagpole}
+  icon: [flagpole]
+
 - tags: {amenity: bicycle_parking}
   icon: [bicycle_parking]
+- tags: {amenity: parking}
+  icon: [parking]
+
+  # Eating and entertainment
+
 - tags: {amenity: cafe}
   icon: [cafe]
 - tags: {amenity: nightclub}
   icon: [night_club]
-- tags: {amenity: waste_basket}
-  icon: [waste_basket]
-- tags: {amenity: clinic}
-  icon: [clinic]
 - tags: {amenity: restaurant}
   icon: [restaurant]
 - tags: {amenity: restaurant;bar}
   icon: [restaurant]
   add_icon: [bar]
-- tags: {amenity: pharmacy}
-  icon: [pharmacy]
-- tags: {amenity: post_box}
-  icon: [letter]
 - tags: {amenity: drinking_water}
   icon: [drinking_water]
-- tags: {amenity: toilets}
-  icon: [toilets]
-- tags: {amenity: telephone}
-  icon: [telephone]
 - tags: {amenity: theatre}
   icon: [theatre]
 - tags: {amenity: bar}
   icon: [bar]
-- tags: {amenity: bank}
-  icon: [money]
 - tags: {amenity: pub}
   icon: [beer]
+- tags: {amenity: fast_food}
+  icon: [fast_food]
+- tags: {amenity: '*', karaoke: 'yes'}
+  add_icon: [microphone]
+
+  # Other buildings
+
+- tags: {building: apartments}
+  icon: [apartments]
+- tags: {tourism: hotel}
+  icon: [hotel]
+- tags: {tourism: hostel}
+  icon: [hostel]
+- tags: {tourism: motel}  # Tourism?
+  icon: [motel]
+- tags: {amenity: clinic}
+  icon: [clinic]
+- tags: {amenity: bank}
+  icon: [money]
 - tags: {amenity: kindergarten}
   icon: [kindergarten]
 - tags: {amenity: post_office}
   icon: [letter]
-- tags: {amenity: fast_food}
-  icon: [fast_food]
-- tags: {amenity: fountain}
-  icon: [fountain]
-  color: water_border
-- tags: {amenity: '*', karaoke: 'yes'}
-  add_icon: [microphone]
 
   # Shop
 
+- tags: {amenity: pharmacy}
+  icon: [pharmacy]
 - tags: {amenity: shop, shop: fishing}
   icon: [fishing]
 - tags: {shop: clothes}
   icon: [shop_clothes]
 - tags: {amenity: shop, shop: clothes}
-  icon: [clothes]
+  icon: [shop_clothes]
 - tags: {shop: bakery}
   icon: [cupcake]
 - tags: {shop: convenience}
@@ -112,8 +139,6 @@ tags:
   icon: [shop_convenience]
 - tags: {building: store}
   icon: [shop_convenience]
-- tags: {building: apartments}
-  icon: [apartments]
 - tags: {amenity: shop, shop: kiosk}
   icon: [kiosk]
 - tags: {shop: gift}
@@ -123,12 +148,20 @@ tags:
 
 - tags: {amenity: place_of_worship, religion: christian}
   icon: [christian]
+- tags: 
+    amenity: place_of_worship
+    religion: christian
+    denomination: russian_orthodox
+  icon: [orthodox]
 - tags: {amenity: place_of_worship, religion: muslim}
   icon: [muslim]
 - tags: {amenity: place_of_worship, religion: buddhist}
   icon: [buddhist]
 - tags: {amenity: place_of_worship, religion: hindu}
   icon: [hindu]
+
+  # Additions for buildings
+
 - tags: {building: '*', 'roof:material': metal}
   add_icon: [metal_roof]
 
@@ -165,21 +198,42 @@ tags:
   icon: [main_entrance]
 - tags: {entrance: staircase}
   icon: [staircase]
-- tags: {railway: subway_entrance}
-  icon: [train]
-- tags: {railway: subway_entrance, entrance: 'yes'}
-  icon: [train]
+
+  # Transport
 
 - tags: {highway: bus_stop}
   icon: [bus_stop]
   add_icon: [bus]
+- tags: {railway: station}
+  icon: [train]
+- tags: {railway: station, station: subway, transport: subway}
+  icon: [train]
+- tags: {railway: subway_entrance}
+  icon: [train]
+- tags: {railway: subway_entrance, entrance: 'yes'}
+  icon: [train]
+- tags: {bus: 'yes'}
+  add_icon: [bus]
+- tags: {trolleybus: 'yes'}
+  add_icon: [trolleybus]
+- tags: {railway: tram_station}
+  icon: [tram]
+- tags: {railway: tram_stop}
+  icon: [tram]
 - tags: {highway: bus_stop, shelter: 'yes'}
   icon: [bus_stop_sign]
   under_icon: [bus_stop_sign]
+  with_icon: [bus_stop_bench]
   over_icon: [bus_stop_shelter]
 - tags: {highway: bus_stop, bench: 'yes'}
   under_icon: [bus_stop_sign]
+  with_icon: [bus_stop_shelter]
   over_icon: [bus_stop_bench]
+- tags: {public_transport: platform}
+  icon: [railway_platform]
+
+  # Road signs
+
 - tags: {highway: crossing}
   icon: [crossing]
 - tags: {highway: crossing, crossing: zebra}
@@ -196,24 +250,44 @@ tags:
   icon: [turning_circle]
 - tags: {highway: traffic_signals}
   icon: [traffic_signals]
+- tags: {public_transport: stop_position}
+  icon: [bus_stop]
+- tags: {crossing_ref: toucan}
+  icon: [toucan_crossing]
 - tags: {traffic_calming: bump}
   icon: [bump]
-- tags: {highway: street_lamp}
-  icon: [street_lamp]
-- tags: {historic: memorial}
+- tags: {sloped_curb: yes}
+  icon: [lowered_kerb]
+- tags: {kerb: lowered}
+  icon: [lowered_kerb]
+- tags: {traffic_calming: cushion}
+  icon: [traffic_cushion]
+
+  # Tourism
+
+- tags: {historic: memorial}  # Before memorial:*
   icon: [memorial]
 - tags: {historic: memorial, memorial: statue}
   icon: [statue]
+- tags: {historic: memorial, memorial: plaque}
+  icon: [plaque]
+- tags: {historic: tomb}  # Before tomb:*
+  icon: [tomb]
+- tags: {historic: tomb, tomb: mausoleum}
+  icon: [mausoleum]
 - tags: {tourism: artwork, artwork_type: statue}
   icon: [statue]
 - tags: {tourism: artwork, artwork_type: sculpture}
   icon: [statue]
-- tags: {historic: memorial, memorial: plaque}
-  icon: [plaque]
-- tags: {historic: tomb}
-  icon: [tomb]
-- tags: {historic: tomb, tomb: mausoleum}
-  icon: [mausoleum]
+- tags: {tourism: attraction}  # Before attraction:*
+  icon: [attraction]
+- tags: {tourism: attraction, attraction: amusement_ride}
+  icon: [amusement_ride]
+- tags: {tourism: gallery}
+  icon: [picture]
+
+  # Barrier
+
 - tags: {barrier: gate}
   icon: [gate]
 - tags: {barrier: bollard}
@@ -224,30 +298,10 @@ tags:
   icon: [turnstile]
 - tags: {barrier: stile}
   icon: [stile]
-- tags: {man_made: pole}
-  icon: [pole]
-- tags: {power: pole}
-  icon: [pole]
-- tags: {power: tower}
-  icon: [power_tower]
-- tags: {man_made: pole, highway: street_lamp}
-  icon: [pole_lamp]
-- tags: {man_made: flagpole}
-  icon: [flagpole]
-- tags: {tourism: attraction}
-  icon: [attraction]
-- tags: {tourism: attraction, attraction: amusement_ride}
-  icon: [amusement_ride]
-- tags: {public_transport: platform}
-  icon: [railway_platform]
 - tags: {barrier: entrance}
   icon: [entrance]
-- tags: {amenity: atm}
-  icon: [atm]
-- tags: {public_transport: stop_position}
-  icon: [bus_stop]
-- tags: {crossing_ref: toucan}
-  icon: [toucan_crossing]
+
+  # Additions for everything
 
 - tags: {foot: 'yes'}
   add_icon: [foot]
@@ -260,14 +314,10 @@ tags:
 - tags: {internet_access: wlan, 'internet_access:fee': 'no'}
   add_icon: [free_wlan]
 - tags: {internet_access: wlan}
-  no_tags: {'internet_access:fee'}
+  no_tags: ['internet_access:fee']
   add_icon: [wlan]
 - tags: {material: wood}
   add_icon: [wood]
-- tags: {bus: 'yes'}
-  add_icon: [bus]
-- tags: {trolleybus: 'yes'}
-  add_icon: [trolleybus]
 - tags: {access: private}
   add_icon: [private]
 - tags: {direction: clockwise}
@@ -276,3 +326,5 @@ tags:
   add_icon: [contrclockwise]
 - tags: {smoking: 'no'}
   add_icon: [no_smoking]
+- tags: {atm: 'yes'}
+  add_icon: [atm]

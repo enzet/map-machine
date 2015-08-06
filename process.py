@@ -1,4 +1,5 @@
 import copy
+import re
 
 def get_color(color, scheme):
     if color in scheme['colors']:
