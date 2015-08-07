@@ -36,6 +36,8 @@ There are simple Python renderer that generates SVG map from OpenStreetMap data.
 
 If tag is drawable it is displayed using icon combination and colors.
 
+All icons are under \href {http://creativecommons.org/licenses/by/4.0/} {CC BY 4.0} license. So, do whatever you want but give appropriate credit.
+
 Double size:
 
 \image {doc/grid.png} {Icons}
