@@ -151,8 +151,23 @@ tags:
 - tags: 
     amenity: place_of_worship
     religion: christian
+    denomination: catholic
+  icon: [christian]
+- tags: 
+    amenity: place_of_worship
+    religion: christian
     denomination: russian_orthodox
+  icon: [russian_orthodox]
+- tags: 
+    amenity: place_of_worship
+    religion: christian
+    denomination: orthodox
   icon: [orthodox]
+- tags: 
+    amenity: place_of_worship
+    religion: christian
+    denomination: baptist
+  icon: [baptist]
 - tags: {amenity: place_of_worship, religion: muslim}
   icon: [muslim]
 - tags: {amenity: place_of_worship, religion: buddhist}
