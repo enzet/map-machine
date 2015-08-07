@@ -46,7 +46,7 @@ wood_color = 'B8CC84'
 icons_file_name = '../icons/icons.svg'
 tags_file_name = '../data/tags.yml'
 colors_file_name = '../data/colors.yml'
-missed_tags_file_name = '../missed_tags_file_name.yml'
+missed_tags_file_name = '../missed_tags.yml'
 
 tags_to_write = set(['operator', 'opening_hours', 'cuisine', 'network',  
                  'website', 'website_2', 'STIF:zone', 'opening_hours:url',

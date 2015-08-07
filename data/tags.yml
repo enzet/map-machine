@@ -104,6 +104,8 @@ tags:
 
   # Other buildings
 
+- tags: {building: service, power: substation}
+  icon: [electricity]
 - tags: {building: apartments}
   icon: [apartments]
 - tags: {tourism: hotel}

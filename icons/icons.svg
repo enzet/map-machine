@@ -25,8 +25,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="32"
-     inkscape:cx="24.460024"
-     inkscape:cy="271.77596"
+     inkscape:cx="105.71002"
+     inkscape:cy="394.27596"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
      showgrid="true"
@@ -36,8 +36,8 @@
      inkscape:snap-bbox="true"
      inkscape:window-width="1425"
      inkscape:window-height="995"
-     inkscape:window-x="54"
-     inkscape:window-y="28"
+     inkscape:window-x="67"
+     inkscape:window-y="18"
      inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
@@ -4698,5 +4698,12 @@
        id="night_club"
        inkscape:connector-curvature="0"
        inkscape:label="#path4864" />
+    <path
+       style="fill:#000000;stroke:none"
+       d="m 105,193 -5,8 5,0 -2,6 5,-8 -5,0 z"
+       id="electricity"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:label="#path4874" />
   </g>
 </svg>
