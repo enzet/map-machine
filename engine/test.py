@@ -18,6 +18,7 @@ sys.path.append('../lib')
 import svg
 
 icons_file_name = '../icons/icons.svg'
+icon_grid_file_name = '../icon_grid.svg'
 
 def draw_icon(icon):
     output_file.write('<path d="' + icon['path'] + '" ' + \
@@ -86,7 +87,7 @@ for icons_to_draw in to_draw:
             y += step
             height += step
 
-output_file = svg.SVG(open('icon_grid.svg', 'w+'))
+output_file = svg.SVG(open(icon_grid_file_name, 'w+'))
 output_file.begin(width, height)
 
 for icon in icons:
