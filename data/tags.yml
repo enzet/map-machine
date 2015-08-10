@@ -108,6 +108,10 @@ tags:
   icon: [electricity]
 - tags: {building: apartments}
   icon: [apartments]
+- tags: {building: garages}
+  icon: [garages]
+- tags: {building: garage}
+  icon: [garage]
 - tags: {tourism: hotel}
   icon: [hotel]
 - tags: {tourism: hostel}
