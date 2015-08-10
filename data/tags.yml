@@ -119,7 +119,7 @@ tags:
 - tags: {amenity: bank}
   icon: [money]
 - tags: {amenity: kindergarten}
-  icon: [kindergarten]
+  icon: [toy_horse]
 - tags: {amenity: post_office}
   icon: [letter]
 

@@ -22,11 +22,11 @@ icons_file_name = '../icons/icons.svg'
 icon_grid_file_name = '../icon_grid.svg'
 icon_colors_file_name = '../data/icon_colors'
 
-def draw_icon(icon, color='444444'):
+def draw_icon(icon, x, y, color='444444'):
     output_file.write('<path d="' + icon['path'] + '" ' + \
         'style="fill:#' + color + ';stroke:none;' + \
         'stroke-width:3;stroke-linejoin:round;" ' + \
-        'transform="translate(' + icon['x'] + ',' + icon['y'] + ')" />\n')
+        'transform="translate(' + str(icon['x'] + x) + ',' + str(icon['y'] + y) + ')" />\n')
 
 
 # Actions
@@ -43,7 +43,7 @@ if os.path.isfile(icon_colors_file_name):
 
 step = 24
 
-width = step * 10
+width = 240
 
 extracter = extract_icon.IconExtractor(icons_file_name)
 
@@ -83,34 +83,39 @@ icons = []
 
 for icons_to_draw in to_draw:
     drawed = False
-    icons.append({'xx': x - 8.0, 'yy': y - 8.0})
+    icon_set = {'icons': []}
     for icon in icons_to_draw:
         path, xx, yy = extracter.get_path(icon)
         if path:
-            icons.append({'path': path, 
-                'x': str(x - 8.0 - xx * 16), 
-                'y': str(y - 8.0 - yy * 16)});
+            icon_set['icons'].append({'path': path, 
+                'x': (- 8.0 - xx * 16), 
+                'y': (- 8.0 - yy * 16)});
             drawed = True
         else:
             print '\033[31m' + icon + '\033[0m'
     if drawed:
+        icons.append(icon_set)
         number += 1
-        x += step
-        if x > width - 8:
-            x = step / 2
-            y += step
-            height += step
+
+height = (number / (width / step) + 1) * step
 
 output_file = svg.SVG(open(icon_grid_file_name, 'w+'))
 output_file.begin(width, height)
 
+output_file.rect(0, 0, width, height, color='FFFFFF')
+
 for icon in icons:
-    if 'xx' in icon:
-        xx, yy = icon['xx'], icon['yy']
-        background_color, foreground_color = random.choice(icon_colors)
-        output_file.rect(xx - 2, yy - 2, 20, 20, color=background_color)
-    else:
-        draw_icon(icon, foreground_color)
+#for k in range(1000):
+#    icon = random.choice(icons)
+    background_color, foreground_color = random.choice(icon_colors)
+    output_file.rect(x - 2 - 8, y - 2 - 8, 20, 20, color=background_color)
+    for i in icon['icons']:
+        draw_icon(i, x, y, foreground_color)
+    x += step
+    if x > width - 8:
+        x = step / 2
+        y += step
+        height += step
 
 print 'Icons: ' + str(number) + '.'
 
