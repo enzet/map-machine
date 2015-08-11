@@ -143,6 +143,10 @@ tags:
   icon: [shop_clothes]
 - tags: {shop: bakery}
   icon: [cupcake]
+- tags: {shop: mall}
+  icon: [bag]
+- tags: {shop: mall, building: 'yes'}
+  icon: [bag]
 - tags: {shop: convenience}
   icon: [shop_convenience]
 - tags: {amenity: shop, shop: convenience}
@@ -249,19 +253,16 @@ tags:
   icon: [tram]
 - tags: {highway: bus_stop, public_transport: platform}
   icon: [bus_stop_sign]
-  with_icon: [bus_stop_bench]
-  with_icon: [bus_stop_shelter]
+  with_icon: [bus_stop_bench, bus_stop_shelter]
   over_icon: [platform]
 - tags: {highway: bus_stop, shelter: 'yes'}
   icon: [bus_stop_sign]
   under_icon: [bus_stop_sign]
-  with_icon: [bus_stop_bench]
-  with_icon: [platform]
+  with_icon: [bus_stop_bench, platform]
   over_icon: [bus_stop_shelter]
 - tags: {highway: bus_stop, bench: 'yes'}
   under_icon: [bus_stop_sign]
-  with_icon: [bus_stop_shelter]
-  with_icon: [platform]
+  with_icon: [bus_stop_shelter, platform]
   over_icon: [bus_stop_bench]
 
   # Road signs
