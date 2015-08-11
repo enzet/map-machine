@@ -382,7 +382,7 @@ def draw_ways(show_missed_tags=False):
             c = line_center(way['nodes'])
             if way['tags']['leisure'] == 'playground':
                 style = 'fill:#' + playground_color + ';opacity:0.2;'
-                draw_point_shape('playground', c.x, c.y, '444444')
+                draw_point_shape('toy_horse', c.x, c.y, '444444')
             elif way['tags']['leisure'] == 'garden':
                 style = 'fill:#' + grass_color + ';'
             elif way['tags']['leisure'] == 'pitch':

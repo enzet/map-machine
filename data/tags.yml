@@ -111,7 +111,7 @@ tags:
 - tags: {building: garages}
   icon: [garages]
 - tags: {building: garage}
-  icon: [garage]
+  icon: [garages]
 - tags: {tourism: hotel}
   icon: [hotel]
 - tags: {tourism: hostel}
@@ -122,7 +122,11 @@ tags:
   icon: [clinic]
 - tags: {amenity: bank}
   icon: [money]
+- tags: {building: kindergarten}
+  icon: [toy_horse]
 - tags: {amenity: kindergarten}
+  icon: [toy_horse]
+- tags: {building: kindergarten, amenity: kindergarten}
   icon: [toy_horse]
 - tags: {amenity: post_office}
   icon: [letter]
@@ -145,6 +149,8 @@ tags:
   icon: [shop_convenience]
 - tags: {building: store}
   icon: [shop_convenience]
+- tags: {building: 'yes', shop: kiosk}
+  icon: [kiosk]
 - tags: {amenity: shop, shop: kiosk}
   icon: [kiosk]
 - tags: {shop: gift}
@@ -241,17 +247,22 @@ tags:
   icon: [tram]
 - tags: {railway: tram_stop}
   icon: [tram]
+- tags: {highway: bus_stop, public_transport: platform}
+  icon: [bus_stop_sign]
+  with_icon: [bus_stop_bench]
+  with_icon: [bus_stop_shelter]
+  over_icon: [platform]
 - tags: {highway: bus_stop, shelter: 'yes'}
   icon: [bus_stop_sign]
   under_icon: [bus_stop_sign]
   with_icon: [bus_stop_bench]
+  with_icon: [platform]
   over_icon: [bus_stop_shelter]
 - tags: {highway: bus_stop, bench: 'yes'}
   under_icon: [bus_stop_sign]
   with_icon: [bus_stop_shelter]
+  with_icon: [platform]
   over_icon: [bus_stop_bench]
-- tags: {public_transport: platform}
-  icon: [railway_platform]
 
   # Road signs
 
@@ -276,6 +287,8 @@ tags:
 - tags: {crossing_ref: toucan}
   icon: [toucan_crossing]
 - tags: {traffic_calming: bump}
+  icon: [bump]
+- tags: {highway: bump}
   icon: [bump]
 - tags: {sloped_curb: yes}
   icon: [lowered_kerb]
