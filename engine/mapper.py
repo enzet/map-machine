@@ -239,104 +239,88 @@ def line_center(node_ids):
     return Vector((ma.x + mi.x) / 2.0, (ma.y + mi.y) / 2.0)
 
 
-def draw_ways(show_missed_tags=False):
-    for level in sorted(layers.keys()):
-        layer = layers[level]
-        #for entity in ['b', 'h1', 'h2', 'r', 'n', 'l', 'a', 'le', 'ba']:
-
-        # Pre part.
-
-        for way in layer['le']:
-            if way['tags']['leisure'] == 'park':
-                style = 'fill:#' + grass_color + ';'
-            else:
-                continue
-            draw_path(way['nodes'], style)
-
-        # Post part.
-
-        way_number = 0
-        for way in layer['l']:
-            way_number += 1
-            ui.write_line(way_number, len(layer['l']))
-            text_y = 0
-            c = line_center(way['nodes'])
-            if way['tags']['landuse'] == 'grass':
+def construct_ways(drawing):
+    for way_id in way_map:
+        way = way_map[way_id]
+        tags = way['tags']
+        nodes = way['nodes']
+        if nodes[0] == nodes[-1]:
+            style = 'fill:#0000FF;stroke:none;'
+        else:
+            style = 'stroke:#0000FF;fill:none;'
+        layer = float(tags['layer']) if ('layer' in tags) else 0
+        c = line_center(nodes)
+        if 'landuse' in tags:
+            if tags['landuse'] == 'grass':
                 style = 'fill:#' + grass_color + ';stroke:none;'
-                draw_path(way['nodes'], style)
-            elif way['tags']['landuse'] == 'conservation':
+            elif tags['landuse'] == 'conservation':
                 style = 'fill:#' + grass_color + ';stroke:none;'
-                draw_path(way['nodes'], style)
-            elif way['tags']['landuse'] == 'forest':
+            elif tags['landuse'] == 'forest':
                 style = 'fill:#' + wood_color + ';stroke:none;'
-                draw_path(way['nodes'], style)
-            elif way['tags']['landuse'] == 'garages':
+            elif tags['landuse'] == 'garages':
                 style = 'fill:#' + parking_color + ';stroke:none;'
-                draw_path(way['nodes'], style)
-                draw_point_shape('parking', c.x, c.y, '444444')
+                shapes, fill, processed = process.get_icon(tags, scheme, '444444')
+                drawing['nodes'].append({'shapes': shapes, 
+                    'x': c.x, 'y': c.y, 'color': fill, 'processed': processed})
             elif way['tags']['landuse'] == 'construction':
                 style = 'fill:#' + construction_color + ';stroke:none;'
-                draw_path(way['nodes'], style)
             elif way['tags']['landuse'] in ['residential', 'commercial']:
                 continue
-            else:
-                style = 'fill:#0000FF;stroke:none;'
-                draw_path(way['nodes'], style)
-            #for tag in way['tags']:
-            #    if not (tag in ['landuse', 'layer']):
-            #        point(tag, str(way['tags'][tag]), c.x, c.y, '000000', text_y)
-            #        text_y += 10
-        for way in layer['a']:
-            c = line_center(way['nodes'])
-            if way['tags']['amenity'] == 'parking':
+        elif 'building' in tags:
+            text_y = 0
+            style = 'fill:#' + building_color + ';stroke:#' + \
+                building_border_color + ';opacity:1.0;'
+            shapes, fill, processed = process.get_icon(tags, scheme, '444444')
+            drawing['nodes'].append({'shapes': shapes, 'x': c.x, 'y': c.y, 
+                'color': fill, 'priority': 1, 'processed': processed, 
+                'tags': tags})
+        elif 'amenity' in tags:
+            if tags['amenity'] == 'parking':
                 style = 'fill:#' + parking_color + ';stroke:none;'
-                draw_path(way['nodes'], style)
                 draw_point_shape('parking', c.x, c.y, '444444')
-            elif way['tags']['amenity'] == 'school':
-                continue
-            else:
-                style = 'fill:#0000FF;stroke:none;'
-                draw_path(way['nodes'], style)
-        for way in layer['n']:
-            if way['tags']['natural'] == 'wood':
-                style = 'fill:#' + wood_color + ';stroke:none;'
-            elif way['tags']['natural'] == 'scrub':
-                style = 'fill:#' + wood_color + ';stroke:none;'
-            elif way['tags']['natural'] == 'sand':
-                style = 'fill:#' + sand_color + ';stroke:none;'
-            elif way['tags']['natural'] == 'beach':
-                style = 'fill:#' + beach_color + ';stroke:none;'
-            elif way['tags']['natural'] == 'desert':
-                style = 'fill:#' + desert_color + ';stroke:none;'
-            elif way['tags']['natural'] == 'water':
-                style = 'fill:#' + water_color + ';stroke:#' + water_border_color + ';stroke-width:1.0;'
-            elif way['tags']['natural'] == 'forest':
-                style = 'fill:#' + wood_color + ';stroke:none;'
-            else:
-                continue
-            draw_path(way['nodes'], style)
-        for way in layer['w']:
-            if way['tags']['waterway'] == 'riverbank':
-                style = 'fill:#' + water_color + ';stroke:#' + water_border_color + ';stroke-width:1.0;'
-            elif way['tags']['waterway'] == 'river':
+        elif 'natural' in tags:
+            v = way['tags']['natural']
+            style = 'stroke:none;'
+            if v == 'wood':
+                style += 'fill:#' + wood_color + ';'
+            elif v == 'scrub':
+                style += 'fill:#' + wood_color + ';'
+            elif v == 'sand':
+                style += 'fill:#' + sand_color + ';'
+            elif v == 'beach':
+                style += 'fill:#' + beach_color + ';'
+            elif v == 'desert':
+                style += 'fill:#' + desert_color + ';'
+            elif v == 'forest':
+                style += 'fill:#' + wood_color + ';'
+            elif v == 'water':
+                style = 'fill:#' + water_color + ';stroke:#' + \
+                    water_border_color + ';stroke-width:1.0;'
+        elif 'waterway' in tags:
+            if tags['waterway'] == 'riverbank':
+                style = 'fill:#' + water_color + ';stroke:#' + \
+                    water_border_color + ';stroke-width:1.0;'
+            elif tags['waterway'] == 'river':
                 style = 'fill:none;stroke:#' + water_color + ';stroke-width:10.0;'
-            draw_path(way['nodes'], style)
-        for way in layer['r']:
-            v = way['tags']['railway']
-            style = 'fill:none;stroke-dasharray:none;stroke-linejoin:round;stroke-linecap:round;stroke-width:'
+        elif 'railway' in tags:
+            v = tags['railway']
+            style = 'fill:none;stroke-dasharray:none;stroke-linejoin:round;' + \
+                'stroke-linecap:round;stroke-width:'
             if v == 'subway': style += '10;stroke:#DDDDDD;'
             if v in ['narrow_gauge', 'tram']: 
                 style += '2;stroke:#000000;'
             else:
                 continue
-            draw_path(way['nodes'], style)
-        for way in layer['h1']:
-            if 'tunnel' in way['tags'] and way['tags']['tunnel'] == 'yes':
-                style = 'fill:none;stroke:#FFFFFF;stroke-dasharray:none;stroke-linejoin:round;stroke-linecap:round;stroke-width:10;'
-                draw_path(way['nodes'], style)
-        for way in layer['h1']:
-            v = way['tags']['highway']
-            style = 'fill:none;stroke:#AAAAAA;stroke-dasharray:none;stroke-linejoin:round;stroke-linecap:round;stroke-width:'
+        elif 'highway' in tags:
+            v = tags['highway']
+            if 'tunnel' in tags and tags['tunnel'] == 'yes':
+                style = 'fill:none;stroke:#FFFFFF;stroke-dasharray:none;' + \
+                    'stroke-linejoin:round;stroke-linecap:round;stroke-width:10;'
+                drawing['ways'].append({'kind': 'way', 'nodes': nodes, 
+                    'layer': layer - 100, 'priority': 50, 'style': style})
+
+            style = 'fill:none;stroke:#AAAAAA;stroke-dasharray:none;' + \
+                'stroke-linejoin:round;stroke-linecap:round;stroke-width:'
             if v == 'motorway': style += '30'
             elif v == 'trunk': style += '25'
             elif v == 'primary': style += '20;stroke:#' + primary_border_color
@@ -346,16 +330,14 @@ def draw_ways(show_missed_tags=False):
             elif v == 'residential': style += '8'
             elif v == 'service': style += '7'
             elif v == 'track': style += '3'
-            elif v in ['footway', 'pedestrian']: style += '1;stroke-dasharray:3,3;stroke-linecap:butt;stroke:#888888'
-            elif v == 'steps': style += '5;stroke-dasharray:1,2;stroke-linecap:butt'
-            elif v == 'path': style += '1;stroke-dasharray:5,5;stroke-linecap:butt'
-            else:
-                continue
-            style += ';'
-            draw_path(way['nodes'], style)
-        for way in layer['h2']:
-            v = way['tags']['highway']
-            style = 'fill:none;stroke:#FFFFFF;stroke-linecap:round;stroke-linejoin:round;stroke-width:'
+            else: style = None
+            if style:
+                style += ';'
+                drawing['ways'].append({'kind': 'way', 'nodes': nodes, 
+                    'layer': layer - 0.01, 'priority': 50, 'style': style})
+
+            style = 'fill:none;stroke:#FFFFFF;stroke-linecap:round;' + \
+                'stroke-linejoin:round;stroke-width:'
             if v == 'motorway': style += '28'
             elif v == 'trunk': style += '23'
             elif v == 'primary': style += '19;stroke:#' + primary_color
@@ -364,43 +346,40 @@ def draw_ways(show_missed_tags=False):
             elif v == 'unclassified': style += '7'
             elif v == 'residential': style += '6'
             elif v == 'service': style += '5'
-            else:
-                continue
+            elif v in ['footway', 'pedestrian']: 
+                style += '1;stroke-dasharray:3,3;stroke-linecap:butt;stroke:#888888'
+            elif v == 'steps': 
+                style += '5;stroke-dasharray:1,2;stroke-linecap:butt;stroke:#888888'
+            elif v == 'path': 
+                style += '1;stroke-dasharray:5,5;stroke-linecap:butt;stroke:#888888'
             style += ';'
-            draw_path(way['nodes'], style)
-        for way in layer['b']:
-            floors = 0
-            text_y = 0
-            #if 'building:levels' in way['tags']:
-                #floors = float(way['tags']['building:levels'])
-            draw_path(way['nodes'], 'fill:#' + building_color + ';stroke:#' + building_border_color + ';opacity:1.0;')
+        elif 'leisure' in tags:
             c = line_center(way['nodes'])
-            shapes, fill, processed = process.get_icon(way['tags'], scheme, '444444')
-            draw_shapes(shapes, True, points, c.x, c.y, fill, show_missed_tags, way['tags'], processed)
-            icons_to_draw.append({'shapes': shapes, 'x': c.x, 'y': c.y, 'fill': fill, 'priority': 1})
-        for way in layer['le']:
-            c = line_center(way['nodes'])
-            if way['tags']['leisure'] == 'playground':
+            if tags['leisure'] == 'playground':
                 style = 'fill:#' + playground_color + ';opacity:0.2;'
                 draw_point_shape('toy_horse', c.x, c.y, '444444')
-            elif way['tags']['leisure'] == 'garden':
+            elif tags['leisure'] == 'garden':
                 style = 'fill:#' + grass_color + ';'
-            elif way['tags']['leisure'] == 'pitch':
+            elif tags['leisure'] == 'pitch':
                 style = 'fill:#' + playground_color + ';opacity:0.2;'
-            elif way['tags']['leisure'] == 'park':
+            elif tags['leisure'] == 'park':
                 continue
             else:
                 style = 'fill:#FF0000;opacity:0.2;'
-            draw_path(way['nodes'], style)
-        for way in layer['ba']:
-            if way['tags']['barrier'] == 'hedge':
+        elif 'barrier' in tags:
+            if tags['barrier'] == 'hedge':
                 style += 'fill:none;stroke:#' + wood_color + ';stroke-width:4;'
             else:
                 style += 'fill:none;stroke:#000000;stroke-width:1;opacity:0.4;'
-            draw_path(way['nodes'], style)
-        for way in layer['bo']:
-            style += 'fill:none;stroke:#FF0000;stroke-width:0.5;stroke-dahsarray:10,20;'
-            draw_path(way['nodes'], style)
+        elif 'border' in tags:
+            style += 'fill:none;stroke:#FF0000;stroke-width:0.5;' + \
+                'stroke-dahsarray:10,20;'
+        else:
+            continue
+ 
+        drawing['ways'].append({'kind': 'way', 'nodes': nodes, 'layer': layer,
+            'priority': 50, 'style': style})
+
 
 # Nodes drawing
 
@@ -426,7 +405,8 @@ def to_write(key):
             return True
     return False
 
-def draw_shapes(shapes, overlap, points, x, y, fill, show_missed_tags, tags, processed):
+def draw_shapes(shapes, overlap, points, x, y, fill, show_missed_tags, tags, 
+        processed):
     text_y = 0
     xxx = -(len(shapes) - 1) * 8
 
@@ -453,7 +433,7 @@ def draw_shapes(shapes, overlap, points, x, y, fill, show_missed_tags, tags, pro
                 point(k, tags[k], x, y, fill, text_y)
                 text_y += 10
 
-def draw_nodes(show_missed_tags=False, overlap=14, draw=True):
+def construct_nodes(drawing):
     print 'Draw nodes...'
 
     start_time = datetime.datetime.now()
@@ -489,25 +469,48 @@ def draw_nodes(show_missed_tags=False, overlap=14, draw=True):
                 draw_text(k + ': ' + tags[k], x, y + 18 + text_y, '444444')
                 text_y += 10
 
-        if show_missed_tags:
-            for k in tags:
-                v = tags[k]
-                if not no_draw(k) and not k in processed:
-                    if ('node ' + k + ': ' + v) in missed_tags:
-                        missed_tags['node ' + k + ': ' + v] += 1
-                    else:
-                        missed_tags['node ' + k + ': ' + v] = 1
+        #if show_missed_tags:
+        #    for k in tags:
+        #        v = tags[k]
+        #        if not no_draw(k) and not k in processed:
+        #            if ('node ' + k + ': ' + v) in missed_tags:
+        #                missed_tags['node ' + k + ': ' + v] += 1
+        #            else:
+        #                missed_tags['node ' + k + ': ' + v] = 1
 
         if not draw:
             continue
 
-        draw_shapes(shapes, overlap, points, x, y, fill, show_missed_tags, tags, processed)
+        drawing['nodes'].append({'shapes': shapes, 
+            'x': x, 'y': y, 'color': fill, 'processed': processed, 
+            'tags': tags})
 
     ui.write_line(-1, len(node_map))
     print 'Nodes drawed in ' + str(datetime.datetime.now() - start_time) + '.'
     print 'Tags processed: ' + str(processed_tags) + ', tags skipped: ' + \
         str(skipped_tags) + ' (' + \
         str(processed_tags / float(processed_tags + skipped_tags) * 100) + ' %).'
+
+def way_sorter(element):
+    if 'layer' in element:
+        return element['layer']
+    else:
+        return 0
+
+def node_sorter(element):
+    if 'layer' in element:
+        return element['layer']
+    else:
+        return 0
+
+def draw(drawing, show_missed_tags=False, overlap=14, draw=True):
+    ways = sorted(drawing['ways'], key=way_sorter)
+    for way in ways:
+        draw_path(way['nodes'], way['style'])
+    nodes = sorted(drawing['nodes'], key=node_sorter)
+    for node in nodes:
+        draw_shapes(node['shapes'], overlap, points, node['x'], node['y'], 
+            node['color'], show_missed_tags, node['tags'], node['processed'])
 
 # Actions
 
@@ -563,15 +566,17 @@ else:
     flinger = GeoFlinger(minimum, maximum, Vector(25, 25), Vector(975, 975))
     print 'Done.'
 
-if options['draw_ways']:
-    layers = construct_layers()
-
 icons = extract_icon.IconExtractor(icons_file_name)
 
+drawing = {'nodes': [], 'ways': []}
+
 if options['draw_ways']:
-    draw_ways(show_missed_tags=options['show_missed_tags'])
-draw_nodes(show_missed_tags=options['show_missed_tags'], 
-           overlap=options['overlap'], draw=options['draw_nodes'])
+    construct_ways(drawing)
+
+construct_nodes(drawing)
+
+draw(drawing, show_missed_tags=options['show_missed_tags'], 
+     overlap=options['overlap'], draw=options['draw_nodes'])
 
 if flinger.space.x == 0:
     output_file.rect(0, 0, w, flinger.space.y, color='FFFFFF')
