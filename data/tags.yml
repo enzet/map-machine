@@ -149,6 +149,8 @@ tags:
   icon: [bag]
 - tags: {shop: convenience}
   icon: [shop_convenience]
+- tags: {shop: milk}
+  icon: [milk]
 - tags: {amenity: shop, shop: convenience}
   icon: [shop_convenience]
 - tags: {building: store}
