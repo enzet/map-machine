@@ -423,7 +423,7 @@ def construct_relations(drawing):
     for relation_id in relation_map:
         relation = relation_map[relation_id]
         tags = relation['tags']
-        if tags['type'] == 'multipolygon':
+        if 'type' in tags and tags['type'] == 'multipolygon':
             style = 'fill:#FFEEEE;stroke:#FF0000;stroke-width:0.5;'
             inners, outers = [], []
             for member in relation['members']:
