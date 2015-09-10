@@ -189,7 +189,7 @@ def parse_osm_file_fast(file_name, parse_nodes=True, parse_ways=True,
             element['tags'][k] = v
         elif line[:5] in ['  <nd', '\t\t<nd']:
             element['nodes'].append(int(line[11:-4]))
-        elif line[:5] in ['  <member', '\t\t<member']:
+        elif line[:9] in ['  <member', '\t\t<member']:
             member = parse_member(line[10:-3])
             element['members'].append(member)
         line = input_file.readline()
