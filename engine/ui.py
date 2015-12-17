@@ -9,7 +9,7 @@ import sys
 
 def parse_options(args):
     options = {'draw_nodes': True, 'draw_ways': False, 'overlap': 12, 
-               'show_missed_tags': False}
+            'show_missed_tags': False, 'show_index': False}
     args = iter(args[1:])
     for arg in args:
         if arg in ['-i', '--input']:
@@ -35,6 +35,10 @@ def parse_options(args):
             options['overlap'] = int(next(args))
         elif arg in ['-s', '--size']:
             options['size'] = map(lambda x: float(x), next(args).split(','))
+        elif arg in ['--show-index']:
+            options['show_index'] = True
+        elif arg in ['--no-show-index']:
+            options['show_index'] = False
         else:
             print 'Unknown option: ' + arg
             return None

@@ -204,6 +204,9 @@ tags:
 - tags: {natural: tree}
   icon: [tree]
   color: tree
+- tags: {natural: bush}
+  icon: [bush]
+  color: tree
 - tags: {natural: tree, leaf_type: broadleaved}
   icon: [broadleaved]
   color: tree
@@ -300,6 +303,8 @@ tags:
   icon: [lowered_kerb]
 - tags: {traffic_calming: cushion}
   icon: [traffic_cushion]
+- tags: {manhole: unknown}
+  icon: [manhole]
 
   # Tourism
 
@@ -366,3 +371,5 @@ tags:
   add_icon: [no_smoking]
 - tags: {atm: 'yes'}
   add_icon: [atm]
+- tags: {tactile_paving: 'yes'}
+  add_icon: [tactile_paving]
