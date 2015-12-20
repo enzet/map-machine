@@ -220,12 +220,21 @@ tags:
   color: deciduous
 - tags: {natural: tree, leaf_cycle: evergreen}
   color: evergreen
+
+  # Tree genus
+
+- tags: {natural: tree, genus: Betula}
+  icon: [betula]
+  color: tree
+
+  # Tree over icons
+
 - tags: {natural: tree, denotation: urban}
   over_icon: [urban_tree_pot]
-  under_icon: [tree, broadleaved, needleleaved]
+  under_icon: [tree, broadleaved, needleleaved, betula]
 - tags: {natural: tree, denotation: avenue}
   over_icon: [avenue_tree]
-  under_icon: [tree, broadleaved, needleleaved]
+  under_icon: [tree, broadleaved, needleleaved, betula]
 
   # Entrance
 

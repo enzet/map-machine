@@ -4,45 +4,47 @@
 Author: Sergey Vartanov (me@enzet.ru).
 """
 
+import argparse
 import sys
 
 
 def parse_options(args):
-    options = {'draw_nodes': True, 'draw_ways': False, 'overlap': 12, 
-            'show_missed_tags': False, 'show_index': False}
-    args = iter(args[1:])
-    for arg in args:
-        if arg in ['-i', '--input']:
-            options['input_file_name'] = next(args)
-        elif arg in ['-o', '--output']:
-            options['output_file_name'] = next(args)
-        elif arg in ['-bbox', '--boundary-box']:
-            arg = next(args)
-            options['boundary_box'] = map(lambda x: float(x), arg.split(','))
-        elif arg in ['-n', '--draw-nodes']:
-            options['draw_nodes'] = True
-        elif arg in ['-w', '--draw-ways']:
-            options['draw_ways'] = True
-        elif arg in ['-nn', '--no-draw-nodes']:
-            options['draw_nodes'] = False
-        elif arg in ['-nw', '--no-draw-ways']:
-            options['draw_ways'] = False
-        elif arg in ['--show-missed-tags']:
-            options['show_missed_tags'] = True
-        elif arg in ['--no-show-missed-tags']:
-            options['show_missed_tags'] = False
-        elif arg in ['--overlap']:
-            options['overlap'] = int(next(args))
-        elif arg in ['-s', '--size']:
-            options['size'] = map(lambda x: float(x), next(args).split(','))
-        elif arg in ['--show-index']:
-            options['show_index'] = True
-        elif arg in ['--no-show-index']:
-            options['show_index'] = False
-        else:
-            print 'Unknown option: ' + arg
-            return None
-    return options
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-i', '--input', dest='input_file_name',
+                        required=True)
+    parser.add_argument('-o', '--output', dest='output_file_name',
+                        required=True)
+    parser.add_argument('-bbox', '--boundary-box', dest='boundary_box',
+                        required=True)
+    parser.add_argument('-nn', '--no-draw-nodes', dest='draw_nodes',
+                        action='store_false', default=True)
+    parser.add_argument('-nw', '--no-draw-ways', dest='draw_ways',
+                        action='store_false', default=True)
+    parser.add_argument('-nc', '--no-draw-captions', dest='draw_captions',
+                        action='store_false', default=True)
+    parser.add_argument('--show-missed-tags', dest='show_missed_tags',
+                        action='store_true')
+    parser.add_argument('--no-show-missed-tags', dest='show_missed_tags',
+                        action='store_false')
+    parser.add_argument('--overlap', dest='overlap', default=12, type=int)
+    parser.add_argument('-s', '--size', dest='size')
+    parser.add_argument('--show-index', dest='show_index',
+                        action='store_true')
+    parser.add_argument('--no-show-index', dest='show_index',
+                        action='store_false')
+    parser.add_argument('--user-coloring', dest='user_coloring',
+                        action='store_true', default=False)
+    parser.add_argument('--seed', dest='seed', default='')
+
+    arguments = parser.parse_args(args[1:])
+
+    arguments.boundary_box = \
+        map(lambda x: float(x), arguments.boundary_box.split(','))
+    arguments.size = map(lambda x: float(x), arguments.size.split(','))
+
+    return arguments
 
 
 def write_line(number, total):

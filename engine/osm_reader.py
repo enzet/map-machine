@@ -6,10 +6,11 @@ Author: Sergey Vartanov
 
 import datetime
 import ui
+import re
 import sys
 
 
-def parse_node_full(node_datae):
+def parse_node_full(node_data):
     """
     Parse full node parameters using regular expressions: id, visible, version, 
     etc. For faster parsing use parse_node().
@@ -19,9 +20,10 @@ def parse_node_full(node_datae):
                  'lat="(.*)" lon="(.*)"', node_data)
     if m:
         return {'id': int(m.group(1)), 'visible': m.group(2), 
-                'changeset': m.group(3), 'timestamp': m.group(4), 
-                'user': m.group(5), 'uid': m.group(6), 
-                'lat': float(m.group(7)), 'lon': float(m.group(8))}
+                'version': m.group(3),
+                'changeset': m.group(4), 'timestamp': m.group(5), 
+                'user': m.group(6), 'uid': m.group(7), 
+                'lat': float(m.group(8)), 'lon': float(m.group(9))}
     else:
         print 'Error: cannot parse node data: ' + node_data + '.'
         return None
@@ -46,8 +48,8 @@ def parse_way_full(way_data):
                  'timestamp="(.*)" user="(.*)" uid="(.*)"', way_data)
     if m:
         return {'id': m.group(1), 'visible': m.group(2), 
-                'changeset': m.group(3), 'timestamp': m.group(4), 
-                'user': m.group(5), 'uid': m.group(6)}
+                'changeset': m.group(4), 'timestamp': m.group(5), 
+                'user': m.group(6), 'uid': m.group(7)}
     else:
         print 'Error: cannot parse way data: ' + way_data + '.'
         return None
@@ -87,12 +89,12 @@ def parse_tag(text):
     return k, v
 
 def parse_osm_file(file_name, parse_nodes=True, parse_ways=True, 
-        parse_relations=True):
+        parse_relations=True, full=False):
     start_time = datetime.datetime.now()
     try:
         node_map, way_map, relation_map = parse_osm_file_fast(file_name, 
             parse_nodes=parse_nodes, parse_ways=parse_ways, 
-            parse_relations=parse_relations)
+            parse_relations=parse_relations, full=full)
     except Exception as e:
         print e
         print '\033[31mFast parsing failed.\033[0m'
@@ -107,7 +109,7 @@ def parse_osm_file(file_name, parse_nodes=True, parse_ways=True,
             input_file.close()
             print 'Done.'
         else:
-            return None, None, None
+            sys.exit(0)
     print 'File readed in ' + \
         str(datetime.datetime.now() - start_time) + '.'
     print 'Nodes: ' + str(len(node_map)) + ', ways: ' + \
@@ -115,7 +117,7 @@ def parse_osm_file(file_name, parse_nodes=True, parse_ways=True,
     return node_map, way_map, relation_map
 
 def parse_osm_file_fast(file_name, parse_nodes=True, parse_ways=True, 
-        parse_relations=True):
+        parse_relations=True, full=False):
     node_map = {}
     way_map = {}
     relation_map = {}
@@ -141,10 +143,16 @@ def parse_osm_file_fast(file_name, parse_nodes=True, parse_ways=True,
                 else:
                     break
             if line[-3] == '/':
-                node = parse_node(line[7:-3])
+                if not full:
+                    node = parse_node(line[7:-3])
+                else:
+                    node = parse_node_full(line[7:-3])
                 node_map[node['id']] = node
             else:
-                element = parse_node(line[7:-2])
+                if not full:
+                    element = parse_node(line[7:-2])
+                else:
+                    element = parse_node_full(line[7:-2])
                 element['tags'] = {}
         elif line in [' </node>\n', '\t</node>\n']:
             node_map[element['id']] = element
@@ -158,10 +166,16 @@ def parse_osm_file_fast(file_name, parse_nodes=True, parse_ways=True,
                 else:
                     break
             if line[-3] == '/':
-                way = parse_way(line[6:-3])
+                if not full:
+                    way = parse_way(line[6:-3])
+                else:
+                    way = parse_way_full(line[6:-3])
                 way_map[node['id']] = way
             else:
-                element = parse_way(line[6:-2])
+                if not full:
+                    element = parse_way(line[6:-2])
+                else:
+                    element = parse_way_full(line[6:-2])
                 element['tags'] = {}
                 element['nodes'] = []
         elif line in [' </way>\n', '\t</way>\n']:
