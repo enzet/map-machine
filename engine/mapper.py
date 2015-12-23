@@ -8,7 +8,6 @@ Author: Sergey Vartanov (me@enzet.ru).
 """
 
 import copy
-import datetime
 import os
 import process
 import re
@@ -21,6 +20,7 @@ import osm_reader
 import ui
 
 from flinger import GeoFlinger, Geo
+from datetime import datetime
 
 sys.path.append('../lib')
 
@@ -134,7 +134,7 @@ def get_path(nodes, shift=Vector()):
     return path
 
 
-def draw_point_shape(name, x, y, fill):
+def draw_point_shape(name, x, y, fill, tags=None):
     if not isinstance(name, list):
         name = [name]
     for one_name in name:
@@ -142,31 +142,38 @@ def draw_point_shape(name, x, y, fill):
         draw_point_outline(shape, x, y, fill, size=16, xx=xx, yy=yy)
     for one_name in name:
         shape, xx, yy = get_d_from_file(one_name)
-        draw_point(shape, x, y, fill, size=16, xx=xx, yy=yy)
+        draw_point(shape, x, y, fill, size=16, xx=xx, yy=yy, tags=tags)
 
 def draw_point_outline(shape, x, y, fill, size=16, xx=0, yy=0):
     x = int(float(x))
     y = int(float(y))
     opacity = 0.5
-    r = int(fill[0:2], 16)
-    g = int(fill[2:4], 16)
-    b = int(fill[4:6], 16)
-    Y = 0.2126 * r + 0.7152 * g + 0.0722 * b
-    if Y > 200:
-        outline_fill = '000000'
-        opacity = 0.3
+    outline_fill = outline_color
+    if not options.mode in ['user-coloring', 'time']:
+        r = int(fill[0:2], 16)
+        g = int(fill[2:4], 16)
+        b = int(fill[4:6], 16)
+        Y = 0.2126 * r + 0.7152 * g + 0.0722 * b
+        if Y > 200:
+            outline_fill = '000000'
+            opacity = 0.3
     output_file.write('<path d="' + shape + \
-        '" style="fill:#' + outline_color + ';opacity:' + str(opacity) + ';' + \
-        'stroke:#' + outline_color + ';stroke-width:3;stroke-linejoin:round;" ' + \
+        '" style="fill:#' + outline_fill + ';opacity:' + str(opacity) + ';' + \
+        'stroke:#' + outline_fill + ';stroke-width:3;stroke-linejoin:round;" ' + \
         'transform="translate(' + \
          str(x - size / 2.0 - xx * 16) + ',' + str(y - size / 2.0 - yy * 16) + ')" />\n')
 
-def draw_point(shape, x, y, fill, size=16, xx=0, yy=0):
+def draw_point(shape, x, y, fill, size=16, xx=0, yy=0, tags=None):
     x = int(float(x))
     y = int(float(y))
     output_file.write('<path d="' + shape + \
          '" style="fill:#' + fill + ';fill-opacity:1" transform="translate(' + \
-         str(x - size / 2.0 - xx * 16) + ',' + str(y - size / 2.0 - yy * 16) + ')" />\n')
+         str(x - size / 2.0 - xx * 16) + ',' + str(y - size / 2.0 - yy * 16) + ')">')
+    if tags:
+        output_file.write('<title>')
+        output_file.write(str(tags))
+        output_file.write('</title>')
+    output_file.write('</path>\n')
 
 def draw_text(text, x, y, fill, size=10):
     if type(text) == unicode:
@@ -209,6 +216,7 @@ def construct_text(tags, processed):
         else:
             alt_name = ''
         alt_name += tags['alt_name']
+        tags.pop('alt_name')
     if 'old_name' in tags:
         if alt_name:
             alt_name += ', '
@@ -274,7 +282,7 @@ def construct_text(tags, processed):
             link = link[4:]
         if link[-1] == '/':
             link = link[:-1]
-        link = link[:50] + ('...' if len(tags['website']) > 50 else '')
+        link = link[:25] + ('...' if len(tags['website']) > 25 else '')
         texts.append({'text': link, 'fill': '000088'})
         tags.pop('website', None)
     for k in ['phone']:
@@ -289,8 +297,10 @@ def construct_text(tags, processed):
 
 
 def wr(text, x, y, fill, text_y, size=10):
-    if type(text) == unicode:
-        text = text.encode('utf-8')
+    if type(text) == str:
+        text = text.decode('utf-8')
+    text = text[:26] + ('...' if len(text) > 26 else '')
+    text = text.encode('utf-8')
     draw_text(text, x, float(y) + text_y + 8, fill, size=size)
 
 # Ways drawing
@@ -337,14 +347,29 @@ def get_user_color(user):
     return '0' * (6 - len(h)) + h
 
 
+def get_time_color(time):
+    if not time:
+        return '000000'
+    time = datetime.strptime(time, '%Y-%m-%dT%H:%M:%SZ')
+    delta = (datetime.now() - time).total_seconds()
+    time_color = hex(0xFF - min(0xFF, int(delta / 500000.)))[2:]
+    i_time_color = hex(min(0xFF, int(delta / 500000.)))[2:]
+    if len(time_color) == 1:
+        time_color = '0' + time_color
+    if len(i_time_color) == 1:
+        i_time_color = '0' + i_time_color
+    return time_color + 'AA' + i_time_color
+
+
 def construct_ways(drawing):
     for way_id in way_map:
         way = way_map[way_id]
         user = way['user'] if 'user' in way else ''
-        construct_way(drawing, way['nodes'], way['tags'], None, user)
+        time = way['timestamp'] if 'timestamp' in way else None
+        construct_way(drawing, way['nodes'], way['tags'], None, user, time)
 
 
-def construct_way(drawing, nodes, tags, path, user):
+def construct_way(drawing, nodes, tags, path, user, time):
     is_area = None
     if nodes:
         is_area = nodes[0] == nodes[-1]
@@ -354,9 +379,16 @@ def construct_way(drawing, nodes, tags, path, user):
     if nodes:
         c = line_center(nodes)
     user_color = get_user_color(user)
-    if options.user_coloring:
+    if options.mode == 'user-coloring':
         drawing['ways'].append({'kind': 'way', 'nodes': nodes, 'path': path,
-            'style': 'fill:none;stroke:#' + user_color + ';stroke-width:1.5;'})
+            'style': 'fill:none;stroke:#' + user_color + ';stroke-width:1;'})
+        return
+    if options.mode == 'time':
+        if not time:
+            return
+        time_color = get_time_color(time)
+        drawing['ways'].append({'kind': 'way', 'nodes': nodes, 'path': path,
+            'style': 'fill:none;stroke:#' + time_color + ';stroke-width:1;'})
         return
     if 'natural' in tags:
         v = tags['natural']
@@ -479,10 +511,10 @@ def construct_way(drawing, nodes, tags, path, user):
         style = 'fill:none;stroke:#' + road_border_color + \
             ';stroke-dasharray:none;' + \
             'stroke-linejoin:round;stroke-linecap:round;stroke-width:'
-        if v == 'motorway': style += '30'
-        elif v == 'trunk': style += '25'
-        elif v == 'primary': style += '20;stroke:#' + primary_border_color
-        elif v == 'secondary': style += '13'
+        if v == 'motorway': style += '33'
+        elif v == 'trunk': style += '31'
+        elif v == 'primary': style += '29;stroke:#' + primary_border_color
+        elif v == 'secondary': style += '27'
         elif v == 'tertiary': style += '25'
         elif v == 'unclassified': style += '17'
         elif v == 'residential': style += '17'
@@ -502,10 +534,13 @@ def construct_way(drawing, nodes, tags, path, user):
 
         style = 'fill:none;stroke:#FFFFFF;stroke-linecap:round;' + \
             'stroke-linejoin:round;stroke-width:'
-        if v == 'motorway': style += '28'
-        elif v == 'trunk': style += '23'
-        elif v == 'primary': style += '19;stroke:#' + primary_color
-        elif v == 'secondary': style += '11'
+
+        priority = 50
+
+        if v == 'motorway': style += '31'
+        elif v == 'trunk': style += '29'
+        elif v == 'primary': style += '27;stroke:#' + primary_color
+        elif v == 'secondary': style += '25'
         elif v == 'tertiary': style += '23'
         elif v == 'unclassified': style += '15'
         elif v == 'residential': style += '15'
@@ -517,7 +552,8 @@ def construct_way(drawing, nodes, tags, path, user):
         elif v == 'cycleway': 
             style += '1;stroke-dasharray:8,2;istroke-linecap:butt;' + \
                 'stroke:#' + cycle_color
-        elif v in ['footway', 'pedestrian']: 
+        elif v in ['footway', 'pedestrian']:
+            priority = 55
             if 'area' in tags and tags['area'] == 'yes':
                 style += '1;stroke:none;fill:#DDDDDD'
             else:
@@ -531,7 +567,7 @@ def construct_way(drawing, nodes, tags, path, user):
                 'stroke:#' + foot_color
         style += ';'
         drawing['ways'].append({'kind': 'way', 'nodes': nodes, 'layer': layer,
-            'priority': 50, 'style': style, 'path': path})
+            'priority': priority, 'style': style, 'path': path})
         if 'access' in tags and tags['access'] == 'private':
             drawing['ways'].append({'kind': 'way', 'nodes': nodes, 
                 'layer': layer + 0.1, 'priority': 50, 'path': path,
@@ -651,7 +687,7 @@ def construct_relations(drawing):
                 way.reverse()
                 path = get_path(way)
                 p += path + ' '
-            construct_way(drawing, None, tags, p, '')
+            construct_way(drawing, None, tags, p, '', None)
 
 
 # Nodes drawing
@@ -694,12 +730,12 @@ def draw_shapes(shapes, overlap, points, x, y, fill, show_missed_tags, tags,
                     has_space = False
                     break
             if has_space:
-                draw_point_shape(shape, x + xxx, y, fill)
+                draw_point_shape(shape, x + xxx, y, fill, tags=tags)
                 points.append(Vector(x + xxx, y))
                 xxx += 16
     else:
         for shape in shapes:
-            draw_point_shape(shape, x + xxx, y, fill)
+            draw_point_shape(shape, x + xxx, y, fill, tags=tags)
             xxx += 16
 
     if options.draw_captions:
@@ -723,7 +759,7 @@ def construct_nodes(drawing):
     """
     print 'Draw nodes...'
 
-    start_time = datetime.datetime.now()
+    start_time = datetime.now()
 
     node_number = 0
     processed_tags = 0
@@ -745,8 +781,10 @@ def construct_nodes(drawing):
 
         shapes, fill, processed = process.get_icon(tags, scheme)
 
-        if options.user_coloring:
+        if options.mode == 'user-coloring':
             fill = get_user_color(node['user'])
+        if options.mode == 'time':
+            fill = get_time_color(node['timestamp'])
 
         for k in tags:
             if k in processed or no_draw(k):
@@ -771,12 +809,15 @@ def construct_nodes(drawing):
         if not draw:
             continue
 
+        if shapes == [] and tags != {}:
+            shapes = [['circle']]
+
         drawing['nodes'].append({'shapes': shapes, 
             'x': x, 'y': y, 'color': fill, 'processed': processed, 
             'tags': tags})
 
     ui.write_line(-1, len(node_map))
-    print 'Nodes drawed in ' + str(datetime.datetime.now() - start_time) + '.'
+    print 'Nodes drawed in ' + str(datetime.now() - start_time) + '.'
     print 'Tags processed: ' + str(processed_tags) + ', tags skipped: ' + \
         str(skipped_tags) + ' (' + \
         str(processed_tags / float(processed_tags + skipped_tags) * 100) + ' %).'
@@ -816,6 +857,10 @@ options = ui.parse_options(sys.argv)
 if not options:
     sys.exit(1)
 
+if options.mode in ['user-coloring', 'time']:
+    background_color = '111111'
+    outline_color = '111111'
+
 input_file_name = options.input_file_name
 
 if not os.path.isfile(input_file_name):
@@ -824,7 +869,7 @@ if not os.path.isfile(input_file_name):
 
 full = False  # Full keys getting
 
-if options.user_coloring:
+if options.mode in ['user-coloring', 'time']:
     full = True
 
 node_map, way_map, relation_map = osm_reader.parse_osm_file(input_file_name, 
@@ -951,3 +996,4 @@ sys.exit(0)
 top_authors = sorted(authors.keys(), key=lambda x: -authors[x])
 for author in top_authors:
     print author + ': ' + str(authors[author])
+

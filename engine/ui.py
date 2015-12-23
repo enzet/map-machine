@@ -34,14 +34,13 @@ def parse_options(args):
                         action='store_true')
     parser.add_argument('--no-show-index', dest='show_index',
                         action='store_false')
-    parser.add_argument('--user-coloring', dest='user_coloring',
-                        action='store_true', default=False)
+    parser.add_argument('--mode', dest='mode', default='normal')
     parser.add_argument('--seed', dest='seed', default='')
 
     arguments = parser.parse_args(args[1:])
 
     arguments.boundary_box = \
-        map(lambda x: float(x), arguments.boundary_box.split(','))
+        map(lambda x: float(x.replace('m', '-')), arguments.boundary_box.split(','))
     arguments.size = map(lambda x: float(x), arguments.size.split(','))
 
     return arguments
