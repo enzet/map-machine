@@ -171,16 +171,30 @@ def draw_point(shape, x, y, fill, size=16, xx=0, yy=0, tags=None):
          str(x - size / 2.0 - xx * 16) + ',' + str(y - size / 2.0 - yy * 16) + ')">')
     if tags:
         output_file.write('<title>')
-        output_file.write(str(tags))
+        output_file.write('\n'.join(map (lambda x: x + ': ' + tags[x], tags)))
         output_file.write('</title>')
     output_file.write('</path>\n')
 
-def draw_text(text, x, y, fill, size=10):
+def draw_text(text, x, y, fill, size=10, out_fill='FFFFFF', out_opacity=0.5, 
+        out_fill_2=None, out_opacity_2=1.0):
+    """
+    Drawing text.
+
+      ######     ###  outline 2
+     #------#    ---  outline 1
+    #| Text |#
+     #------# 
+      ######  
+    """
     if type(text) == unicode:
         text = text.encode('utf-8')
     text = text.replace('&', 'and')
-    output_file.write('<text x="' + str(x) + '" y="' + str(y) + \
-            '" style="font-size:' + str(size) + ';text-anchor:middle;font-family:Myriad Pro;fill:#FFFFFF;stroke-linejoin:round;stroke-width:5;stroke:#FFFFFF;opacity:0.5;">' + text + '</text>')
+    if out_fill_2:
+        output_file.write('<text x="' + str(x) + '" y="' + str(y) + \
+                '" style="font-size:' + str(size) + ';text-anchor:middle;font-family:Myriad Pro;fill:#' + out_fill_2 + ';stroke-linejoin:round;stroke-width:5;stroke:#' + out_fill_2 + ';opacity:' + str(out_opacity_2) + ';">' + text + '</text>')
+    if out_fill:
+        output_file.write('<text x="' + str(x) + '" y="' + str(y) + \
+                '" style="font-size:' + str(size) + ';text-anchor:middle;font-family:Myriad Pro;fill:#' + out_fill + ';stroke-linejoin:round;stroke-width:5;stroke:#' + out_fill + ';opacity:' + str(out_opacity) + ';">' + text + '</text>')
     output_file.write('<text x="' + str(x) + '" y="' + str(y) + \
             '" style="font-size:' + str(size) + ';text-anchor:middle;font-family:Myriad Pro;fill:#' + fill + ';">' + text + '</text>')
 
@@ -620,6 +634,15 @@ def construct_way(drawing, nodes, tags, path, user, time):
             'priority': 50, 'style': style, 'path': path})
     #drawing['ways'].append({'kind': 'way', 'nodes': nodes, 'layer': layer,
     #    'priority': 50, 'style': style, 'path': path})
+    if False:
+        if 'highway' in tags and tags['highway'] != 'steps' and not ('surface' in tags):
+            drawing['ways'].append({'kind': 'way', 'nodes': nodes, 
+                'layer': layer + 0.1, 'priority': 50, 'path': path,
+                'style': 'fill:none;' + \
+                'stroke:#FF0000;stroke-linecap:butt;' + \
+                'stroke-width:5;opacity:0.4;'})
+            #draw_text('no surface', cx, cy, 'FF0000', out_opacity='1.0', 
+            #    out_fill_2='FF0000', out_opacity_2=1.0)
 
 
 def glue_ways(ways):
@@ -884,6 +907,7 @@ if 'size' in options:
     h = options.size[1]
 
 output_file.begin(w, h)
+output_file.write('<style> path:hover {stroke: #FF0000;} </style>\n')
 output_file.rect(0, 0, w, h, color=background_color)
 
 minimum = Geo(180, 180)
