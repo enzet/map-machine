@@ -75,8 +75,6 @@ tags:
   icon: [pole]
 - tags: {power: tower}
   icon: [power_tower]
-- tags: {tourism: information}
-  icon: [information]
 - tags: {man_made: pole, highway: street_lamp}
   icon: [pole_lamp]
 - tags: {man_made: flagpole}
@@ -86,6 +84,11 @@ tags:
   icon: [bicycle_parking]
 - tags: {amenity: parking}
   icon: [parking]
+
+- tags: {information: '*'}
+  icon: [information]
+- tags: {tourism: information}
+  icon: [information]
 
   # Eating and entertainment
 
