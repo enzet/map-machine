@@ -48,8 +48,6 @@ tags:
   icon: [film]
 - tags: {amenity: telephone}
   icon: [telephone]
-- tags: {emergency: phone}
-  icon: [sos_phone]
 - tags: {amenity: fountain}
   icon: [fountain]
   color: water_border
@@ -63,6 +61,12 @@ tags:
   icon: [vending_machine]
 - tags: {amenity: waste_basket}
   icon: [waste_basket]
+- tags: {emergency: phone}
+  icon: [sos_phone]
+- tags: {emergency: fire_extinguisher}
+  icon: [fire_extinguisher]
+- tags: {emergency: fire_hydrant}
+  icon: [fire_hydrant]
 - tags: {highway: street_lamp}
   icon: [street_lamp]
 - tags: {man_made: pole}
@@ -71,6 +75,8 @@ tags:
   icon: [pole]
 - tags: {power: tower}
   icon: [power_tower]
+- tags: {tourism: information}
+  icon: [information]
 - tags: {man_made: pole, highway: street_lamp}
   icon: [pole_lamp]
 - tags: {man_made: flagpole}
