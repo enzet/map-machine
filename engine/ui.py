@@ -36,6 +36,7 @@ def parse_options(args):
                         action='store_false')
     parser.add_argument('--mode', dest='mode', default='normal')
     parser.add_argument('--seed', dest='seed', default='')
+    parser.add_argument('--level', dest='level', default=None, type=float)
 
     arguments = parser.parse_args(args[1:])
 

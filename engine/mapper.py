@@ -35,8 +35,9 @@ building_border_color = 'C4C4C4'  # 'AAAAAA'
 construction_color = 'CCCCCC'
 cycle_color = '4444EE'
 desert_color = 'F0E0D0'
-#foot_color = '888844'
 foot_color = 'B89A74'
+indoor_color = 'E8E4E0'
+indoor_border_color = 'C0B8B0'
 foot_border_color = 'FFFFFF'
 grass_color = 'CFE0A8'
 grass_border_color = 'BFD098'
@@ -60,7 +61,7 @@ missed_tags_file_name = '../missed_tags.yml'
 tags_to_write = set(['operator', 'opening_hours', 'cuisine', 'network',  
                  'website', 'website_2', 'STIF:zone', 'opening_hours:url',
                  'phone', 'branch', 'route_ref', 'brand', 'ref', 'wikipedia', 
-                 'description', 'level', 'wikidata', 'name', 'alt_name', 
+                 'description', 'wikidata', 'name', 'alt_name', 
                  'image', 'fax', 'old_name', 'artist_name', 'int_name',
                  'official_name', 'full_name', 'email', 'designation', 
                  'min_height', 'height', 'inscription', 'start_date', 
@@ -87,8 +88,8 @@ prefix_to_write = set(['addr', 'contact', 'name', 'operator', 'wikipedia',
                    # To draw
                    'species', 'taxon', 'genus'])
 
-tags_to_skip = set(['note', 'layer', 'source', 'building:part', 'fixme', 
-        'comment', 'FIXME', 'source_ref', 'naptan:verified:note', 
+tags_to_skip = set(['note', 'layer', 'level', 'source', 'building:part', 
+        'comment', 'FIXME', 'source_ref', 'naptan:verified:note', 'fixme',
         'building:levels', 'ref:opendataparis:adresse', 
         'ref:opendataparis:geo_point_2d', 'created_by'])
 
@@ -378,6 +379,14 @@ def get_time_color(time):
 def construct_ways(drawing):
     for way_id in way_map:
         way = way_map[way_id]
+        if options.level:
+            if 'level' in way['tags']:
+                levels = map(lambda x:float(x), way['tags']['level'].split(';'))
+                if not options.level in levels:
+                    continue
+            else:
+                if options.level != 0:
+                    continue
         user = way['user'] if 'user' in way else ''
         time = way['timestamp'] if 'timestamp' in way else None
         construct_way(drawing, way['nodes'], way['tags'], None, user, time)
@@ -404,6 +413,23 @@ def construct_way(drawing, nodes, tags, path, user, time):
         drawing['ways'].append({'kind': 'way', 'nodes': nodes, 'path': path,
             'style': 'fill:none;stroke:#' + time_color + ';stroke-width:1;'})
         return
+    if 'indoor' in tags:
+        v = tags['indoor']
+        style = 'stroke:' + indoor_border_color + ';'
+        if v == 'area':
+            style += 'fill:#' + indoor_color + ';'
+            layer += 0.2
+        elif v == 'corridor':
+            style += 'fill:#' + indoor_color + ';'
+            layer += 0.2
+        elif v == 'room':
+            style += 'fill:#' + indoor_color + ';'
+            layer += 0.2
+        elif v == 'column':
+            style += 'fill:#' + indoor_border_color + ';'
+            layer += 0.2
+        drawing['ways'].append({'kind': 'way', 'nodes': nodes, 'layer': layer,
+            'priority': 50, 'style': style, 'path': path})
     if 'natural' in tags:
         v = tags['natural']
         style = 'stroke:none;'
@@ -515,7 +541,7 @@ def construct_way(drawing, nodes, tags, path, user, time):
         style = 'fill:none;stroke:none;'
         layer += 0.4
         v = tags['highway']
-        if 'tunnel' in tags and tags['tunnel'] == 'yes':
+        if False: #'tunnel' in tags and tags['tunnel'] == 'yes':
             style = 'fill:none;stroke:#FFFFFF;stroke-dasharray:none;' + \
                 'stroke-linejoin:round;stroke-linecap:round;stroke-width:10;'
             drawing['ways'].append({'kind': 'way', 'nodes': nodes, 
@@ -539,6 +565,7 @@ def construct_way(drawing, nodes, tags, path, user, time):
                 style += '11'
         elif v == 'track': style += '3'
         elif v in ['footway', 'pedestrian', 'cycleway']: style += '3;stroke:#' + foot_border_color
+        elif v in ['steps']: style += '6;stroke:#' + foot_border_color
         else: style = None
         if style:
             style += ';'
@@ -689,6 +716,14 @@ def construct_relations(drawing):
     for relation_id in relation_map:
         relation = relation_map[relation_id]
         tags = relation['tags']
+        if options.level:
+            if 'level' in tags:
+                levels = map(lambda x:float(x), tags['level'].split(';'))
+                if not options.level in levels:
+                    continue
+            else:
+                if options.level != 0:
+                    continue
         if 'type' in tags and tags['type'] == 'multipolygon':
             style = 'fill:#FFEEEE;stroke:#FF0000;stroke-width:0.5;'
             inners, outers = [], []
@@ -801,6 +836,15 @@ def construct_nodes(drawing):
             tags = node['tags']
         else:
             tags = {}
+
+        if options.level:
+            if 'level' in tags:
+                levels = map(lambda x:float(x), tags['level'].split(';'))
+                if not options.level in levels:
+                    continue
+            else:
+                if options.level != 0:
+                    continue
 
         shapes, fill, processed = process.get_icon(tags, scheme)
 
