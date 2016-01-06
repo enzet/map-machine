@@ -46,10 +46,6 @@ tags:
   icon: [clock]
 - tags: {amenity: cinema}
   icon: [film]
-- tags: {highway: street_lamp}
-  icon: [street_lamp]
-- tags: {amenity: waste_basket}
-  icon: [waste_basket]
 - tags: {amenity: telephone}
   icon: [telephone]
 - tags: {emergency: phone}
@@ -63,6 +59,12 @@ tags:
   icon: [letter]
 - tags: {amenity: prison}
   icon: [prison]
+- tags: {amenity: vending_machine}
+  icon: [vending_machine]
+- tags: {amenity: waste_basket}
+  icon: [waste_basket]
+- tags: {highway: street_lamp}
+  icon: [street_lamp]
 - tags: {man_made: pole}
   icon: [pole]
 - tags: {power: pole}
