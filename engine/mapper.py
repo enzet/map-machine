@@ -42,6 +42,8 @@ foot_border_color = 'FFFFFF'
 grass_color = 'CFE0A8'
 grass_border_color = 'BFD098'
 parking_color = 'DDCC99'
+platform_color = 'BBBBBB'
+platform_border_color = 'AAAAAA'
 playground_color = '884400'
 primary_border_color = '888888'  # 'AA8800'
 primary_color = 'FFFFFF'  # 'FFDD66'
@@ -379,9 +381,10 @@ def get_time_color(time):
 def construct_ways(drawing):
     for way_id in way_map:
         way = way_map[way_id]
-        if options.level:
-            if 'level' in way['tags']:
-                levels = map(lambda x:float(x), way['tags']['level'].split(';'))
+        tags = way['tags']
+        if not (options.level is None):
+            if 'level' in tags:
+                levels = map(lambda x:float(x), tags['level'].split(';'))
                 if not options.level in levels:
                     continue
             else:
@@ -389,7 +392,7 @@ def construct_ways(drawing):
                     continue
         user = way['user'] if 'user' in way else ''
         time = way['timestamp'] if 'timestamp' in way else None
-        construct_way(drawing, way['nodes'], way['tags'], None, user, time)
+        construct_way(drawing, way['nodes'], tags, None, user, time)
 
 
 def construct_way(drawing, nodes, tags, path, user, time):
@@ -415,7 +418,7 @@ def construct_way(drawing, nodes, tags, path, user, time):
         return
     if 'indoor' in tags:
         v = tags['indoor']
-        style = 'stroke:' + indoor_border_color + ';'
+        style = 'stroke:' + indoor_border_color + ';stroke-width:1;'
         if v == 'area':
             style += 'fill:#' + indoor_color + ';'
             layer += 0.2
@@ -533,6 +536,9 @@ def construct_way(drawing, nodes, tags, path, user, time):
         if v == 'subway': style += '10;stroke:#DDDDDD;'
         if v in ['narrow_gauge', 'tram']: 
             style += '2;stroke:#000000;'
+        if v == 'platform': 
+            style = 'fill:#' + platform_color + ';stroke:#' + \
+                platform_border_color + 'stroke-width:1;'
         else:
             return
         drawing['ways'].append({'kind': 'way', 'nodes': nodes, 'layer': layer,
@@ -565,7 +571,7 @@ def construct_way(drawing, nodes, tags, path, user, time):
                 style += '11'
         elif v == 'track': style += '3'
         elif v in ['footway', 'pedestrian', 'cycleway']: style += '3;stroke:#' + foot_border_color
-        elif v in ['steps']: style += '6;stroke:#' + foot_border_color
+        elif v in ['steps']: style += '6;stroke:#' + foot_border_color + ';stroke-linecap:butt;'
         else: style = None
         if style:
             style += ';'
@@ -598,11 +604,15 @@ def construct_way(drawing, nodes, tags, path, user, time):
             if 'area' in tags and tags['area'] == 'yes':
                 style += '1;stroke:none;fill:#DDDDDD'
             else:
-                style += '1.5;stroke-dasharray:8,2;stroke-linecap:butt;' + \
+                style += '1.5;stroke-dasharray:7,3;stroke-linecap:round;' + \
                     'stroke:#' + foot_color
         elif v == 'steps': 
-            style += '5;stroke-dasharray:1,2;stroke-linecap:butt;' + \
-                'stroke:#' + foot_color
+            style += '5;stroke-dasharray:1.5,2;stroke-linecap:butt;' + \
+                'stroke:#' 
+            if 'conveying' in tags:
+                style += '888888'
+            else:
+                style += foot_color
         elif v == 'path': 
             style += '1;stroke-dasharray:5,5;stroke-linecap:butt;' + \
                 'stroke:#' + foot_color
@@ -716,7 +726,7 @@ def construct_relations(drawing):
     for relation_id in relation_map:
         relation = relation_map[relation_id]
         tags = relation['tags']
-        if options.level:
+        if not (options.level is None):
             if 'level' in tags:
                 levels = map(lambda x:float(x), tags['level'].split(';'))
                 if not options.level in levels:
@@ -837,9 +847,9 @@ def construct_nodes(drawing):
         else:
             tags = {}
 
-        if options.level:
+        if not (options.level is None):
             if 'level' in tags:
-                levels = map(lambda x:float(x), tags['level'].split(';'))
+                levels = map(lambda x:float(x), tags['level'].replace(',', '.').split(';'))
                 if not options.level in levels:
                     continue
             else:
@@ -959,8 +969,8 @@ maximum = Geo(-180, -180)
 
 if 'boundary_box' in options:
     bb = options.boundary_box
-    min1 = Geo(bb[2], bb[0])
-    max1 = Geo(bb[3], bb[1])
+    min1 = Geo(bb[1], bb[0])
+    max1 = Geo(bb[3], bb[2])
 
 authors = {}
 missed_tags = {}

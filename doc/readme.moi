@@ -22,7 +22,7 @@ There are simple Python renderer that generates SVG map from OpenStreetMap data.
     {{Option} {Value} {Description}}
     {
         {\tt {-bbox}, \tt {--boundary-box}} 
-        {\tt {\formal {longitude 1},\formal {longitude 2},\formal {latitude 1},\formal {latitude 2}} (decimal float)}
+        {\tt {\formal {longitude 1},\formal {latitude 1},\formal {longitude 2},\formal {latitude 2}} (decimal float)}
         {Boundary box to draw}
     }
     {
