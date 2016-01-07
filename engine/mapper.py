@@ -93,10 +93,10 @@ prefix_to_write = set(['addr', 'contact', 'name', 'operator', 'wikipedia',
 
 tags_to_skip = set(['note', 'layer', 'level', 'source', 'building:part', 
         'comment', 'FIXME', 'source_ref', 'naptan:verified:note', 'fixme',
-        'building:levels', 'ref:opendataparis:adresse', 
-        'ref:opendataparis:geo_point_2d', 'created_by'])
+        'building:levels', 'ref:opendataparis:adresse', 'indoor', 'level:ref',
+        'ref:opendataparis:geo_point_2d', 'created_by', 'mapillary'])
 
-prefix_to_skip = set(['source'])
+prefix_to_skip = set(['source', 'mapillary'])
 
 def get_d_from_file(file_name):
     path, x, y = icons.get_path(file_name)
@@ -410,6 +410,7 @@ def construct_way(drawing, nodes, tags, path, user, time):
         :param user: way update time.
     """
     layer = 0
+    level = 0
 
     if 'layer' in tags:
         layer = get_float(tags['layer'])

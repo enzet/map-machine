@@ -43,9 +43,10 @@ def get_icon(tags, scheme, fill='444444'):
                 main_icon = copy.deepcopy(matcher['icon'])
                 processed = set(matcher['tags'].keys())
             if 'over_icon' in matcher:
-                main_icon += matcher['over_icon']
-                for key in matcher['tags'].keys():
-                    processed.add(key)
+                if main_icon:  # TODO: check main icon in under icons
+                    main_icon += matcher['over_icon']
+                    for key in matcher['tags'].keys():
+                        processed.add(key)
             if 'add_icon' in matcher:
                 extra_icons += matcher['add_icon']
                 for key in matcher['tags'].keys():

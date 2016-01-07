@@ -89,6 +89,23 @@ tags:
   icon: [information]
 - tags: {tourism: information}
   icon: [information]
+- tags: {information: board}
+  icon: [information_board]
+
+- tags: {vending: public_transport_tickets}
+  add_icon: [ticket]
+
+  # Support
+
+- tags: {support: pole}
+  over_icon: [support_pole]
+  under_icon: [clock, information_board]
+- tags: {support: wall_mounted}
+  over_icon: [support_wall]
+  under_icon: [clock, information_board]
+- tags: {support: column}
+  over_icon: [support_column]
+  under_icon: [clock, information_board]
 
   # Eating and entertainment
 
@@ -255,6 +272,8 @@ tags:
   icon: [main_entrance]
 - tags: {entrance: staircase}
   icon: [staircase]
+- tags: {door: 'no'}
+  icon: [no_door]
 
   # Transport
 
