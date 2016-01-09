@@ -24,12 +24,12 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="16"
-     inkscape:cx="384.8366"
-     inkscape:cy="470.06725"
+     inkscape:zoom="32"
+     inkscape:cx="343.5866"
+     inkscape:cy="528.81725"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     showgrid="false"
+     showgrid="true"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:object-paths="true"
@@ -419,6 +419,15 @@
      id="layer1"
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
+    <rect
+       style="fill:#808080;fill-opacity:1;stroke:none"
+       id="rect3815"
+       width="12"
+       height="8"
+       x="338"
+       y="52"
+       ry="1.5"
+       rx="1.5" />
     <rect
        style="fill:#808080;fill-opacity:1;stroke:none"
        id="rect3811"
@@ -5768,5 +5777,48 @@
        d="M 388.5 131 C 388.223 131 388 131.223 388 131.5 L 388 132.5 L 388 140.5 C 388 140.777 388.223 141 388.5 141 L 389.5 141 C 389.777 141 390 140.777 390 140.5 L 390 133 L 394 133 L 394 140.5 C 394 140.777 394.223 141 394.5 141 L 395.5 141 C 395.777 141 396 140.777 396 140.5 L 396 132.5 L 396 131.5 C 396 131.223 395.777 131 395.5 131 L 394.5 131 L 388.5 131 z "
        id="no_door"
        inkscape:label="#rect3978" />
+    <rect
+       style="opacity:1;fill:#cccccc;fill-opacity:1;stroke:none"
+       id="rect3793"
+       width="10"
+       height="6"
+       x="339"
+       y="53"
+       rx="0.5"
+       ry="0.5" />
+    <rect
+       style="opacity:1;fill:#808080;fill-opacity:1;stroke:none"
+       id="rect3795"
+       width="12"
+       height="2"
+       x="338"
+       y="54"
+       rx="0.5"
+       ry="0.5" />
+    <rect
+       style="opacity:1;fill:#808080;fill-opacity:1;stroke:none"
+       id="rect3797"
+       width="2"
+       height="1"
+       x="343"
+       y="57"
+       rx="0.5"
+       ry="0.5" />
+    <rect
+       style="opacity:1;fill:#808080;fill-opacity:1;stroke:none"
+       id="rect3800"
+       width="2"
+       height="1"
+       x="346"
+       y="57"
+       rx="0.5"
+       ry="0.5" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:none"
+       d="m 339.5,68 c -0.831,0 -1.5,0.669 -1.5,1.5 0,1.666667 0,3.333333 0,5 0,0.831 0.669,1.5 1.5,1.5 l 9,0 c 0.831,0 1.5,-0.669 1.5,-1.5 0,-1.666667 0,-3.333333 0,-5 0,-0.831 -0.669,-1.5 -1.5,-1.5 z m 0,1 9,0 c 0.277,0 0.5,0.223 0.5,0.5 l 0,0.5 -10,0 0,-0.5 c 0,-0.277 0.223,-0.5 0.5,-0.5 z m -0.5,3 10,0 0,2.5 c 0,0.277 -0.223,0.5 -0.5,0.5 l -9,0 c -0.277,0 -0.5,-0.223 -0.5,-0.5 z m 4.5,1 c -0.277,0 -0.5,0.223 -0.5,0.5 0,0.277 0.223,0.5 0.5,0.5 l 1,0 c 0.277,0 0.5,-0.223 0.5,-0.5 0,-0.277 -0.223,-0.5 -0.5,-0.5 z m 3,0 c -0.277,0 -0.5,0.223 -0.5,0.5 0,0.277 0.223,0.5 0.5,0.5 l 1,0 c 0.277,0 0.5,-0.223 0.5,-0.5 0,-0.277 -0.223,-0.5 -0.5,-0.5 z"
+       id="credit_card"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="sccssccsssssccssccsssscssssssssssssss"
+       inkscape:label="#rect3819" />
   </g>
 </svg>

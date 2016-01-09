@@ -412,3 +412,5 @@ tags:
   add_icon: [atm]
 - tags: {tactile_paving: 'yes'}
   add_icon: [tactile_paving]
+- tags: {'payment:credit_cards': 'yes'}
+  add_icon: [credit_card]
