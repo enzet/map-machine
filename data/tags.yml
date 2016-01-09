@@ -310,6 +310,11 @@ tags:
   with_icon: [bus_stop_shelter, platform]
   over_icon: [bus_stop_bench]
 
+  # Railway special
+
+- tags: {railway: buffer_stop}
+  icon: [buffer_stop]
+
   # Road signs
 
 - tags: {highway: crossing}
