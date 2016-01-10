@@ -27,11 +27,11 @@ sys.path.append('../lib')
 import svg
 from vector import Vector
 
-background_color = 'DDDDDD'  # 'DDDDDD'
+background_color = 'EEEEEE'  # 'DDDDDD'
 outline_color = 'FFFFFF'
 beach_color = 'F0E0C0'
 building_color = 'EEEEEE'  # 'D0D0C0'
-building_border_color = 'C4C4C4'  # 'AAAAAA'
+building_border_color = 'DDDDDD'  # 'AAAAAA'
 construction_color = 'CCCCCC'
 cycle_color = '4444EE'
 desert_color = 'F0E0D0'
@@ -526,6 +526,9 @@ def construct_way(drawing, nodes, tags, path, user, time):
         style = 'fill:none;stroke:none;'
         text_y = 0
         layer += 40
+        levels = 1
+        if 'building:levels' in tags:
+            levels = float(tags['building:levels'])
         style = 'fill:#' + building_color + ';stroke:#' + \
             building_border_color + ';opacity:1.0;'
         shapes, fill, processed = process.get_icon(tags, scheme, '444444')
@@ -535,8 +538,9 @@ def construct_way(drawing, nodes, tags, path, user, time):
             drawing['nodes'].append({'shapes': shapes, 'x': c.x, 'y': c.y, 
                 'color': fill, 'priority': 1, 'processed': processed, 
                 'tags': tags, 'path': path})
-        drawing['ways'].append({'kind': 'way', 'nodes': nodes, 'layer': layer,
-            'priority': 50, 'style': style, 'path': path})
+        drawing['ways'].append({'kind': 'building', 'nodes': nodes, 
+            'layer': layer, 'priority': 50, 'style': style, 'path': path, 
+            'levels': levels})
 
     # Amenity
 
@@ -981,13 +985,50 @@ def node_sorter(element):
 def draw(drawing, show_missed_tags=False, overlap=14, draw=True):
     ways = sorted(drawing['ways'], key=way_sorter)
     for way in ways:
-        if way['nodes']:
-            path = get_path(way['nodes'])
-            output_file.write('<path d="' + path + '" ' + \
-                'style="' + way['style'] + '" />\n')
-        else:
-            output_file.write('<path d="' + way['path'] + '" ' + \
-                'style="' + way['style'] + '" />\n')
+        if way['kind'] == 'way':
+            if way['nodes']:
+                path = get_path(way['nodes'])
+                output_file.write('<path d="' + path + '" ' + \
+                    'style="' + way['style'] + '" />\n')
+            else:
+                output_file.write('<path d="' + way['path'] + '" ' + \
+                    'style="' + way['style'] + '" />\n')
+    output_file.write('<g style="opacity:0.1;">\n')
+    for way in ways:
+        if way['kind'] == 'building':
+            if way['nodes']:
+                shift = Vector(-5, 5)
+                if 'levels' in way:
+                    shift = Vector(-5 * way['levels'], 5 * way['levels'])
+                for i in range(len(way['nodes']) - 1):
+                    node_1 = node_map[way['nodes'][i]]
+                    node_2 = node_map[way['nodes'][i + 1]]
+                    flinged_1 = flinger.fling(Geo(node_1['lat'], node_1['lon']))
+                    flinged_2 = flinger.fling(Geo(node_2['lat'], node_2['lon']))
+                    output_file.write('<path d="M ' + `flinged_1.x` + ',' + `flinged_1.y` + ' L ' + `flinged_2.x` + ',' + `flinged_2.y` + ' ' + `(flinged_2 + shift).x` + ',' + `(flinged_2 + shift).y` + ' ' + `(flinged_1 + shift).x` + ',' + `(flinged_1 + shift).y` + ' Z" style="fill:#000000;stroke:#000000;stroke-width:1;" />\n')
+    output_file.write('</g>\n')
+    for way in ways:
+        if way['kind'] == 'building':
+            if way['nodes']:
+                shift = Vector(0, -0.5)
+                if 'levels' in way:
+                    shift = Vector(0 * way['levels'], -0.5 * way['levels'])
+                for i in range(len(way['nodes']) - 1):
+                    node_1 = node_map[way['nodes'][i]]
+                    node_2 = node_map[way['nodes'][i + 1]]
+                    flinged_1 = flinger.fling(Geo(node_1['lat'], node_1['lon']))
+                    flinged_2 = flinger.fling(Geo(node_2['lat'], node_2['lon']))
+                    output_file.write('<path d="M ' + `flinged_1.x` + ',' + `flinged_1.y` + ' L ' + `flinged_2.x` + ',' + `flinged_2.y` + ' ' + `(flinged_2 + shift).x` + ',' + `(flinged_2 + shift).y` + ' ' + `(flinged_1 + shift).x` + ',' + `(flinged_1 + shift).y` + ' Z" style="fill:#DDDDDD;stroke:#DDDDDD;stroke-width:1;opacity:1;" />\n')
+    for way in ways:
+        if way['kind'] == 'building':
+            if way['nodes']:
+                shift = Vector(0, -0.5)
+                if 'levels' in way:
+                    shift = Vector(0 * way['levels'], -0.5 * way['levels'])
+                # shift = Vector()
+                path = get_path(way['nodes'], shift=shift)
+                output_file.write('<path d="' + path + '" ' + \
+                    'style="' + way['style'] + ';opacity:1;" />\n')
     nodes = sorted(drawing['nodes'], key=node_sorter)
     for node in nodes:
         draw_shapes(node['shapes'], overlap, points, node['x'], node['y'], 
