@@ -8,13 +8,13 @@ colors:
   beach: 'F0E0C0'
   deciduous: 'FCAF3E'
   desert: 'F0E0D0'
-  evergreen: 'B8CC84'
+  evergreen: '688C44'
   playground: '884400'
   parking: 'DDCC99'
   water: 'AACCFF'
   water_border: '6688BB'
   wood: 'B8CC84'
-  tree: '688C44'
+  tree: '98AC64'
 
   # Colors not in W3C
 
@@ -57,6 +57,8 @@ tags:
   icon: [letter]
 - tags: {amenity: prison}
   icon: [prison]
+- tags: {amenity: stage}
+  icon: [theatre]
 - tags: {amenity: vending_machine}
   icon: [vending_machine]
 - tags: {amenity: waste_basket}
@@ -89,6 +91,8 @@ tags:
   icon: [information]
 - tags: {tourism: information}
   icon: [information]
+- tags: {tourism: viewpoint}
+  icon: [binocular]
 - tags: {information: board}
   icon: [information_board]
 
@@ -106,6 +110,11 @@ tags:
 - tags: {support: column}
   over_icon: [support_column]
   under_icon: [clock, information_board]
+
+  # Advertising
+
+- tags: {advertising: billboard}
+  icon: [billboard]
 
   # Eating and entertainment
 
@@ -159,6 +168,8 @@ tags:
   icon: [toy_horse]
 - tags: {amenity: post_office}
   icon: [letter]
+- tags: {office: telecommunication}
+  icon: telephone
 
   # Shop
 
@@ -254,6 +265,12 @@ tags:
 - tags: {natural: tree, genus: Betula}
   icon: [betula]
   color: tree
+- tags: {natural: tree, "genus:en": Birch}
+  icon: [betula]
+  color: tree
+- tags: {natural: tree, "genus:ru": Берёза}
+  icon: [betula]
+  color: tree
 
   # Tree over icons
 
@@ -267,6 +284,8 @@ tags:
   # Entrance
 
 - tags: {entrance: 'yes'}
+  icon: [entrance]
+- tags: {door: 'yes'}
   icon: [entrance]
 - tags: {entrance: main}
   icon: [main_entrance]
@@ -419,3 +438,45 @@ tags:
   add_icon: [tactile_paving]
 - tags: {'payment:credit_cards': 'yes'}
   add_icon: [credit_card]
+
+tags_to_write: [
+  "operator", "opening_hours", "cuisine", "network", "website",
+  "website_2", "STIF:zone", "opening_hours:url", "phone",
+  "branch", "route_ref", "brand", "ref", "wikipedia",
+  "description", "wikidata", "name", "alt_name", "image", "fax",
+  "old_name", "artist_name", "int_name", "official_name",
+  "full_name", "email", "designation", "min_height", "height",
+  "inscription", "start_date", "created_by", "naptan:verified",
+  "url", "naptan:AtcoCode", "naptan:Landmark",
+  "naptan:Indicator", "collection_times", "naptan:Street",
+  "naptan:PlusbusZoneRef", "naptan:Crossing", "local_ref",
+  "naptan:CommonName", "survey:date", "naptan:NaptanCode",
+  "postal_code", "uk_postcode_centroid", "fhrs:rating_date",
+  "fhrs:local_authority_id", "destination", "fhrs:id",
+  "naptan:ShotCommonName", "flickr", "royal_cypher", "is_in",
+  "booth", "naptan:AltStreet", "media:commons", "ref_no", "uri",
+  "fhrs:inspectiondate", "telephone", "naptan:AltCommonName",
+  "end_date", "facebook", "naptan:Notes", "voltage",
+  "last_collection", "twitter", "ele", "information", "phone_1",
+  "cyclestreets_id", "cladr:code", "naptan:Bearing", "species",
+  "taxon", "seats", "capacity", "fhrs:rating",
+  "fhrs:confidence_management", "fhrs:hygiene", "genus",
+  "platforms", "naptan:BusStopType"]
+
+prefix_to_write: [
+  "addr", "contact", "name", "operator", "wikipedia",
+  "alt_name", "description", "old_name", "inscription",
+  "route_ref", "is_in", "website", "ref", "species", "taxon",
+  "genus"]
+
+tags_to_skip: [
+  "note", "layer", "level", "source", "building:part", "comment",
+  "FIXME", "source_ref", "naptan:verified:note", "fixme",
+  "building:levels", "ref:opendataparis:adresse", "indoor",
+  "level:ref", "ref:opendataparis:geo_point_2d", "created_by",
+  "mapillary", "diameter_crown"]
+
+prefix_to_skip: [
+  "source", "mapillary"]
+
+

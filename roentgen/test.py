@@ -2,13 +2,12 @@
 Author: Sergey Vartanov (me@enzet.ru).
 """
 
-import copy
-import extract_icon
 import os
-import process
 import random
 import sys
 import yaml
+
+from roentgen import extract_icon
 
 tags_file_name = '../data/tags.yml'
 
@@ -21,6 +20,7 @@ import svg
 icons_file_name = '../icons/icons.svg'
 icon_grid_file_name = '../icon_grid.svg'
 icon_colors_file_name = '../data/icon_colors'
+
 
 def draw_icon(icon, x, y, color='444444'):
     output_file.write('<path d="' + icon['path'] + '" ' + \

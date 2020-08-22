@@ -5,11 +5,7 @@ Author: Sergey Vartanov (me@enzet.ru)
 """
 
 import math
-import sys
-
-sys.path.append('../lib')
-
-from vector import Vector
+import numpy as np
 
 
 class Flinger(object):
@@ -21,30 +17,30 @@ class Flinger(object):
         self.maximum = maximum
 
         if not target_minimum:
-            target_minimum = Vector()
+            target_minimum = [0, 0]
         if not target_maximum:
             target_maximum = maximum - minimum
 
-        space = Vector()
+        space = [0, 0]
 
         if ratio:
             if ratio == 'geo':
-                ratio = math.sin((90.0 - ((self.maximum.y + self.minimum.y) / 2.0)) / 180.0 * math.pi)
+                ratio = math.sin((90.0 - ((self.maximum[1] + self.minimum[1]) / 2.0)) / 180.0 * math.pi)
 
-            current_ratio = (self.maximum.x - self.minimum.x) * ratio / (self.maximum.y - self.minimum.y)
-            target_ratio = (target_maximum.x - target_minimum.x) / (target_maximum.y - target_minimum.y)
+            current_ratio = (self.maximum[0] - self.minimum[0]) * ratio / (self.maximum[1] - self.minimum[1])
+            target_ratio = (target_maximum[0] - target_minimum[0]) / (target_maximum[1] - target_minimum[1])
 
             if current_ratio >= target_ratio:
-                n = (target_maximum.x - target_minimum.x) / (maximum.x - minimum.x) / ratio
-                space.y = ((target_maximum.y - target_minimum.y) - (maximum.y - minimum.y) * n) / 2.0
-                space.x = 0
+                n = (target_maximum[0] - target_minimum[0]) / (maximum[0] - minimum[0]) / ratio
+                space[1] = ((target_maximum[1] - target_minimum[1]) - (maximum[1] - minimum[1]) * n) / 2.0
+                space[0] = 0
             else:
-                n = (target_maximum.y - target_minimum.y) / (maximum.y - minimum.y)
-                space.x = ((target_maximum.x - target_minimum.x) - (maximum.x - minimum.x) * n) / 2.0
-                space.y = 0
+                n = (target_maximum[1] - target_minimum[1]) / (maximum[1] - minimum[1])
+                space[0] = ((target_maximum[0] - target_minimum[0]) - (maximum[0] - minimum[0]) * n) / 2.0
+                space[1] = 0
 
-        target_minimum.x += space
-        target_maximum.x += space
+        target_minimum[0] += space
+        target_maximum[0] += space
 
         self.target_minimum = target_minimum
         self.target_maximum = target_maximum
@@ -53,21 +49,24 @@ class Flinger(object):
         """
         Fling current point to the surface.
         """
-        x = map_(current.x, self.minimum.x, self.maximum.x, self.target_minimum.x, self.target_maximum.x)
-        y = map_(current.y, self.minimum.y, self.maximum.y, self.target_minimum.y, self.target_maximum.y)
-        return Vector(x, y)
+        x = map_(current[0], self.minimum[0], self.maximum[0], self.target_minimum[0], self.target_maximum[0])
+        y = map_(current[1], self.minimum[1], self.maximum[1], self.target_minimum[1], self.target_maximum[1])
+        return [x, y]
 
 
 class Geo:
     def __init__(self, lat, lon):
         self.lat = lat
         self.lon = lon
+
     def __add__(self, other):
         return Geo(self.lat + other.lat, self.lon + other.lon)
+
     def __sub__(self, other):
         return Geo(self.lat - other.lat, self.lon - other.lon)
+
     def __repr__(self):
-        return `self.lat` + ', ' + `self.lon`
+        return f"{self.lat}, {self.lon}"
 
 
 class GeoFlinger:
@@ -86,31 +85,31 @@ class GeoFlinger:
 
         # Ratio is x / y.
 
-        space = Vector()
+        space = [0, 0]
         current_ratio = (self.maximum.lon - self.minimum.lon) * ratio / (self.maximum.lat - self.minimum.lat)
-        target_ratio = (target_maximum.x - target_minimum.x) / (target_maximum.y - target_minimum.y)
+        target_ratio = (target_maximum[0] - target_minimum[0]) / (target_maximum[1] - target_minimum[1])
 
         if current_ratio >= target_ratio:
-            n = (target_maximum.x - target_minimum.x) / (maximum.lon - minimum.lon) / ratio
-            space.y = ((target_maximum.y - target_minimum.y) - (maximum.lat - minimum.lat) * n) / 2.0
-            space.x = 0
+            n = (target_maximum[0] - target_minimum[0]) / (maximum.lon - minimum.lon) / ratio
+            space[1] = ((target_maximum[1] - target_minimum[1]) - (maximum.lat - minimum.lat) * n) / 2.0
+            space[0] = 0
         else:
-            n = (target_maximum.y - target_minimum.y) / (maximum.lat - minimum.lat) * ratio
-            space.x = ((target_maximum.x - target_minimum.x) - (maximum.lon - minimum.lon) * n) / 2.0
-            space.y = 0
+            n = (target_maximum[1] - target_minimum[1]) / (maximum.lat - minimum.lat) * ratio
+            space[0] = ((target_maximum[0] - target_minimum[0]) - (maximum.lon - minimum.lon) * n) / 2.0
+            space[1] = 0
 
-        self.target_minimum = target_minimum + space
-        self.target_maximum = target_maximum - space
+        self.target_minimum = np.add(target_minimum, space)
+        self.target_maximum = np.subtract(target_maximum, space)
 
         self.space = space
 
     def fling(self, current):
         x = map_(current.lon, self.minimum.lon, self.maximum.lon, 
-                 self.target_minimum.x, self.target_maximum.x)
+                 self.target_minimum[0], self.target_maximum[0])
         y = map_(self.maximum.lat + self.minimum.lat - current.lat, 
                  self.minimum.lat, self.maximum.lat, 
-                 self.target_minimum.y, self.target_maximum.y)
-        return Vector(x, y)
+                 self.target_minimum[1], self.target_maximum[1])
+        return [x, y]
 
 
 def map_(value, current_min, current_max, target_min, target_max):

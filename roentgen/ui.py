@@ -4,6 +4,8 @@ Author: Sergey Vartanov (me@enzet.ru).
 import argparse
 import sys
 
+from typing import Optional
+
 
 def parse_options(args):
 
@@ -33,13 +35,12 @@ def parse_options(args):
                         action='store_false')
     parser.add_argument('--mode', dest='mode', default='normal')
     parser.add_argument('--seed', dest='seed', default='')
-    parser.add_argument('--level', dest='level', default=None, type=float)
+    parser.add_argument('--level', dest='level', default=None)
 
     arguments = parser.parse_args(args[1:])
 
     arguments.boundary_box = \
-        map(lambda x: float(x.replace('m', '-')), arguments.boundary_box.split(','))
-    arguments.size = map(lambda x: float(x), arguments.size.split(','))
+        list(map(lambda x: float(x.replace('m', '-')), arguments.boundary_box.split(',')))
 
     return arguments
 
@@ -50,13 +51,25 @@ def write_line(number, total):
     boxes = [' ', '▏', '▎', '▍', '▌', '▋', '▊', '▉']
 
     if number == -1:
-        print('%3s' % '100') + ' % █' + (length * '█') + '█'
+        print('%3s' % '100' + ' % █' + (length * '█') + '█')
     elif number % 1000 == 0:
         p = number / float(total)
         l = int(p * parts)
-        fl = l / 8
+        fl = int(l / 8)
         pr = int(l - fl * 8)
-        print('%3s' % str(int(p * 1000) / 10)) + ' % █' + (fl * '█') + \
-            boxes[pr] + ((length - fl - 1) * ' ') + '█'
+        print(('%3s' % str(int(p * 1000) / 10)) + ' % █' + (fl * '█') +
+            boxes[pr] + ((length - fl - 1) * ' ') + '█')
         sys.stdout.write("\033[F")
+
+
+def error(message: Optional[str] = None):
+    """
+    Print error message.
+
+    :param message: message to print.
+    """
+    if message:
+        print(f"Error: {message}.")
+    else:
+        print("Error.")
 

@@ -14,30 +14,42 @@ class SVG:
 
     def begin(self, width, height):
         self.file.write('<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n\n')
-        self.file.write('''<svg version = "1.1" baseProfile = "full"
-                        xmlns = "http://www.w3.org/2000/svg"
-                        xmlns:xlink = "http://www.w3.org/1999/xlink"
-                        xmlns:ev = "http://www.w3.org/2001/xml-events"
-                        bgcolor = "#e5e9e6" width = "''' + str(width) +
-                        '" height = "' + str(height) + '">\n')
+        self.file.write(
+            f'''<svg version="1.1" baseProfile="full"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            xmlns:ev="http://www.w3.org/2001/xml-events"
+            bgcolor="#e5e9e6" width="{width}" height="{height}">\n''')
 
     def end(self):
         self.file.write('</svg>\n')
 
-    def path(self, path, color='black', width=1, fill='none', end='butt', id=None, color2=None,
-             gx1=0, gy1=0, gx2=0, gy2=0, dash=None, dashoffset=None, opacity=1, transform=None):
+    def path(
+            self, path: str, color: str = "black", width: float = 1,
+            fill: str = "none", end: str = "butt", id: str = None,
+            color2: str = None, gx1: float = 0, gy1: float = 0, gx2: float = 0,
+            gy2: float = 0, dash: str = None, dashoffset: str = None,
+            opacity: float = 1, transform: str = None):
+
         if color2:
             self.index += 1
-            self.file.write('<defs><linearGradient id = "grad' + str(self.index) + '" x1 = "' + str(gx1) + '" y1 = "' +
-                            str(gy1) + ' " x2 = "' + str(gx2) + '" y2 = "' + str(gy2) +
-                            '" gradientUnits="userSpaceOnUse"> <stop style="stop-color:' + self.get_color(color) +
-                            ';stop-opacity:1;" offset="0" /><stop style="stop-color:' + self.get_color(color2) +
-                            ';stop-opacity:1;" offset="1" /></linearGradient></defs>\n')
+            self.file.write(
+                f'<defs><linearGradient id="grad{str(self.index)}" '
+                f'x1="{str(gx1)}" y1="{str(gy1)}" '
+                f'x2="{str(gx2)}" y2="{str(gy2)}" '
+                f'gradientUnits="userSpaceOnUse">'
+                f'<stop style="stop-color:{self.get_color(color)};'
+                f'stop-opacity:1;" offset="0" />'
+                f'<stop style="stop-color:{self.get_color(color2)};'
+                f'stop-opacity:1;" offset="1" /></linearGradient></defs>\n')
+
         self.file.write('  <path d = "' + path + '" ')
+
         if id:
-            self.file.write('id = "' + id + '" ')
+            self.file.write(f'id="{id}" ')
         if transform:
             self.file.write('transform="' + transform + '" ')
+
         self.file.write('style = "')
         if not color2:
             self.file.write('stroke:' + self.get_color(color) + '; ')
@@ -132,14 +144,11 @@ class SVG:
                 </radialGradient>
               </defs>''')
         c = 0.577
-        self.file.write('''  <path d = "M %5.1f %5.1f C %5.1f %5.1f
-                %5.1f %5.1f %5.1f %5.1f C %5.1f %5.1f %5.1f %5.1f %5.1f
-                %5.1f C %5.1f %5.1f %5.1f %5.1f %5.1f %5.1f C %5.1f %5.1f
-                %5.1f %5.1f %5.1f %5.1f" ''' % (
-                x, y + d, x - d * c, y + d, x - d, y + d * c, x - d, y, x - d,
-                y - d * c, x - d * c, y - d, x, y - d, x + d * c, y - d, x + d,
-                y - d * c, x + d, y, x + d, y + d * c, x + d * c, y + d, x,
-                y + d))
+        self.file.write(
+            f'''  <path d = "M {x:5.1f} {y + d:5.1f} C {x - d * c:5.1f} {y + d:5.1f}
+                {x - d:5.1f} {y + d * c:5.1f} {x - d:5.1f} {y:5.1f} C {x - d:5.1f} {y - d * c:5.1f} {x - d * c:5.1f} {y - d:5.1f} {x:5.1f}
+                {y - d:5.1f} C {x + d * c:5.1f} {y - d:5.1f} {x + d:5.1f} {y - d * c:5.1f} {x + d:5.1f} {y:5.1f} C {x + d:5.1f} {y + d * c:5.1f}
+                {x + d * c:5.1f} {y + d:5.1f} {x:5.1f} {y + d:5.1f}" ''')
         if id:
             self.file.write('id = "' + id + '" ')
         self.file.write('style = "')
@@ -153,9 +162,6 @@ class SVG:
             self.file.write('opacity:' + str(opacity) + '; ')
         self.file.write('" />\n')
 
-    # text-align:center;text-anchor:middle
-    # font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:2px;
-
     def text(self, x, y, text, font='Myriad Pro', size='10', align='left',
         color='black', id=None, weight=None, letter_spacing=None, angle=None,
         opacity=None):
@@ -163,9 +169,9 @@ class SVG:
         Drawing SVG <text> element.
         """
         if angle is None:
-            self.file.write('  <text x = "' + str(x) + '" y = "' + str(y) + '" ')
+            self.file.write(f'  <text x="{str(x)}" y="{str(y)}" ')
         else:
-            self.file.write('  <text x = "0" y = "0" ')
+            self.file.write('  <text x="0" y="0" ')
         self.file.write('font-size = "' + str(size) + '" ')
         if id:
             self.file.write('id = "' + id + '" ')
@@ -207,7 +213,7 @@ class SVG:
         return '#' + str(color)
 
     def begin_layer(self, name):
-        self.file.write('<g id="' + name + '" label="' + name + '" ')
+        self.file.write(f'<g id="{name}" label="{name}" ')
         self.file.write('inkscape:groupmode="layer">\n')
 
     def end_layer(self):

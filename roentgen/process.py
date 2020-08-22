@@ -1,11 +1,12 @@
 import copy
 import re
 
+
 def get_color(color, scheme):
     if color in scheme['colors']:
         return scheme['colors'][color]
     else:
-        m = re.match('^(\\#)?(?P<color1>[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])' + \
+        m = re.match('^(\\#)?(?P<color1>[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])' +
             '(?P<color2>[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])?$', color)
         if m:
             if 'color2' in m.groups():
@@ -13,6 +14,7 @@ def get_color(color, scheme):
             else:
                 return ''.join(map(lambda x: x + x, m.group('color1')))
     return '444444'
+
 
 def get_icon(tags, scheme, fill='444444'):
     tags_hash = ','.join(tags.keys()) + ':' + \
@@ -38,10 +40,10 @@ def get_icon(tags, scheme, fill='444444'):
                     break
         if matched:
             if 'draw' in matcher and not matcher['draw']:
-                processed = set(matcher['tags'].keys())
+                processed |= set(matcher['tags'].keys())
             if 'icon' in matcher:
                 main_icon = copy.deepcopy(matcher['icon'])
-                processed = set(matcher['tags'].keys())
+                processed |= set(matcher['tags'].keys())
             if 'over_icon' in matcher:
                 if main_icon:  # TODO: check main icon in under icons
                     main_icon += matcher['over_icon']
@@ -55,17 +57,20 @@ def get_icon(tags, scheme, fill='444444'):
                 fill = scheme['colors'][matcher['color']]
                 for key in matcher['tags'].keys():
                     processed.add(key)
+
     for color_name in ['color', 'colour', 'building:colour']:
         if color_name in tags:
             fill = get_color(tags[color_name], scheme)
             if fill != '444444':
                 processed.add(color_name)
             else:
-                print("No color {tags[color_name]}.")
+                print(f"No color {tags[color_name]}.")
+
     if main_icon:
         returned = [main_icon] + extra_icons, fill, processed
     else:
         returned = [], fill, processed
+
     scheme['cache'][tags_hash] = returned
     return returned
 

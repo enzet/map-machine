@@ -3,224 +3,218 @@ Reading OpenStreetMap data from XML file.
 
 Author: Sergey Vartanov
 """
-import datetime
-import ui
 import re
-import sys
 
-from typing import Dict
+from typing import Any, Dict
 
-
-def parse_node_full(node_data):
-    """
-    Parse full node parameters using regular expressions: id, visible, version, 
-    etc. For faster parsing use parse_node().
-    """
-    m = re.match(
-        'id="(.*)" visible="(.*)" version="(.*)" changeset="(.*)" '
-        'timestamp="(.*)" user="(.*)" uid="(.*)" lat="(.*)" lon="(.*)"',
-        node_data)
-    if m:
-        return {'id': int(m.group(1)), 'visible': m.group(2), 
-                'version': m.group(3),
-                'changeset': m.group(4), 'timestamp': m.group(5), 
-                'user': m.group(6), 'uid': m.group(7), 
-                'lat': float(m.group(8)), 'lon': float(m.group(9))}
-    else:
-        print(f"Error: cannot parse node data: {node_data}.")
-        return None
+from roentgen import ui
 
 
-def parse_node(text):
-    """
-    Just parse node identifier, latitude, and longitude.
-    """
-    node_id = text[4:text.find('"', 6)]
-    lat_index = text.find('lat="')
-    lon_index = text.find('lon="')
-    lat = text[lat_index + 5:text.find('"', lat_index + 7)]
-    lon = text[lon_index + 5:text.find('"', lon_index + 7)]
-    return {'id': int(node_id), 'lat': float(lat), 'lon': float(lon)}
+class OSMNode:
+    def __init__(self, id_: int = 0, lat: float = 0, lon: float = 0):
+        self.id_ = id_
+        self.lat = lat
+        self.lon = lon
+        self.tags = {}
+
+        self.visible = None
+        self.changeset = None
+        self.timestamp = None
+        self.user = None
+        self.uid = None
+
+    def parse_from_xml(self, text: str, is_full: bool = False):
+        """
+        Parse full node parameters using regular expressions: id, visible, version,
+        etc. For faster parsing use parse_node().
+        """
+        self.id_ = int(get_value("id", text))
+        self.lat = float(get_value("lat", text))
+        self.lon = float(get_value("lon", text))
+
+        if is_full:
+            self.visible = get_value("visible", text)
+            self.changeset = get_value("changeset", text)
+            self.timestamp = get_value("timestamp", text)
+            self.user = get_value("user", text)
+            self.uid = get_value("uid", text)
+
+        return self
 
 
-def parse_way_full(way_data):
-    """
-    Parse full way parameters using regular expressions: id, visible, version,
-    etc. For faster parsing use parse_way().
-    """
-    m = re.match('id="(.*)" visible="(.*)" version="(.*)" changeset="(.*)" ' + \
-                 'timestamp="(.*)" user="(.*)" uid="(.*)"', way_data)
-    if m:
-        return {'id': m.group(1), 'visible': m.group(2), 
-                'changeset': m.group(4), 'timestamp': m.group(5), 
-                'user': m.group(6), 'uid': m.group(7)}
-    else:
-        print(f"Error: cannot parse way data: {way_data}.")
-        return None
+class OSMWay:
+    def __init__(self, id_: int = 0, nodes=None):
+        self.id_ = id_
+        self.nodes = [] if nodes is None else nodes
+        self.tags = {}
+
+        self.visible = None
+        self.changeset = None
+        self.user = None
+        self.timestamp = None
+        self.uid = None
+
+    def parse_from_xml(self, text: str, is_full: bool = False):
+        self.id_ = int(get_value("id", text))
+
+        if is_full:
+            self.visible = get_value("visible", text)
+            self.changeset = get_value("changeset", text)
+            self.timestamp = get_value("timestamp", text)
+            self.user = get_value("user", text)
+            self.uid = get_value("uid", text)
+
+        return self
+
+    def is_cycle(self) -> bool:
+        return self.nodes[0] == self.nodes[-1]
+
+    def try_to_glue(self, other: "OSMWay"):
+        if self.nodes[0] == other.nodes[0]:
+            return OSMWay(nodes=list(reversed(other.nodes[1:])) + self.nodes)
+        elif self.nodes[0] == other.nodes[-1]:
+            return OSMWay(nodes=other.nodes[:-1] + self.nodes)
+        elif self.nodes[-1] == other.nodes[-1]:
+            return OSMWay(nodes=self.nodes + list(reversed(other.nodes[:-1])))
+        elif self.nodes[-1] == other.nodes[0]:
+            return OSMWay(nodes=self.nodes + other.nodes[1:])
+
+    def __repr__(self):
+        return str(self.nodes)
 
 
-def parse_way(text):
-    """
-    Just parse way identifier.
-    """
-    id = text[4:text.find('"', 6)]
-    return {'id': int(id)}
+class OSMRelation:
+    def __init__(self, id_):
+        self.id_ = id_
+        self.tags = {}
+        self.members = []
 
 
-def parse_relation(text):
+def get_value(key: str, text: str):
+    if key + '="' in text:
+        index: int = text.find(key + '="')
+        value = text[index + len(key) + 2:text.find('"', index + len(key) + 4)]
+        return value
+
+
+def parse_relation(text) -> OSMRelation:
     """
     Just parse relation identifier.
     """
-    id = text[4:text.find('"', 6)]
-    return {'id': int(id)}
+    id = text[text.find("id=\"") + 4:text.find('"', text.find("id=\"") + 6)]
+    return OSMRelation(int(id))
 
 
 def parse_member(text) -> Dict[str, Any]:
     """
     Parse member type, reference, and role.
     """
-    if text[6] == 'w':
-        type = 'way'
-    else:
-        type = 'node'
-    ref_index = text.find('ref')
-    role_index = text.find('role')
-    ref = text[ref_index + 5:text.find('"', ref_index + 7)]
-    role = text[role_index + 6:text.find('"', role_index + 8)]
+    type = get_value("type", text)
+    ref = get_value("ref", text)
+    role = get_value("role", text)
     return {'type': type, 'ref': int(ref), 'role': role}
 
 
-def parse_tag(text: str) -> (str, str):
-    v_index = text.find('v="')
-    k = text[3:text.find('"', 4)]
-    v = text[v_index + 3:text.find('"', v_index + 4)]
-    return k, v
+class Map:
+    def __init__(self, node_map, way_map, relation_map):
+        self.node_map = node_map
+        self.way_map = way_map
+        self.relation_map = relation_map
 
 
-def parse_osm_file(
-        file_name: str, parse_nodes: bool = True, parse_ways: bool = True,
-        parse_relations: bool = True, full: bool = False):
+class OSMReader:
+    def __init__(self, file_name: str):
+        self.file_name = file_name
 
-    start_time = datetime.datetime.now()
-    try:
-        node_map, way_map, relation_map = parse_osm_file_fast(file_name, 
-            parse_nodes=parse_nodes, parse_ways=parse_ways, 
+    def parse_osm_file(
+            self, parse_nodes: bool = True, parse_ways: bool = True,
+            parse_relations: bool = True, full: bool = False) -> Map:
+
+        map_ = self.parse_osm_file_fast(
+            parse_nodes=parse_nodes, parse_ways=parse_ways,
             parse_relations=parse_relations, full=full)
-    except Exception as e:
-        print(e)
-        print("\033[31mFast parsing failed.\033[0m")
-        a = input("Do you want to use slow but correct XML parsing? [y/n] ")
-        if a in ['y', 'yes']:
-            start_time = datetime.datetime.now()
-            print(f"Opening OSM file {file_name}...")
-            with open(file_name) as input_file:
-                print('Done.')
-                print('Parsing OSM file ' + file_name + '...')
-                content = xml.dom.minidom.parse(input_file)
-                input_file.close()
-                print('Done.')
-        else:
-            sys.exit(0)
-    print('File readed in ' + \
-        str(datetime.datetime.now() - start_time) + '.')
-    print('Nodes: ' + str(len(node_map)) + ', ways: ' + \
-        str(len(way_map)) + ', relations: ' + str(len(relation_map)) + '.')
-    return node_map, way_map, relation_map
+        return map_
 
-
-def parse_osm_file_fast(file_name, parse_nodes=True, parse_ways=True, 
-        parse_relations=True, full=False):
-    node_map = {}
-    way_map = {}
-    relation_map = {}
-    print('Line number counting for ' + file_name + '...')
-    with open(file_name) as f:
-        for lines_number, l in enumerate(f):
-            pass
-    print('Done.')
-    print('Parsing OSM file ' + file_name + '...')
-    input_file = open(file_name)
-    line = input_file.readline()
-    line_number = 0
-    while line != '':
-        line_number += 1
-        ui.write_line(line_number, lines_number)
-
-        # Node parsing.
-
-        if line[:6] in [' <node', '\t<node']:
-            if not parse_nodes:
-                if parse_ways or parse_relations:
-                    continue
-                else:
-                    break
-            if line[-3] == '/':
-                if not full:
-                    node = parse_node(line[7:-3])
-                else:
-                    node = parse_node_full(line[7:-3])
-                node_map[node['id']] = node
-            else:
-                if not full:
-                    element = parse_node(line[7:-2])
-                else:
-                    element = parse_node_full(line[7:-2])
-                element['tags'] = {}
-        elif line in [' </node>\n', '\t</node>\n']:
-            node_map[element['id']] = element
-
-        # Way parsing.
-
-        elif line[:5] in [' <way', '\t<way']:
-            if not parse_ways:
-                if parse_relations:
-                    continue
-                else:
-                    break
-            if line[-3] == '/':
-                if not full:
-                    way = parse_way(line[6:-3])
-                else:
-                    way = parse_way_full(line[6:-3])
-                way_map[node['id']] = way
-            else:
-                if not full:
-                    element = parse_way(line[6:-2])
-                else:
-                    element = parse_way_full(line[6:-2])
-                element['tags'] = {}
-                element['nodes'] = []
-        elif line in [' </way>\n', '\t</way>\n']:
-            way_map[element['id']] = element
-
-        # Relation parsing.
-
-        elif line[:10] in [' <relation', '\t<relation']:
-            if not parse_relations:
-                break
-            if line[-3] == '/':
-                relation = parse_relation(line[11:-3])
-                relation_map[relation['id']] = relation
-            else:
-                element = parse_relation(line[11:-2])
-                element['tags'] = {}
-                element['members'] = []
-        elif line in [' </relation>\n', '\t</relation>\n']:
-            relation_map[element['id']] = element
-
-        # Elements parsing.
-
-        elif line[:6] in ['  <tag', '\t\t<tag']:
-            k, v = parse_tag(line[7:-3])
-            element['tags'][k] = v
-        elif line[:5] in ['  <nd', '\t\t<nd']:
-            element['nodes'].append(int(line[11:-4]))
-        elif line[:9] in ['  <member', '\t\t<member']:
-            member = parse_member(line[10:-3])
-            element['members'].append(member)
+    def parse_osm_file_fast(self, parse_nodes=True, parse_ways=True,
+            parse_relations=True, full=False) -> Map:
+        node_map: Dict[int, OSMNode] = {}
+        way_map: Dict[int, OSMWay] = {}
+        relation_map: Dict[int, OSMRelation] = {}
+        print('Line number counting for ' + self.file_name + '...')
+        with open(self.file_name) as f:
+            for lines_number, l in enumerate(f):
+                pass
+        print('Done.')
+        print('Parsing OSM file ' + self.file_name + '...')
+        input_file = open(self.file_name)
         line = input_file.readline()
-    input_file.close()
+        line_number = 0
 
-    ui.write_line(-1, lines_number)  # Complete progress bar.
+        while line != '':
+            line_number += 1
+            ui.write_line(line_number, lines_number)
 
-    return node_map, way_map, relation_map
+            # Node parsing.
+
+            if line[:6] in [' <node', '\t<node'] or line[:7] == "  <node":
+                if not parse_nodes:
+                    if parse_ways or parse_relations:
+                        continue
+                    else:
+                        break
+                if line[-3] == '/':
+                    node: OSMNode = OSMNode().parse_from_xml(line[7:-3], full)
+                    node_map[node.id_] = node
+                else:
+                    element = OSMNode().parse_from_xml(line[7:-2], full)
+            elif line in [' </node>\n', '\t</node>\n', "  </node>\n"]:
+                node_map[element.id_] = element
+
+            # Way parsing.
+
+            elif line[:5] in [' <way', '\t<way'] or line[:6] == "  <way":
+                if not parse_ways:
+                    if parse_relations:
+                        continue
+                    else:
+                        break
+                if line[-3] == '/':
+                    way = OSMWay().parse_from_xml(line[6:-3], full)
+                    way_map[way.id_] = way
+                else:
+                    element = OSMWay().parse_from_xml(line[6:-2], full)
+            elif line in [' </way>\n', '\t</way>\n'] or line == "  </way>\n":
+                way_map[element.id_] = element
+
+            # Relation parsing.
+
+            elif line[:10] in [' <relation', '\t<relation'] or \
+                    line[:11] == "  <relation":
+                if not parse_relations:
+                    break
+                if line[-3] == '/':
+                    relation = parse_relation(line[11:-3])
+                    relation_map[relation.id_] = relation
+                else:
+                    element = parse_relation(line[11:-2])
+            elif line in [' </relation>\n', '\t</relation>\n'] or \
+                    line == "  </relation>\n":
+                relation_map[element.id_] = element
+
+            # Elements parsing.
+
+            elif line[:6] in ['  <tag', '\t\t<tag'] or line[:8] == "    <tag":
+                k = get_value("k", line[7:-3])
+                v = get_value("v", line[7:-3])
+                element.tags[k] = v
+            elif line[:5] in ['  <nd', '\t\t<nd'] or line[:7] == "    <nd":
+                element.nodes.append(int(get_value("ref", line)))
+            elif line[:9] in ['  <member', '\t\t<member'] or line[:11] == "    <member":
+                member = parse_member(line[10:-3])
+                element.members.append(member)
+            line = input_file.readline()
+        input_file.close()
+
+        ui.write_line(-1, lines_number)  # Complete progress bar.
+
+        return Map(node_map, way_map, relation_map)
