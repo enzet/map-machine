@@ -5,10 +5,11 @@ sys.path.append('../lib')
 
 import network
 
+
 usage = '<box coordinates: left,bottom,right,top>'
 
 if len(sys.argv) < 2:
-    print 'Usage: python ' + sys.argv[0] + ' ' + usage
+    print('Usage: python ' + sys.argv[0] + ' ' + usage)
     sys.exit(0)
 
 boundary_box = sys.argv[1]
@@ -18,12 +19,14 @@ result_file_name = '../map/' + boundary_box + '.xml'
 matcher = re.match('(?P<left>[0-9\\.-]*),(?P<bottom>[0-9\\.-]*),' + \
     '(?P<right>[0-9\\.-]*),(?P<top>[0-9\\.-]*)', boundary_box)
 
+
 def error(message=None):
     if message:
-        print 'Error: ' + message + '.'
+        print('Error: ' + message + '.')
     else:
-        print 'Error.'
+        print('Error.')
     sys.exit(1)
+
 
 if not matcher:
     error('invalid boundary box')

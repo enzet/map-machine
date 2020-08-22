@@ -89,10 +89,10 @@ for icons_to_draw in to_draw:
         if path:
             icon_set['icons'].append({'path': path, 
                 'x': (- 8.0 - xx * 16), 
-                'y': (- 8.0 - yy * 16)});
+                'y': (- 8.0 - yy * 16)})
             drawed = True
         else:
-            print '\033[31m' + icon + '\033[0m'
+            print('\033[31m' + icon + '\033[0m')
     if drawed:
         icons.append(icon_set)
         number += 1
@@ -117,6 +117,6 @@ for icon in icons:
         y += step
         height += step
 
-print 'Icons: ' + str(number) + '.'
+print(f"Icons: {number}.")
 
 output_file.end()

@@ -61,7 +61,7 @@ def get_icon(tags, scheme, fill='444444'):
             if fill != '444444':
                 processed.add(color_name)
             else:
-                print 'No color ' + tags[color_name] + '.'
+                print("No color {tags[color_name]}.")
     if main_icon:
         returned = [main_icon] + extra_icons, fill, processed
     else:

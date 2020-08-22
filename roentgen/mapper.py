@@ -103,7 +103,7 @@ def get_d_from_file(file_name):
     if path:
         return path, x, y
     else:
-        # print 'No such icon: ' + file_name
+        # print('No such icon: ' + file_name)
         # TODO: add to missed icons
         return 'M 4,4 L 4,10 10,10 10,4 z', 0, 0
 
@@ -896,7 +896,7 @@ def construct_nodes(drawing):
     """
     Draw nodes.
     """
-    print 'Draw nodes...'
+    print('Draw nodes...')
 
     start_time = datetime.now()
 
@@ -964,10 +964,10 @@ def construct_nodes(drawing):
             'tags': tags})
 
     ui.write_line(-1, len(node_map))
-    print 'Nodes drawed in ' + str(datetime.now() - start_time) + '.'
-    print 'Tags processed: ' + str(processed_tags) + ', tags skipped: ' + \
-        str(skipped_tags) + ' (' + \
-        str(processed_tags / float(processed_tags + skipped_tags) * 100) + ' %).'
+    print('Nodes drawed in ' + str(datetime.now() - start_time) + '.')
+    print('Tags processed: ' + str(processed_tags) + ', tags skipped: ' +
+        str(skipped_tags) + ' (' +
+        str(processed_tags / float(processed_tags + skipped_tags) * 100) + ' %).')
 
 def way_sorter(element):
     if 'layer' in element:
@@ -1048,7 +1048,7 @@ if options.mode in ['user-coloring', 'time']:
 input_file_name = options.input_file_name
 
 if not os.path.isfile(input_file_name):
-    print 'Fatal: no such file: ' + input_file_name + '.'
+    print('Fatal: no such file: ' + input_file_name + '.')
     sys.exit(1)
 
 full = False  # Full keys getting
@@ -1093,10 +1093,10 @@ for color_name in w3c_colors:
 if len(sys.argv) > 3:
     flinger = GeoFlinger(min1, max1, Vector(0, 0), Vector(w, h))
 else:
-    print 'Compute borders...'
+    print('Compute borders...')
     minimum, maximum = get_min_max(node_map)
     flinger = GeoFlinger(minimum, maximum, Vector(25, 25), Vector(975, 975))
-    print 'Done.'
+    print('Done.')
 
 icons = extract_icon.IconExtractor(icons_file_name)
 
@@ -1116,8 +1116,8 @@ if flinger.space.x == 0:
     output_file.rect(0, h - flinger.space.y, w, flinger.space.y, color='FFFFFF')
 
 if options.show_index:
-    print min1.lon, max1.lon
-    print min1.lat, max1.lat
+    print(min1.lon, max1.lon)
+    print(min1.lat, max1.lat)
 
     lon_step = 0.001
     lat_step = 0.001
@@ -1180,5 +1180,5 @@ sys.exit(0)
 
 top_authors = sorted(authors.keys(), key=lambda x: -authors[x])
 for author in top_authors:
-    print author + ': ' + str(authors[author])
+    print(author + ': ' + str(authors[author]))
 
