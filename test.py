@@ -4,22 +4,18 @@ Author: Sergey Vartanov (me@enzet.ru).
 
 import os
 import random
-import sys
 import yaml
 
 from roentgen import extract_icon
+from roentgen import svg
 
-tags_file_name = '../data/tags.yml'
+tags_file_name = 'data/tags.yml'
 
 scheme = yaml.load(open(tags_file_name))
 
-sys.path.append('../lib')
-
-import svg
-
-icons_file_name = '../icons/icons.svg'
-icon_grid_file_name = '../icon_grid.svg'
-icon_colors_file_name = '../data/icon_colors'
+icons_file_name = 'icons/icons.svg'
+icon_grid_file_name = 'icon_grid.svg'
+icon_colors_file_name = 'data/icon_colors'
 
 
 def draw_icon(icon, x, y, color='444444'):
@@ -76,7 +72,6 @@ for element in scheme['tags']:
                             if not (set([icon] + [icon2] + [icon3] + element['over_icon']) in to_draw):
                                 to_draw.append(set([icon] + [icon2] + [icon3] + element['over_icon']))
 
-height = 24
 number = 0
 
 icons = []
@@ -86,7 +81,7 @@ for icons_to_draw in to_draw:
     icon_set = {'icons': []}
     for icon in icons_to_draw:
         path, xx, yy = extracter.get_path(icon)
-        if path:
+        if xx:
             icon_set['icons'].append({'path': path, 
                 'x': (- 8.0 - xx * 16), 
                 'y': (- 8.0 - yy * 16)})
@@ -97,7 +92,7 @@ for icons_to_draw in to_draw:
         icons.append(icon_set)
         number += 1
 
-height = (number / (width / step) + 1) * step
+height = int(number / (width / step) + 1) * step
 
 output_file = svg.SVG(open(icon_grid_file_name, 'w+'))
 output_file.begin(width, height)
@@ -105,8 +100,6 @@ output_file.begin(width, height)
 output_file.rect(0, 0, width, height, color='FFFFFF')
 
 for icon in icons:
-#for k in range(1000):
-#    icon = random.choice(icons)
     background_color, foreground_color = random.choice(icon_colors)
     output_file.rect(x - 2 - 8, y - 2 - 8, 20, 20, color=background_color)
     for i in icon['icons']:

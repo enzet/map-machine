@@ -169,7 +169,7 @@ tags:
 - tags: {amenity: post_office}
   icon: [letter]
 - tags: {office: telecommunication}
-  icon: telephone
+  icon: [telephone]
 
   # Shop
 
