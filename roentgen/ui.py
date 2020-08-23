@@ -21,7 +21,7 @@ def parse_options(args):
     parser.add_argument('-nw', '--no-draw-ways', dest='draw_ways',
                         action='store_false', default=True)
     parser.add_argument('--captions', '--no-draw-captions', dest='draw_captions',
-                        default='yes')
+                        default='main')
     parser.add_argument('--show-missed-tags', dest='show_missed_tags',
                         action='store_true')
     parser.add_argument('--no-show-missed-tags', dest='show_missed_tags',
