@@ -11,8 +11,7 @@ def parse_options(args):
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-i', '--input', dest='input_file_name',
-                        required=True)
+    parser.add_argument('-i', '--input', dest='input_file_name')
     parser.add_argument('-o', '--output', dest='output_file_name',
                         required=True)
     parser.add_argument('-bbox', '--boundary-box', dest='boundary_box',
@@ -38,9 +37,6 @@ def parse_options(args):
     parser.add_argument('--level', dest='level', default=None)
 
     arguments = parser.parse_args(args[1:])
-
-    arguments.boundary_box = \
-        list(map(lambda x: float(x.replace('m', '-')), arguments.boundary_box.split(',')))
 
     return arguments
 
