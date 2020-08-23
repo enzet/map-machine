@@ -39,7 +39,7 @@ if os.path.isfile(icon_colors_file_name):
 
 step = 24
 
-width = 240
+width = 24 * 16
 
 extracter = extract_icon.IconExtractor(icons_file_name)
 
