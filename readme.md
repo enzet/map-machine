@@ -22,25 +22,53 @@ There are simple Python renderer that generates SVG map from OpenStreetMap data.
 You can run it using:
 
 ```bash
-python3 roentgen.py -i ${INPUT_FILE_NAME} -o ${OUTPUT_FILE_NAME}
+python3 run.py \
+    -bbox ${LONGITUDE_1},${LATITUDE_1},${LONGITUDE_2},${LATITUDE_2} \
+    -o ${OUTPUT_FILE_NAME} \
+    -s ${WIDTH},${HEIGHT}
 ```
 
-### Options ###
+Example:
+
+```bash
+python3 run.py -bbox 2.284,48.86,2.29,48.865 -o map.svg -s 1000,1000
+```
+
+### Main arguments ###
+
+#### Required ####
 
 <table>
     <tr><td>Option</td><td>Value</td><td>Description</td></tr>
     <tr>
         <td><tt>-bbox</tt>, <tt>--boundary-box</tt></td>
         <td>
-            <tt>&lt;longitude 1&gt;,&lt;latitude 1&gt;,&lt;longitude 2&gt;,&lt;latitude 2&gt;</tt>
-            (decimal float)
+            <tt>&lt;longitude 1&gt;,&lt;latitude 1&gt;,&lt;longitude 
+            2&gt;,&lt;latitude 2&gt;</tt>
         </td>
-        <td>Boundary box to draw</td>
+        <td>Boundary box to draw.</td>
     </tr>
     <tr>
         <td><tt>-s</tt>, <tt>--size</tt></td>
-        <td><tt>&lt;width&gt;,&lt;height&gt;</tt> (pixels)</td>
-        <td>Result image size</td>
+        <td><tt>&lt;width&gt;,&lt;height&gt;</tt></td>
+        <td>Result image size in pixels.</td>
+    </tr>
+    <tr>
+        <td><tt>-o</tt></td>
+        <td><tt>&lt;path&gt;</tt></td>
+        <td>Path to output SVG file name.</td>
+    </tr>
+</table>
+
+#### Optional ####
+
+<table>
+    <tr><td>Option</td><td>Value</td><td>Description</td></tr>
+    <tr>
+        <td><tt>-i</tt></td>
+        <td><tt>&lt;path&gt;</tt></td>
+        <td>Path to input XML file name. If this argument is not set, XML file
+        will be downloaded throung Openstreetmap API.</td>
     </tr>
 </table>
 

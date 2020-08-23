@@ -1,48 +1,47 @@
+import os
 import re
-import sys
+
+from typing import Optional
 
 from roentgen.ui import error
 from roentgen import network
 
 
-USAGE: str = '<box coordinates: left,bottom,right,top>'
+def get_osm(boundary_box: str, to_update: bool = False) -> Optional[str]:
+    result_file_name = os.path.join("map", boundary_box + ".osm")
 
+    if not to_update and os.path.isfile(result_file_name):
+        return open(result_file_name).read()
 
-def main(boundary_box: str):
-    result_file_name = 'map/' + boundary_box + '.xml'
-
-    matcher = re.match('(?P<left>[0-9\\.-]*),(?P<bottom>[0-9\\.-]*),' + \
-        '(?P<right>[0-9\\.-]*),(?P<top>[0-9\\.-]*)', boundary_box)
+    matcher = re.match("(?P<left>[0-9.-]*),(?P<bottom>[0-9.-]*)," +
+        "(?P<right>[0-9.-]*),(?P<top>[0-9.-]*)", boundary_box)
 
     if not matcher:
-        error('invalid boundary box')
+        error("invalid boundary box")
         return
 
     try:
-        left = float(matcher.group('left'))
-        bottom = float(matcher.group('bottom'))
-        right = float(matcher.group('right'))
-        top = float(matcher.group('top'))
-    except Exception:
-        error('parsing boundary box')
+        left = float(matcher.group("left"))
+        bottom = float(matcher.group("bottom"))
+        right = float(matcher.group("right"))
+        top = float(matcher.group("top"))
+    except ValueError:
+        error("parsing boundary box")
         return
 
     if left >= right:
-        error('negative horizontal boundary')
+        error("negative horizontal boundary")
         return
     if bottom >= top:
-        error('negative vertical boundary')
+        error("negative vertical boundary")
         return
     if right - left > 0.5 or top - bottom > 0.5:
-        error('box too big')
+        error("box too big")
         return
-    network.get_content('api.openstreetmap.org/api/0.6/map',
-            {'bbox': boundary_box}, result_file_name, 'html', is_secure=True)
 
+    content = network.get_data("api.openstreetmap.org/api/0.6/map",
+            {"bbox": boundary_box}, is_secure=True)
 
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print('Usage: python ' + sys.argv[0] + ' ' + USAGE)
-        sys.exit(0)
+    open(result_file_name, "w+").write(content.decode("utf-8"))
 
-    main(sys.argv[1])
+    return content.decode("utf-8")

@@ -16,6 +16,7 @@ from roentgen import ui
 from roentgen import svg
 from roentgen.flinger import GeoFlinger, Geo
 from roentgen.osm_reader import OSMReader, OSMWay
+from roentgen.osm_getter import get_osm
 
 from datetime import datetime
 from typing import List, Optional, Set
@@ -1064,16 +1065,24 @@ def main():
     if not options:
         sys.exit(1)
 
-    background_color = "EEEEEE"  # "DDDDDD"
+    background_color = "EEEEEE"
     if options.mode in ["user-coloring", "time"]:
         background_color = "111111"
-        outline_color = "111111"
 
-    input_file_name = options.input_file_name
+    if options.input_file_name:
+        input_file_name = options.input_file_name
+    else:
+        content = get_osm(options.boundary_box)
+        if not content:
+            ui.error("cannot download OSM data")
+        input_file_name = os.path.join("map", options.boundary_box + ".osm")
 
     if not os.path.isfile(input_file_name):
         print("Fatal: no such file: " + input_file_name + ".")
         sys.exit(1)
+
+    boundary_box = list(map(
+        lambda x: float(x.replace('m', '-')), options.boundary_box.split(',')))
 
     full = False  # Full keys getting
 
@@ -1095,10 +1104,8 @@ def main():
         "<title>Rӧntgen</title><style>path:hover {stroke: #FF0000;}</style>\n")
     output_file.rect(0, 0, w, h, color=background_color)
 
-    if "boundary_box" in options:
-        bb = options.boundary_box
-        min1 = Geo(bb[1], bb[0])
-        max1 = Geo(bb[3], bb[2])
+    min1 = Geo(boundary_box[1], boundary_box[0])
+    max1 = Geo(boundary_box[3], boundary_box[2])
 
     authors = {}
     missed_tags = {}
