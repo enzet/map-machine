@@ -69,7 +69,7 @@ def get_icon(tags, scheme, fill='444444'):
     if main_icon:
         returned = [main_icon] + extra_icons, fill, processed
     else:
-        returned = [], fill, processed
+        returned = extra_icons, fill, processed
 
     scheme['cache'][tags_hash] = returned
     return returned
