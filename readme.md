@@ -52,7 +52,8 @@ If tag is drawable it is displayed using icon combination and colors.
 All icons are under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)
 license. So, do whatever you want but give appropriate credit.
 
-Double size:
+Icon set is heavily inspired by [Osmic](https://github.com/gmgeo/osmic) icon
+set.
 
 ![Icons](doc/grid.png)
 
