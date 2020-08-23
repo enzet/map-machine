@@ -64,6 +64,10 @@ being equal.
 
 ### Icon combination ###
 
+Some icons can be combined into new icons.
+
+![Icons](doc/bus_stop.png)
+
 Röntgen map styles
 ------------------
 
