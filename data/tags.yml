@@ -385,6 +385,8 @@ tags:
 
   # Tourism
 
+- tags: {historic: "*"}
+  icon: [historic]
 - tags: {historic: memorial}  # Before memorial:*
   icon: [memorial]
 - tags: {historic: memorial, memorial: statue}
