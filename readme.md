@@ -99,6 +99,12 @@ Some icons can be combined into new icons.
 Map elements
 ------------
 
+### 3D buildings ###
+
+Simple shapes for walls, shade, and roof.
+
+![3D buildings](doc/buildings.png)
+
 ### Trees ###
 
 Tree leaf types, leaf cycles, and genes.

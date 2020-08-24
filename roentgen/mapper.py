@@ -973,12 +973,11 @@ class Painter:
                    node.tags["natural"] == "tree" and
                    "diameter_crown" in node.tags):
                 continue
-            for i in range(8):
-                self.output_file.circle(
-                    float(node.x) + (random.random() - 0.5) * 10,
-                    float(node.y) + (random.random() - 0.5) * 10,
-                    float(node.tags["diameter_crown"]) * 1.5,
-                    color='688C44', fill='688C44', opacity=0.2)
+            self.output_file.circle(
+                float(node.x) + (random.random() - 0.5) * 10,
+                float(node.y) + (random.random() - 0.5) * 10,
+                float(node.tags["diameter_crown"]) * 1.2,
+                color='688C44', fill='688C44', opacity=0.3)
 
         # All other nodes
 
