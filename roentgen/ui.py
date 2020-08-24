@@ -38,6 +38,9 @@ def parse_options(args):
 
     arguments = parser.parse_args(args[1:])
 
+    if arguments.boundary_box:
+        arguments.boundary_box = arguments.boundary_box.replace("m", "-")
+
     return arguments
 
 
@@ -68,4 +71,3 @@ def error(message: Optional[str] = None):
         print(f"Error: {message}.")
     else:
         print("Error.")
-

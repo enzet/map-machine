@@ -3,8 +3,6 @@ Reading OpenStreetMap data from XML file.
 
 Author: Sergey Vartanov
 """
-import re
-
 from typing import Any, Dict
 
 from roentgen import ui

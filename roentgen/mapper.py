@@ -336,7 +336,10 @@ class Constructor:
             shapes, fill, processed = \
                 process.get_icon(tags, self.scheme, "444444")
             if "height" in tags:
-                layer += float(tags["height"])
+                try:
+                    layer += float(tags["height"])
+                except ValueError:
+                    pass
             if nodes:
                 self.nodes.append(
                     Node(shapes, tags, c[0], c[1], fill, path, processed, 1))
@@ -681,9 +684,11 @@ class Painter:
             self.output_file.circle(flinged[0], flinged[1], 0.2, color="FFFFFF")
 
     def no_draw(self, key):
-        if key in self.scheme["tags_to_write"] or key in self.scheme["tags_to_skip"]:
+        if key in self.scheme["tags_to_write"] or \
+                key in self.scheme["tags_to_skip"]:
             return True
-        for prefix in self.scheme["prefix_to_write"].union(self.scheme["prefix_to_skip"]):
+        for prefix in \
+                self.scheme["prefix_to_write"] + self.scheme["prefix_to_skip"]:
             if key[:len(prefix) + 1] == prefix + ":":
                 return True
         return False
