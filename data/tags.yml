@@ -81,6 +81,10 @@ tags:
   icon: [pole_lamp]
 - tags: {man_made: flagpole}
   icon: [flagpole]
+- tags: {man_made: ventilation_shaft}
+  icon: [ventilation]
+- tags: {building: ventilation_shaft}
+  icon: [ventilation]
 
 - tags: {amenity: bicycle_parking}
   icon: [bicycle_parking]
@@ -98,6 +102,11 @@ tags:
 
 - tags: {vending: public_transport_tickets}
   add_icon: [ticket]
+
+  # Leisure
+
+- tags: {leisure: playground}
+  icon: [toy_horse]
 
   # Support
 
@@ -195,6 +204,8 @@ tags:
   icon: [shop_convenience]
 - tags: {building: store}
   icon: [shop_convenience]
+- tags: {shop: kiosk}
+  icon: [kiosk]
 - tags: {building: 'yes', shop: kiosk}
   icon: [kiosk]
 - tags: {amenity: shop, shop: kiosk}
@@ -366,8 +377,11 @@ tags:
   icon: [lowered_kerb]
 - tags: {traffic_calming: cushion}
   icon: [traffic_cushion]
-- tags: {manhole: unknown}
+
+- tags: {man_made: manhole}
   icon: [manhole]
+- tags: {manhole: drain}
+  icon: [manhole_drain]
 
   # Tourism
 
