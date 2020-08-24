@@ -94,7 +94,16 @@ being equal.
 
 Some icons can be combined into new icons.
 
-![Icons](doc/bus_stop.png)
+![Bus stop icon combination](doc/bus_stop.png)
+
+Map elements
+------------
+
+### Trees ###
+
+Tree leaf types, leaf cycles, and genes.
+
+![Trees](doc/trees.png)
 
 Röntgen map styles
 ------------------
