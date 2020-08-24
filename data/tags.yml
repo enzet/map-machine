@@ -248,6 +248,8 @@ tags:
 
 - tags: {building: '*', 'roof:material': metal}
   add_icon: [metal_roof]
+- tags: {building: '*', 'roof:shape': onion}
+  add_icon: [onion_roof_shape]
 
   # Trees
 
