@@ -23,7 +23,7 @@ You can run it using:
 
 ```bash
 python3 run.py \
-    -bbox ${LONGITUDE_1},${LATITUDE_1},${LONGITUDE_2},${LATITUDE_2} \
+    -b ${LONGITUDE_1},${LATITUDE_1},${LONGITUDE_2},${LATITUDE_2} \
     -o ${OUTPUT_FILE_NAME} \
     -s ${WIDTH},${HEIGHT}
 ```
@@ -31,7 +31,7 @@ python3 run.py \
 Example:
 
 ```bash
-python3 run.py -bbox 2.284,48.86,2.29,48.865 -o map.svg -s 1000,1000
+python3 run.py -b 2.284,48.86,2.29,48.865 -o map.svg -s 1000,1000
 ```
 
 ### Main arguments ###
@@ -41,7 +41,7 @@ python3 run.py -bbox 2.284,48.86,2.29,48.865 -o map.svg -s 1000,1000
 <table>
     <tr><td>Option</td><td>Value</td><td>Description</td></tr>
     <tr>
-        <td><tt>-bbox</tt>, <tt>--boundary-box</tt></td>
+        <td><tt>-b</tt>, <tt>--boundary-box</tt></td>
         <td>
             <tt>&lt;longitude 1&gt;,&lt;latitude 1&gt;,&lt;longitude 
             2&gt;,&lt;latitude 2&gt;</tt>
