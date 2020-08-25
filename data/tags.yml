@@ -16,6 +16,34 @@ colors:
   wood: 'B8CC84'
   tree: '98AC64'
 
+  outline_color: "FFFFFF"
+  beach_color: "F0E0C0"
+  building_color: "F8F0E8"  # "D0D0C0"
+  building_border_color: "DDDDDD"  # "AAAAAA"
+  construction_color: "CCCCCC"
+  cycle_color: "4444EE"
+  desert_color: "F0E0D0"
+  foot_color: "B89A74"
+  indoor_color: "E8E4E0"
+  indoor_border_color: "C0B8B0"
+  foot_border_color: "FFFFFF"
+  grass_color: "CFE0A8"
+  grass_border_color: "BFD098"
+  guide_strips_color: "228833"
+  parking_color: "DDCC99"
+  platform_color: "CCCCCC"
+  platform_border_color: "AAAAAA"
+  playground_color: "884400"
+  primary_border_color: "888888"  # "AA8800"
+  primary_color: "FFFFFF"  # "FFDD66"
+  private_access_color: "884444"
+  road_border_color: "CCCCCC"
+  sand_color: "F0E0D0"
+  water_color: "AACCFF"
+  water_border_color: "6688BB"
+  wood_color: "B8CC84"
+  wood_border_color: "A8BC74"
+
   # Colors not in W3C
 
   'rose': 'FF007F'  # Wikipedia

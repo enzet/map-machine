@@ -3,28 +3,35 @@ Reading OpenStreetMap data from XML file.
 
 Author: Sergey Vartanov
 """
-from typing import Any, Dict
+from typing import Any, Dict, List, Optional
 
 from roentgen import ui
 
 
 class OSMNode:
-    def __init__(self, id_: int = 0, lat: float = 0, lon: float = 0):
-        self.id_ = id_
-        self.lat = lat
-        self.lon = lon
-        self.tags = {}
+    """
+    OpenStreetMap node.
 
-        self.visible = None
-        self.changeset = None
-        self.timestamp = None
-        self.user = None
-        self.uid = None
+    See https://wiki.openstreetmap.org/wiki/Node
+    """
+    def __init__(self, id_: int = 0, lat: float = 0, lon: float = 0):
+        self.id_: int = id_
+        self.lat: float = lat
+        self.lon: float = lon
+        self.tags: Dict[str, str] = {}
+
+        self.visible: Optional[str] = None
+        self.changeset: Optional[str] = None
+        self.timestamp: Optional[str] = None
+        self.user: Optional[str] = None
+        self.uid: Optional[str] = None
 
     def parse_from_xml(self, text: str, is_full: bool = False):
         """
-        Parse full node parameters using regular expressions: id, visible, version,
-        etc. For faster parsing use parse_node().
+        Parse from XML node representation.
+
+        :param text: XML node representation
+        :param is_full: if false, parse only ID, latitude and longitude
         """
         self.id_ = int(get_value("id", text))
         self.lat = float(get_value("lat", text))
@@ -41,18 +48,29 @@ class OSMNode:
 
 
 class OSMWay:
-    def __init__(self, id_: int = 0, nodes=None):
-        self.id_ = id_
-        self.nodes = [] if nodes is None else nodes
-        self.tags = {}
+    """
+    OpenStreetMap way.
 
-        self.visible = None
-        self.changeset = None
-        self.user = None
-        self.timestamp = None
-        self.uid = None
+    See https://wiki.openstreetmap.org/wiki/Way
+    """
+    def __init__(self, id_: int = 0, nodes=None):
+        self.id_: int = id_
+        self.nodes: List[int] = [] if nodes is None else nodes
+        self.tags: Dict[str, str] = {}
+
+        self.visible: Optional[str] = None
+        self.changeset: Optional[str] = None
+        self.user: Optional[str] = None
+        self.timestamp: Optional[str] = None
+        self.uid: Optional[str] = None
 
     def parse_from_xml(self, text: str, is_full: bool = False):
+        """
+        Parse from XML way representation.
+
+        :param text: XML way representation
+        :param is_full: if false, parse only ID
+        """
         self.id_ = int(get_value("id", text))
 
         if is_full:
@@ -82,8 +100,8 @@ class OSMWay:
 
 
 class OSMRelation:
-    def __init__(self, id_):
-        self.id_ = id_
+    def __init__(self, id_: int):
+        self.id_: int = id_
         self.tags = {}
         self.members = []
 

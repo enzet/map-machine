@@ -38,7 +38,8 @@ def get_icon(
             if key not in tags:
                 matched = False
                 break
-            if matcher["tags"][key] != "*" and matcher["tags"][key] != tags[key]:
+            if matcher["tags"][key] != "*" and \
+                    matcher["tags"][key] != tags[key]:
                 matched = False
                 break
         if "no_tags" in matcher:

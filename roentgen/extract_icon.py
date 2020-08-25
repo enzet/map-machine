@@ -35,6 +35,8 @@ class IconExtractor:
     def parse(self, node) -> None:
         """
         Extract icon paths into a map.
+
+        :param node: XML node that contains icon
         """
         if node.nodeName == "path":
             if "id" in node.attributes.keys() and \

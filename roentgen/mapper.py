@@ -21,39 +21,10 @@ from roentgen.osm_getter import get_osm
 from datetime import datetime
 from typing import List, Optional, Set
 
-
-outline_color = "FFFFFF"
-beach_color = "F0E0C0"
-building_color = "F8F0E8"  # "D0D0C0"
-building_border_color = "DDDDDD"  # "AAAAAA"
-construction_color = "CCCCCC"
-cycle_color = "4444EE"
-desert_color = "F0E0D0"
-foot_color = "B89A74"
-indoor_color = "E8E4E0"
-indoor_border_color = "C0B8B0"
-foot_border_color = "FFFFFF"
-grass_color = "CFE0A8"
-grass_border_color = "BFD098"
-guide_strips_color = "228833"
-parking_color = "DDCC99"
-platform_color = "CCCCCC"
-platform_border_color = "AAAAAA"
-playground_color = "884400"
-primary_border_color = "888888"  # "AA8800"
-primary_color = "FFFFFF"  # "FFDD66"
-private_access_color = "884444"
-road_border_color = "CCCCCC"
-sand_color = "F0E0D0"
-water_color = "AACCFF"
-water_border_color = "6688BB"
-wood_color = "B8CC84"
-wood_border_color = "A8BC74"
-
 icons_file_name = "icons/icons.svg"
 tags_file_name = "data/tags.yml"
 colors_file_name = "data/colors.yml"
-missed_tags_file_name = "missed_tags.yml"
+missing_tags_file_name = "missing_tags.yml"
 
 
 class Node:
@@ -192,6 +163,9 @@ class Constructor:
         self.nodes: List[Node] = []
         self.ways: List[Way] = []
 
+    def color(self, name: str):
+        return self.scheme["colors"][name]
+
     def construct_ways(self):
         for way_id in self.map_.way_map:
             way = self.map_.way_map[way_id]
@@ -231,7 +205,8 @@ class Constructor:
             user_color = get_user_color(user, self.seed)
             self.ways.append(
                 Way("way", nodes, path,
-                    f"fill:none;stroke:#{user_color};stroke-width:1;"))
+                    f"fill:none;stroke:#{self.color('user_color')};"
+                    f"stroke-width:1;"))
             return
 
         if self.mode == "time":
@@ -240,25 +215,28 @@ class Constructor:
             time_color = get_time_color(time)
             self.ways.append(
                 Way("way", nodes, path,
-                    f"fill:none;stroke:#{time_color};stroke-width:1;"))
+                    f"fill:none;stroke:#{self.color('time_color')};"
+                    f"stroke-width:1;"))
             return
 
         # Indoor features
 
         if "indoor" in tags:
             v = tags["indoor"]
-            style = f"stroke:{indoor_border_color};stroke-width:1;"
+            style = \
+                f"stroke:#{self.color('indoor_border_color')};" \
+                f"stroke-width:1;"
             if v == "area":
-                style += f"fill:#{indoor_color};"
+                style += f"fill:#{self.color('indoor_color')};"
                 layer += 10
             elif v == "corridor":
-                style += f"fill:#{indoor_color};"
+                style += f"fill:#{self.color('indoor_color')};"
                 layer += 11
             elif v in ["yes", "room", "elevator"]:
-                style += f"fill:#{indoor_color};"
+                style += f"fill:#{self.color('indoor_color')};"
                 layer += 12
             elif v == "column":
-                style += f"fill:#{indoor_border_color};"
+                style += f"fill:#{self.color('indoor_border_color')};"
                 layer += 13
             self.ways.append(Way("way", nodes, path, style, layer, 50))
 
@@ -268,31 +246,31 @@ class Constructor:
             v = tags["natural"]
             style = "stroke:none;"
             if v == "wood":
-                style += f"fill:#{wood_color};"
+                style += f"fill:#{self.color('wood_color')};"
                 layer += 21
             elif v == "grassland":
-                style = f"fill:#{grass_color};stroke:#{grass_border_color};"
+                style = f"fill:#{self.color('grass_color')};stroke:#{self.color('grass_border_color')};"
                 layer += 20
             elif v == "scrub":
-                style += f"fill:#{wood_color};"
+                style += f"fill:#{self.color('wood_color')};"
                 layer += 21
             elif v == "sand":
-                style += f"fill:#{sand_color};"
+                style += f"fill:#{self.color('sand_color')};"
                 layer += 20
             elif v == "beach":
-                style += f"fill:#{beach_color};"
+                style += f"fill:#{self.color('beach_color')};"
                 layer += 20
             elif v == "desert":
-                style += f"fill:#{desert_color};"
+                style += f"fill:#{self.color('desert_color')};"
                 layer += 20
             elif v == "forest":
-                style += f"fill:#{wood_color};"
+                style += f"fill:#{self.color('wood_color')};"
                 layer += 21
             elif v == "tree_row":
-                style += f"fill:none;stroke:#{wood_color};stroke-width:5;"
+                style += f"fill:none;stroke:#{self.color('wood_color')};stroke-width:5;"
                 layer += 21
             elif v == "water":
-                style = f"fill:#{water_color};stroke:#{water_border_color};stroke-width:1.0;"
+                style = f"fill:#{self.color('water_color')};stroke:#{self.color('water_border_color')};stroke-width:1.0;"
                 layer += 21
             self.ways.append(Way("way", nodes, path, style, layer, 50))
 
@@ -301,16 +279,18 @@ class Constructor:
         if "landuse" in tags:
             style = "fill:none;stroke:none;"
             if tags["landuse"] == "grass":
-                style = f"fill:#{grass_color};stroke:#{grass_border_color};"
+                style = \
+                    f"fill:#{self.color('grass_color')};" \
+                    f"stroke:#{self.color('grass_border_color')};"
                 layer += 20
             elif tags["landuse"] == "conservation":
-                style = f"fill:#{grass_color};stroke:none;"
+                style = f"fill:#{self.color('grass_color')};stroke:none;"
                 layer += 20
             elif tags["landuse"] == "forest":
-                style = f"fill:#{wood_color};stroke:none;"
+                style = f"fill:#{self.color('wood_color')};stroke:none;"
                 layer += 20
             elif tags["landuse"] == "garages":
-                style = f"fill:#{parking_color};stroke:none;"
+                style = f"fill:#{self.color('parking_color')};stroke:none;"
                 layer += 21
                 shapes, fill, processed = \
                     process.get_icon(tags, self.scheme, "444444")
@@ -319,7 +299,7 @@ class Constructor:
                         shapes, tags, c[0], c[1], fill, path, processed))
             elif tags["landuse"] == "construction":
                 layer += 20
-                style = f"fill:#{construction_color};stroke:none;"
+                style = f"fill:#{self.color('construction_color')};stroke:none;"
             elif tags["landuse"] in ["residential", "commercial"]:
                 return
             self.ways.append(Way("way", nodes, path, style, layer, 50))
@@ -331,8 +311,10 @@ class Constructor:
             levels = 1
             if "building:levels" in tags:
                 levels = float(tags["building:levels"])
-            style = f"fill:#{building_color};stroke:#" + \
-                    building_border_color + ";opacity:1.0;"
+            style = \
+                f"fill:#{self.color('building_color')};" \
+                f"stroke:#{self.color('building_border_color')};" \
+                f"opacity:1.0;"
             shapes, fill, processed = \
                 process.get_icon(tags, self.scheme, "444444")
             if "height" in tags:
@@ -343,7 +325,8 @@ class Constructor:
             if nodes:
                 self.nodes.append(
                     Node(shapes, tags, c[0], c[1], fill, path, processed, 1))
-            self.ways.append(Way("building", nodes, path, style, layer, 50, levels))
+            self.ways.append(Way(
+                "building", nodes, path, style, layer, 50, levels))
 
         # Amenity
 
@@ -351,7 +334,9 @@ class Constructor:
             style = "fill:none;stroke:none;"
             layer += 21
             if tags["amenity"] == "parking":
-                style = f"fill:#{parking_color};stroke:none;opacity:0.5;"
+                style = \
+                    f"fill:#{self.color('parking_color')};" \
+                    f"stroke:none;opacity:0.5;"
                 shapes, fill, processed = \
                     process.get_icon(tags, self.scheme, "444444")
                 if nodes:
@@ -365,10 +350,12 @@ class Constructor:
             style = "fill:none;stroke:none;"
             layer += 21
             if tags["waterway"] == "riverbank":
-                style = f"fill:#{water_color};stroke:#" + \
-                        water_border_color + ";stroke-width:1.0;"
+                style = \
+                    f"fill:#{self.color('water_color')};" \
+                    f"stroke:#{self.color('water_border_color')};" \
+                    f"stroke-width:1.0;"
             elif tags["waterway"] == "river":
-                style = "fill:none;stroke:#" + water_color + ";stroke-width:10.0;"
+                style = "fill:none;stroke:#" + self.color('water_color') + ";stroke-width:10.0;"
             self.ways.append(Way("way", nodes, path, style, layer, 50))
 
         # Railway
@@ -383,8 +370,10 @@ class Constructor:
             if v in ["narrow_gauge", "tram"]:
                 style += "2;stroke:#000000;"
             if v == "platform":
-                style = f"fill:#{platform_color};stroke:#" + \
-                        platform_border_color + "stroke-width:1;"
+                style = \
+                    f"fill:#{self.color('platform_color')};" \
+                    f"stroke:#{self.color('platform_border_color')};" \
+                    f"stroke-width:1;"
             else:
                 return
             self.ways.append(Way("way", nodes, path, style, layer, 50))
@@ -395,7 +384,7 @@ class Constructor:
             layer += 42
             v = tags["highway"]
             style = \
-                f"fill:none;stroke:#{road_border_color};" \
+                f"fill:none;stroke:#{self.color('road_border_color')};" \
                 f"stroke-dasharray:none;stroke-linejoin:round;" \
                 f"stroke-linecap:round;stroke-width:"
 
@@ -406,7 +395,7 @@ class Constructor:
             elif v == "trunk":
                 style += "31"
             elif v == "primary":
-                style += f"29;stroke:#{primary_border_color}"
+                style += f"29;stroke:#{self.color('primary_border_color')};"
             elif v == "secondary":
                 style += "27"
             elif v == "tertiary":
@@ -424,9 +413,11 @@ class Constructor:
                 style += "3"
             elif v in ["footway", "pedestrian", "cycleway"]:
                 if not ("area" in tags and tags["area"] == "yes"):
-                    style += f"3;stroke:#{foot_border_color}"
+                    style += f"3;stroke:#{self.color('foot_border_color')};"
             elif v in ["steps"]:
-                style += f"6;stroke:#{foot_border_color};stroke-linecap:butt;"
+                style += \
+                    f"6;stroke:#{self.color('foot_border_color')};" \
+                    f"stroke-linecap:butt;"
             else:
                 style = None
             if style:
@@ -445,7 +436,7 @@ class Constructor:
             elif v == "trunk":
                 style += "29"
             elif v == "primary":
-                style += "27;stroke:#" + primary_color
+                style += "27;stroke:#" + self.color('primary_color')
             elif v == "secondary":
                 style += "25"
             elif v == "tertiary":
@@ -460,7 +451,9 @@ class Constructor:
                 else:
                     style += "9"
             elif v == "cycleway":
-                style += f"1;stroke-dasharray:8,2;istroke-linecap:butt;stroke:#{cycle_color}"
+                style += \
+                    f"1;stroke-dasharray:8,2;istroke-linecap:butt;" \
+                    f"stroke:#{self.color('cycle_color')}"
             elif v in ["footway", "pedestrian"]:
                 priority = 55
                 if "area" in tags and tags["area"] == "yes":
@@ -470,19 +463,19 @@ class Constructor:
                     style += "1.5;stroke-dasharray:7,3;stroke-linecap:round;" + \
                              "stroke:#"
                     if "guide_strips" in tags and tags["guide_strips"] == "yes":
-                        style += guide_strips_color
+                        style += self.color('guide_strips_color')
                     else:
-                        style += foot_color
+                        style += self.color('foot_color')
             elif v == "steps":
                 style += "5;stroke-dasharray:1.5,2;stroke-linecap:butt;" + \
                          "stroke:#"
                 if "conveying" in tags:
                     style += "888888"
                 else:
-                    style += foot_color
+                    style += self.color('foot_color')
             elif v == "path":
                 style += "1;stroke-dasharray:5,5;stroke-linecap:butt;" + \
-                         "stroke:#" + foot_color
+                         "stroke:#" + self.color('foot_color')
             style += ";"
             self.ways.append(Way("way", nodes, path, style, layer + 42, 50))
             if "oneway" in tags and tags["oneway"] == "yes" or \
@@ -490,12 +483,13 @@ class Constructor:
                 for k in range(7):
                     self.ways.append(Way(
                         "way", nodes, path,
-                        f"fill:none;stroke:#EEEEEE;stroke-linecap:butt;stroke-width:{7 - k};stroke-dasharray:{k},{40 - k};",
+                        f"fill:none;stroke:#EEEEEE;stroke-linecap:butt;"
+                        f"stroke-width:{7 - k};stroke-dasharray:{k},{40 - k};",
                         layer + 43, 50))
             if "access" in tags and tags["access"] == "private":
                 self.ways.append(Way(
                     "way", nodes, path,
-                    f"fill:none;stroke:#{private_access_color};"
+                    f"fill:none;stroke:#{self.color('private_access_color')};"
                     f"stroke-linecap:butt;stroke-width:10;stroke-dasharray:1,5;"
                     f"opacity:0.4;", layer + 0.1, 50))
 
@@ -505,14 +499,14 @@ class Constructor:
             style = "fill:none;stroke:none;"
             layer += 21
             if tags["leisure"] == "playground":
-                style = f"fill:#{playground_color};opacity:0.2;"
+                style = f"fill:#{self.color('playground_color')};opacity:0.2;"
                 # FIXME!!!!!!!!!!!!!!!!!!!!!
                 # if nodes:
                 #     self.draw_point_shape("toy_horse", c[0], c[1], "444444")
             elif tags["leisure"] == "garden":
-                style = f"fill:#{grass_color};"
+                style = f"fill:#{self.color('grass_color')};"
             elif tags["leisure"] == "pitch":
-                style = f"fill:#{playground_color};opacity:0.2;"
+                style = f"fill:#{self.color('playground_color')};opacity:0.2;"
             elif tags["leisure"] == "park":
                 return
             else:
@@ -525,7 +519,9 @@ class Constructor:
             style = "fill:none;stroke:none;"
             layer += 40
             if tags["barrier"] == "hedge":
-                style += "fill:none;stroke:#" + wood_color + ";stroke-width:4;"
+                style += \
+                    f"fill:none;stroke:#{self.color('wood_color')};" \
+                    f"stroke-width:4;"
             elif tags["barrier"] == "fense":
                 style += "fill:none;stroke:#000000;stroke-width:1;opacity:0.4;"
             elif tags["barrier"] == "kerb":
@@ -634,14 +630,14 @@ class Constructor:
             #         draw_text(k + ": " + tags[k], x, y + 18 + text_y, "444444")
             #         text_y += 10
 
-            # if show_missed_tags:
+            # if show_missing_tags:
             #     for k in tags:
             #         v = tags[k]
             #         if not no_draw(k) and not k in processed:
-            #             if ("node " + k + ": " + v) in missed_tags:
-            #                 missed_tags["node " + k + ": " + v] += 1
+            #             if ("node " + k + ": " + v) in missing_tags:
+            #                 missing_tags["node " + k + ": " + v] += 1
             #             else:
-            #                 missed_tags["node " + k + ": " + v] = 1
+            #                 missing_tags["node " + k + ": " + v] = 1
 
             if shapes == [] and tags != {}:
                 shapes = [["no"]]
@@ -662,10 +658,10 @@ class Constructor:
 class Painter:
 
     def __init__(
-            self, show_missed_tags, overlap, draw_nodes, mode, draw_captions,
+            self, show_missing_tags, overlap, draw_nodes, mode, draw_captions,
             map_, flinger, output_file, icons, scheme):
 
-        self.show_missed_tags = show_missed_tags
+        self.show_missing_tags = show_missing_tags
         self.overlap = overlap
         self.draw_nodes = draw_nodes
         self.mode = mode
@@ -739,7 +735,7 @@ class Painter:
             text_y += size + 1
             self.wr(text_struct["text"], x, y, fill, text_y, size=size)
 
-        if self.show_missed_tags:
+        if self.show_missing_tags:
             for k in tags:
                 if not self.no_draw(k) and k not in processed:
                     text = k + ": " + tags[k]
@@ -1112,7 +1108,7 @@ def main():
     max1 = Geo(boundary_box[3], boundary_box[2])
 
     authors = {}
-    missed_tags = {}
+    missing_tags = {}
     points = []
 
     scheme = yaml.load(open(tags_file_name), Loader=yaml.FullLoader)
@@ -1143,7 +1139,7 @@ def main():
     constructor.construct_nodes()
 
     painter = Painter(
-        show_missed_tags=options.show_missed_tags, overlap=options.overlap,
+        show_missing_tags=options.show_missing_tags, overlap=options.overlap,
         draw_nodes=options.draw_nodes, mode=options.mode,
         draw_captions=options.draw_captions,
         map_=map_, flinger=flinger, output_file=output_file, icons=icons,
@@ -1216,12 +1212,13 @@ def main():
 
     output_file.end()
 
-    top_missed_tags = sorted(missed_tags.keys(), key=lambda x: -missed_tags[x])
-    missed_tags_file = open(missed_tags_file_name, "w+")
-    for tag in top_missed_tags:
-        missed_tags_file.write("- {tag: "" + tag + "", count: " + \
-                               str(missed_tags[tag]) + "}\n")
-    missed_tags_file.close()
+    top_missing_tags = \
+        sorted(missing_tags.keys(), key=lambda x: -missing_tags[x])
+    missing_tags_file = open(missing_tags_file_name, "w+")
+    for tag in top_missing_tags:
+        missing_tags_file.write(
+            f'- {{tag: "{tag}", count: {missing_tags[tag]}}}\n')
+    missing_tags_file.close()
 
     top_authors = sorted(authors.keys(), key=lambda x: -authors[x])
     for author in top_authors:

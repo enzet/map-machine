@@ -8,11 +8,11 @@ import math
 import numpy as np
 
 
-def get_ratio(maximum: float, minimum: float, ratio: float = 1):
+def get_ratio(maximum, minimum, ratio: float = 1):
     return (maximum[0] - minimum[0]) * ratio / (maximum[1] - minimum[1])
 
 
-class Flinger(object):
+class Flinger:
     """
     Flinger. Coordinates repositioning.
     """
@@ -63,6 +63,8 @@ class Flinger(object):
     def fling(self, current):
         """
         Fling current point to the surface.
+
+        :param current: vector to fling
         """
         x = map_(
             current[0], self.minimum[0], self.maximum[0],
@@ -97,7 +99,12 @@ class Geo:
 class GeoFlinger:
     def __init__(
             self, minimum, maximum, target_minimum=None, target_maximum=None):
-
+        """
+        :param minimum: minimum latitude and longitude
+        :param maximum: maximum latitude and longitude
+        :param target_minimum: minimum of the resulting image
+        :param target_maximum: maximum of the resulting image
+        """
         self.minimum = minimum
         self.maximum = maximum
 
@@ -139,6 +146,9 @@ class GeoFlinger:
         self.space = space
 
     def fling(self, current):
+        """
+        :param current: vector to fling
+        """
         x = map_(
             current.lon, self.minimum.lon, self.maximum.lon,
             self.target_minimum[0], self.target_maximum[0])
