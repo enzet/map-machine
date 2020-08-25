@@ -203,8 +203,12 @@ tags:
   icon: [toy_horse]
 - tags: {building: kindergarten, amenity: kindergarten}
   icon: [toy_horse]
+- tags: {amenity: school, __country: Japan}
+  icon: [japan_elementary_school]
 - tags: {amenity: post_office}
   icon: [letter]
+- tags: {amenity: post_office, __country: Japan}
+  icon: [japan_post]
 - tags: {office: telecommunication}
   icon: [telephone]
 
