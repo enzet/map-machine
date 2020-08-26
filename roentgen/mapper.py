@@ -11,649 +11,20 @@ import yaml
 import numpy as np
 
 from roentgen import extract_icon
-from roentgen import process
 from roentgen import ui
 from roentgen import svg
+from roentgen.constructor import Constructor, get_path
 from roentgen.flinger import GeoFlinger, Geo
-from roentgen.osm_reader import OSMReader, OSMWay
+from roentgen.osm_reader import OSMReader
 from roentgen.osm_getter import get_osm
 
-from datetime import datetime
-from typing import List, Optional, Set
+from typing import List
 
-icons_file_name = "icons/icons.svg"
-tags_file_name = "data/tags.yml"
-colors_file_name = "data/colors.yml"
-missing_tags_file_name = "missing_tags.yml"
+ICONS_FILE_NAME: str = "icons/icons.svg"
+TAGS_FILE_NAME: str = "data/tags.yml"
+COLORS_FILE_NAME: str = "data/colors.yml"
+MISSING_TAGS_FILE_NAME: str = "missing_tags.yml"
 
-
-class Node:
-    def __init__(self, shapes, tags, x, y, color, path, processed, priority=0):
-        self.shapes = shapes
-        self.tags = tags
-        self.x = x
-        self.y = y
-        self.color = color
-        self.path = path
-        self.processed = processed
-        self.priority = priority
-        self.layer = 0
-
-
-class Way:
-    def __init__(
-            self, kind, nodes, path, style, layer=0.0, priority=0, levels=None):
-        self.kind = kind
-        self.nodes = nodes
-        self.path = path
-        self.style = style
-        self.layer = layer
-        self.priority = priority
-        self.levels = levels
-
-
-def get_path(nodes, shift, map_, flinger: GeoFlinger):
-    path = ""
-    prev_node = None
-    for node_id in nodes:
-        node = map_.node_map[node_id]
-        flinged1 = np.add(flinger.fling(Geo(node.lat, node.lon)), shift)
-        if prev_node:
-            path += f"L {flinged1[0]},{flinged1[1]} "
-        else:
-            path += f"M {flinged1[0]},{flinged1[1]} "
-        prev_node = map_.node_map[node_id]
-    if nodes[0] == nodes[-1]:
-        path += "Z"
-    return path
-
-
-def line_center(nodes, flinger: GeoFlinger):
-    ma = [0, 0]
-    mi = [10000, 10000]
-    for node in nodes:
-        flinged = flinger.fling(Geo(node.lat, node.lon))
-        if flinged[0] > ma[0]: ma[0] = flinged[0]
-        if flinged[1] > ma[1]: ma[1] = flinged[1]
-        if flinged[0] < mi[0]: mi[0] = flinged[0]
-        if flinged[1] < mi[1]: mi[1] = flinged[1]
-    return [(ma[0] + mi[0]) / 2.0, (ma[1] + mi[1]) / 2.0]
-
-
-def get_float(string):
-    try:
-        return float(string)
-    except ValueError:
-        return 0
-
-
-def get_user_color(user, seed):
-    if user == "":
-        return "000000"
-    rgb = hex(abs(hash(seed + user)))[-6:]
-    r = int(rgb[0:2], 16)
-    g = int(rgb[2:4], 16)
-    b = int(rgb[4:6], 16)
-    c = (r + g + b) / 3.
-    cc = 0
-    r = r * (1 - cc) + c * cc
-    g = g * (1 - cc) + c * cc
-    b = b * (1 - cc) + c * cc
-    h = hex(int(r))[2:] + hex(int(g))[2:] + hex(int(b))[2:]
-    return "0" * (6 - len(h)) + h
-
-
-def get_time_color(time):
-    if not time:
-        return "000000"
-    time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
-    delta = (datetime.now() - time).total_seconds()
-    time_color = hex(0xFF - min(0xFF, int(delta / 500000.)))[2:]
-    i_time_color = hex(min(0xFF, int(delta / 500000.)))[2:]
-    if len(time_color) == 1:
-        time_color = "0" + time_color
-    if len(i_time_color) == 1:
-        i_time_color = "0" + i_time_color
-    return time_color + "AA" + i_time_color
-
-
-def glue(ways: List[OSMWay]):
-    """
-    Try to glue ways that share nodes.
-    """
-    result: List[List[int]] = []
-    to_process: Set[OSMWay] = set()
-
-    for way in ways:  # type: OSMWay
-        if way.is_cycle():
-            result.append(way.nodes)
-        else:
-            to_process.add(way)
-
-    while to_process:
-        way: OSMWay = to_process.pop()
-        glued: Optional[OSMWay] = None
-
-        for other_way in to_process:  # type: OSMWay
-            glued = way.try_to_glue(other_way)
-            if glued:
-                break
-
-        if glued:
-            to_process.remove(other_way)
-            if glued.is_cycle():
-                result.append(glued.nodes)
-            else:
-                to_process.add(glued)
-        else:
-            result.append(way.nodes)
-
-    return result
-
-
-class Constructor:
-    def __init__(self, check_level, mode, seed, map_, flinger, scheme):
-        self.check_level = check_level
-        self.mode = mode
-        self.seed = seed
-        self.map_ = map_
-        self.flinger = flinger
-        self.scheme = scheme
-
-        self.nodes: List[Node] = []
-        self.ways: List[Way] = []
-
-    def color(self, name: str):
-        return self.scheme["colors"][name]
-
-    def construct_ways(self):
-        for way_id in self.map_.way_map:
-            way = self.map_.way_map[way_id]
-            tags = way.tags
-            if not self.check_level(tags):
-                continue
-            self.construct_way(way.nodes, tags, None, way.user, way.timestamp)
-
-    def construct_way(self, nodes, tags, path, user, time):
-        """
-        Way construction.
-
-        Params:
-            :param drawing: structure for drawing elements.
-            :param nodes: way node list.
-            :param tags: way tag dictionary.
-            :param path: way path (if there is no nodes).
-            :param user: author name.
-            :param user: way update time.
-        """
-        layer: float = 0
-        level: float = 0
-
-        if "layer" in tags:
-            layer = get_float(tags["layer"])
-        if "level" in tags:
-            levels = list(map(lambda x: float(x), tags["level"].split(";")))
-            level = sum(levels) / len(levels)
-
-        layer = 100 * level + 0.01 * layer
-
-        if nodes:
-            c = line_center(
-                map(lambda x: self.map_.node_map[x], nodes), self.flinger)
-
-        if self.mode == "user-coloring":
-            user_color = get_user_color(user, self.seed)
-            self.ways.append(
-                Way("way", nodes, path,
-                    f"fill:none;stroke:#{self.color('user_color')};"
-                    f"stroke-width:1;"))
-            return
-
-        if self.mode == "time":
-            if not time:
-                return
-            time_color = get_time_color(time)
-            self.ways.append(
-                Way("way", nodes, path,
-                    f"fill:none;stroke:#{self.color('time_color')};"
-                    f"stroke-width:1;"))
-            return
-
-        # Indoor features
-
-        if "indoor" in tags:
-            v = tags["indoor"]
-            style = \
-                f"stroke:#{self.color('indoor_border_color')};" \
-                f"stroke-width:1;"
-            if v == "area":
-                style += f"fill:#{self.color('indoor_color')};"
-                layer += 10
-            elif v == "corridor":
-                style += f"fill:#{self.color('indoor_color')};"
-                layer += 11
-            elif v in ["yes", "room", "elevator"]:
-                style += f"fill:#{self.color('indoor_color')};"
-                layer += 12
-            elif v == "column":
-                style += f"fill:#{self.color('indoor_border_color')};"
-                layer += 13
-            self.ways.append(Way("way", nodes, path, style, layer, 50))
-
-        # Natural
-
-        if "natural" in tags:
-            v = tags["natural"]
-            style = "stroke:none;"
-            if v == "wood":
-                style += f"fill:#{self.color('wood_color')};"
-                layer += 21
-            elif v == "grassland":
-                style = f"fill:#{self.color('grass_color')};stroke:#{self.color('grass_border_color')};"
-                layer += 20
-            elif v == "scrub":
-                style += f"fill:#{self.color('wood_color')};"
-                layer += 21
-            elif v == "sand":
-                style += f"fill:#{self.color('sand_color')};"
-                layer += 20
-            elif v == "beach":
-                style += f"fill:#{self.color('beach_color')};"
-                layer += 20
-            elif v == "desert":
-                style += f"fill:#{self.color('desert_color')};"
-                layer += 20
-            elif v == "forest":
-                style += f"fill:#{self.color('wood_color')};"
-                layer += 21
-            elif v == "tree_row":
-                style += f"fill:none;stroke:#{self.color('wood_color')};stroke-width:5;"
-                layer += 21
-            elif v == "water":
-                style = f"fill:#{self.color('water_color')};stroke:#{self.color('water_border_color')};stroke-width:1.0;"
-                layer += 21
-            self.ways.append(Way("way", nodes, path, style, layer, 50))
-
-        # Landuse
-
-        if "landuse" in tags:
-            style = "fill:none;stroke:none;"
-            if tags["landuse"] == "grass":
-                style = \
-                    f"fill:#{self.color('grass_color')};" \
-                    f"stroke:#{self.color('grass_border_color')};"
-                layer += 20
-            elif tags["landuse"] == "conservation":
-                style = f"fill:#{self.color('grass_color')};stroke:none;"
-                layer += 20
-            elif tags["landuse"] == "forest":
-                style = f"fill:#{self.color('wood_color')};stroke:none;"
-                layer += 20
-            elif tags["landuse"] == "garages":
-                style = f"fill:#{self.color('parking_color')};stroke:none;"
-                layer += 21
-                shapes, fill, processed = \
-                    process.get_icon(tags, self.scheme, "444444")
-                if nodes:
-                    self.nodes.append(Node(
-                        shapes, tags, c[0], c[1], fill, path, processed))
-            elif tags["landuse"] == "construction":
-                layer += 20
-                style = f"fill:#{self.color('construction_color')};stroke:none;"
-            elif tags["landuse"] in ["residential", "commercial"]:
-                return
-            self.ways.append(Way("way", nodes, path, style, layer, 50))
-
-        # Building
-
-        if "building" in tags:
-            layer += 40
-            levels = 1
-            if "building:levels" in tags:
-                levels = float(tags["building:levels"])
-            style = \
-                f"fill:#{self.color('building_color')};" \
-                f"stroke:#{self.color('building_border_color')};" \
-                f"opacity:1.0;"
-            shapes, fill, processed = \
-                process.get_icon(tags, self.scheme, "444444")
-            if "height" in tags:
-                try:
-                    layer += float(tags["height"])
-                except ValueError:
-                    pass
-            if nodes:
-                self.nodes.append(
-                    Node(shapes, tags, c[0], c[1], fill, path, processed, 1))
-            self.ways.append(Way(
-                "building", nodes, path, style, layer, 50, levels))
-
-        # Amenity
-
-        if "amenity" in tags:
-            style = "fill:none;stroke:none;"
-            layer += 21
-            if tags["amenity"] == "parking":
-                style = \
-                    f"fill:#{self.color('parking_color')};" \
-                    f"stroke:none;opacity:0.5;"
-                shapes, fill, processed = \
-                    process.get_icon(tags, self.scheme, "444444")
-                if nodes:
-                    self.nodes.append(Node(
-                        shapes, tags, c[0], c[1], fill, path, processed, 1))
-            self.ways.append(Way("way", nodes, path, style, layer, 50))
-
-        # Waterway
-
-        if "waterway" in tags:
-            style = "fill:none;stroke:none;"
-            layer += 21
-            if tags["waterway"] == "riverbank":
-                style = \
-                    f"fill:#{self.color('water_color')};" \
-                    f"stroke:#{self.color('water_border_color')};" \
-                    f"stroke-width:1.0;"
-            elif tags["waterway"] == "river":
-                style = "fill:none;stroke:#" + self.color('water_color') + ";stroke-width:10.0;"
-            self.ways.append(Way("way", nodes, path, style, layer, 50))
-
-        # Railway
-
-        if "railway" in tags:
-            style = "fill:none;stroke:none;"
-            layer += 41
-            v = tags["railway"]
-            style = "fill:none;stroke-dasharray:none;stroke-linejoin:round;" + \
-                    "stroke-linecap:round;stroke-width:"
-            if v == "subway": style += "10;stroke:#DDDDDD;"
-            if v in ["narrow_gauge", "tram"]:
-                style += "2;stroke:#000000;"
-            if v == "platform":
-                style = \
-                    f"fill:#{self.color('platform_color')};" \
-                    f"stroke:#{self.color('platform_border_color')};" \
-                    f"stroke-width:1;"
-            else:
-                return
-            self.ways.append(Way("way", nodes, path, style, layer, 50))
-
-        # Highway
-
-        if "highway" in tags:
-            layer += 42
-            v = tags["highway"]
-            style = \
-                f"fill:none;stroke:#{self.color('road_border_color')};" \
-                f"stroke-dasharray:none;stroke-linejoin:round;" \
-                f"stroke-linecap:round;stroke-width:"
-
-            # Highway outline
-
-            if v == "motorway":
-                style += "33"
-            elif v == "trunk":
-                style += "31"
-            elif v == "primary":
-                style += f"29;stroke:#{self.color('primary_border_color')};"
-            elif v == "secondary":
-                style += "27"
-            elif v == "tertiary":
-                style += "25"
-            elif v == "unclassified":
-                style += "17"
-            elif v == "residential":
-                style += "17"
-            elif v == "service":
-                if "service" in tags and tags["service"] == "parking_aisle":
-                    style += "7"
-                else:
-                    style += "11"
-            elif v == "track":
-                style += "3"
-            elif v in ["footway", "pedestrian", "cycleway"]:
-                if not ("area" in tags and tags["area"] == "yes"):
-                    style += f"3;stroke:#{self.color('foot_border_color')};"
-            elif v in ["steps"]:
-                style += \
-                    f"6;stroke:#{self.color('foot_border_color')};" \
-                    f"stroke-linecap:butt;"
-            else:
-                style = None
-            if style:
-                style += ";"
-                self.ways.append(Way("way", nodes, path, style, layer + 41, 50))
-
-            # Highway main shape
-
-            style = "fill:none;stroke:#FFFFFF;stroke-linecap:round;" + \
-                    "stroke-linejoin:round;stroke-width:"
-
-            priority = 50
-
-            if v == "motorway":
-                style += "31"
-            elif v == "trunk":
-                style += "29"
-            elif v == "primary":
-                style += "27;stroke:#" + self.color('primary_color')
-            elif v == "secondary":
-                style += "25"
-            elif v == "tertiary":
-                style += "23"
-            elif v == "unclassified":
-                style += "15"
-            elif v == "residential":
-                style += "15"
-            elif v == "service":
-                if "service" in tags and tags["service"] == "parking_aisle":
-                    style += "5"
-                else:
-                    style += "9"
-            elif v == "cycleway":
-                style += \
-                    f"1;stroke-dasharray:8,2;istroke-linecap:butt;" \
-                    f"stroke:#{self.color('cycle_color')}"
-            elif v in ["footway", "pedestrian"]:
-                priority = 55
-                if "area" in tags and tags["area"] == "yes":
-                    style += "1;stroke:none;fill:#DDDDDD"
-                    layer -= 55  # FIXME!
-                else:
-                    style += "1.5;stroke-dasharray:7,3;stroke-linecap:round;" + \
-                             "stroke:#"
-                    if "guide_strips" in tags and tags["guide_strips"] == "yes":
-                        style += self.color('guide_strips_color')
-                    else:
-                        style += self.color('foot_color')
-            elif v == "steps":
-                style += "5;stroke-dasharray:1.5,2;stroke-linecap:butt;" + \
-                         "stroke:#"
-                if "conveying" in tags:
-                    style += "888888"
-                else:
-                    style += self.color('foot_color')
-            elif v == "path":
-                style += "1;stroke-dasharray:5,5;stroke-linecap:butt;" + \
-                         "stroke:#" + self.color('foot_color')
-            style += ";"
-            self.ways.append(Way("way", nodes, path, style, layer + 42, 50))
-            if "oneway" in tags and tags["oneway"] == "yes" or \
-                    "conveying" in tags and tags["conveying"] == "forward":
-                for k in range(7):
-                    self.ways.append(Way(
-                        "way", nodes, path,
-                        f"fill:none;stroke:#EEEEEE;stroke-linecap:butt;"
-                        f"stroke-width:{7 - k};stroke-dasharray:{k},{40 - k};",
-                        layer + 43, 50))
-            if "access" in tags and tags["access"] == "private":
-                self.ways.append(Way(
-                    "way", nodes, path,
-                    f"fill:none;stroke:#{self.color('private_access_color')};"
-                    f"stroke-linecap:butt;stroke-width:10;stroke-dasharray:1,5;"
-                    f"opacity:0.4;", layer + 0.1, 50))
-
-        # Leisure
-
-        if "leisure" in tags:
-            style = "fill:none;stroke:none;"
-            layer += 21
-            if tags["leisure"] == "playground":
-                style = f"fill:#{self.color('playground_color')};opacity:0.2;"
-                # FIXME!!!!!!!!!!!!!!!!!!!!!
-                # if nodes:
-                #     self.draw_point_shape("toy_horse", c[0], c[1], "444444")
-            elif tags["leisure"] == "garden":
-                style = f"fill:#{self.color('grass_color')};"
-            elif tags["leisure"] == "pitch":
-                style = f"fill:#{self.color('playground_color')};opacity:0.2;"
-            elif tags["leisure"] == "park":
-                return
-            else:
-                style = "fill:#FF0000;opacity:0.2;"
-            self.ways.append(Way("way", nodes, path, style, layer, 50))
-
-        # Barrier
-
-        if "barrier" in tags:
-            style = "fill:none;stroke:none;"
-            layer += 40
-            if tags["barrier"] == "hedge":
-                style += \
-                    f"fill:none;stroke:#{self.color('wood_color')};" \
-                    f"stroke-width:4;"
-            elif tags["barrier"] == "fense":
-                style += "fill:none;stroke:#000000;stroke-width:1;opacity:0.4;"
-            elif tags["barrier"] == "kerb":
-                style += "fill:none;stroke:#000000;stroke-width:1;opacity:0.2;"
-            else:
-                style += "fill:none;stroke:#000000;stroke-width:1;opacity:0.3;"
-            self.ways.append(Way("way", nodes, path, style, layer, 50))
-
-        # Border
-
-        if "border" in tags:
-            style = "fill:none;stroke:none;"
-            style += "fill:none;stroke:#FF0000;stroke-width:0.5;" + \
-                     "stroke-dahsarray:10,20;"
-            self.ways.append(Way("way", nodes, path, style, layer, 50))
-        if "area:highway" in tags:
-            style = "fill:none;stroke:none;"
-            if tags["area:highway"] == "yes":
-                style += "fill:#FFFFFF;stroke:#DDDDDD;stroke-width:1;"
-            self.ways.append(Way("way", nodes, path, style, layer, 50))
-        # drawing["ways"].append({"kind": "way", "nodes": nodes, "layer": layer,
-        #    "priority": 50, "style": style, "path": path})
-        """
-        if False:
-            if "highway" in tags and tags["highway"] != "steps" and not (
-                    "surface" in tags):
-                drawing["ways"].append({"kind": "way", "nodes": nodes,
-                                        "layer": layer + 0.1, "priority": 50,
-                                        "path": path,
-                                        "style": "fill:none;" + \
-                                                 "stroke:#FF0000;stroke-linecap:butt;" + \
-                                                 "stroke-width:5;opacity:0.4;"})
-                # draw_text("no surface", cx, cy, "FF0000", out_opacity="1.0",
-                #    out_fill_2="FF0000", out_opacity_2=1.0)
-        """
-
-    def construct_relations(self):
-        for relation_id in self.map_.relation_map:
-            relation = self.map_.relation_map[relation_id]
-            tags = relation.tags
-            if not self.check_level(tags):
-                continue
-            if "type" in tags and tags["type"] == "multipolygon":
-                inners, outers = [], []
-                for member in relation.members:
-                    if member["type"] == "way":
-                        if member["role"] == "inner":
-                            if member["ref"] in self.map_.way_map:
-                                inners.append(self.map_.way_map[member["ref"]])
-                        elif member["role"] == "outer":
-                            if member["ref"] in self.map_.way_map:
-                                outers.append(self.map_.way_map[member["ref"]])
-                p = ""
-                inners_path = glue(inners)
-                outers_path = glue(outers)
-                for way in outers_path:
-                    path = get_path(way, [0, 0], self.map_, self.flinger)
-                    p += path + " "
-                for way in inners_path:
-                    way.reverse()
-                    path = get_path(way, [0, 0], self.map_, self.flinger)
-                    p += path + " "
-                self.construct_way(None, tags, p, "", None)
-
-    def construct_nodes(self):
-        """
-        Draw nodes.
-        """
-        print("Draw nodes...")
-
-        start_time = datetime.now()
-
-        node_number = 0
-        # processed_tags = 0
-        # skipped_tags = 0
-
-        s = sorted(self.map_.node_map.keys(), key=lambda x: -self.map_.node_map[x].lat)
-
-        for node_id in s:
-            node_number += 1
-            ui.write_line(node_number, len(self.map_.node_map))
-            node = self.map_.node_map[node_id]
-            flinged = self.flinger.fling(Geo(node.lat, node.lon))
-            x = flinged[0]
-            y = flinged[1]
-            tags = node.tags
-
-            if not self.check_level(tags):
-                continue
-
-            shapes, fill, processed = process.get_icon(tags, self.scheme)
-
-            if self.mode == "user-coloring":
-                fill = get_user_color(node.user, self.seed)
-            if self.mode == "time":
-                fill = get_time_color(node.timestamp)
-
-            # for k in tags:
-            #     if k in processed or self.no_draw(k):
-            #         processed_tags += 1
-            #     else:
-            #         skipped_tags += 1
-
-            # for k in []:  # tags:
-            #     if to_write(k):
-            #         draw_text(k + ": " + tags[k], x, y + 18 + text_y, "444444")
-            #         text_y += 10
-
-            # if show_missing_tags:
-            #     for k in tags:
-            #         v = tags[k]
-            #         if not no_draw(k) and not k in processed:
-            #             if ("node " + k + ": " + v) in missing_tags:
-            #                 missing_tags["node " + k + ": " + v] += 1
-            #             else:
-            #                 missing_tags["node " + k + ": " + v] = 1
-
-            if shapes == [] and tags != {}:
-                shapes = [["no"]]
-
-            self.nodes.append(Node(
-                shapes, tags, x, y, fill, None, processed))
-
-        ui.write_line(-1, len(self.map_.node_map))
-        print("Nodes painted in " + str(datetime.now() - start_time) + ".")
-        # print("Tags processed: " + str(processed_tags) + ", tags skipped: " +
-        #       str(skipped_tags) + " (" +
-        #       str(processed_tags / float(
-        #           processed_tags + skipped_tags) * 100) + " %).")
-
-
-# Nodes drawing
 
 class Painter:
 
@@ -676,8 +47,8 @@ class Painter:
     def draw_raw_nodes(self):
         for node_id in self.map_.node_map:
             node = self.map_.node_map[node_id]
-            flinged = self.flinger.fling(node)
-            self.output_file.circle(flinged[0], flinged[1], 0.2, color="FFFFFF")
+            flung = self.flinger.fling(node)
+            self.output_file.circle(flung[0], flung[1], 0.2, color="FFFFFF")
 
     def no_draw(self, key):
         if key in self.scheme["tags_to_write"] or \
@@ -870,6 +241,9 @@ class Painter:
         return texts
 
     def draw_building_walls(self, stage, color, ways):
+        """
+        Draw area between way and way shifted by the vector.
+        """
         for way in ways:
             if way.kind != "building":
                 continue
@@ -891,15 +265,18 @@ class Painter:
                 for i in range(len(way.nodes) - 1):
                     node_1 = self.map_.node_map[way.nodes[i]]
                     node_2 = self.map_.node_map[way.nodes[i + 1]]
-                    flinged_1 = self.flinger.fling(Geo(node_1.lat, node_1.lon))
-                    flinged_2 = self.flinger.fling(Geo(node_2.lat, node_2.lon))
+                    flung_1 = self.flinger.fling(Geo(node_1.lat, node_1.lon))
+                    flung_2 = self.flinger.fling(Geo(node_2.lat, node_2.lon))
+                    shifted_1 = np.add(flung_1, shift_1)
+                    shifted_2 = np.add(flung_2, shift_2)
                     self.output_file.write(
                         f'<path d="M '
-                        f'{flinged_1[0] + shift_1[0]},{flinged_1[1] + shift_1[1]} L '
-                        f"{flinged_2[0] + shift_1[0]},{flinged_2[1] + shift_1[1]} "
-                        f"{flinged_2[0] + shift_2[0]},{flinged_2[1] + shift_2[1]} "
-                        f'{flinged_1[0] + shift_2[0]},{flinged_1[1] + shift_2[1]} Z" '
-                        f'style="fill:#{color};stroke:#{color};stroke-width:1;" />\n')
+                        f"{shifted_1[0]},{shifted_1[1]} L "
+                        f"{shifted_1[0]},{shifted_1[1]} "
+                        f"{shifted_2[0]},{shifted_2[1]} "
+                        f'{shifted_2[0]},{shifted_2[1]} Z" '
+                        f'style="fill:#{color};stroke:#{color};'
+                        f'stroke-width:1;" />\n')
             elif way.path:
                 # TODO: implement
                 pass
@@ -929,14 +306,14 @@ class Painter:
                     for i in range(len(way.nodes) - 1):
                         node_1 = self.map_.node_map[way.nodes[i]]
                         node_2 = self.map_.node_map[way.nodes[i + 1]]
-                        flinged_1 = self.flinger.fling(Geo(node_1.lat, node_1.lon))
-                        flinged_2 = self.flinger.fling(Geo(node_2.lat, node_2.lon))
+                        flung_1 = self.flinger.fling(Geo(node_1.lat, node_1.lon))
+                        flung_2 = self.flinger.fling(Geo(node_2.lat, node_2.lon))
                         self.output_file.write(
                             f'<path d="M '
-                            f'{flinged_1[0]},{flinged_1[1]} L '
-                            f"{flinged_2[0]},{flinged_2[1]} "
-                            f"{flinged_2[0] + shift[0]},{flinged_2[1] + shift[1]} "
-                            f'{flinged_1[0] + shift[0]},{flinged_1[1] + shift[1]} Z" '
+                            f'{flung_1[0]},{flung_1[1]} L '
+                            f"{flung_2[0]},{flung_2[1]} "
+                            f"{flung_2[0] + shift[0]},{flung_2[1] + shift[1]} "
+                            f'{flung_1[0] + shift[0]},{flung_1[1] + shift[1]} Z" '
                             f'style="fill:#000000;stroke:#000000;stroke-width:1;" />\n')
         self.output_file.write("</g>\n")
 
@@ -955,12 +332,12 @@ class Painter:
                     if way.levels:
                         shift = [0 * way.levels, min(-3, -1 * way.levels)]
                     path = get_path(way.nodes, shift, self.map_, self.flinger)
-                    self.output_file.write('<path d="' + path + '" ' +
-                                      'style="' + way.style + ';opacity:1;" />\n')
+                    self.output_file.write(
+                        f'<path d="{path}" style="{way.style};opacity:1;" />\n')
                 else:
                     self.output_file.write(
-                        '<path d="' + way.path + '" ' + 'style="' +
-                        way.style + '" />\n')
+                        f'<path d="{way.path}" '
+                        f'style="{way.style};opacity:1;" />\n')
 
         # Trees
 
@@ -995,7 +372,8 @@ class Painter:
             name = [name]
         for one_name in name:
             shape, xx, yy = self.icons.get_path(one_name)
-            self.draw_point_outline(shape, x, y, fill, mode=self.mode, size=16, xx=xx, yy=yy)
+            self.draw_point_outline(
+                shape, x, y, fill, mode=self.mode, size=16, xx=xx, yy=yy)
         for one_name in name:
             shape, xx, yy = self.icons.get_path(one_name)
             self.draw_point(shape, x, y, fill, size=16, xx=xx, yy=yy, tags=tags)
@@ -1021,7 +399,7 @@ class Painter:
         y = int(float(y))
         opacity = 0.5
         stroke_width = 2.2
-        outline_fill = outline_color
+        outline_fill = self.scheme["colors"]["outline_color"]
         if mode not in ["user-coloring", "time"]:
             r = int(fill[0:2], 16)
             g = int(fill[2:4], 16)
@@ -1040,8 +418,8 @@ class Painter:
 
 def check_level_number(tags, level):
     if "level" in tags:
-        levels = map(lambda x: float(x),
-                     tags["level"].replace(",", ".").split(";"))
+        levels = \
+            map(lambda x: float(x), tags["level"].replace(",", ".").split(";"))
         if level not in levels:
             return False
     else:
@@ -1111,25 +489,31 @@ def main():
     missing_tags = {}
     points = []
 
-    scheme = yaml.load(open(tags_file_name), Loader=yaml.FullLoader)
+    scheme = yaml.load(open(TAGS_FILE_NAME), Loader=yaml.FullLoader)
     scheme["cache"] = {}
-    w3c_colors = yaml.load(open(colors_file_name), Loader=yaml.FullLoader)
+    w3c_colors = yaml.load(open(COLORS_FILE_NAME), Loader=yaml.FullLoader)
     for color_name in w3c_colors:
         scheme["colors"][color_name] = w3c_colors[color_name]
 
     flinger = GeoFlinger(min1, max1, [0, 0], [w, h])
 
-    icons = extract_icon.IconExtractor(icons_file_name)
+    icons = extract_icon.IconExtractor(ICONS_FILE_NAME)
 
-    check_level = lambda x: True
+    def check_level(x):
+        """ Draw objects on all levels. """
+        return True
 
     if options.level:
         if options.level == "overground":
             check_level = check_level_overground
         elif options.level == "underground":
-            check_level = lambda x: not check_level_overground(x)
+            def check_level(x):
+                """ Draw underground objects. """
+                return not check_level_overground(x)
         else:
-            check_level = lambda x: check_level_number(x, float(options.level))
+            def check_level(x):
+                """ Draw objects on the specified level. """
+                return not check_level_number(x, float(options.level))
 
     constructor = Constructor(
         check_level, options.mode, options.seed, map_, flinger, scheme)
@@ -1148,10 +532,12 @@ def main():
 
     if flinger.space[0] == 0:
         output_file.rect(0, 0, w, flinger.space[1], color="FFFFFF")
-        output_file.rect(0, h - flinger.space[1], w, flinger.space[1], color="FFFFFF")
+        output_file.rect(
+            0, h - flinger.space[1], w, flinger.space[1], color="FFFFFF")
     if flinger.space[1] == 0:
         output_file.rect(0, 0, flinger.space[0], h, color="FFFFFF")
-        output_file.rect(w - flinger.space[0], 0, flinger.space[0], h, color="FFFFFF")
+        output_file.rect(
+            w - flinger.space[0], 0, flinger.space[0], h, color="FFFFFF")
 
     if options.show_index:
         print(min1.lon, max1.lon)
@@ -1193,28 +579,21 @@ def main():
 
         for i in range(lat_number):
             for j in range(lon_number):
-                b = int(matrix[i][j] / 1)
-                a = "%2x" % min(255, b)
-                color = a + a + a
-                color = color.replace(" ", "0")
-                t1 = flinger.fling(Geo(min1.lat + i * lat_step,
-                                       min1.lon + j * lon_step))
-                t2 = flinger.fling(Geo(min1.lat + (i + 1) * lat_step,
-                                       min1.lon + (j + 1) * lon_step))
-                # output_file.write("<path d = "M " + str(t1[0]) + "," +
-                # str(t1[1]) + " L " + str(t1[0]) + "," + str(t2[1]) + " " +
-                # str(t2[0]) + "," + str(t2[1]) + " " + str(t2[0]) + "," +
-                # str(t1[1])  + "" style = "fill:#" + color + ";opacity:0.5;" />\n")
-                output_file.text(((t1 + t2) * 0.5)[0], ((t1 + t2) * 0.5)[1] + 40,
-                                 str(int(matrix[i][j])), size=80,
-                                 color="440000", opacity=0.1,
-                                 align="center")
+                t1 = flinger.fling(Geo(
+                    min1.lat + i * lat_step, min1.lon + j * lon_step))
+                t2 = flinger.fling(Geo(
+                    min1.lat + (i + 1) * lat_step,
+                    min1.lon + (j + 1) * lon_step))
+                output_file.text(
+                    ((t1 + t2) * 0.5)[0], ((t1 + t2) * 0.5)[1] + 40,
+                    str(int(matrix[i][j])), size=80, color="440000",
+                    opacity=0.1, align="center")
 
     output_file.end()
 
     top_missing_tags = \
         sorted(missing_tags.keys(), key=lambda x: -missing_tags[x])
-    missing_tags_file = open(missing_tags_file_name, "w+")
+    missing_tags_file = open(MISSING_TAGS_FILE_NAME, "w+")
     for tag in top_missing_tags:
         missing_tags_file.write(
             f'- {{tag: "{tag}", count: {missing_tags[tag]}}}\n')
@@ -1222,4 +601,4 @@ def main():
 
     top_authors = sorted(authors.keys(), key=lambda x: -authors[x])
     for author in top_authors:
-        print(author + ": " + str(authors[author]))
+        print(f"{author}: {authors[author]}")
