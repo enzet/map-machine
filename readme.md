@@ -47,6 +47,34 @@ Some icons can be combined into new icons.
 
 ![Bus stop icon combination](doc/bus_stop.png)
 
+
+Röntgen map styles
+------------------
+
+### All tags style ###
+
+Options: `--show-missing-tags --overlap 0`.
+
+Display as many OpenStreetMap data tags on the map as possible.
+
+### Pretty style ###
+
+Options: `--draw-captions main --level overground`.
+
+Display only not overlapping icons and main captions.
+
+### Creation time mode ###
+
+Visualize element creation time.
+
+![Creation time mode](doc/time.png)
+
+### Author mode ###
+
+Visualize element authors.
+
+![Author mode](doc/user.png)
+
 Map generation
 --------------
 
@@ -107,18 +135,3 @@ python3 run.py -b 2.284,48.86,2.29,48.865 -o map.svg -s 1000,1000
 </table>
 
 Check all arguments with `python3 run.py --help`.
-
-Röntgen map styles
-------------------
-
-### All tags style ###
-
-Options: `--show-missing-tags --overlap 0`.
-
-Display as many OpenStreetMap data tags on the map as possible.
-
-### Pretty style ###
-
-Options: `--draw-captions main --level overground`.
-
-Display only not overlapping icons and main captions.
