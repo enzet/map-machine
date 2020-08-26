@@ -3,6 +3,8 @@
   * set of icons,
   * and map styles.
 
+[![Build Status](https://travis-ci.org/enzet/Roentgen.svg?branch=master)](https://travis-ci.org/enzet/Roentgen)
+
 The idea behind Röntgen project is to have a possibility to display every
 OpenStreetMap data tag on the map. Suppose, you spent time adding colors for
 building walls, benches and shelters for bus stops but they do not represented
