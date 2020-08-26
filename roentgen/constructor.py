@@ -208,8 +208,11 @@ class Constructor:
         if "layer" in tags:
             layer = get_float(tags["layer"])
         if "level" in tags:
-            levels = list(map(lambda x: float(x), tags["level"].split(";")))
-            level = sum(levels) / len(levels)
+            try:
+                levels = list(map(lambda x: float(x), tags["level"].split(";")))
+                level = sum(levels) / len(levels)
+            except ValueError:
+                pass
 
         layer = 100 * level + 0.01 * layer
 
