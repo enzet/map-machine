@@ -1,5 +1,7 @@
 import numpy as np
 
+from hashlib import sha256
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Set
 
@@ -77,7 +79,7 @@ def get_user_color(text: str, seed: str):
     """
     if text == "":
         return "000000"
-    rgb = hex(abs(hash(seed + text)))[-6:]
+    rgb = sha256((seed + text).encode("utf-8")).hexdigest()[-6:]
     r = int(rgb[0:2], 16)
     g = int(rgb[2:4], 16)
     b = int(rgb[4:6], 16)
@@ -629,12 +631,14 @@ class Constructor:
 
             shapes, fill, processed = process.get_icon(tags, self.scheme)
 
+            if self.mode in ["time", "user-coloring"]:
+                if not tags:
+                    continue
+                shapes = ["small"]
             if self.mode == "user-coloring":
                 fill = get_user_color(node.user, self.seed)
-                shapes = ["small"]
             if self.mode == "time":
                 fill = get_time_color(node.timestamp)
-                shapes = ["small"]
 
             # for k in tags:
             #     if k in processed or self.no_draw(k):
