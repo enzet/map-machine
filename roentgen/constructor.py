@@ -219,6 +219,8 @@ class Constructor:
             nodes = way.nodes
 
         if self.mode == "user-coloring":
+            if not way:
+                return
             user_color = get_user_color(way.user, self.seed)
             self.ways.append(
                 Way("way", nodes, path,
@@ -629,8 +631,10 @@ class Constructor:
 
             if self.mode == "user-coloring":
                 fill = get_user_color(node.user, self.seed)
+                shapes = ["small"]
             if self.mode == "time":
                 fill = get_time_color(node.timestamp)
+                shapes = ["small"]
 
             # for k in tags:
             #     if k in processed or self.no_draw(k):

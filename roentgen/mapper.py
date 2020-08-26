@@ -288,11 +288,11 @@ class Painter:
             if way.kind == "way":
                 if way.nodes:
                     path = get_path(way.nodes, [0, 0], self.map_, self.flinger)
-                    self.output_file.write(f'<path d="{path}" ' +
-                                      'style="' + way.style + '" />\n')
+                    self.output_file.write(
+                        f'<path d="{path}" style="' + way.style + '" />\n')
                 else:
-                    self.output_file.write('<path d="' + way.path + '" ' +
-                                      'style="' + way.style + '" />\n')
+                    self.output_file.write(
+                        f'<path d="{way.path}" style="' + way.style + '" />\n')
 
         # Building shade
 
@@ -360,20 +360,24 @@ class Painter:
                    node.tags["natural"] == "tree" and \
                    "diameter_crown" in node.tags:
                 continue
-            self.draw_shapes(node.shapes, points, node.x, node.y,
-                        node.color, node.tags, node.processed)
+            self.draw_shapes(
+                node.shapes, points, node.x, node.y, node.color, node.tags,
+                node.processed)
 
         for node in nodes:
-            self.draw_texts(node.shapes, points, node.x, node.y,
-                        node.color, node.tags, node.processed)
+            if self.mode not in ["time", "user-coloring"]:
+                self.draw_texts(
+                    node.shapes, points, node.x, node.y, node.color,
+                    node.tags, node.processed)
 
     def draw_point_shape(self, name, x, y, fill, tags=None):
         if not isinstance(name, list):
             name = [name]
-        for one_name in name:
-            shape, xx, yy = self.icons.get_path(one_name)
-            self.draw_point_outline(
-                shape, x, y, fill, mode=self.mode, size=16, xx=xx, yy=yy)
+        if self.mode not in ["time", "user-coloring"]:
+            for one_name in name:
+                shape, xx, yy = self.icons.get_path(one_name)
+                self.draw_point_outline(
+                    shape, x, y, fill, mode=self.mode, size=16, xx=xx, yy=yy)
         for one_name in name:
             shape, xx, yy = self.icons.get_path(one_name)
             self.draw_point(shape, x, y, fill, size=16, xx=xx, yy=yy, tags=tags)
