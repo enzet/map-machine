@@ -273,8 +273,6 @@ tags:
   icon: [muslim]
 - tags: {amenity: place_of_worship, religion: buddhist}
   icon: [buddhist]
-- tags: {amenity: place_of_worship, religion: hindu}
-  icon: [hindu]
 
   # Additions for buildings
 
@@ -391,10 +389,6 @@ tags:
   add_icon: [no_traffic_signals]
 - tags: {highway: crossing, crossing: traffic_signals}
   add_icon: [traffic_signals]
-- tags: {highway: mini_roundabout}
-  icon: [mini_roundabout]
-- tags: {highway: turning_circle}
-  icon: [turning_circle]
 - tags: {highway: traffic_signals}
   icon: [traffic_signals]
 - tags: {public_transport: stop_position}
@@ -452,8 +446,6 @@ tags:
   icon: [lift_gate]
 - tags: {barrier: turnstile}
   icon: [turnstile]
-- tags: {barrier: stile}
-  icon: [stile]
 - tags: {barrier: entrance}
   icon: [entrance]
 
@@ -480,8 +472,6 @@ tags:
   add_icon: [clockwise]
 - tags: {direction: contrclockwise}
   add_icon: [contrclockwise]
-- tags: {smoking: 'no'}
-  add_icon: [no_smoking]
 - tags: {atm: 'yes'}
   add_icon: [atm]
 - tags: {tactile_paving: 'yes'}

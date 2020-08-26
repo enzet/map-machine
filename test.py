@@ -49,7 +49,6 @@ def test_icons():
                                     to_draw.append(set([icon] + [icon2] + [icon3] + element['over_icon']))
 
     for icons_to_draw in to_draw:
-        drawed = False
         icon_set = {'icons': []}
         for icon in icons_to_draw:
             path, xx, yy = extracter.get_path(icon)
@@ -57,4 +56,3 @@ def test_icons():
             icon_set['icons'].append({'path': path, 
                 'x': (- 8.0 - xx * 16), 
                 'y': (- 8.0 - yy * 16)})
-            drawed = True

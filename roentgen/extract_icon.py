@@ -69,3 +69,4 @@ class IconExtractor:
             if id_ == "small":
                 return "M 6,6 L 6,8 8,8 8,6 z", 0, 0
             ui.error(f"no such icon ID {id_}")
+            return "M 4,4 L 4,10 10,10 10,4 z", 0, 0
