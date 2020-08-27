@@ -375,11 +375,11 @@ class Painter:
             name = [name]
         if self.mode not in ["time", "user-coloring"]:
             for one_name in name:
-                shape, xx, yy = self.icons.get_path(one_name)
+                shape, xx, yy, _ = self.icons.get_path(one_name)
                 self.draw_point_outline(
                     shape, x, y, fill, mode=self.mode, size=16, xx=xx, yy=yy)
         for one_name in name:
-            shape, xx, yy = self.icons.get_path(one_name)
+            shape, xx, yy, _ = self.icons.get_path(one_name)
             self.draw_point(shape, x, y, fill, size=16, xx=xx, yy=yy, tags=tags)
 
     def draw_point(self, shape, x, y, fill, size=16, xx=0, yy=0, tags=None):

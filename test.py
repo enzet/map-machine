@@ -51,8 +51,8 @@ def test_icons():
     for icons_to_draw in to_draw:
         icon_set = {'icons': []}
         for icon in icons_to_draw:
-            path, xx, yy = extracter.get_path(icon)
-            assert xx
+            path, xx, yy, is_shape = extracter.get_path(icon)
+            assert is_shape, icon
             icon_set['icons'].append({'path': path, 
                 'x': (- 8.0 - xx * 16), 
                 'y': (- 8.0 - yy * 16)})

@@ -55,18 +55,18 @@ class IconExtractor:
             for sub_node in node.childNodes:
                 self.parse(sub_node)
 
-    def get_path(self, id_: str) -> (str, float, float):
+    def get_path(self, id_: str) -> (str, float, float, bool):
         """
         Get SVG path of the icon.
 
         :param id_: string icon ID
         """
         if id_ in self.icons:
-            return self.icons[id_]
+            return list(self.icons[id_]) + [True]
         else:
             if id_ == "no":
-                return "M 4,4 L 4,10 10,10 10,4 z", 0, 0
+                return "M 4,4 L 4,10 10,10 10,4 z", 0, 0, False
             if id_ == "small":
-                return "M 6,6 L 6,8 8,8 8,6 z", 0, 0
+                return "M 6,6 L 6,8 8,8 8,6 z", 0, 0, False
             ui.error(f"no such icon ID {id_}")
-            return "M 4,4 L 4,10 10,10 10,4 z", 0, 0
+            return "M 4,4 L 4,10 10,10 10,4 z", 0, 0, False
