@@ -295,6 +295,9 @@ tags:
 - tags: {natural: tree, leaf_type: needleleaved}
   icon: [needleleaved]
   color: tree
+- tags: {natural: tree, leaf_type: palm}
+  icon: [palm]
+  color: tree
 - tags: {natural: tree, type: conifer}
   icon: [needleleaved]
   color: tree
@@ -319,10 +322,10 @@ tags:
 
 - tags: {natural: tree, denotation: urban}
   over_icon: [urban_tree_pot]
-  under_icon: [tree, broadleaved, needleleaved, betula]
+  under_icon: [tree, broadleaved, needleleaved, betula, palm]
 - tags: {natural: tree, denotation: avenue}
   over_icon: [avenue_tree]
-  under_icon: [tree, broadleaved, needleleaved, betula]
+  under_icon: [tree, broadleaved, needleleaved, betula, palm]
 
   # Entrance
 
