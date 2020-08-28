@@ -103,6 +103,8 @@ tags:
   icon: [pole]
 - tags: {power: pole}
   icon: [pole]
+- tags: {power: generator}
+  icon: [power_generator]
 - tags: {power: tower}
   icon: [power_tower]
 - tags: {man_made: pole, highway: street_lamp}
