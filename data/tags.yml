@@ -390,6 +390,8 @@ tags:
   over_icon: [bus_stop_bench]
 - tags: {highway: stop}
   icon: [stop]
+- tags: {highway: give_way}
+  icon: [triangle_down_hollow]
 - tags: {noexit: 'yes'}
   icon: [noexit]
 
