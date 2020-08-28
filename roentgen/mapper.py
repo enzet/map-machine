@@ -471,11 +471,11 @@ def main():
     if options.mode in ["user-coloring", "time"]:
         full = True
 
-    osm_reader = OSMReader(input_file_name)
+    osm_reader = OSMReader()
 
     map_ = osm_reader.parse_osm_file(
-        parse_ways=options.draw_ways, parse_relations=options.draw_ways,
-        full=full)
+        input_file_name, parse_ways=options.draw_ways,
+        parse_relations=options.draw_ways, full=full)
 
     output_file = svg.SVG(open(options.output_file_name, "w+"))
 

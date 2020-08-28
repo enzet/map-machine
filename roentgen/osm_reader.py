@@ -142,35 +142,33 @@ def get_value(key: str, text: str):
 
 
 class Map:
-    def __init__(self, node_map, way_map, relation_map):
-        self.node_map = node_map
-        self.way_map = way_map
-        self.relation_map = relation_map
+    def __init__(self):
+        self.node_map: Dict[int, OSMNode] = {}
+        self.way_map: Dict[int, OSMWay] = {}
+        self.relation_map: Dict[int, OSMRelation] = {}
 
 
 class OSMReader:
     """
     OSM XML representation reader.
     """
-    def __init__(self, file_name: str):
-        self.file_name = file_name
+    def __init__(self):
+        self.map_ = Map()
 
     def parse_osm_file(
-            self, parse_nodes: bool = True, parse_ways: bool = True,
-            parse_relations: bool = True, full: bool = False) -> Map:
+            self, file_name: str, parse_nodes: bool = True,
+            parse_ways: bool = True, parse_relations: bool = True,
+            full: bool = False) -> Map:
         """
         Parse OSM XML representation.
         """
-        node_map: Dict[int, OSMNode] = {}
-        way_map: Dict[int, OSMWay] = {}
-        relation_map: Dict[int, OSMRelation] = {}
-        print(f"Line number counting for {self.file_name}...")
-        with open(self.file_name) as f:
+        print(f"Line number counting for {file_name}...")
+        with open(file_name) as f:
             for lines_number, _ in enumerate(f):
                 pass
         print("Done.")
-        print(f"Parsing OSM file {self.file_name}...")
-        input_file = open(self.file_name)
+        print(f"Parsing OSM file {file_name}...")
+        input_file = open(file_name)
         line = input_file.readline()
         line_number = 0
 
@@ -188,11 +186,11 @@ class OSMReader:
                         break
                 if line[-3] == "/":
                     node: OSMNode = OSMNode().parse_from_xml(line[7:-3], full)
-                    node_map[node.id_] = node
+                    self.map_.node_map[node.id_] = node
                 else:
                     element = OSMNode().parse_from_xml(line[7:-2], full)
             elif line in [" </node>\n", "\t</node>\n", "  </node>\n"]:
-                node_map[element.id_] = element
+                self.map_.node_map[element.id_] = element
 
             # Way parsing.
 
@@ -204,11 +202,11 @@ class OSMReader:
                         break
                 if line[-3] == '/':
                     way = OSMWay().parse_from_xml(line[6:-3], full)
-                    way_map[way.id_] = way
+                    self.map_.way_map[way.id_] = way
                 else:
                     element = OSMWay().parse_from_xml(line[6:-2], full)
             elif line in [' </way>\n', '\t</way>\n'] or line == "  </way>\n":
-                way_map[element.id_] = element
+                self.map_.way_map[element.id_] = element
 
             # Relation parsing.
 
@@ -218,12 +216,12 @@ class OSMReader:
                     break
                 if line[-3] == "/":
                     relation = OSMRelation().parse_from_xml(line[11:-3])
-                    relation_map[relation.id_] = relation
+                    self.map_.relation_map[relation.id_] = relation
                 else:
                     element = OSMRelation().parse_from_xml(line[11:-2])
             elif line in [" </relation>\n", "\t</relation>\n"] or \
                     line == "  </relation>\n":
-                relation_map[element.id_] = element
+                self.map_.relation_map[element.id_] = element
 
             # Elements parsing.
 
@@ -241,4 +239,4 @@ class OSMReader:
 
         ui.write_line(-1, lines_number)  # Complete progress bar.
 
-        return Map(node_map, way_map, relation_map)
+        return self.map_
