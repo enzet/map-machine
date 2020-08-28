@@ -367,6 +367,12 @@ tags:
   icon: [train]
 - tags: {railway: subway_entrance, entrance: 'yes'}
   icon: [train]
+- tags: {railway: station, station: subway, transport: subway, __city: Moscow}
+  icon: [moscow_metro]
+- tags: {railway: subway_entrance, __city: Moscow}
+  icon: [moscow_metro]
+- tags: {railway: subway_entrance, entrance: 'yes', __city: Moscow}
+  icon: [moscow_metro]
 - tags: {railway: level_crossing}
   icon: [cross]
 - tags: {bus: 'yes'}

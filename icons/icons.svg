@@ -139,11 +139,11 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="11.313708"
-     inkscape:cx="9.0644837"
-     inkscape:cy="321.3857"
+     inkscape:cx="104.03776"
+     inkscape:cy="331.9923"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     showgrid="true"
+     showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:object-paths="true"
@@ -566,8 +566,8 @@
        id="rect9285"
        width="16"
        height="16"
-       x="64"
-       y="256" />
+       x="96"
+       y="272" />
     <path
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="m 55.5,258.5 c 0,0 -0.5,0.5 -0.5,1.5 l 0,9 1,0 0,-9 c 0,-1 -0.5,-1.5 -0.5,-1.5 z"
@@ -7357,5 +7357,43 @@
        y="257"
        ry="0.5"
        rx="0.5" />
+    <circle
+       r="2.5"
+       cy="261.5"
+       cx="89.5"
+       id="circle11183"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <circle
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="circle11185"
+       cx="86.5"
+       cy="261.5"
+       r="2.5" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect11181"
+       width="10"
+       height="1"
+       x="83"
+       y="279" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 85,264 6,0 -3,7 z"
+       id="path11175"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 97,283 0,2 5,0 0,-2 -1,0 1,-2.5 2,3.5 2,-3.5 1,2.5 -1,0 0,2 5,0 0,-2 -1,0 -3,-8.5 -3,5 -3,-5 -3,8.5 z"
+       id="moscow_metro"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccccccccccc"
+       inkscape:label="#path11187" />
+    <path
+       sodipodi:nodetypes="ccccccccccccccccccc"
+       inkscape:connector-curvature="0"
+       id="path11189"
+       d="m 97,267 0,2 5,0 0,-2 -1,0 1,-2.5 2,3.5 2,-3.5 1,2.5 -1,0 0,2 5,0 0,-2 -1,0 -3,-8.5 -3,5 -3,-5 -3,8.5 z"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
   </g>
 </svg>
