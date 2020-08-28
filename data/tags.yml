@@ -282,6 +282,8 @@ tags:
 
 - tags: {aeroway: aerodrome}
   icon: [plane]
+- tags: {aeroway: landingpad}
+  icon: [booster_landing]
 
   # Additions for buildings
 
