@@ -457,11 +457,7 @@ def main():
         content = get_osm(options.boundary_box)
         if not content:
             ui.error("cannot download OSM data")
-        input_file_name = os.path.join("map", options.boundary_box + ".osm")
-
-    if not os.path.isfile(input_file_name):
-        print("Fatal: no such file: " + input_file_name + ".")
-        sys.exit(1)
+        input_file_name = [os.path.join("map", options.boundary_box + ".osm")]
 
     boundary_box = list(map(
         lambda x: float(x.replace('m', '-')), options.boundary_box.split(',')))
@@ -473,9 +469,14 @@ def main():
 
     osm_reader = OSMReader()
 
-    map_ = osm_reader.parse_osm_file(
-        input_file_name, parse_ways=options.draw_ways,
-        parse_relations=options.draw_ways, full=full)
+    for file_name in input_file_name:
+        if not os.path.isfile(file_name):
+            print("Fatal: no such file: " + file_name + ".")
+            sys.exit(1)
+
+        map_ = osm_reader.parse_osm_file(
+            file_name, parse_ways=options.draw_ways,
+            parse_relations=options.draw_ways, full=full)
 
     output_file = svg.SVG(open(options.output_file_name, "w+"))
 

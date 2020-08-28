@@ -15,7 +15,8 @@ def parse_options(args):
         "-i", "--input",
         dest="input_file_name",
         metavar="<path>",
-        help="input XML file name (if not specified, file will be downloaded"
+        nargs="*",
+        help="input XML file name (if not specified, file will be downloaded "
              "using OpenStreetMap API)")
     parser.add_argument(
         "-o", "--output",
@@ -48,7 +49,8 @@ def parse_options(args):
     parser.add_argument(
         "--show-missing-tags", dest="show_missing_tags", action="store_true")
     parser.add_argument(
-        "--no-show-missing-tags", dest="show_missing_tags", action="store_false")
+        "--no-show-missing-tags", dest="show_missing_tags",
+        action="store_false")
     parser.add_argument("--overlap", dest="overlap", default=12, type=int)
     parser.add_argument(
         "--show-index", dest="show_index", action="store_true")
