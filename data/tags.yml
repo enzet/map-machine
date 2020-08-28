@@ -273,6 +273,13 @@ tags:
   icon: [muslim]
 - tags: {amenity: place_of_worship, religion: buddhist}
   icon: [buddhist]
+- tags: {amenity: place_of_worship, religion: jewish}
+  icon: [jewish]
+
+  # Aeroways
+
+- tags: {aeroway: aerodrome}
+  icon: [plane]
 
   # Additions for buildings
 
@@ -327,6 +334,9 @@ tags:
   over_icon: [avenue_tree]
   under_icon: [tree, broadleaved, needleleaved, betula, palm]
 
+- tags: {natural: peak}
+  icon: [triangle_small]
+
   # Entrance
 
 - tags: {entrance: 'yes'}
@@ -353,6 +363,8 @@ tags:
   icon: [train]
 - tags: {railway: subway_entrance, entrance: 'yes'}
   icon: [train]
+- tags: {railway: level_crossing}
+  icon: [cross]
 - tags: {bus: 'yes'}
   add_icon: [bus]
 - tags: {trolleybus: 'yes'}
@@ -374,6 +386,10 @@ tags:
   under_icon: [bus_stop_sign]
   with_icon: [bus_stop_shelter, platform]
   over_icon: [bus_stop_bench]
+- tags: {highway: stop}
+  icon: [stop]
+- tags: {noexit: 'yes'}
+  icon: [noexit]
 
   # Railway special
 
@@ -385,6 +401,8 @@ tags:
 - tags: {highway: crossing}
   icon: [crossing]
 - tags: {highway: crossing, crossing: zebra}
+  icon: [crossing]
+- tags: {highway: crossing, crossing: marked}
   icon: [crossing]
 - tags: {highway: crossing, crossing_ref: zebra}
   icon: [crossing]
@@ -433,7 +451,7 @@ tags:
 - tags: {tourism: artwork, artwork_type: sculpture}
   icon: [statue]
 - tags: {tourism: attraction}  # Before attraction:*
-  icon: [attraction]
+  icon: [photo_camera]
 - tags: {tourism: attraction, attraction: amusement_ride}
   icon: [amusement_ride]
 - tags: {tourism: gallery}
@@ -454,6 +472,8 @@ tags:
 
   # Additions for everything
 
+- tags: {wheelchair: 'yes'}
+  add_icon: [wheelchair]
 - tags: {foot: 'yes'}
   add_icon: [foot]
 - tags: {foot: 'no'}
