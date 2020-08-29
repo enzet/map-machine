@@ -253,22 +253,22 @@ tags:
 
 - tags: {amenity: place_of_worship, religion: christian}
   icon: [christian]
-- tags: 
+- tags:
     amenity: place_of_worship
     religion: christian
     denomination: catholic
   icon: [christian]
-- tags: 
+- tags:
     amenity: place_of_worship
     religion: christian
     denomination: russian_orthodox
   icon: [russian_orthodox]
-- tags: 
+- tags:
     amenity: place_of_worship
     religion: christian
     denomination: orthodox
   icon: [orthodox]
-- tags: 
+- tags:
     amenity: place_of_worship
     religion: christian
     denomination: baptist
@@ -369,11 +369,18 @@ tags:
   icon: [train]
 - tags: {railway: subway_entrance, entrance: 'yes'}
   icon: [train]
-- tags: {railway: station, station: subway, transport: subway, __city: Moscow}
+- tags:
+    railway: station
+    station: subway
+    transport: subway
+    network: Московский метрополитен
   icon: [moscow_metro]
-- tags: {railway: subway_entrance, __city: Moscow}
+- tags: {railway: subway_entrance, network: Московский метрополитен}
   icon: [moscow_metro]
-- tags: {railway: subway_entrance, entrance: 'yes', __city: Moscow}
+- tags:
+    railway: subway_entrance
+    entrance: 'yes'
+    network: Московский метрополитен
   icon: [moscow_metro]
 - tags: {railway: level_crossing}
   icon: [cross]
