@@ -159,6 +159,8 @@ tags:
 
 - tags: {amenity: cafe}
   icon: [cafe]
+- tags: {amenity: ice_cream}
+  icon: [ice_cream]
 - tags: {amenity: nightclub}
   icon: [night_club]
 - tags: {amenity: restaurant}

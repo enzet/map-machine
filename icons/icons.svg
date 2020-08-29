@@ -143,7 +143,7 @@
      inkscape:cy="331.9923"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     showgrid="false"
+     showgrid="true"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:object-paths="true"
@@ -566,7 +566,7 @@
        id="rect9285"
        width="16"
        height="16"
-       x="96"
+       x="80"
        y="272" />
     <path
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
@@ -7358,17 +7358,11 @@
        ry="0.5"
        rx="0.5" />
     <circle
-       r="2.5"
-       cy="261.5"
-       cx="89.5"
-       id="circle11183"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <circle
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="circle11185"
-       cx="86.5"
-       cy="261.5"
-       r="2.5" />
+       cx="86"
+       cy="262"
+       r="2" />
     <rect
        style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect11181"
@@ -7378,10 +7372,10 @@
        y="279" />
     <path
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 85,264 6,0 -3,7 z"
+       d="m 85,264 3,-3 3,3 -3,7 z"
        id="path11175"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccc" />
+       sodipodi:nodetypes="ccccc" />
     <path
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="m 97,283 0,2 5,0 0,-2 -1,0 1,-2.5 2,3.5 2,-3.5 1,2.5 -1,0 0,2 5,0 0,-2 -1,0 -3,-8.5 -3,5 -3,-5 -3,8.5 z"
@@ -7395,5 +7389,29 @@
        id="path11189"
        d="m 97,267 0,2 5,0 0,-2 -1,0 1,-2.5 2,3.5 2,-3.5 1,2.5 -1,0 0,2 5,0 0,-2 -1,0 -3,-8.5 -3,5 -3,-5 -3,8.5 z"
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <circle
+       r="2"
+       cy="262"
+       cx="90"
+       id="circle11191"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <circle
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="circle11193"
+       cx="88"
+       cy="260"
+       r="2" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect11195"
+       width="10"
+       height="1"
+       x="83"
+       y="263" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 88 274 A 2 2 0 0 0 86 276 A 2 2 0 0 0 84 278 A 2 2 0 0 0 84.271484 279 L 91.728516 279 A 2 2 0 0 0 92 278 A 2 2 0 0 0 90 276 A 2 2 0 0 0 88 274 z M 85 280 L 88 287 L 91 280 L 85 280 z "
+       id="ice_cream"
+       inkscape:label="#circle11197" />
   </g>
 </svg>
