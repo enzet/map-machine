@@ -17,6 +17,7 @@ from roentgen.constructor import Constructor, get_path
 from roentgen.flinger import GeoFlinger, Geo
 from roentgen.osm_reader import OSMReader
 from roentgen.osm_getter import get_osm
+from roentgen.grid import draw_grid
 
 from typing import List
 
@@ -442,6 +443,11 @@ def check_level_overground(tags):
 
 
 def main():
+    if len(sys.argv) == 2:
+        if sys.argv[1] == "grid":
+            draw_grid()
+        return
+
     options = ui.parse_options(sys.argv)
 
     if not options:
