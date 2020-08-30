@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Optional, Set
 from roentgen import process, ui
 from roentgen.flinger import Geo, GeoFlinger
 from roentgen.osm_reader import OSMMember, OSMRelation, OSMWay
+from roentgen.scheme import Scheme
 
 
 class Node:
@@ -16,7 +17,7 @@ class Node:
     """
     def __init__(
             self, shapes, tags: Dict[str, str], x: float, y: float, color: str,
-            path: Optional[str], processed, priority=0):
+            path: Optional[str], processed, priority: int = 0):
         self.shapes = shapes
         self.tags = tags
         self.x = x
@@ -165,13 +166,13 @@ class Constructor:
     """
     Röntgen node and way constructor.
     """
-    def __init__(self, check_level, mode, seed, map_, flinger, scheme):
+    def __init__(self, check_level, mode, seed, map_, flinger, scheme: Scheme):
         self.check_level = check_level
         self.mode = mode
         self.seed = seed
         self.map_ = map_
         self.flinger = flinger
-        self.scheme = scheme
+        self.scheme: Scheme = scheme
 
         self.nodes: List[Node] = []
         self.ways: List[Way] = []
@@ -180,7 +181,7 @@ class Constructor:
         """
         Get color from the scheme.
         """
-        return self.scheme["colors"][name]
+        return self.scheme.get_color(name)
 
     def construct_ways(self):
         """
@@ -323,8 +324,7 @@ class Constructor:
             elif tags["landuse"] == "garages":
                 style = f"fill:#{self.color('parking_color')};stroke:none;"
                 layer += 21
-                shapes, fill, processed = \
-                    process.get_icon(tags, self.scheme, "444444")
+                shapes, fill, processed = self.scheme.get_icon(tags)
                 if way:
                     self.nodes.append(Node(
                         shapes, tags, c[0], c[1], fill, path, processed))
@@ -346,8 +346,7 @@ class Constructor:
                 f"fill:#{self.color('building_color')};" \
                 f"stroke:#{self.color('building_border_color')};" \
                 f"opacity:1.0;"
-            shapes, fill, processed = \
-                process.get_icon(tags, self.scheme, "444444")
+            shapes, fill, processed = self.scheme.get_icon(tags)
             if "height" in tags:
                 try:
                     layer += float(tags["height"])
@@ -368,8 +367,7 @@ class Constructor:
                 style = \
                     f"fill:#{self.color('parking_color')};" \
                     f"stroke:none;opacity:0.5;"
-                shapes, fill, processed = \
-                    process.get_icon(tags, self.scheme, "444444")
+                shapes, fill, processed = self.scheme.get_icon(tags)
                 if way:
                     self.nodes.append(Node(
                         shapes, tags, c[0], c[1], fill, path, processed, 1))
@@ -613,14 +611,12 @@ class Constructor:
 
         start_time = datetime.now()
 
-        node_number = 0
-        # processed_tags = 0
-        # skipped_tags = 0
+        node_number: int = 0
 
         s = sorted(
             self.map_.node_map.keys(), key=lambda x: -self.map_.node_map[x].lat)
 
-        for node_id in s:
+        for node_id in s:  # type: int
             node_number += 1
             ui.write_line(node_number, len(self.map_.node_map))
             node = self.map_.node_map[node_id]
@@ -632,7 +628,7 @@ class Constructor:
             if not self.check_level(tags):
                 continue
 
-            shapes, fill, processed = process.get_icon(tags, self.scheme)
+            shapes, fill, processed = self.scheme.get_icon(tags)
 
             if self.mode in ["time", "user-coloring"]:
                 if not tags:
@@ -643,27 +639,6 @@ class Constructor:
             if self.mode == "time":
                 fill = get_time_color(node.timestamp)
 
-            # for k in tags:
-            #     if k in processed or self.no_draw(k):
-            #         processed_tags += 1
-            #     else:
-            #         skipped_tags += 1
-
-            # for k in []:  # tags:
-            #     if to_write(k):
-            #         draw_text(k + ": " + tags[k], x, y + 18 + text_y,
-            #             "444444")
-            #         text_y += 10
-
-            # if show_missing_tags:
-            #     for k in tags:
-            #         v = tags[k]
-            #         if not no_draw(k) and not k in processed:
-            #             if ("node " + k + ": " + v) in missing_tags:
-            #                 missing_tags["node " + k + ": " + v] += 1
-            #             else:
-            #                 missing_tags["node " + k + ": " + v] = 1
-
             if shapes == [] and tags != {}:
                 shapes = [["no"]]
 
@@ -671,8 +646,5 @@ class Constructor:
                 shapes, tags, x, y, fill, None, processed))
 
         ui.write_line(-1, len(self.map_.node_map))
+
         print("Nodes painted in " + str(datetime.now() - start_time) + ".")
-        # print("Tags processed: " + str(processed_tags) + ", tags skipped: " +
-        #       str(skipped_tags) + " (" +
-        #       str(processed_tags / float(
-        #           processed_tags + skipped_tags) * 100) + " %).")

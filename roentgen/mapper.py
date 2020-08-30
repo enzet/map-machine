@@ -22,6 +22,7 @@ from roentgen.flinger import GeoFlinger, Geo
 from roentgen.grid import draw_grid
 from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader
+from roentgen.scheme import Scheme
 
 ICONS_FILE_NAME: str = "icons/icons.svg"
 TAGS_FILE_NAME: str = "data/tags.yml"
@@ -33,7 +34,7 @@ class Painter:
 
     def __init__(
             self, show_missing_tags, overlap, draw_nodes, mode, draw_captions,
-            map_, flinger, svg: svgwrite.Drawing, icons, scheme):
+            map_, flinger, svg: svgwrite.Drawing, icons, scheme: Scheme):
 
         self.show_missing_tags = show_missing_tags
         self.overlap = overlap
@@ -45,27 +46,7 @@ class Painter:
         self.flinger = flinger
         self.svg: svgwrite.Drawing = svg
         self.icons = icons
-        self.scheme = scheme
-
-    def no_draw(self, key):
-        if key in self.scheme["tags_to_write"] or \
-                key in self.scheme["tags_to_skip"]:
-            return True
-        for prefix in \
-                self.scheme["prefix_to_write"] + self.scheme["prefix_to_skip"]:
-            if key[:len(prefix) + 1] == prefix + ":":
-                return True
-        return False
-
-    def to_write(self, key):
-        if key in self.scheme["tags_to_skip"]:
-            return False
-        if key in self.scheme["tags_to_write"]:
-            return True
-        for prefix in self.scheme["prefix_to_write"]:
-            if key[:len(prefix) + 1] == prefix + ":":
-                return True
-        return False
+        self.scheme: Scheme = scheme
 
     def draw_shapes(self, shapes, points, x, y, fill, tags, processed):
 
@@ -379,7 +360,7 @@ class Painter:
         y = int(float(y))
         opacity = 0.5
         stroke_width = 2.2
-        outline_fill = self.scheme["colors"]["outline_color"]
+        outline_fill = self.scheme.get_color("outline_color")
         if mode not in ["user-coloring", "time"]:
             r = int(fill[0:2], 16)
             g = int(fill[2:4], 16)
@@ -475,11 +456,7 @@ def main():
     missing_tags = {}
     points = []
 
-    scheme = yaml.load(open(TAGS_FILE_NAME), Loader=yaml.FullLoader)
-    scheme["cache"] = {}
-    w3c_colors = yaml.load(open(COLORS_FILE_NAME), Loader=yaml.FullLoader)
-    for color_name in w3c_colors:
-        scheme["colors"][color_name] = w3c_colors[color_name]
+    scheme = Scheme(TAGS_FILE_NAME, COLORS_FILE_NAME)
 
     flinger = GeoFlinger(min1, max1, [0, 0], [w, h])
 
