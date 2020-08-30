@@ -8,7 +8,9 @@ from typing import Optional
 
 
 def parse_options(args):
-
+    """
+    Parse Röntgen command-line options.
+    """
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -56,9 +58,9 @@ def parse_options(args):
         "--show-index", dest="show_index", action="store_true")
     parser.add_argument(
         "--no-show-index", dest="show_index", action="store_false")
-    parser.add_argument("--mode", dest="mode", default="normal")
-    parser.add_argument("--seed", dest="seed", default="")
-    parser.add_argument("--level", dest="level", default=None)
+    parser.add_argument("--mode", default="normal")
+    parser.add_argument("--seed", default="")
+    parser.add_argument("--level", default=None)
 
     arguments = parser.parse_args(args[1:])
 

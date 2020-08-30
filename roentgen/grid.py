@@ -4,22 +4,21 @@ Author: Sergey Vartanov (me@enzet.ru).
 
 import os
 import random
+import svgwrite
 import yaml
 
 from roentgen import extract_icon
-from roentgen import svg
 
 from typing import Any, Dict
 
 
 def draw_icon(
-        output_file, icon: Dict[str, Any], x: float, y: float,
+        svg, icon: Dict[str, Any], x: float, y: float,
         color: str = "444444"):
 
-    output_file.write(
-        f'<path d="{icon["path"]}" '
-        f'style="fill:#{color};stroke:none;" '
-        f'transform="translate({icon["x"] + x},{icon["y"] + y})" />\n')
+    svg.add(svg.path(
+        d=icon["path"], fill=f"#{color}", stroke="none",
+        transform=f'translate({icon["x"] + x},{icon["y"] + y})'))
 
 
 def draw_grid():
@@ -103,16 +102,16 @@ def draw_grid():
 
     height = int(number / (width / step) + 1) * step
 
-    output_file = svg.SVG(open(icon_grid_file_name, "w+"))
-    output_file.begin(width, height)
+    svg = svgwrite.Drawing(icon_grid_file_name, (width, height))
 
-    output_file.rect(0, 0, width, height, color="FFFFFF")
+    svg.add(svg.rect((0, 0), (width, height), fill="#FFFFFF"))
 
     for icon in icons:
         background_color, foreground_color = random.choice(icon_colors)
-        output_file.rect(x - 2 - 8, y - 2 - 8, 20, 20, color=background_color)
+        svg.add(svg.rect(
+            (x - 2 - 8, y - 2 - 8), (20, 20), fill=f"#{background_color}"))
         for i in icon["icons"]:
-            draw_icon(output_file, i, x, y, foreground_color)
+            draw_icon(svg, i, x, y, foreground_color)
         x += step
         if x > width - 8:
             x = step / 2
@@ -121,4 +120,4 @@ def draw_grid():
 
     print(f"Icons: {number}.")
 
-    output_file.end()
+    svg.write(open(icon_grid_file_name, "w"))

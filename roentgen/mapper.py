@@ -3,23 +3,25 @@ Simple OpenStreetMap renderer.
 
 Author: Sergey Vartanov (me@enzet.ru).
 """
+import numpy as np
 import os
-import random
+import svgwrite
 import sys
 import yaml
 
-import numpy as np
+from svgwrite.container import Group
+from svgwrite.path import Path
+from svgwrite.shapes import Circle, Rect
+from svgwrite.text import Text
+from typing import List
 
 from roentgen import extract_icon
 from roentgen import ui
-from roentgen import svg
 from roentgen.constructor import Constructor, get_path
 from roentgen.flinger import GeoFlinger, Geo
-from roentgen.osm_reader import OSMReader
-from roentgen.osm_getter import get_osm
 from roentgen.grid import draw_grid
-
-from typing import List
+from roentgen.osm_getter import get_osm
+from roentgen.osm_reader import Map, OSMReader
 
 ICONS_FILE_NAME: str = "icons/icons.svg"
 TAGS_FILE_NAME: str = "data/tags.yml"
@@ -31,7 +33,7 @@ class Painter:
 
     def __init__(
             self, show_missing_tags, overlap, draw_nodes, mode, draw_captions,
-            map_, flinger, output_file, icons, scheme):
+            map_, flinger, svg: svgwrite.Drawing, icons, scheme):
 
         self.show_missing_tags = show_missing_tags
         self.overlap = overlap
@@ -41,15 +43,9 @@ class Painter:
 
         self.map_ = map_
         self.flinger = flinger
-        self.output_file = output_file
+        self.svg: svgwrite.Drawing = svg
         self.icons = icons
         self.scheme = scheme
-
-    def draw_raw_nodes(self):
-        for node_id in self.map_.node_map:
-            node = self.map_.node_map[node_id]
-            flung = self.flinger.fling(node)
-            self.output_file.circle(flung[0], flung[1], 0.2, color="FFFFFF")
 
     def no_draw(self, key):
         if key in self.scheme["tags_to_write"] or \
@@ -125,27 +121,21 @@ class Painter:
          #------#
           ######
         """
-        text = text.replace("&", "and")
         if out_fill_2:
-            self.output_file.write(
-                f'<text x="{x}" y="{y}" style="font-size:' +
-                str(
-                    size) + ";text-anchor:middle;font-family:Roboto;fill:#" +
-                out_fill_2 + ";stroke-linejoin:round;stroke-width:5;stroke:#" +
-                out_fill_2 + ";opacity:" + str(
-                    out_opacity_2) + ';">' + text + "</text>")
+            self.svg.add(Text(
+                text, (x, y), font_size=size, text_anchor="middle",
+                font_family="Roboto", fill=f"#{out_fill_2}",
+                stroke_linejoin="round", stroke_width=5,
+                stroke=f"#{out_fill_2}", opacity=out_opacity_2))
         if out_fill:
-            self.output_file.write(
-                f'<text x="{x}" y="{y}" style="font-size:' +
-                str(
-                    size) + ";text-anchor:middle;font-family:Roboto;fill:#" +
-                out_fill + ";stroke-linejoin:round;stroke-width:3;stroke:#" +
-                out_fill + ";opacity:" + str(
-                    out_opacity) + ';">' + text + "</text>")
-        self.output_file.write(
-            f'<text x="{x}" y="{y}" style="font-size:' +
-            str(size) + ";text-anchor:middle;font-family:Roboto;fill:#" +
-            fill + ';">' + text + "</text>")
+            self.svg.add(Text(
+                text, (x, y), font_size=size, text_anchor="middle",
+                font_family="Roboto", fill=f"#{out_fill}",
+                stroke_linejoin="round", stroke_width=3,
+                stroke=f"#{out_fill}", opacity=out_opacity))
+        self.svg.add(Text(
+            text, (x, y), font_size=size, text_anchor="middle",
+            font_family="Roboto", fill=f"#{fill}"))
 
     def wr(self, text, x, y, fill, text_y, size=10):
         text = text[:26] + ("..." if len(text) > 26 else "")
@@ -268,16 +258,12 @@ class Painter:
                     node_2 = self.map_.node_map[way.nodes[i + 1]]
                     flung_1 = self.flinger.fling(Geo(node_1.lat, node_1.lon))
                     flung_2 = self.flinger.fling(Geo(node_2.lat, node_2.lon))
-                    shifted_1 = np.add(flung_1, shift_1)
-                    shifted_2 = np.add(flung_2, shift_2)
-                    self.output_file.write(
-                        f'<path d="M '
-                        f"{shifted_1[0]},{shifted_1[1]} L "
-                        f"{shifted_1[0]},{shifted_1[1]} "
-                        f"{shifted_2[0]},{shifted_2[1]} "
-                        f'{shifted_2[0]},{shifted_2[1]} Z" '
-                        f'style="fill:#{color};stroke:#{color};'
-                        f'stroke-width:1;" />\n')
+
+                    self.svg.add(self.svg.path(
+                        d=("M", np.add(flung_1, shift_1), "L",
+                           np.add(flung_2, shift_1), np.add(flung_2, shift_2),
+                           np.add(flung_1, shift_2), "Z"),
+                        fill=f"#{color}", stroke=f"#{color}", stroke_width=1))
             elif way.path:
                 # TODO: implement
                 pass
@@ -289,34 +275,31 @@ class Painter:
             if way.kind == "way":
                 if way.nodes:
                     path = get_path(way.nodes, [0, 0], self.map_, self.flinger)
-                    self.output_file.write(
-                        f'<path d="{path}" style="' + way.style + '" />\n')
+                    self.svg.add(Path(d=path, style=way.style))
                 else:
-                    self.output_file.write(
-                        f'<path d="{way.path}" style="' + way.style + '" />\n')
+                    self.svg.add(Path(d=way.path, style=way.style))
 
         # Building shade
 
-        self.output_file.write('<g style="opacity:0.1;">\n')
+        building_shade = Group(opacity=0.1)
+
         for way in ways:
-            if way.kind == "building":
-                if way.nodes:
-                    shift = [-5, 5]
-                    if way.levels:
-                        shift = [-5 * way.levels, 5 * way.levels]
-                    for i in range(len(way.nodes) - 1):
-                        node_1 = self.map_.node_map[way.nodes[i]]
-                        node_2 = self.map_.node_map[way.nodes[i + 1]]
-                        flung_1 = self.flinger.fling(Geo(node_1.lat, node_1.lon))
-                        flung_2 = self.flinger.fling(Geo(node_2.lat, node_2.lon))
-                        self.output_file.write(
-                            f'<path d="M '
-                            f'{flung_1[0]},{flung_1[1]} L '
-                            f"{flung_2[0]},{flung_2[1]} "
-                            f"{flung_2[0] + shift[0]},{flung_2[1] + shift[1]} "
-                            f'{flung_1[0] + shift[0]},{flung_1[1] + shift[1]} Z" '
-                            f'style="fill:#000000;stroke:#000000;stroke-width:1;" />\n')
-        self.output_file.write("</g>\n")
+            if way.kind != "building" or not way.nodes:
+                continue
+            shift = [-5, 5]
+            if way.levels:
+                shift = [-5 * way.levels, 5 * way.levels]
+            for i in range(len(way.nodes) - 1):
+                node_1 = self.map_.node_map[way.nodes[i]]
+                node_2 = self.map_.node_map[way.nodes[i + 1]]
+                flung_1 = self.flinger.fling(Geo(node_1.lat, node_1.lon))
+                flung_2 = self.flinger.fling(Geo(node_2.lat, node_2.lon))
+                building_shade.add(Path(
+                    ("M", flung_1, "L", flung_2, np.add(flung_2, shift),
+                     np.add(flung_1, shift), "Z"),
+                    fill="#000000", stroke="#000000", stroke_width=1))
+
+        self.svg.add(building_shade)
 
         # Building walls
 
@@ -327,18 +310,16 @@ class Painter:
         # Building roof
 
         for way in ways:
-            if way.kind == "building":
-                if way.nodes:
-                    shift = [0, -3]
-                    if way.levels:
-                        shift = [0 * way.levels, min(-3, -1 * way.levels)]
-                    path = get_path(way.nodes, shift, self.map_, self.flinger)
-                    self.output_file.write(
-                        f'<path d="{path}" style="{way.style};opacity:1;" />\n')
-                else:
-                    self.output_file.write(
-                        f'<path d="{way.path}" '
-                        f'style="{way.style};opacity:1;" />\n')
+            if way.kind != "building":
+                continue
+            if way.nodes:
+                shift = [0, -3]
+                if way.levels:
+                    shift = [0 * way.levels, min(-3, -1 * way.levels)]
+                path = get_path(way.nodes, shift, self.map_, self.flinger)
+                self.svg.add(Path(d=path, style=way.style, opacity=1))
+            else:
+                self.svg.add(Path(d=way.path, style=way.style, opacity=1))
 
         # Trees
 
@@ -347,11 +328,10 @@ class Painter:
                    node.tags["natural"] == "tree" and
                    "diameter_crown" in node.tags):
                 continue
-            self.output_file.circle(
-                float(node.x) + (random.random() - 0.5) * 10,
-                float(node.y) + (random.random() - 0.5) * 10,
+            self.svg.add(Circle(
+                (float(node.x), float(node.y)),
                 float(node.tags["diameter_crown"]) * 1.2,
-                color='688C44', fill='688C44', opacity=0.3)
+                fill="#688C44", stroke="#688C44", opacity=0.3))
 
         # All other nodes
 
@@ -386,20 +366,15 @@ class Painter:
     def draw_point(self, shape, x, y, fill, size=16, xx=0, yy=0, tags=None):
         x = int(float(x))
         y = int(float(y))
-        self.output_file.write(
-            '<path d="' + shape + '" style="fill:#' + fill +
-            ';fill-opacity:1" transform="translate(' +
-            str(x - size / 2.0 - xx * 16) + "," + str(
-                y - size / 2.0 - yy * 16) +
-            ')">')
-        if tags:
-            self.output_file.write("<title>")
-            self.output_file.write(
-                "\n".join(map(lambda x: x + ": " + tags[x], tags)))
-            self.output_file.write("</title>")
-        self.output_file.write("</path>\n")
+        path = self.svg.path(
+            d=shape, fill=f"#{fill}", fill_opacity=1,
+            transform=f"translate({x - size / 2.0 - xx * 16},"
+                      f"{y - size / 2.0 - yy * 16})")
+        path.set_desc(title="\n".join(map(lambda x: x + ": " + tags[x], tags)))
+        self.svg.add(path)
 
-    def draw_point_outline(self, shape, x, y, fill, mode="default", size=16, xx=0, yy=0):
+    def draw_point_outline(
+            self, shape, x, y, fill, mode="default", size=16, xx=0, yy=0):
         x = int(float(x))
         y = int(float(y))
         opacity = 0.5
@@ -413,12 +388,12 @@ class Painter:
             if Y > 200:
                 outline_fill = "000000"
                 opacity = 0.7
-        self.output_file.write(
-            '<path d="' + shape + '" style="fill:#' + outline_fill + ";opacity:" +
-            str(opacity) + ";" + "stroke:#" + outline_fill +
-            f';stroke-width:{stroke_width};stroke-linejoin:round;" ' + 'transform="translate(' +
-            str(x - size / 2.0 - xx * 16) + "," + str(y - size / 2.0 - yy * 16) +
-            ')" />\n')
+        self.svg.add(self.svg.path(
+            d=shape, fill=f"#{outline_fill}", opacity=opacity,
+            stroke=f"#{outline_fill}", stroke_width=stroke_width,
+            stroke_linejoin="round",
+            transform=f"translate({x - size / 2.0 - xx * 16},"
+                      f"{y - size / 2.0 - yy * 16})"))
 
 
 def check_level_number(tags, level):
@@ -453,9 +428,9 @@ def main():
     if not options:
         sys.exit(1)
 
-    background_color = "EEEEEE"
+    background_color = "#EEEEEE"
     if options.mode in ["user-coloring", "time"]:
-        background_color = "111111"
+        background_color = "#111111"
 
     if options.input_file_name:
         input_file_name = options.input_file_name
@@ -480,18 +455,18 @@ def main():
             print("Fatal: no such file: " + file_name + ".")
             sys.exit(1)
 
-        map_ = osm_reader.parse_osm_file(
+        osm_reader.parse_osm_file(
             file_name, parse_ways=options.draw_ways,
             parse_relations=options.draw_ways, full=full)
 
-    output_file = svg.SVG(open(options.output_file_name, "w+"))
+    map_: Map = osm_reader.map_
 
     w, h = list(map(lambda x: float(x), options.size.split(",")))
 
-    output_file.begin(w, h)
-    output_file.write(
-        "<title>Rӧntgen</title><style>path:hover {stroke: #FF0000;}</style>\n")
-    output_file.rect(0, 0, w, h, color=background_color)
+    svg: svgwrite.Drawing = \
+        svgwrite.Drawing(options.output_file_name, size=(w, h))
+
+    svg.add(Rect((0, 0), (w, h), fill=background_color))
 
     min1 = Geo(boundary_box[1], boundary_box[0])
     max1 = Geo(boundary_box[3], boundary_box[2])
@@ -537,18 +512,18 @@ def main():
         show_missing_tags=options.show_missing_tags, overlap=options.overlap,
         draw_nodes=options.draw_nodes, mode=options.mode,
         draw_captions=options.draw_captions,
-        map_=map_, flinger=flinger, output_file=output_file, icons=icons,
+        map_=map_, flinger=flinger, svg=svg, icons=icons,
         scheme=scheme)
     painter.draw(constructor.nodes, constructor.ways, points)
 
     if flinger.space[0] == 0:
-        output_file.rect(0, 0, w, flinger.space[1], color="FFFFFF")
-        output_file.rect(
-            0, h - flinger.space[1], w, flinger.space[1], color="FFFFFF")
+        svg.add(Rect((0, 0), (w, flinger.space[1]), fill="#FFFFFF"))
+        svg.add(Rect(
+            (0, h - flinger.space[1]), (w, flinger.space[1]), fill="#FFFFFF"))
     if flinger.space[1] == 0:
-        output_file.rect(0, 0, flinger.space[0], h, color="FFFFFF")
-        output_file.rect(
-            w - flinger.space[0], 0, flinger.space[0], h, color="FFFFFF")
+        svg.add(Rect((0, 0), (flinger.space[0], h), fill="#FFFFFF"))
+        svg.add(Rect(
+            (w - flinger.space[0], 0), (flinger.space[0], h), fill="#FFFFFF"))
 
     if options.show_index:
         print(min1.lon, max1.lon)
@@ -595,12 +570,13 @@ def main():
                 t2 = flinger.fling(Geo(
                     min1.lat + (i + 1) * lat_step,
                     min1.lon + (j + 1) * lon_step))
-                output_file.text(
-                    ((t1 + t2) * 0.5)[0], ((t1 + t2) * 0.5)[1] + 40,
-                    str(int(matrix[i][j])), size=80, color="440000",
-                    opacity=0.1, align="center")
+                svg.add(Text(
+                    str(int(matrix[i][j])),
+                    (((t1 + t2) * 0.5)[0], ((t1 + t2) * 0.5)[1] + 40),
+                    font_size=80, fill="440000",
+                    opacity=0.1, align="center"))
 
-    output_file.end()
+    svg.write(open(options.output_file_name, "w"))
 
     top_missing_tags = \
         sorted(missing_tags.keys(), key=lambda x: -missing_tags[x])
