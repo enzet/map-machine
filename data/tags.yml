@@ -54,481 +54,481 @@ tags:
 
   # No draw
 
-- tags: {type: multipolygon}
-  draw: false
-- tags: {place: quarter}
-  draw: false
-- tags: {building: 'yes'}
-  draw: false
+  - tags: {type: multipolygon}
+    draw: false
+  - tags: {place: quarter}
+    draw: false
+  - tags: {building: 'yes'}
+    draw: false
 
-  # Street amenity
+    # Street amenity
 
-- tags: {amenity: atm}
-  icon: [atm]
-- tags: {amenity: bench}
-  icon: [bench]
-- tags: {amenity: bench, backrest: 'yes'}
-  icon: [bench_backrest]
-- tags: {amenity: bench, backrest: 'no'}
-  icon: [bench_no_backrest]
-- tags: {amenity: clock}
-  icon: [clock]
-- tags: {amenity: cinema}
-  icon: [film]
-- tags: {amenity: telephone}
-  icon: [telephone]
-- tags: {amenity: fountain}
-  icon: [fountain]
-  color: water_border
-- tags: {amenity: toilets}
-  icon: [toilets]
-- tags: {amenity: post_box}
-  icon: [letter]
-- tags: {amenity: prison}
-  icon: [prison]
-- tags: {amenity: stage}
-  icon: [theatre]
-- tags: {amenity: vending_machine}
-  icon: [vending_machine]
-- tags: {amenity: waste_basket}
-  icon: [waste_basket]
-- tags: {emergency: phone}
-  icon: [sos_phone]
-- tags: {emergency: fire_extinguisher}
-  icon: [fire_extinguisher]
-- tags: {emergency: fire_hydrant}
-  icon: [fire_hydrant]
-- tags: {highway: street_lamp}
-  icon: [street_lamp]
-- tags: {man_made: pole}
-  icon: [pole]
-- tags: {power: pole}
-  icon: [pole]
-- tags: {power: generator}
-  icon: [power_generator]
-- tags: {power: tower}
-  icon: [power_tower]
-- tags: {man_made: pole, highway: street_lamp}
-  icon: [pole_lamp]
-- tags: {man_made: flagpole}
-  icon: [flagpole]
-- tags: {man_made: ventilation_shaft}
-  icon: [ventilation]
-- tags: {building: ventilation_shaft}
-  icon: [ventilation]
+  - tags: {amenity: atm}
+    icon: [atm]
+  - tags: {amenity: bench}
+    icon: [bench]
+  - tags: {amenity: bench, backrest: 'yes'}
+    icon: [bench_backrest]
+  - tags: {amenity: bench, backrest: 'no'}
+    icon: [bench_no_backrest]
+  - tags: {amenity: clock}
+    icon: [clock]
+  - tags: {amenity: cinema}
+    icon: [film]
+  - tags: {amenity: telephone}
+    icon: [telephone]
+  - tags: {amenity: fountain}
+    icon: [fountain]
+    color: water_border
+  - tags: {amenity: toilets}
+    icon: [toilets]
+  - tags: {amenity: post_box}
+    icon: [letter]
+  - tags: {amenity: prison}
+    icon: [prison]
+  - tags: {amenity: stage}
+    icon: [theatre]
+  - tags: {amenity: vending_machine}
+    icon: [vending_machine]
+  - tags: {amenity: waste_basket}
+    icon: [waste_basket]
+  - tags: {emergency: phone}
+    icon: [sos_phone]
+  - tags: {emergency: fire_extinguisher}
+    icon: [fire_extinguisher]
+  - tags: {emergency: fire_hydrant}
+    icon: [fire_hydrant]
+  - tags: {highway: street_lamp}
+    icon: [street_lamp]
+  - tags: {man_made: pole}
+    icon: [pole]
+  - tags: {power: pole}
+    icon: [pole]
+  - tags: {power: generator}
+    icon: [power_generator]
+  - tags: {power: tower}
+    icon: [power_tower]
+  - tags: {man_made: pole, highway: street_lamp}
+    icon: [pole_lamp]
+  - tags: {man_made: flagpole}
+    icon: [flagpole]
+  - tags: {man_made: ventilation_shaft}
+    icon: [ventilation]
+  - tags: {building: ventilation_shaft}
+    icon: [ventilation]
 
-- tags: {amenity: bicycle_parking}
-  icon: [bicycle_parking]
-- tags: {amenity: parking}
-  icon: [parking]
+  - tags: {amenity: bicycle_parking}
+    icon: [bicycle_parking]
+  - tags: {amenity: parking}
+    icon: [parking]
 
-- tags: {information: '*'}
-  icon: [information]
-- tags: {tourism: information}
-  icon: [information]
-- tags: {tourism: viewpoint}
-  icon: [binocular]
-- tags: {information: board}
-  icon: [information_board]
+  - tags: {information: '*'}
+    icon: [information]
+  - tags: {tourism: information}
+    icon: [information]
+  - tags: {tourism: viewpoint}
+    icon: [binocular]
+  - tags: {information: board}
+    icon: [information_board]
 
-- tags: {vending: public_transport_tickets}
-  add_icon: [ticket]
+  - tags: {vending: public_transport_tickets}
+    add_icon: [ticket]
 
-  # Leisure
+    # Leisure
 
-- tags: {leisure: playground}
-  icon: [toy_horse]
+  - tags: {leisure: playground}
+    icon: [toy_horse]
 
-  # Support
+    # Support
 
-- tags: {support: pole}
-  over_icon: [support_pole]
-  under_icon: [clock, information_board]
-- tags: {support: wall_mounted}
-  over_icon: [support_wall]
-  under_icon: [clock, information_board]
-- tags: {support: column}
-  over_icon: [support_column]
-  under_icon: [clock, information_board]
+  - tags: {support: pole}
+    over_icon: [support_pole]
+    under_icon: [clock, information_board]
+  - tags: {support: wall_mounted}
+    over_icon: [support_wall]
+    under_icon: [clock, information_board]
+  - tags: {support: column}
+    over_icon: [support_column]
+    under_icon: [clock, information_board]
 
-  # Advertising
+    # Advertising
 
-- tags: {advertising: billboard}
-  icon: [billboard]
+  - tags: {advertising: billboard}
+    icon: [billboard]
 
-  # Eating and entertainment
+    # Eating and entertainment
 
-- tags: {amenity: cafe}
-  icon: [cafe]
-- tags: {amenity: ice_cream}
-  icon: [ice_cream]
-- tags: {amenity: biergarten}
-  icon: [beer]
-- tags: {amenity: nightclub}
-  icon: [night_club]
-- tags: {amenity: restaurant}
-  icon: [restaurant]
-- tags: {amenity: restaurant;bar}
-  icon: [restaurant]
-  add_icon: [bar]
-- tags: {amenity: drinking_water}
-  icon: [drinking_water]
-- tags: {amenity: theatre}
-  icon: [theatre]
-- tags: {amenity: bar}
-  icon: [bar]
-- tags: {amenity: pub}
-  icon: [beer]
-- tags: {amenity: fast_food}
-  icon: [fast_food]
-- tags: {amenity: '*', karaoke: 'yes'}
-  add_icon: [microphone]
+  - tags: {amenity: cafe}
+    icon: [cafe]
+  - tags: {amenity: ice_cream}
+    icon: [ice_cream]
+  - tags: {amenity: biergarten}
+    icon: [beer]
+  - tags: {amenity: nightclub}
+    icon: [night_club]
+  - tags: {amenity: restaurant}
+    icon: [restaurant]
+  - tags: {amenity: restaurant;bar}
+    icon: [restaurant]
+    add_icon: [bar]
+  - tags: {amenity: drinking_water}
+    icon: [drinking_water]
+  - tags: {amenity: theatre}
+    icon: [theatre]
+  - tags: {amenity: bar}
+    icon: [bar]
+  - tags: {amenity: pub}
+    icon: [beer]
+  - tags: {amenity: fast_food}
+    icon: [fast_food]
+  - tags: {amenity: '*', karaoke: 'yes'}
+    add_icon: [microphone]
 
-  # Other buildings
+    # Other buildings
 
-- tags: {building: service, power: substation}
-  icon: [electricity]
-- tags: {building: apartments}
-  icon: [apartments]
-- tags: {building: garages}
-  icon: [garages]
-- tags: {building: garage}
-  icon: [garages]
-- tags: {tourism: hotel}
-  icon: [hotel]
-- tags: {tourism: hostel}
-  icon: [hostel]
-- tags: {tourism: motel}  # Tourism?
-  icon: [motel]
-- tags: {amenity: clinic}
-  icon: [clinic]
-- tags: {amenity: bank}
-  icon: [money]
-- tags: {building: kindergarten}
-  icon: [toy_horse]
-- tags: {amenity: kindergarten}
-  icon: [toy_horse]
-- tags: {building: kindergarten, amenity: kindergarten}
-  icon: [toy_horse]
-- tags: {amenity: school, __country: Japan}
-  icon: [japan_elementary_school]
-- tags: {amenity: post_office}
-  icon: [letter]
-- tags: {amenity: post_office, __country: Japan}
-  icon: [japan_post]
-- tags: {office: telecommunication}
-  icon: [telephone]
+  - tags: {building: service, power: substation}
+    icon: [electricity]
+  - tags: {building: apartments}
+    icon: [apartments]
+  - tags: {building: garages}
+    icon: [garages]
+  - tags: {building: garage}
+    icon: [garages]
+  - tags: {tourism: hotel}
+    icon: [hotel]
+  - tags: {tourism: hostel}
+    icon: [hostel]
+  - tags: {tourism: motel}  # Tourism?
+    icon: [motel]
+  - tags: {amenity: clinic}
+    icon: [clinic]
+  - tags: {amenity: bank}
+    icon: [money]
+  - tags: {building: kindergarten}
+    icon: [toy_horse]
+  - tags: {amenity: kindergarten}
+    icon: [toy_horse]
+  - tags: {building: kindergarten, amenity: kindergarten}
+    icon: [toy_horse]
+  - tags: {amenity: school, __country: Japan}
+    icon: [japan_elementary_school]
+  - tags: {amenity: post_office}
+    icon: [letter]
+  - tags: {amenity: post_office, __country: Japan}
+    icon: [japan_post]
+  - tags: {office: telecommunication}
+    icon: [telephone]
 
-  # Shop
+    # Shop
 
-- tags: {amenity: pharmacy}
-  icon: [pharmacy]
-- tags: {amenity: shop, shop: fishing}
-  icon: [fishing]
-- tags: {shop: clothes}
-  icon: [shop_clothes]
-- tags: {amenity: shop, shop: clothes}
-  icon: [shop_clothes]
-- tags: {shop: bakery}
-  icon: [cupcake]
-- tags: {shop: mall}
-  icon: [bag]
-- tags: {shop: alcohol}
-  icon: [bottle]
-- tags: {shop: mall, building: 'yes'}
-  icon: [bag]
-- tags: {shop: convenience}
-  icon: [shop_convenience]
-- tags: {shop: milk}
-  icon: [milk]
-- tags: {amenity: shop, shop: convenience}
-  icon: [shop_convenience]
-- tags: {building: store}
-  icon: [shop_convenience]
-- tags: {shop: kiosk}
-  icon: [kiosk]
-- tags: {building: 'yes', shop: kiosk}
-  icon: [kiosk]
-- tags: {amenity: shop, shop: kiosk}
-  icon: [kiosk]
-- tags: {shop: gift}
-  icon: [gift]
-- tags: {shop: watches}
-  icon: [watches]
+  - tags: {amenity: pharmacy}
+    icon: [pharmacy]
+  - tags: {amenity: shop, shop: fishing}
+    icon: [fishing]
+  - tags: {shop: clothes}
+    icon: [shop_clothes]
+  - tags: {amenity: shop, shop: clothes}
+    icon: [shop_clothes]
+  - tags: {shop: bakery}
+    icon: [cupcake]
+  - tags: {shop: mall}
+    icon: [bag]
+  - tags: {shop: alcohol}
+    icon: [bottle]
+  - tags: {shop: mall, building: 'yes'}
+    icon: [bag]
+  - tags: {shop: convenience}
+    icon: [shop_convenience]
+  - tags: {shop: milk}
+    icon: [milk]
+  - tags: {amenity: shop, shop: convenience}
+    icon: [shop_convenience]
+  - tags: {building: store}
+    icon: [shop_convenience]
+  - tags: {shop: kiosk}
+    icon: [kiosk]
+  - tags: {building: 'yes', shop: kiosk}
+    icon: [kiosk]
+  - tags: {amenity: shop, shop: kiosk}
+    icon: [kiosk]
+  - tags: {shop: gift}
+    icon: [gift]
+  - tags: {shop: watches}
+    icon: [watches]
 
-  # Place of worship
+    # Place of worship
 
-- tags: {amenity: place_of_worship, religion: christian}
-  icon: [christian]
-- tags:
-    amenity: place_of_worship
-    religion: christian
-    denomination: catholic
-  icon: [christian]
-- tags:
-    amenity: place_of_worship
-    religion: christian
-    denomination: russian_orthodox
-  icon: [russian_orthodox]
-- tags:
-    amenity: place_of_worship
-    religion: christian
-    denomination: orthodox
-  icon: [orthodox]
-- tags:
-    amenity: place_of_worship
-    religion: christian
-    denomination: baptist
-  icon: [baptist]
-- tags: {amenity: place_of_worship, religion: muslim}
-  icon: [muslim]
-- tags: {amenity: place_of_worship, religion: buddhist}
-  icon: [buddhist]
-- tags: {amenity: place_of_worship, religion: jewish}
-  icon: [jewish]
+  - tags: {amenity: place_of_worship, religion: christian}
+    icon: [christian]
+  - tags:
+      amenity: place_of_worship
+      religion: christian
+      denomination: catholic
+    icon: [christian]
+  - tags:
+      amenity: place_of_worship
+      religion: christian
+      denomination: russian_orthodox
+    icon: [russian_orthodox]
+  - tags:
+      amenity: place_of_worship
+      religion: christian
+      denomination: orthodox
+    icon: [orthodox]
+  - tags:
+      amenity: place_of_worship
+      religion: christian
+      denomination: baptist
+    icon: [baptist]
+  - tags: {amenity: place_of_worship, religion: muslim}
+    icon: [muslim]
+  - tags: {amenity: place_of_worship, religion: buddhist}
+    icon: [buddhist]
+  - tags: {amenity: place_of_worship, religion: jewish}
+    icon: [jewish]
 
-  # Aeroways
+    # Aeroways
 
-- tags: {aeroway: aerodrome}
-  icon: [plane]
-- tags: {aeroway: landingpad}
-  icon: [booster_landing]
+  - tags: {aeroway: aerodrome}
+    icon: [plane]
+  - tags: {aeroway: landingpad}
+    icon: [booster_landing]
 
-  # Additions for buildings
+    # Additions for buildings
 
-- tags: {building: '*', 'roof:material': metal}
-  add_icon: [metal_roof]
-- tags: {building: '*', 'roof:shape': onion}
-  add_icon: [onion_roof_shape]
+  - tags: {building: '*', 'roof:material': metal}
+    add_icon: [metal_roof]
+  - tags: {building: '*', 'roof:shape': onion}
+    add_icon: [onion_roof_shape]
 
-  # Trees
+    # Trees
 
-- tags: {natural: tree}
-  icon: [tree]
-  color: tree
-- tags: {natural: bush}
-  icon: [bush]
-  color: tree
-- tags: {natural: tree, leaf_type: broadleaved}
-  icon: [broadleaved]
-  color: tree
-- tags: {natural: tree, leaf_type: needleleaved}
-  icon: [needleleaved]
-  color: tree
-- tags: {natural: tree, leaf_type: palm}
-  icon: [palm]
-  color: tree
-- tags: {natural: tree, type: conifer}
-  icon: [needleleaved]
-  color: tree
-- tags: {natural: tree, leaf_cycle: deciduous}
-  color: deciduous
-- tags: {natural: tree, leaf_cycle: evergreen}
-  color: evergreen
+  - tags: {natural: tree}
+    icon: [tree]
+    color: tree
+  - tags: {natural: bush}
+    icon: [bush]
+    color: tree
+  - tags: {natural: tree, leaf_type: broadleaved}
+    icon: [broadleaved]
+    color: tree
+  - tags: {natural: tree, leaf_type: needleleaved}
+    icon: [needleleaved]
+    color: tree
+  - tags: {natural: tree, leaf_type: palm}
+    icon: [palm]
+    color: tree
+  - tags: {natural: tree, type: conifer}
+    icon: [needleleaved]
+    color: tree
+  - tags: {natural: tree, leaf_cycle: deciduous}
+    color: deciduous
+  - tags: {natural: tree, leaf_cycle: evergreen}
+    color: evergreen
 
-  # Tree genus
+    # Tree genus
 
-- tags: {natural: tree, genus: Betula}
-  icon: [betula]
-  color: tree
-- tags: {natural: tree, "genus:en": Birch}
-  icon: [betula]
-  color: tree
-- tags: {natural: tree, "genus:ru": Берёза}
-  icon: [betula]
-  color: tree
+  - tags: {natural: tree, genus: Betula}
+    icon: [betula]
+    color: tree
+  - tags: {natural: tree, "genus:en": Birch}
+    icon: [betula]
+    color: tree
+  - tags: {natural: tree, "genus:ru": Берёза}
+    icon: [betula]
+    color: tree
 
-  # Tree over icons
+    # Tree over icons
 
-- tags: {natural: tree, denotation: urban}
-  over_icon: [urban_tree_pot]
-  under_icon: [tree, broadleaved, needleleaved, betula, palm]
-- tags: {natural: tree, denotation: avenue}
-  over_icon: [avenue_tree]
-  under_icon: [tree, broadleaved, needleleaved, betula, palm]
+  - tags: {natural: tree, denotation: urban}
+    over_icon: [urban_tree_pot]
+    under_icon: [tree, broadleaved, needleleaved, betula, palm]
+  - tags: {natural: tree, denotation: avenue}
+    over_icon: [avenue_tree]
+    under_icon: [tree, broadleaved, needleleaved, betula, palm]
 
-- tags: {natural: peak}
-  icon: [triangle_small]
+  - tags: {natural: peak}
+    icon: [triangle_small]
 
-  # Entrance
+    # Entrance
 
-- tags: {entrance: 'yes'}
-  icon: [entrance]
-- tags: {door: 'yes'}
-  icon: [entrance]
-- tags: {entrance: main}
-  icon: [main_entrance]
-- tags: {entrance: staircase}
-  icon: [staircase]
-- tags: {door: 'no'}
-  icon: [no_door]
+  - tags: {entrance: 'yes'}
+    icon: [entrance]
+  - tags: {door: 'yes'}
+    icon: [entrance]
+  - tags: {entrance: main}
+    icon: [main_entrance]
+  - tags: {entrance: staircase}
+    icon: [staircase]
+  - tags: {door: 'no'}
+    icon: [no_door]
 
-  # Transport
+    # Transport
 
-- tags: {highway: bus_stop}
-  icon: [bus_stop]
-  add_icon: [bus]
-- tags: {railway: station}
-  icon: [train]
-- tags: {railway: station, station: subway, transport: subway}
-  icon: [train]
-- tags: {railway: subway_entrance}
-  icon: [train]
-- tags: {railway: subway_entrance, entrance: 'yes'}
-  icon: [train]
-- tags:
-    railway: station
-    station: subway
-    transport: subway
-    network: Московский метрополитен
-  icon: [moscow_metro]
-- tags: {railway: subway_entrance, network: Московский метрополитен}
-  icon: [moscow_metro]
-- tags:
-    railway: subway_entrance
-    entrance: 'yes'
-    network: Московский метрополитен
-  icon: [moscow_metro]
-- tags: {railway: level_crossing}
-  icon: [cross]
-- tags: {bus: 'yes'}
-  add_icon: [bus]
-- tags: {trolleybus: 'yes'}
-  add_icon: [trolleybus]
-- tags: {railway: tram_station}
-  icon: [tram]
-- tags: {railway: tram_stop}
-  icon: [tram]
-- tags: {highway: bus_stop, public_transport: platform}
-  icon: [bus_stop_sign]
-  with_icon: [bus_stop_bench, bus_stop_shelter]
-  over_icon: [platform]
-- tags: {highway: bus_stop, shelter: 'yes'}
-  icon: [bus_stop_sign]
-  under_icon: [bus_stop_sign]
-  with_icon: [bus_stop_bench, platform]
-  over_icon: [bus_stop_shelter]
-- tags: {highway: bus_stop, bench: 'yes'}
-  under_icon: [bus_stop_sign]
-  with_icon: [bus_stop_shelter, platform]
-  over_icon: [bus_stop_bench]
-- tags: {highway: stop}
-  icon: [stop]
-- tags: {highway: give_way}
-  icon: [triangle_down_hollow]
-- tags: {noexit: 'yes'}
-  icon: [noexit]
+  - tags: {highway: bus_stop}
+    icon: [bus_stop]
+    add_icon: [bus]
+  - tags: {railway: station}
+    icon: [train]
+  - tags: {railway: station, station: subway, transport: subway}
+    icon: [train]
+  - tags: {railway: subway_entrance}
+    icon: [train]
+  - tags: {railway: subway_entrance, entrance: 'yes'}
+    icon: [train]
+  - tags:
+      railway: station
+      station: subway
+      transport: subway
+      network: Московский метрополитен
+    icon: [moscow_metro]
+  - tags: {railway: subway_entrance, network: Московский метрополитен}
+    icon: [moscow_metro]
+  - tags:
+      railway: subway_entrance
+      entrance: 'yes'
+      network: Московский метрополитен
+    icon: [moscow_metro]
+  - tags: {railway: level_crossing}
+    icon: [cross]
+  - tags: {bus: 'yes'}
+    add_icon: [bus]
+  - tags: {trolleybus: 'yes'}
+    add_icon: [trolleybus]
+  - tags: {railway: tram_station}
+    icon: [tram]
+  - tags: {railway: tram_stop}
+    icon: [tram]
+  - tags: {highway: bus_stop, public_transport: platform}
+    icon: [bus_stop_sign]
+    with_icon: [bus_stop_bench, bus_stop_shelter]
+    over_icon: [platform]
+  - tags: {highway: bus_stop, shelter: 'yes'}
+    icon: [bus_stop_sign]
+    under_icon: [bus_stop_sign]
+    with_icon: [bus_stop_bench, platform]
+    over_icon: [bus_stop_shelter]
+  - tags: {highway: bus_stop, bench: 'yes'}
+    under_icon: [bus_stop_sign]
+    with_icon: [bus_stop_shelter, platform]
+    over_icon: [bus_stop_bench]
+  - tags: {highway: stop}
+    icon: [stop]
+  - tags: {highway: give_way}
+    icon: [triangle_down_hollow]
+  - tags: {noexit: 'yes'}
+    icon: [noexit]
 
-  # Railway special
+    # Railway special
 
-- tags: {railway: buffer_stop}
-  icon: [buffer_stop]
+  - tags: {railway: buffer_stop}
+    icon: [buffer_stop]
 
-  # Road signs
+    # Road signs
 
-- tags: {highway: crossing}
-  icon: [crossing]
-- tags: {highway: crossing, crossing: zebra}
-  icon: [crossing]
-- tags: {highway: crossing, crossing: marked}
-  icon: [crossing]
-- tags: {highway: crossing, crossing_ref: zebra}
-  icon: [crossing]
-- tags: {highway: crossing, crossing: uncontrolled}
-  add_icon: [no_traffic_signals]
-- tags: {highway: crossing, crossing: traffic_signals}
-  add_icon: [traffic_signals]
-- tags: {highway: traffic_signals}
-  icon: [traffic_signals]
-- tags: {public_transport: stop_position}
-  icon: [bus_stop]
-- tags: {crossing_ref: toucan}
-  icon: [toucan_crossing]
-- tags: {traffic_calming: bump}
-  icon: [bump]
-- tags: {highway: bump}
-  icon: [bump]
-- tags: {sloped_curb: yes}
-  icon: [lowered_kerb]
-- tags: {kerb: lowered}
-  icon: [lowered_kerb]
-- tags: {traffic_calming: cushion}
-  icon: [traffic_cushion]
+  - tags: {highway: crossing}
+    icon: [crossing]
+  - tags: {highway: crossing, crossing: zebra}
+    icon: [crossing]
+  - tags: {highway: crossing, crossing: marked}
+    icon: [crossing]
+  - tags: {highway: crossing, crossing_ref: zebra}
+    icon: [crossing]
+  - tags: {highway: crossing, crossing: uncontrolled}
+    add_icon: [no_traffic_signals]
+  - tags: {highway: crossing, crossing: traffic_signals}
+    add_icon: [traffic_signals]
+  - tags: {highway: traffic_signals}
+    icon: [traffic_signals]
+  - tags: {public_transport: stop_position}
+    icon: [bus_stop]
+  - tags: {crossing_ref: toucan}
+    icon: [toucan_crossing]
+  - tags: {traffic_calming: bump}
+    icon: [bump]
+  - tags: {highway: bump}
+    icon: [bump]
+  - tags: {sloped_curb: yes}
+    icon: [lowered_kerb]
+  - tags: {kerb: lowered}
+    icon: [lowered_kerb]
+  - tags: {traffic_calming: cushion}
+    icon: [traffic_cushion]
 
-- tags: {man_made: manhole}
-  icon: [manhole]
-- tags: {manhole: drain}
-  icon: [manhole_drain]
+  - tags: {man_made: manhole}
+    icon: [manhole]
+  - tags: {manhole: drain}
+    icon: [manhole_drain]
 
-  # Tourism
+    # Tourism
 
-- tags: {historic: "*"}
-  icon: [historic]
-- tags: {historic: memorial}  # Before memorial:*
-  icon: [memorial]
-- tags: {historic: memorial, memorial: statue}
-  icon: [statue]
-- tags: {historic: memorial, memorial: plaque}
-  icon: [plaque]
-- tags: {historic: tomb}  # Before tomb:*
-  icon: [tomb]
-- tags: {historic: tomb, tomb: mausoleum}
-  icon: [mausoleum]
-- tags: {tourism: artwork, artwork_type: statue}
-  icon: [statue]
-- tags: {tourism: artwork, artwork_type: sculpture}
-  icon: [statue]
-- tags: {tourism: attraction}  # Before attraction:*
-  icon: [photo_camera]
-- tags: {tourism: attraction, attraction: amusement_ride}
-  icon: [amusement_ride]
-- tags: {tourism: gallery}
-  icon: [picture]
+  - tags: {historic: "*"}
+    icon: [historic]
+  - tags: {historic: memorial}  # Before memorial:*
+    icon: [memorial]
+  - tags: {historic: memorial, memorial: statue}
+    icon: [statue]
+  - tags: {historic: memorial, memorial: plaque}
+    icon: [plaque]
+  - tags: {historic: tomb}  # Before tomb:*
+    icon: [tomb]
+  - tags: {historic: tomb, tomb: mausoleum}
+    icon: [mausoleum]
+  - tags: {tourism: artwork, artwork_type: statue}
+    icon: [statue]
+  - tags: {tourism: artwork, artwork_type: sculpture}
+    icon: [statue]
+  - tags: {tourism: attraction}  # Before attraction:*
+    icon: [photo_camera]
+  - tags: {tourism: attraction, attraction: amusement_ride}
+    icon: [amusement_ride]
+  - tags: {tourism: gallery}
+    icon: [picture]
 
-  # Barrier
+    # Barrier
 
-- tags: {barrier: gate}
-  icon: [gate]
-- tags: {barrier: bollard}
-  icon: [bollard]
-- tags: {barrier: lift_gate}
-  icon: [lift_gate]
-- tags: {barrier: turnstile}
-  icon: [turnstile]
-- tags: {barrier: entrance}
-  icon: [entrance]
+  - tags: {barrier: gate}
+    icon: [gate]
+  - tags: {barrier: bollard}
+    icon: [bollard]
+  - tags: {barrier: lift_gate}
+    icon: [lift_gate]
+  - tags: {barrier: turnstile}
+    icon: [turnstile]
+  - tags: {barrier: entrance}
+    icon: [entrance]
 
-  # Additions for everything
+    # Additions for everything
 
-- tags: {wheelchair: 'yes'}
-  add_icon: [wheelchair]
-- tags: {foot: 'yes'}
-  add_icon: [foot]
-- tags: {foot: 'no'}
-  add_icon: [no_foot]
-- tags: {bicycle: 'yes'}
-  add_icon: [bicycle]
-- tags: {bicycle: 'no'}
-  add_icon: [no_bicycle]
-- tags: {internet_access: wlan, 'internet_access:fee': 'no'}
-  add_icon: [free_wlan]
-- tags: {internet_access: wlan}
-  no_tags: ['internet_access:fee']
-  add_icon: [wlan]
-- tags: {material: wood}
-  add_icon: [wood]
-- tags: {access: private}
-  add_icon: [private]
-- tags: {direction: clockwise}
-  add_icon: [clockwise]
-- tags: {direction: contrclockwise}
-  add_icon: [contrclockwise]
-- tags: {atm: 'yes'}
-  add_icon: [atm]
-- tags: {tactile_paving: 'yes'}
-  add_icon: [tactile_paving]
-- tags: {'payment:credit_cards': 'yes'}
-  add_icon: [credit_card]
+  - tags: {wheelchair: 'yes'}
+    add_icon: [wheelchair]
+  - tags: {foot: 'yes'}
+    add_icon: [foot]
+  - tags: {foot: 'no'}
+    add_icon: [no_foot]
+  - tags: {bicycle: 'yes'}
+    add_icon: [bicycle]
+  - tags: {bicycle: 'no'}
+    add_icon: [no_bicycle]
+  - tags: {internet_access: wlan, 'internet_access:fee': 'no'}
+    add_icon: [free_wlan]
+  - tags: {internet_access: wlan}
+    no_tags: ['internet_access:fee']
+    add_icon: [wlan]
+  - tags: {material: wood}
+    add_icon: [wood]
+  - tags: {access: private}
+    add_icon: [private]
+  - tags: {direction: clockwise}
+    add_icon: [clockwise]
+  - tags: {direction: contrclockwise}
+    add_icon: [contrclockwise]
+  - tags: {atm: 'yes'}
+    add_icon: [atm]
+  - tags: {tactile_paving: 'yes'}
+    add_icon: [tactile_paving]
+  - tags: {'payment:credit_cards': 'yes'}
+    add_icon: [credit_card]
 
 ways:
   - tags: {indoor: area}
