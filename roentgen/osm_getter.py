@@ -1,3 +1,8 @@
+"""
+Getting OpenStreetMap data from the web.
+
+Author: Sergey Vartanov (me@enzet.ru).
+"""
 import os
 import re
 import time

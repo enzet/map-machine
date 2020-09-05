@@ -7,19 +7,18 @@ import numpy as np
 import os
 import svgwrite
 import sys
-import yaml
 
 from svgwrite.container import Group
 from svgwrite.path import Path
 from svgwrite.shapes import Circle, Rect
 from svgwrite.text import Text
-from typing import List
+from typing import Dict, List
 
-from roentgen import extract_icon
 from roentgen import ui
-from roentgen.constructor import Constructor, get_path
+from roentgen.constructor import Constructor, get_path, Node, Way
 from roentgen.flinger import GeoFlinger, Geo
 from roentgen.grid import draw_grid
+from roentgen.extract_icon import Icon, IconExtractor
 from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader
 from roentgen.scheme import Scheme
@@ -29,70 +28,97 @@ TAGS_FILE_NAME: str = "data/tags.yml"
 COLORS_FILE_NAME: str = "data/colors.yml"
 MISSING_TAGS_FILE_NAME: str = "missing_tags.yml"
 
+AUTHOR_MODE = "user-coloring"
+CREATION_TIME_MODE = "time"
+
 
 class Painter:
-
+    """
+    Map drawing.
+    """
     def __init__(
-            self, show_missing_tags, overlap, draw_nodes, mode, draw_captions,
-            map_, flinger, svg: svgwrite.Drawing, icons, scheme: Scheme):
+            self, show_missing_tags: bool, overlap: int, draw_nodes: bool,
+            mode: str, draw_captions: bool, map_: Map, flinger: GeoFlinger,
+            svg: svgwrite.Drawing, icon_extractor: IconExtractor,
+            scheme: Scheme):
 
-        self.show_missing_tags = show_missing_tags
-        self.overlap = overlap
-        self.draw_nodes = draw_nodes
-        self.mode = mode
+        self.show_missing_tags: bool = show_missing_tags
+        self.overlap: int = overlap
+        self.draw_nodes: bool = draw_nodes
+        self.mode: str = mode
         self.draw_captions = draw_captions
 
-        self.map_ = map_
-        self.flinger = flinger
+        self.map_: Map = map_
+        self.flinger: GeoFlinger = flinger
         self.svg: svgwrite.Drawing = svg
-        self.icons = icons
+        self.icon_extractor = icon_extractor
         self.scheme: Scheme = scheme
 
-    def draw_shapes(self, shapes, points, x, y, fill, tags, processed):
+    def draw_shapes(self, node: Node, points: List[List[float]]):
+        """
+        Draw shapes for one node.
+        """
+        if node.icon_set.is_default and not node.is_for_node:
+            return
 
-        xxx = -(len(shapes) - 1) * 8
+        left: float = -(len(node.icon_set.icons) - 1) * 8
 
         if self.overlap != 0:
-            for shape in shapes:
+            for shape_ids in node.icon_set.icons:
                 has_space = True
                 for p in points[-1000:]:
-                    if x + xxx - self.overlap <= p[0] <= x + xxx + self.overlap and \
-                            y - self.overlap <= p[1] <= y + self.overlap:
+                    if node.point[0] + left - self.overlap <= p[0] \
+                            <= node.point[0] + left + self.overlap and \
+                            node.point[1] - self.overlap <= p[1] \
+                            <= node.point[1] + self.overlap:
                         has_space = False
                         break
                 if has_space:
-                    self.draw_point_shape(shape, x + xxx, y, fill, tags=tags)
-                    points.append([x + xxx, y])
-                    xxx += 16
+                    self.draw_point_shape(
+                        shape_ids, (node.point[0] + left, node.point[1]),
+                        node.icon_set.color, tags=node.tags)
+                    points.append([node.point[0] + left, node.point[1]])
+                    left += 16
         else:
-            for shape in shapes:
-                self.draw_point_shape(shape, x + xxx, y, fill, tags=tags)
-                xxx += 16
+            for shape_ids in node.icon_set.icons:
+                self.draw_point_shape(
+                    shape_ids, (node.point[0] + left, node.point[1]),
+                    node.icon_set.color, tags=node.tags)
+                left += 16
 
-    def draw_texts(self, shapes, points, x, y, fill, tags, processed):
-
-        if self.draw_captions == "no":
-            return
-
+    def draw_texts(self, node: Node):
+        """
+        Draw all labels.
+        """
         text_y: float = 0
 
-        write_tags = self.construct_text(tags, processed)
+        write_tags = self.construct_text(node.tags, node.icon_set.processed)
 
         for text_struct in write_tags:
             fill = text_struct["fill"] if "fill" in text_struct else "444444"
             size = text_struct["size"] if "size" in text_struct else 10
             text_y += size + 1
-            self.wr(text_struct["text"], x, y, fill, text_y, size=size)
+            text = text_struct["text"]
+            text = text.replace("&quot;", '"')
+            text = text.replace("&amp;", '&')
+            text = text[:26] + ("..." if len(text) > 26 else "")
+            self.draw_text(
+                text, (node.point[0], node.point[1] + text_y + 8),
+                fill, size=size)
 
         if self.show_missing_tags:
-            for k in tags:
-                if not self.no_draw(k) and k not in processed:
-                    text = k + ": " + tags[k]
-                    self.draw_text(text, x, float(y) + text_y + 18, "734A08")
+            for tag in node.tags:  # type: str
+                if not self.scheme.is_no_drawable(tag) and \
+                        tag not in node.icon_set.processed:
+                    text = f"{tag}: {node.tags[tag]}"
+                    self.draw_text(
+                        text, (node.point[0], node.point[1] + text_y + 18),
+                        "734A08")
                     text_y += 10
 
-    def draw_text(self, text: str, x, y, fill, size=10, out_fill="FFFFFF",
-                  out_opacity=1.0, out_fill_2=None, out_opacity_2=1.0):
+    def draw_text(
+            self, text: str, point, fill, size=10, out_fill="FFFFFF",
+            out_opacity=1.0, out_fill_2=None, out_opacity_2=1.0):
         """
         Drawing text.
 
@@ -104,27 +130,24 @@ class Painter:
         """
         if out_fill_2:
             self.svg.add(Text(
-                text, (x, y), font_size=size, text_anchor="middle",
+                text, point, font_size=size, text_anchor="middle",
                 font_family="Roboto", fill=f"#{out_fill_2}",
                 stroke_linejoin="round", stroke_width=5,
                 stroke=f"#{out_fill_2}", opacity=out_opacity_2))
         if out_fill:
             self.svg.add(Text(
-                text, (x, y), font_size=size, text_anchor="middle",
+                text, point, font_size=size, text_anchor="middle",
                 font_family="Roboto", fill=f"#{out_fill}",
                 stroke_linejoin="round", stroke_width=3,
                 stroke=f"#{out_fill}", opacity=out_opacity))
         self.svg.add(Text(
-            text, (x, y), font_size=size, text_anchor="middle",
+            text, point, font_size=size, text_anchor="middle",
             font_family="Roboto", fill=f"#{fill}"))
 
-    def wr(self, text, x, y, fill, text_y, size=10):
-        text = text[:26] + ("..." if len(text) > 26 else "")
-        self.draw_text(text, x, float(y) + text_y + 8, fill, size=size)
-
     def construct_text(self, tags, processed):
-        for key in tags:
-            tags[key] = tags[key].replace("&quot;", '"')
+        """
+        Construct labels for not processed tags.
+        """
         texts = []
         address: List[str] = []
         name = None
@@ -207,8 +230,7 @@ class Painter:
                 texts.append({"text": tags[k], "fill": "444444"})
                 tags.pop(k)
         for tag in tags:
-            if self.to_write(tag) and not (tag in processed):
-                # texts.append({"text": tag + ": " + tags[tag]})
+            if self.scheme.is_writable(tag) and not (tag in processed):
                 texts.append({"text": tags[tag]})
         return texts
 
@@ -250,21 +272,27 @@ class Painter:
                 pass
 
     def draw(self, nodes, ways, points):
-
+        """
+        Draw map.
+        """
         ways = sorted(ways, key=lambda x: x.layer)
         for way in ways:
             if way.kind == "way":
                 if way.nodes:
                     path = get_path(way.nodes, [0, 0], self.map_, self.flinger)
-                    self.svg.add(Path(d=path, style=way.style))
+                    p = Path(d=path)
+                    p.update(way.style)
+                    self.svg.add(p)
                 else:
-                    self.svg.add(Path(d=way.path, style=way.style))
+                    p = Path(d=way.path)
+                    p.update(way.style)
+                    self.svg.add(p)
 
         # Building shade
 
         building_shade = Group(opacity=0.1)
 
-        for way in ways:
+        for way in ways:  # type: Way
             if way.kind != "building" or not way.nodes:
                 continue
             shift = [-5, 5]
@@ -290,7 +318,7 @@ class Painter:
 
         # Building roof
 
-        for way in ways:
+        for way in ways:  # type: Way
             if way.kind != "building":
                 continue
             if way.nodes:
@@ -298,9 +326,13 @@ class Painter:
                 if way.levels:
                     shift = [0 * way.levels, min(-3, -1 * way.levels)]
                 path = get_path(way.nodes, shift, self.map_, self.flinger)
-                self.svg.add(Path(d=path, style=way.style, opacity=1))
+                p = Path(d=path, opacity=1)
+                p.update(way.style)
+                self.svg.add(p)
             else:
-                self.svg.add(Path(d=way.path, style=way.style, opacity=1))
+                p = Path(d=way.path, opacity=1)
+                p.update(way.style)
+                self.svg.add(p)
 
         # Trees
 
@@ -310,58 +342,59 @@ class Painter:
                    "diameter_crown" in node.tags):
                 continue
             self.svg.add(Circle(
-                (float(node.x), float(node.y)),
-                float(node.tags["diameter_crown"]) * 1.2,
+                node.point, float(node.tags["diameter_crown"]) * 1.2,
                 fill="#688C44", stroke="#688C44", opacity=0.3))
 
         # All other nodes
 
         nodes = sorted(nodes, key=lambda x: x.layer)
-        for node in nodes:
+        for node in nodes:  # type: Node
             if "natural" in node.tags and \
                    node.tags["natural"] == "tree" and \
                    "diameter_crown" in node.tags:
                 continue
-            self.draw_shapes(
-                node.shapes, points, node.x, node.y, node.color, node.tags,
-                node.processed)
+            self.draw_shapes(node, points)
 
-        for node in nodes:
-            if self.mode not in ["time", "user-coloring"]:
-                self.draw_texts(
-                    node.shapes, points, node.x, node.y, node.color,
-                    node.tags, node.processed)
+        if self.draw_captions == "no":
+            return
 
-    def draw_point_shape(self, name, x, y, fill, tags=None):
-        if not isinstance(name, list):
-            name = [name]
-        if self.mode not in ["time", "user-coloring"]:
-            for one_name in name:
-                shape, xx, yy, _ = self.icons.get_path(one_name)
-                self.draw_point_outline(
-                    shape, x, y, fill, mode=self.mode, size=16, xx=xx, yy=yy)
-        for one_name in name:
-            shape, xx, yy, _ = self.icons.get_path(one_name)
-            self.draw_point(shape, x, y, fill, size=16, xx=xx, yy=yy, tags=tags)
+        for node in nodes:  # type: Node
+            if self.mode not in [CREATION_TIME_MODE, AUTHOR_MODE]:
+                self.draw_texts(node)
 
-    def draw_point(self, shape, x, y, fill, size=16, xx=0, yy=0, tags=None):
-        x = int(float(x))
-        y = int(float(y))
-        path = self.svg.path(
-            d=shape, fill=f"#{fill}", fill_opacity=1,
-            transform=f"translate({x - size / 2.0 - xx * 16},"
-                      f"{y - size / 2.0 - yy * 16})")
-        path.set_desc(title="\n".join(map(lambda x: x + ": " + tags[x], tags)))
+    def draw_point_shape(self, shape_ids: List[str], point, fill, tags=None):
+        """
+        Draw one icon.
+        """
+        if self.mode not in [CREATION_TIME_MODE, AUTHOR_MODE]:
+            for shape_id in shape_ids:  # type: str
+                icon, _ = self.icon_extractor.get_path(shape_id)
+                self.draw_point_outline(icon, point, fill, mode=self.mode)
+        for shape_id in shape_ids:  # type: str
+            icon, _ = self.icon_extractor.get_path(shape_id)
+            self.draw_point(icon, point, fill, tags=tags)
+
+    def draw_point(
+            self, icon: Icon, point: (float, float), fill: str,
+            tags: Dict[str, str] = None) -> None:
+
+        point = np.array(list(map(lambda x: int(x), point)))
+        title: str = "\n".join(map(lambda x: x + ": " + tags[x], tags))
+
+        path = icon.get_path(self.svg, point)
+        path.update({"fill": f"#{fill}"})
+        path.set_desc(title=title)
         self.svg.add(path)
 
     def draw_point_outline(
-            self, shape, x, y, fill, mode="default", size=16, xx=0, yy=0):
-        x = int(float(x))
-        y = int(float(y))
+            self, icon: Icon, point, fill, mode="default", size=16):
+
+        point = np.array(list(map(lambda x: int(x), point)))
+
         opacity = 0.5
         stroke_width = 2.2
         outline_fill = self.scheme.get_color("outline_color")
-        if mode not in ["user-coloring", "time"]:
+        if mode not in [AUTHOR_MODE, CREATION_TIME_MODE]:
             r = int(fill[0:2], 16)
             g = int(fill[2:4], 16)
             b = int(fill[4:6], 16)
@@ -369,12 +402,13 @@ class Painter:
             if Y > 200:
                 outline_fill = "000000"
                 opacity = 0.7
-        self.svg.add(self.svg.path(
-            d=shape, fill=f"#{outline_fill}", opacity=opacity,
-            stroke=f"#{outline_fill}", stroke_width=stroke_width,
-            stroke_linejoin="round",
-            transform=f"translate({x - size / 2.0 - xx * 16},"
-                      f"{y - size / 2.0 - yy * 16})"))
+
+        path = icon.get_path(self.svg, point)
+        path.update({
+            "fill": f"#{outline_fill}", "opacity": opacity,
+            "stroke": f"#{outline_fill}", "stroke-width": stroke_width,
+            "stroke-linejoin": "round"})
+        self.svg.add(path)
 
 
 def check_level_number(tags, level):
@@ -395,6 +429,14 @@ def check_level_overground(tags):
         for level in levels:
             if level <= 0:
                 return False
+    if "layer" in tags:
+        levels = \
+            map(lambda x: float(x), tags["layer"].replace(",", ".").split(";"))
+        for level in levels:
+            if level <= 0:
+                return False
+    if "parking" in tags and tags["parking"] == "underground":
+        return False
     return True
 
 
@@ -410,7 +452,7 @@ def main():
         sys.exit(1)
 
     background_color = "#EEEEEE"
-    if options.mode in ["user-coloring", "time"]:
+    if options.mode in [AUTHOR_MODE, CREATION_TIME_MODE]:
         background_color = "#111111"
 
     if options.input_file_name:
@@ -426,7 +468,7 @@ def main():
 
     full = False  # Full keys getting
 
-    if options.mode in ["user-coloring", "time"]:
+    if options.mode in [AUTHOR_MODE, CREATION_TIME_MODE]:
         full = True
 
     osm_reader = OSMReader()
@@ -460,7 +502,7 @@ def main():
 
     flinger = GeoFlinger(min1, max1, [0, 0], [w, h])
 
-    icons = extract_icon.IconExtractor(ICONS_FILE_NAME)
+    icon_extractor = IconExtractor(ICONS_FILE_NAME)
 
     def check_level(x):
         """ Draw objects on all levels. """
@@ -489,7 +531,7 @@ def main():
         show_missing_tags=options.show_missing_tags, overlap=options.overlap,
         draw_nodes=options.draw_nodes, mode=options.mode,
         draw_captions=options.draw_captions,
-        map_=map_, flinger=flinger, svg=svg, icons=icons,
+        map_=map_, flinger=flinger, svg=svg, icon_extractor=icon_extractor,
         scheme=scheme)
     painter.draw(constructor.nodes, constructor.ways, points)
 

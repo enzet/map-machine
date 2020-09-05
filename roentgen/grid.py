@@ -1,24 +1,15 @@
 """
 Author: Sergey Vartanov (me@enzet.ru).
 """
-
+import numpy as np
 import os
 import random
 import svgwrite
 import yaml
 
-from roentgen import extract_icon
+from roentgen.extract_icon import Icon, IconExtractor
 
-from typing import Any, Dict
-
-
-def draw_icon(
-        svg, icon: Dict[str, Any], x: float, y: float,
-        color: str = "444444"):
-
-    svg.add(svg.path(
-        d=icon["path"], fill=f"#{color}", stroke="none",
-        transform=f'translate({icon["x"] + x},{icon["y"] + y})'))
+from typing import List
 
 
 def draw_grid():
@@ -47,8 +38,7 @@ def draw_grid():
 
     width: float = 24 * 16
 
-    x: float = step / 2
-    y: float = step / 2
+    point: np.array = np.array((step / 2, step / 2))
 
     to_draw = []
 
@@ -83,20 +73,19 @@ def draw_grid():
 
     number: int = 0
 
-    icons = []
+    icons: List[List[Icon]] = []
 
-    extractor = extract_icon.IconExtractor(icons_file_name)
+    extractor: IconExtractor = IconExtractor(icons_file_name)
 
     for icons_to_draw in to_draw:
-        drawed = False
-        icon_set = {"icons": []}
-        for icon in icons_to_draw:
-            path, xx, yy, _ = extractor.get_path(icon)
-            icon_set["icons"].append({"path": path,
-                "x": (- 8.0 - xx * 16),
-                "y": (- 8.0 - yy * 16)})
-            drawed = True
-        if drawed:
+        found: bool = False
+        icon_set: List[Icon] = []
+        for icon_id in icons_to_draw:  # type: str
+            icon, got = extractor.get_path(icon_id)
+            assert got
+            icon_set.append(icon)
+            found = True
+        if found:
             icons.append(icon_set)
             number += 1
 
@@ -109,13 +98,16 @@ def draw_grid():
     for icon in icons:
         background_color, foreground_color = random.choice(icon_colors)
         svg.add(svg.rect(
-            (x - 2 - 8, y - 2 - 8), (20, 20), fill=f"#{background_color}"))
-        for i in icon["icons"]:
-            draw_icon(svg, i, x, y, foreground_color)
-        x += step
-        if x > width - 8:
-            x = step / 2
-            y += step
+            point - np.array((-10, -10)), (20, 20),
+            fill=f"#{background_color}"))
+        for i in icon:  # type: Icon
+            path = i.get_path(svg, point)
+            path.update({"fill": f"#{foreground_color}"})
+            svg.add(path)
+        point += np.array((step, 0))
+        if point[0] > width - 8:
+            point[0] = step / 2
+            point += np.array((0, step))
             height += step
 
     print(f"Icons: {number}.")

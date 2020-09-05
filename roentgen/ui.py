@@ -4,7 +4,10 @@ Author: Sergey Vartanov (me@enzet.ru).
 import argparse
 import sys
 
-from typing import Optional
+from typing import List, Optional
+
+BOXES: List[str] = [" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉"]
+BOXES_LENGTH: int = len(BOXES)
 
 
 def parse_options(args):
@@ -43,24 +46,44 @@ def parse_options(args):
         action="store_false",
         default=True)
     parser.add_argument(
-        "-nw", "--no-draw-ways", dest="draw_ways", action="store_false",
+        "-nw", "--no-draw-ways",
+        dest="draw_ways",
+        action="store_false",
         default=True)
     parser.add_argument(
-        "--captions", "--no-draw-captions", dest="draw_captions",
+        "--captions", "--no-draw-captions",
+        dest="draw_captions",
         default="main")
     parser.add_argument(
-        "--show-missing-tags", dest="show_missing_tags", action="store_true")
+        "--show-missing-tags",
+        dest="show_missing_tags",
+        action="store_true")
     parser.add_argument(
-        "--no-show-missing-tags", dest="show_missing_tags",
+        "--no-show-missing-tags",
+        dest="show_missing_tags",
         action="store_false")
-    parser.add_argument("--overlap", dest="overlap", default=12, type=int)
     parser.add_argument(
-        "--show-index", dest="show_index", action="store_true")
+        "--overlap",
+        dest="overlap",
+        default=12,
+        type=int)
     parser.add_argument(
-        "--no-show-index", dest="show_index", action="store_false")
-    parser.add_argument("--mode", default="normal")
-    parser.add_argument("--seed", default="")
-    parser.add_argument("--level", default=None)
+        "--show-index",
+        dest="show_index",
+        action="store_true")
+    parser.add_argument(
+        "--no-show-index",
+        dest="show_index",
+        action="store_false")
+    parser.add_argument(
+        "--mode",
+        default="normal")
+    parser.add_argument(
+        "--seed",
+        default="")
+    parser.add_argument(
+        "--level",
+        default=None)
 
     arguments = parser.parse_args(args[1:])
 
@@ -70,20 +93,27 @@ def parse_options(args):
     return arguments
 
 
-def write_line(number, total):
-    length = 20
-    parts = length * 8
-    boxes = [" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉"]
+def progress_bar(
+        number: int, total: int, length: int = 20, step: int = 1000) -> None:
+    """
+    Draw progress bar using Unicode symbols.
 
+    :param number: current value
+    :param total: maximum value
+    :param length: progress bar length.
+    :param step: frequency of progress bar updating (assuming that numbers go
+        subsequently)
+    """
     if number == -1:
-        print("%3s" % "100" + " % █" + (length * "█") + "█")
-    elif number % 1000 == 0:
-        p = number / float(total)
-        l = int(p * parts)
-        fl = int(l / 8)
-        pr = int(l - fl * 8)
-        print(("%3s" % str(int(p * 1000) / 10)) + " % █" + (fl * "█") +
-            boxes[pr] + ((length - fl - 1) * " ") + "█")
+        print(f"100 % {length * '█'}▏")
+    elif number % step == 0:
+        ratio: float = number / total
+        parts: int = int(ratio * length * BOXES_LENGTH)
+        fill_length: int = int(parts / BOXES_LENGTH)
+        box: str = BOXES[int(parts - fill_length * BOXES_LENGTH)]
+        print(
+            f"{str(int(int(ratio * 1000) / 10)):>3} % {fill_length * '█'}{box}"
+            f"{int(length - fill_length - 1) * ' '}▏")
         sys.stdout.write("\033[F")
 
 

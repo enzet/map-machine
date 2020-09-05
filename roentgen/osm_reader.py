@@ -83,9 +83,15 @@ class OSMWay:
         return self
 
     def is_cycle(self) -> bool:
+        """
+        Is way a cycle way or an area boundary.
+        """
         return self.nodes[0] == self.nodes[-1]
 
     def try_to_glue(self, other: "OSMWay"):
+        """
+        Create new combined way if ways share endpoints.
+        """
         if self.nodes[0] == other.nodes[0]:
             return OSMWay(nodes=list(reversed(other.nodes[1:])) + self.nodes)
         elif self.nodes[0] == other.nodes[-1]:
@@ -142,6 +148,9 @@ def get_value(key: str, text: str):
 
 
 class Map:
+    """
+    The whole OpenStreetMap information about nodes, ways, and relations.
+    """
     def __init__(self):
         self.node_map: Dict[int, OSMNode] = {}
         self.way_map: Dict[int, OSMWay] = {}
@@ -162,19 +171,18 @@ class OSMReader:
         """
         Parse OSM XML representation.
         """
-        print(f"Line number counting for {file_name}...")
-        with open(file_name) as f:
-            for lines_number, _ in enumerate(f):
-                pass
-        print("Done.")
+        lines_number: int = sum(1 for _ in open(file_name))
+
         print(f"Parsing OSM file {file_name}...")
         input_file = open(file_name)
         line = input_file.readline()
         line_number = 0
 
+        element = None
+
         while line != "":
             line_number += 1
-            ui.write_line(line_number, lines_number)
+            ui.progress_bar(line_number, lines_number)
 
             # Node parsing.
 
@@ -237,6 +245,6 @@ class OSMReader:
             line = input_file.readline()
         input_file.close()
 
-        ui.write_line(-1, lines_number)  # Complete progress bar.
+        ui.progress_bar(-1, lines_number)  # Complete progress bar.
 
         return self.map_

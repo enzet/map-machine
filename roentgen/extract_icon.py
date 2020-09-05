@@ -5,10 +5,51 @@ Author: Sergey Vartanov (me@enzet.ru).
 """
 import re
 import xml.dom.minidom
-
 from typing import Dict
 
+import numpy as np
+from svgwrite import Drawing
+
 from roentgen import ui
+
+DEFAULT_SHAPE_ID: str = "default"
+DEFAULT_SMALL_SHAPE_ID: str = "default_small"
+
+GRID_STEP: int = 16
+
+
+class Icon:
+    """
+    SVG icon path description.
+    """
+    def __init__(self, path: str, offset: np.array, id_: str):
+        """
+        :param path: SVG icon path
+        :param offset: vector that should be used to shift the path
+        :param id_: shape identifier
+        """
+        self.path: str = path
+        self.offset: np.array = offset
+        self.id_: str = id_
+
+    def is_default(self) -> bool:
+        """
+        Return true if icon is has a default shape that doesn't represent
+        anything.
+        """
+        return self.id_ in [DEFAULT_SHAPE_ID, DEFAULT_SMALL_SHAPE_ID]
+
+    def get_path(self, svg: Drawing, point: np.array):
+        """
+        Draw icon into SVG file.
+
+        :param svg: SVG file to draw to
+        :param point: icon position
+        """
+        shift: np.array = self.offset + point
+
+        return svg.path(
+            d=self.path, transform=f"translate({shift[0]},{shift[1]})")
 
 
 class IconExtractor:
@@ -22,7 +63,7 @@ class IconExtractor:
         :param svg_file_name: input SVG file name with icons.  File may contain
             any other irrelevant graphics.
         """
-        self.icons: Dict[str, (str, float, float)] = {}
+        self.icons: Dict[str, Icon] = {}
 
         with open(svg_file_name) as input_file:
             content = xml.dom.minidom.parse(input_file)
@@ -38,35 +79,39 @@ class IconExtractor:
 
         :param node: XML node that contains icon
         """
-        if node.nodeName == "path":
-            if "id" in node.attributes.keys() and \
-                    "d" in node.attributes.keys() and \
-                    node.attributes["id"].value:
-                path = node.attributes["d"].value
-                m = re.match("[Mm] ([0-9.e-]*)[, ]([0-9.e-]*)", path)
-                if not m:
-                    ui.error(f"invalid path: {path}")
-                else:
-                    x = int(float(m.group(1)) / 16)
-                    y = int(float(m.group(2)) / 16)
-                    self.icons[node.attributes["id"].value] = \
-                        (node.attributes["d"].value, x, y)
-        else:
+        if node.nodeName != "path":
             for sub_node in node.childNodes:
                 self.parse(sub_node)
+            return
 
-    def get_path(self, id_: str) -> (str, float, float, bool):
+        if "id" in node.attributes.keys() and \
+                "d" in node.attributes.keys() and \
+                node.attributes["id"].value:
+            path = node.attributes["d"].value
+            matcher = re.match("[Mm] ([0-9.e-]*)[, ]([0-9.e-]*)", path)
+            if not matcher:
+                ui.error(f"invalid path: {path}")
+                return
+
+            def get_offset(value: float):
+                """ Get negated icon offset from the origin. """
+                return -int(value / GRID_STEP) * GRID_STEP - GRID_STEP / 2
+
+            point: np.array = np.array((
+                get_offset(float(matcher.group(1))),
+                get_offset(float(matcher.group(2)))))
+
+            id_: str = node.attributes["id"].value
+            self.icons[id_] = Icon(node.attributes["d"].value, point, id_)
+
+    def get_path(self, id_: str) -> (Icon, bool):
         """
         Get SVG path of the icon.
 
-        :param id_: string icon ID
+        :param id_: string icon identifier
         """
         if id_ in self.icons:
-            return list(self.icons[id_]) + [True]
-        else:
-            if id_ == "no":
-                return "M 4,4 L 4,10 10,10 10,4 z", 0, 0, False
-            if id_ == "small":
-                return "M 6,6 L 6,8 8,8 8,6 z", 0, 0, False
-            ui.error(f"no such icon ID {id_}")
-            return "M 4,4 L 4,10 10,10 10,4 z", 0, 0, False
+            return self.icons[id_], True
+
+        ui.error(f"no such icon ID {id_}")
+        return self.icons[DEFAULT_SHAPE_ID], False

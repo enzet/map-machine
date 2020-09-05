@@ -1,9 +1,35 @@
+"""
+Röntgen drawing scheme.
+
+Author: Sergey Vartanov (me@enzet.ru).
+"""
 import copy
 import yaml
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Set
+
+from roentgen.extract_icon import DEFAULT_SHAPE_ID
 
 DEFAULT_COLOR: str = "444444"
+
+
+class IconSet:
+    """
+    Node representation: icons and color.
+    """
+    def __init__(
+            self, icons: List[List[str]], color: str, processed: Set[str],
+            is_default: bool):
+        """
+        :param icons: list of lists of shape identifiers
+        :param color: fill color of all icons
+        :param processed: tag keys that were processed to create icon set (other
+            tag keys should be displayed by text or ignored)
+        """
+        self.icons: List[List[str]] = icons
+        self.color: str = color
+        self.processed: Set[str] = processed
+        self.is_default = is_default
 
 
 class Scheme:
@@ -22,6 +48,7 @@ class Scheme:
             yaml.load(open(file_name).read(), Loader=yaml.FullLoader)
 
         self.tags: List[Dict[str, Any]] = content["tags"]
+        self.ways: List[Dict[str, Any]] = content["ways"]
 
         self.colors: Dict[str, str] = content["colors"]
         w3c_colors: Dict[str, str] = \
@@ -34,7 +61,8 @@ class Scheme:
         self.tags_to_skip: List[str] = content["tags_to_skip"]
         self.prefix_to_skip: List[str] = content["prefix_to_skip"]
 
-        self.cache = {}
+        # Storage for created icon sets.
+        self.cache: Dict[str, IconSet] = {}
 
     def get_color(self, color: str) -> str:
         """
@@ -81,16 +109,24 @@ class Scheme:
                 return True
         return False
 
-    def get_icon(self, tags: Dict[str, Any]):
+    def get_icon(self, tags: Dict[str, Any]) -> IconSet:
+        """
+        Construct icon set.
 
-        tags_hash = ",".join(tags.keys()) + ":" + \
-                    ",".join(map(lambda x: str(x), tags.values()))
+        :param tags: OpenStreetMap element tags dictionary
+        """
+        tags_hash: str = \
+            ",".join(tags.keys()) + ":" + \
+            ",".join(map(lambda x: str(x), tags.values()))
+
         if tags_hash in self.cache:
             return self.cache[tags_hash]
-        main_icon = None
-        extra_icons = []
+
+        main_icon: Optional[List[str]] = None
+        extra_icons: List[List[str]] = []
         processed = set()
         fill = DEFAULT_COLOR
+
         for matcher in self.tags:
             matched = True
             for key in matcher["tags"]:
@@ -118,7 +154,7 @@ class Scheme:
                         for key in matcher["tags"].keys():
                             processed.add(key)
                 if "add_icon" in matcher:
-                    extra_icons += matcher["add_icon"]
+                    extra_icons += [matcher["add_icon"]]
                     for key in matcher["tags"].keys():
                         processed.add(key)
                 if "color" in matcher:
@@ -126,17 +162,24 @@ class Scheme:
                     for key in matcher["tags"].keys():
                         processed.add(key)
 
-        for color_name in ["color", "colour", "building:colour"]:
-            if color_name in tags:
-                fill = self.get_color(tags[color_name])
-                processed.add(color_name)
+        for tag_key in tags:  # type: str
+            if tag_key in ["color", "colour"] or tag_key.endswith(":color") or \
+                    tag_key.endswith(":colour"):
+                fill = self.get_color(tags[tag_key])
+                processed.add(tag_key)
 
         if main_icon:
-            returned = [main_icon] + extra_icons, fill, processed
+            result_set: List[List[str]] = [main_icon] + extra_icons
         else:
-            returned = extra_icons, fill, processed
+            result_set: List[List[str]] = extra_icons
+
+        is_default: bool = False
+        if not result_set and tags:
+            result_set = [[DEFAULT_SHAPE_ID]]
+            is_default = True
+
+        returned: IconSet = IconSet(result_set, fill, processed, is_default)
 
         self.cache[tags_hash] = returned
 
         return returned
-

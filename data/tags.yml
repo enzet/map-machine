@@ -18,6 +18,7 @@ colors:
 
   outline_color: "FFFFFF"
   beach_color: "F0E0C0"
+  boundary_color: "880088"
   building_color: "F8F0E8"  # "D0D0C0"
   building_border_color: "DDDDDD"  # "AAAAAA"
   construction_color: "CCCCCC"
@@ -232,6 +233,8 @@ tags:
   icon: [cupcake]
 - tags: {shop: mall}
   icon: [bag]
+- tags: {shop: alcohol}
+  icon: [bottle]
 - tags: {shop: mall, building: 'yes'}
   icon: [bag]
 - tags: {shop: convenience}
@@ -526,6 +529,291 @@ tags:
   add_icon: [tactile_paving]
 - tags: {'payment:credit_cards': 'yes'}
   add_icon: [credit_card]
+
+ways:
+  - tags: {indoor: area}
+    stroke: indoor_border_color
+    stroke-width: 1
+    fill: indoor_color
+    layer: 10
+  - tags: {indoor: corridor}
+    stroke: indoor_color
+    stroke-width: 1
+    fill: indoor_color
+    layer: 11
+  - tags: {indoor: ["yes", room, elevator]}
+    stroke: indoor_color
+    stroke-width: 1
+    fill: indoor_color
+    layer: 12
+  - tags: {indoor: column}
+    stroke: indoor_color
+    stroke-width: 1
+    fill: indoor_color
+    layer: 13
+
+  - tags: {natural: wood}
+    fill: wood_color
+    layer: 21
+  - tags: {natural: grassland}
+    fill: grass_color
+    stroke: grass_border_color
+    layer: 20
+  - tags: {natural: scrub}
+    fill: wood_color
+    layer: 21
+  - tags: {natural: sand}
+    fill: sand_color
+    layer: 20
+  - tags: {natural: beach}
+    fill: beach_color
+    layer: 20
+  - tags: {natural: desert}
+    fill: desert_color
+    layer: 20
+  - tags: {natural: forest}
+    fill: wood_color
+    layer: 21
+  - tags: {natural: tree_row}
+    layer: 21
+    stroke: wood_color
+    stroke-width: 5
+  - tags: {natural: water}
+    fill: water_color
+    stroke: water_border_color
+    stroke-width: 1
+    layer: 21
+
+  - tags: {landuse: grass}
+    fill: grass_color
+    layer: 20
+    stroke: grass_border_color
+  - tags: {landuse: conservation}
+    fill: grass_color
+    layer: 20
+  - tags: {landuse: forest}
+    fill: wood_color
+    layer: 20
+  - tags: {landuse: garages}
+    fill: parking_color
+    layer: 21
+  - tags: {landuse: construction}
+    fill: construction_color
+  - tags: {landuse: residential}
+    fill: none
+    stroke: none
+  - tags: {landuse: commercial}
+    fill: none
+    stroke: none
+
+  - tags: {building: "*"}
+    fill: building_color
+    stroke: building_border_color
+
+  - tags: {amenity: parking}
+    fill: parking_color
+    opacity: 0.5
+    icon: parking
+
+  - tags: {waterway: riverbank}
+    fill: water_color
+    stroke: water_border_color
+    stroke-width: 1
+
+  - tags: {railway: subway}
+    stroke-width: 10
+    stroke: "#DDDDDD"
+    layer: 41
+  - tags: {railway: [narrow_gauge, tram]}
+    stroke-width: 2
+    stroke: "#000000"
+    layer: 41
+  - tags: {railway: platform}
+    fill: platform_color
+    stroke-width: 1
+    stroke: platform_border_color
+    layer: 41
+
+  - tags: {highway: motorway}
+    stroke-width: 33
+    stroke: road_border_color
+    layer: 41
+  - tags: {highway: trunk}
+    stroke-width: 31
+    stroke: road_border_color
+    layer: 41
+  - tags: {highway: primary}
+    stroke-width: 29
+    stroke: primary_border_color
+    layer: 41
+  - tags: {highway: secondary}
+    stroke-width: 27
+    stroke: road_border_color
+    layer: 41
+  - tags: {highway: tertiary}
+    stroke-width: 25
+    stroke: road_border_color
+    layer: 41
+  - tags: {highway: unclassified}
+    stroke-width: 17
+    stroke: road_border_color
+    layer: 41
+  - tags: {highway: residential}
+    stroke-width: 17
+    stroke: road_border_color
+    layer: 41
+  - tags: {highway: service}
+    no_tags: {service: parking_aisle}
+    stroke-width: 11
+    stroke: road_border_color
+    layer: 41
+  - tags: {highway: service, service: parking_aisle}
+    stroke-width: 7
+    stroke: road_border_color
+    layer: 41
+  - tags: {highway: track}
+    stroke-width: 3
+    stroke: road_border_color
+    layer: 41
+  - tags: {highway: [footway, pedestrian, cycleway]}
+    no_tags: {area: "yes"}
+    stroke-width: 3
+    stroke: foot_border_color
+    layer: 41
+  - tags: {highway: steps}
+    stroke-width: 6
+    stroke: foot_border_color
+
+  - tags: {highway: motorway}
+    stroke-width: 31
+    stroke: "#FFFFFF"
+    layer: 42
+  - tags: {highway: trunk}
+    stroke-width: 29
+    stroke:  "#FFFFFF"
+    layer: 42
+  - tags: {highway: primary}
+    stroke-width: 27
+    stroke: primary_color
+    layer: 42
+  - tags: {highway: secondary}
+    stroke-width: 25
+    stroke: "#FFFFFF"
+    layer: 42
+  - tags: {highway: tertiary}
+    stroke-width: 23
+    stroke: "#FFFFFF"
+    layer: 42
+  - tags: {highway: unclassified}
+    stroke-width: 15
+    stroke: "#FFFFFF"
+    layer: 42
+  - tags: {highway: residential}
+    stroke-width: 15
+    stroke: "#FFFFFF"
+    layer: 42
+  - tags: {highway: service, service: parking_aisle}
+    stroke-width: 5
+    stroke: "#FFFFFF"
+    layer: 42
+  - tags: {highway: service}
+    no_tags: {service: parking_aisle}
+    stroke-width: 9
+    stroke: "#FFFFFF"
+    layer: 42
+  - tags: {highway: track}
+    stroke-width: 3
+    stroke: road_border_color
+    layer: 42
+  - tags: {highway: [footway, pedestrian]}
+    no_tags: {area: "yes"}
+    stroke-width: 1.5
+    stroke-dasharray: 7,3
+    stroke-linecap: round
+    stroke: foot_color
+    layer: 42
+  - tags: {highway: [footway, pedestrian], area: "yes"}
+    stroke: none
+    fill: "#DDDDDD"
+    layer: -55  # FIXME
+  - tags: {highway: cycleway}
+    no_tags: {area: "yes"}
+    stroke-width: 1
+    stroke: cycle_color
+    stroke-dasharray: 8,2
+    stroke-linecap: butt
+    layer: 42
+  - tags: {highway: steps, conveying: "*"}
+    stroke-width: 5
+    stroke-dasharray: 1.5,2
+    stroke-linecap: butt
+    stroke: "#888888"
+    layer: 42
+  - tags: {highway: steps}
+    no_tags: {conveying: "*"}
+    stroke-width: 5
+    stroke-dasharray: 1.5,2
+    stroke-linecap: butt
+    stroke: foot_color
+    layer: 42
+  - tags: {highway: path}
+    stroke-width: 1
+    stroke-dasharray: 5,5
+    stroke-linecap: butt
+    stroke: foot_color
+    layer: 42
+
+  - tags: {leisure: playground}
+    fill: playground_color
+    opacity: 0.2
+    icon: toy_horse
+    layer: 21
+  - tags: {leisure: garden}
+    fill: grass_color
+    layer: 21
+  - tags: {leisure: pitch}
+    fill: playground_color
+    opacity: 0.2
+    layer: 21
+  - tags: {leisure: park}
+    fill: grass_color
+    opacity: 0.5
+
+  - tags: {barrier: hedge}
+    fill: none
+    stroke: wood_color
+    stroke-width: 4
+    layer: 40
+  - tags: {barrier: [fence, retaining_wall]}
+    fill: none
+    stroke: "#000000"
+    stroke-width: 1
+    opacity: 0.4
+    layer: 40
+  - tags: {barrier: handrail}
+    fill: none
+    stroke: "#000000"
+    stroke-width: 1
+    opacity: 0.3
+    layer: 40
+  - tags: {barrier: kerb}
+    fill: none
+    stroke: "#000000"
+    stroke-width: 1
+    opacity: 0.2
+    layer: 40
+
+  - tags: {border: "*"}
+    stroke: "#FF0000"
+    stroke-width: 0.5
+    stroke-dasharray: 10,20
+  - tags: {"area:highway": "*"}
+
+  - tags: {boundary: "*"}
+    stroke: boundary_color
+    stroke-width: 1
+    stroke-dasharray: 10,5
+    layer: 60
 
 tags_to_write: [
   "operator", "opening_hours", "cuisine", "network", "website",
