@@ -74,6 +74,8 @@ tags:
     icon: [bench_backrest]
   - tags: {amenity: bench, backrest: "no"}
     icon: [bench_no_backrest]
+  - tags: {amenity: bicycle_repair_station}
+    icon: [bicycle_repair]
   - tags: {amenity: clock}
     icon: [clock]
   - tags: {amenity: cinema}
@@ -242,6 +244,8 @@ tags:
     icon: [bottle]
   - tags: {shop: bakery}
     icon: [cupcake]
+  - tags: {shop: car_repair}
+    icon: [car_repair]
   - tags: {shop: clothes}
     icon: [shop_clothes]
   - tags: {amenity: shop, shop: clothes}
