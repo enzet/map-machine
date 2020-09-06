@@ -396,6 +396,19 @@ tags:
       entrance: 'yes'
       network: Московский метрополитен
     icon: [moscow_metro]
+  - tags:
+      railway: station
+      station: subway
+      transport: subway
+      network: London Underground
+    icon: [tfl]
+  - tags: {railway: subway_entrance, network: London Underground}
+    icon: [tfl]
+  - tags:
+      railway: subway_entrance
+      entrance: 'yes'
+      network: London Underground
+    icon: [tfl]
   - tags: {railway: level_crossing}
     icon: [cross]
   - tags: {bus: 'yes'}

@@ -43,6 +43,8 @@ map. No matter how frequently the tag is used in OpenStreetMap since final goal
 is to cover all tags. However, common used tags have priority, other things
 being equal.
 
+Draw icon grid: `python3 run.py grid`.
+
 ### Icon combination ###
 
 Some icons can be combined into new icons.
