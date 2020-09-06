@@ -242,6 +242,8 @@ tags:
     icon: [bag]
   - tags: {shop: convenience}
     icon: [shop_convenience]
+  - tags: {shop: ice_cream}
+    icon: [ice_cream]
   - tags: {shop: milk}
     icon: [milk]
   - tags: {amenity: shop, shop: convenience}
