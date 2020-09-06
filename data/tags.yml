@@ -2,19 +2,19 @@ colors:
 
   # Entity
 
-  background: 'EEEEEE'
-  grass: 'C8DC94'
-  sand: 'F0E0D0'
-  beach: 'F0E0C0'
-  deciduous: 'FCAF3E'
-  desert: 'F0E0D0'
-  evergreen: '688C44'
-  playground: '884400'
-  parking: 'DDCC99'
-  water: 'AACCFF'
-  water_border: '6688BB'
-  wood: 'B8CC84'
-  tree: '98AC64'
+  background: "EEEEEE"
+  grass: "C8DC94"
+  sand: "F0E0D0"
+  beach: "F0E0C0"
+  deciduous: "FCAF3E"
+  desert: "F0E0D0"
+  evergreen: "688C44"
+  playground: "884400"
+  parking: "DDCC99"
+  water: "AACCFF"
+  water_border: "6688BB"
+  wood: "B8CC84"
+  tree: "98AC64"
 
   outline_color: "FFFFFF"
   beach_color: "F0E0C0"
@@ -50,8 +50,8 @@ colors:
 
   # Colors not in W3C
 
-  'rose': 'FF007F'  # Wikipedia
-  'slate_blue': '6A5ACD'  # W3C slateblue
+  "rose": "FF007F"  # Wikipedia
+  "slate_blue": "6A5ACD"  # W3C slateblue
 
 tags:
 
@@ -61,7 +61,7 @@ tags:
     draw: false
   - tags: {place: quarter}
     draw: false
-  - tags: {building: 'yes'}
+  - tags: {building: "yes"}
     draw: false
 
     # Street amenity
@@ -70,9 +70,9 @@ tags:
     icon: [atm]
   - tags: {amenity: bench}
     icon: [bench]
-  - tags: {amenity: bench, backrest: 'yes'}
+  - tags: {amenity: bench, backrest: "yes"}
     icon: [bench_backrest]
-  - tags: {amenity: bench, backrest: 'no'}
+  - tags: {amenity: bench, backrest: "no"}
     icon: [bench_no_backrest]
   - tags: {amenity: clock}
     icon: [clock]
@@ -125,7 +125,7 @@ tags:
   - tags: {amenity: parking}
     icon: [parking]
 
-  - tags: {information: '*'}
+  - tags: {information: "*"}
     icon: [information]
   - tags: {tourism: information}
     icon: [information]
@@ -184,7 +184,7 @@ tags:
     icon: [beer]
   - tags: {amenity: fast_food}
     icon: [fast_food]
-  - tags: {amenity: '*', karaoke: 'yes'}
+  - tags: {amenity: "*", karaoke: "yes"}
     add_icon: [microphone]
 
     # Other buildings
@@ -224,38 +224,40 @@ tags:
 
     # Shop
 
-  - tags: {amenity: pharmacy}
-    icon: [pharmacy]
   - tags: {amenity: shop, shop: fishing}
     icon: [fishing]
+  - tags: {shop: alcohol}
+    icon: [bottle]
+  - tags: {shop: bakery}
+    icon: [cupcake]
   - tags: {shop: clothes}
     icon: [shop_clothes]
   - tags: {amenity: shop, shop: clothes}
     icon: [shop_clothes]
-  - tags: {shop: bakery}
-    icon: [cupcake]
-  - tags: {shop: mall}
-    icon: [bag]
-  - tags: {shop: alcohol}
-    icon: [bottle]
-  - tags: {shop: mall, building: 'yes'}
-    icon: [bag]
   - tags: {shop: convenience}
     icon: [shop_convenience]
-  - tags: {shop: ice_cream}
-    icon: [ice_cream]
-  - tags: {shop: milk}
-    icon: [milk]
   - tags: {amenity: shop, shop: convenience}
     icon: [shop_convenience]
-  - tags: {building: store}
-    icon: [shop_convenience]
+  - tags: {shop: electronics}
+    icon: [tv]
+  - tags: {shop: ice_cream}
+    icon: [ice_cream]
   - tags: {shop: kiosk}
     icon: [kiosk]
-  - tags: {building: 'yes', shop: kiosk}
+  - tags: {building: "yes", shop: kiosk}
     icon: [kiosk]
   - tags: {amenity: shop, shop: kiosk}
     icon: [kiosk]
+  - tags: {shop: mall}
+    icon: [bag]
+  - tags: {shop: mall, building: "yes"}
+    icon: [bag]
+  - tags: {shop: milk}
+    icon: [milk]
+  - tags: {amenity: pharmacy}
+    icon: [pharmacy]
+  - tags: {building: store}
+    icon: [shop_convenience]
   - tags: {shop: gift}
     icon: [gift]
   - tags: {shop: watches}
@@ -307,18 +309,25 @@ tags:
 
     # Additions for buildings
 
-  - tags: {building: '*', 'roof:material': metal}
+  - tags: {building: "*", "roof:material": metal}
     add_icon: [metal_roof]
-  - tags: {building: '*', 'roof:shape': onion}
+  - tags: {building: "*", "roof:shape": onion}
     add_icon: [onion_roof_shape]
+
+    # Natural
+
+  - tags: {natural: cliff}
+    icon: [cliff]
+  - tags: {natural: stone}
+    icon: [stone]
 
     # Trees
 
-  - tags: {natural: tree}
-    icon: [tree]
-    color: tree
   - tags: {natural: bush}
     icon: [bush]
+    color: tree
+  - tags: {natural: tree}
+    icon: [tree]
     color: tree
   - tags: {natural: tree, leaf_type: broadleaved}
     icon: [broadleaved]
@@ -363,15 +372,15 @@ tags:
 
     # Entrance
 
-  - tags: {entrance: 'yes'}
+  - tags: {entrance: "yes"}
     icon: [entrance]
-  - tags: {door: 'yes'}
+  - tags: {door: "yes"}
     icon: [entrance]
   - tags: {entrance: main}
     icon: [main_entrance]
   - tags: {entrance: staircase}
     icon: [staircase]
-  - tags: {door: 'no'}
+  - tags: {door: "no"}
     icon: [no_door]
 
     # Transport
@@ -385,7 +394,7 @@ tags:
     icon: [train]
   - tags: {railway: subway_entrance}
     icon: [train]
-  - tags: {railway: subway_entrance, entrance: 'yes'}
+  - tags: {railway: subway_entrance, entrance: "yes"}
     icon: [train]
   - tags:
       railway: station
@@ -397,7 +406,7 @@ tags:
     icon: [moscow_metro]
   - tags:
       railway: subway_entrance
-      entrance: 'yes'
+      entrance: "yes"
       network: Московский метрополитен
     icon: [moscow_metro]
   - tags:
@@ -410,14 +419,14 @@ tags:
     icon: [tfl]
   - tags:
       railway: subway_entrance
-      entrance: 'yes'
+      entrance: "yes"
       network: London Underground
     icon: [tfl]
   - tags: {railway: level_crossing}
     icon: [cross]
-  - tags: {bus: 'yes'}
+  - tags: {bus: "yes"}
     add_icon: [bus]
-  - tags: {trolleybus: 'yes'}
+  - tags: {trolleybus: "yes"}
     add_icon: [trolleybus]
   - tags: {railway: tram_station}
     icon: [tram]
@@ -427,12 +436,12 @@ tags:
     icon: [bus_stop_sign]
     with_icon: [bus_stop_bench, bus_stop_shelter]
     over_icon: [platform]
-  - tags: {highway: bus_stop, shelter: 'yes'}
+  - tags: {highway: bus_stop, shelter: "yes"}
     icon: [bus_stop_sign]
     under_icon: [bus_stop_sign]
     with_icon: [bus_stop_bench, platform]
     over_icon: [bus_stop_shelter]
-  - tags: {highway: bus_stop, bench: 'yes'}
+  - tags: {highway: bus_stop, bench: "yes"}
     under_icon: [bus_stop_sign]
     with_icon: [bus_stop_shelter, platform]
     over_icon: [bus_stop_bench]
@@ -440,7 +449,7 @@ tags:
     icon: [stop]
   - tags: {highway: give_way}
     icon: [triangle_down_hollow]
-  - tags: {noexit: 'yes'}
+  - tags: {noexit: "yes"}
     icon: [noexit]
 
     # Railway special
@@ -484,20 +493,27 @@ tags:
   - tags: {manhole: drain}
     icon: [manhole_drain]
 
-    # Tourism
+    # Historic
 
   - tags: {historic: "*"}
     icon: [historic]
   - tags: {historic: memorial}  # Before memorial:*
     icon: [memorial]
-  - tags: {historic: memorial, memorial: statue}
-    icon: [statue]
   - tags: {historic: memorial, memorial: plaque}
     icon: [plaque]
+  - tags: {historic: memorial, memorial: statue}
+    icon: [statue]
+  - tags: {historic: stone}
+    icon: [stone_with_inscription]
+  - tags: {historic: memorial, memorial: stone}
+    icon: [stone_with_inscription]
   - tags: {historic: tomb}  # Before tomb:*
     icon: [tomb]
   - tags: {historic: tomb, tomb: mausoleum}
     icon: [mausoleum]
+
+    # Tourism
+
   - tags: {tourism: artwork, artwork_type: statue}
     icon: [statue]
   - tags: {tourism: artwork, artwork_type: sculpture}
@@ -524,20 +540,20 @@ tags:
 
     # Additions for everything
 
-  - tags: {wheelchair: 'yes'}
+  - tags: {wheelchair: "yes"}
     add_icon: [wheelchair]
-  - tags: {foot: 'yes'}
+  - tags: {foot: "yes"}
     add_icon: [foot]
-  - tags: {foot: 'no'}
+  - tags: {foot: "no"}
     add_icon: [no_foot]
-  - tags: {bicycle: 'yes'}
+  - tags: {bicycle: "yes"}
     add_icon: [bicycle]
-  - tags: {bicycle: 'no'}
+  - tags: {bicycle: "no"}
     add_icon: [no_bicycle]
-  - tags: {internet_access: wlan, 'internet_access:fee': 'no'}
+  - tags: {internet_access: wlan, "internet_access:fee": "no"}
     add_icon: [free_wlan]
   - tags: {internet_access: wlan}
-    no_tags: ['internet_access:fee']
+    no_tags: ["internet_access:fee"]
     add_icon: [wlan]
   - tags: {material: wood}
     add_icon: [wood]
@@ -547,11 +563,11 @@ tags:
     add_icon: [clockwise]
   - tags: {direction: contrclockwise}
     add_icon: [contrclockwise]
-  - tags: {atm: 'yes'}
+  - tags: {atm: "yes"}
     add_icon: [atm]
-  - tags: {tactile_paving: 'yes'}
+  - tags: {tactile_paving: "yes"}
     add_icon: [tactile_paving]
-  - tags: {'payment:credit_cards': 'yes'}
+  - tags: {"payment:credit_cards": "yes"}
     add_icon: [credit_card]
 
 ways:
