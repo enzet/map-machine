@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Optional, Set
 
 from roentgen.extract_icon import DEFAULT_SHAPE_ID
 
-DEFAULT_COLOR: str = "444444"
+DEFAULT_COLOR: str = "#444444"
 
 
 class IconSet:
@@ -68,12 +68,12 @@ class Scheme:
         """
         Return color if the color is in scheme, otherwise return default color.
 
-        :return: 6-digit color specification without "#"
+        :return: 6-digit color specification with "#"
         """
         if color in self.colors:
-            return self.colors[color]
+            return "#" + self.colors[color]
         if color.startswith("#"):
-            return color[1:]
+            return color
 
         print(f"No color {color}.")
 
@@ -158,7 +158,7 @@ class Scheme:
                     for key in matcher["tags"].keys():
                         processed.add(key)
                 if "color" in matcher:
-                    fill = self.colors[matcher["color"]]
+                    fill = self.get_color(matcher["color"])
                     for key in matcher["tags"].keys():
                         processed.add(key)
 

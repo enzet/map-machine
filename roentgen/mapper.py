@@ -22,6 +22,7 @@ from roentgen.extract_icon import Icon, IconExtractor
 from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader
 from roentgen.scheme import Scheme
+from roentgen.direction import DirectionSet
 
 ICONS_FILE_NAME: str = "icons/icons.svg"
 TAGS_FILE_NAME: str = "data/tags.yml"
@@ -95,7 +96,7 @@ class Painter:
         write_tags = self.construct_text(node.tags, node.icon_set.processed)
 
         for text_struct in write_tags:
-            fill = text_struct["fill"] if "fill" in text_struct else "444444"
+            fill = text_struct["fill"] if "fill" in text_struct else "#444444"
             size = text_struct["size"] if "size" in text_struct else 10
             text_y += size + 1
             text = text_struct["text"]
@@ -113,11 +114,11 @@ class Painter:
                     text = f"{tag}: {node.tags[tag]}"
                     self.draw_text(
                         text, (node.point[0], node.point[1] + text_y + 18),
-                        "734A08")
+                        "#734A08")
                     text_y += 10
 
     def draw_text(
-            self, text: str, point, fill, size=10, out_fill="FFFFFF",
+            self, text: str, point, fill, size=10, out_fill="#FFFFFF",
             out_opacity=1.0, out_fill_2=None, out_opacity_2=1.0):
         """
         Drawing text.
@@ -131,18 +132,18 @@ class Painter:
         if out_fill_2:
             self.svg.add(Text(
                 text, point, font_size=size, text_anchor="middle",
-                font_family="Roboto", fill=f"#{out_fill_2}",
+                font_family="Roboto", fill=out_fill_2,
                 stroke_linejoin="round", stroke_width=5,
-                stroke=f"#{out_fill_2}", opacity=out_opacity_2))
+                stroke=out_fill_2, opacity=out_opacity_2))
         if out_fill:
             self.svg.add(Text(
                 text, point, font_size=size, text_anchor="middle",
-                font_family="Roboto", fill=f"#{out_fill}",
+                font_family="Roboto", fill=out_fill,
                 stroke_linejoin="round", stroke_width=3,
-                stroke=f"#{out_fill}", opacity=out_opacity))
+                stroke=out_fill, opacity=out_opacity))
         self.svg.add(Text(
             text, point, font_size=size, text_anchor="middle",
-            font_family="Roboto", fill=f"#{fill}"))
+            font_family="Roboto", fill=fill))
 
     def construct_text(self, tags, processed):
         """
@@ -197,7 +198,7 @@ class Painter:
             address.append(tags["addr:housenumber"])
             tags.pop("addr:housenumber", None)
         if name:
-            texts.append({"text": name, "fill": "000000"})
+            texts.append({"text": name, "fill": "#000000"})
         if alt_name:
             texts.append({"text": "(" + alt_name + ")"})
         if address:
@@ -223,11 +224,11 @@ class Painter:
             if link[-1] == "/":
                 link = link[:-1]
             link = link[:25] + ("..." if len(tags["website"]) > 25 else "")
-            texts.append({"text": link, "fill": "000088"})
+            texts.append({"text": link, "fill": "#000088"})
             tags.pop("website", None)
         for k in ["phone"]:
             if k in tags:
-                texts.append({"text": tags[k], "fill": "444444"})
+                texts.append({"text": tags[k], "fill": "#444444"})
                 tags.pop(k)
         for tag in tags:
             if self.scheme.is_writable(tag) and not (tag in processed):
@@ -266,7 +267,7 @@ class Painter:
                         d=("M", np.add(flung_1, shift_1), "L",
                            np.add(flung_2, shift_1), np.add(flung_2, shift_2),
                            np.add(flung_1, shift_2), "Z"),
-                        fill=f"#{color}", stroke=f"#{color}", stroke_width=1))
+                        fill=color, stroke=color, stroke_width=1))
             elif way.path:
                 # TODO: implement
                 pass
@@ -312,9 +313,9 @@ class Painter:
 
         # Building walls
 
-        self.draw_building_walls(1, "AAAAAA", ways)
-        self.draw_building_walls(2, "C3C3C3", ways)
-        self.draw_building_walls(3, "DDDDDD", ways)
+        self.draw_building_walls(1, "#AAAAAA", ways)
+        self.draw_building_walls(2, "#C3C3C3", ways)
+        self.draw_building_walls(3, "#DDDDDD", ways)
 
         # Building roof
 
@@ -344,6 +345,29 @@ class Painter:
             self.svg.add(Circle(
                 node.point, float(node.tags["diameter_crown"]) * 1.2,
                 fill="#688C44", stroke="#688C44", opacity=0.3))
+
+        # Directions
+
+        for node in nodes:
+            if not ("tourism" in node.tags and
+                    node.tags["tourism"] == "viewpoint" and
+                    "direction" in node.tags):
+                continue
+
+            DIRECTION_RADIUS: int = 50
+            DIRECTION_COLOR: str = self.scheme.get_color("direction_color")
+
+            for d in DirectionSet(node.tags["direction"])\
+                    .draw(node.point, DIRECTION_RADIUS):
+                gradient = self.svg.defs.add(self.svg.radialGradient(
+                    center=node.point, r=DIRECTION_RADIUS,
+                    gradientUnits="userSpaceOnUse"))
+                gradient\
+                    .add_stop_color(0, DIRECTION_COLOR, opacity=0)\
+                    .add_stop_color(1, DIRECTION_COLOR, opacity=0.7)
+                self.svg.add(self.svg.path(
+                    d=["M", node.point] + d + ["L", node.point, "Z"],
+                    fill=gradient.get_paint_server()))
 
         # All other nodes
 
@@ -382,12 +406,12 @@ class Painter:
         title: str = "\n".join(map(lambda x: x + ": " + tags[x], tags))
 
         path = icon.get_path(self.svg, point)
-        path.update({"fill": f"#{fill}"})
+        path.update({"fill": fill})
         path.set_desc(title=title)
         self.svg.add(path)
 
     def draw_point_outline(
-            self, icon: Icon, point, fill, mode="default", size=16):
+            self, icon: Icon, point, fill, mode="default"):
 
         point = np.array(list(map(lambda x: int(x), point)))
 
@@ -395,18 +419,18 @@ class Painter:
         stroke_width = 2.2
         outline_fill = self.scheme.get_color("outline_color")
         if mode not in [AUTHOR_MODE, CREATION_TIME_MODE]:
-            r = int(fill[0:2], 16)
-            g = int(fill[2:4], 16)
-            b = int(fill[4:6], 16)
+            r = int(fill[1:3], 16)
+            g = int(fill[3:5], 16)
+            b = int(fill[5:7], 16)
             Y = 0.2126 * r + 0.7152 * g + 0.0722 * b
             if Y > 200:
-                outline_fill = "000000"
+                outline_fill = "#000000"
                 opacity = 0.7
 
         path = icon.get_path(self.svg, point)
         path.update({
-            "fill": f"#{outline_fill}", "opacity": opacity,
-            "stroke": f"#{outline_fill}", "stroke-width": stroke_width,
+            "fill": outline_fill, "opacity": opacity,
+            "stroke": outline_fill, "stroke-width": stroke_width,
             "stroke-linejoin": "round"})
         self.svg.add(path)
 

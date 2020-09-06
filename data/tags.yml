@@ -16,6 +16,8 @@ colors:
   wood: "B8CC84"
   tree: "98AC64"
 
+  direction_color: "E0F0FF"
+
   outline_color: "FFFFFF"
   beach_color: "F0E0C0"
   boundary_color: "880088"

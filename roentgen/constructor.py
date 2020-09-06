@@ -177,12 +177,6 @@ class Constructor:
         self.nodes: List[Node] = []
         self.ways: List[Way] = []
 
-    def color(self, name: str):
-        """
-        Get color from the scheme.
-        """
-        return self.scheme.get_color(name)
-
     def construct_ways(self):
         """
         Construct Röntgen ways.
@@ -283,7 +277,7 @@ class Constructor:
                     if key not in ["tags", "no_tags", "layer", "level", "icon"]:
                         value = element[key]
                         if isinstance(value, str) and value.endswith("_color"):
-                            value = "#" + self.scheme.get_color(value)
+                            value = self.scheme.get_color(value)
                         style[key] = value
                 self.ways.append(
                     Way(kind, nodes, path, style, layer, 50, levels))
@@ -294,6 +288,7 @@ class Constructor:
                         icon_set, tags, center_point, path, is_for_node=False))
                 appended = True
 
+        """
         if not appended:
             style: Dict[str, Any] = {
                 "fill": "none", "stroke": "#FF0000", "stroke-width": 1}
@@ -303,6 +298,7 @@ class Constructor:
                 icon_set: IconSet = self.scheme.get_icon(tags)
                 self.nodes.append(Node(
                     icon_set, tags, center_point, path, is_for_node=False))
+        """
 
     def construct_relations(self) -> None:
         """
