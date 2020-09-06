@@ -148,9 +148,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="288.43718"
-     inkscape:cx="253.00966"
-     inkscape:zoom="5.6"
+     inkscape:cy="289.50861"
+     inkscape:cx="129.43823"
+     inkscape:zoom="11.2"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -8172,7 +8172,7 @@
     <path
        sodipodi:nodetypes="ccccccccccccccccccccccccccccc"
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 24.5,290 -1,2 -1,-1 0,2 0,1 -1,-1 0,1 -2,-1 1,2 -1,0 1,1 1,1 1,1 -0.5,1 2.5,-0.5 2.5,0.5 -0.5,-1 1,-1 1,-1 1,-1 -1,0 1,-2 -2,1 0,-1 -1,1 0,-1 0,-2 -1,1 z"
+       d="m 24.5,290 -1,2 -1,-1 v 2 1 l -1,-1 v 1 l -2,-1 1,2 h -1 l 1,1 1,1 1,1 -0.5,1 2.5,-0.5 2.5,0.5 -0.5,-1 1,-1 1,-1 1,-1 h -1 l 1,-2 -2,1 v -1 l -1,1 v -1 -2 l -1,1 z"
        id="path13324"
        inkscape:connector-curvature="0" />
     <rect
@@ -8482,5 +8482,36 @@
        width="6"
        id="rect2060"
        style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#000000;stroke-width:0.0999997;stroke-miterlimit:4;stroke-dasharray:none;marker:none;enable-background:accumulate" />
+    <rect
+       rx="0.5"
+       ry="0.5"
+       y="291"
+       x="132"
+       height="10"
+       width="2"
+       id="rect2088"
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect2090"
+       width="2"
+       height="10"
+       x="138"
+       y="291"
+       ry="0.5"
+       rx="0.5" />
+    <rect
+       ry="0.5"
+       rx="0.5"
+       y="295"
+       x="133"
+       height="2"
+       width="6"
+       id="rect2092"
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
+    <path
+       d="M 132.5 307 C 132.223 307 132 307.223 132 307.5 L 132 316.5 C 132 316.777 132.223 317 132.5 317 L 133.5 317 C 133.777 317 134 316.777 134 316.5 L 134 313 L 138 313 L 138 316.5 C 138 316.777 138.223 317 138.5 317 L 139.5 317 C 139.777 317 140 316.777 140 316.5 L 140 307.5 C 140 307.223 139.777 307 139.5 307 L 138.5 307 C 138.223 307 138 307.223 138 307.5 L 138 311 L 134 311 L 134 307.5 C 134 307.223 133.777 307 133.5 307 L 132.5 307 z "
+       style="fill:#000000;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+       id="h" />
   </g>
 </svg>

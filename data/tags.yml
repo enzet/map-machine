@@ -300,6 +300,8 @@ tags:
 
   - tags: {aeroway: aerodrome}
     icon: [plane]
+  - tags: {aeroway: helipad}
+    icon: [h]
   - tags: {aeroway: landingpad}
     icon: [booster_landing]
 
