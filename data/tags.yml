@@ -38,8 +38,11 @@ colors:
   primary_border_color: "888888"  # "AA8800"
   primary_color: "FFFFFF"  # "FFDD66"
   private_access_color: "884444"
+  ridge_color: "000000"
   road_border_color: "CCCCCC"
+  rock_color: "DDDDDD"
   sand_color: "F0E0D0"
+  scree_color: "CCCCCC"
   water_color: "AACCFF"
   water_border_color: "6688BB"
   wood_color: "B8CC84"
@@ -255,6 +258,10 @@ tags:
     icon: [gift]
   - tags: {shop: watches}
     icon: [watches]
+  - tags: {craft: watchmaker}
+    icon: [watches]
+  - tags: {shop: frame}
+    icon: [frame]
 
     # Place of worship
 
@@ -583,6 +590,15 @@ ways:
     stroke: water_border_color
     stroke-width: 1
     layer: 21
+  - tags: {natural: ridge}
+    stroke-width: 2
+    opacity: 0.3
+    stroke: ridge_color
+    layer: 21
+  - tags: {natural: bare_rock}
+    fill: rock_color
+  - tags: {natural: scree}
+    fill: scree_color
 
   - tags: {landuse: grass}
     fill: grass_color
