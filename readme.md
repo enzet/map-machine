@@ -3,7 +3,8 @@
   * set of icons,
   * and map styles.
 
-[![Build Status](https://travis-ci.org/enzet/Roentgen.svg?branch=master)](https://travis-ci.org/enzet/Roentgen)
+[![Build Status](https://travis-ci.org/enzet/Roentgen.svg?branch=master)
+](https://travis-ci.org/enzet/Roentgen)
 
 The idea behind Röntgen project is to have a possibility to display every
 OpenStreetMap data tag on the map. Suppose, you spent time adding colors for
@@ -18,7 +19,7 @@ Map elements
 
 ### 3D buildings ###
 
-Simple shapes for walls, shade, and roof.
+Simple shapes for walls and shade in proportion to `building:levels` value.
 
 ![3D buildings](doc/buildings.png)
 
@@ -27,6 +28,12 @@ Simple shapes for walls, shade, and roof.
 Tree leaf types, leaf cycles, and genes.
 
 ![Trees](doc/trees.png)
+
+### Viewpoint direction ###
+
+Visualize `direction` tag for `tourism=viewpoint`.
+
+![Trees](doc/viewpoints.png)
 
 Icon set
 --------

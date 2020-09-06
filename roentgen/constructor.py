@@ -11,6 +11,8 @@ from roentgen.flinger import Geo, GeoFlinger
 from roentgen.osm_reader import OSMMember, OSMRelation, OSMWay
 from roentgen.scheme import IconSet, Scheme
 
+DEBUG: bool = False
+
 
 class Node:
     """
@@ -79,7 +81,7 @@ def get_user_color(text: str, seed: str):
     Generate random color based on text.
     """
     if text == "":
-        return "000000"
+        return "#000000"
     rgb = sha256((seed + text).encode("utf-8")).hexdigest()[-6:]
     r = int(rgb[0:2], 16)
     g = int(rgb[2:4], 16)
@@ -90,7 +92,7 @@ def get_user_color(text: str, seed: str):
     g = g * (1 - cc) + c * cc
     b = b * (1 - cc) + c * cc
     h = hex(int(r))[2:] + hex(int(g))[2:] + hex(int(b))[2:]
-    return "0" * (6 - len(h)) + h
+    return "#" + "0" * (6 - len(h)) + h
 
 
 def get_time_color(time):
@@ -98,7 +100,7 @@ def get_time_color(time):
     Generate color based on time.
     """
     if not time:
-        return "000000"
+        return "#000000"
     time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
     delta = (datetime.now() - time).total_seconds()
     time_color = hex(0xFF - min(0xFF, int(delta / 500000.)))[2:]
@@ -107,7 +109,7 @@ def get_time_color(time):
         time_color = "0" + time_color
     if len(i_time_color) == 1:
         i_time_color = "0" + i_time_color
-    return time_color + "AA" + i_time_color
+    return "#" + time_color + "AA" + i_time_color
 
 
 def glue(ways: List[OSMWay]):
@@ -226,7 +228,7 @@ class Constructor:
             user_color = get_user_color(way.user, self.seed)
             self.ways.append(
                 Way("way", nodes, path,
-                    {"fill": "none", "stroke": "#" + user_color,
+                    {"fill": "none", "stroke": user_color,
                      "stroke-width": 1}))
             return
 
@@ -236,7 +238,7 @@ class Constructor:
             time_color = get_time_color(way.timestamp)
             self.ways.append(
                 Way("way", nodes, path,
-                    {"fill": "none", "stroke": "#" + time_color,
+                    {"fill": "none", "stroke": time_color,
                      "stroke-width": 1}))
             return
 
@@ -288,8 +290,7 @@ class Constructor:
                         icon_set, tags, center_point, path, is_for_node=False))
                 appended = True
 
-        """
-        if not appended:
+        if not appended and DEBUG:
             style: Dict[str, Any] = {
                 "fill": "none", "stroke": "#FF0000", "stroke-width": 1}
             self.ways.append(Way(kind, nodes, path, style, layer, 50, levels))
@@ -298,7 +299,6 @@ class Constructor:
                 icon_set: IconSet = self.scheme.get_icon(tags)
                 self.nodes.append(Node(
                     icon_set, tags, center_point, path, is_for_node=False))
-        """
 
     def construct_relations(self) -> None:
         """

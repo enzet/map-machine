@@ -107,6 +107,8 @@ tags:
     icon: [fire_hydrant]
   - tags: {highway: street_lamp}
     icon: [street_lamp]
+  - tags: {man_made: cross}
+    icon: [cross]
   - tags: {man_made: pole}
     icon: [pole]
   - tags: {power: pole}
@@ -152,6 +154,15 @@ tags:
     add_icon: [vending_tickets]
   - tags: {vending: water}
     add_icon: [vending_drop]
+
+  # Sea
+
+  - tags: {buoy: "*"}
+    icon: [buoy]
+  - tags: {"seamark:type": "*"}
+    icon: [buoy]
+  - tags: {"waterway:sign": "*"}
+    icon: [buoy]
 
     # Leisure
 
@@ -290,12 +301,12 @@ tags:
     # Place of worship
 
   - tags: {amenity: place_of_worship, religion: christian}
-    icon: [christian]
+    icon: [cross]
   - tags:
       amenity: place_of_worship
       religion: christian
       denomination: catholic
-    icon: [christian]
+    icon: [cross]
   - tags:
       amenity: place_of_worship
       religion: christian
@@ -443,7 +454,7 @@ tags:
       network: London Underground
     icon: [tfl]
   - tags: {railway: level_crossing}
-    icon: [cross]
+    icon: [x]
   - tags: {bus: "yes"}
     add_icon: [bus]
   - tags: {trolleybus: "yes"}
@@ -880,7 +891,7 @@ ways:
 
   - tags: {boundary: "*"}
     stroke: boundary_color
-    stroke-width: 1
+    stroke-width: 0.3
     stroke-dasharray: 10,5
     layer: 60
 

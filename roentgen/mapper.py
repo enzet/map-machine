@@ -357,7 +357,7 @@ class Painter:
             DIRECTION_RADIUS: int = 50
             DIRECTION_COLOR: str = self.scheme.get_color("direction_color")
 
-            for d in DirectionSet(node.tags["direction"])\
+            for path in DirectionSet(node.tags["direction"])\
                     .draw(node.point, DIRECTION_RADIUS):
                 gradient = self.svg.defs.add(self.svg.radialGradient(
                     center=node.point, r=DIRECTION_RADIUS,
@@ -366,7 +366,7 @@ class Painter:
                     .add_stop_color(0, DIRECTION_COLOR, opacity=0)\
                     .add_stop_color(1, DIRECTION_COLOR, opacity=0.7)
                 self.svg.add(self.svg.path(
-                    d=["M", node.point] + d + ["L", node.point, "Z"],
+                    d=["M", node.point] + path + ["L", node.point, "Z"],
                     fill=gradient.get_paint_server()))
 
         # All other nodes
