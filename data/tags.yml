@@ -134,8 +134,20 @@ tags:
   - tags: {information: board}
     icon: [information_board]
 
+  - tags: {vending: admission_tickets}
+    add_icon: [vending_tickets]
+  - tags: {vending: candles}
+    add_icon: [vending_candles]
+  - tags: {vending: chemist}
+    add_icon: [vending_chemist]
+  - tags: {vending: drinks}
+    add_icon: [vending_bottle]
+  - tags: {vending: fishing_tackle}
+    add_icon: [vending_angle]
   - tags: {vending: public_transport_tickets}
-    add_icon: [ticket]
+    add_icon: [vending_tickets]
+  - tags: {vending: water}
+    add_icon: [vending_drop]
 
     # Leisure
 
@@ -242,6 +254,8 @@ tags:
     icon: [tv]
   - tags: {shop: ice_cream}
     icon: [ice_cream]
+  - tags: {shop: gift}
+    icon: [gift]
   - tags: {shop: kiosk}
     icon: [kiosk]
   - tags: {building: "yes", shop: kiosk}
@@ -258,8 +272,8 @@ tags:
     icon: [pharmacy]
   - tags: {building: store}
     icon: [shop_convenience]
-  - tags: {shop: gift}
-    icon: [gift]
+  - tags: {shop: ticket}
+    icon: [ticket]
   - tags: {shop: watches}
     icon: [watches]
   - tags: {craft: watchmaker}
