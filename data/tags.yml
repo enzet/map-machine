@@ -16,7 +16,7 @@ colors:
   wood: "B8CC84"
   tree: "98AC64"
 
-  direction_color: "E0F0FF"
+  direction_color: "0088FF"  # "E0F0FF"
 
   outline_color: "FFFFFF"
   beach_color: "F0E0C0"
@@ -76,60 +76,77 @@ tags:
     icon: [bench_backrest]
   - tags: {amenity: bench, backrest: "no"}
     icon: [bench_no_backrest]
+  - tags: {amenity: bicycle_parking}
+    icon: [bicycle_parking]
   - tags: {amenity: bicycle_repair_station}
     icon: [bicycle_repair]
   - tags: {amenity: clock}
     icon: [clock]
   - tags: {amenity: cinema}
     icon: [film]
-  - tags: {amenity: telephone}
-    icon: [telephone]
   - tags: {amenity: fountain}
     icon: [fountain]
     color: water_border
-  - tags: {amenity: toilets}
-    icon: [toilets]
+  - tags: {amenity: parking}
+    icon: [parking]
   - tags: {amenity: post_box}
     icon: [letter]
   - tags: {amenity: prison}
     icon: [prison]
   - tags: {amenity: stage}
     icon: [theatre]
+  - tags: {amenity: telephone}
+    icon: [telephone]
+  - tags: {amenity: toilets}
+    icon: [toilets]
   - tags: {amenity: vending_machine}
     icon: [vending_machine]
   - tags: {amenity: waste_basket}
     icon: [waste_basket]
+
+
+  # Emergency
+
   - tags: {emergency: phone}
     icon: [sos_phone]
   - tags: {emergency: fire_extinguisher}
     icon: [fire_extinguisher]
   - tags: {emergency: fire_hydrant}
     icon: [fire_hydrant]
+
+  # Highway
+
   - tags: {highway: street_lamp}
     icon: [street_lamp]
+
+  # Man made
+
   - tags: {man_made: cross}
     icon: [cross]
+  - tags: {man_made: flagpole}
+    icon: [flagpole]
   - tags: {man_made: pole}
     icon: [pole]
+  - tags: {man_made: pole, highway: street_lamp}
+    icon: [pole_lamp]
+  - tags: {man_made: surveillance}
+    icon: [cctv]
+  - tags: {man_made: ventilation_shaft}
+    icon: [ventilation]
+
+  # Building
+
+  - tags: {building: ventilation_shaft}
+    icon: [ventilation]
+
+  # Power
+
   - tags: {power: pole}
     icon: [pole]
   - tags: {power: generator}
     icon: [power_generator]
   - tags: {power: tower}
     icon: [power_tower]
-  - tags: {man_made: pole, highway: street_lamp}
-    icon: [pole_lamp]
-  - tags: {man_made: flagpole}
-    icon: [flagpole]
-  - tags: {man_made: ventilation_shaft}
-    icon: [ventilation]
-  - tags: {building: ventilation_shaft}
-    icon: [ventilation]
-
-  - tags: {amenity: bicycle_parking}
-    icon: [bicycle_parking]
-  - tags: {amenity: parking}
-    icon: [parking]
 
   - tags: {information: "*"}
     icon: [information]
@@ -651,8 +668,8 @@ ways:
     stroke-width: 5
   - tags: {natural: water}
     fill: water_color
-    stroke: water_border_color
-    stroke-width: 1
+    # stroke: water_border_color
+    # stroke-width: 1
     layer: 21
   - tags: {natural: ridge}
     stroke-width: 2
@@ -696,7 +713,7 @@ ways:
     icon: parking
 
   - tags: {waterway: riverbank}
-    fill: water_color
+    fill: none # water_color
     stroke: water_border_color
     stroke-width: 1
 
@@ -717,93 +734,115 @@ ways:
   - tags: {highway: motorway}
     stroke-width: 33
     stroke: road_border_color
+    stroke-linecap: round
     layer: 41
   - tags: {highway: trunk}
     stroke-width: 31
     stroke: road_border_color
+    stroke-linecap: round
     layer: 41
   - tags: {highway: primary}
     stroke-width: 29
     stroke: primary_border_color
+    stroke-linecap: round
     layer: 41
   - tags: {highway: secondary}
     stroke-width: 27
     stroke: road_border_color
+    stroke-linecap: round
     layer: 41
   - tags: {highway: tertiary}
     stroke-width: 25
     stroke: road_border_color
+    stroke-linecap: round
     layer: 41
   - tags: {highway: unclassified}
     stroke-width: 17
     stroke: road_border_color
+    stroke-linecap: round
     layer: 41
   - tags: {highway: residential}
     stroke-width: 17
     stroke: road_border_color
+    stroke-linecap: round
     layer: 41
   - tags: {highway: service}
     no_tags: {service: parking_aisle}
     stroke-width: 11
     stroke: road_border_color
+    stroke-linecap: round
     layer: 41
   - tags: {highway: service, service: parking_aisle}
     stroke-width: 7
     stroke: road_border_color
+    stroke-linecap: round
     layer: 41
   - tags: {highway: track}
     stroke-width: 3
     stroke: road_border_color
+    stroke-linecap: round
     layer: 41
   - tags: {highway: [footway, pedestrian, cycleway]}
     no_tags: {area: "yes"}
     stroke-width: 3
     stroke: foot_border_color
+    stroke-linecap: round
     layer: 41
   - tags: {highway: steps}
     stroke-width: 6
     stroke: foot_border_color
+    stroke-linecap: butt
 
   - tags: {highway: motorway}
     stroke-width: 31
     stroke: "#FFFFFF"
+    stroke-linecap: round
     layer: 42
   - tags: {highway: trunk}
     stroke-width: 29
     stroke:  "#FFFFFF"
+    stroke-linecap: round
     layer: 42
   - tags: {highway: primary}
     stroke-width: 27
     stroke: primary_color
+    stroke-linecap: round
     layer: 42
   - tags: {highway: secondary}
     stroke-width: 25
     stroke: "#FFFFFF"
+    stroke-linecap: round
     layer: 42
   - tags: {highway: tertiary}
     stroke-width: 23
     stroke: "#FFFFFF"
+    stroke-linecap: round
     layer: 42
   - tags: {highway: unclassified}
     stroke-width: 15
     stroke: "#FFFFFF"
+    stroke-linecap: round
     layer: 42
   - tags: {highway: residential}
     stroke-width: 15
     stroke: "#FFFFFF"
+    stroke-linecap: round
     layer: 42
   - tags: {highway: service, service: parking_aisle}
     stroke-width: 5
     stroke: "#FFFFFF"
+    stroke-linecap: round
     layer: 42
   - tags: {highway: service}
     no_tags: {service: parking_aisle}
     stroke-width: 9
     stroke: "#FFFFFF"
+    stroke-linecap: round
     layer: 42
   - tags: {highway: track}
     stroke-width: 3
     stroke: road_border_color
+    stroke-linecap: round
     layer: 42
   - tags: {highway: [footway, pedestrian]}
     no_tags: {area: "yes"}
@@ -815,6 +854,7 @@ ways:
   - tags: {highway: [footway, pedestrian], area: "yes"}
     stroke: none
     fill: "#DDDDDD"
+    stroke-linecap: round
     layer: -55  # FIXME
   - tags: {highway: cycleway}
     no_tags: {area: "yes"}
