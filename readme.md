@@ -6,18 +6,22 @@
 [![Build Status](https://travis-ci.org/enzet/Roentgen.svg?branch=master)
 ](https://travis-ci.org/enzet/Roentgen)
 
-The idea behind Röntgen project is to have a possibility to display every
-OpenStreetMap data tag on the map. Suppose, you spent time adding colors for
-building walls, benches and shelters for bus stops but they do not represented
-on the map. Röntgen helps to display all changes you made.
+The idea behind Röntgen project is to have a possibility to *display every
+map feature* represented by OpenStreetMap data tags by means of colors, shapes,
+and icons.
+
+Röntgen is primarily created for OpenStreetMap contributors. Suppose, you spent
+time adding colors for building walls, benches and shelters for bus stops but
+they are not represented on the standard tile layer. Röntgen helps to display
+all changes you made.
 
 Nevertheless, Röntgen map generator can generate precise but messy maps for OSM
 contributors as well as pretty and clean maps for OSM users.
 
-Map elements
+Map features
 ------------
 
-### 3D buildings ###
+### Building levels ###
 
 Simple shapes for walls and shade in proportion to `building:levels` value.
 
@@ -29,9 +33,10 @@ Tree leaf types, leaf cycles, and genes.
 
 ![Trees](doc/trees.png)
 
-### Viewpoint direction ###
+### Viewpoint and camera direction ###
 
-Visualize `direction` tag for `tourism=viewpoint`.
+Visualize `direction` tag for `tourism=viewpoint` and `camera:direction` for
+`man_made=surveillance`.
 
 ![Trees](doc/viewpoints.png)
 
@@ -82,14 +87,15 @@ Visualize element creation time.
 
 ### Author mode ###
 
-Visualize element authors.
+Every way and node displayed with the random color picked for each author.
 
 ![Author mode](doc/user.png)
 
 Map generation
 --------------
 
-**Requirements**: Python 3.7.
+**Requirements**: Python (at least 3.7) and Python libraries (see
+`requirements.txt`).
 
 There are simple Python renderer that generates SVG map from OpenStreetMap data.
 You can run it using:
