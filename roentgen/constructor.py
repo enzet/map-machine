@@ -1,3 +1,8 @@
+"""
+Construct Röntgen nodes and ways.
+
+Author: Sergey Vartanov (me@enzet.ru).
+"""
 import numpy as np
 
 from datetime import datetime
@@ -6,9 +11,10 @@ from typing import Any, Dict, List, Optional, Set
 
 from roentgen import ui
 from roentgen.extract_icon import DEFAULT_SMALL_SHAPE_ID
-from roentgen.flinger import Geo, GeoFlinger
-from roentgen.osm_reader import OSMMember, OSMRelation, OSMWay
+from roentgen.flinger import GeoFlinger
+from roentgen.osm_reader import OSMMember, OSMRelation, OSMWay, OSMNode
 from roentgen.scheme import IconSet, Scheme
+from roentgen.util import MinMax
 
 DEBUG: bool = False
 
@@ -40,10 +46,12 @@ class Way:
     Way in Röntgen terms.
     """
     def __init__(
-            self, kind: str, nodes, path, style: Dict[str, Any],
+            self, kind: str, nodes: List[OSMNode], path, style: Dict[str, Any],
             layer: float = 0.0, priority: float = 0, levels=None):
+        assert nodes or path
+
         self.kind = kind
-        self.nodes = nodes
+        self.nodes: List[OSMNode] = nodes
         self.path = path
         self.style: Dict[str, Any] = style
         self.layer = layer
@@ -61,23 +69,20 @@ def get_float(string):
         return 0
 
 
-def line_center(nodes, flinger: GeoFlinger):
+def line_center(nodes: List[OSMNode], flinger: GeoFlinger) -> np.array:
     """
     Get geometric center of nodes set.
+
+    :param nodes: node list
+    :param flinger: flinger that remap geo positions
     """
-    ma = [0, 0]
-    mi = [10000, 10000]
-    for node in nodes:
-        flung = flinger.fling(Geo(node.lat, node.lon))
-        if flung[0] > ma[0]:
-            ma[0] = flung[0]
-        if flung[1] > ma[1]:
-            ma[1] = flung[1]
-        if flung[0] < mi[0]:
-            mi[0] = flung[0]
-        if flung[1] < mi[1]:
-            mi[1] = flung[1]
-    return [(ma[0] + mi[0]) / 2.0, (ma[1] + mi[1]) / 2.0]
+    x, y = MinMax(), MinMax()
+
+    for node in nodes:  # type: OSMNode
+        flung = flinger.fling(node.position)
+        x.add(flung[0])
+        y.add(flung[1])
+    return np.array(((x.min_ + x.max_) / 2.0, (y.min_ + y.max_) / 2.0))
 
 
 def get_user_color(text: str, seed: str):
@@ -99,12 +104,12 @@ def get_user_color(text: str, seed: str):
     return "#" + "0" * (6 - len(h)) + h
 
 
-def get_time_color(time: datetime):
+def get_time_color(time: Optional[datetime]):
     """
     Generate color based on time.
     """
-    if not time:
-        return "#000000"
+    if time is None:
+        return "000000"
     delta = (datetime.now() - time).total_seconds()
     time_color = hex(0xFF - min(0xFF, int(delta / 500000.)))[2:]
     i_time_color = hex(min(0xFF, int(delta / 500000.)))[2:]
@@ -115,11 +120,13 @@ def get_time_color(time: datetime):
     return "#" + time_color + "AA" + i_time_color
 
 
-def glue(ways: List[OSMWay]):
+def glue(ways: List[OSMWay]) -> List[List[OSMNode]]:
     """
     Try to glue ways that share nodes.
+
+    :param ways: ways to glue
     """
-    result: List[List[int]] = []
+    result: List[List[OSMNode]] = []
     to_process: Set[OSMWay] = set()
 
     for way in ways:  # type: OSMWay
@@ -149,17 +156,16 @@ def glue(ways: List[OSMWay]):
     return result
 
 
-def get_path(nodes, shift, map_, flinger: GeoFlinger):
+def get_path(nodes: List[OSMNode], shift: np.array, flinger: GeoFlinger) -> str:
     """
     Construct SVG path from nodes.
     """
     path = ""
     prev_node = None
-    for node_id in nodes:
-        node = map_.node_map[node_id]
-        flung = np.add(flinger.fling(Geo(node.lat, node.lon)), shift)
+    for node in nodes:
+        flung = flinger.fling(node.position) + shift
         path += ("L" if prev_node else "M") + f" {flung[0]},{flung[1]} "
-        prev_node = map_.node_map[node_id]
+        prev_node = node
     if nodes[0] == nodes[-1]:
         path += "Z"
     else:
@@ -198,10 +204,12 @@ class Constructor:
         """
         Way construction.
 
-        :param way: OSM way.
-        :param tags: way tag dictionary.
-        :param path: way path (if there is no nodes).
+        :param way: OSM way
+        :param tags: way tag dictionary
+        :param path: way path (if there is no nodes)
         """
+        assert way or path
+
         layer: float = 0
         level: float = 0
 
@@ -209,7 +217,7 @@ class Constructor:
             layer = get_float(tags["layer"])
         if "level" in tags:
             try:
-                levels = list(map(lambda x: float(x), tags["level"].split(";")))
+                levels = list(map(float, tags["level"].split(";")))
                 level = sum(levels) / len(levels)
             except ValueError:
                 pass
@@ -221,8 +229,7 @@ class Constructor:
         center_point = None
 
         if way:
-            center_point = line_center(
-                map(lambda x: self.map_.node_map[x], way.nodes), self.flinger)
+            center_point = line_center(way.nodes, self.flinger)
             nodes = way.nodes
 
         if self.mode == "user-coloring":
@@ -255,7 +262,10 @@ class Constructor:
         if "building" in tags:
             kind = "building"
         if "building:levels" in tags:
-            levels = float(tags["building:levels"])
+            try:
+                levels = float(tags["building:levels"])
+            except ValueError:
+                levels = None
 
         for element in self.scheme.ways:  # type: Dict[str, Any]
             matched: bool = True
@@ -286,7 +296,7 @@ class Constructor:
                         style[key] = value
                 self.ways.append(
                     Way(kind, nodes, path, style, layer, 50, levels))
-                if center_point and way.is_cycle() or \
+                if center_point is not None and way.is_cycle() or \
                         "area" in tags and tags["area"]:
                     icon_set: IconSet = self.scheme.get_icon(tags)
                     self.nodes.append(Node(
@@ -297,7 +307,7 @@ class Constructor:
             style: Dict[str, Any] = {
                 "fill": "none", "stroke": "#FF0000", "stroke-width": 1}
             self.ways.append(Way(kind, nodes, path, style, layer, 50, levels))
-            if center_point and way.is_cycle() or \
+            if center_point is not None and way.is_cycle() or \
                     "area" in tags and tags["area"]:
                 icon_set: IconSet = self.scheme.get_icon(tags)
                 self.nodes.append(Node(
@@ -326,13 +336,14 @@ class Constructor:
                 inners_path = glue(inners)
                 outers_path = glue(outers)
                 for nodes in outers_path:
-                    path = get_path(nodes, [0, 0], self.map_, self.flinger)
+                    path = get_path(nodes, np.array([0, 0]), self.flinger)
                     p += path + " "
                 for nodes in inners_path:
                     nodes.reverse()
-                    path = get_path(nodes, [0, 0], self.map_, self.flinger)
+                    path = get_path(nodes, np.array([0, 0]), self.flinger)
                     p += path + " "
-                self.construct_way(None, tags, p)
+                if p:
+                    self.construct_way(None, tags, p)
 
     def construct_nodes(self) -> None:
         """
@@ -345,13 +356,14 @@ class Constructor:
         node_number: int = 0
 
         s = sorted(
-            self.map_.node_map.keys(), key=lambda x: -self.map_.node_map[x].lat)
+            self.map_.node_map.keys(),
+            key=lambda x: -self.map_.node_map[x].position.lat)
 
         for node_id in s:  # type: int
             node_number += 1
             ui.progress_bar(node_number, len(self.map_.node_map))
-            node = self.map_.node_map[node_id]
-            flung = self.flinger.fling(Geo(node.lat, node.lon))
+            node: OSMNode = self.map_.node_map[node_id]
+            flung = self.flinger.fling(node.position)
             tags = node.tags
 
             if not self.check_level(tags):
@@ -363,6 +375,7 @@ class Constructor:
                 if not tags:
                     continue
                 icon_set.icons = [[DEFAULT_SMALL_SHAPE_ID]]
+                break
             if self.mode == "user-coloring":
                 icon_set.color = get_user_color(node.user, self.seed)
             if self.mode == "time":

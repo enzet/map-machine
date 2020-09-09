@@ -95,7 +95,7 @@ class GeoFlinger:
 
         self.space = space
 
-    def fling(self, current):
+    def fling(self, current) -> np.array:
         """
         :param current: vector to fling
         """
@@ -106,4 +106,4 @@ class GeoFlinger:
             self.maximum.lat + self.minimum.lat - current.lat,
             self.minimum.lat, self.maximum.lat,
             self.target_minimum[1], self.target_maximum[1])
-        return [x, y]
+        return np.array([x, y])

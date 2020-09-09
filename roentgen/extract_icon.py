@@ -28,6 +28,8 @@ class Icon:
         :param offset: vector that should be used to shift the path
         :param id_: shape identifier
         """
+        assert path
+
         self.path: str = path
         self.offset: np.array = offset
         self.id_: str = id_

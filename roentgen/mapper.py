@@ -12,7 +12,7 @@ from svgwrite.container import Group
 from svgwrite.path import Path
 from svgwrite.shapes import Circle, Rect
 from svgwrite.text import Text
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from roentgen import ui
 from roentgen.address import get_address
@@ -243,10 +243,8 @@ class Painter:
 
             if way.nodes:
                 for i in range(len(way.nodes) - 1):
-                    node_1 = self.map_.node_map[way.nodes[i]]
-                    node_2 = self.map_.node_map[way.nodes[i + 1]]
-                    flung_1 = self.flinger.fling(Geo(node_1.lat, node_1.lon))
-                    flung_2 = self.flinger.fling(Geo(node_2.lat, node_2.lon))
+                    flung_1 = self.flinger.fling(way.nodes[i].position)
+                    flung_2 = self.flinger.fling(way.nodes[i + 1].position)
 
                     self.svg.add(self.svg.path(
                         d=("M", np.add(flung_1, shift_1), "L",
@@ -265,7 +263,7 @@ class Painter:
         for way in ways:
             if way.kind == "way":
                 if way.nodes:
-                    path = get_path(way.nodes, [0, 0], self.map_, self.flinger)
+                    path = get_path(way.nodes, np.array([0, 0]), self.flinger)
                     p = Path(d=path)
                     p.update(way.style)
                     self.svg.add(p)
@@ -285,10 +283,8 @@ class Painter:
             if way.levels:
                 shift = [-5 * way.levels, 5 * way.levels]
             for i in range(len(way.nodes) - 1):
-                node_1 = self.map_.node_map[way.nodes[i]]
-                node_2 = self.map_.node_map[way.nodes[i + 1]]
-                flung_1 = self.flinger.fling(Geo(node_1.lat, node_1.lon))
-                flung_2 = self.flinger.fling(Geo(node_2.lat, node_2.lon))
+                flung_1 = self.flinger.fling(way.nodes[i].position)
+                flung_2 = self.flinger.fling(way.nodes[i + 1].position)
                 building_shade.add(Path(
                     ("M", flung_1, "L", flung_2, np.add(flung_2, shift),
                      np.add(flung_1, shift), "Z"),
@@ -310,8 +306,8 @@ class Painter:
             if way.nodes:
                 shift = [0, -3]
                 if way.levels:
-                    shift = [0 * way.levels, min(-3, -1 * way.levels)]
-                path = get_path(way.nodes, shift, self.map_, self.flinger)
+                    shift = np.array([0 * way.levels, min(-3, -1 * way.levels)])
+                path = get_path(way.nodes, shift, self.flinger)
                 p = Path(d=path, opacity=1)
                 p.update(way.style)
                 self.svg.add(p)
@@ -400,8 +396,7 @@ class Painter:
         path.set_desc(title=title)
         self.svg.add(path)
 
-    def draw_point_outline(
-            self, icon: Icon, point, fill, mode="default"):
+    def draw_point_outline(self, icon: Icon, point, fill, mode="default"):
 
         point = np.array(list(map(lambda x: int(x), point)))
 
@@ -425,10 +420,12 @@ class Painter:
         self.svg.add(path)
 
 
-def check_level_number(tags, level):
+def check_level_number(tags: Dict[str, Any], level: float):
+    """
+    Check if element described by tags is no the specified level.
+    """
     if "level" in tags:
-        levels = \
-            map(lambda x: float(x), tags["level"].replace(",", ".").split(";"))
+        levels = map(float, tags["level"].replace(",", ".").split(";"))
         if level not in levels:
             return False
     else:
@@ -436,19 +433,26 @@ def check_level_number(tags, level):
     return True
 
 
-def check_level_overground(tags):
+def check_level_overground(tags: Dict[str, Any]):
+    """
+    Check if element described by tags is overground.
+    """
     if "level" in tags:
-        levels = \
-            map(lambda x: float(x), tags["level"].replace(",", ".").split(";"))
-        for level in levels:
-            if level <= 0:
-                return False
+        try:
+            levels = map(float, tags["level"].replace(",", ".").split(";"))
+            for level in levels:
+                if level <= 0:
+                    return False
+        except ValueError:
+            pass
     if "layer" in tags:
-        levels = \
-            map(lambda x: float(x), tags["layer"].replace(",", ".").split(";"))
-        for level in levels:
-            if level <= 0:
-                return False
+        try:
+            levels = map(float, tags["layer"].replace(",", ".").split(";"))
+            for level in levels:
+                if level <= 0:
+                    return False
+        except ValueError:
+            pass
     if "parking" in tags and tags["parking"] == "underground":
         return False
     return True

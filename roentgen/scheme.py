@@ -72,6 +72,8 @@ class Scheme:
         """
         if color in self.colors:
             return "#" + self.colors[color]
+        if color.lower() in self.colors:
+            return "#" + self.colors[color.lower()]
         if color.startswith("#"):
             return color
 
