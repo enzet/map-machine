@@ -5,6 +5,8 @@ import math
 import numpy as np
 from typing import Optional
 
+from roentgen.util import MinMax
+
 
 def get_ratio(maximum, minimum, ratio: float = 1):
     return (maximum[0] - minimum[0]) * ratio / (maximum[1] - minimum[1])

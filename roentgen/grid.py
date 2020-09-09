@@ -1,10 +1,10 @@
 """
+Icon grid drawing.
+
 Author: Sergey Vartanov (me@enzet.ru).
 """
 import numpy as np
-import os
-import random
-import svgwrite
+from svgwrite import Drawing
 import yaml
 
 from roentgen.extract_icon import Icon, IconExtractor
@@ -12,32 +12,21 @@ from roentgen.extract_icon import Icon, IconExtractor
 from typing import List
 
 
-def draw_grid():
+def draw_grid(step: float = 24, columns: int = 16):
+    """
+    Draw all possible icon combinations in grid.
+
+    :param step: horizontal and vertical distance between icons
+    :param columns: the number of columns in grid
+    """
     tags_file_name = "data/tags.yml"
 
     scheme = yaml.load(open(tags_file_name), Loader=yaml.FullLoader)
 
     icons_file_name = "icons/icons.svg"
     icon_grid_file_name = "icon_grid.svg"
-    icon_colors_file_name = "data/icon_colors"
 
-    icon_colors = [("FFFFFF", "444444")]
-
-    if os.path.isfile(icon_colors_file_name):
-        icon_colors_file = open(icon_colors_file_name)
-        for line in icon_colors_file.read().split("\n"):
-            background_color = \
-                hex(int(line[0:3]))[2:] + hex(int(line[3:6]))[2:] + \
-                hex(int(line[6:9]))[2:]
-            foreground_color = \
-                hex(int(line[10:13]))[2:] + hex(int(line[13:16]))[2:] + \
-                hex(int(line[16:19]))[2:]
-            icon_colors.append((background_color, foreground_color))
-
-    step: float = 24
-
-    width: float = 24 * 16
-
+    width: float = step * columns
     point: np.array = np.array((step / 2, step / 2))
 
     to_draw = []
@@ -89,20 +78,20 @@ def draw_grid():
             icons.append(icon_set)
             number += 1
 
-    height = int(number / (width / step) + 1) * step
+    height: int = int(int(number / (width / step) + 1) * step)
 
-    svg = svgwrite.Drawing(icon_grid_file_name, (width, height))
+    svg: Drawing = Drawing(icon_grid_file_name, (width, height))
 
     svg.add(svg.rect((0, 0), (width, height), fill="#FFFFFF"))
 
     for icon in icons:
-        background_color, foreground_color = random.choice(icon_colors)
+        background_color, foreground_color = "#FFFFFF", "#444444"
         svg.add(svg.rect(
             point - np.array((-10, -10)), (20, 20),
-            fill=f"#{background_color}"))
+            fill=background_color))
         for i in icon:  # type: Icon
             path = i.get_path(svg, point)
-            path.update({"fill": f"#{foreground_color}"})
+            path.update({"fill": foreground_color})
             svg.add(path)
         point += np.array((step, 0))
         if point[0] > width - 8:
@@ -112,4 +101,5 @@ def draw_grid():
 
     print(f"Icons: {number}.")
 
-    svg.write(open(icon_grid_file_name, "w"))
+    with open(icon_grid_file_name, "w") as output_file:
+        svg.write(output_file)

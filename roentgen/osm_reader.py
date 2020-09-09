@@ -3,6 +3,7 @@ Reading OpenStreetMap data from XML file.
 
 Author: Sergey Vartanov
 """
+from datetime import datetime
 from typing import Dict, List, Optional
 
 from roentgen import ui
@@ -61,7 +62,7 @@ class OSMWay:
         self.visible: Optional[str] = None
         self.changeset: Optional[str] = None
         self.user: Optional[str] = None
-        self.timestamp: Optional[str] = None
+        self.timestamp: Optional[datetime] = None
         self.uid: Optional[str] = None
 
     def parse_from_xml(self, text: str, is_full: bool = False) -> "OSMWay":
@@ -76,7 +77,8 @@ class OSMWay:
         if is_full:
             self.visible = get_value("visible", text)
             self.changeset = get_value("changeset", text)
-            self.timestamp = get_value("timestamp", text)
+            self.timestamp = datetime.strptime(
+                get_value("timestamp", text), "%Y-%m-%dT%H:%M:%SZ")
             self.user = get_value("user", text)
             self.uid = get_value("uid", text)
 
@@ -190,8 +192,7 @@ class OSMReader:
                 if not parse_nodes:
                     if parse_ways or parse_relations:
                         continue
-                    else:
-                        break
+                    break
                 if line[-3] == "/":
                     node: OSMNode = OSMNode().parse_from_xml(line[7:-3], full)
                     self.map_.node_map[node.id_] = node
@@ -206,8 +207,7 @@ class OSMReader:
                 if not parse_ways:
                     if parse_relations:
                         continue
-                    else:
-                        break
+                    break
                 if line[-3] == '/':
                     way = OSMWay().parse_from_xml(line[6:-3], full)
                     self.map_.way_map[way.id_] = way

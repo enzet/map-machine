@@ -15,6 +15,7 @@ from svgwrite.text import Text
 from typing import Dict, List
 
 from roentgen import ui
+from roentgen.address import get_address
 from roentgen.constructor import Constructor, get_path, Node, Way
 from roentgen.flinger import GeoFlinger, Geo
 from roentgen.grid import draw_grid
@@ -39,7 +40,7 @@ class Painter:
     """
     def __init__(
             self, show_missing_tags: bool, overlap: int, draw_nodes: bool,
-            mode: str, draw_captions: bool, map_: Map, flinger: GeoFlinger,
+            mode: str, draw_captions: str, map_: Map, flinger: GeoFlinger,
             svg: svgwrite.Drawing, icon_extractor: IconExtractor,
             scheme: Scheme):
 
@@ -47,7 +48,7 @@ class Painter:
         self.overlap: int = overlap
         self.draw_nodes: bool = draw_nodes
         self.mode: str = mode
-        self.draw_captions = draw_captions
+        self.draw_captions: str = draw_captions
 
         self.map_: Map = map_
         self.flinger: GeoFlinger = flinger
@@ -150,7 +151,6 @@ class Painter:
         Construct labels for not processed tags.
         """
         texts = []
-        address: List[str] = []
         name = None
         alt_name = None
         if "name" in tags:
@@ -179,24 +179,9 @@ class Painter:
             else:
                 alt_name = ""
             alt_name += "бывш. " + tags["old_name"]
-        if "addr:postcode" in tags and self.draw_captions != "main":
-            address.append(tags["addr:postcode"])
-            tags.pop("addr:postcode", None)
-        if "addr:country" in tags and self.draw_captions != "main":
-            address.append(tags["addr:country"])
-            tags.pop("addr:country", None)
-        if "addr:city" in tags and self.draw_captions != "main":
-            address.append(tags["addr:city"])
-            tags.pop("addr:city", None)
-        if "addr:street" in tags and self.draw_captions != "main":
-            street = tags["addr:street"]
-            if street.startswith("улица "):
-                street = "ул. " + street[len("улица "):]
-            address.append(street)
-            tags.pop("addr:street", None)
-        if "addr:housenumber" in tags:
-            address.append(tags["addr:housenumber"])
-            tags.pop("addr:housenumber", None)
+
+        address = get_address(tags, self.draw_captions)
+
         if name:
             texts.append({"text": name, "fill": "#000000"})
         if alt_name:
@@ -338,8 +323,7 @@ class Painter:
         # Trees
 
         for node in nodes:
-            if not("natural" in node.tags and
-                   node.tags["natural"] == "tree" and
+            if not(node.get_tag("natural") == "tree" and
                    "diameter_crown" in node.tags):
                 continue
             self.svg.add(Circle(
@@ -348,23 +332,27 @@ class Painter:
 
         # Directions
 
-        for node in nodes:
-            if not ("tourism" in node.tags and
-                    node.tags["tourism"] == "viewpoint" and
-                    "direction" in node.tags):
+        for node in nodes:  # type: Node
+            direction = None
+            if node.get_tag("tourism") == "viewpoint":
+                direction = node.get_tag("direction")
+            if node.get_tag("man_made") == "surveillance":
+                direction = node.get_tag("camera:direction")
+
+            if not direction:
                 continue
 
-            DIRECTION_RADIUS: int = 50
+            DIRECTION_RADIUS: int = 25
             DIRECTION_COLOR: str = self.scheme.get_color("direction_color")
 
-            for path in DirectionSet(node.tags["direction"])\
+            for path in DirectionSet(direction)\
                     .draw(node.point, DIRECTION_RADIUS):
                 gradient = self.svg.defs.add(self.svg.radialGradient(
                     center=node.point, r=DIRECTION_RADIUS,
                     gradientUnits="userSpaceOnUse"))
                 gradient\
                     .add_stop_color(0, DIRECTION_COLOR, opacity=0)\
-                    .add_stop_color(1, DIRECTION_COLOR, opacity=0.7)
+                    .add_stop_color(1, DIRECTION_COLOR, opacity=0.4)
                 self.svg.add(self.svg.path(
                     d=["M", node.point] + path + ["L", node.point, "Z"],
                     fill=gradient.get_paint_server()))
@@ -372,12 +360,14 @@ class Painter:
         # All other nodes
 
         nodes = sorted(nodes, key=lambda x: x.layer)
-        for node in nodes:  # type: Node
+        for index, node in enumerate(nodes):  # type: int, Node
             if "natural" in node.tags and \
                    node.tags["natural"] == "tree" and \
                    "diameter_crown" in node.tags:
                 continue
+            ui.progress_bar(index, len(nodes), step=10)
             self.draw_shapes(node, points)
+        ui.progress_bar(-1, len(nodes), step=10)
 
         if self.draw_captions == "no":
             return
@@ -405,7 +395,7 @@ class Painter:
         point = np.array(list(map(lambda x: int(x), point)))
         title: str = "\n".join(map(lambda x: x + ": " + tags[x], tags))
 
-        path = icon.get_path(self.svg, point)
+        path: svgwrite.path.Path = icon.get_path(self.svg, point)
         path.update({"fill": fill})
         path.set_desc(title=title)
         self.svg.add(path)
@@ -518,15 +508,14 @@ def main():
     min1 = Geo(boundary_box[1], boundary_box[0])
     max1 = Geo(boundary_box[3], boundary_box[2])
 
-    authors = {}
     missing_tags = {}
     points = []
 
-    scheme = Scheme(TAGS_FILE_NAME, COLORS_FILE_NAME)
+    scheme: Scheme = Scheme(TAGS_FILE_NAME, COLORS_FILE_NAME)
 
-    flinger = GeoFlinger(min1, max1, [0, 0], [w, h])
+    flinger: GeoFlinger = GeoFlinger(min1, max1, [0, 0], [w, h])
 
-    icon_extractor = IconExtractor(ICONS_FILE_NAME)
+    icon_extractor: IconExtractor = IconExtractor(ICONS_FILE_NAME)
 
     def check_level(x):
         """ Draw objects on all levels. """
@@ -544,14 +533,14 @@ def main():
                 """ Draw objects on the specified level. """
                 return not check_level_number(x, float(options.level))
 
-    constructor = Constructor(
+    constructor: Constructor = Constructor(
         check_level, options.mode, options.seed, map_, flinger, scheme)
     if options.draw_ways:
         constructor.construct_ways()
         constructor.construct_relations()
     constructor.construct_nodes()
 
-    painter = Painter(
+    painter: Painter = Painter(
         show_missing_tags=options.show_missing_tags, overlap=options.overlap,
         draw_nodes=options.draw_nodes, mode=options.mode,
         draw_captions=options.draw_captions,
@@ -569,57 +558,11 @@ def main():
             (w - flinger.space[0], 0), (flinger.space[0], h), fill="#FFFFFF"))
 
     if options.show_index:
-        print(min1.lon, max1.lon)
-        print(min1.lat, max1.lat)
+        draw_index(flinger, map_, max1, min1, svg)
 
-        lon_step = 0.001
-        lat_step = 0.001
-
-        matrix = []
-
-        lat_number = int((max1.lat - min1.lat) / lat_step) + 1
-        lon_number = int((max1.lon - min1.lon) / lon_step) + 1
-
-        for i in range(lat_number):
-            row = []
-            for j in range(lon_number):
-                row.append(0)
-            matrix.append(row)
-
-        for node_id in map_.node_map:
-            node = map_.node_map[node_id]
-            i = int((node.lat - min1.lat) / lat_step)
-            j = int((node.lon - min1.lon) / lon_step)
-            if (0 <= i < lat_number) and (0 <= j < lon_number):
-                matrix[i][j] += 1
-                if "tags" in node:
-                    matrix[i][j] += len(node.tags)
-
-        for way_id in map_.way_map:
-            way = map_.way_map[way_id]
-            if "tags" in way:
-                for node_id in way.nodes:
-                    node = map_.node_map[node_id]
-                    i = int((node.lat - min1.lat) / lat_step)
-                    j = int((node.lon - min1.lon) / lon_step)
-                    if (0 <= i < lat_number) and (0 <= j < lon_number):
-                        matrix[i][j] += len(way.tags) / float(
-                            len(way.nodes))
-
-        for i in range(lat_number):
-            for j in range(lon_number):
-                t1 = flinger.fling(Geo(
-                    min1.lat + i * lat_step, min1.lon + j * lon_step))
-                t2 = flinger.fling(Geo(
-                    min1.lat + (i + 1) * lat_step,
-                    min1.lon + (j + 1) * lon_step))
-                svg.add(Text(
-                    str(int(matrix[i][j])),
-                    (((t1 + t2) * 0.5)[0], ((t1 + t2) * 0.5)[1] + 40),
-                    font_size=80, fill="440000",
-                    opacity=0.1, align="center"))
-
+    print("Writing output SVG...")
     svg.write(open(options.output_file_name, "w"))
+    print("Done")
 
     top_missing_tags = \
         sorted(missing_tags.keys(), key=lambda x: -missing_tags[x])
@@ -629,6 +572,47 @@ def main():
             f'- {{tag: "{tag}", count: {missing_tags[tag]}}}\n')
     missing_tags_file.close()
 
-    top_authors = sorted(authors.keys(), key=lambda x: -authors[x])
-    for author in top_authors:
-        print(f"{author}: {authors[author]}")
+
+def draw_index(flinger, map_, max1, min1, svg):
+    print(min1.lon, max1.lon)
+    print(min1.lat, max1.lat)
+    lon_step = 0.001
+    lat_step = 0.001
+    matrix = []
+    lat_number = int((max1.lat - min1.lat) / lat_step) + 1
+    lon_number = int((max1.lon - min1.lon) / lon_step) + 1
+    for i in range(lat_number):
+        row = []
+        for j in range(lon_number):
+            row.append(0)
+        matrix.append(row)
+    for node_id in map_.node_map:  # type: int
+        node = map_.node_map[node_id]
+        i = int((node.lat - min1.lat) / lat_step)
+        j = int((node.lon - min1.lon) / lon_step)
+        if (0 <= i < lat_number) and (0 <= j < lon_number):
+            matrix[i][j] += 1
+            if "tags" in node:
+                matrix[i][j] += len(node.tags)
+    for way_id in map_.way_map:  # type: int
+        way = map_.way_map[way_id]
+        if "tags" in way:
+            for node_id in way.nodes:
+                node = map_.node_map[node_id]
+                i = int((node.lat - min1.lat) / lat_step)
+                j = int((node.lon - min1.lon) / lon_step)
+                if (0 <= i < lat_number) and (0 <= j < lon_number):
+                    matrix[i][j] += len(way.tags) / float(
+                        len(way.nodes))
+    for i in range(lat_number):
+        for j in range(lon_number):
+            t1 = flinger.fling(Geo(
+                min1.lat + i * lat_step, min1.lon + j * lon_step))
+            t2 = flinger.fling(Geo(
+                min1.lat + (i + 1) * lat_step,
+                min1.lon + (j + 1) * lon_step))
+            svg.add(Text(
+                str(int(matrix[i][j])),
+                (((t1 + t2) * 0.5)[0], ((t1 + t2) * 0.5)[1] + 40),
+                font_size=80, fill="440000",
+                opacity=0.1, align="center"))

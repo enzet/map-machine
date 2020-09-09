@@ -39,7 +39,8 @@ def parse_options(args):
         "-s", "--size",
         metavar="<width>,<height>",
         help="output SVG file size in pixels",
-        dest="size")
+        dest="size",
+        required=True)
     parser.add_argument(
         "-nn", "--no-draw-nodes",
         dest="draw_nodes",

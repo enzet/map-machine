@@ -1,8 +1,7 @@
 import numpy as np
 
-from hashlib import sha256
-
 from datetime import datetime
+from hashlib import sha256
 from typing import Any, Dict, List, Optional, Set
 
 from roentgen import ui
@@ -29,6 +28,11 @@ class Node:
         self.priority = priority
         self.layer = 0
         self.is_for_node = is_for_node
+
+    def get_tag(self, key: str):
+        if key in self.tags:
+            return self.tags[key]
+        return None
 
 
 class Way:
@@ -95,13 +99,12 @@ def get_user_color(text: str, seed: str):
     return "#" + "0" * (6 - len(h)) + h
 
 
-def get_time_color(time):
+def get_time_color(time: datetime):
     """
     Generate color based on time.
     """
     if not time:
         return "#000000"
-    time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
     delta = (datetime.now() - time).total_seconds()
     time_color = hex(0xFF - min(0xFF, int(delta / 500000.)))[2:]
     i_time_color = hex(min(0xFF, int(delta / 500000.)))[2:]

@@ -2,10 +2,6 @@
 Author: Sergey Vartanov (me@enzet.ru).
 """
 
-import os
-import random
-import yaml
-
 from roentgen.flinger import map_
 from roentgen.grid import draw_grid
 

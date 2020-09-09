@@ -1,4 +1,5 @@
-svgwrite
 numpy>=1.18.1
-PyYAML>=4.2b1
+portolan
+pyyaml>=4.2b1
+svgwrite
 urllib3>=1.25.6

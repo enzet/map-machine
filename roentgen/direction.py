@@ -3,42 +3,51 @@ Direction tag support.
 
 Author: Sergey Vartanov (me@enzet.ru).
 """
-import math
+from typing import Iterator, List, Optional, Union
+
 import numpy as np
-
-from typing import Dict, List, Optional, Iterator
-
-
-DIRECTIONS: Dict[str, np.array] = {
-    "N": np.array((0, -1)),
-    "E": np.array((1, 0)),
-    "W": np.array((-1, 0)),
-    "S": np.array((0, 1)),
-}
+from portolan import middle
 
 
 def parse_vector(text: str) -> np.array:
     """
-    Parse vector from text representation: letters N, E, W, S or 360-degree
-    notation.  E.g. NW, 270.
+    Parse vector from text representation: compass points or 360-degree
+    notation.  E.g. "NW", "270".
 
     :param text: vector text representation
     :return: parsed normalized vector
     """
+    def degree_to_radian(degree: float):
+        """ Convert value in degrees to radians. """
+        return degree / 180 * np.pi - np.pi / 2
+
     try:
-        degree: float = float(text) / 180 * math.pi - math.pi / 2
-        return np.array((math.cos(degree), math.sin(degree)))
-    except ValueError as e:
-        vector: np.array = np.array((0, 0))
-        for char in text:  # type: str
-            if char not in DIRECTIONS:
-                return None
-            vector += DIRECTIONS[char]
-        return vector / np.linalg.norm(vector)
+        radians: float = degree_to_radian(float(text))
+        return np.array((np.cos(radians), np.sin(radians)))
+    except ValueError:
+        radians: float = degree_to_radian(middle(text))
+        return np.array((np.cos(radians), np.sin(radians)))
+
+
+def rotation_matrix(angle):
+    """
+    Get a matrix to rotate 2D vector by the angle.
+
+    :param angle: angle in radians
+    """
+    return np.array([
+        [np.cos(angle), np.sin(angle)],
+        [-np.sin(angle), np.cos(angle)]])
 
 
 class Sector:
+    """
+    Sector described by two vectors.
+    """
     def __init__(self, text: str):
+        """
+        :param text: sector text representation.  E.g. "70-210", "N-NW"
+        """
         self.start: Optional[np.array]
         self.end: Optional[np.array]
 
@@ -47,16 +56,23 @@ class Sector:
             self.start = parse_vector(parts[0])
             self.end = parse_vector(parts[1])
         else:
-            self.start = parse_vector(text)
-            self.end = None
+            vector = parse_vector(text)
+            angle = np.pi / 12
+            self.start = np.dot(rotation_matrix(angle), vector)
+            self.end = np.dot(rotation_matrix(-angle), vector)
 
-    def draw(self, center: np.array, radius: float) -> List:
+    def draw(self, center: np.array, radius: float) \
+            -> Optional[List[Union[float, str, np.array]]]:
         """
-        Construct SVG "d" for arc element.
+        Construct SVG path commands for arc element.
 
-        :param center: arc center
+        :param center: arc center point
         :param radius: arc radius
+        :return: SVG path commands
         """
+        if self.start is None or self.end is None:
+            return None
+
         start: np.array = center + radius * self.end
         end: np.array = center + radius * self.start
 
@@ -79,5 +95,14 @@ class DirectionSet:
     def __str__(self):
         return ", ".join(map(str, self.sectors))
 
-    def draw(self, center: np.array, radius: float) -> Iterator[str]:
-        return map(lambda x: x.draw(center, radius), self.sectors)
+    def draw(self, center: np.array, radius: float) -> Iterator[List]:
+        """
+        Construct SVG "d" for arc elements.
+
+        :param center: center point of all arcs
+        :param radius: radius of all arcs
+        :return: list of "d" values
+        """
+        return filter(
+            lambda x: x is not None,
+            map(lambda x: x.draw(center, radius), self.sectors))
