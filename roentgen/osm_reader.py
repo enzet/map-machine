@@ -150,7 +150,7 @@ def get_value(key: str, text: str):
     if key + '="' in text:
         start_index: int = text.find(key + '="') + 2
         end_index: int = start_index + len(key)
-        value = text[end_index:text.find('"', end_index + 2)]
+        value = text[end_index:text.find('"', end_index)]
         return value
 
 
