@@ -10,7 +10,7 @@ import sys
 
 from svgwrite.container import Group
 from svgwrite.path import Path
-from svgwrite.shapes import Circle, Rect
+from svgwrite.shapes import Rect
 from svgwrite.text import Text
 from typing import Any, Dict, List
 
@@ -23,7 +23,7 @@ from roentgen.extract_icon import Icon, IconExtractor
 from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader
 from roentgen.scheme import Scheme
-from roentgen.direction import DirectionSet
+from roentgen.direction import DirectionSet, Sector
 
 ICONS_FILE_NAME: str = "icons/icons.svg"
 TAGS_FILE_NAME: str = "data/tags.yml"
@@ -320,46 +320,82 @@ class Painter:
 
         for node in nodes:
             if not(node.get_tag("natural") == "tree" and
-                   "diameter_crown" in node.tags):
+                    ("diameter_crown" in node.tags or
+                     "circumference" in node.tags)):
                 continue
-            self.svg.add(Circle(
-                node.point, float(node.tags["diameter_crown"]) * 1.2,
-                fill="#688C44", stroke="#688C44", opacity=0.3))
+            if "circumference" in node.tags:
+                self.svg.add(self.svg.circle(
+                    node.point,
+                    float(node.tags["circumference"]) * self.flinger.scale / 2,
+                    fill="#AAAA88", opacity=0.3))
+            if "diameter_crown" in node.tags:
+                self.svg.add(self.svg.circle(
+                    node.point,
+                    float(node.tags["diameter_crown"]) * self.flinger.scale / 2,
+                    fill=self.scheme.get_color("evergreen"), opacity=0.3))
 
         # Directions
 
         for node in nodes:  # type: Node
-            direction = None
-            if node.get_tag("tourism") == "viewpoint":
-                direction = node.get_tag("direction")
+
+            angle = None
+            is_revert_gradient: bool = False
+
             if node.get_tag("man_made") == "surveillance":
                 direction = node.get_tag("camera:direction")
+                if "camera:angle" in node.tags:
+                    angle = float(node.get_tag("camera:angle"))
+                if "angle" in node.tags:
+                    angle = float(node.get_tag("angle"))
+                direction_radius: int = 25 * self.flinger.scale
+                direction_color: str = \
+                    self.scheme.get_color("direction_camera_color")
+            elif node.get_tag("traffic_sign") == "stop":
+                direction = node.get_tag("direction")
+                direction_radius: int = 25 * self.flinger.scale
+                direction_color: str = "#FF0000"
+            else:
+                direction = node.get_tag("direction")
+                direction_radius: int = 100 * self.flinger.scale
+                direction_color: str = \
+                    self.scheme.get_color("direction_view_color")
+                is_revert_gradient = True
 
             if not direction:
                 continue
 
-            DIRECTION_RADIUS: int = 25
-            DIRECTION_COLOR: str = self.scheme.get_color("direction_color")
+            point = (node.point.astype(int)).astype(float)
 
-            for path in DirectionSet(direction)\
-                    .draw(node.point, DIRECTION_RADIUS):
+            if angle:
+                paths = [Sector(direction, angle)
+                             .draw(point, direction_radius)]
+            else:
+                paths = DirectionSet(direction) \
+                    .draw(point, direction_radius)
+
+            for path in paths:
                 gradient = self.svg.defs.add(self.svg.radialGradient(
-                    center=node.point, r=DIRECTION_RADIUS,
+                    center=point, r=direction_radius,
                     gradientUnits="userSpaceOnUse"))
-                gradient\
-                    .add_stop_color(0, DIRECTION_COLOR, opacity=0)\
-                    .add_stop_color(1, DIRECTION_COLOR, opacity=0.4)
+                if is_revert_gradient:
+                    gradient \
+                        .add_stop_color(0, direction_color, opacity=0) \
+                        .add_stop_color(1, direction_color, opacity=0.7)
+                else:
+                    gradient \
+                        .add_stop_color(0, direction_color, opacity=0.4) \
+                        .add_stop_color(1, direction_color, opacity=0)
                 self.svg.add(self.svg.path(
-                    d=["M", node.point] + path + ["L", node.point, "Z"],
+                    d=["M", point] + path + ["L", point, "Z"],
                     fill=gradient.get_paint_server()))
 
         # All other nodes
 
         nodes = sorted(nodes, key=lambda x: x.layer)
         for index, node in enumerate(nodes):  # type: int, Node
-            if "natural" in node.tags and \
-                   node.tags["natural"] == "tree" and \
-                   "diameter_crown" in node.tags:
+            if node.get_tag("natural") == "tree" and \
+                    ("diameter_crown" in node.tags or
+                     "circumference" in node.tags):
                 continue
             ui.progress_bar(index, len(nodes), step=10)
             self.draw_shapes(node, points)
@@ -517,7 +553,8 @@ def main():
 
     scheme: Scheme = Scheme(TAGS_FILE_NAME, COLORS_FILE_NAME)
 
-    flinger: GeoFlinger = GeoFlinger(min1, max1, [0, 0], [w, h])
+    flinger: GeoFlinger = \
+        GeoFlinger(min1, max1, np.array([0, 0]), np.array([w, h]))
 
     icon_extractor: IconExtractor = IconExtractor(ICONS_FILE_NAME)
 

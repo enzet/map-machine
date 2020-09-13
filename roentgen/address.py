@@ -30,4 +30,3 @@ def get_address(tags: Dict[str, Any], draw_captions_mode: str):
     if "addr:housenumber" in tags:
         address.append(tags["addr:housenumber"])
         tags.pop("addr:housenumber", None)
-

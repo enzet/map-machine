@@ -173,7 +173,7 @@ class Map:
         self.node_map[node.id_] = node
         if node.user:
             self.authors.add(node.user)
-        self.time.add(node.timestamp)
+        self.time.update(node.timestamp)
 
     def add_way(self, way: OSMWay):
         """
@@ -182,7 +182,7 @@ class Map:
         self.way_map[way.id_] = way
         if way.user:
             self.authors.add(way.user)
-        self.time.add(way.timestamp)
+        self.time.update(way.timestamp)
 
     def add_relation(self, relation: OSMRelation):
         """

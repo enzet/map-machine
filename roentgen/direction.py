@@ -8,8 +8,19 @@ from typing import Iterator, List, Optional, Union
 import numpy as np
 from portolan import middle
 
+Path = Union[float, str, np.array]
 
-def parse_vector(text: str) -> np.array:
+SHIFT: float = -np.pi / 2
+SMALLEST_ANGLE: float = np.pi / 15
+DEFAULT_ANGLE: float = np.pi / 30
+
+
+def degree_to_radian(degree: float) -> float:
+    """ Convert value in degrees to radians. """
+    return degree / 180 * np.pi
+
+
+def parse_vector(text: str) -> Optional[np.array]:
     """
     Parse vector from text representation: compass points or 360-degree
     notation.  E.g. "NW", "270".
@@ -17,16 +28,19 @@ def parse_vector(text: str) -> np.array:
     :param text: vector text representation
     :return: parsed normalized vector
     """
-    def degree_to_radian(degree: float):
-        """ Convert value in degrees to radians. """
-        return degree / 180 * np.pi - np.pi / 2
-
     try:
-        radians: float = degree_to_radian(float(text))
+        radians: float = degree_to_radian(float(text)) + SHIFT
         return np.array((np.cos(radians), np.sin(radians)))
     except ValueError:
-        radians: float = degree_to_radian(middle(text))
+        pass
+
+    try:
+        radians: float = degree_to_radian(middle(text)) + SHIFT
         return np.array((np.cos(radians), np.sin(radians)))
+    except KeyError:
+        pass
+
+    return None
 
 
 def rotation_matrix(angle):
@@ -44,25 +58,32 @@ class Sector:
     """
     Sector described by two vectors.
     """
-    def __init__(self, text: str):
+    def __init__(self, text: str, angle: Optional[float] = None):
         """
         :param text: sector text representation.  E.g. "70-210", "N-NW"
+        :param angle: angle in degrees
         """
-        self.start: Optional[np.array]
-        self.end: Optional[np.array]
+        self.start: Optional[np.array] = None
+        self.end: Optional[np.array] = None
 
         if "-" in text:
             parts: List[str] = text.split("-")
             self.start = parse_vector(parts[0])
             self.end = parse_vector(parts[1])
         else:
-            vector = parse_vector(text)
-            angle = np.pi / 12
-            self.start = np.dot(rotation_matrix(angle), vector)
-            self.end = np.dot(rotation_matrix(-angle), vector)
+            if angle is None:
+                angle = DEFAULT_ANGLE
+            else:
+                angle = degree_to_radian(angle) / 2
+                angle = max(SMALLEST_ANGLE, angle)
 
-    def draw(self, center: np.array, radius: float) \
-            -> Optional[List[Union[float, str, np.array]]]:
+            vector: Optional[np.array] = parse_vector(text)
+
+            if vector is not None:
+                self.start = np.dot(rotation_matrix(angle), vector)
+                self.end = np.dot(rotation_matrix(-angle), vector)
+
+    def draw(self, center: np.array, radius: float) -> Optional[List[Path]]:
         """
         Construct SVG path commands for arc element.
 
@@ -95,7 +116,7 @@ class DirectionSet:
     def __str__(self):
         return ", ".join(map(str, self.sectors))
 
-    def draw(self, center: np.array, radius: float) -> Iterator[List]:
+    def draw(self, center: np.array, radius: float) -> Iterator[List[Path]]:
         """
         Construct SVG "d" for arc elements.
 

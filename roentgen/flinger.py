@@ -5,8 +5,6 @@ import math
 import numpy as np
 from typing import Optional
 
-from roentgen.util import MinMax
-
 
 def get_ratio(maximum, minimum, ratio: float = 1):
     return (maximum[0] - minimum[0]) * ratio / (maximum[1] - minimum[1])
@@ -48,7 +46,7 @@ class Geo:
 
 class GeoFlinger:
     def __init__(
-            self, minimum, maximum, target_minimum=None, target_maximum=None):
+            self, minimum, maximum, target_minimum, target_maximum):
         """
         :param minimum: minimum latitude and longitude
         :param maximum: maximum latitude and longitude
@@ -71,7 +69,7 @@ class GeoFlinger:
 
         # Ratio is x / y.
 
-        space = [0, 0]
+        space: np.array = [0, 0]
         current_ratio = get_ratio(self.maximum, self.minimum, ratio)
         target_ratio = get_ratio(target_maximum, target_minimum)
 
@@ -92,6 +90,13 @@ class GeoFlinger:
 
         self.target_minimum = np.add(target_minimum, space)
         self.target_maximum = np.subtract(target_maximum, space)
+
+        meters_per_pixel = \
+            (self.maximum.lat - self.minimum.lat) / \
+            (self.target_maximum[1] - self.target_minimum[1]) * \
+            40000 / 360 * 1000
+
+        self.scale = 1 / meters_per_pixel
 
         self.space = space
 

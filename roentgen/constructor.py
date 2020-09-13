@@ -27,6 +27,8 @@ class Node:
             self, icon_set: IconSet, tags: Dict[str, str],
             point: (float, float), path: Optional[str],
             priority: int = 0, is_for_node: bool = True):
+        assert point is not None
+
         self.icon_set: IconSet = icon_set
         self.tags = tags
         self.point = point
@@ -80,8 +82,8 @@ def line_center(nodes: List[OSMNode], flinger: GeoFlinger) -> np.array:
 
     for node in nodes:  # type: OSMNode
         flung = flinger.fling(node.position)
-        x.add(flung[0])
-        y.add(flung[1])
+        x.update(flung[0])
+        y.update(flung[1])
     return np.array(((x.min_ + x.max_) / 2.0, (y.min_ + y.max_) / 2.0))
 
 
@@ -296,17 +298,19 @@ class Constructor:
                         style[key] = value
                 self.ways.append(
                     Way(kind, nodes, path, style, layer, 50, levels))
-                if center_point is not None and way.is_cycle() or \
-                        "area" in tags and tags["area"]:
+                if center_point is not None and \
+                        (way.is_cycle() or "area" in tags and tags["area"]):
                     icon_set: IconSet = self.scheme.get_icon(tags)
                     self.nodes.append(Node(
                         icon_set, tags, center_point, path, is_for_node=False))
                 appended = True
 
-        if not appended and DEBUG:
-            style: Dict[str, Any] = {
-                "fill": "none", "stroke": "#FF0000", "stroke-width": 1}
-            self.ways.append(Way(kind, nodes, path, style, layer, 50, levels))
+        if not appended:
+            if DEBUG:
+                style: Dict[str, Any] = {
+                    "fill": "none", "stroke": "#FF0000", "stroke-width": 1}
+                self.ways.append(Way(
+                    kind, nodes, path, style, layer, 50, levels))
             if center_point is not None and way.is_cycle() or \
                     "area" in tags and tags["area"]:
                 icon_set: IconSet = self.scheme.get_icon(tags)
