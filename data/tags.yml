@@ -16,7 +16,8 @@ colors:
   wood: "B8CC84"
   tree: "98AC64"
 
-  direction_color: "0088FF"  # "E0F0FF"
+  direction_view_color: "E0F0FF"
+  direction_camera_color: "0088FF"
 
   outline_color: "FFFFFF"
   beach_color: "F0E0C0"
@@ -43,10 +44,12 @@ colors:
   ridge_color: "000000"
   road_border_color: "CCCCCC"
   rock_color: "DDDDDD"
+  route_color: "FFFFFF"
   sand_color: "F0E0D0"
   scree_color: "CCCCCC"
   water_color: "AACCFF"
   water_border_color: "6688BB"
+  wetland_color: "BFE0D8"
   wood_color: "B8CC84"
   wood_border_color: "A8BC74"
 
@@ -84,6 +87,8 @@ tags:
     icon: [clock]
   - tags: {amenity: cinema}
     icon: [film]
+  - tags: {amenity: ferry_terminal}
+    icon: [anchor]
   - tags: {amenity: fountain}
     icon: [fountain]
     color: water_border
@@ -118,6 +123,8 @@ tags:
 
   - tags: {highway: street_lamp}
     icon: [street_lamp]
+  - tags: {highway: turning_circle}
+    icon: [circle_empty]
 
   # Man made
 
@@ -152,25 +159,27 @@ tags:
     icon: [information]
   - tags: {tourism: information}
     icon: [information]
+  - tags: {information: guidepost}
+    icon: [guidepost]
   - tags: {tourism: viewpoint}
     icon: [binocular]
   - tags: {information: board}
     icon: [information_board]
 
   - tags: {vending: admission_tickets}
-    add_icon: [vending_tickets]
+    icon: [vending_tickets]
   - tags: {vending: candles}
-    add_icon: [vending_candles]
+    icon: [vending_candles]
   - tags: {vending: chemist}
-    add_icon: [vending_chemist]
+    icon: [vending_chemist]
   - tags: {vending: drinks}
-    add_icon: [vending_bottle]
+    icon: [vending_bottle]
   - tags: {vending: fishing_tackle}
-    add_icon: [vending_angle]
+    icon: [vending_angle]
   - tags: {vending: public_transport_tickets}
-    add_icon: [vending_tickets]
+    icon: [vending_tickets]
   - tags: {vending: water}
-    add_icon: [vending_drop]
+    icon: [vending_drop]
 
   # Sea
 
@@ -306,6 +315,8 @@ tags:
     icon: [pharmacy]
   - tags: {building: store}
     icon: [shop_convenience]
+  - tags: {shop: supermarket}
+    icon: [supermarket_cart]
   - tags: {shop: ticket}
     icon: [ticket]
   - tags: {shop: watches}
@@ -317,6 +328,8 @@ tags:
 
     # Place of worship
 
+  - tags: {religion: christian}
+    icon: [cross]
   - tags: {amenity: place_of_worship, religion: christian}
     icon: [cross]
   - tags:
@@ -366,6 +379,8 @@ tags:
 
   - tags: {natural: cliff}
     icon: [cliff]
+  - tags: {natural: rock}
+    icon: [stone]
   - tags: {natural: stone}
     icon: [stone]
 
@@ -376,6 +391,15 @@ tags:
     color: tree
   - tags: {natural: tree}
     icon: [tree]
+    color: tree
+  - tags: {leaf_type: broadleaved}
+    icon: [broadleaved]
+    color: tree
+  - tags: {leaf_type: needleleaved}
+    icon: [needleleaved]
+    color: tree
+  - tags: {leaf_type: palm}
+    icon: [palm]
     color: tree
   - tags: {natural: tree, leaf_type: broadleaved}
     icon: [broadleaved]
@@ -389,6 +413,10 @@ tags:
   - tags: {natural: tree, type: conifer}
     icon: [needleleaved]
     color: tree
+  - tags: {leaf_cycle: deciduous}
+    color: deciduous
+  - tags: {leaf_cycle: evergreen}
+    color: evergreen
   - tags: {natural: tree, leaf_cycle: deciduous}
     color: deciduous
   - tags: {natural: tree, leaf_cycle: evergreen}
@@ -472,8 +500,12 @@ tags:
     icon: [tfl]
   - tags: {railway: level_crossing}
     icon: [x]
+  - tags: {railway: crossing}
+    icon: [x]
   - tags: {bus: "yes"}
     add_icon: [bus]
+  - tags: {monorail: "yes"}
+    add_icon: [monorail]
   - tags: {trolleybus: "yes"}
     add_icon: [trolleybus]
   - tags: {railway: tram_station}
@@ -495,6 +527,8 @@ tags:
     over_icon: [bus_stop_bench]
   - tags: {highway: stop}
     icon: [stop]
+  - tags: {traffic_sign: stop}
+    icon: [stop]
   - tags: {highway: give_way}
     icon: [triangle_down_hollow]
   - tags: {noexit: "yes"}
@@ -509,7 +543,11 @@ tags:
 
   - tags: {highway: crossing}
     icon: [crossing]
+  - tags: {crossing: zebra}
+    icon: [crossing]
   - tags: {highway: crossing, crossing: zebra}
+    icon: [crossing]
+  - tags: {crossing: marked}
     icon: [crossing]
   - tags: {highway: crossing, crossing: marked}
     icon: [crossing]
@@ -529,7 +567,9 @@ tags:
     icon: [bump]
   - tags: {highway: bump}
     icon: [bump]
-  - tags: {sloped_curb: yes}
+  - tags: {ford: "yes"}
+    icon: [ford]
+  - tags: {sloped_curb: "yes"}
     icon: [lowered_kerb]
   - tags: {kerb: lowered}
     icon: [lowered_kerb]
@@ -577,6 +617,8 @@ tags:
 
   - tags: {barrier: gate}
     icon: [gate]
+  - tags: {barrier: block}
+    icon: [block]
   - tags: {barrier: bollard}
     icon: [bollard]
   - tags: {barrier: lift_gate}
@@ -643,6 +685,9 @@ ways:
   - tags: {natural: wood}
     fill: wood_color
     layer: 21
+  - tags: {natural: wetland}
+    fill: wetland_color
+    layer: 21
   - tags: {natural: grassland}
     fill: grass_color
     stroke: grass_border_color
@@ -667,9 +712,14 @@ ways:
     stroke: wood_color
     stroke-width: 5
   - tags: {natural: water}
-    fill: water_color
-    # stroke: water_border_color
-    # stroke-width: 1
+    # fill: water_color
+    stroke: water_border_color
+    stroke-width: 1
+    layer: 21
+  - tags: {natural: coastline}
+    # fill: water_color
+    stroke: water_border_color
+    stroke-width: 1
     layer: 21
   - tags: {natural: ridge}
     stroke-width: 2
@@ -702,6 +752,9 @@ ways:
   - tags: {landuse: commercial}
     fill: none
     stroke: none
+  - tags: {landuse: military}
+    fill: none
+    stroke: none
 
   - tags: {building: "*"}
     fill: building_color
@@ -712,10 +765,19 @@ ways:
     opacity: 0.5
     icon: parking
 
+  - tags: {aeroway: landingpad}
+    fill: "#000000"
+    opacity: 0.1
+    icon: parking
+
   - tags: {waterway: riverbank}
     fill: none # water_color
     stroke: water_border_color
     stroke-width: 1
+  - tags: {waterway: ditch}
+    fill: none # water_color
+    stroke: water_color
+    stroke-width: 2
 
   - tags: {railway: subway}
     stroke-width: 10
@@ -883,6 +945,13 @@ ways:
     stroke: foot_color
     layer: 42
 
+  - tags: {route: ferry}
+    stroke-width: 1
+    stroke-dasharray: 3,3
+    stroke-linecap: butt
+    stroke: route_color
+    layer: 42
+
   - tags: {leisure: playground}
     fill: playground_color
     opacity: 0.2
@@ -970,7 +1039,7 @@ tags_to_skip: [
   "FIXME", "source_ref", "naptan:verified:note", "fixme",
   "building:levels", "ref:opendataparis:adresse", "indoor",
   "level:ref", "ref:opendataparis:geo_point_2d", "created_by",
-  "mapillary", "diameter_crown"]
+  "mapillary", "diameter_crown", "attribution"]
 
 prefix_to_skip: [
   "source", "mapillary"]
