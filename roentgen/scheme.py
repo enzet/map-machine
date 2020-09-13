@@ -176,7 +176,9 @@ class Scheme:
             result_set: List[List[str]] = extra_icons
 
         is_default: bool = False
-        if not result_set and tags:
+        if not result_set and \
+                list(filter(lambda x: x not in processed and
+                    not self.is_no_drawable(x), tags.keys())):
             result_set = [[DEFAULT_SHAPE_ID]]
             is_default = True
 
