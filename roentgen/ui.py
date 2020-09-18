@@ -33,7 +33,7 @@ def parse_options(args):
         "-b", "--boundary-box",
         dest="boundary_box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
-        help="geo boundary box, use \"m\" instead of \"-\" for negative values",
+        help="geo boundary box, use space before \"-\" for negative values",
         required=True)
     parser.add_argument(
         "-s", "--scale",
@@ -90,7 +90,7 @@ def parse_options(args):
     arguments = parser.parse_args(args[1:])
 
     if arguments.boundary_box:
-        arguments.boundary_box = arguments.boundary_box.replace("m", "-")
+        arguments.boundary_box = arguments.boundary_box.replace(" ", "")
 
     return arguments
 
