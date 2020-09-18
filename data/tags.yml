@@ -3,55 +3,65 @@ colors:
   # Entity
 
   background: "EEEEEE"
-  grass: "C8DC94"
-  sand: "F0E0D0"
   beach: "F0E0C0"
   deciduous: "FCAF3E"
   desert: "F0E0D0"
   evergreen: "688C44"
-  playground: "884400"
+  grass: "C8DC94"
   parking: "DDCC99"
+  playground: "884400"
+  sand: "F0E0D0"
+  tree: "98AC64"
   water: "AACCFF"
   water_border: "6688BB"
   wood: "B8CC84"
-  tree: "98AC64"
 
   direction_view_color: "E0F0FF"
   direction_camera_color: "0088FF"
 
-  outline_color: "FFFFFF"
   beach_color: "F0E0C0"
   boundary_color: "880088"
+  building_border_color: "E0D0C0"  # "AAAAAA"
   building_color: "F8F0E8"  # "D0D0C0"
-  building_border_color: "DDDDDD"  # "AAAAAA"
   construction_color: "CCCCCC"
   cycle_color: "4444EE"
   desert_color: "F0E0D0"
-  foot_color: "B89A74"
-  indoor_color: "E8E4E0"
-  indoor_border_color: "C0B8B0"
+  emergency_color: "DD2222"
+  farmland_color: "FFEEBB"
   foot_border_color: "FFFFFF"
-  grass_color: "CFE0A8"
+  foot_color: "B89A74"
   grass_border_color: "BFD098"
+  grass_color: "CFE0A8"
   guide_strips_color: "228833"
+  indoor_border_color: "C0B8B0"
+  indoor_color: "E8E4E0"
+  meadow_border_color: "BFD078"
+  meadow_color: "CFE088"
+  orchard_color: "B8DCA4"
+  outline_color: "FFFFFF"
   parking_color: "DDCC99"
-  platform_color: "CCCCCC"
   platform_border_color: "AAAAAA"
+  platform_color: "CCCCCC"
+  playground_border_color: "663300"
   playground_color: "884400"
-  primary_border_color: "888888"  # "AA8800"
-  primary_color: "FFFFFF"  # "FFDD66"
+  primary_border_color: "AA8800"
+  primary_color: "FFDD66"
   private_access_color: "884444"
   ridge_color: "000000"
   road_border_color: "CCCCCC"
   rock_color: "DDDDDD"
   route_color: "FFFFFF"
   sand_color: "F0E0D0"
+  secondary_border_color: "BB9911"
+  secondary_color: "FFEE77"
   scree_color: "CCCCCC"
-  water_color: "AACCFF"
+  tertiary_border_color: "CCAA22"
+  tertiary_color: "FFFF88"
   water_border_color: "6688BB"
+  water_color: "AACCFF"
   wetland_color: "BFE0D8"
-  wood_color: "B8CC84"
   wood_border_color: "A8BC74"
+  wood_color: "B8CC84"
 
   # Colors not in W3C
 
@@ -112,12 +122,17 @@ tags:
 
   # Emergency
 
-  - tags: {emergency: phone}
-    icon: [sos_phone]
+  - tags: {emergency: defibrillator}
+    icon: [defibrillator]
+    color: emergency_color
   - tags: {emergency: fire_extinguisher}
     icon: [fire_extinguisher]
+    color: emergency_color
   - tags: {emergency: fire_hydrant}
     icon: [fire_hydrant]
+  - tags: {emergency: phone}
+    icon: [sos_phone]
+    color: emergency_color
 
   # Highway
 
@@ -152,9 +167,13 @@ tags:
     icon: [pole]
   - tags: {power: generator}
     icon: [power_generator]
+  - tags: {power: generator, generator:source: solar}
+    icon: [solar_panel]
   - tags: {power: tower}
     icon: [power_tower]
 
+  - tags: {tourism: "*"}
+    icon: [historic]
   - tags: {information: "*"}
     icon: [information]
   - tags: {tourism: information}
@@ -602,6 +621,8 @@ tags:
 
     # Tourism
 
+  - tags: {tourism: artwork}
+    icon: [picture]
   - tags: {tourism: artwork, artwork_type: statue}
     icon: [statue]
   - tags: {tourism: artwork, artwork_type: sculpture}
@@ -665,87 +686,111 @@ ways:
     stroke: indoor_border_color
     stroke-width: 1
     fill: indoor_color
-    layer: 10
+    priority: 10
   - tags: {indoor: corridor}
     stroke: indoor_color
     stroke-width: 1
     fill: indoor_color
-    layer: 11
-  - tags: {indoor: ["yes", room, elevator]}
+    priority: 11
+  - tags: {highway: corridor}
+    stroke: "#00FF00"
+    stroke-width: 5
+    priority: 11
+  - tags: {indoor: ["yes", room, elevator], area: "yes"}
     stroke: indoor_color
     stroke-width: 1
     fill: indoor_color
-    layer: 12
+    priority: 12
   - tags: {indoor: column}
     stroke: indoor_color
     stroke-width: 1
     fill: indoor_color
-    layer: 13
+    priority: 13
+
+  - tags: {power: line}
+    stroke: "#000000"
+    stroke-width: 1
+    opacity: 0.2
+    priority: 80
 
   - tags: {natural: wood}
     fill: wood_color
-    layer: 21
+    priority: 21
   - tags: {natural: wetland}
     fill: wetland_color
-    layer: 21
+    priority: 21
   - tags: {natural: grassland}
     fill: grass_color
     stroke: grass_border_color
-    layer: 20
+    priority: 20
   - tags: {natural: scrub}
     fill: wood_color
-    layer: 21
+    priority: 21
   - tags: {natural: sand}
     fill: sand_color
-    layer: 20
+    priority: 20
   - tags: {natural: beach}
     fill: beach_color
-    layer: 20
+    priority: 20
   - tags: {natural: desert}
     fill: desert_color
-    layer: 20
+    priority: 20
   - tags: {natural: forest}
     fill: wood_color
-    layer: 21
+    priority: 21
   - tags: {natural: tree_row}
-    layer: 21
+    priority: 21
     stroke: wood_color
     stroke-width: 5
   - tags: {natural: water}
-    # fill: water_color
-    stroke: water_border_color
-    stroke-width: 1
-    layer: 21
+    fill: water_color
+    # stroke: water_border_color
+    # stroke-width: 1
+    priority: 21
   - tags: {natural: coastline}
     # fill: water_color
     stroke: water_border_color
     stroke-width: 1
-    layer: 21
+    priority: 21
   - tags: {natural: ridge}
     stroke-width: 2
     opacity: 0.3
     stroke: ridge_color
-    layer: 21
+    priority: 21
   - tags: {natural: bare_rock}
     fill: rock_color
   - tags: {natural: scree}
     fill: scree_color
 
-  - tags: {landuse: grass}
-    fill: grass_color
-    layer: 20
-    stroke: grass_border_color
   - tags: {landuse: conservation}
     fill: grass_color
-    layer: 20
-  - tags: {landuse: forest}
-    fill: wood_color
-    layer: 20
-  - tags: {landuse: garages}
-    fill: parking_color
-    layer: 21
+    priority: 20
   - tags: {landuse: construction}
     fill: construction_color
+  - tags: {landuse: farmland}
+    fill: farmland_color
+    priority: 20
+    stroke: grass_border_color
+  - tags: {landuse: forest}
+    fill: wood_color
+    priority: 20
+  - tags: {landuse: garages}
+    fill: parking_color
+    priority: 21
+  - tags: {landuse: grass}
+    fill: grass_color
+    priority: 20
+    stroke: grass_border_color
+  - tags: {landuse: orchard}
+    fill: orchard_color
+    priority: 21
+  - tags: {landuse: meadow}
+    fill: meadow_color
+    priority: 20
+    stroke: meadow_border_color
+
+    # Hidden land use
+
   - tags: {landuse: residential}
     fill: none
     stroke: none
@@ -755,10 +800,16 @@ ways:
   - tags: {landuse: military}
     fill: none
     stroke: none
+  - tags: {landuse: railway}
+    fill: none
+    stroke: none
 
   - tags: {building: "*"}
     fill: building_color
     stroke: building_border_color
+  #- tags: {building:part: "*"}
+  #  fill: building_color
+  #  stroke: building_border_color
 
   - tags: {amenity: parking}
     fill: parking_color
@@ -782,215 +833,257 @@ ways:
   - tags: {railway: subway}
     stroke-width: 10
     stroke: "#DDDDDD"
-    layer: 41
-  - tags: {railway: [narrow_gauge, tram]}
+    priority: 41
+  - tags: {railway: [rail, narrow_gauge, tram]}
     stroke-width: 2
     stroke: "#000000"
-    layer: 41
+    priority: 43
   - tags: {railway: platform}
     fill: platform_color
     stroke-width: 1
     stroke: platform_border_color
-    layer: 41
+    priority: 41
 
   - tags: {highway: motorway}
-    stroke-width: 33
+    r2: 15
     stroke: road_border_color
     stroke-linecap: round
-    layer: 41
+    priority: 41
   - tags: {highway: trunk}
-    stroke-width: 31
+    r2: 13
     stroke: road_border_color
     stroke-linecap: round
-    layer: 41
+    priority: 41
   - tags: {highway: primary}
-    stroke-width: 29
+    r2: 11
     stroke: primary_border_color
     stroke-linecap: round
-    layer: 41
+    priority: 41.9
+  - tags: {highway: motorway_link}
+    r2: 9
+    stroke: road_border_color
+    stroke-linecap: round
+    priority: 41
   - tags: {highway: secondary}
-    stroke-width: 27
-    stroke: road_border_color
+    r2: 9
+    stroke: secondary_border_color
     stroke-linecap: round
-    layer: 41
+    priority: 41.8
   - tags: {highway: tertiary}
-    stroke-width: 25
-    stroke: road_border_color
+    r2: 7
+    stroke: tertiary_border_color
     stroke-linecap: round
-    layer: 41
+    priority: 41.7
   - tags: {highway: unclassified}
-    stroke-width: 17
+    r2: 5
     stroke: road_border_color
     stroke-linecap: round
-    layer: 41
+    priority: 41
   - tags: {highway: residential}
-    stroke-width: 17
+    r2: 5
     stroke: road_border_color
     stroke-linecap: round
-    layer: 41
+    priority: 41
+  - tags: {highway: living_street}
+    r2: 4
+    stroke: road_border_color
+    stroke-linecap: round
+    priority: 41
   - tags: {highway: service}
     no_tags: {service: parking_aisle}
-    stroke-width: 11
+    r2: 3
     stroke: road_border_color
     stroke-linecap: round
-    layer: 41
+    priority: 41
   - tags: {highway: service, service: parking_aisle}
-    stroke-width: 7
+    r2: 2
     stroke: road_border_color
     stroke-linecap: round
-    layer: 41
+    priority: 41
   - tags: {highway: track}
     stroke-width: 3
     stroke: road_border_color
     stroke-linecap: round
-    layer: 41
+    priority: 41
   - tags: {highway: [footway, pedestrian, cycleway]}
     no_tags: {area: "yes"}
     stroke-width: 3
     stroke: foot_border_color
     stroke-linecap: round
-    layer: 41
+    priority: 41
   - tags: {highway: steps}
     stroke-width: 6
     stroke: foot_border_color
     stroke-linecap: butt
+  - tags: {highway: path}
+    stroke-width: 3
+    stroke: foot_border_color
+    priority: 41
 
   - tags: {highway: motorway}
-    stroke-width: 31
+    r: 15
     stroke: "#FFFFFF"
     stroke-linecap: round
-    layer: 42
+    priority: 42
   - tags: {highway: trunk}
-    stroke-width: 29
+    r: 13
     stroke:  "#FFFFFF"
     stroke-linecap: round
-    layer: 42
+    priority: 42
   - tags: {highway: primary}
-    stroke-width: 27
+    r: 11
     stroke: primary_color
     stroke-linecap: round
-    layer: 42
+    priority: 42.9
   - tags: {highway: secondary}
-    stroke-width: 25
+    r: 9
+    stroke: secondary_color
+    stroke-linecap: round
+    priority: 42.8
+  - tags: {highway: motorway_link}
+    r: 9
     stroke: "#FFFFFF"
     stroke-linecap: round
-    layer: 42
+    priority: 42
   - tags: {highway: tertiary}
-    stroke-width: 23
-    stroke: "#FFFFFF"
+    r: 7
+    stroke: tertiary_color
     stroke-linecap: round
-    layer: 42
+    priority: 42.7
   - tags: {highway: unclassified}
-    stroke-width: 15
+    r: 5
     stroke: "#FFFFFF"
     stroke-linecap: round
-    layer: 42
+    priority: 42
   - tags: {highway: residential}
-    stroke-width: 15
+    r: 5
     stroke: "#FFFFFF"
     stroke-linecap: round
-    layer: 42
-  - tags: {highway: service, service: parking_aisle}
-    stroke-width: 5
+    priority: 42
+  - tags: {highway: living_street}
+    r: 4
     stroke: "#FFFFFF"
     stroke-linecap: round
-    layer: 42
+    priority: 42
   - tags: {highway: service}
     no_tags: {service: parking_aisle}
-    stroke-width: 9
+    r: 3
     stroke: "#FFFFFF"
     stroke-linecap: round
-    layer: 42
+    priority: 42
+  - tags: {highway: service, service: parking_aisle}
+    r: 2
+    stroke: "#FFFFFF"
+    stroke-linecap: round
+    priority: 42
   - tags: {highway: track}
     stroke-width: 3
     stroke: road_border_color
     stroke-linecap: round
-    layer: 42
+    priority: 42
   - tags: {highway: [footway, pedestrian]}
     no_tags: {area: "yes"}
     stroke-width: 1.5
     stroke-dasharray: 7,3
     stroke-linecap: round
     stroke: foot_color
-    layer: 42
+    priority: 42
   - tags: {highway: [footway, pedestrian], area: "yes"}
     stroke: none
     fill: "#DDDDDD"
     stroke-linecap: round
-    layer: -55  # FIXME
+    priority: -55  # FIXME
   - tags: {highway: cycleway}
     no_tags: {area: "yes"}
     stroke-width: 1
     stroke: cycle_color
     stroke-dasharray: 8,2
     stroke-linecap: butt
-    layer: 42
+    priority: 42
   - tags: {highway: steps, conveying: "*"}
     stroke-width: 5
     stroke-dasharray: 1.5,2
     stroke-linecap: butt
     stroke: "#888888"
-    layer: 42
+    priority: 42
   - tags: {highway: steps}
     no_tags: {conveying: "*"}
     stroke-width: 5
     stroke-dasharray: 1.5,2
     stroke-linecap: butt
     stroke: foot_color
-    layer: 42
+    priority: 42
   - tags: {highway: path}
-    stroke-width: 1
-    stroke-dasharray: 5,5
+    stroke-width: 1.5
+    stroke-dasharray: 5,3
     stroke-linecap: butt
     stroke: foot_color
-    layer: 42
+    priority: 42
 
   - tags: {route: ferry}
     stroke-width: 1
     stroke-dasharray: 3,3
     stroke-linecap: butt
     stroke: route_color
-    layer: 42
+    priority: 42
 
+  - tags: {leisure: garden}
+    fill: grass_color
+    priority: 21
+  - tags: {leisure: park}
+    fill: grass_color
+    opacity: 0.5
+  - tags: {leisure: pitch}
+    fill: playground_color
+    stroke: playground_border_color
+    stroke-width: 1
+    opacity: 0.2
+    priority: 21
   - tags: {leisure: playground}
     fill: playground_color
     opacity: 0.2
     icon: toy_horse
-    layer: 21
-  - tags: {leisure: garden}
-    fill: grass_color
-    layer: 21
-  - tags: {leisure: pitch}
-    fill: playground_color
-    opacity: 0.2
-    layer: 21
-  - tags: {leisure: park}
-    fill: grass_color
-    opacity: 0.5
+    priority: 21
+  - tags: {leisure: swimming_pool}
+    fill: water_color
+    stroke: water_border_color
+    stroke-width: 1
 
   - tags: {barrier: hedge}
     fill: none
     stroke: wood_color
     stroke-width: 4
-    layer: 40
+    priority: 40
+  - tags: {barrier: city_wall}
+    fill: none
+    stroke: "#000000"
+    stroke-width: 1
+    opacity: 0.6
+    priority: 40
+  - tags: {barrier: wall}
+    fill: none
+    stroke: "#000000"
+    stroke-width: 1
+    opacity: 0.5
+    priority: 40
   - tags: {barrier: [fence, retaining_wall]}
     fill: none
     stroke: "#000000"
     stroke-width: 1
     opacity: 0.4
-    layer: 40
+    priority: 40
   - tags: {barrier: handrail}
     fill: none
     stroke: "#000000"
     stroke-width: 1
     opacity: 0.3
-    layer: 40
+    priority: 40
   - tags: {barrier: kerb}
     fill: none
     stroke: "#000000"
     stroke-width: 1
     opacity: 0.2
-    layer: 40
+    priority: 40
 
   - tags: {border: "*"}
     stroke: "#FF0000"
@@ -1002,7 +1095,7 @@ ways:
     stroke: boundary_color
     stroke-width: 0.3
     stroke-dasharray: 10,5
-    layer: 60
+    priority: 60
 
 tags_to_write: [
   "operator", "opening_hours", "cuisine", "network", "website",

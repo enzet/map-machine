@@ -2,9 +2,9 @@ class MinMax:
     """
     Minimum and maximum.
     """
-    def __init__(self):
-        self.min_ = None
-        self.max_ = None
+    def __init__(self, min_=None, max_=None):
+        self.min_ = min_
+        self.max_ = max_
 
     def update(self, value):
         """
@@ -18,3 +18,6 @@ class MinMax:
         Difference between maximum and minimum.
         """
         return self.max_ - self.min_
+
+    def center(self):
+        return (self.min_ + self.max_) / 2

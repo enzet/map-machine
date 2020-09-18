@@ -36,10 +36,11 @@ def parse_options(args):
         help="geo boundary box, use \"m\" instead of \"-\" for negative values",
         required=True)
     parser.add_argument(
-        "-s", "--size",
-        metavar="<width>,<height>",
-        help="output SVG file size in pixels",
-        dest="size",
+        "-s", "--scale",
+        metavar="<float>",
+        help="map scale",
+        dest="scale",
+        type=float,
         required=True)
     parser.add_argument(
         "-nn", "--no-draw-nodes",
@@ -95,7 +96,8 @@ def parse_options(args):
 
 
 def progress_bar(
-        number: int, total: int, length: int = 20, step: int = 1000) -> None:
+        number: int, total: int, length: int = 20, step: int = 1000,
+        text: str = "") -> None:
     """
     Draw progress bar using Unicode symbols.
 
@@ -106,7 +108,7 @@ def progress_bar(
         subsequently)
     """
     if number == -1:
-        print(f"100 % {length * '█'}▏")
+        print(f"100 % {length * '█'}▏{text}")
     elif number % step == 0:
         ratio: float = number / total
         parts: int = int(ratio * length * BOXES_LENGTH)
@@ -114,7 +116,7 @@ def progress_bar(
         box: str = BOXES[int(parts - fill_length * BOXES_LENGTH)]
         print(
             f"{str(int(int(ratio * 1000) / 10)):>3} % {fill_length * '█'}{box}"
-            f"{int(length - fill_length - 1) * ' '}▏")
+            f"{int(length - fill_length - 1) * ' '}▏{text}")
         sys.stdout.write("\033[F")
 
 

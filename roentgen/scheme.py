@@ -77,8 +77,6 @@ class Scheme:
         if color.startswith("#"):
             return color
 
-        print(f"No color {color}.")
-
         return DEFAULT_COLOR
 
     def is_no_drawable(self, key: str) -> bool:

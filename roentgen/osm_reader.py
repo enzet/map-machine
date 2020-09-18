@@ -3,10 +3,10 @@ Reading OpenStreetMap data from XML file.
 
 Author: Sergey Vartanov (me@enzet.ru).
 """
+import numpy as np
 from datetime import datetime
 from typing import Dict, List, Optional, Set, Union
 
-from roentgen.flinger import Geo
 from roentgen.ui import progress_bar
 from roentgen.util import MinMax
 
@@ -21,7 +21,7 @@ class OSMNode:
     """
     def __init__(self):
         self.id_: Optional[int] = None
-        self.position: Optional[Geo] = None
+        self.position: Optional[np.array] = None
         self.tags: Dict[str, str] = {}
 
         self.visible: Optional[str] = None
@@ -38,8 +38,8 @@ class OSMNode:
         :param is_full: if false, parse only ID, latitude and longitude
         """
         self.id_ = int(get_value("id", text))
-        self.position = Geo(
-            float(get_value("lat", text)), float(get_value("lon", text)))
+        self.position = np.array((
+            float(get_value("lat", text)), float(get_value("lon", text))))
 
         if is_full:
             self.visible = get_value("visible", text)
