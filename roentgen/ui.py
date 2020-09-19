@@ -107,6 +107,7 @@ def progress_bar(
     :param length: progress bar length.
     :param step: frequency of progress bar updating (assuming that numbers go
         subsequently)
+    :param text: short description
     """
     if number == -1:
         print(f"100 % {length * '█'}▏{text}")

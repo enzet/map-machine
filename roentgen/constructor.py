@@ -76,14 +76,18 @@ class Way:
     Way in Röntgen terms.
     """
     def __init__(
-            self, kind: str, inners, outers, style: Dict[str, Any],
+            self, inners, outers, style: Dict[str, Any],
             layer: float = 0.0, levels=None):
-        self.kind = kind
-        self.inners = inners
-        self.outers = outers
+        self.inners = []
+        self.outers = []
         self.style: Dict[str, Any] = style
         self.layer = layer
         self.levels = levels
+
+        for inner_nodes in inners:
+            self.inners.append(make_clockwise(inner_nodes))
+        for outer_nodes in outers:
+            self.outers.append(make_counter_clockwise(outer_nodes))
 
     def get_path(
             self, flinger: Flinger, shift: np.array = np.array((0, 0))) -> str:
@@ -95,12 +99,10 @@ class Way:
         path: str = ""
 
         for outer_nodes in self.outers:
-            path += get_path(
-                make_counter_clockwise(outer_nodes), shift, flinger) + " "
+            path += get_path(outer_nodes, shift, flinger) + " "
 
         for inner_nodes in self.inners:
-            path += get_path(
-                make_clockwise(inner_nodes), shift, flinger) + " "
+            path += get_path(inner_nodes, shift, flinger) + " "
 
         return path
 
@@ -234,6 +236,7 @@ class Constructor:
 
         self.nodes: List[Node] = []
         self.ways: List[Way] = []
+        self.buildings: List[Way] = []
 
     def construct_ways(self):
         """
@@ -289,7 +292,7 @@ class Constructor:
                 return
             user_color = get_user_color(way.user, self.seed)
             self.ways.append(
-                Way("way", inners, outers,
+                Way(inners, outers,
                     {"fill": "none", "stroke": user_color.hex,
                      "stroke-width": 1}))
             return
@@ -299,7 +302,7 @@ class Constructor:
                 return
             time_color = get_time_color(way.timestamp)
             self.ways.append(
-                Way("way", inners, outers,
+                Way(inners, outers,
                     {"fill": "none", "stroke": time_color.hex,
                      "stroke-width": 1}))
             return
@@ -355,10 +358,13 @@ class Constructor:
                         style["stroke-width"] = \
                             element["r2"] * \
                             self.flinger.get_scale(center_coordinates) + 2
-                self.ways.append(
-                    Way(kind, inners, outers, style, layer, levels))
+                w = Way(inners, outers, style, layer, levels)
+                if kind == "way":
+                    self.ways.append(w)
+                elif kind == "building":
+                    self.buildings.append(w)
                 if center_point is not None and \
-                        (way.is_cycle() or "area" in tags and tags["area"]):
+                        (way.is_cycle() and "area" in tags and tags["area"]):
                     icon_set: IconSet = self.scheme.get_icon(tags)
                     self.nodes.append(Node(
                         icon_set, tags, center_point, center_coordinates,

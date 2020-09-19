@@ -515,7 +515,6 @@ nodes:
   - tags:
       railway: station
       station: subway
-      transport: subway
       network: London Underground
     icon: [tfl]
   - tags: {railway: subway_entrance, network: London Underground}

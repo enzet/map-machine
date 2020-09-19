@@ -229,9 +229,6 @@ class Painter:
         Draw area between way and way shifted by the vector.
         """
         for way in ways:
-            if way.kind != "building":
-                continue
-
             if stage == 1:
                 shift_1 = [0, 0]
                 shift_2 = [0, -1]
@@ -256,26 +253,26 @@ class Painter:
                            np.add(flung_1, shift_2), "Z"),
                         fill=color.hex, stroke=color.hex, stroke_width=1))
 
-    def draw(self, nodes: List[Node], ways: List[Way], points):
+    def draw(self, constructor: Constructor, points):
         """
         Draw map.
         """
-        ways = sorted(ways, key=lambda x: x.layer)
-        for way in ways:  # type: Way
-            if way.kind == "way":
-                path: str = way.get_path(self.flinger)
-                if path:
-                    p = Path(d=path)
-                    p.update(way.style)
-                    self.svg.add(p)
+        ways = sorted(constructor.ways, key=lambda x: x.layer)
+        ways_length: int = len(ways)
+        for index, way in enumerate(ways):  # type: Way
+            ui.progress_bar(index, ways_length, step=10, text="Drawing ways")
+            path: str = way.get_path(self.flinger)
+            if path:
+                p = Path(d=path)
+                p.update(way.style)
+                self.svg.add(p)
+        ui.progress_bar(-1, 0, text="Drawing ways")
 
         # Building shade
 
         building_shade = Group(opacity=0.1)
 
-        for way in ways:  # type: Way
-            if way.kind != "building":
-                continue
+        for way in constructor.buildings:  # type: Way
             shift = [-5, 5]
             if way.levels:
                 shift = [-5 * way.levels, 5 * way.levels]
@@ -292,17 +289,15 @@ class Painter:
 
         # Building walls
 
-        self.draw_building_walls(1, Color("#AAAAAA"), ways)
-        self.draw_building_walls(2, Color("#C3C3C3"), ways)
-        self.draw_building_walls(3, Color("#DDDDDD"), ways)
+        self.draw_building_walls(1, Color("#AAAAAA"), constructor.buildings)
+        self.draw_building_walls(2, Color("#C3C3C3"), constructor.buildings)
+        self.draw_building_walls(3, Color("#DDDDDD"), constructor.buildings)
 
         # Building roof
 
         building_paths: List[(str, Dict)] = []
 
-        for way in ways:  # type: Way
-            if way.kind != "building":
-                continue
+        for way in constructor.buildings:  # type: Way
             shift = [0, -3]
             if way.levels:
                 shift = np.array([0 * way.levels, min(-3, -1 * way.levels)])
@@ -323,7 +318,7 @@ class Painter:
 
         # Trees
 
-        for node in nodes:
+        for node in constructor.nodes:
             if not (node.get_tag("natural") == "tree" and
                     ("diameter_crown" in node.tags or
                      "circumference" in node.tags)):
@@ -343,7 +338,7 @@ class Painter:
 
         # Directions
 
-        for node in nodes:  # type: Node
+        for node in constructor.nodes:  # type: Node
 
             angle = None
             is_revert_gradient: bool = False
@@ -356,18 +351,18 @@ class Painter:
                     angle = float(node.get_tag("angle"))
                 direction_radius: float = \
                     25 * self.flinger.get_scale(node.coordinates)
-                direction_color: str = \
+                direction_color: Color = \
                     self.scheme.get_color("direction_camera_color")
             elif node.get_tag("traffic_sign") == "stop":
                 direction = node.get_tag("direction")
                 direction_radius: float = \
                     25 * self.flinger.get_scale(node.coordinates)
-                direction_color: str = Color("red")
+                direction_color: Color = Color("red")
             else:
                 direction = node.get_tag("direction")
                 direction_radius: float = \
                     50 * self.flinger.get_scale(node.coordinates)
-                direction_color: str = \
+                direction_color: Color = \
                     self.scheme.get_color("direction_view_color")
                 is_revert_gradient = True
 
@@ -399,15 +394,15 @@ class Painter:
 
         # All other nodes
 
-        nodes = sorted(nodes, key=lambda x: x.layer)
+        nodes = sorted(constructor.nodes, key=lambda x: x.layer)
         for index, node in enumerate(nodes):  # type: int, Node
             if node.get_tag("natural") == "tree" and \
                     ("diameter_crown" in node.tags or
                      "circumference" in node.tags):
                 continue
-            ui.progress_bar(index, len(nodes), step=10, text="Draw nodes")
+            ui.progress_bar(index, len(nodes), step=10, text="Drawing nodes")
             self.draw_shapes(node, points)
-        ui.progress_bar(-1, len(nodes), step=10, text="Draw nodes")
+        ui.progress_bar(-1, len(nodes), step=10, text="Drawing nodes")
 
         if self.draw_captions == "no":
             return
@@ -589,7 +584,7 @@ def main(argv):
         draw_captions=options.draw_captions,
         map_=map_, flinger=flinger, svg=svg, icon_extractor=icon_extractor,
         scheme=scheme)
-    painter.draw(constructor.nodes, constructor.ways, points)
+    painter.draw(constructor, points)
 
     if options.show_index:
         draw_index(flinger, map_, max1, min1, svg)
