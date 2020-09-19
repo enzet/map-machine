@@ -1,3 +1,6 @@
+from colour import Color
+
+
 class MinMax:
     """
     Minimum and maximum.
@@ -21,3 +24,12 @@ class MinMax:
 
     def center(self):
         return (self.min_ + self.max_) / 2
+
+def is_bright(color: Color) -> bool:
+    """
+    Is color bright enough to have black outline instead of white.
+    """
+    return (
+        0.2126 * color.red * 256 +
+        0.7152 * color.green * 256 +
+        0.0722 * color.blue * 256 > 200)

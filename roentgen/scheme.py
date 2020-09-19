@@ -6,11 +6,12 @@ Author: Sergey Vartanov (me@enzet.ru).
 import copy
 import yaml
 
+from colour import Color
 from typing import Any, Dict, List, Optional, Set
 
 from roentgen.extract_icon import DEFAULT_SHAPE_ID
 
-DEFAULT_COLOR: str = "#444444"
+DEFAULT_COLOR: Color = Color("#444444")
 
 
 class IconSet:
@@ -18,7 +19,7 @@ class IconSet:
     Node representation: icons and color.
     """
     def __init__(
-            self, icons: List[List[str]], color: str, processed: Set[str],
+            self, icons: List[List[str]], color: Color, processed: Set[str],
             is_default: bool):
         """
         :param icons: list of lists of shape identifiers
@@ -27,7 +28,7 @@ class IconSet:
             tag keys should be displayed by text or ignored)
         """
         self.icons: List[List[str]] = icons
-        self.color: str = color
+        self.color: Color = color
         self.processed: Set[str] = processed
         self.is_default = is_default
 
@@ -38,23 +39,18 @@ class Scheme:
 
     Specifies map colors and rules to draw icons for OpenStreetMap tags.
     """
-    def __init__(self, file_name: str, color_file_name: str):
+    def __init__(self, file_name: str):
         """
         :param file_name: scheme file name with tags, colors, and tag key
             specification
-        :param color_file_name: additional color scheme
         """
         content: Dict[str, Any] = \
             yaml.load(open(file_name).read(), Loader=yaml.FullLoader)
 
-        self.tags: List[Dict[str, Any]] = content["tags"]
+        self.nodes: List[Dict[str, Any]] = content["nodes"]
         self.ways: List[Dict[str, Any]] = content["ways"]
 
         self.colors: Dict[str, str] = content["colors"]
-        w3c_colors: Dict[str, str] = \
-            yaml.load(open(color_file_name), Loader=yaml.FullLoader)
-
-        self.colors.update(w3c_colors)
 
         self.tags_to_write: List[str] = content["tags_to_write"]
         self.prefix_to_write: List[str] = content["prefix_to_write"]
@@ -64,18 +60,20 @@ class Scheme:
         # Storage for created icon sets.
         self.cache: Dict[str, IconSet] = {}
 
-    def get_color(self, color: str) -> str:
+    def get_color(self, color: str) -> Color:
         """
         Return color if the color is in scheme, otherwise return default color.
 
         :return: 6-digit color specification with "#"
         """
         if color in self.colors:
-            return "#" + self.colors[color]
+            return Color("#" + self.colors[color])
         if color.lower() in self.colors:
-            return "#" + self.colors[color.lower()]
-        if color.startswith("#"):
-            return color
+            return Color("#" + self.colors[color.lower()])
+        try:
+            return Color(color)
+        except ValueError:
+            pass
 
         return DEFAULT_COLOR
 
@@ -124,12 +122,12 @@ class Scheme:
 
         main_icon: Optional[List[str]] = None
         extra_icons: List[List[str]] = []
-        processed = set()
-        fill = DEFAULT_COLOR
+        processed: Set[str] = set()
+        fill: Color = DEFAULT_COLOR
 
-        for matcher in self.tags:
-            matched = True
-            for key in matcher["tags"]:
+        for matcher in self.nodes:  # type: Dict[str, Any]
+            matched: bool = True
+            for key in matcher["tags"]:  # type: str
                 if key not in tags:
                     matched = False
                     break
@@ -173,10 +171,12 @@ class Scheme:
         else:
             result_set: List[List[str]] = extra_icons
 
+        keys_left = list(filter(
+            lambda x: x not in processed and
+            not self.is_no_drawable(x), tags.keys()))
+
         is_default: bool = False
-        if not result_set and \
-                list(filter(lambda x: x not in processed and
-                    not self.is_no_drawable(x), tags.keys())):
+        if not result_set and keys_left:
             result_set = [[DEFAULT_SHAPE_ID]]
             is_default = True
 

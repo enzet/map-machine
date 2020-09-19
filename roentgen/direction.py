@@ -58,6 +58,7 @@ class Sector:
     """
     Sector described by two vectors.
     """
+
     def __init__(self, text: str, angle: Optional[float] = None):
         """
         :param text: sector text representation.  E.g. "70-210", "N-NW"
@@ -107,11 +108,12 @@ class DirectionSet:
     """
     Describes direction, set of directions.
     """
+
     def __init__(self, text: str):
         """
         :param text: direction tag value
         """
-        self.sectors = list(map(Sector, text.split(";")))
+        self.sectors: Iterator[Optional[Sector]] = map(Sector, text.split(";"))
 
     def __str__(self):
         return ", ".join(map(str, self.sectors))

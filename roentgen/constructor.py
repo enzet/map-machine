@@ -5,6 +5,7 @@ Author: Sergey Vartanov (me@enzet.ru).
 """
 import numpy as np
 
+from colour import Color
 from datetime import datetime
 from hashlib import sha256
 from typing import Any, Dict, List, Optional, Set
@@ -103,6 +104,13 @@ class Way:
 
         return path
 
+class TextStruct:
+    def __init__(
+            self, text: str, fill: Color = Color("#444444"), size: float = 10):
+        self.text = text
+        self.fill = fill
+        self.size = size
+
 
 def line_center(nodes: List[OSMNode], flinger: Flinger) -> np.array:
     """
@@ -121,12 +129,12 @@ def line_center(nodes: List[OSMNode], flinger: Flinger) -> np.array:
     return flinger.fling(center_coordinates), center_coordinates
 
 
-def get_user_color(text: str, seed: str):
+def get_user_color(text: str, seed: str) -> Color:
     """
     Generate random color based on text.
     """
     if text == "":
-        return "#000000"
+        return Color("black")
     rgb = sha256((seed + text).encode("utf-8")).hexdigest()[-6:]
     r = int(rgb[0:2], 16)
     g = int(rgb[2:4], 16)
@@ -137,15 +145,15 @@ def get_user_color(text: str, seed: str):
     g = g * (1 - cc) + c * cc
     b = b * (1 - cc) + c * cc
     h = hex(int(r))[2:] + hex(int(g))[2:] + hex(int(b))[2:]
-    return "#" + "0" * (6 - len(h)) + h
+    return Color("#" + "0" * (6 - len(h)) + h)
 
 
-def get_time_color(time: Optional[datetime]):
+def get_time_color(time: Optional[datetime]) -> Color:
     """
     Generate color based on time.
     """
     if time is None:
-        return "000000"
+        return Color("black")
     delta = (datetime.now() - time).total_seconds()
     time_color = hex(0xFF - min(0xFF, int(delta / 500000.)))[2:]
     i_time_color = hex(min(0xFF, int(delta / 500000.)))[2:]
@@ -153,7 +161,7 @@ def get_time_color(time: Optional[datetime]):
         time_color = "0" + time_color
     if len(i_time_color) == 1:
         i_time_color = "0" + i_time_color
-    return "#" + time_color + "AA" + i_time_color
+    return Color("#" + time_color + "AA" + i_time_color)
 
 
 def glue(ways: List[OSMWay]) -> List[List[OSMNode]]:
@@ -214,12 +222,12 @@ class Constructor:
     Röntgen node and way constructor.
     """
     def __init__(
-            self, check_level, mode, seed, map_, flinger: Flinger,
+            self, check_level, mode: str, seed: str, map_, flinger: Flinger,
             scheme: Scheme):
 
         self.check_level = check_level
-        self.mode = mode
-        self.seed = seed
+        self.mode: str = mode
+        self.seed: str = seed
         self.map_ = map_
         self.flinger: Flinger = flinger
         self.scheme: Scheme = scheme
@@ -282,7 +290,7 @@ class Constructor:
             user_color = get_user_color(way.user, self.seed)
             self.ways.append(
                 Way("way", inners, outers,
-                    {"fill": "none", "stroke": user_color,
+                    {"fill": "none", "stroke": user_color.hex,
                      "stroke-width": 1}))
             return
 
@@ -292,14 +300,14 @@ class Constructor:
             time_color = get_time_color(way.timestamp)
             self.ways.append(
                 Way("way", inners, outers,
-                    {"fill": "none", "stroke": time_color,
+                    {"fill": "none", "stroke": time_color.hex,
                      "stroke-width": 1}))
             return
 
         if not tags:
             return
 
-        appended = False
+        appended: bool = False
         kind: str = "way"
         levels = None
 
@@ -323,9 +331,9 @@ class Constructor:
                     break
             if "no_tags" in element:
                 for config_tag_key in element["no_tags"]:  # type: str
-                    if config_tag_key in tags and \
-                            tags[config_tag_key] == \
-                            element["no_tags"][config_tag_key]:
+                    if (config_tag_key in tags and
+                            tags[config_tag_key] ==
+                            element["no_tags"][config_tag_key]):
                         matched = False
                         break
             if matched:
@@ -360,7 +368,8 @@ class Constructor:
         if not appended:
             if DEBUG:
                 style: Dict[str, Any] = {
-                    "fill": "none", "stroke": "#FF0000", "stroke-width": 1}
+                    "fill": "none", "stroke": Color("red").hex,
+                    "stroke-width": 1}
                 self.ways.append(Way(
                     kind, inners, outers, style, layer, levels))
             if center_point is not None and (way.is_cycle() or

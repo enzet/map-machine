@@ -69,7 +69,7 @@ colors:
   "rose": "FF007F"  # Wikipedia
   "slate_blue": "6A5ACD"  # W3C slateblue
 
-tags:
+nodes:
 
   # No draw
 
@@ -120,7 +120,6 @@ tags:
   - tags: {amenity: waste_basket}
     icon: [waste_basket]
 
-
   # Emergency
 
   - tags: {emergency: defibrillator}
@@ -148,6 +147,10 @@ tags:
     icon: [cross]
   - tags: {man_made: flagpole}
     icon: [flagpole]
+  - tags: {man_made: manhole}
+    icon: [manhole]
+  - tags: {manhole: drain}
+    icon: [manhole_drain]
   - tags: {man_made: pole}
     icon: [pole]
   - tags: {man_made: pole, highway: street_lamp}
@@ -173,10 +176,12 @@ tags:
   - tags: {power: tower}
     icon: [power_tower]
 
-  - tags: {tourism: "*"}
-    icon: [historic]
+  # Information
+
   - tags: {information: "*"}
     icon: [information]
+  - tags: {tourism: "*"}
+    icon: [historic]
   - tags: {tourism: information}
     icon: [information]
   - tags: {information: guidepost}
@@ -185,6 +190,8 @@ tags:
     icon: [binocular]
   - tags: {information: board}
     icon: [information_board]
+
+  # Vending
 
   - tags: {vending: admission_tickets}
     icon: [vending_tickets]
@@ -595,11 +602,6 @@ tags:
     icon: [lowered_kerb]
   - tags: {traffic_calming: cushion}
     icon: [traffic_cushion]
-
-  - tags: {man_made: manhole}
-    icon: [manhole]
-  - tags: {manhole: drain}
-    icon: [manhole_drain]
 
     # Historic
 

@@ -8,15 +8,16 @@ import os
 import svgwrite
 import sys
 
+from colour import Color
 from svgwrite.container import Group
 from svgwrite.path import Path
 from svgwrite.shapes import Rect
 from svgwrite.text import Text
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from roentgen import ui
 from roentgen.address import get_address
-from roentgen.constructor import Constructor, Node, Way
+from roentgen.constructor import Constructor, Node, Way, TextStruct
 from roentgen.flinger import Flinger
 from roentgen.grid import draw_grid
 from roentgen.extract_icon import Icon, IconExtractor
@@ -24,21 +25,23 @@ from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader
 from roentgen.scheme import Scheme
 from roentgen.direction import DirectionSet, Sector
-from roentgen.util import MinMax
+from roentgen.util import MinMax, is_bright
 
 ICONS_FILE_NAME: str = "icons/icons.svg"
 TAGS_FILE_NAME: str = "data/tags.yml"
-COLORS_FILE_NAME: str = "data/colors.yml"
 MISSING_TAGS_FILE_NAME: str = "missing_tags.yml"
 
 AUTHOR_MODE = "user-coloring"
 CREATION_TIME_MODE = "time"
+
+DEFAULT_FONT = "Roboto"
 
 
 class Painter:
     """
     Map drawing.
     """
+
     def __init__(
             self, show_missing_tags: bool, overlap: int, draw_nodes: bool,
             mode: str, draw_captions: str, map_: Map, flinger: Flinger,
@@ -97,17 +100,15 @@ class Painter:
 
         write_tags = self.construct_text(node.tags, node.icon_set.processed)
 
-        for text_struct in write_tags:
-            fill = text_struct["fill"] if "fill" in text_struct else "#444444"
-            size = text_struct["size"] if "size" in text_struct else 10
-            text_y += size + 1
-            text = text_struct["text"]
+        for text_struct in write_tags:  # type: TextStruct
+            text_y += text_struct.size + 1
+            text = text_struct.text
             text = text.replace("&quot;", '"')
             text = text.replace("&amp;", '&')
             text = text[:26] + ("..." if len(text) > 26 else "")
             self.draw_text(
                 text, (node.point[0], node.point[1] + text_y + 8),
-                fill, size=size)
+                text_struct.fill, size=text_struct.size)
 
         if self.show_missing_tags:
             for tag in node.tags:  # type: str
@@ -116,12 +117,13 @@ class Painter:
                     text = f"{tag}: {node.tags[tag]}"
                     self.draw_text(
                         text, (node.point[0], node.point[1] + text_y + 18),
-                        "#734A08")
+                        Color("#734A08"))
                     text_y += 10
 
     def draw_text(
-            self, text: str, point, fill, size=10, out_fill="#FFFFFF",
-            out_opacity=1.0, out_fill_2=None, out_opacity_2=1.0):
+            self, text: str, point, fill: Color, size: float = 10,
+            out_fill=Color("white"), out_opacity=1.0,
+            out_fill_2: Optional[Color] = None, out_opacity_2=1.0):
         """
         Drawing text.
 
@@ -134,24 +136,25 @@ class Painter:
         if out_fill_2:
             self.svg.add(Text(
                 text, point, font_size=size, text_anchor="middle",
-                font_family="Roboto", fill=out_fill_2,
+                font_family=DEFAULT_FONT, fill=out_fill_2.hex,
                 stroke_linejoin="round", stroke_width=5,
-                stroke=out_fill_2, opacity=out_opacity_2))
+                stroke=out_fill_2.hex, opacity=out_opacity_2))
         if out_fill:
             self.svg.add(Text(
                 text, point, font_size=size, text_anchor="middle",
-                font_family="Roboto", fill=out_fill,
+                font_family=DEFAULT_FONT, fill=out_fill.hex,
                 stroke_linejoin="round", stroke_width=3,
-                stroke=out_fill, opacity=out_opacity))
+                stroke=out_fill.hex, opacity=out_opacity))
         self.svg.add(Text(
             text, point, font_size=size, text_anchor="middle",
-            font_family="Roboto", fill=fill))
+            font_family=DEFAULT_FONT, fill=fill.hex))
 
     def construct_text(self, tags, processed):
         """
         Construct labels for not processed tags.
         """
-        texts = []
+        texts: List[TextStruct] = []
+
         name = None
         alt_name = None
         if "name" in tags:
@@ -184,20 +187,20 @@ class Painter:
         address = get_address(tags, self.draw_captions)
 
         if name:
-            texts.append({"text": name, "fill": "#000000"})
+            texts.append(TextStruct(name, Color("black")))
         if alt_name:
-            texts.append({"text": "(" + alt_name + ")"})
+            texts.append(TextStruct("(" + alt_name + ")"))
         if address:
-            texts.append({"text": ", ".join(address)})
+            texts.append(TextStruct(", ".join(address)))
 
         if self.draw_captions == "main":
             return texts
 
         if "route_ref" in tags:
-            texts.append({"text": tags["route_ref"].replace(";", " ")})
+            texts.append(TextStruct(tags["route_ref"].replace(";", " ")))
             tags.pop("route_ref", None)
         if "cladr:code" in tags:
-            texts.append({"text": tags["cladr:code"], "size": 7})
+            texts.append(TextStruct(tags["cladr:code"], size=7))
             tags.pop("cladr:code", None)
         if "website" in tags:
             link = tags["website"]
@@ -210,18 +213,18 @@ class Painter:
             if link[-1] == "/":
                 link = link[:-1]
             link = link[:25] + ("..." if len(tags["website"]) > 25 else "")
-            texts.append({"text": link, "fill": "#000088"})
+            texts.append(TextStruct(link, Color("#000088")))
             tags.pop("website", None)
         for k in ["phone"]:
             if k in tags:
-                texts.append({"text": tags[k], "fill": "#444444"})
+                texts.append(TextStruct(tags[k], Color("#444444")))
                 tags.pop(k)
         for tag in tags:
             if self.scheme.is_writable(tag) and not (tag in processed):
-                texts.append({"text": tags[tag]})
+                texts.append(TextStruct(tags[tag]))
         return texts
 
-    def draw_building_walls(self, stage, color, ways):
+    def draw_building_walls(self, stage, color: Color, ways):
         """
         Draw area between way and way shifted by the vector.
         """
@@ -251,7 +254,7 @@ class Painter:
                         d=("M", np.add(flung_1, shift_1), "L",
                            np.add(flung_2, shift_1), np.add(flung_2, shift_2),
                            np.add(flung_1, shift_2), "Z"),
-                        fill=color, stroke=color, stroke_width=1))
+                        fill=color.hex, stroke=color.hex, stroke_width=1))
 
     def draw(self, nodes: List[Node], ways: List[Way], points):
         """
@@ -289,9 +292,9 @@ class Painter:
 
         # Building walls
 
-        self.draw_building_walls(1, "#AAAAAA", ways)
-        self.draw_building_walls(2, "#C3C3C3", ways)
-        self.draw_building_walls(3, "#DDDDDD", ways)
+        self.draw_building_walls(1, Color("#AAAAAA"), ways)
+        self.draw_building_walls(2, Color("#C3C3C3"), ways)
+        self.draw_building_walls(3, Color("#DDDDDD"), ways)
 
         # Building roof
 
@@ -321,7 +324,7 @@ class Painter:
         # Trees
 
         for node in nodes:
-            if not(node.get_tag("natural") == "tree" and
+            if not (node.get_tag("natural") == "tree" and
                     ("diameter_crown" in node.tags or
                      "circumference" in node.tags)):
                 continue
@@ -359,7 +362,7 @@ class Painter:
                 direction = node.get_tag("direction")
                 direction_radius: float = \
                     25 * self.flinger.get_scale(node.coordinates)
-                direction_color: str = "#FF0000"
+                direction_color: str = Color("red")
             else:
                 direction = node.get_tag("direction")
                 direction_radius: float = \
@@ -384,12 +387,12 @@ class Painter:
                     gradientUnits="userSpaceOnUse"))
                 if is_revert_gradient:
                     gradient \
-                        .add_stop_color(0, direction_color, opacity=0) \
-                        .add_stop_color(1, direction_color, opacity=0.7)
+                        .add_stop_color(0, direction_color.hex, opacity=0) \
+                        .add_stop_color(1, direction_color.hex, opacity=0.7)
                 else:
                     gradient \
-                        .add_stop_color(0, direction_color, opacity=0.4) \
-                        .add_stop_color(1, direction_color, opacity=0)
+                        .add_stop_color(0, direction_color.hex, opacity=0.4) \
+                        .add_stop_color(1, direction_color.hex, opacity=0)
                 self.svg.add(self.svg.path(
                     d=["M", point] + path + ["L", point, "Z"],
                     fill=gradient.get_paint_server()))
@@ -413,7 +416,8 @@ class Painter:
             if self.mode not in [CREATION_TIME_MODE, AUTHOR_MODE]:
                 self.draw_texts(node)
 
-    def draw_point_shape(self, shape_ids: List[str], point, fill, tags=None):
+    def draw_point_shape(
+            self, shape_ids: List[str], point, fill: Color, tags=None):
         """
         Draw one icon.
         """
@@ -426,37 +430,34 @@ class Painter:
             self.draw_point(icon, point, fill, tags=tags)
 
     def draw_point(
-            self, icon: Icon, point: (float, float), fill: str,
+            self, icon: Icon, point: (float, float), fill: Color,
             tags: Dict[str, str] = None) -> None:
 
         point = np.array(list(map(lambda x: int(x), point)))
         title: str = "\n".join(map(lambda x: x + ": " + tags[x], tags))
 
         path: svgwrite.path.Path = icon.get_path(self.svg, point)
-        path.update({"fill": fill})
+        path.update({"fill": fill.hex})
         path.set_desc(title=title)
         self.svg.add(path)
 
-    def draw_point_outline(self, icon: Icon, point, fill, mode="default"):
+    def draw_point_outline(
+            self, icon: Icon, point, fill: Color, mode="default"):
 
         point = np.array(list(map(lambda x: int(x), point)))
 
-        opacity = 0.5
-        stroke_width = 2.2
-        outline_fill = self.scheme.get_color("outline_color")
-        if mode not in [AUTHOR_MODE, CREATION_TIME_MODE]:
-            r = int(fill[1:3], 16)
-            g = int(fill[3:5], 16)
-            b = int(fill[5:7], 16)
-            Y = 0.2126 * r + 0.7152 * g + 0.0722 * b
-            if Y > 200:
-                outline_fill = "#000000"
-                opacity = 0.7
+        opacity: float = 0.5
+        stroke_width: float = 2.2
+        outline_fill: Color = self.scheme.get_color("outline_color")
+
+        if mode not in [AUTHOR_MODE, CREATION_TIME_MODE] and is_bright(fill):
+            outline_fill = Color("black")
+            opacity = 0.7
 
         path = icon.get_path(self.svg, point)
         path.update({
-            "fill": outline_fill, "opacity": opacity,
-            "stroke": outline_fill, "stroke-width": stroke_width,
+            "fill": outline_fill.hex, "opacity": opacity,
+            "stroke": outline_fill.hex, "stroke-width": stroke_width,
             "stroke-linejoin": "round"})
         self.svg.add(path)
 
@@ -510,9 +511,9 @@ def main(argv):
     if not options:
         sys.exit(1)
 
-    background_color = "#EEEEEE"
+    background_color: Color = Color("#EEEEEE")
     if options.mode in [AUTHOR_MODE, CREATION_TIME_MODE]:
-        background_color = "#111111"
+        background_color: Color = Color("#111111")
 
     if options.input_file_name:
         input_file_name = options.input_file_name
@@ -546,7 +547,7 @@ def main(argv):
     missing_tags = {}
     points = []
 
-    scheme: Scheme = Scheme(TAGS_FILE_NAME, COLORS_FILE_NAME)
+    scheme: Scheme = Scheme(TAGS_FILE_NAME)
 
     min1: np.array = np.array((boundary_box[1], boundary_box[0]))
     max1: np.array = np.array((boundary_box[3], boundary_box[2]))
@@ -626,7 +627,7 @@ def draw_index(flinger, map_, max1, min1, svg):
         if (0 <= i < lat_number) and (0 <= j < lon_number):
             matrix[i][j] += 1
             if "tags" in node:
-                matrix[i][j] += len(node.tags)
+                matrix[i][j] += len(node.nodes)
     for way_id in map_.way_map:  # type: int
         way = map_.way_map[way_id]
         if "tags" in way:
@@ -635,7 +636,7 @@ def draw_index(flinger, map_, max1, min1, svg):
                 i = int((node[0] - min1[0]) / lat_step)
                 j = int((node[1] - min1[1]) / lon_step)
                 if (0 <= i < lat_number) and (0 <= j < lon_number):
-                    matrix[i][j] += len(way.tags) / float(
+                    matrix[i][j] += len(way.nodes) / float(
                         len(way.nodes))
     for i in range(lat_number):
         for j in range(lon_number):

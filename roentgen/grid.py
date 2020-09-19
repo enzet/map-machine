@@ -31,7 +31,7 @@ def draw_grid(step: float = 24, columns: int = 16):
 
     to_draw = []
 
-    for element in scheme["tags"]:
+    for element in scheme["nodes"]:
         if "icon" in element:
             if set(element["icon"]) not in to_draw:
                 to_draw.append(set(element["icon"]))
