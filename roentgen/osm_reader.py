@@ -13,16 +13,36 @@ from roentgen.util import MinMax
 OSM_TIME_PATTERN: str = "%Y-%m-%dT%H:%M:%SZ"
 
 
-class OSMNode:
+class Tagged:
+    """
+    OpenStreetMap element (node, way or relation) with tags.
+    """
+    def __init__(self):
+        self.tags: Dict[str, str] = {}
+
+    def get_tag(self, key: str) -> Optional[str]:
+        """
+        Get tag value or None if it doesn't exist.
+
+        :param key: tag key
+        :return: tag value or None
+        """
+        if key in self.tags:
+            return self.tags[key]
+        return None
+
+
+class OSMNode(Tagged):
     """
     OpenStreetMap node.
 
     See https://wiki.openstreetmap.org/wiki/Node
     """
     def __init__(self):
+        super().__init__()
+
         self.id_: Optional[int] = None
         self.position: Optional[np.array] = None
-        self.tags: Dict[str, str] = {}
 
         self.visible: Optional[str] = None
         self.changeset: Optional[str] = None
@@ -52,16 +72,17 @@ class OSMNode:
         return self
 
 
-class OSMWay:
+class OSMWay(Tagged):
     """
     OpenStreetMap way.
 
     See https://wiki.openstreetmap.org/wiki/Way
     """
     def __init__(self, id_: int = 0, nodes: Optional[List[OSMNode]] = None):
+        super().__init__()
+
         self.id_: int = id_
         self.nodes: List[OSMNode] = [] if nodes is None else nodes
-        self.tags: Dict[str, str] = {}
 
         self.visible: Optional[str] = None
         self.changeset: Optional[str] = None
@@ -111,15 +132,16 @@ class OSMWay:
         return f"Way <{self.id_}> {self.nodes}"
 
 
-class OSMRelation:
+class OSMRelation(Tagged):
     """
     OpenStreetMap relation.
 
     See https://wiki.openstreetmap.org/wiki/Relation
     """
     def __init__(self, id_: int = 0):
+        super().__init__()
+
         self.id_: int = id_
-        self.tags: Dict[str, str] = {}
         self.members: List["OSMMember"] = []
 
     def parse_from_xml(self, text: str) -> "OSMRelation":
@@ -204,8 +226,11 @@ class OSMReader:
             full: bool = False) -> Map:
         """
         Parse OSM XML representation.
+
+        :param file_name input OSM XML file name
         """
-        lines_number: int = sum(1 for _ in open(file_name))
+        with open(file_name) as input_file:
+            lines_number: int = sum(1 for _ in input_file)
 
         print(f"Parsing OSM file {file_name}...")
         line_number: int = 0
