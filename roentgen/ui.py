@@ -38,7 +38,8 @@ def parse_options(args):
     parser.add_argument(
         "-s", "--scale",
         metavar="<float>",
-        help="map scale",
+        help="OSM zoom level (may not be integer, default is 18)",
+        default=18,
         dest="scale",
         type=float,
         required=True)

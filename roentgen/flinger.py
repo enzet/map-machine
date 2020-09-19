@@ -21,20 +21,31 @@ def pseudo_mercator(coordinates: np.array) -> np.array:
         np.tan(np.pi / 4 + coordinates[0] * (np.pi / 180) / 2))))
 
 
+def osm_zoom_level_to_pixels_per_meter(zoom_level: float):
+    """
+    Convert OSM zoom level (see https://wiki.openstreetmap.org/wiki/Zoom_levels)
+    to pixels per meter on Equator.
+    """
+    return 2 ** zoom_level / 156415
+
+
 class Flinger:
     """
     Convert geo coordinates into SVG position points.
     """
-    def __init__(self, geo_boundaries: MinMax, ratio: float = 1000):
+    def __init__(self, geo_boundaries: MinMax, scale: float = 1000):
         """
         :param geo_boundaries: minimum and maximum latitude and longitude
+        :param scale: OSM zoom level
         """
         self.geo_boundaries: MinMax = geo_boundaries
-        self.ratio: float = ratio
+        self.ratio: float = (
+                osm_zoom_level_to_pixels_per_meter(scale) *
+                EQUATOR_LENGTH / 360)
         self.size: np.array = self.ratio * (
             pseudo_mercator(self.geo_boundaries.max_) -
             pseudo_mercator(self.geo_boundaries.min_))
-        self.pixels_per_meter = 360 / EQUATOR_LENGTH * self.ratio
+        self.pixels_per_meter = osm_zoom_level_to_pixels_per_meter(scale)
 
         self.size: np.array = self.size.astype(int).astype(float)
 

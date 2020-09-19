@@ -1,4 +1,4 @@
-**Röntgen** is a 
+**Röntgen** is a
   * simple Python [OpenStreetMap](http://openstreetmap.org) renderer,
   * set of icons,
   * and map styles.
@@ -6,13 +6,13 @@
 [![Build Status](https://travis-ci.org/enzet/Roentgen.svg?branch=master)
 ](https://travis-ci.org/enzet/Roentgen)
 
-The idea behind Röntgen project is to have a possibility to *display every
-map feature* represented by OpenStreetMap data tags by means of colors, shapes,
-and icons.
+The idea behind Röntgen project is to have a possibility to *display any map
+feature* represented by OpenStreetMap data tags by means of colors, shapes, and
+icons.
 
-Röntgen is primarily created for OpenStreetMap contributors. Suppose, you spent
+Röntgen is primarily created for OpenStreetMap contributors.  Suppose, you spent
 time adding colors for building walls, benches and shelters for bus stops but
-they are not represented on the standard tile layer. Röntgen helps to display
+they are not represented on the standard tile layer.  Röntgen helps to display
 all changes you made.
 
 Nevertheless, Röntgen map generator can generate precise but messy maps for OSM
@@ -43,16 +43,16 @@ Visualize `direction` tag for `tourism=viewpoint` and `camera:direction` for
 Icon set
 --------
 
-If tag is drawable it is displayed using icon combination and colors. All icons
-are under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/) license. So,
-do whatever you want but give appropriate credit. Icon set is heavily inspired
+If tag is drawable it is displayed using icon combination and colors.  All icons
+are under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/) license.  So,
+do whatever you want but give appropriate credit.  Icon set is heavily inspired
 by [Osmic](https://github.com/gmgeo/osmic) icon set.
 
 ![Icons](doc/grid.png)
 
 Feel free to request new icons via issues for whatever you want to see on the
-map. No matter how frequently the tag is used in OpenStreetMap since final goal
-is to cover all tags. However, common used tags have priority, other things
+map.  No matter how frequently the tag is used in OpenStreetMap since final goal
+is to cover all tags.  However, common used tags have priority, other things
 being equal.
 
 Draw icon grid: `python3 run.py grid`.
@@ -104,51 +104,29 @@ You can run it using:
 python3 run.py \
     -b ${LONGITUDE_1},${LATITUDE_1},${LONGITUDE_2},${LATITUDE_2} \
     -o ${OUTPUT_FILE_NAME} \
-    -s ${WIDTH},${HEIGHT}
+    -s ${OSM_ZOOM_LEVEL}
 ```
 
 Example:
 
 ```bash
-python3 run.py -b 2.284,48.86,2.29,48.865 -o map.svg -s 1000,1000
+python3 run.py -b 2.284,48.86,2.29,48.865
 ```
 
 ### Main arguments ###
 
 #### Required ####
 
-<table>
-    <tr><td>Option</td><td>Value</td><td>Description</td></tr>
-    <tr>
-        <td><tt>-b</tt>, <tt>--boundary-box</tt></td>
-        <td>
-            <tt>&lt;longitude 1&gt;,&lt;latitude 1&gt;,&lt;longitude 
-            2&gt;,&lt;latitude 2&gt;</tt>
-        </td>
-        <td>Boundary box to draw.</td>
-    </tr>
-    <tr>
-        <td><tt>-s</tt>, <tt>--size</tt></td>
-        <td><tt>&lt;width&gt;,&lt;height&gt;</tt></td>
-        <td>Result image size in pixels.</td>
-    </tr>
-    <tr>
-        <td><tt>-o</tt></td>
-        <td><tt>&lt;path&gt;</tt></td>
-        <td>Path to output SVG file name.</td>
-    </tr>
-</table>
+* `--boundary-box` or `-b`: boundary box to draw. Value:
+  `<longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>`.  Use space before
+  first `-` to escape negative values.
 
 #### Optional ####
 
-<table>
-    <tr><td>Option</td><td>Value</td><td>Description</td></tr>
-    <tr>
-        <td><tt>-i</tt></td>
-        <td><tt>&lt;path&gt;</tt></td>
-        <td>Path to input XML file name. If this argument is not set, XML file
-        will be downloaded through OpenStreetMap API.</td>
-    </tr>
-</table>
+* `--scale` or `-s`: OSM zoom level.  See
+  [OSM wiki](https://wiki.openstreetmap.org/wiki/Zoom_levels).  Default is 18.
+* `-o`: path to output SVG file name.  Default is <tt>map.svg</tt>.</td>
+* `-i`: path to input XML file name.  If this argument is not set, XML file
+  will be downloaded through OpenStreetMap API.
 
 Check all arguments with `python3 run.py --help`.
