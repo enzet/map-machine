@@ -25,7 +25,8 @@ from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader
 from roentgen.scheme import Scheme
 from roentgen.direction import DirectionSet, Sector
-from roentgen.util import MinMax, is_bright
+from roentgen.util import MinMax
+from roentgen.color import is_bright
 
 ICONS_FILE_NAME: str = "icons/icons.svg"
 TAGS_FILE_NAME: str = "data/tags.yml"

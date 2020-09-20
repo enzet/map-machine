@@ -15,7 +15,8 @@ from roentgen.extract_icon import DEFAULT_SMALL_SHAPE_ID
 from roentgen.flinger import Flinger
 from roentgen.osm_reader import Map, OSMMember, OSMRelation, OSMWay, OSMNode, Tagged
 from roentgen.scheme import IconSet, Scheme
-from roentgen.util import MinMax, get_gradient_color
+from roentgen.util import MinMax
+from roentgen.color import get_gradient_color
 
 DEBUG: bool = False
 TIME_COLOR_SCALE: List[Color] = [
