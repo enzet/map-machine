@@ -13,11 +13,14 @@ from typing import Any, Dict, List, Optional, Set
 from roentgen import ui
 from roentgen.extract_icon import DEFAULT_SMALL_SHAPE_ID
 from roentgen.flinger import Flinger
-from roentgen.osm_reader import OSMMember, OSMRelation, OSMWay, OSMNode
+from roentgen.osm_reader import Map, OSMMember, OSMRelation, OSMWay, OSMNode, Tagged
 from roentgen.scheme import IconSet, Scheme
-from roentgen.util import MinMax
+from roentgen.util import MinMax, get_gradient_color
 
 DEBUG: bool = False
+TIME_COLOR_SCALE: List[Color] = [
+    Color("#581845"), Color("#900C3F"), Color("#C70039"), Color("#FF5733"),
+    Color("#FFC300"), Color("#DAF7A6")]
 
 
 def is_clockwise(polygon: List[OSMNode]) -> bool:
@@ -47,23 +50,23 @@ def make_counter_clockwise(polygon: List[OSMNode]) -> List[OSMNode]:
         return list(reversed(polygon))
 
 
-class Node:
+class Node(Tagged):
     """
     Node in Röntgen terms.
     """
     def __init__(
             self, icon_set: IconSet, tags: Dict[str, str],
             point: np.array, coordinates: np.array,
-            priority: int = 0, is_for_node: bool = True):
+            priority: float = 0, is_for_node: bool = True):
         assert point is not None
 
         self.icon_set: IconSet = icon_set
-        self.tags = tags
+        self.tags: Dict[str, str] = tags
         self.point: np.array = point
         self.coordinates: np.array = coordinates
-        self.priority = priority
-        self.layer = 0
-        self.is_for_node = is_for_node
+        self.priority: float = priority
+        self.layer: float = 0
+        self.is_for_node: bool = is_for_node
 
     def get_tag(self, key: str):
         if key in self.tags:
@@ -137,33 +140,14 @@ def get_user_color(text: str, seed: str) -> Color:
     """
     if text == "":
         return Color("black")
-    rgb = sha256((seed + text).encode("utf-8")).hexdigest()[-6:]
-    r = int(rgb[0:2], 16)
-    g = int(rgb[2:4], 16)
-    b = int(rgb[4:6], 16)
-    c = (r + g + b) / 3.
-    cc = 0
-    r = r * (1 - cc) + c * cc
-    g = g * (1 - cc) + c * cc
-    b = b * (1 - cc) + c * cc
-    h = hex(int(r))[2:] + hex(int(g))[2:] + hex(int(b))[2:]
-    return Color("#" + "0" * (6 - len(h)) + h)
+    return Color("#" + sha256((seed + text).encode("utf-8")).hexdigest()[-6:])
 
 
-def get_time_color(time: Optional[datetime]) -> Color:
+def get_time_color(time: Optional[datetime], boundaries: MinMax) -> Color:
     """
     Generate color based on time.
     """
-    if time is None:
-        return Color("black")
-    delta = (datetime.now() - time).total_seconds()
-    time_color = hex(0xFF - min(0xFF, int(delta / 500000.)))[2:]
-    i_time_color = hex(min(0xFF, int(delta / 500000.)))[2:]
-    if len(time_color) == 1:
-        time_color = "0" + time_color
-    if len(i_time_color) == 1:
-        i_time_color = "0" + i_time_color
-    return Color("#" + time_color + "AA" + i_time_color)
+    return get_gradient_color(time, boundaries, TIME_COLOR_SCALE)
 
 
 def glue(ways: List[OSMWay]) -> List[List[OSMNode]]:
@@ -224,13 +208,13 @@ class Constructor:
     Röntgen node and way constructor.
     """
     def __init__(
-            self, check_level, mode: str, seed: str, map_, flinger: Flinger,
-            scheme: Scheme):
+            self, check_level, mode: str, seed: str, map_: Map,
+            flinger: Flinger, scheme: Scheme):
 
         self.check_level = check_level
         self.mode: str = mode
         self.seed: str = seed
-        self.map_ = map_
+        self.map_: Map = map_
         self.flinger: Flinger = flinger
         self.scheme: Scheme = scheme
 
@@ -300,7 +284,7 @@ class Constructor:
         if self.mode == "time":
             if not way:
                 return
-            time_color = get_time_color(way.timestamp)
+            time_color = get_time_color(way.timestamp, self.map_.time)
             self.ways.append(
                 Way(inners, outers,
                     {"fill": "none", "stroke": time_color.hex,

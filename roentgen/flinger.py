@@ -1,12 +1,14 @@
 """
 Author: Sergey Vartanov (me@enzet.ru)
+
+Geo projection.
 """
 import numpy as np
 
 from roentgen.util import MinMax
 
 
-EQUATOR_LENGTH: float = 40_075_017
+EQUATOR_LENGTH: float = 40_075_017  # (in meters)
 
 
 def pseudo_mercator(coordinates: np.array) -> np.array:
@@ -51,6 +53,8 @@ class Flinger:
 
     def fling(self, coordinates: np.array) -> np.array:
         """
+        Convert geo coordinates into SVG position points.
+
         :param coordinates: vector to fling
         """
         result: np.array = self.ratio * (
@@ -63,5 +67,10 @@ class Flinger:
         return result
 
     def get_scale(self, coordinates: np.array) -> float:
+        """
+        Return pixels per meter ratio for the given geo coordinates.
+
+        :param coordinates: geo coordinates
+        """
         scale_factor = 1 / np.cos(coordinates[0] / 180 * np.pi)
         return self.pixels_per_meter * scale_factor
