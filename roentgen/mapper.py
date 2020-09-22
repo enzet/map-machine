@@ -240,9 +240,10 @@ class Painter:
                 self.svg.add(p)
         ui.progress_bar(-1, 0, text="Drawing ways")
 
-        # Building shade
+        # Draw building shade.
 
-        building_shade = Group(opacity=0.1)
+        building_shade: Group = Group(opacity=0.1)
+        length: float = self.flinger.get_scale()
 
         for way in constructor.buildings:  # type: Building
             shift = [2 * way.get_levels(), 0 * way.get_levels()]
@@ -257,9 +258,10 @@ class Painter:
 
         self.svg.add(building_shade)
 
-        previous_level: float = 0
+        # Draw buildings.
 
-        height = 1
+        previous_level: float = 0
+        height: float = self.flinger.get_scale()
 
         for level in sorted(constructor.levels):
             fill: Color()
@@ -274,8 +276,8 @@ class Painter:
                     elif level == 1:
                         fill = Color("#C3C3C3")
                     else:
-                        a = 0.8 + segment.angle * 0.2
-                        fill = Color(rgb=(a, a, a))
+                        color_part: float = 0.8 + segment.angle * 0.2
+                        fill = Color(rgb=(color_part, color_part, color_part))
 
                     self.svg.add(self.svg.path(
                         d=("M", np.add(segment.point_1, shift_1), "L",
@@ -286,7 +288,7 @@ class Painter:
                         fill=fill.hex, stroke=fill.hex, stroke_width=1,
                         stroke_linejoin="round"))
 
-                # Draw roof.
+                # Draw building roof.
 
                 if way.get_levels() == level:
                     shift = np.array([0, -way.get_levels() * height])

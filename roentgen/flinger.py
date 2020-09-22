@@ -3,6 +3,8 @@ Author: Sergey Vartanov (me@enzet.ru)
 
 Geo projection.
 """
+from typing import Optional
+
 import numpy as np
 
 from roentgen.util import MinMax
@@ -66,11 +68,15 @@ class Flinger:
 
         return result
 
-    def get_scale(self, coordinates: np.array) -> float:
+    def get_scale(self, coordinates: Optional[np.array] = None) -> float:
         """
         Return pixels per meter ratio for the given geo coordinates.
 
         :param coordinates: geo coordinates
         """
-        scale_factor = 1 / np.cos(coordinates[0] / 180 * np.pi)
+        if coordinates is None:
+            # Get pixels per meter ratio for the center of the boundary box.
+            coordinates = self.geo_boundaries.center()
+
+        scale_factor: float = 1 / np.cos(coordinates[0] / 180 * np.pi)
         return self.pixels_per_meter * scale_factor

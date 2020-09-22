@@ -1089,9 +1089,9 @@ ways:
   - tags: {"area:highway": "*"}
 
   - tags: {boundary: "*"}
-    stroke: boundary_color
-    stroke-width: 0.3
-    stroke-dasharray: 10,5
+    # stroke: boundary_color
+    # stroke-width: 0.3
+    # stroke-dasharray: 10,5
     priority: 60
 
 tags_to_write: [
