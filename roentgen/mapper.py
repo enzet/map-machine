@@ -292,26 +292,18 @@ class Painter:
 
         # Building roof
 
-        building_paths: List[(str, Dict)] = []
+        def sort_by_levels(building: Building):
+            return building.get_levels()
 
-        for way in constructor.buildings:  # type: Building
+        for way in sorted(constructor.buildings, key=sort_by_levels):  # type: Building
             shift = [0, -3]
             shift = np.array([
                 0 * way.get_levels(), min(-3, -1 * way.get_levels())])
             path: str = way.get_path(self.flinger, shift)
             if path:
-                building_paths.append((path, way.style))
-
-        for path, style in building_paths:
-            p = Path(d=path, opacity=1)
-            p.update(style)
-            p.update({"stroke": "none"})
-            self.svg.add(p)
-        for path, style in building_paths:
-            p = Path(d=path, opacity=1)
-            p.update(style)
-            p.update({"fill": "none"})
-            self.svg.add(p)
+                p = Path(d=path, opacity=1)
+                p.update(way.style)
+                self.svg.add(p)
 
         # Trees
 
