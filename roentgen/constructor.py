@@ -32,8 +32,8 @@ def is_clockwise(polygon: List[OSMNode]) -> bool:
     for index in range(len(polygon)):  # type: int
         next_index: int = 0 if index == len(polygon) - 1 else index + 1
         count += (
-                (polygon[next_index].position[0] - polygon[index].position[0]) *
-                (polygon[next_index].position[1] + polygon[index].position[1]))
+                (polygon[next_index].coordinates[0] - polygon[index].coordinates[0]) *
+                (polygon[next_index].coordinates[1] + polygon[index].coordinates[1]))
     return count >= 0
 
 
@@ -116,17 +116,43 @@ class Figure(Tagged):
         return path
 
 
+class Segment:
+    def __init__(self, point_1: np.array, point_2: np.array):
+        self.point_1 = point_1
+        self.point_2 = point_2
+
+        difference: np.array = point_2 - point_1
+        vector: np.array = difference / np.linalg.norm(difference)
+        self.angle: float = (
+                np.arccos(np.dot(vector, np.array((0, 1)))) / np.pi)
+
+    def __lt__(self, other: "Segment"):
+        return (((self.point_1 + self.point_2) / 2)[1] <
+                ((other.point_1 + other.point_2) / 2)[1])
+
+
 class Building(Figure):
     def __init__(
-            self, tags: Dict[str, str], inners, outers, style: Dict[str, Any],
-            layer: float):
+            self, tags: Dict[str, str], inners, outers, flinger: Flinger,
+            style: Dict[str, Any], layer: float):
         super().__init__(tags, inners, outers, style, layer)
+
+        self.parts = []
+
+        for nodes in self.inners + self.outers:
+            for i in range(len(nodes) - 1):
+                flung_1: np.array = flinger.fling(nodes[i].coordinates)
+                flung_2: np.array = flinger.fling(nodes[i + 1].coordinates)
+                self.parts.append(Segment(flung_1, flung_2))
+
+        self.parts = sorted(self.parts)
+
 
     def get_levels(self):
         try:
-            return float(self.get_tag("building:levels"))
+            return max(3, float(self.get_tag("building:levels")))
         except (ValueError, TypeError):
-            return 1
+            return 3
 
 
 class TextStruct:
@@ -147,8 +173,8 @@ def line_center(nodes: List[OSMNode], flinger: Flinger) -> np.array:
     boundary = [MinMax(), MinMax()]
 
     for node in nodes:  # type: OSMNode
-        boundary[0].update(node.position[0])
-        boundary[1].update(node.position[1])
+        boundary[0].update(node.coordinates[0])
+        boundary[1].update(node.coordinates[1])
     center_coordinates = np.array((boundary[0].center(), boundary[1].center()))
 
     return flinger.fling(center_coordinates), center_coordinates
@@ -213,7 +239,7 @@ def get_path(nodes: List[OSMNode], shift: np.array, flinger: Flinger) -> str:
     path = ""
     prev_node = None
     for node in nodes:
-        flung = flinger.fling(node.position) + shift
+        flung = flinger.fling(node.coordinates) + shift
         path += ("L" if prev_node else "M") + f" {flung[0]},{flung[1]} "
         prev_node = node
     if nodes[0] == nodes[-1]:
@@ -241,6 +267,12 @@ class Constructor:
         self.nodes: List[Point] = []
         self.figures: List[Figure] = []
         self.buildings: List[Figure] = []
+
+        self.levels: Set[float] = {0.5, 1}
+
+    def add_building(self, building: Building):
+        self.buildings.append(building)
+        self.levels.add(building.get_levels())
 
     def construct_ways(self):
         """
@@ -355,8 +387,8 @@ class Constructor:
                             element["r2"] * \
                             self.flinger.get_scale(center_coordinates) + 2
                 if "building" in tags:
-                    self.buildings.append(
-                        Building(tags, inners, outers, style, layer))
+                    self.add_building(Building(
+                        tags, inners, outers, self.flinger, style, layer))
                 else:
                     self.figures.append(
                         Figure(tags, inners, outers, style, layer))
@@ -414,7 +446,7 @@ class Constructor:
 
         s = sorted(
             self.map_.node_map.keys(),
-            key=lambda x: -self.map_.node_map[x].position[0])
+            key=lambda x: -self.map_.node_map[x].coordinates[0])
 
         for node_id in s:  # type: int
             node_number += 1
@@ -422,7 +454,7 @@ class Constructor:
                 node_number, len(self.map_.node_map),
                 text="Constructing nodes")
             node: OSMNode = self.map_.node_map[node_id]
-            flung = self.flinger.fling(node.position)
+            flung = self.flinger.fling(node.coordinates)
             tags = node.tags
 
             if not self.check_level(tags):
@@ -440,6 +472,6 @@ class Constructor:
             if self.mode == "time":
                 icon_set.color = get_time_color(node.timestamp)
 
-            self.nodes.append(Point(icon_set, tags, flung, node.position))
+            self.nodes.append(Point(icon_set, tags, flung, node.coordinates))
 
         ui.progress_bar(-1, len(self.map_.node_map), text="Constructing nodes")

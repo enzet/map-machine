@@ -225,32 +225,6 @@ class Painter:
                 texts.append(TextStruct(tags[tag]))
         return texts
 
-    def draw_building_walls(self, stage, color: Color, ways):
-        """
-        Draw area between way and way shifted by the vector.
-        """
-        for way in ways:  # type: Building
-            if stage == 1:
-                shift_1 = [0, 0]
-                shift_2 = [0, -1]
-            elif stage == 2:
-                shift_1 = [0, -1]
-                shift_2 = [0, -2]
-            else:
-                shift_1 = [0, -2]
-                shift_2 = [0, min(-3, -1 * way.get_levels())]
-
-            for nodes in way.inners + way.outers:
-                for i in range(len(nodes) - 1):
-                    flung_1 = self.flinger.fling(nodes[i].position)
-                    flung_2 = self.flinger.fling(nodes[i + 1].position)
-
-                    self.svg.add(self.svg.path(
-                        d=("M", np.add(flung_1, shift_1), "L",
-                           np.add(flung_2, shift_1), np.add(flung_2, shift_2),
-                           np.add(flung_1, shift_2), "Z"),
-                        fill=color.hex, stroke="#CCCCCC", stroke_width=1))
-
     def draw(self, constructor: Constructor, points):
         """
         Draw map.
@@ -271,12 +245,11 @@ class Painter:
         building_shade = Group(opacity=0.1)
 
         for way in constructor.buildings:  # type: Building
-            shift = [-5, 5]
-            shift = [-5 * way.get_levels(), 5 * way.get_levels()]
+            shift = [2 * way.get_levels(), 0 * way.get_levels()]
             for nodes11 in way.inners + way.outers:
                 for i in range(len(nodes11) - 1):
-                    flung_1 = self.flinger.fling(nodes11[i].position)
-                    flung_2 = self.flinger.fling(nodes11[i + 1].position)
+                    flung_1 = self.flinger.fling(nodes11[i].coordinates)
+                    flung_2 = self.flinger.fling(nodes11[i + 1].coordinates)
                     building_shade.add(Path(
                         ("M", flung_1, "L", flung_2, np.add(flung_2, shift),
                          np.add(flung_1, shift), "Z"),
@@ -284,26 +257,46 @@ class Painter:
 
         self.svg.add(building_shade)
 
-        # Building walls
+        previous_level: float = 0
 
-        self.draw_building_walls(1, Color("#AAAAAA"), constructor.buildings)
-        self.draw_building_walls(2, Color("#C3C3C3"), constructor.buildings)
-        self.draw_building_walls(3, Color("#DDDDDD"), constructor.buildings)
+        height = 1
 
-        # Building roof
+        for level in sorted(constructor.levels):
+            fill: Color()
+            for way in constructor.buildings:  # type: Building
+                if way.get_levels() < level:
+                    continue
+                shift_1 = [0, -previous_level * height]
+                shift_2 = [0, -level * height]
+                for segment in way.parts:
+                    if level == 0.5:
+                        fill = Color("#AAAAAA")
+                    elif level == 1:
+                        fill = Color("#C3C3C3")
+                    else:
+                        a = 0.8 + segment.angle * 0.2
+                        fill = Color(rgb=(a, a, a))
 
-        def sort_by_levels(building: Building):
-            return building.get_levels()
+                    self.svg.add(self.svg.path(
+                        d=("M", np.add(segment.point_1, shift_1), "L",
+                           np.add(segment.point_2, shift_1),
+                           np.add(segment.point_2, shift_2),
+                           np.add(segment.point_1, shift_2),
+                           np.add(segment.point_1, shift_1), "Z"),
+                        fill=fill.hex, stroke=fill.hex, stroke_width=1,
+                        stroke_linejoin="round"))
 
-        for way in sorted(constructor.buildings, key=sort_by_levels):  # type: Building
-            shift = [0, -3]
-            shift = np.array([
-                0 * way.get_levels(), min(-3, -1 * way.get_levels())])
-            path: str = way.get_path(self.flinger, shift)
-            if path:
-                p = Path(d=path, opacity=1)
-                p.update(way.style)
-                self.svg.add(p)
+                # Draw roof.
+
+                if way.get_levels() == level:
+                    shift = np.array([0, -way.get_levels() * height])
+                    path: str = way.get_path(self.flinger, shift)
+                    p = Path(d=path, opacity=1)
+                    p.update(way.style)
+                    p.update({"stroke-linejoin": "round"})
+                    self.svg.add(p)
+
+            previous_level = level
 
         # Trees
 

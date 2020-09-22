@@ -42,7 +42,7 @@ class OSMNode(Tagged):
         super().__init__()
 
         self.id_: Optional[int] = None
-        self.position: Optional[np.array] = None
+        self.coordinates: Optional[np.array] = None
 
         self.visible: Optional[str] = None
         self.changeset: Optional[str] = None
@@ -58,7 +58,7 @@ class OSMNode(Tagged):
         :param is_full: if false, parse only ID, latitude and longitude
         """
         self.id_ = int(get_value("id", text))
-        self.position = np.array((
+        self.coordinates = np.array((
             float(get_value("lat", text)), float(get_value("lon", text))))
 
         if is_full:
