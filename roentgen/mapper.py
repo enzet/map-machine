@@ -17,7 +17,7 @@ from typing import Any, Dict, List, Optional
 
 from roentgen import ui
 from roentgen.address import get_address
-from roentgen.constructor import Constructor, Node, Way, TextStruct
+from roentgen.constructor import Constructor, Point, Figure, TextStruct, Building
 from roentgen.flinger import Flinger
 from roentgen.grid import draw_grid
 from roentgen.extract_icon import Icon, IconExtractor
@@ -61,7 +61,7 @@ class Painter:
         self.icon_extractor = icon_extractor
         self.scheme: Scheme = scheme
 
-    def draw_shapes(self, node: Node, points: List[List[float]]):
+    def draw_shapes(self, node: Point, points: List[List[float]]):
         """
         Draw shapes for one node.
         """
@@ -93,7 +93,7 @@ class Painter:
                     node.icon_set.color, tags=node.tags)
                 left += 16
 
-    def draw_texts(self, node: Node):
+    def draw_texts(self, node: Point):
         """
         Draw all labels.
         """
@@ -229,7 +229,7 @@ class Painter:
         """
         Draw area between way and way shifted by the vector.
         """
-        for way in ways:
+        for way in ways:  # type: Building
             if stage == 1:
                 shift_1 = [0, 0]
                 shift_2 = [0, -1]
@@ -238,10 +238,7 @@ class Painter:
                 shift_2 = [0, -2]
             else:
                 shift_1 = [0, -2]
-                if way.levels:
-                    shift_2 = [0, min(-3, -1 * way.levels)]
-                else:
-                    shift_2 = [0, -3]
+                shift_2 = [0, min(-3, -1 * way.get_levels())]
 
             for nodes in way.inners + way.outers:
                 for i in range(len(nodes) - 1):
@@ -252,15 +249,15 @@ class Painter:
                         d=("M", np.add(flung_1, shift_1), "L",
                            np.add(flung_2, shift_1), np.add(flung_2, shift_2),
                            np.add(flung_1, shift_2), "Z"),
-                        fill=color.hex, stroke=color.hex, stroke_width=1))
+                        fill=color.hex, stroke="#CCCCCC", stroke_width=1))
 
     def draw(self, constructor: Constructor, points):
         """
         Draw map.
         """
-        ways = sorted(constructor.ways, key=lambda x: x.layer)
+        ways = sorted(constructor.figures, key=lambda x: x.layer)
         ways_length: int = len(ways)
-        for index, way in enumerate(ways):  # type: Way
+        for index, way in enumerate(ways):  # type: Figure
             ui.progress_bar(index, ways_length, step=10, text="Drawing ways")
             path: str = way.get_path(self.flinger)
             if path:
@@ -273,10 +270,9 @@ class Painter:
 
         building_shade = Group(opacity=0.1)
 
-        for way in constructor.buildings:  # type: Way
+        for way in constructor.buildings:  # type: Building
             shift = [-5, 5]
-            if way.levels:
-                shift = [-5 * way.levels, 5 * way.levels]
+            shift = [-5 * way.get_levels(), 5 * way.get_levels()]
             for nodes11 in way.inners + way.outers:
                 for i in range(len(nodes11) - 1):
                     flung_1 = self.flinger.fling(nodes11[i].position)
@@ -298,10 +294,10 @@ class Painter:
 
         building_paths: List[(str, Dict)] = []
 
-        for way in constructor.buildings:  # type: Way
+        for way in constructor.buildings:  # type: Building
             shift = [0, -3]
-            if way.levels:
-                shift = np.array([0 * way.levels, min(-3, -1 * way.levels)])
+            shift = np.array([
+                0 * way.get_levels(), min(-3, -1 * way.get_levels())])
             path: str = way.get_path(self.flinger, shift)
             if path:
                 building_paths.append((path, way.style))
@@ -339,7 +335,7 @@ class Painter:
 
         # Directions
 
-        for node in constructor.nodes:  # type: Node
+        for node in constructor.nodes:  # type: Point
 
             angle = None
             is_revert_gradient: bool = False
@@ -396,7 +392,7 @@ class Painter:
         # All other nodes
 
         nodes = sorted(constructor.nodes, key=lambda x: x.layer)
-        for index, node in enumerate(nodes):  # type: int, Node
+        for index, node in enumerate(nodes):  # type: int, Point
             if node.get_tag("natural") == "tree" and \
                     ("diameter_crown" in node.tags or
                      "circumference" in node.tags):
@@ -408,7 +404,7 @@ class Painter:
         if self.draw_captions == "no":
             return
 
-        for node in nodes:  # type: Node
+        for node in nodes:  # type: Point
             if self.mode not in [CREATION_TIME_MODE, AUTHOR_MODE]:
                 self.draw_texts(node)
 

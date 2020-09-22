@@ -51,14 +51,16 @@ def make_counter_clockwise(polygon: List[OSMNode]) -> List[OSMNode]:
         return list(reversed(polygon))
 
 
-class Node(Tagged):
+class Point(Tagged):
     """
-    Node in Röntgen terms.
+    Object on the map with no dimensional attributes.
     """
     def __init__(
-            self, icon_set: IconSet, tags: Dict[str, str],
-            point: np.array, coordinates: np.array,
-            priority: float = 0, is_for_node: bool = True):
+            self, icon_set: IconSet, tags: Dict[str, str], point: np.array,
+            coordinates: np.array, priority: float = 0,
+            is_for_node: bool = True):
+        super().__init__()
+
         assert point is not None
 
         self.icon_set: IconSet = icon_set
@@ -75,18 +77,21 @@ class Node(Tagged):
         return None
 
 
-class Way:
+class Figure(Tagged):
     """
-    Way in Röntgen terms.
+    Some figure on the map: way or area.
     """
     def __init__(
-            self, inners, outers, style: Dict[str, Any],
-            layer: float = 0.0, levels=None):
+            self, tags: Dict[str, str], inners, outers, style: Dict[str, Any],
+            layer: float = 0.0):
+
+        super().__init__()
+
+        self.tags: Dict[str, str] = tags
         self.inners = []
         self.outers = []
         self.style: Dict[str, Any] = style
         self.layer = layer
-        self.levels = levels
 
         for inner_nodes in inners:
             self.inners.append(make_clockwise(inner_nodes))
@@ -109,6 +114,20 @@ class Way:
             path += get_path(inner_nodes, shift, flinger) + " "
 
         return path
+
+
+class Building(Figure):
+    def __init__(
+            self, tags: Dict[str, str], inners, outers, style: Dict[str, Any],
+            layer: float):
+        super().__init__(tags, inners, outers, style, layer)
+
+    def get_levels(self):
+        try:
+            return float(self.get_tag("building:levels"))
+        except (ValueError, TypeError):
+            return 1
+
 
 class TextStruct:
     def __init__(
@@ -219,9 +238,9 @@ class Constructor:
         self.flinger: Flinger = flinger
         self.scheme: Scheme = scheme
 
-        self.nodes: List[Node] = []
-        self.ways: List[Way] = []
-        self.buildings: List[Way] = []
+        self.nodes: List[Point] = []
+        self.figures: List[Figure] = []
+        self.buildings: List[Figure] = []
 
     def construct_ways(self):
         """
@@ -263,8 +282,6 @@ class Constructor:
 
         # layer = 100 * level + 0.01 * layer
 
-        nodes = None
-
         center_point, center_coordinates = None, None
 
         if way:
@@ -276,8 +293,9 @@ class Constructor:
             if not way:
                 return
             user_color = get_user_color(way.user, self.seed)
-            self.ways.append(
-                Way(inners, outers,
+            self.figures.append(
+                Figure(
+                    way.tags, inners, outers,
                     {"fill": "none", "stroke": user_color.hex,
                      "stroke-width": 1}))
             return
@@ -286,8 +304,9 @@ class Constructor:
             if not way:
                 return
             time_color = get_time_color(way.timestamp, self.map_.time)
-            self.ways.append(
-                Way(inners, outers,
+            self.figures.append(
+                Figure(
+                    way.tags, inners, outers,
                     {"fill": "none", "stroke": time_color.hex,
                      "stroke-width": 1}))
             return
@@ -296,16 +315,6 @@ class Constructor:
             return
 
         appended: bool = False
-        kind: str = "way"
-        levels = None
-
-        if "building" in tags:  # or "building:part" in tags:
-            kind = "building"
-        if "building:levels" in tags:
-            try:
-                levels = float(tags["building:levels"])
-            except ValueError:
-                levels = None
 
         for element in self.scheme.ways:  # type: Dict[str, Any]
             matched: bool = True
@@ -329,7 +338,9 @@ class Constructor:
                 if "priority" in element:
                     layer = element["priority"]
                 for key in element:  # type: str
-                    if key not in ["tags", "no_tags", "priority", "level", "icon", "r", "r2"]:
+                    if key not in [
+                            "tags", "no_tags", "priority", "level", "icon",
+                            "r", "r2"]:
                         value = element[key]
                         if isinstance(value, str) and value.endswith("_color"):
                             value = self.scheme.get_color(value)
@@ -343,15 +354,16 @@ class Constructor:
                         style["stroke-width"] = \
                             element["r2"] * \
                             self.flinger.get_scale(center_coordinates) + 2
-                w = Way(inners, outers, style, layer, levels)
-                if kind == "way":
-                    self.ways.append(w)
-                elif kind == "building":
-                    self.buildings.append(w)
+                if "building" in tags:
+                    self.buildings.append(
+                        Building(tags, inners, outers, style, layer))
+                else:
+                    self.figures.append(
+                        Figure(tags, inners, outers, style, layer))
                 if center_point is not None and \
                         (way.is_cycle() and "area" in tags and tags["area"]):
                     icon_set: IconSet = self.scheme.get_icon(tags)
-                    self.nodes.append(Node(
+                    self.nodes.append(Point(
                         icon_set, tags, center_point, center_coordinates,
                         is_for_node=False))
                 appended = True
@@ -361,12 +373,12 @@ class Constructor:
                 style: Dict[str, Any] = {
                     "fill": "none", "stroke": Color("red").hex,
                     "stroke-width": 1}
-                self.ways.append(Way(
-                    kind, inners, outers, style, layer, levels))
+                self.figures.append(Figure(
+                    tags, inners, outers, style, layer))
             if center_point is not None and (way.is_cycle() or
                     "area" in tags and tags["area"]):
                 icon_set: IconSet = self.scheme.get_icon(tags)
-                self.nodes.append(Node(
+                self.nodes.append(Point(
                     icon_set, tags, center_point, center_coordinates,
                     is_for_node=False))
 
@@ -428,6 +440,6 @@ class Constructor:
             if self.mode == "time":
                 icon_set.color = get_time_color(node.timestamp)
 
-            self.nodes.append(Node(icon_set, tags, flung, node.position))
+            self.nodes.append(Point(icon_set, tags, flung, node.position))
 
         ui.progress_bar(-1, len(self.map_.node_map), text="Constructing nodes")
