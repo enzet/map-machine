@@ -13,7 +13,8 @@ from typing import Any, Dict, List, Optional, Set
 from roentgen import ui
 from roentgen.extract_icon import DEFAULT_SMALL_SHAPE_ID
 from roentgen.flinger import Flinger
-from roentgen.osm_reader import Map, OSMMember, OSMRelation, OSMWay, OSMNode, Tagged
+from roentgen.osm_reader import Map, OSMMember, OSMRelation, OSMWay, OSMNode, \
+    Tagged
 from roentgen.scheme import IconSet, Scheme
 from roentgen.util import MinMax
 from roentgen.color import get_gradient_color
@@ -32,8 +33,10 @@ def is_clockwise(polygon: List[OSMNode]) -> bool:
     for index in range(len(polygon)):  # type: int
         next_index: int = 0 if index == len(polygon) - 1 else index + 1
         count += (
-                (polygon[next_index].coordinates[0] - polygon[index].coordinates[0]) *
-                (polygon[next_index].coordinates[1] + polygon[index].coordinates[1]))
+            (polygon[next_index].coordinates[0] -
+             polygon[index].coordinates[0]) *
+            (polygon[next_index].coordinates[1] +
+             polygon[index].coordinates[1]))
     return count >= 0
 
 
@@ -82,16 +85,17 @@ class Figure(Tagged):
     Some figure on the map: way or area.
     """
     def __init__(
-            self, tags: Dict[str, str], inners, outers, style: Dict[str, Any],
+            self, tags: Dict[str, str], inners: List[List[OSMNode]],
+            outers: List[List[OSMNode]], style: Dict[str, Any],
             layer: float = 0.0):
 
         super().__init__()
 
         self.tags: Dict[str, str] = tags
-        self.inners = []
-        self.outers = []
+        self.inners: List[List[OSMNode]] = []
+        self.outers: List[List[OSMNode]] = []
         self.style: Dict[str, Any] = style
-        self.layer = layer
+        self.layer: float = layer
 
         for inner_nodes in inners:
             self.inners.append(make_clockwise(inner_nodes))
@@ -132,6 +136,9 @@ class Segment:
 
 
 class Building(Figure):
+    """
+    Building on the map.
+    """
     def __init__(
             self, tags: Dict[str, str], inners, outers, flinger: Flinger,
             style: Dict[str, Any], layer: float):
@@ -156,6 +163,9 @@ class Building(Figure):
 
 
 class TextStruct:
+    """
+    Some label on the map with attributes.
+    """
     def __init__(
             self, text: str, fill: Color = Color("#444444"), size: float = 10):
         self.text = text

@@ -246,9 +246,9 @@ class Painter:
         length: float = self.flinger.get_scale()
 
         for way in constructor.buildings:  # type: Building
-            shift = [2 * way.get_levels(), 0 * way.get_levels()]
+            shift = np.array((length * way.get_levels(), 0))
             for nodes11 in way.inners + way.outers:
-                for i in range(len(nodes11) - 1):
+                for i in range(len(nodes11) - 1):  # type: int
                     flung_1 = self.flinger.fling(nodes11[i].coordinates)
                     flung_2 = self.flinger.fling(nodes11[i + 1].coordinates)
                     building_shade.add(Path(
