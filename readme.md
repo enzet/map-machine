@@ -38,7 +38,7 @@ Tree leaf types, leaf cycles, and genes.
 Visualize `direction` tag for `tourism=viewpoint` and `camera:direction` for
 `man_made=surveillance`.
 
-![Trees](doc/viewpoints.png)
+![Trees](doc/surveillance.png)
 
 Icon set
 --------
