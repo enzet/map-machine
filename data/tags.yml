@@ -524,6 +524,15 @@ nodes:
       entrance: "yes"
       network: London Underground
     icon: [tfl]
+  - tags: {railway: station, station: subway, network: MTR}
+    icon: [mtr]
+  - tags: {railway: subway_entrance, network: MTR}
+    icon: [mtr]
+  - tags:
+      railway: subway_entrance
+      entrance: "yes"
+      network: MTR
+    icon: [mtr]
   - tags: {railway: level_crossing}
     icon: [x]
   - tags: {railway: crossing}
