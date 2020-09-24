@@ -1,46 +1,107 @@
-Röntgen project focuses on displaying every \href {http://openstreetmap.org} {OpenStreetMap} data tag on the map. 
+\b {Röntgen} is a
 
-\2 {Why do we need yet another map style?} {map_style}
+\list
+  {simple Python \href {http://openstreetmap.org} {OpenStreetMap} renderer,}
+  {set of icons,}
+  {and map styles.}
 
-It is actually not just another map style since it is \b {not} \i {a map for users} but \i {map for OpenStreetMap contributors}. Suppose, you spent time adding colors for building walls, benches and shelters for bus stops but they do not represented on the map. Röntgen helps to display all changes you made.
+\href {https\://travis-ci.org/enzet/Roentgen} {\image {https\://travis-ci.org/enzet/Roentgen.svg?branch=master} {Build Status}}
 
-\2 {Map generation} {map_generation}
+The idea behind Röntgen project is to have a possibility to \i {display any map feature} represented by OpenStreetMap data tags by means of colors, shapes, and icons.
 
-\image {doc/map.png} {Sample map}
+Röntgen is primarily created for OpenStreetMap contributors.  Suppose, you spent time adding colors for building walls, benches and shelters for bus stops but they are not represented on the standard tile layer.  Röntgen helps to display all changes you made.
 
-\b {Requirements}: Python 2.7.
+Nevertheless, Röntgen map generator can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users.
 
-There are simple Python renderer that generates SVG map from OpenStreetMap data. You can run it using:
+\2 {Map features} {features}
 
-\code
-{python mapper.py -i <input OSM XML file name> -o <output SVG file name>}
+\3 {Building levels} {levels}
 
-\3 {Options} {options}
+Simple shapes for walls and shade in proportion to \tt {building\:levels} value.
 
-\table
-{
-    {{Option} {Value} {Description}}
-    {
-        {\tt {-bbox}, \tt {--boundary-box}} 
-        {\tt {\formal {longitude 1},\formal {latitude 1},\formal {longitude 2},\formal {latitude 2}} (decimal float)}
-        {Boundary box to draw}
-    }
-    {
-        {\tt {-s}, \tt {--size}} 
-        {\tt {\formal {width},\formal {height}} (pixels)}
-        {Result image size}
-    }
-}
+\image {doc/buildings.png} {3D buildings}
 
-\2 {Icon set} {icons}
+\3 {Trees} {trees}
 
-If tag is drawable it is displayed using icon combination and colors.
+Tree leaf types, leaf cycles, and genes.
 
-All icons are under \href {http://creativecommons.org/licenses/by/4.0/} {CC BY 4.0} license. So, do whatever you want but give appropriate credit.
+\image {doc/trees.png} {Trees}
 
-Double size:
+\3 {Viewpoint and camera direction} {direction}
+
+Visualize \tt {direction} tag for \tt {tourism=viewpoint} and \tt {camera\:direction} for \tt {man_made=surveillance}.
+
+\image {doc/surveillance.png} {Surveillance}
+
+\2 {Icon set} {icon_set}
+
+If tag is drawable it is displayed using icon combination and colors.  All icons are under \href {https\://github.com/gmgeo/osmic} {CC BY 4.0](http\://creativecommons.org/licenses/by/4.0/) license.  So, do whatever you want but give appropriate credit.  Icon set is heavily inspired by [Osmic} icon set.
 
 \image {doc/grid.png} {Icons}
 
-Feel free to request new icons via issues for whatever you want to see on the map. No matter how frequently the tag is used in OpenStreetMap since final goal is to cover all tags. However, common used tags have priority, other things being equal.
+Feel free to request new icons via issues for whatever you want to see on the map.  No matter how frequently the tag is used in OpenStreetMap since final goal is to cover all tags.  However, common used tags have priority, other things being equal.
 
+Draw icon grid\: \tt {python3 run.py grid}.
+
+\3 {Icon combination} {icon_combination}
+
+Some icons can be combined into new icons.
+
+\image {doc/bus_stop.png} {Bus stop icon combination}
+
+\2 {Röntgen map styles} {map_styles}
+
+\3 {All tags style} {all_tags_style}
+
+Options\: \tt {--show-missing-tags --overlap 0}.
+
+Display as many OpenStreetMap data tags on the map as possible.
+
+\3 {Pretty style} {pretty_style}
+
+Options\: \tt {--draw-captions main --level overground}.
+
+Display only not overlapping icons and main captions.
+
+\3 {Creation time mode} {time_mode}
+
+Visualize element creation time with \tt {--mode time}.
+
+\image {doc/time.png} {Creation time mode}
+
+\3 {Author mode} {autor_mode}
+
+Every way and node displayed with the random color picked for each author with \tt {--mode user-coloring}.
+
+\image {doc/user.png} {Author mode}
+
+\2 {Map generation} {map_generation}
+
+\b {Requirements}\: Python (at least 3.7) and Python libraries (see \tt {requirements.txt}).
+
+There are simple Python renderer that generates SVG map from OpenStreetMap data.  You can run it using\:
+
+\code {python3 run.py \\
+    -b $\{LONGITUDE_1\},$\{LATITUDE_1\},$\{LONGITUDE_2\},$\{LATITUDE_2\} \\
+    -o $\{OUTPUT_FILE_NAME\} \\
+    -s $\{OSM_ZOOM_LEVEL\}} {bash}
+
+Example\:
+
+\code {python3 run.py -b 2.284,48.86,2.29,48.865} {bash}
+
+\3 {Main arguments} {arguments}
+
+\4 {Required} {required_arguments}
+
+\list
+    {\tt {--boundary-box} or \tt {-b}\: boundary box to draw. Value\: \tt {<longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>}.  Use space before first \tt {-} to escape negative values.}
+
+\4 {Optional} {optional_arguments}
+
+\list
+    {\tt {--scale} or \tt {-s}\: OSM \href {https\://wiki.openstreetmap.org/wiki/Zoom_levels} {zoom level}.  Default is 18.}
+    {\tt {-o}\: path to output SVG file name.  Default is <tt>map.svg</tt>.}
+    {\tt {-i}\: path to input XML file name.  If this argument is not set, XML file will be downloaded through OpenStreetMap API.}
+
+Check all arguments with \tt {python3 run.py --help}.

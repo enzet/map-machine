@@ -1,4 +1,5 @@
 **Röntgen** is a
+
   * simple Python [OpenStreetMap](http://openstreetmap.org) renderer,
   * set of icons,
   * and map styles.
@@ -49,7 +50,6 @@ Some icons can be combined into new icons.
 
 ![Bus stop icon combination](doc/bus_stop.png)
 
-
 Röntgen map styles
 ------------------
 
@@ -67,13 +67,13 @@ Display only not overlapping icons and main captions.
 
 ### Creation time mode ###
 
-Visualize element creation time.
+Visualize element creation time with `--mode time`.
 
 ![Creation time mode](doc/time.png)
 
 ### Author mode ###
 
-Every way and node displayed with the random color picked for each author.
+Every way and node displayed with the random color picked for each author with `--mode user-coloring`.
 
 ![Author mode](doc/user.png)
 
@@ -101,12 +101,13 @@ python3 run.py -b 2.284,48.86,2.29,48.865
 
 #### Required ####
 
-* `--boundary-box` or `-b`: boundary box to draw. Value: `<longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>`. Use space before first `-` to escape negative values.
+  * `--boundary-box` or `-b`: boundary box to draw. Value: `<longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>`. Use space before first `-` to escape negative values.
 
 #### Optional ####
 
-* `--scale` or `-s`: OSM zoom level. See [OSM wiki](https://wiki.openstreetmap.org/wiki/Zoom_levels). Default is 18.
-* `-o`: path to output SVG file name. Default is <tt>map.svg</tt>.</td>
-* `-i`: path to input XML file name. If this argument is not set, XML file will be downloaded through OpenStreetMap API.
+  * `--scale` or `-s`: OSM [zoom level](https://wiki.openstreetmap.org/wiki/Zoom_levels). Default is 18.
+  * `-o`: path to output SVG file name. Default is <tt>map.svg</tt>.
+  * `-i`: path to input XML file name. If this argument is not set, XML file will be downloaded through OpenStreetMap API.
 
 Check all arguments with `python3 run.py --help`.
+
