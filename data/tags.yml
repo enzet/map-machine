@@ -219,6 +219,8 @@ nodes:
 
     # Leisure
 
+  - tags: {leisure: fishing}
+    icon: [fishing]
   - tags: {leisure: playground}
     icon: [toy_horse]
 
@@ -278,9 +280,9 @@ nodes:
   - tags: {building: garage}
     icon: [garages]
   - tags: {tourism: hotel}
-    icon: [hotel]
+    icon: [bed]
   - tags: {tourism: hostel}
-    icon: [hostel]
+    icon: [two_beds]
   - tags: {tourism: motel}  # Tourism?
     icon: [motel]
   - tags: {amenity: clinic}
@@ -397,8 +399,6 @@ nodes:
 
     # Additions for buildings
 
-  - tags: {building: "*", "roof:material": metal}
-    add_icon: [metal_roof]
   - tags: {building: "*", "roof:shape": onion}
     add_icon: [onion_roof_shape]
 
