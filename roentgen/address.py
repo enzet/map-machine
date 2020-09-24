@@ -6,8 +6,13 @@ Author: Sergey Vartanov (me@enzet.ru).
 from typing import List, Any, Dict
 
 
-def get_address(tags: Dict[str, Any], draw_captions_mode: str):
+def get_address(tags: Dict[str, Any], draw_captions_mode: str) -> List[str]:
+    """
+    Construct address text list from the tags.
 
+    :param tags: OSM node, way or relation tags
+    :param draw_captions_mode: captions mode ("all", "main", or "no")
+    """
     address: List[str] = []
 
     if draw_captions_mode != "main":
@@ -30,3 +35,5 @@ def get_address(tags: Dict[str, Any], draw_captions_mode: str):
     if "addr:housenumber" in tags:
         address.append(tags["addr:housenumber"])
         tags.pop("addr:housenumber", None)
+
+    return address

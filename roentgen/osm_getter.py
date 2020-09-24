@@ -6,10 +6,10 @@ Author: Sergey Vartanov (me@enzet.ru).
 import os
 import re
 import time
+from typing import Dict, Optional
+
 import urllib
 import urllib3
-
-from typing import Dict, Optional
 
 from roentgen.ui import error
 
@@ -26,12 +26,14 @@ def get_osm(boundary_box: str, to_update: bool = False) -> Optional[str]:
     if not to_update and os.path.isfile(result_file_name):
         return open(result_file_name).read()
 
-    matcher = re.match("(?P<left>[0-9.-]*),(?P<bottom>[0-9.-]*)," +
-        "(?P<right>[0-9.-]*),(?P<top>[0-9.-]*)", boundary_box)
+    matcher = re.match(
+        "(?P<left>[0-9.-]*),(?P<bottom>[0-9.-]*)," +
+        "(?P<right>[0-9.-]*),(?P<top>[0-9.-]*)",
+        boundary_box)
 
     if not matcher:
         error("invalid boundary box")
-        return
+        return None
 
     try:
         left = float(matcher.group("left"))
@@ -40,20 +42,21 @@ def get_osm(boundary_box: str, to_update: bool = False) -> Optional[str]:
         top = float(matcher.group("top"))
     except ValueError:
         error("parsing boundary box")
-        return
+        return None
 
     if left >= right:
         error("negative horizontal boundary")
-        return
+        return None
     if bottom >= top:
         error("negative vertical boundary")
-        return
+        return None
     if right - left > 0.5 or top - bottom > 0.5:
         error("box too big")
-        return
+        return None
 
-    content = get_data("api.openstreetmap.org/api/0.6/map",
-            {"bbox": boundary_box}, is_secure=True)
+    content = get_data(
+        "api.openstreetmap.org/api/0.6/map",
+        {"bbox": boundary_box}, is_secure=True)
 
     open(result_file_name, "w+").write(content.decode("utf-8"))
 

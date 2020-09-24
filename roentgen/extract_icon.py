@@ -6,6 +6,7 @@ Author: Sergey Vartanov (me@enzet.ru).
 import re
 import xml.dom.minidom
 from typing import Dict
+from xml.dom.minidom import Element, Node
 
 import numpy as np
 from svgwrite import Drawing
@@ -14,6 +15,7 @@ from roentgen import ui
 
 DEFAULT_SHAPE_ID: str = "default"
 DEFAULT_SMALL_SHAPE_ID: str = "default_small"
+STANDARD_INKSCAPE_ID: str = "(path|rect)\\d*"
 
 GRID_STEP: int = 16
 
@@ -71,25 +73,26 @@ class IconExtractor:
             content = xml.dom.minidom.parse(input_file)
             for element in content.childNodes:
                 if element.nodeName == "svg":
-                    for node in element.childNodes:
-                        if node.nodeName in ["g", "path"]:
+                    for node in element.childNodes:  # type: Node
+                        if isinstance(node, Element):
                             self.parse(node)
 
-    def parse(self, node) -> None:
+    def parse(self, node: Element) -> None:
         """
         Extract icon paths into a map.
 
         :param node: XML node that contains icon
         """
-        if node.nodeName != "path":
+        if node.nodeName == "g":
             for sub_node in node.childNodes:
-                self.parse(sub_node)
+                if isinstance(sub_node, Element):
+                    self.parse(sub_node)
             return
 
-        if "id" in node.attributes.keys() and \
-                "d" in node.attributes.keys() and \
-                node.attributes["id"].value:
-            path = node.attributes["d"].value
+        if ("id" in node.attributes.keys() and
+                "d" in node.attributes.keys() and
+                node.attributes["id"].value):
+            path: str = node.attributes["d"].value
             matcher = re.match("[Mm] ([0-9.e-]*)[, ]([0-9.e-]*)", path)
             if not matcher:
                 ui.error(f"invalid path: {path}")
@@ -104,7 +107,9 @@ class IconExtractor:
                 get_offset(float(matcher.group(2)))))
 
             id_: str = node.attributes["id"].value
-            self.icons[id_] = Icon(node.attributes["d"].value, point, id_)
+            matcher = re.match(STANDARD_INKSCAPE_ID, id_)
+            if not matcher:
+                self.icons[id_] = Icon(node.attributes["d"].value, point, id_)
 
     def get_path(self, id_: str) -> (Icon, bool):
         """

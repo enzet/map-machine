@@ -3,21 +3,22 @@ Construct Röntgen nodes and ways.
 
 Author: Sergey Vartanov (me@enzet.ru).
 """
-import numpy as np
-
-from colour import Color
+from dataclasses import dataclass
 from datetime import datetime
 from hashlib import sha256
 from typing import Any, Dict, List, Optional, Set
 
+from colour import Color
+import numpy as np
+
 from roentgen import ui
+from roentgen.color import get_gradient_color
 from roentgen.extract_icon import DEFAULT_SMALL_SHAPE_ID
 from roentgen.flinger import Flinger
-from roentgen.osm_reader import Map, OSMMember, OSMRelation, OSMWay, OSMNode, \
-    Tagged
+from roentgen.osm_reader import (
+    Map, OSMMember, OSMRelation, OSMWay, OSMNode, Tagged)
 from roentgen.scheme import IconSet, Scheme
 from roentgen.util import MinMax
-from roentgen.color import get_gradient_color
 
 DEBUG: bool = False
 TIME_COLOR_SCALE: List[Color] = [
@@ -27,31 +28,35 @@ TIME_COLOR_SCALE: List[Color] = [
 
 def is_clockwise(polygon: List[OSMNode]) -> bool:
     """
-    Are polygon nodes are in clockwise order.
+    Return true if polygon nodes are in clockwise order.
+
+    :param polygon: list of OpenStreetMap nodes
     """
     count: float = 0
-    for index in range(len(polygon)):  # type: int
+    for index, node in enumerate(polygon):  # type: int, OSMNode
         next_index: int = 0 if index == len(polygon) - 1 else index + 1
         count += (
-            (polygon[next_index].coordinates[0] -
-             polygon[index].coordinates[0]) *
-            (polygon[next_index].coordinates[1] +
-             polygon[index].coordinates[1]))
+            (polygon[next_index].coordinates[0] - node.coordinates[0]) *
+            (polygon[next_index].coordinates[1] + node.coordinates[1]))
     return count >= 0
 
 
 def make_clockwise(polygon: List[OSMNode]) -> List[OSMNode]:
-    if is_clockwise(polygon):
-        return polygon
-    else:
-        return list(reversed(polygon))
+    """
+    Make polygon nodes clockwise.
+
+    :param polygon: list of OpenStreetMap nodes
+    """
+    return polygon if is_clockwise(polygon) else list(reversed(polygon))
 
 
 def make_counter_clockwise(polygon: List[OSMNode]) -> List[OSMNode]:
-    if not is_clockwise(polygon):
-        return polygon
-    else:
-        return list(reversed(polygon))
+    """
+    Make polygon nodes counter-clockwise.
+
+    :param polygon: list of OpenStreetMap nodes
+    """
+    return polygon if not is_clockwise(polygon) else list(reversed(polygon))
 
 
 class Point(Tagged):
@@ -73,11 +78,6 @@ class Point(Tagged):
         self.priority: float = priority
         self.layer: float = 0
         self.is_for_node: bool = is_for_node
-
-    def get_tag(self, key: str):
-        if key in self.tags:
-            return self.tags[key]
-        return None
 
 
 class Figure(Tagged):
@@ -107,6 +107,7 @@ class Figure(Tagged):
         """
         Get SVG path commands.
 
+        :param flinger: convertor for geo coordinates
         :param shift: shift vector
         """
         path: str = ""
@@ -121,6 +122,9 @@ class Figure(Tagged):
 
 
 class Segment:
+    """
+    Line segment.
+    """
     def __init__(self, point_1: np.array, point_2: np.array):
         self.point_1 = point_1
         self.point_2 = point_2
@@ -128,7 +132,7 @@ class Segment:
         difference: np.array = point_2 - point_1
         vector: np.array = difference / np.linalg.norm(difference)
         self.angle: float = (
-                np.arccos(np.dot(vector, np.array((0, 1)))) / np.pi)
+            np.arccos(np.dot(vector, np.array((0, 1)))) / np.pi)
 
     def __lt__(self, other: "Segment"):
         return (((self.point_1 + self.point_2) / 2)[1] <
@@ -142,6 +146,7 @@ class Building(Figure):
     def __init__(
             self, tags: Dict[str, str], inners, outers, flinger: Flinger,
             style: Dict[str, Any], layer: float):
+
         super().__init__(tags, inners, outers, style, layer)
 
         self.parts = []
@@ -154,23 +159,24 @@ class Building(Figure):
 
         self.parts = sorted(self.parts)
 
-
-    def get_levels(self):
+    def get_levels(self) -> float:
+        """
+        Get building level number.
+        """
         try:
-            return max(3, float(self.get_tag("building:levels")))
+            return max(3.0, float(self.get_tag("building:levels")))
         except (ValueError, TypeError):
             return 3
 
 
+@dataclass
 class TextStruct:
     """
     Some label on the map with attributes.
     """
-    def __init__(
-            self, text: str, fill: Color = Color("#444444"), size: float = 10):
-        self.text = text
-        self.fill = fill
-        self.size = size
+    text: str
+    fill: Color = Color("#444444")
+    size: float = 10
 
 
 def line_center(nodes: List[OSMNode], flinger: Flinger) -> np.array:
@@ -202,6 +208,9 @@ def get_user_color(text: str, seed: str) -> Color:
 def get_time_color(time: Optional[datetime], boundaries: MinMax) -> Color:
     """
     Generate color based on time.
+
+    :param time: current element creation time
+    :param boundaries: minimum and maximum element creation time on the map
     """
     return get_gradient_color(time, boundaries, TIME_COLOR_SCALE)
 
@@ -244,11 +253,11 @@ def glue(ways: List[OSMWay]) -> List[List[OSMNode]]:
 
 def get_path(nodes: List[OSMNode], shift: np.array, flinger: Flinger) -> str:
     """
-    Construct SVG path from nodes.
+    Construct SVG path commands from nodes.
     """
-    path = ""
-    prev_node = None
-    for node in nodes:
+    path: str = ""
+    prev_node: Optional[OSMNode] = None
+    for node in nodes:  # type: OSMNode
         flung = flinger.fling(node.coordinates) + shift
         path += ("L" if prev_node else "M") + f" {flung[0]},{flung[1]} "
         prev_node = node
@@ -280,11 +289,14 @@ class Constructor:
 
         self.levels: Set[float] = {0.5, 1}
 
-    def add_building(self, building: Building):
+    def add_building(self, building: Building) -> None:
+        """
+        Add building and update levels.
+        """
         self.buildings.append(building)
         self.levels.add(building.get_levels())
 
-    def construct_ways(self):
+    def construct_ways(self) -> None:
         """
         Construct Röntgen ways.
         """
@@ -303,33 +315,22 @@ class Constructor:
 
     def construct_way(
             self, way: Optional[OSMWay], tags: Dict[str, Any],
-            inners, outers) -> None:
+            inners: List[List[OSMNode]], outers: List[List[OSMNode]]) -> None:
         """
         Way construction.
 
         :param way: OSM way
         :param tags: way tag dictionary
+        :param inners: list of polygons that compose inner boundary
+        :param outers: list of polygons that compose outer boundary
         """
         layer: float = 0
-        # level: float = 0
-        #
-        # if "layer" in tags:
-        #     layer = get_float(tags["layer"])
-        # if "level" in tags:
-        #     try:
-        #         levels = list(map(float, tags["level"].split(";")))
-        #         level = sum(levels) / len(levels)
-        #     except ValueError:
-        #         pass
-
-        # layer = 100 * level + 0.01 * layer
 
         center_point, center_coordinates = None, None
 
-        if way:
-            center_point, center_coordinates = \
-                line_center(way.nodes, self.flinger)
-            nodes = way.nodes
+        if way is not None:
+            center_point, center_coordinates = (
+                line_center(way.nodes, self.flinger))
 
         if self.mode == "user-coloring":
             if not way:
@@ -417,8 +418,8 @@ class Constructor:
                     "stroke-width": 1}
                 self.figures.append(Figure(
                     tags, inners, outers, style, layer))
-            if center_point is not None and (way.is_cycle() or
-                    "area" in tags and tags["area"]):
+            if (center_point is not None and
+                    way.is_cycle() and "area" in tags and tags["area"]):
                 icon_set: IconSet = self.scheme.get_icon(tags)
                 self.nodes.append(Point(
                     icon_set, tags, center_point, center_coordinates,
@@ -480,7 +481,7 @@ class Constructor:
             if self.mode == "user-coloring":
                 icon_set.color = get_user_color(node.user, self.seed)
             if self.mode == "time":
-                icon_set.color = get_time_color(node.timestamp)
+                icon_set.color = get_time_color(node.timestamp, self.map_.time)
 
             self.nodes.append(Point(icon_set, tags, flung, node.coordinates))
 

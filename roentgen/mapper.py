@@ -3,6 +3,8 @@ Simple OpenStreetMap renderer.
 
 Author: Sergey Vartanov (me@enzet.ru).
 """
+import argparse
+
 import numpy as np
 import os
 import svgwrite
@@ -17,7 +19,8 @@ from typing import Any, Dict, List, Optional
 
 from roentgen import ui
 from roentgen.address import get_address
-from roentgen.constructor import Constructor, Point, Figure, TextStruct, Building
+from roentgen.constructor import (
+    Constructor, Point, Figure, TextStruct, Building, Segment)
 from roentgen.flinger import Flinger
 from roentgen.grid import draw_grid
 from roentgen.extract_icon import Icon, IconExtractor
@@ -150,7 +153,7 @@ class Painter:
             text, point, font_size=size, text_anchor="middle",
             font_family=DEFAULT_FONT, fill=fill.hex))
 
-    def construct_text(self, tags, processed):
+    def construct_text(self, tags, processed) -> List[TextStruct]:
         """
         Construct labels for not processed tags.
         """
@@ -185,7 +188,7 @@ class Painter:
                 alt_name = ""
             alt_name += "бывш. " + tags["old_name"]
 
-        address = get_address(tags, self.draw_captions)
+        address: List[str] = get_address(tags, self.draw_captions)
 
         if name:
             texts.append(TextStruct(name, Color("black")))
@@ -233,11 +236,11 @@ class Painter:
         ways_length: int = len(ways)
         for index, way in enumerate(ways):  # type: Figure
             ui.progress_bar(index, ways_length, step=10, text="Drawing ways")
-            path: str = way.get_path(self.flinger)
-            if path:
-                p = Path(d=path)
-                p.update(way.style)
-                self.svg.add(p)
+            path_commands: str = way.get_path(self.flinger)
+            if path_commands:
+                path = Path(d=path_commands)
+                path.update(way.style)
+                self.svg.add(path)
         ui.progress_bar(-1, 0, text="Drawing ways")
 
         # Draw building shade.
@@ -262,15 +265,18 @@ class Painter:
 
         previous_level: float = 0
         height: float = self.flinger.get_scale()
+        level_count: int = len(constructor.levels)
 
-        for level in sorted(constructor.levels):
+        for index, level in enumerate(sorted(constructor.levels)):
+            ui.progress_bar(
+                index, level_count, step=1, text="Drawing buildings")
             fill: Color()
             for way in constructor.buildings:  # type: Building
                 if way.get_levels() < level:
                     continue
                 shift_1 = [0, -previous_level * height]
                 shift_2 = [0, -level * height]
-                for segment in way.parts:
+                for segment in way.parts:  # type: Segment
                     if level == 0.5:
                         fill = Color("#AAAAAA")
                     elif level == 1:
@@ -280,25 +286,28 @@ class Painter:
                         fill = Color(rgb=(color_part, color_part, color_part))
 
                     self.svg.add(self.svg.path(
-                        d=("M", np.add(segment.point_1, shift_1), "L",
-                           np.add(segment.point_2, shift_1),
-                           np.add(segment.point_2, shift_2),
-                           np.add(segment.point_1, shift_2),
-                           np.add(segment.point_1, shift_1), "Z"),
+                        d=("M", segment.point_1 + shift_1, "L",
+                           segment.point_2 + shift_1,
+                           segment.point_2 + shift_2,
+                           segment.point_1 + shift_2,
+                           segment.point_1 + shift_1, "Z"),
                         fill=fill.hex, stroke=fill.hex, stroke_width=1,
                         stroke_linejoin="round"))
 
-                # Draw building roof.
+            # Draw building roofs.
 
+            for way in constructor.buildings:  # type: Building
                 if way.get_levels() == level:
                     shift = np.array([0, -way.get_levels() * height])
-                    path: str = way.get_path(self.flinger, shift)
-                    p = Path(d=path, opacity=1)
-                    p.update(way.style)
-                    p.update({"stroke-linejoin": "round"})
-                    self.svg.add(p)
+                    path_commands: str = way.get_path(self.flinger, shift)
+                    path = Path(d=path_commands, opacity=1)
+                    path.update(way.style)
+                    path.update({"stroke-linejoin": "round"})
+                    self.svg.add(path)
 
             previous_level = level
+
+        ui.progress_bar(-1, level_count, step=1, text="Drawing buildings")
 
         # Trees
 
@@ -412,7 +421,7 @@ class Painter:
             self, icon: Icon, point: (float, float), fill: Color,
             tags: Dict[str, str] = None) -> None:
 
-        point = np.array(list(map(lambda x: int(x), point)))
+        point = np.array(list(map(int, point)))
         title: str = "\n".join(map(lambda x: x + ": " + tags[x], tags))
 
         path: svgwrite.path.Path = icon.get_path(self.svg, point)
@@ -423,7 +432,7 @@ class Painter:
     def draw_point_outline(
             self, icon: Icon, point, fill: Color, mode="default"):
 
-        point = np.array(list(map(lambda x: int(x), point)))
+        point = np.array(list(map(int, point)))
 
         opacity: float = 0.5
         stroke_width: float = 2.2
@@ -479,13 +488,13 @@ def check_level_overground(tags: Dict[str, Any]):
     return True
 
 
-def main(argv):
+def main(argv) -> None:
     if len(argv) == 2:
         if argv[1] == "grid":
             draw_grid()
         return
 
-    options = ui.parse_options(argv)
+    options: argparse.Namespace = ui.parse_options(argv)
 
     if not options:
         sys.exit(1)
@@ -570,9 +579,6 @@ def main(argv):
         scheme=scheme)
     painter.draw(constructor, points)
 
-    if options.show_index:
-        draw_index(flinger, map_, max1, min1, svg)
-
     print("Writing output SVG...")
     svg.write(open(options.output_file_name, "w"))
     print("Done.")
@@ -584,48 +590,3 @@ def main(argv):
         missing_tags_file.write(
             f'- {{tag: "{tag}", count: {missing_tags[tag]}}}\n')
     missing_tags_file.close()
-
-
-def draw_index(flinger, map_, max1, min1, svg):
-    print(min1[1], max1[1])
-    print(min1[0], max1[0])
-    lon_step = 0.001
-    lat_step = 0.001
-    matrix = []
-    lat_number = int((max1[0] - min1[0]) / lat_step) + 1
-    lon_number = int((max1[1] - min1[1]) / lon_step) + 1
-    for i in range(lat_number):
-        row = []
-        for j in range(lon_number):
-            row.append(0)
-        matrix.append(row)
-    for node_id in map_.node_map:  # type: int
-        node = map_.node_map[node_id]
-        i = int((node[0] - min1[0]) / lat_step)
-        j = int((node[1] - min1[1]) / lon_step)
-        if (0 <= i < lat_number) and (0 <= j < lon_number):
-            matrix[i][j] += 1
-            if "tags" in node:
-                matrix[i][j] += len(node.nodes)
-    for way_id in map_.way_map:  # type: int
-        way = map_.way_map[way_id]
-        if "tags" in way:
-            for node_id in way.nodes:
-                node = map_.node_map[node_id]
-                i = int((node[0] - min1[0]) / lat_step)
-                j = int((node[1] - min1[1]) / lon_step)
-                if (0 <= i < lat_number) and (0 <= j < lon_number):
-                    matrix[i][j] += len(way.nodes) / float(
-                        len(way.nodes))
-    for i in range(lat_number):
-        for j in range(lon_number):
-            t1 = flinger.fling(np.array((
-                min1[0] + i * lat_step, min1[1] + j * lon_step)))
-            t2 = flinger.fling(np.array((
-                min1[0] + (i + 1) * lat_step,
-                min1[1] + (j + 1) * lon_step)))
-            svg.add(Text(
-                str(int(matrix[i][j])),
-                (((t1 + t2) * 0.5)[0], ((t1 + t2) * 0.5)[1] + 40),
-                font_size=80, fill="440000",
-                opacity=0.1, align="center"))

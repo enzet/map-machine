@@ -3,6 +3,8 @@ Reading OpenStreetMap data from XML file.
 
 Author: Sergey Vartanov (me@enzet.ru).
 """
+from dataclasses import dataclass
+
 import numpy as np
 from datetime import datetime
 from typing import Dict, List, Optional, Set, Union
@@ -115,20 +117,21 @@ class OSMWay(Tagged):
         """
         return self.nodes[0] == self.nodes[-1]
 
-    def try_to_glue(self, other: "OSMWay"):
+    def try_to_glue(self, other: "OSMWay") -> Optional["OSMWay"]:
         """
         Create new combined way if ways share endpoints.
         """
         if self.nodes[0] == other.nodes[0]:
             return OSMWay(nodes=list(reversed(other.nodes[1:])) + self.nodes)
-        elif self.nodes[0] == other.nodes[-1]:
+        if self.nodes[0] == other.nodes[-1]:
             return OSMWay(nodes=other.nodes[:-1] + self.nodes)
-        elif self.nodes[-1] == other.nodes[-1]:
+        if self.nodes[-1] == other.nodes[-1]:
             return OSMWay(nodes=self.nodes + list(reversed(other.nodes[:-1])))
-        elif self.nodes[-1] == other.nodes[0]:
+        if self.nodes[-1] == other.nodes[0]:
             return OSMWay(nodes=self.nodes + other.nodes[1:])
+        return None
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Way <{self.id_}> {self.nodes}"
 
 
@@ -174,6 +177,8 @@ def get_value(key: str, text: str):
         end_index: int = start_index + len(key)
         value = text[end_index:text.find('"', end_index)]
         return value
+
+    return None
 
 
 class Map:
@@ -243,7 +248,7 @@ class OSMReader:
                 line = line.strip()
 
                 line_number += 1
-                progress_bar(line_number, lines_number)
+                progress_bar(line_number, lines_number, text="Parsing")
 
                 # Node parsing.
 
@@ -251,8 +256,7 @@ class OSMReader:
                     if not parse_nodes:
                         if parse_ways or parse_relations:
                             continue
-                        else:
-                            break
+                        break
                     if line[-2] == "/":
                         node: OSMNode = OSMNode().parse_from_xml(line, full)
                         self.map_.add_node(node)
@@ -267,8 +271,7 @@ class OSMReader:
                     if not parse_ways:
                         if parse_relations:
                             continue
-                        else:
-                            break
+                        break
                     if line[-2] == "/":
                         way = OSMWay().parse_from_xml(line, full)
                         self.map_.add_way(way)
@@ -293,15 +296,15 @@ class OSMReader:
                 # Elements parsing.
 
                 elif line.startswith("<tag"):
-                    k = get_value("k", line)
-                    v = get_value("v", line)
-                    element.tags[k] = v
+                    key: str = get_value("k", line)
+                    value = get_value("v", line)
+                    element.tags[key] = value
                 elif line.startswith("<nd"):
                     element.nodes.append(
                         self.map_.node_map[int(get_value("ref", line))])
                 elif line.startswith("<member"):
                     element.members.append(OSMMember(line))
 
-        progress_bar(-1, lines_number)  # Complete progress bar.
+        progress_bar(-1, lines_number, text="Parsing")
 
         return self.map_

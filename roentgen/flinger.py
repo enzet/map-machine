@@ -37,15 +37,15 @@ class Flinger:
     """
     Convert geo coordinates into SVG position points.
     """
-    def __init__(self, geo_boundaries: MinMax, scale: float = 1000):
+    def __init__(self, geo_boundaries: MinMax, scale: float = 18):
         """
         :param geo_boundaries: minimum and maximum latitude and longitude
         :param scale: OSM zoom level
         """
         self.geo_boundaries: MinMax = geo_boundaries
         self.ratio: float = (
-                osm_zoom_level_to_pixels_per_meter(scale) *
-                EQUATOR_LENGTH / 360)
+            osm_zoom_level_to_pixels_per_meter(scale) *
+            EQUATOR_LENGTH / 360)
         self.size: np.array = self.ratio * (
             pseudo_mercator(self.geo_boundaries.max_) -
             pseudo_mercator(self.geo_boundaries.min_))

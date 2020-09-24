@@ -5,11 +5,10 @@ Author: Sergey Vartanov (me@enzet.ru).
 """
 import numpy as np
 from svgwrite import Drawing
-import yaml
+from typing import List, Dict, Any, Set
 
 from roentgen.extract_icon import Icon, IconExtractor
-
-from typing import List
+from roentgen.scheme import Scheme
 
 
 def draw_grid(step: float = 24, columns: int = 16):
@@ -19,19 +18,19 @@ def draw_grid(step: float = 24, columns: int = 16):
     :param step: horizontal and vertical distance between icons
     :param columns: the number of columns in grid
     """
-    tags_file_name = "data/tags.yml"
+    tags_file_name: str = "data/tags.yml"
 
-    scheme = yaml.load(open(tags_file_name), Loader=yaml.FullLoader)
+    scheme: Scheme = Scheme(tags_file_name)
 
-    icons_file_name = "icons/icons.svg"
-    icon_grid_file_name = "icon_grid.svg"
+    icons_file_name: str = "icons/icons.svg"
+    icon_grid_file_name: str = "icon_grid.svg"
 
     width: float = step * columns
     point: np.array = np.array((step / 2, step / 2))
 
-    to_draw = []
+    to_draw: List[Set[str]] = []
 
-    for element in scheme["nodes"]:
+    for element in scheme.nodes:  # type: Dict[str, Any]
         if "icon" in element:
             if set(element["icon"]) not in to_draw:
                 to_draw.append(set(element["icon"]))
@@ -41,23 +40,26 @@ def draw_grid(step: float = 24, columns: int = 16):
         if "over_icon" not in element:
             continue
         if "under_icon" in element:
-            for icon in element["under_icon"]:
-                current_set = set([icon] + element["over_icon"])
+            for icon_id in element["under_icon"]:  # type: str
+                current_set = set([icon_id] + element["over_icon"])
                 if current_set not in to_draw:
                     to_draw.append(current_set)
         if not ("under_icon" in element and "with_icon" in element):
             continue
-        for icon in element["under_icon"]:
-            for icon2 in element["with_icon"]:
-                current_set = set([icon] + [icon2] + element["over_icon"])
+        for icon_id in element["under_icon"]:  # type: str
+            for icon_2_id in element["with_icon"]:  # type: str
+                current_set: Set[str] = set(
+                    [icon_id] + [icon_2_id] + element["over_icon"])
                 if current_set not in to_draw:
                     to_draw.append(current_set)
-            for icon2 in element["with_icon"]:
-                for icon3 in element["with_icon"]:
-                    current_set = \
-                        set([icon] + [icon2] + [icon3] + element["over_icon"])
-                    if icon2 != icon3 and icon2 != icon and icon3 != icon and \
-                            (current_set not in to_draw):
+            for icon_2_id in element["with_icon"]:  # type: str
+                for icon_3_id in element["with_icon"]:  # type: str
+                    current_set = set(
+                        [icon_id] + [icon_2_id] + [icon_3_id] +
+                        element["over_icon"])
+                    if (icon_2_id != icon_3_id and icon_2_id != icon_id and
+                            icon_3_id != icon_id and
+                            (current_set not in to_draw)):
                         to_draw.append(current_set)
 
     number: int = 0
@@ -70,8 +72,8 @@ def draw_grid(step: float = 24, columns: int = 16):
         found: bool = False
         icon_set: List[Icon] = []
         for icon_id in icons_to_draw:  # type: str
-            icon, got = extractor.get_path(icon_id)
-            assert got
+            icon, extracted = extractor.get_path(icon_id)  # type: Icon, bool
+            assert extracted, f"no icon with ID {icon_id}"
             icon_set.append(icon)
             found = True
         if found:
@@ -84,13 +86,13 @@ def draw_grid(step: float = 24, columns: int = 16):
 
     svg.add(svg.rect((0, 0), (width, height), fill="#FFFFFF"))
 
-    for icon in icons:
+    for combined_icon in icons:  # type: List[Icon]
         background_color, foreground_color = "#FFFFFF", "#444444"
         svg.add(svg.rect(
             point - np.array((-10, -10)), (20, 20),
             fill=background_color))
-        for i in icon:  # type: Icon
-            path = i.get_path(svg, point)
+        for icon in combined_icon:  # type: Icon
+            path = icon.get_path(svg, point)
             path.update({"fill": foreground_color})
             svg.add(path)
         point += np.array((step, 0))

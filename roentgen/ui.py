@@ -10,7 +10,7 @@ BOXES: List[str] = [" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉"]
 BOXES_LENGTH: int = len(BOXES)
 
 
-def parse_options(args):
+def parse_options(args) -> argparse.Namespace:
     """
     Parse Röntgen command-line options.
     """
@@ -71,14 +71,6 @@ def parse_options(args):
         default=12,
         type=int)
     parser.add_argument(
-        "--show-index",
-        dest="show_index",
-        action="store_true")
-    parser.add_argument(
-        "--no-show-index",
-        dest="show_index",
-        action="store_false")
-    parser.add_argument(
         "--mode",
         default="normal")
     parser.add_argument(
@@ -88,7 +80,7 @@ def parse_options(args):
         "--level",
         default=None)
 
-    arguments = parser.parse_args(args[1:])
+    arguments: argparse.Namespace = parser.parse_args(args[1:])
 
     if arguments.boundary_box:
         arguments.boundary_box = arguments.boundary_box.replace(" ", "")

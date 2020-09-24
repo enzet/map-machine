@@ -7,6 +7,7 @@ import copy
 import yaml
 
 from colour import Color
+from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Set
 
 from roentgen.extract_icon import DEFAULT_SHAPE_ID
@@ -14,23 +15,17 @@ from roentgen.extract_icon import DEFAULT_SHAPE_ID
 DEFAULT_COLOR: Color = Color("#444444")
 
 
+@dataclass
 class IconSet:
     """
     Node representation: icons and color.
     """
-    def __init__(
-            self, icons: List[List[str]], color: Color, processed: Set[str],
-            is_default: bool):
-        """
-        :param icons: list of lists of shape identifiers
-        :param color: fill color of all icons
-        :param processed: tag keys that were processed to create icon set (other
-            tag keys should be displayed by text or ignored)
-        """
-        self.icons: List[List[str]] = icons
-        self.color: Color = color
-        self.processed: Set[str] = processed
-        self.is_default = is_default
+    icons: List[List[str]]  # list of lists of shape identifiers
+    color: Color  # fill color of all icons
+    # tag keys that were processed to create icon set (other
+    # tag keys should be displayed by text or ignored)
+    processed: Set[str]
+    is_default: bool
 
 
 class Scheme:
@@ -44,8 +39,9 @@ class Scheme:
         :param file_name: scheme file name with tags, colors, and tag key
             specification
         """
-        content: Dict[str, Any] = \
-            yaml.load(open(file_name).read(), Loader=yaml.FullLoader)
+        with open(file_name) as input_file:
+            content: Dict[str, Any] = yaml.load(
+                input_file.read(), Loader=yaml.FullLoader)
 
         self.nodes: List[Dict[str, Any]] = content["nodes"]
         self.ways: List[Dict[str, Any]] = content["ways"]

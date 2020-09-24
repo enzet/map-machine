@@ -43,7 +43,7 @@ def parse_vector(text: str) -> Optional[np.array]:
     return None
 
 
-def rotation_matrix(angle):
+def rotation_matrix(angle) -> np.array:
     """
     Get a matrix to rotate 2D vector by the angle.
 
@@ -100,7 +100,7 @@ class Sector:
 
         return ["L", start, "A", radius, radius, 0, "0", 0, end]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.start}-{self.end}"
 
 
@@ -115,7 +115,7 @@ class DirectionSet:
         """
         self.sectors: Iterator[Optional[Sector]] = map(Sector, text.split(";"))
 
-    def __str__(self):
+    def __str__(self) -> str:
         return ", ".join(map(str, self.sectors))
 
     def draw(self, center: np.array, radius: float) -> Iterator[List[Path]]:
