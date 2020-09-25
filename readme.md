@@ -80,12 +80,12 @@ Every way and node displayed with the random color picked for each author with `
 Map generation
 --------------
 
-**Requirements**: Python (at least 3.7) and Python libraries (see `requirements.txt`).
+**Requirements**: Python (at least 3.8) and Python libraries (install everything using `pip install -r requirements.txt`).
 
 There are simple Python renderer that generates SVG map from OpenStreetMap data. You can run it using:
 
 ```bash
-python3 run.py \
+python run.py \
     -b ${LONGITUDE_1},${LATITUDE_1},${LONGITUDE_2},${LATITUDE_2} \
     -o ${OUTPUT_FILE_NAME} \
     -s ${OSM_ZOOM_LEVEL}
@@ -94,7 +94,7 @@ python3 run.py \
 Example:
 
 ```bash
-python3 run.py -b 2.284,48.86,2.29,48.865
+python run.py -b 2.284,48.86,2.29,48.865
 ```
 
 ### Main arguments ###
