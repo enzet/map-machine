@@ -23,7 +23,7 @@ from roentgen.constructor import (
     Constructor, Point, Figure, TextStruct, Building, Segment)
 from roentgen.flinger import Flinger
 from roentgen.grid import draw_grid
-from roentgen.extract_icon import Icon, IconExtractor
+from roentgen.icon import Icon, IconExtractor
 from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader
 from roentgen.scheme import Scheme
@@ -113,16 +113,6 @@ class Painter:
             self.draw_text(
                 text, (node.point[0], node.point[1] + text_y + 8),
                 text_struct.fill, size=text_struct.size)
-
-        if self.show_missing_tags:
-            for tag in node.tags:  # type: str
-                if not self.scheme.is_no_drawable(tag) and \
-                        tag not in node.icon_set.processed:
-                    text = f"{tag}: {node.tags[tag]}"
-                    self.draw_text(
-                        text, (node.point[0], node.point[1] + text_y + 18),
-                        Color("#734A08"))
-                    text_y += 10
 
     def draw_text(
             self, text: str, point, fill: Color, size: float = 10,
@@ -232,14 +222,14 @@ class Painter:
         """
         Draw map.
         """
-        ways = sorted(constructor.figures, key=lambda x: x.layer)
+        ways = sorted(constructor.figures, key=lambda x: x.line_style.priority)
         ways_length: int = len(ways)
         for index, way in enumerate(ways):  # type: Figure
             ui.progress_bar(index, ways_length, step=10, text="Drawing ways")
             path_commands: str = way.get_path(self.flinger)
             if path_commands:
                 path = Path(d=path_commands)
-                path.update(way.style)
+                path.update(way.line_style.style)
                 self.svg.add(path)
         ui.progress_bar(-1, 0, text="Drawing ways")
 
@@ -301,7 +291,7 @@ class Painter:
                     shift = np.array([0, -way.get_levels() * height])
                     path_commands: str = way.get_path(self.flinger, shift)
                     path = Path(d=path_commands, opacity=1)
-                    path.update(way.style)
+                    path.update(way.line_style.style)
                     path.update({"stroke-linejoin": "round"})
                     self.svg.add(path)
 
@@ -463,7 +453,7 @@ def check_level_number(tags: Dict[str, Any], level: float):
     return True
 
 
-def check_level_overground(tags: Dict[str, Any]):
+def check_level_overground(tags: Dict[str, Any]) -> bool:
     """
     Check if element described by tags is overground.
     """
@@ -548,7 +538,7 @@ def main(argv) -> None:
 
     icon_extractor: IconExtractor = IconExtractor(ICONS_FILE_NAME)
 
-    def check_level(x):
+    def check_level(x) -> bool:
         """ Draw objects on all levels. """
         return True
 
@@ -556,11 +546,11 @@ def main(argv) -> None:
         if options.level == "overground":
             check_level = check_level_overground
         elif options.level == "underground":
-            def check_level(x):
+            def check_level(x) -> bool:
                 """ Draw underground objects. """
                 return not check_level_overground(x)
         else:
-            def check_level(x):
+            def check_level(x) -> bool:
                 """ Draw objects on the specified level. """
                 return not check_level_number(x, float(options.level))
 
@@ -582,11 +572,3 @@ def main(argv) -> None:
     print("Writing output SVG...")
     svg.write(open(options.output_file_name, "w"))
     print("Done.")
-
-    top_missing_tags = \
-        sorted(missing_tags.keys(), key=lambda x: -missing_tags[x])
-    missing_tags_file = open(MISSING_TAGS_FILE_NAME, "w+")
-    for tag in top_missing_tags:
-        missing_tags_file.write(
-            f'- {{tag: "{tag}", count: {missing_tags[tag]}}}\n')
-    missing_tags_file.close()

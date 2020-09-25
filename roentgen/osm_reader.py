@@ -146,6 +146,8 @@ class OSMRelation(Tagged):
 
         self.id_: int = id_
         self.members: List["OSMMember"] = []
+        self.user: Optional[str] = None
+        self.timestamp: Optional[datetime] = None
 
     def parse_from_xml(self, text: str) -> "OSMRelation":
         """
@@ -154,6 +156,10 @@ class OSMRelation(Tagged):
         :param text: XML way representation
         """
         self.id_ = int(get_value("id", text))
+
+        self.user = get_value("user", text)
+        self.timestamp = datetime.strptime(
+            get_value("timestamp", text), OSM_TIME_PATTERN)
 
         return self
 

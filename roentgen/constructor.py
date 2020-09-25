@@ -3,6 +3,7 @@ Construct Röntgen nodes and ways.
 
 Author: Sergey Vartanov (me@enzet.ru).
 """
+from collections import Counter
 from dataclasses import dataclass
 from datetime import datetime
 from hashlib import sha256
@@ -13,14 +14,14 @@ import numpy as np
 
 from roentgen import ui
 from roentgen.color import get_gradient_color
-from roentgen.extract_icon import DEFAULT_SMALL_SHAPE_ID
+from roentgen.icon import DEFAULT_SMALL_SHAPE_ID
 from roentgen.flinger import Flinger
 from roentgen.osm_reader import (
     Map, OSMMember, OSMRelation, OSMWay, OSMNode, Tagged)
-from roentgen.scheme import IconSet, Scheme
+from roentgen.scheme import IconSet, Scheme, LineStyle
 from roentgen.util import MinMax
 
-DEBUG: bool = False
+DEBUG: bool = True
 TIME_COLOR_SCALE: List[Color] = [
     Color("#581845"), Color("#900C3F"), Color("#C70039"), Color("#FF5733"),
     Color("#FFC300"), Color("#DAF7A6")]
@@ -86,16 +87,14 @@ class Figure(Tagged):
     """
     def __init__(
             self, tags: Dict[str, str], inners: List[List[OSMNode]],
-            outers: List[List[OSMNode]], style: Dict[str, Any],
-            layer: float = 0.0):
+            outers: List[List[OSMNode]], line_style: LineStyle):
 
         super().__init__()
 
         self.tags: Dict[str, str] = tags
         self.inners: List[List[OSMNode]] = []
         self.outers: List[List[OSMNode]] = []
-        self.style: Dict[str, Any] = style
-        self.layer: float = layer
+        self.line_style = line_style
 
         for inner_nodes in inners:
             self.inners.append(make_clockwise(inner_nodes))
@@ -145,9 +144,9 @@ class Building(Figure):
     """
     def __init__(
             self, tags: Dict[str, str], inners, outers, flinger: Flinger,
-            style: Dict[str, Any], layer: float):
+            line_style: LineStyle):
 
-        super().__init__(tags, inners, outers, style, layer)
+        super().__init__(tags, inners, outers, line_style)
 
         self.parts = []
 
@@ -268,6 +267,13 @@ def get_path(nodes: List[OSMNode], shift: np.array, flinger: Flinger) -> str:
     return path
 
 
+def is_cycle(nodes) -> bool:
+    """
+    Is way a cycle way or an area boundary.
+    """
+    return nodes[0] == nodes[-1]
+
+
 class Constructor:
     """
     Röntgen node and way constructor.
@@ -309,121 +315,75 @@ class Constructor:
             way: OSMWay = self.map_.way_map[way_id]
             if not self.check_level(way.tags):
                 continue
-            self.construct_way(way, way.tags, [], [way.nodes])
+            self.construct_line(way, [], [way.nodes])
 
         ui.progress_bar(-1, len(self.map_.way_map), text="Constructing ways")
 
-    def construct_way(
-            self, way: Optional[OSMWay], tags: Dict[str, Any],
+    def construct_line(
+            self, line: Optional[Tagged],
             inners: List[List[OSMNode]], outers: List[List[OSMNode]]) -> None:
         """
-        Way construction.
+        Way or relation construction.
 
-        :param way: OSM way
-        :param tags: way tag dictionary
+        :param line: OpenStreetMap way or relation
         :param inners: list of polygons that compose inner boundary
         :param outers: list of polygons that compose outer boundary
         """
-        layer: float = 0
+        assert len(outers) >= 1
 
-        center_point, center_coordinates = None, None
+        line_is_cycle: bool = is_cycle(outers[0])
 
-        if way is not None:
-            center_point, center_coordinates = (
-                line_center(way.nodes, self.flinger))
+        center_point, center_coordinates = (
+            line_center(outers[0], self.flinger))
 
         if self.mode == "user-coloring":
-            if not way:
-                return
-            user_color = get_user_color(way.user, self.seed)
-            self.figures.append(
-                Figure(
-                    way.tags, inners, outers,
-                    {"fill": "none", "stroke": user_color.hex,
-                     "stroke-width": 1}))
+            user_color = get_user_color(line.user, self.seed)
+            self.figures.append(Figure(
+                line.tags, inners, outers,
+                LineStyle({
+                    "fill": "none", "stroke": user_color.hex,
+                    "stroke-width": 1})))
             return
 
         if self.mode == "time":
-            if not way:
-                return
-            time_color = get_time_color(way.timestamp, self.map_.time)
-            self.figures.append(
-                Figure(
-                    way.tags, inners, outers,
-                    {"fill": "none", "stroke": time_color.hex,
-                     "stroke-width": 1}))
+            time_color = get_time_color(line.timestamp, self.map_.time)
+            self.figures.append(Figure(
+                line.tags, inners, outers,
+                LineStyle({
+                    "fill": "none", "stroke": time_color.hex,
+                    "stroke-width": 1})))
             return
 
-        if not tags:
+        if not line.tags:
             return
 
-        appended: bool = False
+        scale: float = self.flinger.get_scale(center_coordinates)
 
-        for element in self.scheme.ways:  # type: Dict[str, Any]
-            matched: bool = True
-            for config_tag_key in element["tags"]:  # type: str
-                matcher = element["tags"][config_tag_key]
-                if config_tag_key not in tags or \
-                        (matcher != "*" and
-                         tags[config_tag_key] != matcher and
-                         tags[config_tag_key] not in matcher):
-                    matched = False
-                    break
-            if "no_tags" in element:
-                for config_tag_key in element["no_tags"]:  # type: str
-                    if (config_tag_key in tags and
-                            tags[config_tag_key] ==
-                            element["no_tags"][config_tag_key]):
-                        matched = False
-                        break
-            if matched:
-                style: Dict[str, Any] = {"fill": "none"}
-                if "priority" in element:
-                    layer = element["priority"]
-                for key in element:  # type: str
-                    if key not in [
-                            "tags", "no_tags", "priority", "level", "icon",
-                            "r", "r2"]:
-                        value = element[key]
-                        if isinstance(value, str) and value.endswith("_color"):
-                            value = self.scheme.get_color(value)
-                        style[key] = value
-                if center_coordinates is not None:
-                    if "r" in element:
-                        style["stroke-width"] = \
-                            element["r"] * \
-                            self.flinger.get_scale(center_coordinates)
-                    if "r2" in element:
-                        style["stroke-width"] = \
-                            element["r2"] * \
-                            self.flinger.get_scale(center_coordinates) + 2
-                if "building" in tags:
-                    self.add_building(Building(
-                        tags, inners, outers, self.flinger, style, layer))
-                else:
-                    self.figures.append(
-                        Figure(tags, inners, outers, style, layer))
-                if center_point is not None and \
-                        (way.is_cycle() and "area" in tags and tags["area"]):
-                    icon_set: IconSet = self.scheme.get_icon(tags)
-                    self.nodes.append(Point(
-                        icon_set, tags, center_point, center_coordinates,
-                        is_for_node=False))
-                appended = True
+        line_styles: List[LineStyle] = self.scheme.get_style(line.tags, scale)
 
-        if not appended:
+        for line_style in line_styles:  # type: LineStyle
+            if "building" in line.tags:
+                self.add_building(Building(
+                    line.tags, inners, outers, self.flinger, line_style))
+            else:
+                self.figures.append(
+                    Figure(line.tags, inners, outers, line_style))
+            icon_set: IconSet = self.scheme.get_icon(line.tags, for_="line")
+            self.nodes.append(Point(
+                icon_set, line.tags, center_point, center_coordinates,
+                is_for_node=False))
+
+        if not line_styles:
             if DEBUG:
                 style: Dict[str, Any] = {
                     "fill": "none", "stroke": Color("red").hex,
                     "stroke-width": 1}
                 self.figures.append(Figure(
-                    tags, inners, outers, style, layer))
-            if (center_point is not None and
-                    way.is_cycle() and "area" in tags and tags["area"]):
-                icon_set: IconSet = self.scheme.get_icon(tags)
-                self.nodes.append(Point(
-                    icon_set, tags, center_point, center_coordinates,
-                    is_for_node=False))
+                    line.tags, inners, outers, LineStyle(style, 1000)))
+            icon_set: IconSet = self.scheme.get_icon(line.tags)
+            self.nodes.append(Point(
+                icon_set, line.tags, center_point, center_coordinates,
+                is_for_node=False))
 
     def construct_relations(self) -> None:
         """
@@ -447,7 +407,7 @@ class Constructor:
                                 outer_ways.append(self.map_.way_map[member.ref])
                 inners_path: List[List[OSMNode]] = glue(inner_ways)
                 outers_path: List[List[OSMNode]] = glue(outer_ways)
-                self.construct_way(None, tags, inners_path, outers_path)
+                self.construct_line(relation, inners_path, outers_path)
 
     def construct_nodes(self) -> None:
         """
@@ -458,6 +418,8 @@ class Constructor:
         s = sorted(
             self.map_.node_map.keys(),
             key=lambda x: -self.map_.node_map[x].coordinates[0])
+
+        missing_tags = Counter()
 
         for node_id in s:  # type: int
             node_number += 1
@@ -477,12 +439,18 @@ class Constructor:
                 if not tags:
                     continue
                 icon_set.icons = [[DEFAULT_SMALL_SHAPE_ID]]
-                break
             if self.mode == "user-coloring":
                 icon_set.color = get_user_color(node.user, self.seed)
             if self.mode == "time":
                 icon_set.color = get_time_color(node.timestamp, self.map_.time)
 
             self.nodes.append(Point(icon_set, tags, flung, node.coordinates))
+
+            missing_tags.update(
+                f"{key}: {tags[key]}" for key in tags
+                if key not in icon_set.processed)
+
+        for t in missing_tags.most_common():
+            print(t)
 
         ui.progress_bar(-1, len(self.map_.node_map), text="Constructing nodes")

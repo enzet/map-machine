@@ -19,6 +19,7 @@ colors:
   direction_view_color: "E0F0FF"
   direction_camera_color: "0088FF"
 
+  allotments_color: "D0E0D0"
   beach_color: "F0E0C0"
   boundary_color: "880088"
   building_border_color: "E0D0C0"  # "AAAAAA"
@@ -28,11 +29,13 @@ colors:
   desert_color: "F0E0D0"
   emergency_color: "DD2222"
   farmland_color: "FFEEBB"
+  ferry_terminal_color: "AABBDD"
   foot_border_color: "FFFFFF"
   foot_color: "B89A74"
   grass_border_color: "BFD098"
   grass_color: "CFE0A8"
   guide_strips_color: "228833"
+  hidden_color: "000000"
   indoor_border_color: "C0B8B0"
   indoor_color: "E8E4E0"
   meadow_border_color: "BFD078"
@@ -40,6 +43,8 @@ colors:
   orchard_color: "B8DCA4"
   outline_color: "FFFFFF"
   parking_color: "DDCC99"
+  pitch_color: "AADDCC"
+  pitch_border_color: "88BBAA"
   platform_border_color: "AAAAAA"
   platform_color: "CCCCCC"
   playground_border_color: "663300"
@@ -69,7 +74,7 @@ colors:
   "rose": "FF007F"  # Wikipedia
   "slate_blue": "6A5ACD"  # W3C slateblue
 
-nodes:
+node_icons:
 
   # No draw
 
@@ -281,6 +286,8 @@ nodes:
     icon: [garages]
   - tags: {tourism: hotel}
     icon: [bed]
+  - tags: {building: hotel}
+    icon: [bed]
   - tags: {tourism: hostel}
     icon: [two_beds]
   - tags: {tourism: motel}  # Tourism?
@@ -295,12 +302,14 @@ nodes:
     icon: [toy_horse]
   - tags: {building: kindergarten, amenity: kindergarten}
     icon: [toy_horse]
-  - tags: {amenity: school, __country: Japan}
-    icon: [japan_elementary_school]
+  - tags: {building: office}
+    icon: [briefcase]
   - tags: {amenity: post_office}
     icon: [letter]
   - tags: {amenity: post_office, __country: Japan}
     icon: [japan_post]
+  - tags: {amenity: school, __country: Japan}
+    icon: [japan_elementary_school]
   - tags: {office: telecommunication}
     icon: [telephone]
 
@@ -692,6 +701,22 @@ nodes:
   - tags: {"payment:credit_cards": "yes"}
     add_icon: [credit_card]
 
+line_icons:
+  - tags: {building: hotel}
+    icon: [bed]
+  - tags: {building: office}
+    icon: [briefcase]
+  - tags: {leisure: playground}
+    icon: [toy_horse]
+  - tags: {amenity: ferry_terminal}
+    icon: [anchor]
+  - tags: {amenity: parking}
+    icon: [parking]
+  - tags: {aeroway: landingpad}
+    icon: [booster_landing]
+  - tags: {aeroway: helipad}
+    icon: [h]
+
 ways:
   - tags: {indoor: area}
     stroke: indoor_border_color
@@ -753,6 +778,8 @@ ways:
     priority: 21
     stroke: wood_color
     stroke-width: 5
+    stroke-linecap: round
+    stroke-linejoin: round
   - tags: {natural: water}
     fill: water_color
     # stroke: water_border_color
@@ -773,6 +800,9 @@ ways:
   - tags: {natural: scree}
     fill: scree_color
 
+  - tags: {landuse: allotments}
+    fill: allotments_color
+    priority: 20
   - tags: {landuse: conservation}
     fill: grass_color
     priority: 20
@@ -803,17 +833,20 @@ ways:
     # Hidden land use
 
   - tags: {landuse: residential}
-    fill: none
-    stroke: none
+    fill: hidden_color
+    opacity: 0.05
   - tags: {landuse: commercial}
-    fill: none
-    stroke: none
+    fill: hidden_color
+    opacity: 0.05
   - tags: {landuse: military}
-    fill: none
-    stroke: none
+    fill: hidden_color
+    opacity: 0.05
   - tags: {landuse: railway}
-    fill: none
-    stroke: none
+    fill: hidden_color
+    opacity: 0.05
+  - tags: {landuse: industrial}
+    fill: hidden_color
+    opacity: 0.05
 
   - tags: {building: "*"}
     fill: building_color
@@ -822,15 +855,19 @@ ways:
   #  fill: building_color
   #  stroke: building_border_color
 
+  - tags: {amenity: ferry_terminal}
+    fill: ferry_terminal_color
+    priority: 50
   - tags: {amenity: parking}
     fill: parking_color
     opacity: 0.5
-    icon: parking
 
   - tags: {aeroway: landingpad}
     fill: "#000000"
     opacity: 0.1
-    icon: parking
+  - tags: {aeroway: helipad}
+    fill: "#440044"
+    opacity: 0.1
 
   - tags: {waterway: riverbank}
     fill: none # water_color
@@ -859,68 +896,81 @@ ways:
     r2: 15
     stroke: road_border_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 41
   - tags: {highway: trunk}
     r2: 13
     stroke: road_border_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 41
   - tags: {highway: primary}
     r2: 11
     stroke: primary_border_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 41.9
   - tags: {highway: motorway_link}
     r2: 9
     stroke: road_border_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 41
   - tags: {highway: secondary}
     r2: 9
     stroke: secondary_border_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 41.8
   - tags: {highway: tertiary}
     r2: 7
     stroke: tertiary_border_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 41.7
   - tags: {highway: unclassified}
     r2: 5
     stroke: road_border_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 41
   - tags: {highway: residential}
     r2: 5
     stroke: road_border_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 41
   - tags: {highway: living_street}
     r2: 4
     stroke: road_border_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 41
   - tags: {highway: service}
     no_tags: {service: parking_aisle}
     r2: 3
     stroke: road_border_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 41
   - tags: {highway: service, service: parking_aisle}
     r2: 2
     stroke: road_border_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 41
   - tags: {highway: track}
     stroke-width: 1.5
     stroke: track_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 41
   - tags: {highway: [footway, pedestrian, cycleway]}
     no_tags: {area: "yes"}
     stroke-width: 3
     stroke: foot_border_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 41
   - tags: {highway: steps}
     stroke-width: 6
@@ -935,69 +985,82 @@ ways:
     r: 15
     stroke: "#FFFFFF"
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 42
   - tags: {highway: trunk}
     r: 13
     stroke:  "#FFFFFF"
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 42
   - tags: {highway: primary}
     r: 11
     stroke: primary_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 42.9
   - tags: {highway: secondary}
     r: 9
     stroke: secondary_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 42.8
   - tags: {highway: motorway_link}
     r: 9
     stroke: "#FFFFFF"
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 42
   - tags: {highway: tertiary}
     r: 7
     stroke: tertiary_color
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 42.7
   - tags: {highway: unclassified}
     r: 5
     stroke: "#FFFFFF"
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 42
   - tags: {highway: residential}
     r: 5
     stroke: "#FFFFFF"
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 42
   - tags: {highway: living_street}
     r: 4
     stroke: "#FFFFFF"
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 42
   - tags: {highway: service}
     no_tags: {service: parking_aisle}
     r: 3
     stroke: "#FFFFFF"
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 42
   - tags: {highway: service, service: parking_aisle}
     r: 2
     stroke: "#FFFFFF"
     stroke-linecap: round
+    stroke-linejoin: round
     priority: 42
   - tags: {highway: [footway, pedestrian]}
     no_tags: {area: "yes"}
     stroke-width: 1.5
     stroke-dasharray: 7,3
     stroke-linecap: round
+    stroke-linejoin: round
     stroke: foot_color
     priority: 42
   - tags: {highway: [footway, pedestrian], area: "yes"}
     stroke: none
     fill: "#DDDDDD"
     stroke-linecap: round
+    stroke-linejoin: round
     priority: -55  # FIXME
   - tags: {highway: cycleway}
     no_tags: {area: "yes"}
@@ -1040,15 +1103,13 @@ ways:
     fill: grass_color
     opacity: 0.5
   - tags: {leisure: pitch}
-    fill: playground_color
-    stroke: playground_border_color
+    fill: pitch_color
+    stroke: pitch_border_color
     stroke-width: 1
-    opacity: 0.2
     priority: 21
   - tags: {leisure: playground}
     fill: playground_color
     opacity: 0.2
-    icon: toy_horse
     priority: 21
   - tags: {leisure: swimming_pool}
     fill: water_color
@@ -1064,31 +1125,31 @@ ways:
     fill: none
     stroke: "#000000"
     stroke-width: 1
-    opacity: 0.6
+    opacity: 0.35
     priority: 40
   - tags: {barrier: wall}
     fill: none
     stroke: "#000000"
     stroke-width: 1
-    opacity: 0.5
+    opacity: 0.3
     priority: 40
   - tags: {barrier: [fence, retaining_wall]}
     fill: none
     stroke: "#000000"
     stroke-width: 1
-    opacity: 0.4
+    opacity: 0.25
     priority: 40
   - tags: {barrier: handrail}
     fill: none
     stroke: "#000000"
     stroke-width: 1
-    opacity: 0.3
+    opacity: 0.2
     priority: 40
   - tags: {barrier: kerb}
     fill: none
     stroke: "#000000"
     stroke-width: 1
-    opacity: 0.2
+    opacity: 0.15
     priority: 40
 
   - tags: {border: "*"}
@@ -1138,9 +1199,7 @@ tags_to_skip: [
   "FIXME", "source_ref", "naptan:verified:note", "fixme",
   "building:levels", "ref:opendataparis:adresse", "indoor",
   "level:ref", "ref:opendataparis:geo_point_2d", "created_by",
-  "mapillary", "diameter_crown", "attribution"]
+  "mapillary", "diameter_crown", "attribution", "curve_geometry"]
 
 prefix_to_skip: [
   "source", "mapillary"]
-
-
