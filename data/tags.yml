@@ -2,20 +2,6 @@ colors:
 
   # Entity
 
-  background: "EEEEEE"
-  beach: "F0E0C0"
-  deciduous: "FCAF3E"
-  desert: "F0E0D0"
-  evergreen: "688C44"
-  grass: "C8DC94"
-  parking: "DDCC99"
-  playground: "884400"
-  sand: "F0E0D0"
-  tree: "98AC64"
-  water: "AACCFF"
-  water_border: "6688BB"
-  wood: "B8CC84"
-
   direction_view_color: "E0F0FF"
   direction_camera_color: "0088FF"
 
