@@ -6,10 +6,12 @@ Author: Sergey Vartanov (me@enzet.ru).
 import re
 import xml.dom.minidom
 from dataclasses import dataclass
-from typing import Dict
+from typing import Dict, Any
 from xml.dom.minidom import Document, Element, Node
 
 import numpy as np
+import svgwrite
+from colour import Color
 from svgwrite import Drawing
 
 from roentgen import ui
@@ -48,6 +50,36 @@ class Icon:
 
         return svg.path(
             d=self.path, transform=f"translate({shift[0]},{shift[1]})")
+
+    def draw(
+            self, svg: svgwrite.Drawing, point: np.array, color: Color,
+            opacity=1.0, tags: Dict[str, Any] = None, outline: bool = False):
+        """
+        Draw icon shape into SVG file.
+
+        :param svg: output SVG file
+        :param point: icon position
+        :param color: fill color
+        :param opacity: icon opacity
+        :param tags: tags to be displayed as hint
+        :param outline: draw outline for the icon
+        """
+        point = np.array(list(map(int, point)))
+
+        path: svgwrite.path.Path = self.get_path(svg, point)
+        path.update({"fill": color.hex})
+        if outline:
+            opacity: float = 0.5
+
+            path.update({
+                "fill": color.hex, "stroke": color.hex, "stroke-width": 2.2,
+                "stroke-linejoin": "round"})
+        if opacity != 1.0:
+            path.update({"opacity": opacity})
+        if tags:
+            title: str = "\n".join(map(lambda x: x + ": " + tags[x], tags))
+            path.set_desc(title=title)
+        svg.add(path)
 
 
 class IconExtractor:

@@ -14,13 +14,12 @@ from colour import Color
 from svgwrite.container import Group
 from svgwrite.path import Path
 from svgwrite.shapes import Rect
-from svgwrite.text import Text
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 
 from roentgen import ui
-from roentgen.address import get_address
 from roentgen.constructor import (
-    Constructor, Point, Figure, TextStruct, Building, Segment)
+    Constructor, Figure, Building, Segment)
+from roentgen.point import Point
 from roentgen.flinger import Flinger
 from roentgen.grid import draw_grid
 from roentgen.icon import Icon, IconExtractor
@@ -29,7 +28,6 @@ from roentgen.osm_reader import Map, OSMReader
 from roentgen.scheme import Scheme
 from roentgen.direction import DirectionSet, Sector
 from roentgen.util import MinMax
-from roentgen.color import is_bright
 
 ICONS_FILE_NAME: str = "icons/icons.svg"
 TAGS_FILE_NAME: str = "data/tags.yml"
@@ -37,8 +35,6 @@ MISSING_TAGS_FILE_NAME: str = "missing_tags.yml"
 
 AUTHOR_MODE = "user-coloring"
 CREATION_TIME_MODE = "time"
-
-DEFAULT_FONT = "Roboto"
 
 
 class Painter:
@@ -63,160 +59,6 @@ class Painter:
         self.svg: svgwrite.Drawing = svg
         self.icon_extractor = icon_extractor
         self.scheme: Scheme = scheme
-
-    def draw_shapes(self, node: Point, points: List[List[float]]):
-        """
-        Draw shapes for one node.
-        """
-        if node.icon_set.is_default and not node.is_for_node:
-            return
-
-        left: float = -(len(node.icon_set.icons) - 1) * 8
-
-        if self.overlap != 0:
-            for shape_ids in node.icon_set.icons:
-                has_space = True
-                for p in points[-1000:]:
-                    if node.point[0] + left - self.overlap <= p[0] \
-                            <= node.point[0] + left + self.overlap and \
-                            node.point[1] - self.overlap <= p[1] \
-                            <= node.point[1] + self.overlap:
-                        has_space = False
-                        break
-                if has_space:
-                    self.draw_point_shape(
-                        shape_ids, (node.point[0] + left, node.point[1]),
-                        node.icon_set.color, tags=node.tags)
-                    points.append([node.point[0] + left, node.point[1]])
-                    left += 16
-        else:
-            for shape_ids in node.icon_set.icons:
-                self.draw_point_shape(
-                    shape_ids, (node.point[0] + left, node.point[1]),
-                    node.icon_set.color, tags=node.tags)
-                left += 16
-
-    def draw_texts(self, node: Point):
-        """
-        Draw all labels.
-        """
-        text_y: float = 0
-
-        write_tags = self.construct_text(node.tags, node.icon_set.processed)
-
-        for text_struct in write_tags:  # type: TextStruct
-            text_y += text_struct.size + 1
-            text = text_struct.text
-            text = text.replace("&quot;", '"')
-            text = text.replace("&amp;", '&')
-            text = text[:26] + ("..." if len(text) > 26 else "")
-            self.draw_text(
-                text, (node.point[0], node.point[1] + text_y + 8),
-                text_struct.fill, size=text_struct.size)
-
-    def draw_text(
-            self, text: str, point, fill: Color, size: float = 10,
-            out_fill=Color("white"), out_opacity=1.0,
-            out_fill_2: Optional[Color] = None, out_opacity_2=1.0):
-        """
-        Drawing text.
-
-          ######     ###  outline 2
-         #------#    ---  outline 1
-        #| Text |#
-         #------#
-          ######
-        """
-        if out_fill_2:
-            self.svg.add(Text(
-                text, point, font_size=size, text_anchor="middle",
-                font_family=DEFAULT_FONT, fill=out_fill_2.hex,
-                stroke_linejoin="round", stroke_width=5,
-                stroke=out_fill_2.hex, opacity=out_opacity_2))
-        if out_fill:
-            self.svg.add(Text(
-                text, point, font_size=size, text_anchor="middle",
-                font_family=DEFAULT_FONT, fill=out_fill.hex,
-                stroke_linejoin="round", stroke_width=3,
-                stroke=out_fill.hex, opacity=out_opacity))
-        self.svg.add(Text(
-            text, point, font_size=size, text_anchor="middle",
-            font_family=DEFAULT_FONT, fill=fill.hex))
-
-    def construct_text(self, tags, processed) -> List[TextStruct]:
-        """
-        Construct labels for not processed tags.
-        """
-        texts: List[TextStruct] = []
-
-        name = None
-        alt_name = None
-        if "name" in tags:
-            name = tags["name"]
-            tags.pop("name", None)
-        if "name:ru" in tags:
-            if not name:
-                name = tags["name:ru"]
-                tags.pop("name:ru", None)
-            tags.pop("name:ru", None)
-        if "name:en" in tags:
-            if not name:
-                name = tags["name:en"]
-                tags.pop("name:en", None)
-            tags.pop("name:en", None)
-        if "alt_name" in tags:
-            if alt_name:
-                alt_name += ", "
-            else:
-                alt_name = ""
-            alt_name += tags["alt_name"]
-            tags.pop("alt_name")
-        if "old_name" in tags:
-            if alt_name:
-                alt_name += ", "
-            else:
-                alt_name = ""
-            alt_name += "бывш. " + tags["old_name"]
-
-        address: List[str] = get_address(tags, self.draw_captions)
-
-        if name:
-            texts.append(TextStruct(name, Color("black")))
-        if alt_name:
-            texts.append(TextStruct("(" + alt_name + ")"))
-        if address:
-            texts.append(TextStruct(", ".join(address)))
-
-        if self.draw_captions == "main":
-            return texts
-
-        if "route_ref" in tags:
-            texts.append(TextStruct(tags["route_ref"].replace(";", " ")))
-            tags.pop("route_ref", None)
-        if "cladr:code" in tags:
-            texts.append(TextStruct(tags["cladr:code"], size=7))
-            tags.pop("cladr:code", None)
-        if "website" in tags:
-            link = tags["website"]
-            if link[:7] == "http://":
-                link = link[7:]
-            if link[:8] == "https://":
-                link = link[8:]
-            if link[:4] == "www.":
-                link = link[4:]
-            if link[-1] == "/":
-                link = link[:-1]
-            link = link[:25] + ("..." if len(tags["website"]) > 25 else "")
-            texts.append(TextStruct(link, Color("#000088")))
-            tags.pop("website", None)
-        for k in ["phone"]:
-            if k in tags:
-                texts.append(TextStruct(tags[k], Color("#444444")))
-                tags.pop(k)
-        for tag in tags:
-            if self.scheme.is_writable(tag) and not (tag in processed):
-                texts.append(TextStruct(tags[tag]))
-        return texts
 
     def draw(self, constructor: Constructor, points):
         """
@@ -332,21 +174,21 @@ class Painter:
                     angle = float(node.get_tag("camera:angle"))
                 if "angle" in node.tags:
                     angle = float(node.get_tag("angle"))
-                direction_radius: float = \
-                    25 * self.flinger.get_scale(node.coordinates)
-                direction_color: Color = \
-                    self.scheme.get_color("direction_camera_color")
+                direction_radius: float = (
+                    25 * self.flinger.get_scale(node.coordinates))
+                direction_color: Color = (
+                    self.scheme.get_color("direction_camera_color"))
             elif node.get_tag("traffic_sign") == "stop":
                 direction = node.get_tag("direction")
-                direction_radius: float = \
-                    25 * self.flinger.get_scale(node.coordinates)
+                direction_radius: float = (
+                    25 * self.flinger.get_scale(node.coordinates))
                 direction_color: Color = Color("red")
             else:
                 direction = node.get_tag("direction")
-                direction_radius: float = \
-                    50 * self.flinger.get_scale(node.coordinates)
-                direction_color: Color = \
-                    self.scheme.get_color("direction_view_color")
+                direction_radius: float = (
+                    50 * self.flinger.get_scale(node.coordinates))
+                direction_color: Color = (
+                    self.scheme.get_color("direction_view_color"))
                 is_revert_gradient = True
 
             if not direction:
@@ -375,16 +217,16 @@ class Painter:
                     d=["M", point] + path + ["L", point, "Z"],
                     fill=gradient.get_paint_server()))
 
-        # All other nodes
+        # All other points
 
         nodes = sorted(constructor.nodes, key=lambda x: x.layer)
         for index, node in enumerate(nodes):  # type: int, Point
-            if node.get_tag("natural") == "tree" and \
+            if (node.get_tag("natural") == "tree" and
                     ("diameter_crown" in node.tags or
-                     "circumference" in node.tags):
+                     "circumference" in node.tags)):
                 continue
             ui.progress_bar(index, len(nodes), step=10, text="Drawing nodes")
-            self.draw_shapes(node, points)
+            node.draw_shapes(self.svg)
         ui.progress_bar(-1, len(nodes), step=10, text="Drawing nodes")
 
         if self.draw_captions == "no":
@@ -392,52 +234,7 @@ class Painter:
 
         for node in nodes:  # type: Point
             if self.mode not in [CREATION_TIME_MODE, AUTHOR_MODE]:
-                self.draw_texts(node)
-
-    def draw_point_shape(
-            self, shape_ids: List[str], point, fill: Color, tags=None):
-        """
-        Draw one icon.
-        """
-        if self.mode not in [CREATION_TIME_MODE, AUTHOR_MODE]:
-            for shape_id in shape_ids:  # type: str
-                icon, _ = self.icon_extractor.get_path(shape_id)
-                self.draw_point_outline(icon, point, fill, mode=self.mode)
-        for shape_id in shape_ids:  # type: str
-            icon, _ = self.icon_extractor.get_path(shape_id)
-            self.draw_point(icon, point, fill, tags=tags)
-
-    def draw_point(
-            self, icon: Icon, point: (float, float), fill: Color,
-            tags: Dict[str, str] = None) -> None:
-
-        point = np.array(list(map(int, point)))
-        title: str = "\n".join(map(lambda x: x + ": " + tags[x], tags))
-
-        path: svgwrite.path.Path = icon.get_path(self.svg, point)
-        path.update({"fill": fill.hex})
-        path.set_desc(title=title)
-        self.svg.add(path)
-
-    def draw_point_outline(
-            self, icon: Icon, point, fill: Color, mode="default"):
-
-        point = np.array(list(map(int, point)))
-
-        opacity: float = 0.5
-        stroke_width: float = 2.2
-        outline_fill: Color = self.scheme.get_color("outline_color")
-
-        if mode not in [AUTHOR_MODE, CREATION_TIME_MODE] and is_bright(fill):
-            outline_fill = Color("black")
-            opacity = 0.7
-
-        path = icon.get_path(self.svg, point)
-        path.update({
-            "fill": outline_fill.hex, "opacity": opacity,
-            "stroke": outline_fill.hex, "stroke-width": stroke_width,
-            "stroke-linejoin": "round"})
-        self.svg.add(path)
+                node.draw_texts(self.svg, self.scheme, self.draw_captions)
 
 
 def check_level_number(tags: Dict[str, Any], level: float):
@@ -479,6 +276,11 @@ def check_level_overground(tags: Dict[str, Any]) -> bool:
 
 
 def main(argv) -> None:
+    """
+    Röntgen entry point.
+
+    :param argv: command-line arguments
+    """
     if len(argv) == 2:
         if argv[1] == "grid":
             draw_grid()
@@ -532,8 +334,8 @@ def main(argv) -> None:
     flinger: Flinger = Flinger(MinMax(min1, max1), options.scale)
     size: np.array = flinger.size
 
-    svg: svgwrite.Drawing = \
-        svgwrite.Drawing(options.output_file_name, size=size)
+    svg: svgwrite.Drawing = (
+        svgwrite.Drawing(options.output_file_name, size=size))
     svg.add(Rect((0, 0), size, fill=background_color))
 
     icon_extractor: IconExtractor = IconExtractor(ICONS_FILE_NAME)
@@ -555,7 +357,8 @@ def main(argv) -> None:
                 return not check_level_number(x, float(options.level))
 
     constructor: Constructor = Constructor(
-        check_level, options.mode, options.seed, map_, flinger, scheme)
+        check_level, options.mode, options.seed, map_, flinger, scheme,
+        icon_extractor)
     if options.draw_ways:
         constructor.construct_ways()
         constructor.construct_relations()

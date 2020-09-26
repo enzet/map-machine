@@ -4,7 +4,6 @@ Construct Röntgen nodes and ways.
 Author: Sergey Vartanov (me@enzet.ru).
 """
 from collections import Counter
-from dataclasses import dataclass
 from datetime import datetime
 from hashlib import sha256
 from typing import Any, Dict, List, Optional, Set
@@ -14,14 +13,15 @@ import numpy as np
 
 from roentgen import ui
 from roentgen.color import get_gradient_color
-from roentgen.icon import DEFAULT_SMALL_SHAPE_ID
+from roentgen.icon import DEFAULT_SMALL_SHAPE_ID, IconExtractor
 from roentgen.flinger import Flinger
 from roentgen.osm_reader import (
     Map, OSMMember, OSMRelation, OSMWay, OSMNode, Tagged)
+from roentgen.point import Point
 from roentgen.scheme import IconSet, Scheme, LineStyle
 from roentgen.util import MinMax
 
-DEBUG: bool = True
+DEBUG: bool = False
 TIME_COLOR_SCALE: List[Color] = [
     Color("#581845"), Color("#900C3F"), Color("#C70039"), Color("#FF5733"),
     Color("#FFC300"), Color("#DAF7A6")]
@@ -58,27 +58,6 @@ def make_counter_clockwise(polygon: List[OSMNode]) -> List[OSMNode]:
     :param polygon: list of OpenStreetMap nodes
     """
     return polygon if not is_clockwise(polygon) else list(reversed(polygon))
-
-
-class Point(Tagged):
-    """
-    Object on the map with no dimensional attributes.
-    """
-    def __init__(
-            self, icon_set: IconSet, tags: Dict[str, str], point: np.array,
-            coordinates: np.array, priority: float = 0,
-            is_for_node: bool = True):
-        super().__init__()
-
-        assert point is not None
-
-        self.icon_set: IconSet = icon_set
-        self.tags: Dict[str, str] = tags
-        self.point: np.array = point
-        self.coordinates: np.array = coordinates
-        self.priority: float = priority
-        self.layer: float = 0
-        self.is_for_node: bool = is_for_node
 
 
 class Figure(Tagged):
@@ -166,16 +145,6 @@ class Building(Figure):
             return max(3.0, float(self.get_tag("building:levels")))
         except (ValueError, TypeError):
             return 3
-
-
-@dataclass
-class TextStruct:
-    """
-    Some label on the map with attributes.
-    """
-    text: str
-    fill: Color = Color("#444444")
-    size: float = 10
 
 
 def line_center(nodes: List[OSMNode], flinger: Flinger) -> np.array:
@@ -280,7 +249,7 @@ class Constructor:
     """
     def __init__(
             self, check_level, mode: str, seed: str, map_: Map,
-            flinger: Flinger, scheme: Scheme):
+            flinger: Flinger, scheme: Scheme, icon_extractor: IconExtractor):
 
         self.check_level = check_level
         self.mode: str = mode
@@ -288,6 +257,7 @@ class Constructor:
         self.map_: Map = map_
         self.flinger: Flinger = flinger
         self.scheme: Scheme = scheme
+        self.icon_extractor = icon_extractor
 
         self.nodes: List[Point] = []
         self.figures: List[Figure] = []
@@ -331,8 +301,6 @@ class Constructor:
         """
         assert len(outers) >= 1
 
-        line_is_cycle: bool = is_cycle(outers[0])
-
         center_point, center_coordinates = (
             line_center(outers[0], self.flinger))
 
@@ -368,7 +336,8 @@ class Constructor:
             else:
                 self.figures.append(
                     Figure(line.tags, inners, outers, line_style))
-            icon_set: IconSet = self.scheme.get_icon(line.tags, for_="line")
+            icon_set: IconSet = self.scheme.get_icon(
+                self.icon_extractor, line.tags, for_="line")
             self.nodes.append(Point(
                 icon_set, line.tags, center_point, center_coordinates,
                 is_for_node=False))
@@ -380,7 +349,8 @@ class Constructor:
                     "stroke-width": 1}
                 self.figures.append(Figure(
                     line.tags, inners, outers, LineStyle(style, 1000)))
-            icon_set: IconSet = self.scheme.get_icon(line.tags)
+            icon_set: IconSet = self.scheme.get_icon(
+                self.icon_extractor, line.tags)
             self.nodes.append(Point(
                 icon_set, line.tags, center_point, center_coordinates,
                 is_for_node=False))
@@ -433,7 +403,7 @@ class Constructor:
             if not self.check_level(tags):
                 continue
 
-            icon_set: IconSet = self.scheme.get_icon(tags)
+            icon_set: IconSet = self.scheme.get_icon(self.icon_extractor, tags)
 
             if self.mode in ["time", "user-coloring"]:
                 if not tags:
@@ -449,8 +419,5 @@ class Constructor:
             missing_tags.update(
                 f"{key}: {tags[key]}" for key in tags
                 if key not in icon_set.processed)
-
-        for t in missing_tags.most_common():
-            print(t)
 
         ui.progress_bar(-1, len(self.map_.node_map), text="Constructing nodes")

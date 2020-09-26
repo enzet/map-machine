@@ -10,7 +10,7 @@ from colour import Color
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Set, Union
 
-from roentgen.icon import DEFAULT_SHAPE_ID
+from roentgen.icon import DEFAULT_SHAPE_ID, IconExtractor, Icon
 
 DEFAULT_COLOR: Color = Color("#444444")
 
@@ -20,7 +20,8 @@ class IconSet:
     """
     Node representation: icons and color.
     """
-    icons: List[List[str]]  # list of lists of shape identifiers
+    main_icon: List[Icon]  # list of icons
+    extra_icons: List[List[Icon]]  # list of lists of icons
     color: Color  # fill color of all icons
     # tag keys that were processed to create icon set (other
     # tag keys should be displayed by text or ignored)
@@ -111,7 +112,9 @@ class Scheme:
                 return True
         return False
 
-    def get_icon(self, tags: Dict[str, Any], for_: str = "node") -> IconSet:
+    def get_icon(
+            self, icon_extractor: IconExtractor, tags: Dict[str, Any],
+            for_: str = "node") -> IconSet:
         """
         Construct icon set.
 
@@ -123,8 +126,8 @@ class Scheme:
         if tags_hash in self.cache:
             return self.cache[tags_hash]
 
-        main_icon: Optional[List[str]] = None
-        extra_icons: List[List[str]] = []
+        main_icon_id: Optional[List[str]] = None
+        extra_icon_ids: List[List[str]] = []
         processed: Set[str] = set()
         fill: Color = DEFAULT_COLOR
 
@@ -150,15 +153,15 @@ class Scheme:
             if "draw" in matcher and not matcher["draw"]:
                 processed |= set(matcher["tags"].keys())
             if "icon" in matcher:
-                main_icon = copy.deepcopy(matcher["icon"])
+                main_icon_id = copy.deepcopy(matcher["icon"])
                 processed |= set(matcher["tags"].keys())
             if "over_icon" in matcher:
-                if main_icon:  # TODO: check main icon in under icons
-                    main_icon += matcher["over_icon"]
+                if main_icon_id:  # TODO: check main icon in under icons
+                    main_icon_id += matcher["over_icon"]
                     for key in matcher["tags"].keys():
                         processed.add(key)
             if "add_icon" in matcher:
-                extra_icons += [matcher["add_icon"]]
+                extra_icon_ids += [matcher["add_icon"]]
                 for key in matcher["tags"].keys():
                     processed.add(key)
             if "color" in matcher:
@@ -167,26 +170,37 @@ class Scheme:
                     processed.add(key)
 
         for tag_key in tags:  # type: str
-            if (tag_key in ["color", "colour"] or tag_key.endswith(":color") or
+            if (tag_key.endswith(":color") or
                     tag_key.endswith(":colour")):
                 fill = self.get_color(tags[tag_key])
                 processed.add(tag_key)
 
-        if main_icon:
-            result_set: List[List[str]] = [main_icon] + extra_icons
-        else:
-            result_set: List[List[str]] = extra_icons
+        for tag_key in tags:  # type: str
+            if tag_key in ["color", "colour"]:
+                fill = self.get_color(tags[tag_key])
+                processed.add(tag_key)
 
         keys_left = list(filter(
             lambda x: x not in processed and
             not self.is_no_drawable(x), tags.keys()))
 
         is_default: bool = False
-        if not result_set and keys_left:
-            result_set = [[DEFAULT_SHAPE_ID]]
+        if not main_icon_id and not extra_icon_ids and keys_left:
+            main_icon_id = [DEFAULT_SHAPE_ID]
             is_default = True
 
-        returned: IconSet = IconSet(result_set, fill, processed, is_default)
+        main_icon: List[Icon] = []
+        if main_icon_id:
+            main_icon = list(map(
+                lambda x: icon_extractor.get_path(x)[0], main_icon_id))
+
+        extra_icons: List[List[Icon]] = []
+        for icon_id in extra_icon_ids:
+            extra_icons.append(list(map(
+                lambda x: icon_extractor.get_path(x)[0], icon_id)))
+
+        returned: IconSet = IconSet(
+            main_icon, extra_icons, fill, processed, is_default)
 
         self.cache[tags_hash] = returned
 
