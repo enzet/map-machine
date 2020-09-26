@@ -72,9 +72,9 @@ class Scheme:
         :return: 6-digit color specification with "#"
         """
         if color in self.colors:
-            return Color("#" + self.colors[color])
+            return Color(self.colors[color])
         if color.lower() in self.colors:
-            return Color("#" + self.colors[color.lower()])
+            return Color(self.colors[color.lower()])
         try:
             return Color(color)
         except ValueError:
