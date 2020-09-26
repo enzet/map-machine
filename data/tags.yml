@@ -13,7 +13,9 @@ colors:
   construction_color: "CCCCCC"
   cycle_color: "4444EE"
   desert_color: "F0E0D0"
+  decidious_color: "FCAF3E"
   emergency_color: "DD2222"
+  evergreen_color: "688C44"
   farmland_color: "FFEEBB"
   ferry_terminal_color: "AABBDD"
   foot_border_color: "FFFFFF"
@@ -49,6 +51,7 @@ colors:
   tertiary_border_color: "CCAA22"
   tertiary_color: "FFFF88"
   track_color: "A88A64"
+  tree_color: "98AC64"
   water_border_color: "6688BB"
   water_color: "AACCFF"
   wetland_color: "BFE0D8"
@@ -93,7 +96,7 @@ node_icons:
     icon: [anchor]
   - tags: {amenity: fountain}
     icon: [fountain]
-    color: water_border
+    color: water_border_color
   - tags: {amenity: parking}
     icon: [parking]
   - tags: {amenity: post_box}
@@ -414,51 +417,51 @@ node_icons:
 
   - tags: {natural: bush}
     icon: [bush]
-    color: tree
+    color: tree_color
   - tags: {natural: tree}
     icon: [tree]
-    color: tree
+    color: tree_color
   - tags: {leaf_type: broadleaved}
     icon: [broadleaved]
-    color: tree
+    color: tree_color
   - tags: {leaf_type: needleleaved}
     icon: [needleleaved]
-    color: tree
+    color: tree_color
   - tags: {leaf_type: palm}
     icon: [palm]
-    color: tree
+    color: tree_color
   - tags: {natural: tree, leaf_type: broadleaved}
     icon: [broadleaved]
-    color: tree
+    color: tree_color
   - tags: {natural: tree, leaf_type: needleleaved}
     icon: [needleleaved]
-    color: tree
+    color: tree_color
   - tags: {natural: tree, leaf_type: palm}
     icon: [palm]
-    color: tree
+    color: tree_color
   - tags: {natural: tree, type: conifer}
     icon: [needleleaved]
-    color: tree
+    color: tree_color
   - tags: {leaf_cycle: deciduous}
-    color: deciduous
+    color: decidious_color
   - tags: {leaf_cycle: evergreen}
-    color: evergreen
+    color: evergreen_color
   - tags: {natural: tree, leaf_cycle: deciduous}
-    color: deciduous
+    color: decidious_color
   - tags: {natural: tree, leaf_cycle: evergreen}
-    color: evergreen
+    color: evergreen_color
 
     # Tree genus
 
   - tags: {natural: tree, genus: Betula}
     icon: [betula]
-    color: tree
+    color: tree_color
   - tags: {natural: tree, "genus:en": Birch}
     icon: [betula]
-    color: tree
+    color: tree_color
   - tags: {natural: tree, "genus:ru": Берёза}
     icon: [betula]
-    color: tree
+    color: tree_color
 
     # Tree over icons
 
