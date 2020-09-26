@@ -114,6 +114,10 @@ node_icons:
     icon: [letter]
   - tags: {amenity: prison}
     icon: [prison]
+  - tags: {amenity: recycling}
+    icon: [recycling_container]
+  - tags: {amenity: recycling, recycling_type: container}
+    icon: [recycling_container]
   - tags: {amenity: stage}
     icon: [theatre]
   - tags: {amenity: telephone}
@@ -706,6 +710,8 @@ node_icons:
 line_icons:
   - tags: {building: hotel}
     icon: [bed]
+  - tags: {building: kindergarten}
+    icon: [toy_horse]
   - tags: {building: office}
     icon: [briefcase]
   - tags: {leisure: playground}
@@ -718,6 +724,23 @@ line_icons:
     icon: [booster_landing]
   - tags: {aeroway: helipad}
     icon: [h]
+
+  # Add to everything.
+
+  - tags: {wheelchair: "yes"}
+    add_icon: [wheelchair]
+  - tags: {wheelchair: "no"}
+    add_icon: [no_wheelchair]
+  - tags: {foot: "yes"}
+    add_icon: [foot]
+  - tags: {foot: "no"}
+    add_icon: [no_foot]
+  - tags: {bicycle: "yes"}
+    add_icon: [bicycle]
+  - tags: {bicycle: "no"}
+    add_icon: [no_bicycle]
+  - tags: {access: private}
+    add_icon: [private]
 
 ways:
   - tags: {indoor: area}

@@ -145,11 +145,11 @@
      inkscape:object-paths="true"
      inkscape:guide-bbox="true"
      showguides="false"
-     showgrid="true"
+     showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="291.18031"
-     inkscape:cx="319.41632"
+     inkscape:cy="586.425"
+     inkscape:cx="17.947305"
      inkscape:zoom="11.313708"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -1046,34 +1046,24 @@
        sodipodi:nodetypes="ccccc" />
     <path
        style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker:none;enable-background:accumulate"
-       d="M 5,6 4,7 12,7 11,6 Z"
-       id="path3059"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccc" />
-    <path
-       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker:none;enable-background:accumulate"
-       d="m 23,13 1,1 3,0 2,-9 -8,0 0,8 z"
+       d="m 26.070711,13 -1,1 L 22,14 22,13 20.9711,13.111688 20.070711,5 l 8,0 -1,8 z"
        id="path3061"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccc" />
+       sodipodi:nodetypes="ccccccccc" />
     <circle
        r="2.5"
-       cy="13.5"
-       cx="22.5"
+       cy="12.5"
+       cx="-26.570711"
        style="fill:none;stroke:#000000;stroke-width:0.09999999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path3063" />
+       id="path3063"
+       transform="scale(-1,1)" />
     <circle
        r="1.5"
-       cy="13.5"
-       cx="22.5"
+       cy="12.5"
+       cx="-26.570711"
        style="fill:none;stroke:#000000;stroke-width:0.10000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path3065" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 22,3 6,0 1,1 -8,0 z"
-       id="path3067"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccc" />
+       id="path3065"
+       transform="scale(-1,1)" />
     <rect
        rx="1"
        ry="1"
@@ -5108,17 +5098,6 @@
        d="M 77,7.5 A 4.5,4.5 0 0 1 72.5,12 4.5,4.5 0 0 1 68,7.5 4.5,4.5 0 0 1 72.5,3 4.5,4.5 0 0 1 77,7.5 Z"
        id="path8781"
        inkscape:connector-curvature="0" />
-    <path
-       d="M 7,6 A 1,1 0 0 1 8,5 1,1 0 0 1 9,6 L 8,6 Z"
-       sodipodi:end="0"
-       sodipodi:start="3.1415927"
-       sodipodi:ry="1"
-       sodipodi:rx="1"
-       sodipodi:cy="6"
-       sodipodi:cx="8"
-       sodipodi:type="arc"
-       id="path8783"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <rect
        ry="0.5"
        rx="0.5"
@@ -9371,12 +9350,6 @@
        id="guidepost"
        inkscape:label="#path9536"
        inkscape:connector-curvature="0" />
-    <path
-       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker:none;enable-background:accumulate"
-       d="m 8,21 a 1,1 0 0 0 -1,1 l -2,0 -1,1 8,0 -1,-1 -2,0 A 1,1 0 0 0 8,21 Z m -4,3 2,6 4,0 2,-6 -8,0 z"
-       id="waste_basket"
-       inkscape:label="#path9544"
-       inkscape:connector-curvature="0" />
     <rect
        style="opacity:1;fill:none;fill-opacity:1;stroke:#242424;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect9551"
@@ -10509,5 +10482,75 @@
        id="path54986"
        d="m 318.5,292.5 -3,-3"
        style="opacity:1;fill:#cccccc;fill-opacity:1;stroke:#cccccc;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect5575"
+       width="8"
+       height="1"
+       x="20"
+       y="3"
+       ry="0.5"
+       rx="0.5" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect5577"
+       width="8"
+       height="0.5"
+       x="20"
+       y="3.5"
+       rx="0"
+       ry="0" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect5579"
+       width="2"
+       height="2"
+       x="23"
+       y="2"
+       ry="0.5"
+       rx="0.5" />
+    <circle
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path5609"
+       cx="21.964844"
+       cy="13"
+       r="1" />
+    <path
+       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker:none;enable-background:accumulate"
+       d="M 23.5 18 C 23.223 18 23 18.223 23 18.5 L 23 19 L 20.5 19 C 20.223 19 20 19.223 20 19.5 L 20 20 L 23.5 20 L 27.5 20 L 28 20 L 28 19.5 C 28 19.223 27.777 19 27.5 19 L 25 19 L 25 18.5 C 25 18.223 24.777 18 24.5 18 L 23.5 18 z M 20.070312 21 L 20.966797 29.070312 A 1 1 0 0 0 20.970703 29.111328 A 1 1 0 0 0 21.964844 30 A 1 1 0 0 0 22 30 L 24.574219 30 A 2.5 2.5 0 0 1 24.070312 28.5 A 2.5 2.5 0 0 1 26.570312 26 A 2.5 2.5 0 0 1 27.425781 26.152344 L 28.070312 21 L 20.070312 21 z M 26.570312 27 A 1.5 1.5 0 0 0 25.070312 28.5 A 1.5 1.5 0 0 0 26.570312 30 A 1.5 1.5 0 0 0 28.070312 28.5 A 1.5 1.5 0 0 0 26.570312 27 z "
+       id="recycling_container"
+       inkscape:label="#path5611" />
+    <rect
+       rx="0.5"
+       ry="0.5"
+       y="6"
+       x="4"
+       height="1"
+       width="8"
+       id="rect5628"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       ry="0"
+       rx="0"
+       y="6.5"
+       x="4"
+       height="0.5"
+       width="8"
+       id="rect5630"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       rx="0.5"
+       ry="0.5"
+       y="5"
+       x="7"
+       height="2"
+       width="2"
+       id="rect5632"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker:none;enable-background:accumulate"
+       d="M 7.5 21 C 7.223 21 7 21.223 7 21.5 L 7 22 L 4.5 22 C 4.223 22 4 22.223 4 22.5 L 4 23 L 7.5 23 L 8.5 23 L 12 23 L 12 22.5 C 12 22.223 11.777 22 11.5 22 L 9 22 L 9 21.5 C 9 21.223 8.777 21 8.5 21 L 7.5 21 z M 4 24 L 6 30 L 10 30 L 12 24 L 4 24 z "
+       id="waste_basket"
+       inkscape:label="#path5634" />
   </g>
 </svg>
