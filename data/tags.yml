@@ -673,6 +673,8 @@ node_icons:
 
   - tags: {wheelchair: "yes"}
     add_icon: [wheelchair]
+  - tags: {wheelchair: "no"}
+    add_icon: [no_wheelchair]
   - tags: {foot: "yes"}
     add_icon: [foot]
   - tags: {foot: "no"}
