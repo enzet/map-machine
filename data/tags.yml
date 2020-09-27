@@ -60,8 +60,8 @@ colors:
 
   # Colors not in W3C
 
-  "rose": "#FF007F"  # Wikipedia
-  "slate_blue": "#6A5ACD"  # W3C slateblue
+  rose: "#FF007F"  # Wikipedia
+  slate_blue: "#6A5ACD"  # W3C slateblue
 
 node_icons:
 
@@ -88,15 +88,19 @@ node_icons:
     icon: [bicycle_parking]
   - tags: {amenity: bicycle_repair_station}
     icon: [bicycle_repair]
-  - tags: {amenity: clock}
-    icon: [clock]
+  - tags: {amenity: charging_station}
+    icon: [charging_station]
   - tags: {amenity: cinema}
     icon: [film]
+  - tags: {amenity: clock}
+    icon: [clock]
   - tags: {amenity: ferry_terminal}
     icon: [anchor]
   - tags: {amenity: fountain}
     icon: [fountain]
     color: water_border_color
+  - tags: {amenity: fuel}
+    icon: [fuel_station]
   - tags: {amenity: parking}
     icon: [parking]
   - tags: {amenity: post_box}
