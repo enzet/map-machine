@@ -69,6 +69,7 @@ class Scheme:
         """
         Return color if the color is in scheme, otherwise return default color.
 
+        :param color: input color string representation
         :return: 6-digit color specification with "#"
         """
         if color in self.colors:

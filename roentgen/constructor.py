@@ -6,7 +6,7 @@ Author: Sergey Vartanov (me@enzet.ru).
 from collections import Counter
 from datetime import datetime
 from hashlib import sha256
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set, Iterator
 
 from colour import Color
 import numpy as np
@@ -201,6 +201,7 @@ def glue(ways: List[OSMWay]) -> List[List[OSMNode]]:
     while to_process:
         way: OSMWay = to_process.pop()
         glued: Optional[OSMWay] = None
+        other_way: Optional[OSMWay] = None
 
         for other_way in to_process:  # type: OSMWay
             glued = way.try_to_glue(other_way)
@@ -385,13 +386,13 @@ class Constructor:
         """
         node_number: int = 0
 
-        s = sorted(
+        sorted_node_ids: Iterator[int] = sorted(
             self.map_.node_map.keys(),
             key=lambda x: -self.map_.node_map[x].coordinates[0])
 
         missing_tags = Counter()
 
-        for node_id in s:  # type: int
+        for node_id in sorted_node_ids:  # type: int
             node_number += 1
             ui.progress_bar(
                 node_number, len(self.map_.node_map),
