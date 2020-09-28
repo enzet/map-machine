@@ -30,7 +30,7 @@ def draw_grid(step: float = 24, columns: int = 16):
 
     to_draw: List[Set[str]] = []
 
-    for element in scheme.node_icons + scheme.line_icons:  # type: Dict[str, Any]
+    for element in scheme.icons:  # type: Dict[str, Any]
         if "icon" in element:
             if set(element["icon"]) not in to_draw:
                 to_draw.append(set(element["icon"]))

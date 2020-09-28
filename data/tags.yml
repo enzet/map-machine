@@ -712,41 +712,6 @@ node_icons:
   - tags: {"payment:credit_cards": "yes"}
     add_icon: [credit_card]
 
-line_icons:
-  - tags: {building: hotel}
-    icon: [bed]
-  - tags: {building: kindergarten}
-    icon: [toy_horse]
-  - tags: {building: office}
-    icon: [briefcase]
-  - tags: {leisure: playground}
-    icon: [toy_horse]
-  - tags: {amenity: ferry_terminal}
-    icon: [anchor]
-  - tags: {amenity: parking}
-    icon: [parking]
-  - tags: {aeroway: landingpad}
-    icon: [booster_landing]
-  - tags: {aeroway: helipad}
-    icon: [h]
-
-  # Add to everything.
-
-  - tags: {wheelchair: "yes"}
-    add_icon: [wheelchair]
-  - tags: {wheelchair: "no"}
-    add_icon: [no_wheelchair]
-  - tags: {foot: "yes"}
-    add_icon: [foot]
-  - tags: {foot: "no"}
-    add_icon: [no_foot]
-  - tags: {bicycle: "yes"}
-    add_icon: [bicycle]
-  - tags: {bicycle: "no"}
-    add_icon: [no_bicycle]
-  - tags: {access: private}
-    add_icon: [private]
-
 ways:
   - tags: {indoor: area}
     stroke: indoor_border_color

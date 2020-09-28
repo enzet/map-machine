@@ -50,8 +50,7 @@ class Scheme:
             content: Dict[str, Any] = yaml.load(
                 input_file.read(), Loader=yaml.FullLoader)
 
-        self.node_icons: List[Dict[str, Any]] = content["node_icons"]
-        self.line_icons: List[Dict[str, Any]] = content["line_icons"]
+        self.icons: List[Dict[str, Any]] = content["node_icons"]
 
         self.ways: List[Dict[str, Any]] = content["ways"]
 
@@ -132,9 +131,7 @@ class Scheme:
         processed: Set[str] = set()
         fill: Color = DEFAULT_COLOR
 
-        rules = self.node_icons if for_ == "node" else self.line_icons
-
-        for matcher in rules:  # type: Dict[str, Any]
+        for matcher in self.icons:  # type: Dict[str, Any]
             matched: bool = True
             for key in matcher["tags"]:  # type: str
                 if key not in tags:
