@@ -41,8 +41,7 @@ def parse_options(args) -> argparse.Namespace:
         help="OSM zoom level (may not be integer, default is 18)",
         default=18,
         dest="scale",
-        type=float,
-        required=True)
+        type=float)
     parser.add_argument(
         "-nn", "--no-draw-nodes",
         dest="draw_nodes",
