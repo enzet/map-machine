@@ -476,6 +476,8 @@ node_icons:
     over_icon: [avenue_tree]
     under_icon: [tree, broadleaved, needleleaved, betula, palm]
 
+  - tags: {natural: cave_entrance}
+    icon: [cave]
   - tags: {natural: peak}
     icon: [triangle_small]
 
@@ -485,6 +487,10 @@ node_icons:
     icon: [entrance]
   - tags: {door: "yes"}
     icon: [entrance]
+  - tags: {entrance: exit}
+    icon: [exit]
+  - tags: {entrance: service}
+    icon: [door_with_x]
   - tags: {entrance: main}
     icon: [main_entrance]
   - tags: {entrance: staircase}
@@ -688,7 +694,7 @@ node_icons:
   - tags: {material: wood}
     add_icon: [wood]
   - tags: {access: private}
-    add_icon: [private]
+    add_icon: [lock]
   - tags: {direction: clockwise}
     add_icon: [clockwise]
   - tags: {direction: contrclockwise}
