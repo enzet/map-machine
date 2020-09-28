@@ -132,6 +132,9 @@ node_icons:
     color: emergency_color
   - tags: {emergency: fire_hydrant}
     icon: [fire_hydrant]
+  - tags: {emergency: life_ring}
+    icon: [life_ring]
+    color: emergency_color
   - tags: {emergency: phone}
     icon: [sos_phone]
     color: emergency_color
@@ -220,6 +223,7 @@ node_icons:
     icon: [buoy]
   - tags: {waterway: waterfall}
     icon: [waterfall]
+    color: water_border_color
 
     # Leisure
 
