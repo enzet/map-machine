@@ -218,6 +218,8 @@ node_icons:
     icon: [buoy]
   - tags: {"waterway:sign": "*"}
     icon: [buoy]
+  - tags: {waterway: waterfall}
+    icon: [waterfall]
 
     # Leisure
 
