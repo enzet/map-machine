@@ -14,12 +14,12 @@ from colour import Color
 from svgwrite.container import Group
 from svgwrite.path import Path
 from svgwrite.shapes import Rect
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from roentgen import ui
 from roentgen.constructor import (
     Constructor, Figure, Building, Segment)
-from roentgen.point import Point
+from roentgen.point import Point, Occupied
 from roentgen.flinger import Flinger
 from roentgen.grid import draw_grid
 from roentgen.icon import Icon, IconExtractor
@@ -60,7 +60,7 @@ class Painter:
         self.icon_extractor = icon_extractor
         self.scheme: Scheme = scheme
 
-    def draw(self, constructor: Constructor, points):
+    def draw(self, constructor: Constructor):
         """
         Draw map.
         """
@@ -96,7 +96,7 @@ class Painter:
         # Draw buildings.
 
         previous_level: float = 0
-        height: float = self.flinger.get_scale()
+        level_height: float = self.flinger.get_scale()
         level_count: int = len(constructor.levels)
 
         for index, level in enumerate(sorted(constructor.levels)):
@@ -106,8 +106,8 @@ class Painter:
             for way in constructor.buildings:  # type: Building
                 if way.get_levels() < level:
                     continue
-                shift_1 = [0, -previous_level * height]
-                shift_2 = [0, -level * height]
+                shift_1 = [0, -previous_level * level_height]
+                shift_2 = [0, -level * level_height]
                 for segment in way.parts:  # type: Segment
                     if level == 0.5:
                         fill = Color("#AAAAAA")
@@ -130,7 +130,7 @@ class Painter:
 
             for way in constructor.buildings:  # type: Building
                 if way.get_levels() == level:
-                    shift = np.array([0, -way.get_levels() * height])
+                    shift = np.array([0, -way.get_levels() * level_height])
                     path_commands: str = way.get_path(self.flinger, shift)
                     path = Path(d=path_commands, opacity=1)
                     path.update(way.line_style.style)
@@ -219,6 +219,8 @@ class Painter:
 
         # All other points
 
+        occupied = Occupied(self.flinger.size[0], self.flinger.size[1])
+
         nodes = sorted(constructor.nodes, key=lambda x: x.layer)
         for index, node in enumerate(nodes):  # type: int, Point
             if (node.get_tag("natural") == "tree" and
@@ -226,7 +228,7 @@ class Painter:
                      "circumference" in node.tags)):
                 continue
             ui.progress_bar(index, len(nodes), step=10, text="Drawing nodes")
-            node.draw_shapes(self.svg)
+            node.draw_shapes(self.svg, occupied)
         ui.progress_bar(-1, len(nodes), step=10, text="Drawing nodes")
 
         if self.draw_captions == "no":
@@ -234,7 +236,8 @@ class Painter:
 
         for node in nodes:  # type: Point
             if self.mode not in [CREATION_TIME_MODE, AUTHOR_MODE]:
-                node.draw_texts(self.svg, self.scheme, self.draw_captions)
+                node.draw_texts(
+                    self.svg, self.scheme, occupied, self.draw_captions)
 
 
 def check_level_number(tags: Dict[str, Any], level: float):
@@ -324,9 +327,6 @@ def main(argv) -> None:
 
     map_: Map = osm_reader.map_
 
-    missing_tags = {}
-    points = []
-
     scheme: Scheme = Scheme(TAGS_FILE_NAME)
 
     min1: np.array = np.array((boundary_box[1], boundary_box[0]))
@@ -370,7 +370,8 @@ def main(argv) -> None:
         draw_captions=options.draw_captions,
         map_=map_, flinger=flinger, svg=svg, icon_extractor=icon_extractor,
         scheme=scheme)
-    painter.draw(constructor, points)
+
+    painter.draw(constructor)
 
     print("Writing output SVG...")
     svg.write(open(options.output_file_name, "w"))

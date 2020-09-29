@@ -25,57 +25,21 @@ class TextStruct:
     size: float = 10.0
 
 
-def draw_point_shape(
-        svg: svgwrite.Drawing, icons: List[Icon], point, fill: Color,
-        tags=None):
-    """
-    Draw one combined icon and its outline.
-    """
-    # Down-cast floats to integers to make icons pixel-perfect.
-    point = np.array(list(map(int, point)))
+class Occupied:
+    def __init__(self, width: int, height: int):
+        self.matrix = np.full((int(width), int(height)), False, dtype=bool)
+        self.width = width
+        self.height = height
 
-    # Draw outlines.
+    def check(self, point) -> bool:
+        if 0 <= point[0] < self.width and 0 <= point[1] < self.height:
+            return self.matrix[point[0], point[1]] == True
+        return True
 
-    for icon in icons:  # type: Icon
-        bright: bool = is_bright(fill)
-        color: Color = Color("black") if bright else Color("white")
-        opacity: float = 0.7 if bright else 0.5
-        icon.draw(svg, point, color, opacity=opacity, outline=True)
-
-    # Draw icons.
-
-    for icon in icons:  # type: Icon
-        icon.draw(svg, point, fill, tags=tags)
-
-
-def draw_text(
-        svg: svgwrite.Drawing, text: str, point, fill: Color,
-        size: float = 10.0, out_fill=Color("white"), out_opacity=1.0,
-        out_fill_2: Optional[Color] = None, out_opacity_2=1.0):
-    """
-    Drawing text.
-
-      ######     ###  outline 2
-     #------#    ---  outline 1
-    #| Text |#
-     #------#
-      ######
-    """
-    if out_fill_2:
-        svg.add(svg.text(
-            text, point, font_size=size, text_anchor="middle",
-            font_family=DEFAULT_FONT, fill=out_fill_2.hex,
-            stroke_linejoin="round", stroke_width=5,
-            stroke=out_fill_2.hex, opacity=out_opacity_2))
-    if out_fill:
-        svg.add(svg.text(
-            text, point, font_size=size, text_anchor="middle",
-            font_family=DEFAULT_FONT, fill=out_fill.hex,
-            stroke_linejoin="round", stroke_width=3,
-            stroke=out_fill.hex, opacity=out_opacity))
-    svg.add(svg.text(
-        text, point, font_size=size, text_anchor="middle",
-        font_family=DEFAULT_FONT, fill=fill.hex))
+    def register(self, point) -> None:
+        if 0 <= point[0] < self.width and 0 <= point[1] < self.height:
+            self.matrix[point[0], point[1]] = True
+            assert self.matrix[point[0], point[1]] == True
 
 
 def construct_text(
@@ -112,7 +76,7 @@ def construct_text(
             alt_name += ", "
         else:
             alt_name = ""
-        alt_name += "бывш. " + tags["old_name"]
+        alt_name += "ex " + tags["old_name"]
 
     address: List[str] = get_address(tags, draw_captions)
 
@@ -155,12 +119,19 @@ def construct_text(
     return texts
 
 
+def in_range(position, points) -> bool:
+    return (
+            0 <= position[0] < len(points) and
+            0 <= position[1] < len(points[0]))
+
+
 class Point(Tagged):
     """
     Object on the map with no dimensional attributes.
 
     It may have icons and text.
     """
+
     def __init__(
             self, icon_set: IconSet, tags: Dict[str, str], point: np.array,
             coordinates: np.array, priority: float = 0,
@@ -179,41 +150,138 @@ class Point(Tagged):
 
         self.y = 0
 
-    def draw_shapes(self, svg: svgwrite.Drawing):
+    def draw_shapes(self, svg: svgwrite.Drawing, occupied: Occupied):
         """
         Draw shapes for one node.
         """
-        if self.icon_set.main_icon and (not self.icon_set.main_icon[0].is_default() or self.is_for_node):
-            draw_point_shape(
+        painted: bool = False
+        if (self.icon_set.main_icon and
+                (not self.icon_set.main_icon[0].is_default() or
+                 self.is_for_node)):
+            position = self.point + np.array((0, self.y))
+            painted: bool = self.draw_point_shape(
                 svg, self.icon_set.main_icon,
-                self.point + np.array((0, self.y)), self.icon_set.color,
+                position, self.icon_set.color, occupied,
                 tags=self.tags)
-            self.y += 16
+            if painted:
+                self.y += 16
 
+        if not self.icon_set.extra_icons or \
+                (self.icon_set.main_icon and not painted):
+            return
+
+        is_place_for_extra: bool = True
         left: float = -(len(self.icon_set.extra_icons) - 1) * 8
-
         for shape_ids in self.icon_set.extra_icons:
-            draw_point_shape(
-                svg, shape_ids, self.point + np.array((left, self.y)),
-                Color("#888888"))
+            if occupied.check(
+                    (int(self.point[0] + left), int(self.point[1] + self.y))):
+                is_place_for_extra = False
+                break
             left += 16
 
-        if self.icon_set.extra_icons:
+        if is_place_for_extra:
+            left: float = -(len(self.icon_set.extra_icons) - 1) * 8
+            for shape_ids in self.icon_set.extra_icons:
+                self.draw_point_shape(
+                    svg, shape_ids, self.point + np.array((left, self.y)),
+                    Color("#888888"), occupied)
+                left += 16
             self.y += 16
 
-    def draw_texts(self, svg: svgwrite.Drawing, scheme, draw_captions):
+    def draw_point_shape(
+            self, svg: svgwrite.Drawing, icons: List[Icon], position,
+            fill: Color, occupied, tags=None) -> bool:
+        """
+        Draw one combined icon and its outline.
+        """
+        # Down-cast floats to integers to make icons pixel-perfect.
+        position = list(map(int, position))
+
+        if occupied.check(position):
+            return False
+
+        # Draw outlines.
+
+        for icon in icons:  # type: Icon
+            bright: bool = is_bright(fill)
+            color: Color = Color("black") if bright else Color("white")
+            opacity: float = 0.7 if bright else 0.5
+            icon.draw(svg, position, color, opacity=opacity, outline=True)
+
+        # Draw icons.
+
+        for icon in icons:  # type: Icon
+            icon.draw(svg, position, fill, tags=tags)
+
+        for i in range(-12, 12):
+            for j in range(-12, 12):
+                occupied.register((position[0] + i, position[1] + j))
+
+        return True
+
+    def draw_texts(
+            self, svg: svgwrite.Drawing, scheme, occupied: Occupied,
+            draw_captions):
         """
         Draw all labels.
         """
-        write_tags = construct_text(
+        text_structures: List[TextStruct] = construct_text(
             self.tags, self.icon_set.processed, scheme, draw_captions)
 
-        for text_struct in write_tags:  # type: TextStruct
-            self.y += text_struct.size + 1
+        for text_struct in text_structures:  # type: TextStruct
             text = text_struct.text
             text = text.replace("&quot;", '"')
             text = text.replace("&amp;", '&')
             text = text[:26] + ("..." if len(text) > 26 else "")
-            draw_text(
-                svg, text, self.point + np.array((0, self.y - 8)),
-                text_struct.fill, size=text_struct.size)
+            self.draw_text(
+                svg, text, self.point + np.array((0, self.y)),
+                occupied, text_struct.fill, size=text_struct.size)
+
+    def draw_text(
+            self, svg: svgwrite.Drawing, text: str, point, occupied: Occupied,
+            fill: Color, size: float = 10.0, out_fill=Color("white"),
+            out_opacity=1.0, out_fill_2: Optional[Color] = None,
+            out_opacity_2=1.0):
+        """
+        Drawing text.
+
+          ######     ###  outline 2
+         #------#    ---  outline 1
+        #| Text |#
+         #------#
+          ######
+        """
+        length = len(text) * 6
+
+        is_occupied: bool = False
+        for i in range(-int(length / 2), int(length/ 2)):
+            if occupied.check((int(point[0] + i), int(point[1] - 4))):
+                is_occupied = True
+                break
+
+        if is_occupied:
+            return
+
+        for i in range(-int(length / 2), int(length / 2)):
+            for j in range(-12, 5):
+                occupied.register((int(point[0] + i), int(point[1] + j)))
+                # svg.add(svg.rect((point[0] + i, point[1] + j), (1, 1)))
+
+        if out_fill_2:
+            svg.add(svg.text(
+                text, point, font_size=size, text_anchor="middle",
+                font_family=DEFAULT_FONT, fill=out_fill_2.hex,
+                stroke_linejoin="round", stroke_width=5,
+                stroke=out_fill_2.hex, opacity=out_opacity_2))
+        if out_fill:
+            svg.add(svg.text(
+                text, point, font_size=size, text_anchor="middle",
+                font_family=DEFAULT_FONT, fill=out_fill.hex,
+                stroke_linejoin="round", stroke_width=3,
+                stroke=out_fill.hex, opacity=out_opacity))
+        svg.add(svg.text(
+            text, point, font_size=size, text_anchor="middle",
+            font_family=DEFAULT_FONT, fill=fill.hex))
+
+        self.y += 11
+

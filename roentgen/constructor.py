@@ -280,7 +280,7 @@ class Constructor:
         way_number: int = 0
         for way_id in self.map_.way_map:  # type: int
             ui.progress_bar(
-                way_number, len(self.map_.way_map),
+                way_number, len(self.map_.way_map), step=10,
                 text="Constructing ways")
             way_number += 1
             way: OSMWay = self.map_.way_map[way_id]
@@ -376,9 +376,12 @@ class Constructor:
                         elif member.role == "outer":
                             if member.ref in self.map_.way_map:
                                 outer_ways.append(self.map_.way_map[member.ref])
-                inners_path: List[List[OSMNode]] = glue(inner_ways)
-                outers_path: List[List[OSMNode]] = glue(outer_ways)
-                self.construct_line(relation, inners_path, outers_path)
+                        else:
+                            print(f'Unknown member role "{member.role}".')
+                if outer_ways:
+                    inners_path: List[List[OSMNode]] = glue(inner_ways)
+                    outers_path: List[List[OSMNode]] = glue(outer_ways)
+                    self.construct_line(relation, inners_path, outers_path)
 
     def construct_nodes(self) -> None:
         """

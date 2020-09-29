@@ -6,7 +6,7 @@ Author: Sergey Vartanov (me@enzet.ru).
 import re
 import xml.dom.minidom
 from dataclasses import dataclass
-from typing import Dict, Any
+from typing import Dict, Any, Set
 from xml.dom.minidom import Document, Element, Node
 
 import numpy as np
