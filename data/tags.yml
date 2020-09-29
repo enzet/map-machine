@@ -182,6 +182,32 @@ node_icons:
     icon: [solar_panel]
   - tags: {power: tower}
     icon: [power_tower]
+  - tags: {power: tower, design: one-level}
+    icon: [power_tower_1_level]
+  - tags: {power: tower, design: two-level}
+    icon: [power_tower_2_level]
+  - tags: {power: tower, design: three-level}
+    icon: [power_tower_3_level]
+  - tags: {power: tower, design: four-level}
+    icon: [power_tower_4_level]
+  - tags: {power: tower, design: donau}
+    icon: [power_tower_donau]
+  - tags: {power: tower, design: barrel}
+    icon: [power_tower_barrel]
+  - tags: {power: tower, design: asymmetric}
+    icon: [power_tower_asymmetric]
+  - tags: {power: tower, design: triangle}
+    icon: [power_tower_triangle]
+  - tags: {power: tower, design: delta}
+    icon: [power_tower_delta]
+  - tags: {power: tower, design: delta-two-level}
+    icon: [power_tower_delta_2_level]
+  - tags: {power: tower, design: delta-three-level}
+    icon: [power_tower_delta_3_level]
+  - tags: {power: tower, design: y-frame}
+    icon: [power_tower_y_frame]
+  - tags: {power: tower, design: x-frame}
+    icon: [power_tower_x_frame]
 
   # Information
 
