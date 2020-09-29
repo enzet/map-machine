@@ -162,6 +162,8 @@ node_icons:
     icon: [pole_lamp]
   - tags: {man_made: surveillance}
     icon: [cctv]
+  - tags: {man_made: survey_point}
+    icon: [survey_point]
   - tags: {man_made: ventilation_shaft}
     icon: [ventilation]
 
