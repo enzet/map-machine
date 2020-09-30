@@ -181,7 +181,7 @@ node_icons:
   - tags: {power: generator, generator:source: solar}
     icon: [solar_panel]
   - tags: {power: tower}
-    icon: [power_tower]
+    icon: [power_tower_2_level]
   - tags: {power: tower, design: one-level}
     icon: [power_tower_1_level]
   - tags: {power: tower, design: two-level}
