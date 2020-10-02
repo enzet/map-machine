@@ -3,11 +3,11 @@ Reading OpenStreetMap data from XML file.
 
 Author: Sergey Vartanov (me@enzet.ru).
 """
-from dataclasses import dataclass
+import json
 
 import numpy as np
 from datetime import datetime
-from typing import Dict, List, Optional, Set, Union
+from typing import Dict, List, Optional, Set, Union, Any
 
 from roentgen.ui import progress_bar
 from roentgen.util import MinMax
@@ -70,6 +70,14 @@ class OSMNode(Tagged):
                 get_value("timestamp", text), OSM_TIME_PATTERN)
             self.user = get_value("user", text)
             self.uid = get_value("uid", text)
+
+        return self
+
+    def parse_from_structure(self, structure: Dict[str, Any]) -> "OSMNode":
+
+        self.id_ = structure["id"]
+        self.coordinates = np.array((structure["lat"], structure["lon"]))
+        self.tags = structure["tags"]
 
         return self
 
@@ -198,6 +206,7 @@ class Map:
 
         self.authors: Set[str] = set()
         self.time: MinMax = MinMax()
+        self.boundary_box: List[MinMax] = [MinMax(), MinMax()]
 
     def add_node(self, node: OSMNode):
         """
@@ -207,6 +216,8 @@ class Map:
         if node.user:
             self.authors.add(node.user)
         self.time.update(node.timestamp)
+        self.boundary_box[0].update(node.coordinates[0])
+        self.boundary_box[1].update(node.coordinates[1])
 
     def add_way(self, way: OSMWay):
         """
@@ -222,6 +233,20 @@ class Map:
         Add relation and update map parameters.
         """
         self.relation_map[relation.id_] = relation
+
+
+class OverpassReader:
+    def __init__(self):
+        self.map_ = Map()
+
+    def parse_json_file(self, file_name: str):
+        with open(file_name) as input_file:
+            structure = json.load(input_file)
+
+        for element in structure["elements"]:
+            if element["type"] == "node":
+                node = OSMNode().parse_from_structure(element)
+                self.map_.add_node(node)
 
 
 class OSMReader:
