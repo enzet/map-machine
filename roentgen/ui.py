@@ -33,8 +33,7 @@ def parse_options(args) -> argparse.Namespace:
         "-b", "--boundary-box",
         dest="boundary_box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
-        help="geo boundary box, use space before \"-\" for negative values",
-        required=True)
+        help="geo boundary box, use space before \"-\" for negative values")
     parser.add_argument(
         "-s", "--scale",
         metavar="<float>",

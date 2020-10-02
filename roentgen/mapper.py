@@ -21,10 +21,10 @@ from roentgen.constructor import (
     Constructor, Figure, Building, Segment)
 from roentgen.point import Point, Occupied
 from roentgen.flinger import Flinger
-from roentgen.grid import draw_grid
+from roentgen.grid import draw_all_icons
 from roentgen.icon import Icon, IconExtractor
 from roentgen.osm_getter import get_osm
-from roentgen.osm_reader import Map, OSMReader
+from roentgen.osm_reader import Map, OSMReader, OverpassReader
 from roentgen.scheme import Scheme
 from roentgen.direction import DirectionSet, Sector
 from roentgen.util import MinMax
@@ -74,6 +74,31 @@ class Painter:
                 path.update(way.line_style.style)
                 self.svg.add(path)
         ui.progress_bar(-1, 0, text="Drawing ways")
+
+        # Trees
+
+        for node in constructor.nodes:
+            if not (node.get_tag("natural") == "tree" and
+                    ("diameter_crown" in node.tags or
+                     "circumference" in node.tags)):
+                continue
+            if "circumference" in node.tags:
+                if "diameter_crown" in node.tags:
+                    opacity = 0.7
+                    radius = float(node.tags["diameter_crown"]) / 2
+                else:
+                    opacity = 0.3
+                    radius = 2
+                self.svg.add(self.svg.circle(
+                    node.point,
+                    radius * self.flinger.get_scale(node.coordinates),
+                    fill=self.scheme.get_color("evergreen_color"),
+                    opacity=opacity))
+                self.svg.add(self.svg.circle(
+                    node.point,
+                    float(node.tags["circumference"]) / 2 / np.pi *
+                    self.flinger.get_scale(node.coordinates),
+                    fill="#B89A74"))
 
         # Draw building shade.
 
@@ -141,26 +166,6 @@ class Painter:
 
         ui.progress_bar(-1, level_count, step=1, text="Drawing buildings")
 
-        # Trees
-
-        for node in constructor.nodes:
-            if not (node.get_tag("natural") == "tree" and
-                    ("diameter_crown" in node.tags or
-                     "circumference" in node.tags)):
-                continue
-            if "circumference" in node.tags:
-                self.svg.add(self.svg.circle(
-                    node.point,
-                    float(node.tags["circumference"]) *
-                    self.flinger.get_scale(node.coordinates) / 2,
-                    fill="#AAAA88", opacity=0.3))
-            if "diameter_crown" in node.tags:
-                self.svg.add(self.svg.circle(
-                    node.point,
-                    float(node.tags["diameter_crown"]) *
-                    self.flinger.get_scale(node.coordinates) / 2,
-                    fill=self.scheme.get_color("evergreen"), opacity=0.3))
-
         # Directions
 
         for node in constructor.nodes:  # type: Point
@@ -219,7 +224,11 @@ class Painter:
 
         # All other points
 
-        occupied = Occupied(self.flinger.size[0], self.flinger.size[1])
+        if self.overlap == 0:
+            occupied = None
+        else:
+            occupied = Occupied(
+                self.flinger.size[0], self.flinger.size[1], self.overlap)
 
         nodes = sorted(constructor.nodes, key=lambda x: x.layer)
         for index, node in enumerate(nodes):  # type: int, Point
@@ -286,7 +295,7 @@ def main(argv) -> None:
     """
     if len(argv) == 2:
         if argv[1] == "grid":
-            draw_grid()
+            draw_all_icons("icon_grid.svg")
         return
 
     options: argparse.Namespace = ui.parse_options(argv)
@@ -306,31 +315,40 @@ def main(argv) -> None:
             ui.error("cannot download OSM data")
         input_file_name = [os.path.join("map", options.boundary_box + ".osm")]
 
-    boundary_box = list(map(
-        lambda x: float(x.replace('m', '-')), options.boundary_box.split(',')))
-
-    full = False  # Full keys getting
-
-    if options.mode in [AUTHOR_MODE, CREATION_TIME_MODE]:
-        full = True
-
-    osm_reader = OSMReader()
-
-    for file_name in input_file_name:
-        if not os.path.isfile(file_name):
-            print("Fatal: no such file: " + file_name + ".")
-            sys.exit(1)
-
-        osm_reader.parse_osm_file(
-            file_name, parse_ways=options.draw_ways,
-            parse_relations=options.draw_ways, full=full)
-
-    map_: Map = osm_reader.map_
-
     scheme: Scheme = Scheme(TAGS_FILE_NAME)
 
-    min1: np.array = np.array((boundary_box[1], boundary_box[0]))
-    max1: np.array = np.array((boundary_box[3], boundary_box[2]))
+    if input_file_name[0].endswith(".json"):
+        reader: OverpassReader = OverpassReader()
+        reader.parse_json_file(input_file_name[0])
+        map_ = reader.map_
+        min1 = np.array((map_.boundary_box[0].min_, map_.boundary_box[1].min_))
+        max1 = np.array((map_.boundary_box[0].max_, map_.boundary_box[1].max_))
+    else:
+
+        boundary_box = list(map(
+            lambda x: float(x.replace('m', '-')), options.boundary_box.split(',')))
+
+        full = False  # Full keys getting
+
+        if options.mode in [AUTHOR_MODE, CREATION_TIME_MODE]:
+            full = True
+
+        osm_reader = OSMReader()
+
+        for file_name in input_file_name:
+            if not os.path.isfile(file_name):
+                print("Fatal: no such file: " + file_name + ".")
+                sys.exit(1)
+
+            osm_reader.parse_osm_file(
+                file_name, parse_ways=options.draw_ways,
+                parse_relations=options.draw_ways, full=full)
+
+        map_: Map = osm_reader.map_
+
+        min1: np.array = np.array((boundary_box[1], boundary_box[0]))
+        max1: np.array = np.array((boundary_box[3], boundary_box[2]))
+
     flinger: Flinger = Flinger(MinMax(min1, max1), options.scale)
     size: np.array = flinger.size
 
@@ -362,7 +380,8 @@ def main(argv) -> None:
     if options.draw_ways:
         constructor.construct_ways()
         constructor.construct_relations()
-    constructor.construct_nodes()
+    if options.mode not in [AUTHOR_MODE, CREATION_TIME_MODE]:
+        constructor.construct_nodes()
 
     painter: Painter = Painter(
         show_missing_tags=options.show_missing_tags, overlap=options.overlap,

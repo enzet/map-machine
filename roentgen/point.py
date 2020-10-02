@@ -26,10 +26,11 @@ class TextStruct:
 
 
 class Occupied:
-    def __init__(self, width: int, height: int):
+    def __init__(self, width: int, height: int, overlap: float):
         self.matrix = np.full((int(width), int(height)), False, dtype=bool)
         self.width = width
         self.height = height
+        self.overlap = overlap
 
     def check(self, point) -> bool:
         if 0 <= point[0] < self.width and 0 <= point[1] < self.height:
@@ -171,13 +172,15 @@ class Point(Tagged):
             return
 
         is_place_for_extra: bool = True
-        left: float = -(len(self.icon_set.extra_icons) - 1) * 8
-        for shape_ids in self.icon_set.extra_icons:
-            if occupied.check(
-                    (int(self.point[0] + left), int(self.point[1] + self.y))):
-                is_place_for_extra = False
-                break
-            left += 16
+        if occupied:
+            left: float = -(len(self.icon_set.extra_icons) - 1) * 8
+            for shape_ids in self.icon_set.extra_icons:
+                if occupied.check(
+                        (int(self.point[0] + left),
+                         int(self.point[1] + self.y))):
+                    is_place_for_extra = False
+                    break
+                left += 16
 
         if is_place_for_extra:
             left: float = -(len(self.icon_set.extra_icons) - 1) * 8
@@ -197,7 +200,7 @@ class Point(Tagged):
         # Down-cast floats to integers to make icons pixel-perfect.
         position = list(map(int, position))
 
-        if occupied.check(position):
+        if occupied and occupied.check(position):
             return False
 
         # Draw outlines.
@@ -213,9 +216,11 @@ class Point(Tagged):
         for icon in icons:  # type: Icon
             icon.draw(svg, position, fill, tags=tags)
 
-        for i in range(-12, 12):
-            for j in range(-12, 12):
-                occupied.register((position[0] + i, position[1] + j))
+        if occupied:
+            overlap: int = occupied.overlap
+            for i in range(-overlap, overlap):
+                for j in range(-overlap, overlap):
+                    occupied.register((position[0] + i, position[1] + j))
 
         return True
 
@@ -240,7 +245,7 @@ class Point(Tagged):
     def draw_text(
             self, svg: svgwrite.Drawing, text: str, point, occupied: Occupied,
             fill: Color, size: float = 10.0, out_fill=Color("white"),
-            out_opacity=1.0, out_fill_2: Optional[Color] = None,
+            out_opacity=0.5, out_fill_2: Optional[Color] = None,
             out_opacity_2=1.0):
         """
         Drawing text.
@@ -253,19 +258,20 @@ class Point(Tagged):
         """
         length = len(text) * 6
 
-        is_occupied: bool = False
-        for i in range(-int(length / 2), int(length/ 2)):
-            if occupied.check((int(point[0] + i), int(point[1] - 4))):
-                is_occupied = True
-                break
+        if occupied:
+            is_occupied: bool = False
+            for i in range(-int(length / 2), int(length/ 2)):
+                if occupied.check((int(point[0] + i), int(point[1] - 4))):
+                    is_occupied = True
+                    break
 
-        if is_occupied:
-            return
+            if is_occupied:
+                return
 
-        for i in range(-int(length / 2), int(length / 2)):
-            for j in range(-12, 5):
-                occupied.register((int(point[0] + i), int(point[1] + j)))
-                # svg.add(svg.rect((point[0] + i, point[1] + j), (1, 1)))
+            for i in range(-int(length / 2), int(length / 2)):
+                for j in range(-12, 5):
+                    occupied.register((int(point[0] + i), int(point[1] + j)))
+                    # svg.add(svg.rect((point[0] + i, point[1] + j), (1, 1)))
 
         if out_fill_2:
             svg.add(svg.text(
