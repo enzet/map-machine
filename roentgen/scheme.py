@@ -51,10 +51,11 @@ class Scheme:
                 input_file.read(), Loader=yaml.FullLoader)
 
         self.icons: List[Dict[str, Any]] = content["node_icons"]
-
         self.ways: List[Dict[str, Any]] = content["ways"]
 
         self.colors: Dict[str, str] = content["colors"]
+
+        self.area_tags: List[Dict[str, str]] = content["area_tags"]
 
         self.tags_to_write: List[str] = content["tags_to_write"]
         self.prefix_to_write: List[str] = content["prefix_to_write"]
@@ -204,6 +205,28 @@ class Scheme:
 
         return returned
 
+    def is_matched(self, matcher: Dict[str, Any], tags: Dict[str, str]) -> bool:
+        matched: bool = True
+
+        for config_tag_key in matcher["tags"]:  # type: str
+            matcher = matcher["tags"][config_tag_key]
+            if (config_tag_key not in tags or
+                    (matcher != "*" and
+                     tags[config_tag_key] != matcher and
+                     tags[config_tag_key] not in matcher)):
+                matched = False
+                break
+
+        if "no_tags" in matcher:
+            for config_tag_key in matcher["no_tags"]:  # type: str
+                if (config_tag_key in tags and
+                        tags[config_tag_key] ==
+                        matcher["no_tags"][config_tag_key]):
+                    matched = False
+                    break
+
+        return matched
+
     def get_style(self, tags: Dict[str, Any], scale):
 
         line_styles = []
@@ -248,3 +271,8 @@ class Scheme:
 
         return line_styles
 
+    def is_area(self, tags: Dict[str, str]) -> bool:
+        for matcher in self.area_tags:
+            if self.is_matched(matcher, tags):
+                return True
+        return False

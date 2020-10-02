@@ -153,17 +153,21 @@ node_icons:
   - tags: {man_made: flagpole}
     icon: [flagpole]
   - tags: {man_made: manhole}
-    icon: [manhole]
+    icon: [circle_9]
   - tags: {manhole: drain}
     icon: [manhole_drain]
   - tags: {man_made: pole}
     icon: [pole]
   - tags: {man_made: pole, highway: street_lamp}
     icon: [pole_lamp]
+  - tags: {man_made: street_cabinet}
+    icon: [street_cabinet]
   - tags: {man_made: surveillance}
     icon: [cctv]
   - tags: {man_made: survey_point}
     icon: [survey_point]
+  - tags: {man_made: tower}
+    icon: [tower]
   - tags: {man_made: ventilation_shaft}
     icon: [ventilation]
 
@@ -180,6 +184,8 @@ node_icons:
     icon: [power_generator]
   - tags: {power: generator, generator:source: solar}
     icon: [solar_panel]
+  - tags: {power: generator, generator:source: wind}
+    icon: [wind_turbine]
   - tags: {power: tower}
     icon: [power_tower_2_level]
   - tags: {power: tower, design: one-level}
@@ -208,6 +214,12 @@ node_icons:
     icon: [power_tower_y_frame]
   - tags: {power: tower, design: x-frame}
     icon: [power_tower_x_frame]
+  - tags: {power: tower, design: h-frame}
+    icon: [power_tower_h_frame]
+  - tags: {power: tower, design: h-frame-two-level}
+    icon: [power_tower_h_frame_2_level]
+  - tags: {power: tower, design: guyed-h-frame}
+    icon: [power_tower_guyed_h_frame]
 
   # Information
 
@@ -277,8 +289,10 @@ node_icons:
   - tags: {advertising: billboard}
     icon: [billboard]
 
-    # Eating and entertainment
+    # Amenity
 
+  - tags: {amenity: embassy}
+    icon: [embassy]
   - tags: {amenity: cafe}
     icon: [cafe]
   - tags: {amenity: ice_cream}
@@ -524,7 +538,7 @@ node_icons:
   - tags: {entrance: exit}
     icon: [exit]
   - tags: {entrance: service}
-    icon: [door_with_x]
+    icon: [door_with_keyhole]
   - tags: {entrance: main}
     icon: [main_entrance]
   - tags: {entrance: staircase}
@@ -608,6 +622,16 @@ node_icons:
     over_icon: [bus_stop_bench]
   - tags: {highway: stop}
     icon: [stop]
+  - tags: {traffic_sign: city_limit}
+    icon: [city_limit_sign]
+  - tags: {traffic_sign: maxspeed, maxspeed: "30"}
+    icon: [circle_30]
+  - tags: {traffic_sign: maxspeed, maxspeed: "40"}
+    icon: [circle_40]
+  - tags: {traffic_sign: maxspeed, maxspeed: "50"}
+    icon: [circle_50]
+  - tags: {traffic_sign: maxspeed, maxspeed: "40_mph"}
+    icon: [speed_limit_40_mph]
   - tags: {traffic_sign: stop}
     icon: [stop]
   - tags: {highway: give_way}
@@ -675,6 +699,8 @@ node_icons:
     icon: [tomb]
   - tags: {historic: tomb, tomb: mausoleum}
     icon: [mausoleum]
+  - tags: {tomb: "*"}
+    icon: [tomb]
 
     # Tourism
 
@@ -855,10 +881,13 @@ ways:
 
     # Hidden land use
 
-  - tags: {landuse: residential}
+  - tags: {landuse: cemetery}
     fill: hidden_color
     opacity: 0.05
   - tags: {landuse: commercial}
+    fill: hidden_color
+    opacity: 0.05
+  - tags: {landuse: industrial}
     fill: hidden_color
     opacity: 0.05
   - tags: {landuse: military}
@@ -867,7 +896,7 @@ ways:
   - tags: {landuse: railway}
     fill: hidden_color
     opacity: 0.05
-  - tags: {landuse: industrial}
+  - tags: {landuse: residential}
     fill: hidden_color
     opacity: 0.05
 
@@ -1186,6 +1215,14 @@ ways:
     # stroke-width: 0.3
     # stroke-dasharray: 10,5
     priority: 60
+
+area_tags:
+  - tags: {aeroway: "*"}
+  - tags: {building: "*"}
+  - tags: {landuse: "*"}
+  - tags: {leisure: "*"}
+  - tags: {natural: "*"}
+  - tags: {indoor: "corridor"}
 
 tags_to_write: [
   "operator", "opening_hours", "cuisine", "network", "website",

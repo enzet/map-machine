@@ -337,11 +337,14 @@ class Constructor:
             else:
                 self.figures.append(
                     Figure(line.tags, inners, outers, line_style))
-            icon_set: IconSet = self.scheme.get_icon(
-                self.icon_extractor, line.tags, for_="line")
-            self.nodes.append(Point(
-                icon_set, line.tags, center_point, center_coordinates,
-                is_for_node=False))
+            if (line.get_tag("area") == "yes" or
+                    is_cycle(outers[0]) and line.get_tag("area") != "no" and
+                    self.scheme.is_area(line.tags)):
+                icon_set: IconSet = self.scheme.get_icon(
+                    self.icon_extractor, line.tags, for_="line")
+                self.nodes.append(Point(
+                    icon_set, line.tags, center_point, center_coordinates,
+                    is_for_node=False))
 
         if not line_styles:
             if DEBUG:
