@@ -35,6 +35,47 @@ class LineStyle:
     priority: float = 0.0
 
 
+def is_not_matched_tag(
+        matcher_tag_key: str, matcher_tag_value: str,
+        tags: Dict[str, str]) -> bool:
+    """
+    Check whether element tags contradict tag matcher.
+
+    :param matcher_tag_key: tag key
+    :param matcher_tag_value: tag value, tag value list, or "*"
+    :param tags: element tags to check
+    """
+    return (matcher_tag_key not in tags or
+            (matcher_tag_value != "*" and
+             tags[matcher_tag_key] != matcher_tag_value and
+             tags[matcher_tag_key] not in matcher_tag_value))
+
+
+def is_matched(matcher: Dict[str, Any], tags: Dict[str, str]) -> bool:
+    """
+    Check whether element tags matches tag matcher.
+
+    :param matcher: dictionary with tag keys and values, value lists, or "*"
+    :param tags: element tags to match
+    """
+    matched: bool = True
+
+    for config_tag_key in matcher["tags"]:  # type: str
+        tag_matcher = matcher["tags"][config_tag_key]
+        if is_not_matched_tag(config_tag_key, tag_matcher, tags):
+            matched = False
+            break
+
+    if "no_tags" in matcher:
+        for config_tag_key in matcher["no_tags"]:  # type: str
+            tag_matcher = matcher["no_tags"][config_tag_key]
+            if not is_not_matched_tag(config_tag_key, tag_matcher, tags):
+                matched = False
+                break
+
+    return matched
+
+
 class Scheme:
     """
     Map style.
@@ -133,7 +174,7 @@ class Scheme:
         fill: Color = DEFAULT_COLOR
 
         for matcher in self.icons:  # type: Dict[str, Any]
-            matched: bool = self.is_matched(matcher, tags)
+            matched: bool = is_matched(matcher, tags)
             if not matched:
                 continue
             if "draw" in matcher and not matcher["draw"]:
@@ -192,35 +233,13 @@ class Scheme:
 
         return returned
 
-    def is_matched(self, matcher: Dict[str, Any], tags: Dict[str, str]) -> bool:
-        matched: bool = True
-
-        for config_tag_key in matcher["tags"]:  # type: str
-            tag_matcher = matcher["tags"][config_tag_key]
-            if (config_tag_key not in tags or
-                    (tag_matcher != "*" and
-                     tags[config_tag_key] != tag_matcher and
-                     tags[config_tag_key] not in tag_matcher)):
-                matched = False
-                break
-
-        if "no_tags" in matcher:
-            for config_tag_key in matcher["no_tags"]:  # type: str
-                if (config_tag_key in tags and
-                        tags[config_tag_key] ==
-                        matcher["no_tags"][config_tag_key]):
-                    matched = False
-                    break
-
-        return matched
-
     def get_style(self, tags: Dict[str, Any], scale):
 
         line_styles = []
 
         for element in self.ways:  # type: Dict[str, Any]
             priority = 0
-            matched: bool = self.is_matched(element, tags)
+            matched: bool = is_matched(element, tags)
             if not matched:
                 continue
             style: Dict[str, Any] = {"fill": "none"}
@@ -245,6 +264,6 @@ class Scheme:
 
     def is_area(self, tags: Dict[str, str]) -> bool:
         for matcher in self.area_tags:
-            if self.is_matched(matcher, tags):
+            if is_matched(matcher, tags):
                 return True
         return False
