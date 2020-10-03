@@ -230,7 +230,7 @@ class Painter:
             occupied = Occupied(
                 self.flinger.size[0], self.flinger.size[1], self.overlap)
 
-        nodes = sorted(constructor.nodes, key=lambda x: x.layer)
+        nodes = sorted(constructor.nodes, key=lambda x: -x.priority)
         for index, node in enumerate(nodes):  # type: int, Point
             if (node.get_tag("natural") == "tree" and
                     ("diameter_crown" in node.tags or

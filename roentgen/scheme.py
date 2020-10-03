@@ -8,7 +8,7 @@ import yaml
 
 from colour import Color
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Set, Union
+from typing import Any, Dict, List, Optional, Set, Union, Tuple
 
 from roentgen.icon import DEFAULT_SHAPE_ID, IconExtractor, Icon
 
@@ -104,7 +104,7 @@ class Scheme:
         self.prefix_to_skip: List[str] = content["prefix_to_skip"]
 
         # Storage for created icon sets.
-        self.cache: Dict[str, IconSet] = {}
+        self.cache: Dict[str, Tuple[IconSet, int]] = {}
 
     def get_color(self, color: str) -> Color:
         """
@@ -156,7 +156,7 @@ class Scheme:
 
     def get_icon(
             self, icon_extractor: IconExtractor, tags: Dict[str, Any],
-            for_: str = "node") -> IconSet:
+            for_: str = "node") -> Tuple[IconSet, int]:
         """
         Construct icon set.
 
@@ -172,11 +172,14 @@ class Scheme:
         extra_icon_ids: List[List[str]] = []
         processed: Set[str] = set()
         fill: Color = DEFAULT_COLOR
+        priority: int = 0
 
-        for matcher in self.icons:  # type: Dict[str, Any]
+        for index, matcher in enumerate(self.icons):
+            # type: (int, Dict[str, Any])
             matched: bool = is_matched(matcher, tags)
             if not matched:
                 continue
+            priority = len(self.icons) - index
             if "draw" in matcher and not matcher["draw"]:
                 processed |= set(matcher["tags"].keys())
             if "icon" in matcher:
@@ -229,9 +232,9 @@ class Scheme:
         returned: IconSet = IconSet(
             main_icon, extra_icons, fill, processed, is_default)
 
-        self.cache[tags_hash] = returned
+        self.cache[tags_hash] = returned, priority
 
-        return returned
+        return returned, priority
 
     def get_style(self, tags: Dict[str, Any], scale):
 

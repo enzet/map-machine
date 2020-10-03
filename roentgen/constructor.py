@@ -340,11 +340,15 @@ class Constructor:
             if (line.get_tag("area") == "yes" or
                     is_cycle(outers[0]) and line.get_tag("area") != "no" and
                     self.scheme.is_area(line.tags)):
-                icon_set: IconSet = self.scheme.get_icon(
+
+                priority: int
+                icon_set: IconSet
+                icon_set, priority = self.scheme.get_icon(
                     self.icon_extractor, line.tags, for_="line")
+
                 self.nodes.append(Point(
                     icon_set, line.tags, center_point, center_coordinates,
-                    is_for_node=False))
+                    is_for_node=False, priority=priority))
 
         if not line_styles:
             if DEBUG:
@@ -353,11 +357,15 @@ class Constructor:
                     "stroke-width": 1}
                 self.figures.append(Figure(
                     line.tags, inners, outers, LineStyle(style, 1000)))
-            icon_set: IconSet = self.scheme.get_icon(
+
+            priority: int
+            icon_set: IconSet
+            icon_set, priority = self.scheme.get_icon(
                 self.icon_extractor, line.tags)
+
             self.nodes.append(Point(
                 icon_set, line.tags, center_point, center_coordinates,
-                is_for_node=False))
+                is_for_node=False, priority=priority))
 
     def construct_relations(self) -> None:
         """
@@ -410,7 +418,9 @@ class Constructor:
             if not self.check_level(tags):
                 continue
 
-            icon_set: IconSet = self.scheme.get_icon(self.icon_extractor, tags)
+            priority: int
+            icon_set: IconSet
+            icon_set, priority = self.scheme.get_icon(self.icon_extractor, tags)
 
             if self.mode in ["time", "user-coloring"]:
                 if not tags:
@@ -421,7 +431,8 @@ class Constructor:
             if self.mode == "time":
                 icon_set.color = get_time_color(node.timestamp, self.map_.time)
 
-            self.nodes.append(Point(icon_set, tags, flung, node.coordinates))
+            self.nodes.append(Point(
+                icon_set, tags, flung, node.coordinates, priority=priority))
 
             missing_tags.update(
                 f"{key}: {tags[key]}" for key in tags
