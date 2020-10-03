@@ -133,20 +133,7 @@ class Scheme:
         fill: Color = DEFAULT_COLOR
 
         for matcher in self.icons:  # type: Dict[str, Any]
-            matched: bool = True
-            for key in matcher["tags"]:  # type: str
-                if key not in tags:
-                    matched = False
-                    break
-                if (matcher["tags"][key] != "*" and
-                        matcher["tags"][key] != tags[key]):
-                    matched = False
-                    break
-            if "no_tags" in matcher:
-                for no_tag in matcher["no_tags"]:
-                    if no_tag in tags.keys():
-                        matched = False
-                        break
+            matched: bool = self.is_matched(matcher, tags)
             if not matched:
                 continue
             if "draw" in matcher and not matcher["draw"]:
@@ -209,11 +196,11 @@ class Scheme:
         matched: bool = True
 
         for config_tag_key in matcher["tags"]:  # type: str
-            matcher = matcher["tags"][config_tag_key]
+            tag_matcher = matcher["tags"][config_tag_key]
             if (config_tag_key not in tags or
-                    (matcher != "*" and
-                     tags[config_tag_key] != matcher and
-                     tags[config_tag_key] not in matcher)):
+                    (tag_matcher != "*" and
+                     tags[config_tag_key] != tag_matcher and
+                     tags[config_tag_key] not in tag_matcher)):
                 matched = False
                 break
 
@@ -233,22 +220,7 @@ class Scheme:
 
         for element in self.ways:  # type: Dict[str, Any]
             priority = 0
-            matched: bool = True
-            for config_tag_key in element["tags"]:  # type: str
-                matcher = element["tags"][config_tag_key]
-                if (config_tag_key not in tags or
-                        (matcher != "*" and
-                         tags[config_tag_key] != matcher and
-                         tags[config_tag_key] not in matcher)):
-                    matched = False
-                    break
-            if "no_tags" in element:
-                for config_tag_key in element["no_tags"]:  # type: str
-                    if (config_tag_key in tags and
-                            tags[config_tag_key] ==
-                            element["no_tags"][config_tag_key]):
-                        matched = False
-                        break
+            matched: bool = self.is_matched(element, tags)
             if not matched:
                 continue
             style: Dict[str, Any] = {"fill": "none"}
