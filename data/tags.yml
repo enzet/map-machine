@@ -440,6 +440,12 @@ node_icons:
     icon: [power_tower_h_frame_2_level]
   - tags: {power: tower, design: guyed_h-frame}
     icon: [power_tower_guyed_h_frame]
+  - tags: {power: tower, design: portal}
+    icon: [power_tower_portal]
+  - tags: {power: tower, design: portal_two-level}
+    icon: [power_tower_portal_2_level]
+  - tags: {power: tower, design: portal_three-level}
+    icon: [power_tower_portal_3_level]
 
   # Important small objects
 
