@@ -65,17 +65,6 @@ colors:
 
 node_icons:
 
-  # Priorities:
-  #   - leisure,
-  #   - part of major transport network (bus stops, train stations, ports),
-  #   - important buildings (embassy),
-  #   - useful buildings (shops, restaurants),
-  #   - important street amenities (vending machines, ATMs),
-  #   - useful street amenities (trash cans, benches),
-  #   - doors,
-  #   - small objects unimportant for the majority of users (trees, lamps,
-  #     clocks, poles, manholes).
-
   # No draw
 
   - tags: {type: multipolygon}
@@ -281,6 +270,33 @@ node_icons:
     icon: [frame]
   - tags: {tourism: gallery}
     icon: [picture]
+  - tags: {amenity: cafe}
+    icon: [cafe]
+  - tags: {amenity: ice_cream}
+    icon: [ice_cream]
+  - tags: {amenity: biergarten}
+    icon: [beer]
+  - tags: {amenity: nightclub}
+    icon: [night_club]
+  - tags: {amenity: restaurant}
+    icon: [restaurant]
+  - tags: {amenity: restaurant;bar}
+    icon: [restaurant]
+    add_icon: [bar]
+  - tags: {shop: ice_cream}
+    icon: [ice_cream]
+  - tags: {shop: gift}
+    icon: [gift]
+  - tags: {shop: clothes}
+    icon: [shop_clothes]
+  - tags: {amenity: shop, shop: clothes}
+    icon: [shop_clothes]
+  - tags: {shop: convenience}
+    icon: [shop_convenience]
+  - tags: {amenity: shop, shop: convenience}
+    icon: [shop_convenience]
+  - tags: {shop: electronics}
+    icon: [tv]
 
   # Big objects not for all
 
@@ -298,20 +314,6 @@ node_icons:
     icon: [japan_elementary_school]
   - tags: {office: telecommunication}
     icon: [telephone]
-  - tags: {shop: clothes}
-    icon: [shop_clothes]
-  - tags: {amenity: shop, shop: clothes}
-    icon: [shop_clothes]
-  - tags: {shop: convenience}
-    icon: [shop_convenience]
-  - tags: {amenity: shop, shop: convenience}
-    icon: [shop_convenience]
-  - tags: {shop: electronics}
-    icon: [tv]
-  - tags: {shop: ice_cream}
-    icon: [ice_cream]
-  - tags: {shop: gift}
-    icon: [gift]
 
   # Not important big objects
 

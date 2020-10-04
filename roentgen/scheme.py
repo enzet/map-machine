@@ -35,7 +35,7 @@ class LineStyle:
     priority: float = 0.0
 
 
-def is_not_matched_tag(
+def is_matched_tag(
         matcher_tag_key: str, matcher_tag_value: str,
         tags: Dict[str, str]) -> bool:
     """
@@ -45,10 +45,13 @@ def is_not_matched_tag(
     :param matcher_tag_value: tag value, tag value list, or "*"
     :param tags: element tags to check
     """
-    return (matcher_tag_key not in tags or
-            (matcher_tag_value != "*" and
-             tags[matcher_tag_key] != matcher_tag_value and
-             tags[matcher_tag_key] not in matcher_tag_value))
+    return (
+        matcher_tag_key in tags and
+        (matcher_tag_value == "*" or
+         isinstance(matcher_tag_value, str) and
+         tags[matcher_tag_key] == matcher_tag_value or
+         isinstance(matcher_tag_value, list) and
+         tags[matcher_tag_key] in matcher_tag_value))
 
 
 def is_matched(matcher: Dict[str, Any], tags: Dict[str, str]) -> bool:
@@ -62,14 +65,14 @@ def is_matched(matcher: Dict[str, Any], tags: Dict[str, str]) -> bool:
 
     for config_tag_key in matcher["tags"]:  # type: str
         tag_matcher = matcher["tags"][config_tag_key]
-        if is_not_matched_tag(config_tag_key, tag_matcher, tags):
+        if not is_matched_tag(config_tag_key, tag_matcher, tags):
             matched = False
             break
 
     if "no_tags" in matcher:
         for config_tag_key in matcher["no_tags"]:  # type: str
             tag_matcher = matcher["no_tags"][config_tag_key]
-            if not is_not_matched_tag(config_tag_key, tag_matcher, tags):
+            if is_matched_tag(config_tag_key, tag_matcher, tags):
                 matched = False
                 break
 
