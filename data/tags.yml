@@ -154,7 +154,7 @@ node_icons:
   # Big territory
 
   - tags: {leisure: fishing}
-    icon: [fishing]
+    icon: [fishing_angle]
   - tags: {building: service, power: substation}
     icon: [electricity]
 
@@ -175,9 +175,9 @@ node_icons:
   # Important big objects
 
   - tags: {amenity: pharmacy}
-    icon: [pharmacy]
+    icon: [medicine_bottle]
   - tags: {amenity: embassy}
-    icon: [embassy]
+    icon: [waving_flag]
   - tags: {tourism: hotel}
     icon: [bed]
   - tags: {building: hotel}
@@ -187,9 +187,9 @@ node_icons:
   - tags: {tourism: motel}  # Tourism?
     icon: [motel]
   - tags: {amenity: clinic}
-    icon: [clinic]
+    icon: [greek_cross]
   - tags: {amenity: post_office}
-    icon: [letter]
+    icon: [envelope]
   - tags: {amenity: post_office, __country: Japan}
     icon: [japan_post]
   - tags: {shop: car_repair}
@@ -247,11 +247,11 @@ node_icons:
   - tags: {amenity: bar}
     icon: [bar]
   - tags: {amenity: pub}
-    icon: [beer]
+    icon: [beer_mug]
   - tags: {amenity: fast_food}
-    icon: [fast_food]
+    icon: [burger]
   - tags: {amenity: shop, shop: fishing}
-    icon: [fishing]
+    icon: [fishing_angle]
   - tags: {shop: alcohol}
     icon: [bottle]
   - tags: {shop: bakery}
@@ -271,11 +271,11 @@ node_icons:
   - tags: {tourism: gallery}
     icon: [picture]
   - tags: {amenity: cafe}
-    icon: [cafe]
+    icon: [coffee_cup]
   - tags: {amenity: ice_cream}
     icon: [ice_cream]
   - tags: {amenity: biergarten}
-    icon: [beer]
+    icon: [beer_mug]
   - tags: {amenity: nightclub}
     icon: [night_club]
   - tags: {amenity: restaurant}
@@ -352,7 +352,7 @@ node_icons:
   - tags: {amenity: fuel}
     icon: [fuel_station]
   - tags: {amenity: parking}
-    icon: [parking]
+    icon: [p]
   - tags: {highway: turning_circle}
     icon: [circle_empty]
   - tags: {highway: crossing}
@@ -381,7 +381,7 @@ node_icons:
   - tags: {tourism: attraction, attraction: amusement_ride}
     icon: [amusement_ride]
   - tags: {amenity: toilets}
-    icon: [toilets]
+    icon: [woman_and_man]
 
   # Normal middle objects
 
@@ -469,7 +469,7 @@ node_icons:
   - tags: {amenity: atm}
     icon: [atm]
   - tags: {amenity: bicycle_parking}
-    icon: [bicycle_parking]
+    icon: [bicycle_p]
   - tags: {amenity: telephone}
     icon: [telephone]
   - tags: {information: "*"}
@@ -518,7 +518,7 @@ node_icons:
   # Normal small objects
 
   - tags: {amenity: post_box}
-    icon: [letter]
+    icon: [envelope]
   - tags: {amenity: recycling}
     icon: [recycling_container]
   - tags: {amenity: recycling, recycling_type: container}
@@ -597,25 +597,25 @@ node_icons:
     icon: [tree]
     color: tree_color
   - tags: {leaf_type: broadleaved}
-    icon: [broadleaved]
+    icon: [tree_with_leaf]
     color: tree_color
   - tags: {leaf_type: needleleaved}
-    icon: [needleleaved]
+    icon: [needleleaved_tree]
     color: tree_color
   - tags: {leaf_type: palm}
     icon: [palm]
     color: tree_color
   - tags: {natural: tree, leaf_type: broadleaved}
-    icon: [broadleaved]
+    icon: [tree_with_leaf]
     color: tree_color
   - tags: {natural: tree, leaf_type: needleleaved}
-    icon: [needleleaved]
+    icon: [needleleaved_tree]
     color: tree_color
   - tags: {natural: tree, leaf_type: palm}
     icon: [palm]
     color: tree_color
   - tags: {natural: tree, type: conifer}
-    icon: [needleleaved]
+    icon: [needleleaved_tree]
     color: tree_color
   - tags: {leaf_cycle: deciduous}
     color: decidious_color
@@ -684,10 +684,10 @@ node_icons:
     add_icon: [onion_roof_shape]
   - tags: {natural: tree, denotation: urban}
     over_icon: [urban_tree_pot]
-    under_icon: [tree, broadleaved, needleleaved, betula, palm]
+    under_icon: [tree, tree_with_leaf, needleleaved_tree, betula, palm]
   - tags: {natural: tree, denotation: avenue}
-    over_icon: [avenue_tree]
-    under_icon: [tree, broadleaved, needleleaved, betula, palm]
+    over_icon: [bottom_right_horizontal_line]
+    under_icon: [tree, tree_with_leaf, needleleaved_tree, betula, palm]
 
   - tags: {wheelchair: "yes"}
     add_icon: [wheelchair]
@@ -709,7 +709,7 @@ node_icons:
   - tags: {material: wood}
     add_icon: [wood]
   - tags: {access: private}
-    add_icon: [lock]
+    add_icon: [lock_with_keyhole]
   - tags: {direction: clockwise}
     add_icon: [clockwise]
   - tags: {direction: contrclockwise}
