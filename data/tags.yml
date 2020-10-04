@@ -533,6 +533,8 @@ node_icons:
     icon: [sit_up]
   - tags: {fitness_station: horizontal_ladder}
     icon: [horizontal_ladder]
+  - tags: {fitness_station: push-up}
+    icon: [low_horizontal_bars]
 
   # Entrances
 
