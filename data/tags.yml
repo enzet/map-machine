@@ -525,6 +525,14 @@ node_icons:
     icon: [recycling_container]
   - tags: {amenity: vending_machine}
     icon: [vending_machine]
+  - tags: {fitness_station: horizontal_bar}
+    icon: [horizontal_bar]
+  - tags: {fitness_station: wall_bars}
+    icon: [wall_bars]
+  - tags: {fitness_station: sit-up}
+    icon: [sit_up]
+  - tags: {fitness_station: horizontal_ladder}
+    icon: [horizontal_ladder]
 
   # Entrances
 
