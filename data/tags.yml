@@ -440,6 +440,8 @@ node_icons:
     icon: [power_tower_h_frame_2_level]
   - tags: {power: tower, design: guyed_h-frame}
     icon: [power_tower_guyed_h_frame]
+  - tags: {power: portal}
+    icon: [power_tower_portal]
   - tags: {power: tower, design: portal}
     icon: [power_tower_portal]
   - tags: {power: tower, design: portal_two-level}
@@ -1137,6 +1139,11 @@ ways:
     stroke: pitch_border_color
     stroke-width: 1
     priority: 21
+  - tags: {leisure: fitness_station}
+    fill: pitch_color
+    stroke: pitch_border_color
+    stroke-width: 1
+    priority: 21
   - tags: {leisure: playground}
     fill: playground_color
     opacity: 0.2
@@ -1202,42 +1209,135 @@ area_tags:
   - tags: {natural: "*"}
   - tags: {indoor: "corridor"}
 
-tags_to_write: [
-  "operator", "opening_hours", "cuisine", "network", "website",
-  "website_2", "STIF:zone", "opening_hours:url", "phone",
-  "branch", "route_ref", "brand", "ref", "wikipedia",
-  "description", "wikidata", "name", "alt_name", "image", "fax",
-  "old_name", "artist_name", "int_name", "official_name",
-  "full_name", "email", "designation", "min_height", "height",
-  "inscription", "start_date", "created_by", "naptan:verified",
-  "url", "naptan:AtcoCode", "naptan:Landmark",
-  "naptan:Indicator", "collection_times", "naptan:Street",
-  "naptan:PlusbusZoneRef", "naptan:Crossing", "local_ref",
-  "naptan:CommonName", "survey:date", "naptan:NaptanCode",
-  "postal_code", "uk_postcode_centroid", "fhrs:rating_date",
-  "fhrs:local_authority_id", "destination", "fhrs:id",
-  "naptan:ShotCommonName", "flickr", "royal_cypher", "is_in",
-  "booth", "naptan:AltStreet", "media:commons", "ref_no", "uri",
-  "fhrs:inspectiondate", "telephone", "naptan:AltCommonName",
-  "end_date", "facebook", "naptan:Notes", "voltage",
-  "last_collection", "twitter", "ele", "information", "phone_1",
-  "cyclestreets_id", "cladr:code", "naptan:Bearing", "species",
-  "taxon", "seats", "capacity", "fhrs:rating",
-  "fhrs:confidence_management", "fhrs:hygiene", "genus",
-  "platforms", "naptan:BusStopType"]
+tags_to_write:
+  - "STIF:zone"
+  - "alt_name"
+  - "artist_name"
+  - "booth"
+  - "branch"
+  - "brand"
+  - "capacity"
+  - "cladr:code"
+  - "collection_times"
+  - "created_by"
+  - "cuisine"
+  - "cyclestreets_id"
+  - "description"
+  - "designation"
+  - "destination"
+  - "ele"
+  - "email"
+  - "end_date"
+  - "facebook"
+  - "fax"
+  - "fhrs:confidence_management"
+  - "fhrs:hygiene"
+  - "fhrs:id"
+  - "fhrs:inspectiondate"
+  - "fhrs:local_authority_id"
+  - "fhrs:rating"
+  - "fhrs:rating_date"
+  - "flickr"
+  - "full_name"
+  - "genus"
+  - "height"
+  - "image"
+  - "information"
+  - "inscription"
+  - "int_name"
+  - "is_in"
+  - "last_collection"
+  - "local_ref"
+  - "manufacturer"
+  - "media:commons"
+  - "min_height"
+  - "name"
+  - "naptan:AltCommonName"
+  - "naptan:AltStreet"
+  - "naptan:AtcoCode"
+  - "naptan:Bearing"
+  - "naptan:BusStopType"
+  - "naptan:CommonName"
+  - "naptan:Crossing"
+  - "naptan:Indicator"
+  - "naptan:Landmark"
+  - "naptan:NaptanCode"
+  - "naptan:Notes"
+  - "naptan:PlusbusZoneRef"
+  - "naptan:ShotCommonName"
+  - "naptan:Street"
+  - "naptan:verified"
+  - "network"
+  - "official_name"
+  - "old_name"
+  - "opening_hours"
+  - "opening_hours:url"
+  - "operator"
+  - "phone"
+  - "phone_1"
+  - "platforms"
+  - "postal_code"
+  - "ref"
+  - "ref_no"
+  - "route_ref"
+  - "royal_cypher"
+  - "seats"
+  - "species"
+  - "start_date"
+  - "survey:date"
+  - "taxon"
+  - "telephone"
+  - "twitter"
+  - "uk_postcode_centroid"
+  - "uri"
+  - "url"
+  - "voltage"
+  - "website"
+  - "website_2"
+  - "wikidata"
+  - "wikipedia"
 
-prefix_to_write: [
-  "addr", "contact", "name", "operator", "wikipedia",
-  "alt_name", "description", "old_name", "inscription",
-  "route_ref", "is_in", "website", "ref", "species", "taxon",
-  "genus"]
+prefix_to_write:
+  - "addr"
+  - "alt_name"
+  - "contact"
+  - "description"
+  - "genus"
+  - "inscription"
+  - "is_in"
+  - "manufacturer"
+  - "name"
+  - "old_name"
+  - "operator"
+  - "ref"
+  - "route_ref"
+  - "species"
+  - "taxon"
+  - "website"
+  - "wikipedia"
 
-tags_to_skip: [
-  "note", "layer", "level", "source", "building:part", "comment",
-  "FIXME", "source_ref", "naptan:verified:note", "fixme",
-  "building:levels", "ref:opendataparis:adresse", "indoor",
-  "level:ref", "ref:opendataparis:geo_point_2d", "created_by",
-  "mapillary", "diameter_crown", "attribution", "curve_geometry"]
+tags_to_skip:
+  - "FIXME"
+  - "attribution"
+  - "building:levels"
+  - "building:part"
+  - "comment"
+  - "created_by"
+  - "curve_geometry"
+  - "diameter_crown"
+  - "fixme"
+  - "indoor"
+  - "layer"
+  - "level"
+  - "level:ref"
+  - "mapillary"
+  - "naptan:verified:note"
+  - "note"
+  - "ref:opendataparis:adresse"
+  - "ref:opendataparis:geo_point_2d"
+  - "source"
+  - "source_ref"
 
-prefix_to_skip: [
-  "source", "mapillary"]
+prefix_to_skip:
+  - "mapillary"
+  - "source"
