@@ -533,6 +533,8 @@ node_icons:
     icon: [recycling_container]
   - tags: {amenity: vending_machine}
     icon: [vending_machine]
+  - tags: {amenity: vending_machine, vending: excrement_bags}
+    icon: [vending_excrement_bag]
   - tags: {fitness_station: horizontal_bar}
     icon: [horizontal_bar]
   - tags: {fitness_station: wall_bars}
