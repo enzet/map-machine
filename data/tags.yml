@@ -17,6 +17,7 @@ colors:
   emergency_color: "#DD2222"
   evergreen_color: "#688C44"
   farmland_color: "#FFEEBB"
+  farmland_border_color: "#DDCC99"
   ferry_terminal_color: "#AABBDD"
   foot_border_color: "#FFFFFF"
   foot_color: "#B89A74"
@@ -69,7 +70,7 @@ node_icons:
 
   - tags: {type: multipolygon}
     draw: false
-  - tags: {place: quarter}
+  - tags: {place: "*"}
     draw: false
   - tags: {building: "yes"}
     draw: false
@@ -135,6 +136,10 @@ node_icons:
     icon: [tram]
   - tags: {railway: tram_stop}
     icon: [tram]
+  - tags: {public_transport: platform}
+    icon: [bus_stop_sign]
+    with_icon: [bus_stop_bench, bus_stop_shelter]
+    over_icon: [platform]
   - tags: {highway: bus_stop, public_transport: platform}
     icon: [bus_stop_sign]
     with_icon: [bus_stop_bench, bus_stop_shelter]
@@ -155,7 +160,7 @@ node_icons:
 
   - tags: {leisure: fishing}
     icon: [fishing_angle]
-  - tags: {building: service, power: substation}
+  - tags: {power: substation}
     icon: [electricity]
 
   # Bigger objects
@@ -402,6 +407,8 @@ node_icons:
     icon: [ventilation]
   - tags: {power: generator}
     icon: [power_generator]
+  - tags: {power: transformer}
+    icon: [transformer]
   - tags: {power: generator, generator:source: solar}
     icon: [solar_panel]
   - tags: {power: generator, generator:source: wind}
@@ -679,6 +686,8 @@ node_icons:
     icon: [noexit]
   - tags: {barrier: block}
     icon: [block]
+  - tags: {barrier: rock}
+    icon: [stone]
   - tags: {barrier: bollard}
     icon: [bollard]
 
@@ -779,6 +788,11 @@ ways:
     stroke-width: 1
     opacity: 0.2
     priority: 80
+  - tags: {power: cable}
+    stroke: "#000000"
+    stroke-width: 1
+    opacity: 0.1
+    priority: 80
 
   - tags: {natural: wood}
     fill: wood_color
@@ -842,7 +856,7 @@ ways:
   - tags: {landuse: farmland}
     fill: farmland_color
     priority: 20
-    stroke: grass_border_color
+    stroke: farmland_border_color
   - tags: {landuse: forest}
     fill: wood_color
     priority: 20
@@ -879,6 +893,9 @@ ways:
     fill: hidden_color
     opacity: 0.05
   - tags: {landuse: residential}
+    fill: hidden_color
+    opacity: 0.05
+  - tags: {power: substation}
     fill: hidden_color
     opacity: 0.05
 
@@ -1141,6 +1158,11 @@ ways:
     stroke: pitch_border_color
     stroke-width: 1
     priority: 21
+  - tags: {leisure: track}
+    fill: pitch_color
+    stroke: pitch_border_color
+    stroke-width: 1
+    priority: 21
   - tags: {leisure: fitness_station}
     fill: pitch_color
     stroke: pitch_border_color
@@ -1209,7 +1231,9 @@ area_tags:
   - tags: {landuse: "*"}
   - tags: {leisure: "*"}
   - tags: {natural: "*"}
+    no_tags: {natural: "tree_row"}
   - tags: {indoor: "corridor"}
+  - tags: {power: ["compensator", "substation"]}
 
 tags_to_write:
   - "STIF:zone"
@@ -1332,14 +1356,20 @@ tags_to_skip:
   - "layer"
   - "level"
   - "level:ref"
+  - "location:transition"
   - "mapillary"
   - "naptan:verified:note"
   - "note"
+  - "osak:identifier"
+  - "place"
   - "ref:opendataparis:adresse"
   - "ref:opendataparis:geo_point_2d"
   - "source"
   - "source_ref"
 
 prefix_to_skip:
+  - "demolished"
   - "mapillary"
   - "source"
+  - "razed"
+  - "removed"
