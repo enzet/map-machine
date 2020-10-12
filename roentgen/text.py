@@ -15,7 +15,7 @@ def get_address(tags: Dict[str, Any], draw_captions_mode: str) -> List[str]:
     """
     address: List[str] = []
 
-    if draw_captions_mode != "main":
+    if draw_captions_mode == "address":
         if "addr:postcode" in tags:
             address.append(tags["addr:postcode"])
             tags.pop("addr:postcode", None)
@@ -37,3 +37,47 @@ def get_address(tags: Dict[str, Any], draw_captions_mode: str) -> List[str]:
         tags.pop("addr:housenumber", None)
 
     return address
+
+
+def format_voltage(value: str) -> str:
+    """
+    Format voltage value to more human-readable form.
+
+    :param value: presumably string representation of integer, in Volts
+    """
+    try:
+        int_value: int = int(value)
+        if int_value % 1000 == 0:
+            return f"{int(int_value / 1000)} kV"
+        return f"{value} V"
+    except ValueError:
+        return value
+
+
+def format_frequency(value: str) -> str:
+    try:
+        int_value: int = int(value)
+        return f"{value} Hz"
+    except ValueError:
+        return value
+
+
+def get_text(tags: Dict[str, Any]) -> List[str]:
+
+    texts: List[str] = []
+
+    values: List[str] = []
+    if "voltage:primary" in tags:
+        values.append(tags["voltage:primary"])
+    if "voltage:secondary" in tags:
+        values.append(tags["voltage:secondary"])
+    if "voltage" in tags:
+        values = tags["voltage"].split(";")
+    texts.append(", ".join(map(format_voltage, values)))
+
+    if "frequency" in tags:
+        texts.append(", ".join(map(
+            format_frequency, tags["frequency"].split(";"))))
+
+    return texts
+

@@ -5,7 +5,7 @@ import numpy as np
 import svgwrite
 from colour import Color
 
-from roentgen.address import get_address
+from roentgen.text import get_address, get_text
 from roentgen.color import is_bright
 from roentgen.icon import Icon
 from roentgen.osm_reader import Tagged
@@ -91,6 +91,10 @@ def construct_text(
     if draw_captions == "main":
         return texts
 
+    for text in get_text(tags):  # type: str
+        if text:
+            texts.append(TextStruct(text))
+
     if "route_ref" in tags:
         texts.append(TextStruct(tags["route_ref"].replace(";", " ")))
         tags.pop("route_ref", None)
@@ -167,8 +171,8 @@ class Point(Tagged):
             if painted:
                 self.y += 16
 
-        if not self.icon_set.extra_icons or \
-                (self.icon_set.main_icon and not painted):
+        if (not self.icon_set.extra_icons or
+                (self.icon_set.main_icon and not painted)):
             return
 
         is_place_for_extra: bool = True
@@ -189,7 +193,8 @@ class Point(Tagged):
                     svg, shape_ids, self.point + np.array((left, self.y)),
                     Color("#888888"), occupied)
                 left += 16
-            self.y += 16
+            if self.icon_set.extra_icons:
+                self.y += 16
 
     def draw_point_shape(
             self, svg: svgwrite.Drawing, icons: List[Icon], position,
@@ -260,7 +265,7 @@ class Point(Tagged):
 
         if occupied:
             is_occupied: bool = False
-            for i in range(-int(length / 2), int(length/ 2)):
+            for i in range(-int(length / 2), int(length / 2)):
                 if occupied.check((int(point[0] + i), int(point[1] - 4))):
                     is_occupied = True
                     break
@@ -290,4 +295,3 @@ class Point(Tagged):
             font_family=DEFAULT_FONT, fill=fill.hex))
 
         self.y += 11
-
