@@ -5,6 +5,8 @@ colors:
   direction_view_color: "#E0F0FF"
   direction_camera_color: "#0088FF"
 
+  background_color: "#EEEEEE"
+
   allotments_color: "#D0E0D0"
   beach_color: "#F0E0C0"
   boundary_color: "#880088"
@@ -45,7 +47,7 @@ colors:
   road_border_color: "#CCCCCC"
   rock_color: "#DDDDDD"
   route_color: "#FFFFFF"
-  sand_color: "#F0E0D0"
+  sand_color: "#E8E0C0"
   secondary_border_color: "#BB9911"
   secondary_color: "#FFEE77"
   scree_color: "#CCCCCC"
@@ -552,6 +554,16 @@ node_icons:
     icon: [horizontal_ladder]
   - tags: {fitness_station: push-up}
     icon: [low_horizontal_bars]
+  - tags: {playground: slide}
+    icon: [slide]
+  - tags: {playground: roundabout}
+    icon: [roundabout]
+  - tags: {playground: seesaw}
+    icon: [seesaw]
+  - tags: {playground: horizontal_bar}
+    icon: [horizontal_bar]
+  - tags: {leisure: picnic_table}
+    icon: [table]
 
   # Entrances
 
@@ -756,6 +768,9 @@ node_icons:
     add_icon: [monorail]
   - tags: {trolleybus: "yes"}
     add_icon: [trolleybus]
+
+  - tags: {recycling:glass_bottles: "yes"}
+    add_icon: [bottle]
 
 ways:
   - tags: {indoor: area}
