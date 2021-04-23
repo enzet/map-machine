@@ -17,7 +17,7 @@ Map features
 
 ### Building levels ###
 
-Simple shapes for walls and shade in proportion to `building:levels` value.
+Simple shapes for walls and shade in proportion to `[building:levels](https://wiki.openstreetmap.org/wiki/Key:building:levels)` value.
 
 ![3D buildings](doc/buildings.png)
 
@@ -29,20 +29,30 @@ Tree leaf types, leaf cycles, and genes.
 
 ### Viewpoint and camera direction ###
 
-Visualize `direction` tag for `tourism=viewpoint` and `camera:direction` for `man_made=surveillance`.
+Visualize `[direction](https://wiki.openstreetmap.org/wiki/Key:direction)` tag for `[tourism](https://wiki.openstreetmap.org/wiki/Key:tourism)=[viewpoint](https://wiki.openstreetmap.org/wiki/Tag:tourism=viewpoint)` and `[camera:direction](https://wiki.openstreetmap.org/wiki/Key:camera:direction)` for `[man_made](https://wiki.openstreetmap.org/wiki/Key:man_made)=[surveillance](https://wiki.openstreetmap.org/wiki/Tag:man_made=surveillance)`.
 
 ![Surveillance](doc/surveillance.png)
+
+### Power tower design ###
+
+Visualize `[design](https://wiki.openstreetmap.org/wiki/Key:design)` values used with `[power](https://wiki.openstreetmap.org/wiki/Key:power)=[tower](https://wiki.openstreetmap.org/wiki/Tag:power=tower)` tag.
+
+![Power tower design](doc/power_tower_design.png)
+
+### Emergency ###
+
+![Emergency](doc/emergency.png)
 
 Icon set
 --------
 
-If tag is drawable it is displayed using icon combination and colors. All icons are under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/) license. So, do whatever you want but give appropriate credit. Icon set is heavily inspired by [Osmic](https://github.com/gmgeo/osmic) icon set.
+If tag is drawable it is displayed using icon combination and colors. All icons are under [CC BY](http://creativecommons.org/licenses/by/4.0/) license. So, do whatever you want but give appropriate credit. Icon set is heavily inspired by [Maki](https://github.com/mapbox/maki), [Osmic](https://github.com/gmgeo/osmic), and [Temaki](https://github.com/ideditor/temaki) icon sets.
 
 ![Icons](doc/grid.png)
 
 Feel free to request new icons via issues for whatever you want to see on the map. No matter how frequently the tag is used in OpenStreetMap since final goal is to cover all tags. However, common used tags have priority, other things being equal.
 
-Draw icon grid: `python3 run.py grid`.
+Draw icon grid: `python run.py grid`.
 
 ### Icon combination ###
 
@@ -106,8 +116,8 @@ python run.py -b 2.284,48.86,2.29,48.865
 #### Optional ####
 
   * `--scale` or `-s`: OSM [zoom level](https://wiki.openstreetmap.org/wiki/Zoom_levels). Default is 18.
-  * `-o`: path to output SVG file name. Default is <tt>map.svg</tt>.
+  * `-o`: path to output SVG file name. Default is `map.svg`.
   * `-i`: path to input XML file name. If this argument is not set, XML file will be downloaded through OpenStreetMap API.
 
-Check all arguments with `python3 run.py --help`.
+Check all arguments with `python run.py --help`.
 
