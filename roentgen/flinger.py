@@ -37,18 +37,21 @@ class Flinger:
     """
     Convert geo coordinates into SVG position points.
     """
-    def __init__(self, geo_boundaries: MinMax, scale: float = 18):
+    def __init__(
+            self, geo_boundaries: MinMax, scale: float = 18,
+            border: np.array = np.array((0, 0))):
         """
         :param geo_boundaries: minimum and maximum latitude and longitude
         :param scale: OSM zoom level
         """
         self.geo_boundaries: MinMax = geo_boundaries
+        self.border = border
         self.ratio: float = (
             osm_zoom_level_to_pixels_per_meter(scale) *
             EQUATOR_LENGTH / 360)
         self.size: np.array = self.ratio * (
             pseudo_mercator(self.geo_boundaries.max_) -
-            pseudo_mercator(self.geo_boundaries.min_))
+            pseudo_mercator(self.geo_boundaries.min_)) + border * 2
         self.pixels_per_meter = osm_zoom_level_to_pixels_per_meter(scale)
 
         self.size: np.array = self.size.astype(int).astype(float)
@@ -61,7 +64,7 @@ class Flinger:
         """
         result: np.array = self.ratio * (
             pseudo_mercator(coordinates) -
-            pseudo_mercator(self.geo_boundaries.min_))
+            pseudo_mercator(self.geo_boundaries.min_)) + self.border
 
         # Invert y axis on coordinate plane.
         result[1] = self.size[1] - result[1]
