@@ -4,10 +4,9 @@ Extract icons from SVG file.
 Author: Sergey Vartanov (me@enzet.ru).
 """
 import re
-import xml.dom.minidom
 from dataclasses import dataclass
-from typing import Dict, Any, Set
-from xml.dom.minidom import Document, Element, Node
+from typing import Dict, Any, Optional
+from xml.dom.minidom import Document, Element, Node, parse
 
 import numpy as np
 import svgwrite
@@ -31,6 +30,7 @@ class Icon:
     path: str  # SVG icon path
     offset: np.array  # vector that should be used to shift the path
     id_: str  # shape identifier
+    name: Optional[str] = None  # icon description
 
     def is_default(self) -> bool:
         """
@@ -96,7 +96,7 @@ class IconExtractor:
         self.icons: Dict[str, Icon] = {}
 
         with open(svg_file_name) as input_file:
-            content = xml.dom.minidom.parse(input_file)  # type: Document
+            content = parse(input_file)  # type: Document
             for element in content.childNodes:  # type: Element
                 if element.nodeName != "svg":
                     continue
@@ -116,13 +116,15 @@ class IconExtractor:
                     self.parse(sub_node)
             return
 
-        if ("id" in node.attributes.keys() and
-                "d" in node.attributes.keys() and
-                node.attributes["id"].value):
-            path: str = node.attributes["d"].value
+        if (node.hasAttribute("id") and node.hasAttribute("d") and
+                node.getAttribute("id")):
+
+            path: str = node.getAttribute("d")
             matcher = re.match("[Mm] ([0-9.e-]*)[, ]([0-9.e-]*)", path)
             if not matcher:
                 return
+
+            name: Optional[str] = None
 
             def get_offset(value: float):
                 """ Get negated icon offset from the origin. """
@@ -132,10 +134,15 @@ class IconExtractor:
                 get_offset(float(matcher.group(1))),
                 get_offset(float(matcher.group(2)))))
 
-            id_: str = node.attributes["id"].value
+            for child_node in node.childNodes:
+                if isinstance(child_node, Element):
+                    name = child_node.childNodes[0].nodeValue
+                    break
+
+            id_: str = node.getAttribute("id")
             matcher = re.match(STANDARD_INKSCAPE_ID, id_)
             if not matcher:
-                self.icons[id_] = Icon(node.attributes["d"].value, point, id_)
+                self.icons[id_] = Icon(path, point, id_, name)
 
     def get_path(self, id_: str) -> (Icon, bool):
         """

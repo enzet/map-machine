@@ -77,7 +77,8 @@ class OSMNode(Tagged):
 
         self.id_ = structure["id"]
         self.coordinates = np.array((structure["lat"], structure["lon"]))
-        self.tags = structure["tags"]
+        if "tags" in structure:
+            self.tags = structure["tags"]
 
         return self
 
@@ -116,6 +117,16 @@ class OSMWay(Tagged):
                 get_value("timestamp", text), OSM_TIME_PATTERN)
             self.user = get_value("user", text)
             self.uid = get_value("uid", text)
+
+        return self
+
+    def parse_from_structure(self, structure: Dict[str, Any], nodes) -> "OSMWay":
+
+        self.id_ = structure["id"]
+        for node_id in structure["nodes"]:
+            self.nodes.append(nodes[node_id])
+        if "tags" in structure:
+            self.tags = structure["tags"]
 
         return self
 
@@ -171,15 +182,36 @@ class OSMRelation(Tagged):
 
         return self
 
+    def parse_from_structure(self, structure: Dict[str, Any]) -> "OSMRelation":
+
+        self.id_ = structure["id"]
+        for member in structure["members"]:
+            mem = OSMMember()
+            mem.type_ = member["type"]
+            mem.role = member["role"]
+            mem.ref = member["ref"]
+            self.members.append(mem)
+        if "tags" in structure:
+            self.tags = structure["tags"]
+
+        return self
+
 
 class OSMMember:
     """
     Member of OpenStreetMap relation.
     """
-    def __init__(self, text: str):
+    def __init__(self):
+        self.type_ = ""
+        self.ref = 0
+        self.role = ""
+
+    def parse_from_xml(self, text: str) -> "OSMMember":
         self.type_: str = get_value("type", text)
         self.ref: int = int(get_value("ref", text))
         self.role: str = get_value("role", text)
+
+        return self
 
 
 def get_value(key: str, text: str):
@@ -239,14 +271,29 @@ class OverpassReader:
     def __init__(self):
         self.map_ = Map()
 
-    def parse_json_file(self, file_name: str):
+    def parse_json_file(self, file_name: str) -> Map:
         with open(file_name) as input_file:
             structure = json.load(input_file)
+
+        node_map = {}
+        way_map = {}
 
         for element in structure["elements"]:
             if element["type"] == "node":
                 node = OSMNode().parse_from_structure(element)
+                node_map[node.id_] = node
                 self.map_.add_node(node)
+        for element in structure["elements"]:
+            if element["type"] == "way":
+                way = OSMWay().parse_from_structure(element, node_map)
+                way_map[way.id_] = way
+                self.map_.add_way(way)
+        for element in structure["elements"]:
+            if element["type"] == "relation":
+                relation = OSMRelation().parse_from_structure(element)
+                self.map_.add_relation(relation)
+
+        return self.map_
 
 
 class OSMReader:
@@ -334,7 +381,7 @@ class OSMReader:
                     element.nodes.append(
                         self.map_.node_map[int(get_value("ref", line))])
                 elif line.startswith("<member"):
-                    element.members.append(OSMMember(line))
+                    element.members.append(OSMMember().parse_from_xml(line))
 
         progress_bar(-1, lines_number, text="Parsing")
 

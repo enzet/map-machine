@@ -43,14 +43,13 @@ class Painter:
     """
 
     def __init__(
-            self, show_missing_tags: bool, overlap: int, draw_nodes: bool,
-            mode: str, draw_captions: str, map_: Map, flinger: Flinger,
+            self, map_: Map, flinger: Flinger,
             svg: svgwrite.Drawing, icon_extractor: IconExtractor,
-            scheme: Scheme):
+            scheme: Scheme, show_missing_tags: bool = False, overlap: int = 12,
+            mode: str = "normal", draw_captions: str = "main"):
 
         self.show_missing_tags: bool = show_missing_tags
         self.overlap: int = overlap
-        self.draw_nodes: bool = draw_nodes
         self.mode: str = mode
         self.draw_captions: str = draw_captions
 
@@ -60,10 +59,17 @@ class Painter:
         self.icon_extractor = icon_extractor
         self.scheme: Scheme = scheme
 
+        self.background_color: Color = self.scheme.get_color("background_color")
+        if self.mode in [AUTHOR_MODE, CREATION_TIME_MODE]:
+            self.background_color: Color = Color("#111111")
+
     def draw(self, constructor: Constructor):
         """
         Draw map.
         """
+        self.svg.add(Rect(
+            (0, 0), self.flinger.size, fill=self.background_color))
+
         ways = sorted(constructor.figures, key=lambda x: x.line_style.priority)
         ways_length: int = len(ways)
         for index, way in enumerate(ways):  # type: Figure
@@ -179,19 +185,16 @@ class Painter:
                     angle = float(node.get_tag("camera:angle"))
                 if "angle" in node.tags:
                     angle = float(node.get_tag("angle"))
-                direction_radius: float = (
-                    25 * self.flinger.get_scale(node.coordinates))
+                direction_radius: float = (25)
                 direction_color: Color = (
                     self.scheme.get_color("direction_camera_color"))
             elif node.get_tag("traffic_sign") == "stop":
                 direction = node.get_tag("direction")
-                direction_radius: float = (
-                    25 * self.flinger.get_scale(node.coordinates))
+                direction_radius: float = (25)
                 direction_color: Color = Color("red")
             else:
                 direction = node.get_tag("direction")
-                direction_radius: float = (
-                    50 * self.flinger.get_scale(node.coordinates))
+                direction_radius: float = (50)
                 direction_color: Color = (
                     self.scheme.get_color("direction_view_color"))
                 is_revert_gradient = True
@@ -238,15 +241,11 @@ class Painter:
                 continue
             ui.progress_bar(index, len(nodes), step=10, text="Drawing nodes")
             node.draw_shapes(self.svg, occupied)
-        ui.progress_bar(-1, len(nodes), step=10, text="Drawing nodes")
-
-        if self.draw_captions == "no":
-            return
-
-        for node in nodes:  # type: Point
-            if self.mode not in [CREATION_TIME_MODE, AUTHOR_MODE]:
+            if (self.mode not in [CREATION_TIME_MODE, AUTHOR_MODE] and
+                    self.draw_captions != "no"):
                 node.draw_texts(
                     self.svg, self.scheme, occupied, self.draw_captions)
+        ui.progress_bar(-1, len(nodes), step=10, text="Drawing nodes")
 
 
 def check_level_number(tags: Dict[str, Any], level: float):
@@ -295,17 +294,14 @@ def main(argv) -> None:
     """
     if len(argv) == 2:
         if argv[1] == "grid":
-            draw_all_icons("icon_grid.svg")
+            os.makedirs("icon_set", exist_ok=True)
+            draw_all_icons("icon_grid.svg", "icon_set")
         return
 
     options: argparse.Namespace = ui.parse_options(argv)
 
     if not options:
         sys.exit(1)
-
-    background_color: Color = Color("#EEEEEE")
-    if options.mode in [AUTHOR_MODE, CREATION_TIME_MODE]:
-        background_color: Color = Color("#111111")
 
     if options.input_file_name:
         input_file_name = options.input_file_name
@@ -325,8 +321,7 @@ def main(argv) -> None:
         max1 = np.array((map_.boundary_box[0].max_, map_.boundary_box[1].max_))
     else:
 
-        boundary_box = list(map(
-            lambda x: float(x.replace('m', '-')), options.boundary_box.split(',')))
+        boundary_box = list(map(float, options.boundary_box.split(',')))
 
         full = False  # Full keys getting
 
@@ -340,9 +335,7 @@ def main(argv) -> None:
                 print("Fatal: no such file: " + file_name + ".")
                 sys.exit(1)
 
-            osm_reader.parse_osm_file(
-                file_name, parse_ways=options.draw_ways,
-                parse_relations=options.draw_ways, full=full)
+            osm_reader.parse_osm_file(file_name, full=full)
 
         map_: Map = osm_reader.map_
 
@@ -354,7 +347,6 @@ def main(argv) -> None:
 
     svg: svgwrite.Drawing = (
         svgwrite.Drawing(options.output_file_name, size=size))
-    svg.add(Rect((0, 0), size, fill=background_color))
 
     icon_extractor: IconExtractor = IconExtractor(ICONS_FILE_NAME)
 
@@ -375,18 +367,13 @@ def main(argv) -> None:
                 return not check_level_number(x, float(options.level))
 
     constructor: Constructor = Constructor(
-        check_level, options.mode, options.seed, map_, flinger, scheme,
-        icon_extractor)
-    if options.draw_ways:
-        constructor.construct_ways()
-        constructor.construct_relations()
-    if options.mode not in [AUTHOR_MODE, CREATION_TIME_MODE]:
-        constructor.construct_nodes()
+        map_, flinger, scheme, icon_extractor, check_level, options.mode,
+        options.seed)
+    constructor.construct()
 
     painter: Painter = Painter(
         show_missing_tags=options.show_missing_tags, overlap=options.overlap,
-        draw_nodes=options.draw_nodes, mode=options.mode,
-        draw_captions=options.draw_captions,
+        mode=options.mode, draw_captions=options.draw_captions,
         map_=map_, flinger=flinger, svg=svg, icon_extractor=icon_extractor,
         scheme=scheme)
 

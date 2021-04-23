@@ -10,9 +10,10 @@
 
 # Generated files
 
-*.png
 *.pyc
-*.svg
+doc/*.html
+doc/*.svg
+doc/*.wiki
 missed_tags.yml
 
 # Test scheme files

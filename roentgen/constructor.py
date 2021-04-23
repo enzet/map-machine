@@ -249,8 +249,9 @@ class Constructor:
     Röntgen node and way constructor.
     """
     def __init__(
-            self, check_level, mode: str, seed: str, map_: Map,
-            flinger: Flinger, scheme: Scheme, icon_extractor: IconExtractor):
+            self, map_: Map, flinger: Flinger, scheme: Scheme,
+            icon_extractor: IconExtractor, check_level=lambda x: True,
+            mode: str = "normal", seed: str = ""):
 
         self.check_level = check_level
         self.mode: str = mode
@@ -272,6 +273,14 @@ class Constructor:
         """
         self.buildings.append(building)
         self.levels.add(building.get_levels())
+
+    def construct(self) -> None:
+        """
+        Construct nodes, ways, and relations.
+        """
+        self.construct_ways()
+        self.construct_relations()
+        self.construct_nodes()
 
     def construct_ways(self) -> None:
         """

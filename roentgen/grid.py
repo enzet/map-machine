@@ -7,16 +7,22 @@ import numpy as np
 from colour import Color
 from svgwrite import Drawing
 from typing import List, Dict, Any, Set
+from os.path import join
 
 from roentgen.icon import Icon, IconExtractor
 from roentgen.scheme import Scheme
 
 
-def draw_all_icons(output_file_name: str, columns: int = 16, step: float = 24):
+def draw_all_icons(
+        output_file_name: str, output_directory: str, columns: int = 16,
+        step: float = 24
+    ) -> None:
     """
     Draw all possible icon combinations in grid.
 
     :param output_file_name: output SVG file name for icon grid
+    :param output_directory: path to the directory to store individual SVG files
+        for icons
     :param columns: the number of columns in grid
     :param step: horizontal and vertical distance between icons
     """
@@ -66,13 +72,16 @@ def draw_all_icons(output_file_name: str, columns: int = 16, step: float = 24):
         "Icons with no tag specification: \n    " +
         ", ".join(sorted(extractor.icons.keys() - specified_ids)) + ".")
 
-    draw_grid(output_file_name, to_draw, extractor, columns, step)
+    draw_grid(
+        output_file_name, to_draw, extractor, output_directory, columns, step
+    )
 
 
 def draw_grid(
         file_name: str, combined_icon_ids: List[Set[str]],
-        extractor: IconExtractor, columns: int = 16, step: float = 24,
-        color=Color("#444444")):
+        extractor: IconExtractor, output_directory: str, columns: int = 16,
+        step: float = 24, color=Color("#444444")
+    ) -> List[List[Icon]]:
     """
     Draw icons in the form of table
 
@@ -80,9 +89,11 @@ def draw_grid(
     :param combined_icon_ids: list of set of icon string identifiers
     :param extractor: icon extractor that generates icon SVG path commands using
         its string identifier
+    :param output_directory: path to the directory to store individual SVG files
+        for icons
     :param columns: number of columns in grid
     :param step: horizontal and vertical distance between icons in grid
-    :return:
+    :param color: icon foreground color
     """
     point: np.array = np.array((step / 2, step / 2))
     width: float = step * columns
@@ -92,14 +103,21 @@ def draw_grid(
     for icons_to_draw in combined_icon_ids:  # type: Set[str]
         found: bool = False
         icon_set: List[Icon] = []
+        names = []
         for icon_id in icons_to_draw:  # type: str
             icon, extracted = extractor.get_path(icon_id)  # type: Icon, bool
             assert extracted, f"no icon with ID {icon_id}"
             icon_set.append(icon)
             found = True
+            if icon.name:
+                names.append(icon.name)
         if found:
             icons.append(icon_set)
             number += 1
+        draw_icon(
+            join(output_directory, f"Röntgen {' + '.join(names)}.svg"),
+            icons_to_draw, extractor
+        )
 
     height: int = int(int(number / (width / step) + 1) * step)
     svg: Drawing = Drawing(file_name, (width, height))
@@ -121,6 +139,29 @@ def draw_grid(
             height += step
 
     print(f"Icons: {number}.")
+
+    with open(file_name, "w") as output_file:
+        svg.write(output_file)
+
+    return icons
+
+
+def draw_icon(
+        file_name: str, icon_ids: Set[str], extractor: IconExtractor
+    ) -> None:
+
+    icon_set: List[Icon] = []
+    for icon_id in icon_ids:  # type: str
+        icon, extracted = extractor.get_path(icon_id)  # type: Icon, bool
+        assert extracted, f"no icon with ID {icon_id}"
+        icon_set.append(icon)
+
+    svg: Drawing = Drawing(file_name, (16, 16))
+
+    for icon in icon_set:  # type: Icon
+        path = icon.get_path(svg, (8, 8))
+        path.update({"fill": "black"})
+        svg.add(path)
 
     with open(file_name, "w") as output_file:
         svg.write(output_file)

@@ -33,3 +33,6 @@ class MinMax:
         Get middle point between minimum and maximum.
         """
         return (self.min_ + self.max_) / 2
+
+    def __repr__(self) -> str:
+        return f"{self.min_}:{self.max_}"

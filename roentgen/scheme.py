@@ -254,13 +254,15 @@ class Scheme:
             for key in element:  # type: str
                 if key not in [
                         "tags", "no_tags", "priority", "level", "icon",
-                        "r", "r2"]:
+                        "r", "r1", "r2"]:
                     value = element[key]
                     if isinstance(value, str) and value.endswith("_color"):
                         value = self.get_color(value)
                     style[key] = value
             if "r" in element:
                 style["stroke-width"] = (element["r"] * scale)
+            if "r1" in element:
+                style["stroke-width"] = (element["r1"] * scale + 1)
             if "r2" in element:
                 style["stroke-width"] = (element["r2"] * scale + 2)
 
