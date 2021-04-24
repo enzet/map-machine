@@ -429,16 +429,21 @@ class Constructor:
 
             priority: int
             icon_set: IconSet
-            icon_set, priority = self.scheme.get_icon(self.icon_extractor, tags)
 
             if self.mode in ["time", "user-coloring"]:
                 if not tags:
                     continue
-                icon_set.icons = [[DEFAULT_SMALL_SHAPE_ID]]
-            if self.mode == "user-coloring":
-                icon_set.color = get_user_color(node.user, self.seed)
-            if self.mode == "time":
-                icon_set.color = get_time_color(node.timestamp, self.map_.time)
+                if self.mode == "user-coloring":
+                    color = get_user_color(node.user, self.seed)
+                if self.mode == "time":
+                    color = get_time_color(node.timestamp, self.map_.time)
+                dot, _ = self.icon_extractor.get_path(DEFAULT_SMALL_SHAPE_ID)
+                icon_set = IconSet([dot], [], color, set(), True)
+                priority = 0
+            else:
+                icon_set, priority = self.scheme.get_icon(
+                    self.icon_extractor, tags
+                )
 
             self.nodes.append(Point(
                 icon_set, tags, flung, node.coordinates, priority=priority))
