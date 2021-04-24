@@ -156,25 +156,26 @@ class Point(Tagged):
         self.draw_outline: bool = draw_outline
 
         self.y = 0
+        self.main_icon_painted: bool = False
 
-    def draw_shapes(self, svg: svgwrite.Drawing, occupied: Occupied):
+    def draw_main_shapes(self, svg: svgwrite.Drawing, occupied: Occupied):
         """
         Draw shapes for one node.
         """
-        painted: bool = False
         if (self.icon_set.main_icon and
                 (not self.icon_set.main_icon[0].is_default() or
                  self.is_for_node)):
             position = self.point + np.array((0, self.y))
-            painted: bool = self.draw_point_shape(
+            self.main_icon_painted: bool = self.draw_point_shape(
                 svg, self.icon_set.main_icon,
                 position, self.icon_set.color, occupied,
                 tags=self.tags)
-            if painted:
+            if self.main_icon_painted:
                 self.y += 16
 
-        if (not self.icon_set.extra_icons or
-                (self.icon_set.main_icon and not painted)):
+    def draw_extra_shapes(self, svg: svgwrite.Drawing, occupied: Occupied):
+
+        if not self.icon_set.extra_icons or not self.main_icon_painted:
             return
 
         is_place_for_extra: bool = True

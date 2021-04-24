@@ -234,17 +234,33 @@ class Painter:
                 self.flinger.size[0], self.flinger.size[1], self.overlap)
 
         nodes = sorted(constructor.nodes, key=lambda x: -x.priority)
+        steps: int = len(nodes)
+
         for index, node in enumerate(nodes):  # type: int, Point
             if (node.get_tag("natural") == "tree" and
                     ("diameter_crown" in node.tags or
                      "circumference" in node.tags)):
                 continue
-            ui.progress_bar(index, len(nodes), step=10, text="Drawing nodes")
-            node.draw_shapes(self.svg, occupied)
+            ui.progress_bar(
+                index, steps * 3, step=10, text="Drawing main icons"
+            )
+            node.draw_main_shapes(self.svg, occupied)
+
+        for index, node in enumerate(nodes):  # type: int, Point
+            ui.progress_bar(
+                steps + index, steps * 3, step=10, text="Drawing extra icons"
+            )
+            node.draw_extra_shapes(self.svg, occupied)
+
+        for index, node in enumerate(nodes):  # type: int, Point
+            ui.progress_bar(
+                steps * 2 + index, steps * 3, step=10, text="Drawing texts"
+            )
             if (self.mode not in [CREATION_TIME_MODE, AUTHOR_MODE] and
                     self.draw_captions != "no"):
                 node.draw_texts(
                     self.svg, self.scheme, occupied, self.draw_captions)
+
         ui.progress_bar(-1, len(nodes), step=10, text="Drawing nodes")
 
 
