@@ -140,7 +140,8 @@ class Point(Tagged):
     def __init__(
             self, icon_set: IconSet, tags: Dict[str, str], point: np.array,
             coordinates: np.array, priority: float = 0,
-            is_for_node: bool = True):
+            is_for_node: bool = True, draw_outline: bool = True
+        ):
         super().__init__()
 
         assert point is not None
@@ -152,6 +153,7 @@ class Point(Tagged):
         self.priority: float = priority
         self.layer: float = 0
         self.is_for_node: bool = is_for_node
+        self.draw_outline: bool = draw_outline
 
         self.y = 0
 
@@ -210,11 +212,12 @@ class Point(Tagged):
 
         # Draw outlines.
 
-        for icon in icons:  # type: Icon
-            bright: bool = is_bright(fill)
-            color: Color = Color("black") if bright else Color("white")
-            opacity: float = 0.7 if bright else 0.5
-            icon.draw(svg, position, color, opacity=opacity, outline=True)
+        if self.draw_outline:
+            for icon in icons:  # type: Icon
+                bright: bool = is_bright(fill)
+                color: Color = Color("black") if bright else Color("white")
+                opacity: float = 0.7 if bright else 0.5
+                icon.draw(svg, position, color, opacity=opacity, outline=True)
 
         # Draw icons.
 

@@ -429,6 +429,7 @@ class Constructor:
 
             priority: int
             icon_set: IconSet
+            draw_outline: bool = True
 
             if self.mode in ["time", "user-coloring"]:
                 if not tags:
@@ -440,13 +441,16 @@ class Constructor:
                 dot, _ = self.icon_extractor.get_path(DEFAULT_SMALL_SHAPE_ID)
                 icon_set = IconSet([dot], [], color, set(), True)
                 priority = 0
+                draw_outline = False
             else:
                 icon_set, priority = self.scheme.get_icon(
                     self.icon_extractor, tags
                 )
 
             self.nodes.append(Point(
-                icon_set, tags, flung, node.coordinates, priority=priority))
+                icon_set, tags, flung, node.coordinates, priority=priority,
+                draw_outline=draw_outline
+            ))
 
             missing_tags.update(
                 f"{key}: {tags[key]}" for key in tags
