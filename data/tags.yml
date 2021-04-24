@@ -243,6 +243,8 @@ node_icons:
     icon: [money]
   - tags: {amenity: cinema}
     icon: [film]
+  - tags: {amenity: community_centre}
+    icon: [two_people_together]
   - tags: {amenity: prison}
     icon: [prison]
   - tags: {man_made: survey_point}
