@@ -39,6 +39,8 @@ Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used
 
 ![Power tower design](doc/power_tower_design.png)
 
+![Power tower design](doc/power.png)
+
 ### Emergency ###
 
 ![Emergency](doc/emergency.png)

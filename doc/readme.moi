@@ -38,6 +38,7 @@ Visualize \osm {direction} tag for \osm {tourism=viewpoint} and \osm {camera:dir
 Visualize \osm {design} values used with \osm {power=tower} tag.
 
 \image {doc/power_tower_design.png} {Power tower design}
+\image {doc/power.png} {Power tower design}
 
 \3 {Emergency} {emergency}
 
