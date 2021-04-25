@@ -4,13 +4,13 @@ Röntgen drawing scheme.
 Author: Sergey Vartanov (me@enzet.ru).
 """
 import copy
-import yaml
-
-from colour import Color
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Set, Union, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
-from roentgen.icon import DEFAULT_SHAPE_ID, IconExtractor, Icon
+import yaml
+from colour import Color
+
+from roentgen.icon import DEFAULT_SHAPE_ID, Icon, IconExtractor
 
 DEFAULT_COLOR: Color = Color("#444444")
 

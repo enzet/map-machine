@@ -4,10 +4,10 @@ Reading OpenStreetMap data from XML file.
 Author: Sergey Vartanov (me@enzet.ru).
 """
 import json
+from datetime import datetime
+from typing import Any, Dict, List, Optional, Set, Union
 
 import numpy as np
-from datetime import datetime
-from typing import Dict, List, Optional, Set, Union, Any
 
 from roentgen.ui import progress_bar
 from roentgen.util import MinMax

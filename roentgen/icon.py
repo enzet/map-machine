@@ -5,7 +5,7 @@ Author: Sergey Vartanov (me@enzet.ru).
 """
 import re
 from dataclasses import dataclass
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 from xml.dom.minidom import Document, Element, Node, parse
 
 import numpy as np

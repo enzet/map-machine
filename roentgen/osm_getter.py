@@ -6,9 +6,9 @@ Author: Sergey Vartanov (me@enzet.ru).
 import os
 import re
 import time
+import urllib
 from typing import Dict, Optional
 
-import urllib
 import urllib3
 
 from roentgen.ui import error

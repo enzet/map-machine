@@ -6,19 +6,20 @@ Author: Sergey Vartanov (me@enzet.ru).
 from collections import Counter
 from datetime import datetime
 from hashlib import sha256
-from typing import Any, Dict, List, Optional, Set, Iterator
+from typing import Any, Dict, Iterator, List, Optional, Set
 
-from colour import Color
 import numpy as np
+from colour import Color
 
 from roentgen import ui
 from roentgen.color import get_gradient_color
-from roentgen.icon import DEFAULT_SMALL_SHAPE_ID, IconExtractor
 from roentgen.flinger import Flinger
+from roentgen.icon import DEFAULT_SMALL_SHAPE_ID, IconExtractor
 from roentgen.osm_reader import (
-    Map, OSMMember, OSMRelation, OSMWay, OSMNode, Tagged)
+    Map, OSMMember, OSMNode, OSMRelation, OSMWay, Tagged
+)
 from roentgen.point import Point
-from roentgen.scheme import IconSet, Scheme, LineStyle
+from roentgen.scheme import IconSet, LineStyle, Scheme
 from roentgen.util import MinMax
 
 DEBUG: bool = False

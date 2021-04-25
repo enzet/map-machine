@@ -3,11 +3,12 @@ Icon grid drawing.
 
 Author: Sergey Vartanov (me@enzet.ru).
 """
+from os.path import join
+from typing import Any, Dict, List, Set
+
 import numpy as np
 from colour import Color
 from svgwrite import Drawing
-from typing import List, Dict, Any, Set
-from os.path import join
 
 from roentgen.icon import Icon, IconExtractor
 from roentgen.scheme import Scheme

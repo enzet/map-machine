@@ -1,15 +1,15 @@
 from dataclasses import dataclass
-from typing import Dict, Optional, List
+from typing import Dict, List, Optional
 
 import numpy as np
 import svgwrite
 from colour import Color
 
-from roentgen.text import get_address, get_text
 from roentgen.color import is_bright
 from roentgen.icon import Icon
 from roentgen.osm_reader import Tagged
 from roentgen.scheme import IconSet
+from roentgen.text import get_address, get_text
 
 DEFAULT_FONT: str = "Roboto"
 DEFAULT_COLOR: Color = Color("#444444")

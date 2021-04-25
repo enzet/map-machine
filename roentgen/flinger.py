@@ -9,7 +9,6 @@ import numpy as np
 
 from roentgen.util import MinMax
 
-
 EQUATOR_LENGTH: float = 40_075_017  # (in meters)
 
 

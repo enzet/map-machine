@@ -4,29 +4,27 @@ Simple OpenStreetMap renderer.
 Author: Sergey Vartanov (me@enzet.ru).
 """
 import argparse
+import os
+import sys
+from typing import Any, Dict
 
 import numpy as np
-import os
 import svgwrite
-import sys
-
 from colour import Color
 from svgwrite.container import Group
 from svgwrite.path import Path
 from svgwrite.shapes import Rect
-from typing import Any, Dict, List
 
 from roentgen import ui
-from roentgen.constructor import (
-    Constructor, Figure, Building, Segment)
-from roentgen.point import Point, Occupied
+from roentgen.constructor import Building, Constructor, Figure, Segment
+from roentgen.direction import DirectionSet, Sector
 from roentgen.flinger import Flinger
 from roentgen.grid import draw_all_icons
-from roentgen.icon import Icon, IconExtractor
+from roentgen.icon import IconExtractor
 from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader, OverpassReader
+from roentgen.point import Occupied, Point
 from roentgen.scheme import Scheme
-from roentgen.direction import DirectionSet, Sector
 from roentgen.util import MinMax
 
 ICONS_FILE_NAME: str = "icons/icons.svg"

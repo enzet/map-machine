@@ -3,7 +3,7 @@ OSM address tag processing.
 
 Author: Sergey Vartanov (me@enzet.ru).
 """
-from typing import List, Any, Dict
+from typing import Any, Dict, List
 
 
 def get_address(tags: Dict[str, Any], draw_captions_mode: str) -> List[str]:
