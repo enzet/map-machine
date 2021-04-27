@@ -259,6 +259,8 @@ node_icons:
     icon: [beer_mug]
   - tags: {amenity: fast_food}
     icon: [burger]
+  - tags: {amenity: food_court}
+    icon: [food_court]
   - tags: {amenity: shop, shop: fishing}
     icon: [fishing_angle]
   - tags: {shop: alcohol}
