@@ -137,20 +137,20 @@
      inkscape:snap-intersection-paths="true"
      inkscape:object-nodes="true"
      inkscape:window-maximized="1"
-     inkscape:window-y="0"
+     inkscape:window-y="1"
      inkscape:window-x="0"
-     inkscape:window-height="856"
+     inkscape:window-height="855"
      inkscape:window-width="1440"
      inkscape:snap-bbox="false"
      inkscape:object-paths="true"
      inkscape:guide-bbox="true"
      showguides="false"
-     showgrid="false"
+     showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="165.53133"
-     inkscape:cx="194.9424"
-     inkscape:zoom="11.313708"
+     inkscape:cy="535.7395"
+     inkscape:cx="32.386975"
+     inkscape:zoom="3.9999998"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -534,7 +534,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1453,7 +1453,10 @@
        inkscape:label="#path3275"
        id="pole_lamp"
        d="m 35,82 0,1 c 0,0.554 0.446,1 1,1 l 1,0 c 0.543137,0 0.98298,-0.42989 1,-0.96875 0.636908,0.0664 1.100578,0.25683 1.40625,0.5625 C 39.788399,83.9759 40,84.58333 40,85.5 l 0,9.5 1,0 0,-9.5 C 41,84.41667 40.711601,83.5241 40.09375,82.90625 39.475899,82.2884 38.583333,82 37.5,82 l -0.5,0 -1,0 -1,0 z"
-       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:Sans;-inkscape-font-specification:Sans;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;marker:none;enable-background:accumulate" />
+       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:Sans;-inkscape-font-specification:Sans;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;marker:none;enable-background:accumulate">
+      <title
+         id="title6152">pole lamp</title>
+    </path>
     <path
        style="fill:none;stroke:#cccccc;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 40.5,79 c 0,0 0,-7.5 0,-9.5 0,-2 -1,-3 -3,-3 -2,0 -2.5,0 -2.5,0"
@@ -1819,7 +1822,10 @@
        inkscape:label="#rect4452"
        id="tree"
        d="m 199,82 c -0.554,0 -1,0.446 -1,1 -0.554,0 -1,0.446 -1,1 l 0,1 c -0.554,0 -1,0.446 -1,1 l 0,2 c 0,0.554 0.446,1 1,1 0,0.554 0.446,1 1,1 l 1,2 0,3 2,0 0,-3 1,-2 c 0.554,0 1,-0.446 1,-1 0.554,0 1,-0.446 1,-1 l 0,-2 c 0,-0.554 -0.446,-1 -1,-1 l 0,-1 c 0,-0.554 -0.446,-1 -1,-1 0,-0.554 -0.446,-1 -1,-1 z m 0,8 2,0 -1,1.5 z"
-       style="fill:#000000;stroke:none" />
+       style="fill:#000000;stroke:none">
+      <title
+         id="title6146">tree</title>
+    </path>
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
@@ -2051,7 +2057,10 @@
        id="needleleaved_tree"
        d="m 216,83 c -0.5,1.25 -1.75,2.25 -3,3 l 2,0 c -0.5,1.25 -1.75,2.25 -3,3 l 2,0 c -0.5,1.25 -1.75,2.25 -3,3 l 4,0 0,3 2,0 0,-3 4,0 c -1.25,-0.75 -2.5,-1.75 -3,-3 l 2,0 c -1.25,-0.75 -2.5,-1.75 -3,-3 l 2,0 c -1.25,-0.75 -2.5,-1.75 -3,-3 z"
        style="fill:#000000;stroke:none"
-       sodipodi:nodetypes="cccccccccccccccc" />
+       sodipodi:nodetypes="cccccccccccccccc">
+      <title
+         id="title6148">needleleaved tree</title>
+    </path>
     <path
        inkscape:connector-curvature="0"
        id="path4418"
@@ -3933,7 +3942,10 @@
        inkscape:label="#rect3847"
        id="betula"
        d="m 199,209 c -0.554,0 -1,0.446 -1,1 -0.554,0 -1,0.446 -1,1 l 0,1 c -0.554,0 -1,0.446 -1,1 l 0,2 c 0,0.554 0.446,1 1,1 l 0,1 c 0,0.554 0.446,1 1,1 l 1,0 0,3 0.5,0 c 0.277,0 0.5,0.223 0.5,0.5 0,0.277 -0.223,0.5 -0.5,0.5 l -0.5,0 0,1 2,0 0,-3 -0.5,0 c -0.277,0 -0.5,-0.223 -0.5,-0.5 0,-0.277 0.223,-0.5 0.5,-0.5 l 0.5,0 0,-1 1,0 c 0.554,0 1,-0.446 1,-1 l 0,-1 c 0.554,0 1,-0.446 1,-1 l 0,-2 c 0,-0.554 -0.446,-1 -1,-1 l 0,-1 c 0,-0.554 -0.446,-1 -1,-1 0,-0.554 -0.446,-1 -1,-1 z"
-       style="fill:#000000;stroke:none" />
+       style="fill:#000000;stroke:none">
+      <title
+         id="title6133">betula</title>
+    </path>
     <rect
        style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect3876"
@@ -4805,7 +4817,10 @@
        inkscape:label="#circle5036"
        id="binocular"
        d="m 309.5,115 a 1.5,1.5 0 0 0 -1.35742,0.86523 l -2.70508,4.57227 0.01,-0.006 A 3.0000021,3.0000021 0 0 0 305,122 a 3.0000021,3.0000021 0 0 0 3,3 3.0000021,3.0000021 0 0 0 3,-3 0.49999994,0.49999994 0 0 1 0.5,-0.5 0.49999994,0.49999994 0 0 1 0.5,0.5 3.0000021,3.0000021 0 0 0 3,3 3.0000021,3.0000021 0 0 0 3,-3 3.0000021,3.0000021 0 0 0 -0.44336,-1.56641 l 0.006,0.004 -2.70508,-4.57227 A 1.5,1.5 0 0 0 313.5,115 a 1.5,1.5 0 0 0 -1.5,1.5 0.49999994,0.49999994 0 0 1 -0.5,0.5 0.49999994,0.49999994 0 0 1 -0.5,-0.5 1.5,1.5 0 0 0 -1.5,-1.5 z m -1.5,5 a 1.9999999,1.9999999 0 0 1 2,2 1.9999999,1.9999999 0 0 1 -2,2 1.9999999,1.9999999 0 0 1 -2,-2 1.9999999,1.9999999 0 0 1 2,-2 z m 7,0 a 1.9999999,1.9999998 0 0 1 2,2 1.9999999,1.9999998 0 0 1 -2,2 1.9999999,1.9999998 0 0 1 -2,-2 1.9999999,1.9999998 0 0 1 2,-2 z"
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1">
+      <title
+         id="title6142">binocular</title>
+    </path>
     <path
        inkscape:connector-curvature="0"
        id="circle_9"
@@ -5007,7 +5022,10 @@
        inkscape:label="#rect8730"
        id="tree_with_leaf"
        d="m 229,82 c -0.554,0 -1,0.446 -1,1 -0.554,0 -1,0.446 -1,1 l 0,1 c -0.554,0 -1,0.446 -1,1 l 0,2 c 0,0.554 0.446,1 1,1 0,0.554 0.446,1 1,1 l 1,2 0,3 2,0 0,-3 1,-2 c 0.554,0 1,-0.446 1,-1 0.554,0 1,-0.446 1,-1 l 0,-2 c 0,-0.554 -0.446,-1 -1,-1 l 0,-1 c 0,-0.554 -0.446,-1 -1,-1 0,-0.554 -0.446,-1 -1,-1 z m 8,1 c -2,2 -2,4 0,6 2,-2 2,-4 0,-6 z m -8,7 2,0 -1,1.5 z"
-       style="fill:#000000;stroke:none" />
+       style="fill:#000000;stroke:none">
+      <title
+         id="title6150">tree with leaf</title>
+    </path>
     <path
        id="path8743"
        d="M 158,7.5 A 5.5,5.5 0 0 1 152.5,13 5.5,5.5 0 0 1 147,7.5 5.5,5.5 0 0 1 152.5,2 5.5,5.5 0 0 1 158,7.5 Z"
@@ -6510,7 +6528,10 @@
        inkscape:label="#circle5361"
        id="plane"
        d="m 216,209.5 c -0.55228,0 -1,0.44772 -1,1 l 0,3 -5,3 0,2 5,-2 0,4 -1.5,1 0,1.5 2.5,-1 2.5,1 0,-1.5 -1.5,-1 0,-4 5,2 0,-2 -5,-3 0,-3 c 0,-0.55228 -0.44772,-1 -1,-1 z"
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1">
+      <title
+         id="title6144">plane</title>
+    </path>
     <rect
        style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
        id="rect5404"
@@ -7059,7 +7080,10 @@
        inkscape:label="#rect5775"
        id="noexit"
        d="m 260.5,211 c -0.277,0 -0.5,0.223 -0.5,0.5 l 0,1 c 0,0.277 0.223,0.5 0.5,0.5 l 2.5,0 0,6.5 c 0,0.277 0.223,0.5 0.5,0.5 l 1,0 c 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-6.5 2.5,0 c 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-1 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 l -7,0 z"
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1">
+      <title
+         id="title6137">T letter</title>
+    </path>
     <path
        inkscape:connector-curvature="0"
        id="path5780"
@@ -7071,7 +7095,10 @@
        inkscape:connector-curvature="0"
        id="triangle_small"
        d="m 280.01562,212.5 c -0.18139,-0.006 -0.35182,0.0866 -0.44531,0.24219 l -3,5 c -0.20076,0.33374 0.0402,0.75874 0.42969,0.75781 l 6,0 c 0.38947,9.3e-4 0.63045,-0.42407 0.42969,-0.75781 l -3,-5 c -0.0878,-0.14598 -0.24381,-0.23725 -0.41407,-0.24219 z"
-       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
+       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate">
+      <title
+         id="title6140">small triangle</title>
+    </path>
     <circle
        r="3.5"
        cy="203"
@@ -10392,7 +10419,7 @@
        id="mtr"
        inkscape:label="#rect52879">
       <title
-         id="title6066">mtr_logo</title>
+         id="title6066">MTR logo</title>
     </path>
     <rect
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
