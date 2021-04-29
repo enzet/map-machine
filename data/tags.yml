@@ -81,6 +81,8 @@ node_icons:
 
   - tags: {amenity: ferry_terminal}
     icon: [anchor]
+  - tags: {amenity: ferry_terminal, cargo: vehicle}
+    icon: [car_on_ferry]
   - tags: {aeroway: aerodrome}
     icon: [plane]
   - tags: {aeroway: helipad}
