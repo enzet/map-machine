@@ -148,9 +148,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="326.24745"
-     inkscape:cx="125.90544"
-     inkscape:zoom="2.8284271"
+     inkscape:cy="99.115412"
+     inkscape:cx="164.18971"
+     inkscape:zoom="16"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -14999,5 +14999,36 @@
        cx="11"
        id="circle7220"
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <circle
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path7231"
+       cx="166"
+       cy="488"
+       r="5" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 166,488 6,6 0,-11 z"
+       id="path7233"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 166 499 A 5 5 0 0 0 161 504 A 5 5 0 0 0 166 509 A 5 5 0 0 0 169.5332 507.5332 L 166 504 L 169.83789 500.80273 A 5 5 0 0 0 166 499 z M 171 503 A 1 1 0 0 0 170 504 A 1 1 0 0 0 171 505 A 1 1 0 0 0 172 504 A 1 1 0 0 0 171 503 z M 174 503 A 1 1 0 0 0 173 504 A 1 1 0 0 0 174 505 A 1 1 0 0 0 175 504 A 1 1 0 0 0 174 503 z "
+       id="pac_man">
+      <title
+         id="title7247">Pac-Man</title>
+    </path>
+    <circle
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path7249"
+       cx="174"
+       cy="488"
+       r="1" />
+    <circle
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path7251"
+       cx="171"
+       cy="488"
+       r="1" />
   </g>
 </svg>

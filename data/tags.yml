@@ -257,6 +257,8 @@ node_icons:
     icon: [prison]
   - tags: {man_made: survey_point}
     icon: [survey_point]
+  - tags: {leisure: amusement_arcade}
+    icon: [pac_man]
   - tags: {leisure: outdoor_seating}
     icon: [table_and_two_chairs, umbrella]
   - tags: {leisure: outdoor_seating, weather_protection: parasol}
