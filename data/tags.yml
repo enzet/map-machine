@@ -89,6 +89,10 @@ node_icons:
     icon: [plane]
   - tags: {aeroway: helipad}
     icon: [h]
+  - tags: {aeroway: spaceport}
+    icon: [rocket_on_launch_pad]
+  - tags: {aeroway: launchpad}
+    icon: [rocket_flying]
   - tags: {aeroway: landingpad}
     icon: [booster_landing]
   - tags: {highway: bus_stop}
