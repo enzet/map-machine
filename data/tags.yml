@@ -256,7 +256,9 @@ node_icons:
   - tags: {man_made: survey_point}
     icon: [survey_point]
   - tags: {leisure: outdoor_seating}
-    icon: [table_and_two_chairs_under_umbrella]
+    icon: [table_and_two_chairs, umbrella]
+  - tags: {leisure: outdoor_seating, weather_protection: parasol}
+    icon: [table_and_two_chairs, umbrella]
   - tags: {leisure: playground}
     icon: [toy_horse]
   - tags: {amenity: theatre}
