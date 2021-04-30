@@ -259,6 +259,14 @@ node_icons:
     icon: [table_and_two_chairs, umbrella]
   - tags: {leisure: outdoor_seating, weather_protection: parasol}
     icon: [table_and_two_chairs, umbrella]
+  - tags: {leisure: outdoor_seating, weather_protection: roof}
+    icon: [table_and_two_chairs, roof]
+  - tags: {leisure: outdoor_seating, weather_protection: awning}
+    icon: [table_and_two_chairs, awning]
+  - tags: {leisure: outdoor_seating, weather_protection: pavilion}
+    icon: [table_and_two_chairs, roof_and_walls]
+  - tags: {leisure: outdoor_seating, weather_protection: pergola}
+    icon: [table_and_two_chairs, pergola]
   - tags: {leisure: playground}
     icon: [toy_horse]
   - tags: {amenity: theatre}
