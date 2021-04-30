@@ -558,6 +558,8 @@ node_icons:
 
   # Normal small objects
 
+  - tags: {amenity: binoculars}
+    icon: [binoculars_on_pole]
   - tags: {amenity: post_box}
     icon: [envelope]
   - tags: {amenity: recycling}
