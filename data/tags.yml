@@ -243,6 +243,8 @@ node_icons:
 
   - tags: {shop: supermarket}
     icon: [supermarket_cart]
+  - tags: {amenity: arts_centre}
+    icon: [picture]
   - tags: {amenity: bank}
     icon: [money]
   - tags: {amenity: cinema}
