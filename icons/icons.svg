@@ -148,8 +148,8 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="134.56631"
-     inkscape:cx="310.63103"
+     inkscape:cy="141.63738"
+     inkscape:cx="360.12851"
      inkscape:zoom="11.313708"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -543,6 +543,16 @@
      inkscape:label="main"
      id="layer1"
      style="display:inline">
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#cccccc;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 289.5,451.5 6,-2 6,2 z"
+       id="path6939"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path6941"
+       d="m 305.5,451.5 6,-2 6,2 z"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#cccccc;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:#cccccc;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="m 227.5,425.5 1,5"
@@ -14888,16 +14898,6 @@
       <title
          id="title6917">pergola</title>
     </path>
-    <path
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 289.5,451.5 6,-2 6,2 z"
-       id="path6939"
-       inkscape:connector-curvature="0" />
-    <path
-       inkscape:connector-curvature="0"
-       id="path6941"
-       d="m 305.5,451.5 6,-2 6,2 z"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="m 311.51172,465 c -0.0577,-0.001 -0.11517,0.007 -0.16992,0.0254 l -6,2 c -0.20422,0.0681 -0.34191,0.25932 -0.3418,0.47461 -2.1e-4,0.008 -2.1e-4,0.0169 0,0.0254 l 0,1.47461 1,0 0,-1 11,0 0,1 1,0 0,-1.46484 c 0.016,-0.22808 -0.12472,-0.43797 -0.3418,-0.50977 l -6,-2 c -0.0473,-0.0157 -0.0967,-0.0243 -0.14648,-0.0254 z"

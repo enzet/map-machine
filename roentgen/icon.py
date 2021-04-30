@@ -82,6 +82,17 @@ class Icon:
         svg.add(path)
 
 
+def is_standard(id_: str):
+    """ Check whether SVG object ID is standard Inkscape ID. """
+    if id_ == "base":
+        return True
+    for prefix in ["path", "circle", "rect", "defs", "use", "metadata"]:
+        matcher = re.match(prefix + "\\d+", id_)
+        if matcher:
+            return True
+    return False
+
+
 class IconExtractor:
     """
     Extract icons from SVG file.
@@ -116,9 +127,14 @@ class IconExtractor:
                     self.parse(sub_node)
             return
 
-        if (node.hasAttribute("id") and node.hasAttribute("d") and
-                node.getAttribute("id")):
+        if not node.hasAttribute("id") or not node.getAttribute("id"):
+            return
 
+        id_: str = node.getAttribute("id")
+        if is_standard(id_):
+            return
+
+        if node.hasAttribute("d"):
             path: str = node.getAttribute("d")
             matcher = re.match("[Mm] ([0-9.e-]*)[, ]([0-9.e-]*)", path)
             if not matcher:
@@ -139,10 +155,11 @@ class IconExtractor:
                     name = child_node.childNodes[0].nodeValue
                     break
 
-            id_: str = node.getAttribute("id")
             matcher = re.match(STANDARD_INKSCAPE_ID, id_)
             if not matcher:
                 self.icons[id_] = Icon(path, point, id_, name)
+        else:
+            ui.error(f"not standard ID {id_}")
 
     def get_path(self, id_: str) -> (Icon, bool):
         """
