@@ -148,8 +148,8 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="64.742261"
-     inkscape:cx="107.80961"
+     inkscape:cy="284.74226"
+     inkscape:cx="100.30961"
      inkscape:zoom="11.313708"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -543,6 +543,13 @@
      inkscape:label="main"
      id="layer1"
      style="display:inline">
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 84 306 C 83.446 306 83 306.446 83 307 L 83 315 C 83 315.554 83.446 316 84 316 L 88 316 L 88 314 C 88 312.892 88.892 312 90 312 L 90 307 C 90 306.446 89.554 306 89 306 L 84 306 z M 86.5 308 L 88.5 311 L 86.5 314 L 84.5 311 L 86.5 308 z M 90 313 C 89.446 313 89 313.446 89 314 L 89 317 C 89 317.554 89.446 318 90 318 L 93 318 C 93.554 318 94 317.554 94 317 L 94 314 C 94 313.446 93.554 313 93 313 L 90 313 z M 90.5 314 A 0.5 0.5 0 0 1 91 314.5 A 0.5 0.5 0 0 1 90.5 315 A 0.5 0.5 0 0 1 90 314.5 A 0.5 0.5 0 0 1 90.5 314 z M 92.5 316 A 0.5 0.5 0 0 1 93 316.5 A 0.5 0.5 0 0 1 92.5 317 A 0.5 0.5 0 0 1 92 316.5 A 0.5 0.5 0 0 1 92.5 316 z "
+       id="card_and_dice">
+      <title
+         id="title7653">card and dice</title>
+    </path>
     <path
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.4000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="m 180,498 c -1.108,0 -2,0.892 -2,2 l 0,7 c 0,1.108 0.892,2 2,2 l 7,0 c 1.108,0 2,-0.892 2,-2 l 0,-7 c 0,-1.108 -0.892,-2 -2,-2 l -7,0 z m 3.36719,2.00195 a 3.5,3.5 0 0 1 1.03906,0.11719 A 3.5,3.5 0 0 1 187,503.5 a 1.5,1.5 0 0 1 -0.75,1.29883 1.5,1.5 0 0 1 -1.5,0 1.5,1.5 0 0 1 -0.25,-0.1836 1.5,1.5 0 0 1 -1,0.38477 1.5,1.5 0 0 1 -1.5,-1.5 1.5,1.5 0 0 1 1.5,-1.5 1.5,1.5 0 0 1 1.5,1.5 0.5,0.5 0 0 0 0,0.0234 0.5,0.5 0 0 0 0.25,0.41015 0.5,0.5 0 0 0 0.5,0 0.5,0.5 0 0 0 0.25,-0.43359 2.5,2.5 0 0 0 -1.85352,-2.41406 2.5,2.5 0 0 0 -2.8125,1.16406 2.5,2.5 0 0 0 0.39844,3.01758 2.5,2.5 0 0 0 3.01758,0.39844 l 0.5,0.86523 a 3.5,3.5 0 0 1 -4.22461,-0.55664 3.5,3.5 0 0 1 -0.55664,-4.22461 3.5,3.5 0 0 1 2.86523,-1.74609 3.5,3.5 0 0 1 0.0332,-0.002 z M 183.5,503 a 0.5,0.5 0 0 0 -0.5,0.5 0.5,0.5 0 0 0 0.5,0.5 0.5,0.5 0 0 0 0.5,-0.5 0.5,0.5 0 0 0 -0.5,-0.5 z"
