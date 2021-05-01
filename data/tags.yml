@@ -443,6 +443,8 @@ node_icons:
     icon: [ventilation]
   - tags: {power: generator}
     icon: [power_generator]
+  - tags: {amenity: public_bookcase}
+    icon: [books]
   - tags: {power: transformer}
     icon: [transformer]
   - tags: {power: generator, generator:source: solar}
