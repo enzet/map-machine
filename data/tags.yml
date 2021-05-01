@@ -267,6 +267,8 @@ node_icons:
     icon: [survey_point]
   - tags: {leisure: amusement_arcade}
     icon: [pac_man]
+  - tags: {leisure: fitness_centre}
+    icon: [dumbbell]
   - tags: {leisure: outdoor_seating}
     icon: [table_and_two_chairs, umbrella]
   - tags: {leisure: outdoor_seating, weather_protection: parasol}
