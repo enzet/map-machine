@@ -17,7 +17,9 @@ from roentgen import ui
 
 DEFAULT_SHAPE_ID: str = "default"
 DEFAULT_SMALL_SHAPE_ID: str = "default_small"
-STANDARD_INKSCAPE_ID: str = "^(circle|path|rect)\\d*$"
+STANDARD_INKSCAPE_ID: str = (
+    "^((circle|defs|ellipse|metadata|path|rect|use)[\\d-]+|base)$"
+)
 
 GRID_STEP: int = 16
 
@@ -27,6 +29,7 @@ class Shape:
     """
     SVG icon path description.
     """
+
     path: str  # SVG icon path
     offset: np.array  # vector that should be used to shift the path
     id_: str  # shape identifier
@@ -49,11 +52,13 @@ class Shape:
         shift: np.array = self.offset + point
 
         return svg.path(
-            d=self.path, transform=f"translate({shift[0]},{shift[1]})")
+            d=self.path, transform=f"translate({shift[0]},{shift[1]})"
+        )
 
     def draw(
-            self, svg: svgwrite.Drawing, point: np.array, color: Color,
-            opacity=1.0, tags: Dict[str, Any] = None, outline: bool = False):
+        self, svg: svgwrite.Drawing, point: np.array, color: Color,
+        opacity: float = 1.0, tags: Dict[str, Any] = None, outline: bool = False
+    ) -> None:
         """
         Draw icon shape into SVG file.
 
@@ -72,8 +77,11 @@ class Shape:
             opacity: float = 0.5
 
             path.update({
-                "fill": color.hex, "stroke": color.hex, "stroke-width": 2.2,
-                "stroke-linejoin": "round"})
+                "fill": color.hex,
+                "stroke": color.hex,
+                "stroke-width": 2.2,
+                "stroke-linejoin": "round",
+            })
         if opacity != 1.0:
             path.update({"opacity": opacity})
         if tags:
@@ -83,11 +91,14 @@ class Shape:
 
 
 def is_standard(id_: str):
-    """ Check whether SVG object ID is standard Inkscape ID. """
+    """
+    Check whether SVG object ID is standard Inkscape ID.
+    """
+    matcher = re.match(STANDARD_INKSCAPE_ID, id_)
+    return matcher is not None
     if id_ == "base":
         return True
     for prefix in [
-        "circle", "defs", "ellipse", "metadata", "path", "rect", "use"
     ]:
         matcher = re.match(prefix + "\\d+", id_)
         if matcher:
@@ -101,6 +112,7 @@ class IconExtractor:
 
     Icon is a single path with "id" attribute that aligned to 16×16 grid.
     """
+
     def __init__(self, svg_file_name: str):
         """
         :param svg_file_name: input SVG file name with icons.  File may contain
@@ -145,21 +157,22 @@ class IconExtractor:
             name: Optional[str] = None
 
             def get_offset(value: float):
-                """ Get negated icon offset from the origin. """
+                """
+                Get negated icon offset from the origin.
+                """
                 return -int(value / GRID_STEP) * GRID_STEP - GRID_STEP / 2
 
             point: np.array = np.array((
                 get_offset(float(matcher.group(1))),
-                get_offset(float(matcher.group(2)))))
+                get_offset(float(matcher.group(2))),
+            ))
 
             for child_node in node.childNodes:
                 if isinstance(child_node, Element):
                     name = child_node.childNodes[0].nodeValue
                     break
 
-            matcher = re.match(STANDARD_INKSCAPE_ID, id_)
-            if not matcher:
-                self.icons[id_] = Shape(path, point, id_, name)
+            self.icons[id_] = Shape(path, point, id_, name)
         else:
             ui.error(f"not standard ID {id_}")
 
