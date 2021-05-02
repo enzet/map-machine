@@ -86,7 +86,9 @@ def is_standard(id_: str):
     """ Check whether SVG object ID is standard Inkscape ID. """
     if id_ == "base":
         return True
-    for prefix in ["path", "circle", "rect", "defs", "use", "metadata"]:
+    for prefix in [
+        "circle", "defs", "ellipse", "metadata", "path", "rect", "use"
+    ]:
         matcher = re.match(prefix + "\\d+", id_)
         if matcher:
             return True
