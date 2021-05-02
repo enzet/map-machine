@@ -6,9 +6,9 @@ import svgwrite
 from colour import Color
 
 from roentgen.color import is_bright
-from roentgen.icon import Icon
+from roentgen.icon import Shape
 from roentgen.osm_reader import Tagged
-from roentgen.scheme import IconSet
+from roentgen.scheme import Icon
 from roentgen.text import get_address, get_text
 
 DEFAULT_FONT: str = "Roboto"
@@ -138,7 +138,7 @@ class Point(Tagged):
     """
 
     def __init__(
-            self, icon_set: IconSet, tags: Dict[str, str], point: np.array,
+            self, icon_set: Icon, tags: Dict[str, str], point: np.array,
             coordinates: np.array, priority: float = 0,
             is_for_node: bool = True, draw_outline: bool = True
         ):
@@ -146,7 +146,7 @@ class Point(Tagged):
 
         assert point is not None
 
-        self.icon_set: IconSet = icon_set
+        self.icon_set: Icon = icon_set
         self.tags: Dict[str, str] = tags
         self.point: np.array = point
         self.coordinates: np.array = coordinates
@@ -200,7 +200,7 @@ class Point(Tagged):
                 self.y += 16
 
     def draw_point_shape(
-            self, svg: svgwrite.Drawing, icons: List[Icon], position,
+            self, svg: svgwrite.Drawing, shapes: List[Shape], position,
             fill: Color, occupied, tags=None) -> bool:
         """
         Draw one combined icon and its outline.
@@ -214,7 +214,7 @@ class Point(Tagged):
         # Draw outlines.
 
         if self.draw_outline:
-            for icon in icons:  # type: Icon
+            for icon in shapes:  # type: Shape
                 bright: bool = is_bright(fill)
                 color: Color = Color("black") if bright else Color("white")
                 opacity: float = 0.7 if bright else 0.5
@@ -222,7 +222,7 @@ class Point(Tagged):
 
         # Draw icons.
 
-        for icon in icons:  # type: Icon
+        for icon in shapes:  # type: Shape
             icon.draw(svg, position, fill, tags=tags)
 
         if occupied:

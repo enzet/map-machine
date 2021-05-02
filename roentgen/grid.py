@@ -10,7 +10,7 @@ import numpy as np
 from colour import Color
 from svgwrite import Drawing
 
-from roentgen.icon import Icon, IconExtractor
+from roentgen.icon import Shape, IconExtractor
 from roentgen.scheme import Scheme
 
 
@@ -82,7 +82,7 @@ def draw_grid(
         file_name: str, combined_icon_ids: List[Set[str]],
         extractor: IconExtractor, output_directory: str, columns: int = 16,
         step: float = 24, color=Color("#444444")
-    ) -> List[List[Icon]]:
+    ) -> List[List[Shape]]:
     """
     Draw icons in the form of table
 
@@ -99,14 +99,14 @@ def draw_grid(
     point: np.array = np.array((step / 2, step / 2))
     width: float = step * columns
     number: int = 0
-    icons: List[List[Icon]] = []
+    icons: List[List[Shape]] = []
 
     for icons_to_draw in combined_icon_ids:  # type: Set[str]
         found: bool = False
-        icon_set: List[Icon] = []
+        icon_set: List[Shape] = []
         names = []
         for icon_id in icons_to_draw:  # type: str
-            icon, extracted = extractor.get_path(icon_id)  # type: Icon, bool
+            icon, extracted = extractor.get_path(icon_id)  # type: Shape, bool
             assert extracted, f"no icon with ID {icon_id}"
             icon_set.append(icon)
             found = True
@@ -124,12 +124,12 @@ def draw_grid(
     svg: Drawing = Drawing(file_name, (width, height))
     svg.add(svg.rect((0, 0), (width, height), fill="#FFFFFF"))
 
-    for combined_icon in icons:  # type: List[Icon]
+    for combined_icon in icons:  # type: List[Shape]
         background_color = "#FFFFFF"
         svg.add(svg.rect(
             point - np.array((-10, -10)), (20, 20),
             fill=background_color))
-        for icon in combined_icon:  # type: Icon
+        for icon in combined_icon:  # type: Shape
             path = icon.get_path(svg, point)
             path.update({"fill": color.hex})
             svg.add(path)
@@ -151,15 +151,15 @@ def draw_icon(
         file_name: str, icon_ids: Set[str], extractor: IconExtractor
     ) -> None:
 
-    icon_set: List[Icon] = []
+    icon_set: List[Shape] = []
     for icon_id in icon_ids:  # type: str
-        icon, extracted = extractor.get_path(icon_id)  # type: Icon, bool
+        icon, extracted = extractor.get_path(icon_id)  # type: Shape, bool
         assert extracted, f"no icon with ID {icon_id}"
         icon_set.append(icon)
 
     svg: Drawing = Drawing(file_name, (16, 16))
 
-    for icon in icon_set:  # type: Icon
+    for icon in icon_set:  # type: Shape
         path = icon.get_path(svg, (8, 8))
         path.update({"fill": "black"})
         svg.add(path)

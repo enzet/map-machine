@@ -10,18 +10,18 @@ from typing import Any, Dict, List, Optional, Set, Tuple, Union
 import yaml
 from colour import Color
 
-from roentgen.icon import DEFAULT_SHAPE_ID, Icon, IconExtractor
+from roentgen.icon import DEFAULT_SHAPE_ID, Shape, IconExtractor
 
 DEFAULT_COLOR: Color = Color("#444444")
 
 
 @dataclass
-class IconSet:
+class Icon:
     """
     Node representation: icons and color.
     """
-    main_icon: List[Icon]  # list of icons
-    extra_icons: List[List[Icon]]  # list of lists of icons
+    main_icon: List[Shape]  # list of icons
+    extra_icons: List[List[Shape]]  # list of lists of icons
     color: Color  # fill color of all icons
     # tag keys that were processed to create icon set (other
     # tag keys should be displayed by text or ignored)
@@ -107,7 +107,7 @@ class Scheme:
         self.prefix_to_skip: List[str] = content["prefix_to_skip"]
 
         # Storage for created icon sets.
-        self.cache: Dict[str, Tuple[IconSet, int]] = {}
+        self.cache: Dict[str, Tuple[Icon, int]] = {}
 
     def get_color(self, color: str) -> Color:
         """
@@ -159,7 +159,7 @@ class Scheme:
 
     def get_icon(
             self, icon_extractor: IconExtractor, tags: Dict[str, Any],
-            for_: str = "node") -> Tuple[IconSet, int]:
+            for_: str = "node") -> Tuple[Icon, int]:
         """
         Construct icon set.
 
@@ -222,17 +222,17 @@ class Scheme:
             main_icon_id = [DEFAULT_SHAPE_ID]
             is_default = True
 
-        main_icon: List[Icon] = []
+        main_icon: List[Shape] = []
         if main_icon_id:
             main_icon = list(map(
                 lambda x: icon_extractor.get_path(x)[0], main_icon_id))
 
-        extra_icons: List[List[Icon]] = []
+        extra_icons: List[List[Shape]] = []
         for icon_id in extra_icon_ids:
             extra_icons.append(list(map(
                 lambda x: icon_extractor.get_path(x)[0], icon_id)))
 
-        returned: IconSet = IconSet(
+        returned: Icon = Icon(
             main_icon, extra_icons, fill, processed, is_default)
 
         self.cache[tags_hash] = returned, priority

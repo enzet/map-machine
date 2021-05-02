@@ -23,7 +23,7 @@ GRID_STEP: int = 16
 
 
 @dataclass
-class Icon:
+class Shape:
     """
     SVG icon path description.
     """
@@ -58,7 +58,7 @@ class Icon:
         Draw icon shape into SVG file.
 
         :param svg: output SVG file
-        :param point: icon position
+        :param point: 2D position of the icon centre
         :param color: fill color
         :param opacity: icon opacity
         :param tags: tags to be displayed as hint
@@ -104,7 +104,7 @@ class IconExtractor:
         :param svg_file_name: input SVG file name with icons.  File may contain
             any other irrelevant graphics.
         """
-        self.icons: Dict[str, Icon] = {}
+        self.icons: Dict[str, Shape] = {}
 
         with open(svg_file_name) as input_file:
             content = parse(input_file)  # type: Document
@@ -157,11 +157,11 @@ class IconExtractor:
 
             matcher = re.match(STANDARD_INKSCAPE_ID, id_)
             if not matcher:
-                self.icons[id_] = Icon(path, point, id_, name)
+                self.icons[id_] = Shape(path, point, id_, name)
         else:
             ui.error(f"not standard ID {id_}")
 
-    def get_path(self, id_: str) -> (Icon, bool):
+    def get_path(self, id_: str) -> (Shape, bool):
         """
         Get SVG path of the icon.
 

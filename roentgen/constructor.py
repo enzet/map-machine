@@ -19,7 +19,7 @@ from roentgen.osm_reader import (
     Map, OSMMember, OSMNode, OSMRelation, OSMWay, Tagged
 )
 from roentgen.point import Point
-from roentgen.scheme import IconSet, LineStyle, Scheme
+from roentgen.scheme import Icon, LineStyle, Scheme
 from roentgen.util import MinMax
 
 DEBUG: bool = False
@@ -352,7 +352,7 @@ class Constructor:
                     self.scheme.is_area(line.tags)):
 
                 priority: int
-                icon_set: IconSet
+                icon_set: Icon
                 icon_set, priority = self.scheme.get_icon(
                     self.icon_extractor, line.tags, for_="line")
 
@@ -369,7 +369,7 @@ class Constructor:
                     line.tags, inners, outers, LineStyle(style, 1000)))
 
             priority: int
-            icon_set: IconSet
+            icon_set: Icon
             icon_set, priority = self.scheme.get_icon(
                 self.icon_extractor, line.tags)
 
@@ -429,7 +429,7 @@ class Constructor:
                 continue
 
             priority: int
-            icon_set: IconSet
+            icon_set: Icon
             draw_outline: bool = True
 
             if self.mode in ["time", "user-coloring"]:
@@ -440,7 +440,7 @@ class Constructor:
                 if self.mode == "time":
                     color = get_time_color(node.timestamp, self.map_.time)
                 dot, _ = self.icon_extractor.get_path(DEFAULT_SMALL_SHAPE_ID)
-                icon_set = IconSet([dot], [], color, set(), True)
+                icon_set = Icon([dot], [], color, set(), True)
                 priority = 0
                 draw_outline = False
             else:
