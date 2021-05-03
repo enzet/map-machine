@@ -8,7 +8,7 @@ from colour import Color
 from roentgen.color import is_bright
 from roentgen.icon import Shape
 from roentgen.osm_reader import Tagged
-from roentgen.scheme import Icon
+from roentgen.scheme import Icon, Scheme
 from roentgen.text import get_address, get_text
 
 DEFAULT_FONT: str = "Roboto"
@@ -20,6 +20,7 @@ class TextStruct:
     """
     Some label on the map with attributes.
     """
+
     text: str
     fill: Color = DEFAULT_COLOR
     size: float = 10.0
@@ -138,7 +139,7 @@ class Point(Tagged):
     """
 
     def __init__(
-            self, icon_set: Icon, tags: Dict[str, str], point: np.array,
+            self, icon: Icon, tags: Dict[str, str], point: np.array,
             coordinates: np.array, priority: float = 0,
             is_for_node: bool = True, draw_outline: bool = True
         ):
@@ -146,7 +147,7 @@ class Point(Tagged):
 
         assert point is not None
 
-        self.icon_set: Icon = icon_set
+        self.icon_set: Icon = icon
         self.tags: Dict[str, str] = tags
         self.point: np.array = point
         self.coordinates: np.array = coordinates
@@ -158,9 +159,11 @@ class Point(Tagged):
         self.y = 0
         self.main_icon_painted: bool = False
 
-    def draw_main_shapes(self, svg: svgwrite.Drawing, occupied: Occupied):
+    def draw_main_shapes(
+        self, svg: svgwrite.Drawing, occupied: Optional[Occupied] = None
+    ) -> None:
         """
-        Draw shapes for one node.
+        Draw main shape for one node.
         """
         if (self.icon_set.main_icon and
                 (not self.icon_set.main_icon[0].is_default() or
@@ -173,8 +176,12 @@ class Point(Tagged):
             if self.main_icon_painted:
                 self.y += 16
 
-    def draw_extra_shapes(self, svg: svgwrite.Drawing, occupied: Occupied):
-
+    def draw_extra_shapes(
+        self, svg: svgwrite.Drawing, occupied: Optional[Occupied] = None
+    ) -> None:
+        """
+        Draw secondary shapes.
+        """
         if not self.icon_set.extra_icons or not self.main_icon_painted:
             return
 
@@ -200,8 +207,9 @@ class Point(Tagged):
                 self.y += 16
 
     def draw_point_shape(
-            self, svg: svgwrite.Drawing, shapes: List[Shape], position,
-            fill: Color, occupied, tags=None) -> bool:
+        self, svg: svgwrite.Drawing, shapes: List[Shape], position,
+        fill: Color, occupied, tags: Optional[Dict[str, str]] = None
+    ) -> bool:
         """
         Draw one combined icon and its outline.
         """
@@ -234,7 +242,7 @@ class Point(Tagged):
         return True
 
     def draw_texts(
-            self, svg: svgwrite.Drawing, scheme, occupied: Occupied,
+            self, svg: svgwrite.Drawing, scheme: Scheme, occupied: Occupied,
             draw_captions):
         """
         Draw all labels.
@@ -252,10 +260,11 @@ class Point(Tagged):
                 occupied, text_struct.fill, size=text_struct.size)
 
     def draw_text(
-            self, svg: svgwrite.Drawing, text: str, point, occupied: Occupied,
-            fill: Color, size: float = 10.0, out_fill=Color("white"),
-            out_opacity=0.5, out_fill_2: Optional[Color] = None,
-            out_opacity_2=1.0):
+        self, svg: svgwrite.Drawing, text: str, point, occupied: Occupied,
+        fill: Color, size: float = 10.0, out_fill=Color("white"),
+        out_opacity: float = 0.5, out_fill_2: Optional[Color] = None,
+        out_opacity_2: float = 1.0
+    ) -> None:
         """
         Drawing text.
 
@@ -287,15 +296,18 @@ class Point(Tagged):
                 text, point, font_size=size, text_anchor="middle",
                 font_family=DEFAULT_FONT, fill=out_fill_2.hex,
                 stroke_linejoin="round", stroke_width=5,
-                stroke=out_fill_2.hex, opacity=out_opacity_2))
+                stroke=out_fill_2.hex, opacity=out_opacity_2
+            ))
         if out_fill:
             svg.add(svg.text(
                 text, point, font_size=size, text_anchor="middle",
                 font_family=DEFAULT_FONT, fill=out_fill.hex,
                 stroke_linejoin="round", stroke_width=3,
-                stroke=out_fill.hex, opacity=out_opacity))
+                stroke=out_fill.hex, opacity=out_opacity
+            ))
         svg.add(svg.text(
             text, point, font_size=size, text_anchor="middle",
-            font_family=DEFAULT_FONT, fill=fill.hex))
+            font_family=DEFAULT_FONT, fill=fill.hex
+        ))
 
         self.y += 11
