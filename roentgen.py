@@ -31,12 +31,6 @@ def main(argv) -> None:
 
     :param argv: command-line arguments
     """
-    if len(argv) == 2:
-        if argv[1] == "grid":
-            os.makedirs("icon_set", exist_ok=True)
-            draw_all_icons("icon_grid.svg", "icon_set")
-        return
-
     options: argparse.Namespace = ui.parse_options(argv)
 
     if not options:
@@ -132,11 +126,19 @@ def draw_icon(tags_description: str):
     svg = svgwrite.Drawing("test_icon.svg", (64, 64))
     point.draw_main_shapes(svg)
     point.draw_extra_shapes(svg)
+    point.draw_texts(svg, scheme, None, True)
     svg.write(open("test_icon.svg", "w+"))
+
+
+def draw_grid():
+    os.makedirs("icon_set", exist_ok=True)
+    draw_all_icons("icon_grid.svg", "icon_set")
 
 
 if __name__ == "__main__":
     if len(sys.argv) == 3 and sys.argv[1] == "icon":
         draw_icon(sys.argv[2])
+    elif len(sys.argv) == 2 and sys.argv[1] == "grid":
+        draw_grid()
     else:
         main(sys.argv)

@@ -54,7 +54,7 @@ If tag is drawable it is displayed using icon combination and colors. All icons 
 
 Feel free to request new icons via issues for whatever you want to see on the map. No matter how frequently the tag is used in OpenStreetMap since final goal is to cover all tags. However, common used tags have priority, other things being equal.
 
-Draw icon grid: `python run.py grid`.
+Draw icon grid: `python roentgen.py grid`.
 
 ### Icon combination ###
 
@@ -97,7 +97,7 @@ Map generation
 There are simple Python renderer that generates SVG map from OpenStreetMap data. You can run it using:
 
 ```bash
-python run.py \
+python roentgen.py \
     -b ${LONGITUDE_1},${LATITUDE_1},${LONGITUDE_2},${LATITUDE_2} \
     -o ${OUTPUT_FILE_NAME} \
     -s ${OSM_ZOOM_LEVEL}
@@ -106,7 +106,7 @@ python run.py \
 Example:
 
 ```bash
-python run.py -b 2.284,48.86,2.29,48.865
+python roentgen.py -b 2.284,48.86,2.29,48.865
 ```
 
 ### Main arguments ###
@@ -121,5 +121,5 @@ python run.py -b 2.284,48.86,2.29,48.865
   * `-o`: path to output SVG file name. Default is `map.svg`.
   * `-i`: path to input XML file name. If this argument is not set, XML file will be downloaded through OpenStreetMap API.
 
-Check all arguments with `python run.py --help`.
+Check all arguments with `python roentgen.py --help`.
 
