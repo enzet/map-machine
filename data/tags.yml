@@ -173,10 +173,18 @@ node_icons:
     icon: [fishing_angle]
   - tags: {power: substation}
     icon: [electricity]
+  # produce=*
   - tags: {produce: apple}
     icon: [apple]
     color: orchard_border_color
   - tags: {produce: pear}
+    icon: [pear]
+    color: orchard_border_color
+  # trees=*
+  - tags: {trees: apple_trees}
+    icon: [apple]
+    color: orchard_border_color
+  - tags: {trees: pear_trees}
     icon: [pear]
     color: orchard_border_color
 
