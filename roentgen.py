@@ -21,7 +21,7 @@ from roentgen.mapper import (
 from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader, OverpassReader
 from roentgen.point import Point
-from roentgen.scheme import Scheme
+from roentgen.scheme import Scheme, LineStyle
 from roentgen.util import MinMax
 
 
@@ -117,13 +117,30 @@ def main(argv) -> None:
     print("Done.")
 
 
-def draw_icon(tags_description: str):
-    tags = dict([x.split("=") for x in tags_description.split(";")])
+def draw_element(target: str, tags_description: str):
+    """
+    Draw single node, line, or area.
+
+    :param target: node, line, or area.
+    :param tags_description: text description of tags, pair are separated by
+        comma, key from value is separated by equals sign.
+    """
+    tags = dict([x.split("=") for x in tags_description.split(",")])
     scheme = Scheme("data/tags.yml")
     icon_extractor = IconExtractor("icons/icons.svg")
     icon_set, priority = scheme.get_icon(icon_extractor, tags)
-    point = Point(icon_set, tags, np.array((32, 32)), None)
+    is_for_node: bool = target == "node"
+    point = Point(
+        icon_set, tags, np.array((32, 32)), None, is_for_node=is_for_node,
+        draw_outline=is_for_node
+    )
+    print(point.is_for_node)
     svg = svgwrite.Drawing("test_icon.svg", (64, 64))
+    for style in scheme.get_style(tags, 18):
+        style: LineStyle
+        path = svg.path(d="M 0,0 L 64,0 L 64,64 L 0,64 L 0,0 Z")
+        path.update(style.style)
+        svg.add(path)
     point.draw_main_shapes(svg)
     point.draw_extra_shapes(svg)
     point.draw_texts(svg, scheme, None, True)
@@ -131,13 +148,16 @@ def draw_icon(tags_description: str):
 
 
 def draw_grid():
+    """
+    Draw all possible icon shapes combinations as grid.
+    """
     os.makedirs("icon_set", exist_ok=True)
     draw_all_icons("icon_grid.svg", "icon_set")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 3 and sys.argv[1] == "icon":
-        draw_icon(sys.argv[2])
+    if len(sys.argv) == 3 and sys.argv[1] in ["node", "way", "area"]:
+        draw_element(sys.argv[1], sys.argv[2])
     elif len(sys.argv) == 2 and sys.argv[1] == "grid":
         draw_grid()
     else:
