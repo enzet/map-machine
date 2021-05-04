@@ -32,6 +32,7 @@ colors:
   meadow_border_color: "#BFD078"
   meadow_color: "#CFE088"
   orchard_color: "#B8DCA4"
+  orchard_border_color: "#98BC84"
   outline_color: "#FFFFFF"
   parking_color: "#DDCC99"
   pitch_color: "#AADDCC"
@@ -172,6 +173,12 @@ node_icons:
     icon: [fishing_angle]
   - tags: {power: substation}
     icon: [electricity]
+  - tags: {produce: apple}
+    icon: [apple]
+    color: orchard_border_color
+  - tags: {produce: pear}
+    icon: [pear]
+    color: orchard_border_color
 
   # Bigger objects
 
