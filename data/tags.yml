@@ -173,9 +173,16 @@ node_icons:
     icon: [fishing_angle]
   - tags: {power: substation}
     icon: [electricity]
+  # plant=*
+  - tags: {plant: christmas_trees}
+    icon: [christmas_tree]
+    color: orchard_border_color
   # produce=*
   - tags: {produce: apple}
     icon: [apple]
+    color: orchard_border_color
+  - tags: {produce: christmas_trees}
+    icon: [christmas_tree]
     color: orchard_border_color
   - tags: {produce: pear}
     icon: [pear]
@@ -584,6 +591,8 @@ node_icons:
     icon: [statue]
   - tags: {tourism: attraction}
     icon: [photo_camera]
+  - tags: {xmas:feature: tree}
+    icon: {christmas_tree}
 
   # Normal small objects
 

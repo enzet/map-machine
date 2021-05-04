@@ -168,12 +168,12 @@
      inkscape:object-paths="true"
      inkscape:guide-bbox="true"
      showguides="false"
-     showgrid="false"
+     showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="136.86191"
-     inkscape:cx="232.58179"
-     inkscape:zoom="4"
+     inkscape:cy="514.66521"
+     inkscape:cx="327.2049"
+     inkscape:zoom="32"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -15285,5 +15285,52 @@
        id="path7841"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccc" />
+    <path
+       style="fill:#000000;stroke:none"
+       d="M 326 81 L 327 83 L 326 85 L 328 84 L 330 85 L 329 83 L 330 81 L 328 82 L 326 81 z M 328 85 C 327.5 86.25 326.25 87.25 325 88 L 327 88 C 326.5 89.25 325.25 90.25 324 91 L 326 91 C 325.5 92.25 324.25 93.25 323 94 L 327 94 L 327 95 L 329 95 L 329 94 L 333 94 C 331.75 93.25 330.5 92.25 330 91 L 332 91 C 330.75 90.25 329.5 89.25 329 88 L 331 88 C 329.75 87.25 328.5 86.25 328 85 z "
+       id="christmas_tree"
+       inkscape:label="#path7845">
+      <title
+         id="title7866">Christmas tree</title>
+    </path>
+    <path
+       sodipodi:nodetypes="cccccccccccccc"
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 216,67 c -0.5,1.25 -1.75,2.25 -3,3 l 2,0 c -0.5,1.25 -1.75,2.25 -3,3 l 2,0 c -0.5,1.25 -1.75,2.25 -3,3 l 4,0 2,0 4,0 c -1.25,-0.75 -2.5,-1.75 -3,-3 l 2,0 c -1.25,-0.75 -2.5,-1.75 -3,-3 l 2,0 c -1.25,-0.75 -2.5,-1.75 -3,-3 z"
+       id="path7851"
+       inkscape:connector-curvature="0"
+       inkscape:label="#path3178">
+      <title
+         id="title7853">needleleaved tree</title>
+    </path>
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect7855"
+       width="2"
+       height="4"
+       x="215"
+       y="75" />
+    <path
+       inkscape:label="#path3178"
+       inkscape:connector-curvature="0"
+       id="path7857"
+       d="m 328,69 c -0.5,1.25 -1.75,2.25 -3,3 l 2,0 c -0.5,1.25 -1.75,2.25 -3,3 l 2,0 c -0.5,1.25 -1.75,2.25 -3,3 l 4,0 2,0 4,0 c -1.25,-0.75 -2.5,-1.75 -3,-3 l 2,0 c -1.25,-0.75 -2.5,-1.75 -3,-3 l 2,0 c -1.25,-0.75 -2.5,-1.75 -3,-3 z"
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none"
+       sodipodi:nodetypes="cccccccccccccc">
+      <title
+         id="title7859">needleleaved tree</title>
+    </path>
+    <rect
+       y="77"
+       x="327"
+       height="2"
+       width="2"
+       id="rect7861"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 328,68 -2,1 1,-2 -1,-2 2,1 2,-1 -1,2 1,2 z"
+       id="path7863"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>
