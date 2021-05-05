@@ -2,11 +2,40 @@
 Author: Sergey Vartanov (me@enzet.ru).
 """
 from os import makedirs
+from typing import Dict
 
+from roentgen.icon import IconExtractor
 from roentgen.grid import draw_all_icons
+from roentgen.scheme import Scheme
 
 
 def test_icons() -> None:
     """ Test grid drawing. """
     makedirs("icon_set", exist_ok=True)
     draw_all_icons("temp.svg", "icon_set")
+
+
+def get_icon(tags: Dict[str, str]):
+    scheme = Scheme("data/tags.yml")
+    icon_extractor = IconExtractor("icons/icons.svg")
+    icon, _ = scheme.get_icon(icon_extractor, tags)
+    return icon
+
+
+def test_no_icons() -> None:
+    """
+    Tags that has no description in scheme and should be visualized with default
+    shape.
+    """
+    icon = get_icon({"aaa": "bbb"})
+    assert icon.main_icon[0].is_default()
+
+
+def test_icon() -> None:
+    """
+    Tags that should be visualized with single main icon and without extra
+    icons.
+    """
+    icon = get_icon({"natural": "tree"})
+    assert not icon.main_icon[0].is_default()
+    assert not icon.extra_icons
