@@ -39,3 +39,21 @@ def test_icon() -> None:
     icon = get_icon({"natural": "tree"})
     assert not icon.main_icon[0].is_default()
     assert not icon.extra_icons
+
+
+def test_icon_1_extra() -> None:
+    """
+    Tags that should be visualized with single main icon and single extra icon.
+    """
+    icon = get_icon({"barrier": "gate", "access": "private"})
+    assert not icon.main_icon[0].is_default()
+    assert len(icon.extra_icons) == 1
+
+
+def test_icon_2_extra() -> None:
+    """
+    Tags that should be visualized with single main icon and two extra icons.
+    """
+    icon = get_icon({"barrier": "gate", "access": "private", "bicycle": "yes"})
+    assert not icon.main_icon[0].is_default()
+    assert len(icon.extra_icons) == 2
