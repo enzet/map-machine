@@ -320,8 +320,9 @@ class Constructor:
             self.figures.append(Figure(
                 line.tags, inners, outers,
                 LineStyle({
-                    "fill": "none", "stroke": user_color.hex,
-                    "stroke-width": 1})))
+                    "fill": "none", "stroke": user_color.hex, "stroke-width": 1
+                })
+            ))
             return
 
         if self.mode == "time":
@@ -329,8 +330,9 @@ class Constructor:
             self.figures.append(Figure(
                 line.tags, inners, outers,
                 LineStyle({
-                    "fill": "none", "stroke": time_color.hex,
-                    "stroke-width": 1})))
+                    "fill": "none", "stroke": time_color.hex, "stroke-width": 1
+                })
+            ))
             return
 
         if not line.tags:
@@ -343,22 +345,25 @@ class Constructor:
         for line_style in line_styles:  # type: LineStyle
             if "building" in line.tags:
                 self.add_building(Building(
-                    line.tags, inners, outers, self.flinger, line_style))
+                    line.tags, inners, outers, self.flinger, line_style
+                ))
             else:
                 self.figures.append(
                     Figure(line.tags, inners, outers, line_style))
-            if (line.get_tag("area") == "yes" or
-                    is_cycle(outers[0]) and line.get_tag("area") != "no" and
-                    self.scheme.is_area(line.tags)):
-
+            if (
+                line.get_tag("area") == "yes" or
+                is_cycle(outers[0]) and line.get_tag("area") != "no" and
+                self.scheme.is_area(line.tags)
+            ):
                 priority: int
-                icon_set: Icon
-                icon_set, priority = self.scheme.get_icon(
-                    self.icon_extractor, line.tags, for_="line")
-
+                icon: Icon
+                icon, priority = self.scheme.get_icon(
+                    self.icon_extractor, line.tags, for_="line"
+                )
                 self.nodes.append(Point(
-                    icon_set, line.tags, center_point, center_coordinates,
-                    is_for_node=False, priority=priority))
+                    icon, line.tags, center_point, center_coordinates,
+                    is_for_node=False, priority=priority
+                ))
 
         if not line_styles:
             if DEBUG:

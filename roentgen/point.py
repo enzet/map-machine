@@ -126,9 +126,7 @@ def construct_text(
 
 
 def in_range(position, points) -> bool:
-    return (
-            0 <= position[0] < len(points) and
-            0 <= position[1] < len(points[0]))
+    return 0 <= position[0] < len(points) and 0 <= position[1] < len(points[0])
 
 
 class Point(Tagged):
@@ -139,15 +137,15 @@ class Point(Tagged):
     """
 
     def __init__(
-            self, icon: Icon, tags: Dict[str, str], point: np.array,
-            coordinates: np.array, priority: float = 0,
-            is_for_node: bool = True, draw_outline: bool = True
-        ):
+        self, icon: Icon, tags: Dict[str, str], point: np.array,
+        coordinates: np.array, priority: float = 0,
+        is_for_node: bool = True, draw_outline: bool = True
+    ):
         super().__init__()
 
         assert point is not None
 
-        self.icon_set: Icon = icon
+        self.icon: Icon = icon
         self.tags: Dict[str, str] = tags
         self.point: np.array = point
         self.coordinates: np.array = coordinates
@@ -165,13 +163,15 @@ class Point(Tagged):
         """
         Draw main shape for one node.
         """
-        if (self.icon_set.main_icon and
-                (not self.icon_set.main_icon[0].is_default() or
-                 self.is_for_node)):
+        if (
+            self.icon.main_icon and
+            (not self.icon.main_icon[0].is_default() or
+             self.is_for_node)
+        ):
             position = self.point + np.array((0, self.y))
             self.main_icon_painted: bool = self.draw_point_shape(
-                svg, self.icon_set.main_icon,
-                position, self.icon_set.color, occupied,
+                svg, self.icon.main_icon,
+                position, self.icon.color, occupied,
                 tags=self.tags)
             if self.main_icon_painted:
                 self.y += 16
@@ -182,28 +182,28 @@ class Point(Tagged):
         """
         Draw secondary shapes.
         """
-        if not self.icon_set.extra_icons or not self.main_icon_painted:
+        if not self.icon.extra_icons or not self.main_icon_painted:
             return
 
         is_place_for_extra: bool = True
         if occupied:
-            left: float = -(len(self.icon_set.extra_icons) - 1) * 8
-            for shape_ids in self.icon_set.extra_icons:
+            left: float = -(len(self.icon.extra_icons) - 1) * 8
+            for _ in self.icon.extra_icons:
                 if occupied.check(
-                        (int(self.point[0] + left),
-                         int(self.point[1] + self.y))):
+                    (int(self.point[0] + left), int(self.point[1] + self.y))
+                ):
                     is_place_for_extra = False
                     break
                 left += 16
 
         if is_place_for_extra:
-            left: float = -(len(self.icon_set.extra_icons) - 1) * 8
-            for shape_ids in self.icon_set.extra_icons:
+            left: float = -(len(self.icon.extra_icons) - 1) * 8
+            for shape_ids in self.icon.extra_icons:
                 self.draw_point_shape(
                     svg, shape_ids, self.point + np.array((left, self.y)),
                     Color("#888888"), occupied)
                 left += 16
-            if self.icon_set.extra_icons:
+            if self.icon.extra_icons:
                 self.y += 16
 
     def draw_point_shape(
@@ -248,7 +248,7 @@ class Point(Tagged):
         Draw all labels.
         """
         text_structures: List[TextStruct] = construct_text(
-            self.tags, self.icon_set.processed, scheme, draw_captions)
+            self.tags, self.icon.processed, scheme, draw_captions)
 
         for text_struct in text_structures:  # type: TextStruct
             text = text_struct.text
@@ -257,7 +257,8 @@ class Point(Tagged):
             text = text[:26] + ("..." if len(text) > 26 else "")
             self.draw_text(
                 svg, text, self.point + np.array((0, self.y)),
-                occupied, text_struct.fill, size=text_struct.size)
+                occupied, text_struct.fill, size=text_struct.size
+            )
 
     def draw_text(
         self, svg: svgwrite.Drawing, text: str, point, occupied: Occupied,
