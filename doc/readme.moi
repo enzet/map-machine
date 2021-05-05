@@ -1,9 +1,9 @@
-\b {Röntgen} is a
+\b {Röntgen} project consists of
 
 \list
-  {simple Python \href {http://openstreetmap.org} {OpenStreetMap} renderer,}
-  {set of icons,}
-  {and map styles.}
+    {simple Python \href {http://openstreetmap.org} {OpenStreetMap} renderer,}
+    {set of icons,}
+    {and map styles.}
 
 \href {https://travis-ci.org/enzet/Roentgen} {\image {https://travis-ci.org/enzet/Roentgen.svg?branch=master} {Build Status}}
 
@@ -12,6 +12,14 @@ The idea behind Röntgen project is to have a possibility to \i {display any map
 Röntgen is primarily created for OpenStreetMap contributors.  Suppose, you spent time adding colors for building walls, benches and shelters for bus stops but they are not represented on the standard tile layer.  Röntgen helps to display all changes you made.
 
 Nevertheless, Röntgen map generator can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users.
+
+\2 {Usage} {usage}
+
+To get SVG map, just run
+
+\code {python roentgen.py -b <lon1>,<lat1>,<lon2>,<lat2>} {bash}
+
+(e.g. \tt {python roentgen.py -b 2.284,48.86,2.29,48.865}).  It will automatically download OSM data and write output map to \tt {map.svg}.  For more options see \href {#map-generation} {Map Generation section}.
 
 \2 {Map features} {features}
 

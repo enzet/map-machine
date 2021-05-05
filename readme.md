@@ -1,4 +1,4 @@
-**Röntgen** is a
+**Röntgen** project consists of
 
   * simple Python [OpenStreetMap](http://openstreetmap.org) renderer,
   * set of icons,
@@ -11,6 +11,17 @@ The idea behind Röntgen project is to have a possibility to *display any map fe
 Röntgen is primarily created for OpenStreetMap contributors. Suppose, you spent time adding colors for building walls, benches and shelters for bus stops but they are not represented on the standard tile layer. Röntgen helps to display all changes you made.
 
 Nevertheless, Röntgen map generator can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users.
+
+Usage
+-----
+
+To get SVG map, just run
+
+```bash
+python roentgen.py -b <lon1>,<lat1>,<lon2>,<lat2>
+```
+
+(e.g. `python roentgen.py -b 2.284,48.86,2.29,48.865`). It will automatically download OSM data and write output map to `map.svg`. For more options see [Map Generation section](#map-generation).
 
 Map features
 ------------
@@ -29,13 +40,13 @@ Tree leaf types, leaf cycles, and genes.
 
 ### Viewpoint and camera direction ###
 
-Visualize [`direction`](https://wiki.openstreetmap.org/wiki/Key:direction) tag for [`tourism`](https://wiki.openstreetmap.org/wiki/Key:tourism)`=`[`viewpoint`](https://wiki.openstreetmap.org/wiki/Tag:tourism=viewpoint) and [`camera:direction`](https://wiki.openstreetmap.org/wiki/Key:camera:direction) for [`man_made`](https://wiki.openstreetmap.org/wiki/Key:man_made)`=`[`surveillance`](https://wiki.openstreetmap.org/wiki/Tag:man_made=surveillance).
+Visualize [`direction`](https://wiki.openstreetmap.org/wiki/Key:direction) tag for [`tourism`](https://wiki.openstreetmap.org/wiki/Key:tourism)=[`viewpoint`](https://wiki.openstreetmap.org/wiki/Tag:tourism=viewpoint) and [`camera:direction`](https://wiki.openstreetmap.org/wiki/Key:camera:direction) for [`man_made`](https://wiki.openstreetmap.org/wiki/Key:man_made)=[`surveillance`](https://wiki.openstreetmap.org/wiki/Tag:man_made=surveillance).
 
 ![Surveillance](doc/surveillance.png)
 
 ### Power tower design ###
 
-Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used with [`power`](https://wiki.openstreetmap.org/wiki/Key:power)`=`[`tower`](https://wiki.openstreetmap.org/wiki/Tag:power=tower) tag.
+Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used with [`power`](https://wiki.openstreetmap.org/wiki/Key:power)=[`tower`](https://wiki.openstreetmap.org/wiki/Tag:power=tower) tag.
 
 ![Power tower design](doc/power_tower_design.png)
 
