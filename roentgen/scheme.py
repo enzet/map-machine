@@ -5,6 +5,7 @@ Author: Sergey Vartanov (me@enzet.ru).
 """
 import copy
 from dataclasses import dataclass
+from enum import Enum
 from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 import yaml
@@ -35,9 +36,17 @@ class LineStyle:
     priority: float = 0.0
 
 
+class MatchingType(Enum):
+    NOT_MATCHED = 0
+    MATCHED_BY_SET = 1
+    MATCHED_BY_WILDCARD = 2
+    MATCHED = 3
+
+
 def is_matched_tag(
-        matcher_tag_key: str, matcher_tag_value: str,
-        tags: Dict[str, str]) -> bool:
+    matcher_tag_key: str, matcher_tag_value: Union[str, list],
+    tags: Dict[str, str]
+) -> MatchingType:
     """
     Check whether element tags contradict tag matcher.
 
@@ -45,13 +54,20 @@ def is_matched_tag(
     :param matcher_tag_value: tag value, tag value list, or "*"
     :param tags: element tags to check
     """
-    return (
-        matcher_tag_key in tags and
-        (matcher_tag_value == "*" or
-         isinstance(matcher_tag_value, str) and
-         tags[matcher_tag_key] == matcher_tag_value or
-         isinstance(matcher_tag_value, list) and
-         tags[matcher_tag_key] in matcher_tag_value))
+    if matcher_tag_key in tags:
+        if matcher_tag_value == "*":
+            return MatchingType.MATCHED_BY_WILDCARD
+        if (
+            isinstance(matcher_tag_value, str) and
+            tags[matcher_tag_key] == matcher_tag_value
+        ):
+            return MatchingType.MATCHED
+        if (
+            isinstance(matcher_tag_value, list) and
+            tags[matcher_tag_key] in matcher_tag_value
+        ):
+            return MatchingType.MATCHED_BY_SET
+    return MatchingType.NOT_MATCHED
 
 
 def is_matched(matcher: Dict[str, Any], tags: Dict[str, str]) -> bool:
@@ -63,16 +79,24 @@ def is_matched(matcher: Dict[str, Any], tags: Dict[str, str]) -> bool:
     """
     matched: bool = True
 
-    for config_tag_key in matcher["tags"]:  # type: str
+    for config_tag_key in matcher["tags"]:
+        config_tag_key: str
         tag_matcher = matcher["tags"][config_tag_key]
-        if not is_matched_tag(config_tag_key, tag_matcher, tags):
+        if (
+            is_matched_tag(config_tag_key, tag_matcher, tags) ==
+                MatchingType.NOT_MATCHED
+        ):
             matched = False
             break
 
     if "no_tags" in matcher:
-        for config_tag_key in matcher["no_tags"]:  # type: str
+        for config_tag_key in matcher["no_tags"]:
+            config_tag_key: str
             tag_matcher = matcher["no_tags"][config_tag_key]
-            if is_matched_tag(config_tag_key, tag_matcher, tags):
+            if (
+                is_matched_tag(config_tag_key, tag_matcher, tags) !=
+                    MatchingType.NOT_MATCHED
+            ):
                 matched = False
                 break
 
@@ -158,16 +182,19 @@ class Scheme:
         return False
 
     def get_icon(
-            self, icon_extractor: IconExtractor, tags: Dict[str, Any],
-            for_: str = "node") -> Tuple[Icon, int]:
+        self, icon_extractor: IconExtractor, tags: Dict[str, Any],
+        for_: str = "node"
+    ) -> Tuple[Icon, int]:
         """
         Construct icon set.
 
+        :param icon_extractor: extractor with icon specifications
         :param tags: OpenStreetMap element tags dictionary
+        :param for_: target (node, way, area or relation)
         """
         tags_hash: str = (
-            ",".join(tags.keys()) + ":" + ",".join(map(str, tags.values())))
-
+            ",".join(tags.keys()) + ":" + ",".join(map(str, tags.values()))
+        )
         if tags_hash in self.cache:
             return self.cache[tags_hash]
 
@@ -215,7 +242,8 @@ class Scheme:
 
         keys_left = list(filter(
             lambda x: x not in processed and
-            not self.is_no_drawable(x), tags.keys()))
+            not self.is_no_drawable(x), tags.keys()
+        ))
 
         is_default: bool = False
         if not main_icon_id and not extra_icon_ids and keys_left:
@@ -225,7 +253,8 @@ class Scheme:
         main_icon: List[Shape] = []
         if main_icon_id:
             main_icon = list(map(
-                lambda x: icon_extractor.get_path(x)[0], main_icon_id))
+                lambda x: icon_extractor.get_path(x)[0], main_icon_id
+            ))
 
         extra_icons: List[List[Shape]] = []
         for icon_id in extra_icon_ids:
@@ -233,8 +262,8 @@ class Scheme:
                 lambda x: icon_extractor.get_path(x)[0], icon_id)))
 
         returned: Icon = Icon(
-            main_icon, extra_icons, fill, processed, is_default)
-
+            main_icon, extra_icons, fill, processed, is_default
+        )
         self.cache[tags_hash] = returned, priority
 
         return returned, priority
