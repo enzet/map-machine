@@ -95,4 +95,3 @@ def get_text(tags: Dict[str, Any]) -> List[str]:
             format_frequency, tags["frequency"].split(";"))))
 
     return texts
-
