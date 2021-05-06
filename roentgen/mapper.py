@@ -3,9 +3,6 @@ Simple OpenStreetMap renderer.
 
 Author: Sergey Vartanov (me@enzet.ru).
 """
-import argparse
-import os
-import sys
 from typing import Any, Dict
 
 import numpy as np
@@ -19,13 +16,10 @@ from roentgen import ui
 from roentgen.constructor import Building, Constructor, Figure, Segment
 from roentgen.direction import DirectionSet, Sector
 from roentgen.flinger import Flinger
-from roentgen.grid import draw_all_icons
 from roentgen.icon import IconExtractor
-from roentgen.osm_getter import get_osm
-from roentgen.osm_reader import Map, OSMReader, OverpassReader
+from roentgen.osm_reader import Map
 from roentgen.point import Occupied, Point
 from roentgen.scheme import Scheme
-from roentgen.util import MinMax
 
 ICONS_FILE_NAME: str = "icons/icons.svg"
 TAGS_FILE_NAME: str = "data/tags.yml"

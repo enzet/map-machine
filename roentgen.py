@@ -6,8 +6,9 @@ Author: Sergey Vartanov (me@enzet.ru).
 import argparse
 import os
 import sys
-import svgwrite
+
 import numpy as np
+import svgwrite
 
 from roentgen import ui
 from roentgen.constructor import Constructor
@@ -15,13 +16,13 @@ from roentgen.flinger import Flinger
 from roentgen.grid import draw_all_icons
 from roentgen.icon import IconExtractor
 from roentgen.mapper import (
-    Painter, check_level_number, check_level_overground,
-    ICONS_FILE_NAME, AUTHOR_MODE, CREATION_TIME_MODE, TAGS_FILE_NAME
+    AUTHOR_MODE, CREATION_TIME_MODE, ICONS_FILE_NAME, Painter, TAGS_FILE_NAME,
+    check_level_number, check_level_overground
 )
 from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader, OverpassReader
 from roentgen.point import Point
-from roentgen.scheme import Scheme, LineStyle
+from roentgen.scheme import LineStyle, Scheme
 from roentgen.util import MinMax
 
 

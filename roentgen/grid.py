@@ -10,7 +10,7 @@ import numpy as np
 from colour import Color
 from svgwrite import Drawing
 
-from roentgen.icon import Shape, IconExtractor
+from roentgen.icon import IconExtractor, Shape
 from roentgen.scheme import Scheme
 
 

@@ -11,7 +11,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple, Union
 import yaml
 from colour import Color
 
-from roentgen.icon import DEFAULT_SHAPE_ID, Shape, IconExtractor
+from roentgen.icon import DEFAULT_SHAPE_ID, IconExtractor, Shape
 from roentgen.text import Label, get_address, get_text
 
 DEFAULT_COLOR: Color = Color("#444444")

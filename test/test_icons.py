@@ -4,8 +4,8 @@ Author: Sergey Vartanov (me@enzet.ru).
 from os import makedirs
 from typing import Dict
 
-from roentgen.icon import IconExtractor
 from roentgen.grid import draw_all_icons
+from roentgen.icon import IconExtractor
 from roentgen.scheme import Scheme
 
 

@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List
 
 from colour import Color
+
 DEFAULT_COLOR: Color = Color("#444444")
 
 
