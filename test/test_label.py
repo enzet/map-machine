@@ -1,4 +1,6 @@
 """
+Test label generation for nodes.
+
 Author: Sergey Vartanov (me@enzet.ru).
 """
 from typing import List

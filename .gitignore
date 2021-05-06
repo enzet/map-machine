@@ -19,3 +19,11 @@ missed_tags.yml
 # Test scheme files
 
 *.tm2
+
+# Cache
+
+map/  # OSM XML files
+
+# Generated files
+
+icon_set/  # Generated SVG icon files

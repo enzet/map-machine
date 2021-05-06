@@ -171,9 +171,9 @@
      showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="132.85433"
-     inkscape:cx="263.20995"
-     inkscape:zoom="5.6568542"
+     inkscape:cy="95.082327"
+     inkscape:cx="248.78527"
+     inkscape:zoom="4"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -566,6 +566,11 @@
      inkscape:label="main"
      id="layer1"
      style="display:inline">
+    <path
+       style="opacity:1;fill:#cccccc;fill-opacity:1;stroke:#cccccc;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 259,492 8,-8"
+       id="path7923"
+       inkscape:connector-curvature="0" />
     <path
        inkscape:connector-curvature="0"
        id="path7898"
@@ -15235,12 +15240,6 @@
          id="title7780">slide</title>
     </path>
     <path
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 200,491 c -1,1 -4.01177,-1.21096 -4,-3 0.0112,-1.70857 2,-5 4,-3 2,-2 4.02778,1.16424 4,3 -0.025,1.65171 -3,4 -4,3 z"
-       id="path7786"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cscsc" />
-    <path
        sodipodi:nodetypes="csscssc"
        inkscape:connector-curvature="0"
        id="path7788"
@@ -15377,6 +15376,44 @@
        inkscape:label="#path7900">
       <title
          id="title7909">umbrella</title>
+    </path>
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect7913"
+       width="3"
+       height="10"
+       x="246"
+       y="483"
+       rx="1.4558058"
+       ry="1.5" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 247.45581,499 0.0884,0 c 0.80652,0 1.45581,0.669 1.45581,1.5 l 0,7 c 0,0.831 -0.64929,1.5 -1.45581,1.5 l -0.0884,0 C 246.64929,509 246,508.331 246,507.5 l 0,-7 c 0,-0.831 0.64929,-1.5 1.45581,-1.5 z"
+       id="rectangle_vertical_rounded">
+      <title
+         id="title7942">vertical rounded rectangle</title>
+    </path>
+    <rect
+       ry="1.5"
+       rx="1.4558058"
+       y="483"
+       x="262"
+       height="10"
+       width="3"
+       id="rect7919"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 257.91797,493.08203 a 1.50015,1.50015 0 0 0 0.01,0.01 1.50015,1.50015 0 0 0 0.11133,0.0996 1.50015,1.50015 0 0 0 0.1211,0.0879 1.50015,1.50015 0 0 0 0.13086,0.0762 1.50015,1.50015 0 0 0 0.13671,0.0605 1.50015,1.50015 0 0 0 0.14063,0.0488 1.50015,1.50015 0 0 0 0.14648,0.0332 1.50015,1.50015 0 0 0 0.14844,0.0195 1.50015,1.50015 0 0 0 0.15039,0.004 1.50015,1.50015 0 0 0 0.15039,-0.0117 1.50015,1.50015 0 0 0 0.14649,-0.0254 1.50015,1.50015 0 0 0 0.14453,-0.041 1.50015,1.50015 0 0 0 0.14062,-0.0547 1.50015,1.50015 0 0 0 0.13282,-0.0684 1.50015,1.50015 0 0 0 0.125,-0.0801 1.50015,1.50015 0 0 0 0.11718,-0.0937 1.50015,1.50015 0 0 0 0.0899,-0.0859 l 8,-8 a 1.50015,1.50015 0 0 0 0.10156,-0.10937 1.50015,1.50015 0 0 0 0.0918,-0.11914 1.50015,1.50015 0 0 0 0.0781,-0.12891 1.50015,1.50015 0 0 0 0.0644,-0.13477 1.50015,1.50015 0 0 0 0.0508,-0.14062 1.50015,1.50015 0 0 0 0.0371,-0.14649 1.50015,1.50015 0 0 0 0.0215,-0.14843 1.50015,1.50015 0 0 0 0.008,-0.14844 1.50015,1.50015 0 0 0 -0.008,-0.15039 1.50015,1.50015 0 0 0 -0.0215,-0.14844 1.50015,1.50015 0 0 0 -0.0371,-0.14453 1.50015,1.50015 0 0 0 -0.0527,-0.14062 1.50015,1.50015 0 0 0 -0.0644,-0.13477 1.50015,1.50015 0 0 0 -0.0801,-0.12891 1.50015,1.50015 0 0 0 -0.0898,-0.11914 1.50015,1.50015 0 0 0 -0.0859,-0.0918 l -10.15625,10.15625 z"
+       id="path7925"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 263.45508 499 C 262.64856 499 262 499.669 262 500.5 L 262 504.29297 L 258.64648 507.64648 A 0.50005 0.50005 0 1 0 259.35352 508.35352 L 267.35352 500.35352 A 0.50005 0.50005 0 0 0 266.99023 499.49609 A 0.50005 0.50005 0 0 0 266.64648 499.64648 L 265 501.29297 L 265 500.5 C 265 499.669 264.35144 499 263.54492 499 L 263.45508 499 z M 265 504.12109 L 262 507.12109 L 262 507.5 C 262 508.331 262.64856 509 263.45508 509 L 263.54492 509 C 264.35144 509 265 508.331 265 507.5 L 265 504.12109 z "
+       id="rectangle_vertical_rounded_crossed"
+       inkscape:label="#rect7927">
+      <title
+         id="title7939">crossed vertical rounded rectangle</title>
     </path>
   </g>
 </svg>

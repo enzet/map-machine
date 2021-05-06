@@ -148,7 +148,9 @@ class Point(Tagged):
 
         return True
 
-    def draw_texts(self, svg: svgwrite.Drawing, occupied: Occupied) -> None:
+    def draw_texts(
+        self, svg: svgwrite.Drawing, occupied: Optional[Occupied]
+    ) -> None:
         """
         Draw all labels.
         """
@@ -163,10 +165,11 @@ class Point(Tagged):
             )
 
     def draw_text(
-        self, svg: svgwrite.Drawing, text: str, point, occupied: Occupied,
-        fill: Color, size: float = 10.0, out_fill=Color("white"),
-        out_opacity: float = 0.5, out_fill_2: Optional[Color] = None,
-        out_opacity_2: float = 1.0
+        self, svg: svgwrite.Drawing, text: str, point,
+        occupied: Optional[Occupied], fill: Color, size: float = 10.0,
+        out_fill=Color("white"), out_opacity: float = 0.5,
+        out_fill_2: Optional[Color] = None, out_opacity_2: float = 1.0,
+        is_debug: bool = False
     ) -> None:
         """
         Drawing text.
@@ -177,6 +180,8 @@ class Point(Tagged):
          #------#
           ######
         """
+        self.y += 2
+
         length = len(text) * 6
 
         if occupied:
@@ -192,7 +197,8 @@ class Point(Tagged):
             for i in range(-int(length / 2), int(length / 2)):
                 for j in range(-12, 5):
                     occupied.register((int(point[0] + i), int(point[1] + j)))
-                    # svg.add(svg.rect((point[0] + i, point[1] + j), (1, 1)))
+                    if is_debug:
+                        svg.add(svg.rect((point[0] + i, point[1] + j), (1, 1)))
 
         if out_fill_2:
             svg.add(svg.text(

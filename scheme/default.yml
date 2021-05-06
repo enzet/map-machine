@@ -836,6 +836,11 @@ node_icons:
   - tags: {recycling:glass_bottles: "yes"}
     add_icon: [bottle]
 
+  - tags: {crossing:island: "yes"}
+    add_icon: [rectangle_vertical_rounded]
+  - tags: {crossing:island: "no"}
+    add_icon: [rectangle_vertical_rounded_crossed]
+
 ways:
   - tags: {indoor: area}
     stroke: indoor_border_color

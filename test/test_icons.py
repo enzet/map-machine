@@ -1,4 +1,6 @@
 """
+Test icon generation for nodes.
+
 Author: Sergey Vartanov (me@enzet.ru).
 """
 from os import makedirs
