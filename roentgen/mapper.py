@@ -22,7 +22,7 @@ from roentgen.point import Occupied, Point
 from roentgen.scheme import Scheme
 
 ICONS_FILE_NAME: str = "icons/icons.svg"
-TAGS_FILE_NAME: str = "data/tags.yml"
+TAGS_FILE_NAME: str = "scheme/default.yml"
 MISSING_TAGS_FILE_NAME: str = "missing_tags.yml"
 
 AUTHOR_MODE = "user-coloring"

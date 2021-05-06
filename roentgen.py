@@ -127,7 +127,7 @@ def draw_element(target: str, tags_description: str):
         comma, key from value is separated by equals sign.
     """
     tags = dict([x.split("=") for x in tags_description.split(",")])
-    scheme = Scheme("data/tags.yml")
+    scheme = Scheme("scheme/default.yml")
     icon_extractor = IconExtractor("icons/icons.svg")
     icon, priority = scheme.get_icon(icon_extractor, tags)
     is_for_node: bool = target == "node"

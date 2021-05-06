@@ -27,7 +27,7 @@ def draw_all_icons(
     :param columns: the number of columns in grid
     :param step: horizontal and vertical distance between icons
     """
-    tags_file_name: str = "data/tags.yml"
+    tags_file_name: str = "scheme/default.yml"
     scheme: Scheme = Scheme(tags_file_name)
 
     to_draw: List[Set[str]] = []

@@ -5,7 +5,7 @@ from roentgen.scheme import Scheme
 
 
 def get_text(tags):
-    scheme = Scheme("data/tags.yml")
+    scheme = Scheme("scheme/default.yml")
     return scheme.construct_text(tags, True)
 
 

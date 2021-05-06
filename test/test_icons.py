@@ -16,7 +16,7 @@ def test_icons() -> None:
 
 
 def get_icon(tags: Dict[str, str]):
-    scheme = Scheme("data/tags.yml")
+    scheme = Scheme("scheme/default.yml")
     icon_extractor = IconExtractor("icons/icons.svg")
     icon, _ = scheme.get_icon(icon_extractor, tags)
     return icon
