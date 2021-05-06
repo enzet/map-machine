@@ -360,8 +360,10 @@ class Constructor:
                 icon, priority = self.scheme.get_icon(
                     self.icon_extractor, line.tags, for_="line"
                 )
+                labels = self.scheme.construct_text(line.tags, True)
+
                 self.nodes.append(Point(
-                    icon, line.tags, center_point, center_coordinates,
+                    icon, labels, line.tags, center_point, center_coordinates,
                     is_for_node=False, priority=priority
                 ))
 
@@ -377,9 +379,10 @@ class Constructor:
             icon_set: Icon
             icon_set, priority = self.scheme.get_icon(
                 self.icon_extractor, line.tags)
+            labels = self.scheme.construct_text(line.tags, True)
 
             self.nodes.append(Point(
-                icon_set, line.tags, center_point, center_coordinates,
+                icon_set, labels, line.tags, center_point, center_coordinates,
                 is_for_node=False, priority=priority))
 
     def construct_relations(self) -> None:
@@ -448,14 +451,16 @@ class Constructor:
                 icon_set = Icon([dot], [], color, set(), True)
                 priority = 0
                 draw_outline = False
+                labels = []
             else:
                 icon_set, priority = self.scheme.get_icon(
                     self.icon_extractor, tags
                 )
+                labels = self.scheme.construct_text(tags, True)
 
             self.nodes.append(Point(
-                icon_set, tags, flung, node.coordinates, priority=priority,
-                draw_outline=draw_outline
+                icon_set, labels, tags, flung, node.coordinates,
+                priority=priority, draw_outline=draw_outline
             ))
 
             missing_tags.update(

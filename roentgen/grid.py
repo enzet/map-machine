@@ -71,7 +71,8 @@ def draw_all_icons(
         specified_ids |= icons_to_draw
     print(
         "Icons with no tag specification: \n    " +
-        ", ".join(sorted(extractor.icons.keys() - specified_ids)) + ".")
+        ", ".join(sorted(extractor.icons.keys() - specified_ids)) + "."
+    )
 
     draw_grid(
         output_file_name, to_draw, extractor, output_directory, columns, step
@@ -79,10 +80,10 @@ def draw_all_icons(
 
 
 def draw_grid(
-        file_name: str, combined_icon_ids: List[Set[str]],
-        extractor: IconExtractor, output_directory: str, columns: int = 16,
-        step: float = 24, color=Color("#444444")
-    ) -> List[List[Shape]]:
+    file_name: str, combined_icon_ids: List[Set[str]],
+    extractor: IconExtractor, output_directory: str, columns: int = 16,
+    step: float = 24, color=Color("#444444")
+) -> List[List[Shape]]:
     """
     Draw icons in the form of table
 

@@ -61,7 +61,7 @@ def test_icon_2_extra() -> None:
 
 def __test_no_icon_1_extra() -> None:
     """
-    Tags that should be visualized with defult main icon and single extra icon.
+    Tags that should be visualized with default main icon and single extra icon.
     """
     icon = get_icon({"access": "private"})
     assert icon.main_icon[0].is_default()
@@ -70,7 +70,7 @@ def __test_no_icon_1_extra() -> None:
 
 def __test_no_icon_2_extra() -> None:
     """
-    Tags that should be visualized with defult main icon and two extra icons.
+    Tags that should be visualized with default main icon and two extra icons.
     """
     icon = get_icon({"access": "private", "bicycle": "yes"})
     assert icon.main_icon[0].is_default()

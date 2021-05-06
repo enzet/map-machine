@@ -21,7 +21,7 @@ To get SVG map, just run
 python roentgen.py -b <lon1>,<lat1>,<lon2>,<lat2>
 ```
 
-(e.g. `python roentgen.py -b 2.284,48.86,2.29,48.865`). It will automatically download OSM data and write output map to `map.svg`. For more options see [Map Generation section](#map-generation).
+(e.g. `python roentgen.py -b 2.284,48.86,2.29,48.865`). It will automatically download OSM data and write output map to `map.svg`. For more options see [Map Generation](#map-generation).
 
 Map features
 ------------

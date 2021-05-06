@@ -128,10 +128,11 @@ def draw_element(target: str, tags_description: str):
     tags = dict([x.split("=") for x in tags_description.split(",")])
     scheme = Scheme("data/tags.yml")
     icon_extractor = IconExtractor("icons/icons.svg")
-    icon_set, priority = scheme.get_icon(icon_extractor, tags)
+    icon, priority = scheme.get_icon(icon_extractor, tags)
     is_for_node: bool = target == "node"
+    labels = scheme.construct_text(tags, True)
     point = Point(
-        icon_set, tags, np.array((32, 32)), None, is_for_node=is_for_node,
+        icon, labels, tags, np.array((32, 32)), None, is_for_node=is_for_node,
         draw_outline=is_for_node
     )
     print(point.is_for_node)
@@ -143,7 +144,7 @@ def draw_element(target: str, tags_description: str):
         svg.add(path)
     point.draw_main_shapes(svg)
     point.draw_extra_shapes(svg)
-    point.draw_texts(svg, scheme, None, True)
+    point.draw_texts(svg, None)
     svg.write(open("test_icon.svg", "w+"))
 
 

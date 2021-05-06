@@ -12,6 +12,7 @@ import yaml
 from colour import Color
 
 from roentgen.icon import DEFAULT_SHAPE_ID, Shape, IconExtractor
+from roentgen.text import Label, get_address, get_text
 
 DEFAULT_COLOR: Color = Color("#444444")
 
@@ -298,6 +299,85 @@ class Scheme:
             line_styles.append(LineStyle(style, priority))
 
         return line_styles
+
+    def construct_text(self, tags, draw_captions) -> List[Label]:
+        """
+        Construct labels for not processed tags.
+        """
+        texts: List[Label] = []
+
+        name = None
+        alt_name = None
+        if "name" in tags:
+            name = tags["name"]
+            tags.pop("name", None)
+        if "name:ru" in tags:
+            if not name:
+                name = tags["name:ru"]
+                tags.pop("name:ru", None)
+            tags.pop("name:ru", None)
+        if "name:en" in tags:
+            if not name:
+                name = tags["name:en"]
+                tags.pop("name:en", None)
+            tags.pop("name:en", None)
+        if "alt_name" in tags:
+            if alt_name:
+                alt_name += ", "
+            else:
+                alt_name = ""
+            alt_name += tags["alt_name"]
+            tags.pop("alt_name")
+        if "old_name" in tags:
+            if alt_name:
+                alt_name += ", "
+            else:
+                alt_name = ""
+            alt_name += "ex " + tags["old_name"]
+
+        address: List[str] = get_address(tags, draw_captions)
+
+        if name:
+            texts.append(Label(name, Color("black")))
+        if alt_name:
+            texts.append(Label(f"({alt_name})"))
+        if address:
+            texts.append(Label(", ".join(address)))
+
+        if draw_captions == "main":
+            return texts
+
+        for text in get_text(tags):  # type: str
+            if text:
+                texts.append(Label(text))
+
+        if "route_ref" in tags:
+            texts.append(Label(tags["route_ref"].replace(";", " ")))
+            tags.pop("route_ref", None)
+        if "cladr:code" in tags:
+            texts.append(Label(tags["cladr:code"], size=7))
+            tags.pop("cladr:code", None)
+        if "website" in tags:
+            link = tags["website"]
+            if link[:7] == "http://":
+                link = link[7:]
+            if link[:8] == "https://":
+                link = link[8:]
+            if link[:4] == "www.":
+                link = link[4:]
+            if link[-1] == "/":
+                link = link[:-1]
+            link = link[:25] + ("..." if len(tags["website"]) > 25 else "")
+            texts.append(Label(link, Color("#000088")))
+            tags.pop("website", None)
+        for k in ["phone"]:
+            if k in tags:
+                texts.append(Label(tags[k], Color("#444444")))
+                tags.pop(k)
+        for tag in tags:
+            if self.is_writable(tag):
+                texts.append(Label(tags[tag]))
+        return texts
 
     def is_area(self, tags: Dict[str, str]) -> bool:
         for matcher in self.area_tags:

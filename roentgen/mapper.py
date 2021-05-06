@@ -244,20 +244,19 @@ class Painter:
             )
             node.draw_main_shapes(self.svg, occupied)
 
-        for index, node in enumerate(nodes):  # type: int, Point
+        for index, point in enumerate(nodes):  # type: int, Point
             ui.progress_bar(
                 steps + index, steps * 3, step=10, text="Drawing extra icons"
             )
-            node.draw_extra_shapes(self.svg, occupied)
+            point.draw_extra_shapes(self.svg, occupied)
 
-        for index, node in enumerate(nodes):  # type: int, Point
+        for index, point in enumerate(nodes):  # type: int, Point
             ui.progress_bar(
                 steps * 2 + index, steps * 3, step=10, text="Drawing texts"
             )
             if (self.mode not in [CREATION_TIME_MODE, AUTHOR_MODE] and
                     self.draw_captions != "no"):
-                node.draw_texts(
-                    self.svg, self.scheme, occupied, self.draw_captions)
+                point.draw_texts(self.svg, occupied)
 
         ui.progress_bar(-1, len(nodes), step=10, text="Drawing nodes")
 

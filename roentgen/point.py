@@ -8,22 +8,10 @@ from colour import Color
 from roentgen.color import is_bright
 from roentgen.icon import Shape
 from roentgen.osm_reader import Tagged
-from roentgen.scheme import Icon, Scheme
-from roentgen.text import get_address, get_text
+from roentgen.scheme import Icon
+from roentgen.text import Label
 
 DEFAULT_FONT: str = "Roboto"
-DEFAULT_COLOR: Color = Color("#444444")
-
-
-@dataclass
-class TextStruct:
-    """
-    Some label on the map with attributes.
-    """
-
-    text: str
-    fill: Color = DEFAULT_COLOR
-    size: float = 10.0
 
 
 class Occupied:
@@ -44,87 +32,6 @@ class Occupied:
             assert self.matrix[point[0], point[1]] == True
 
 
-def construct_text(
-        tags, processed, scheme, draw_captions) -> List["TextStruct"]:
-    """
-    Construct labels for not processed tags.
-    """
-    texts: List[TextStruct] = []
-
-    name = None
-    alt_name = None
-    if "name" in tags:
-        name = tags["name"]
-        tags.pop("name", None)
-    if "name:ru" in tags:
-        if not name:
-            name = tags["name:ru"]
-            tags.pop("name:ru", None)
-        tags.pop("name:ru", None)
-    if "name:en" in tags:
-        if not name:
-            name = tags["name:en"]
-            tags.pop("name:en", None)
-        tags.pop("name:en", None)
-    if "alt_name" in tags:
-        if alt_name:
-            alt_name += ", "
-        else:
-            alt_name = ""
-        alt_name += tags["alt_name"]
-        tags.pop("alt_name")
-    if "old_name" in tags:
-        if alt_name:
-            alt_name += ", "
-        else:
-            alt_name = ""
-        alt_name += "ex " + tags["old_name"]
-
-    address: List[str] = get_address(tags, draw_captions)
-
-    if name:
-        texts.append(TextStruct(name, Color("black")))
-    if alt_name:
-        texts.append(TextStruct(f"({alt_name})"))
-    if address:
-        texts.append(TextStruct(", ".join(address)))
-
-    if draw_captions == "main":
-        return texts
-
-    for text in get_text(tags):  # type: str
-        if text:
-            texts.append(TextStruct(text))
-
-    if "route_ref" in tags:
-        texts.append(TextStruct(tags["route_ref"].replace(";", " ")))
-        tags.pop("route_ref", None)
-    if "cladr:code" in tags:
-        texts.append(TextStruct(tags["cladr:code"], size=7))
-        tags.pop("cladr:code", None)
-    if "website" in tags:
-        link = tags["website"]
-        if link[:7] == "http://":
-            link = link[7:]
-        if link[:8] == "https://":
-            link = link[8:]
-        if link[:4] == "www.":
-            link = link[4:]
-        if link[-1] == "/":
-            link = link[:-1]
-        link = link[:25] + ("..." if len(tags["website"]) > 25 else "")
-        texts.append(TextStruct(link, Color("#000088")))
-        tags.pop("website", None)
-    for k in ["phone"]:
-        if k in tags:
-            texts.append(TextStruct(tags[k], Color("#444444")))
-            tags.pop(k)
-    for tag in tags:
-        if scheme.is_writable(tag) and not (tag in processed):
-            texts.append(TextStruct(tags[tag]))
-    return texts
-
-
 def in_range(position, points) -> bool:
     return 0 <= position[0] < len(points) and 0 <= position[1] < len(points[0])
 
@@ -137,8 +44,8 @@ class Point(Tagged):
     """
 
     def __init__(
-        self, icon: Icon, tags: Dict[str, str], point: np.array,
-        coordinates: np.array, priority: float = 0,
+        self, icon: Icon, labels: List[Label], tags: Dict[str, str],
+        point: np.array, coordinates: np.array, priority: float = 0,
         is_for_node: bool = True, draw_outline: bool = True
     ):
         super().__init__()
@@ -146,6 +53,7 @@ class Point(Tagged):
         assert point is not None
 
         self.icon: Icon = icon
+        self.labels: List[Label] = labels
         self.tags: Dict[str, str] = tags
         self.point: np.array = point
         self.coordinates: np.array = coordinates
@@ -241,16 +149,11 @@ class Point(Tagged):
 
         return True
 
-    def draw_texts(
-            self, svg: svgwrite.Drawing, scheme: Scheme, occupied: Occupied,
-            draw_captions):
+    def draw_texts(self, svg: svgwrite.Drawing, occupied: Occupied) -> None:
         """
         Draw all labels.
         """
-        text_structures: List[TextStruct] = construct_text(
-            self.tags, self.icon.processed, scheme, draw_captions)
-
-        for text_struct in text_structures:  # type: TextStruct
+        for text_struct in self.labels:  # type: Label
             text = text_struct.text
             text = text.replace("&quot;", '"')
             text = text.replace("&amp;", '&')

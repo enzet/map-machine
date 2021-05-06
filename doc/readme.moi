@@ -19,7 +19,7 @@ To get SVG map, just run
 
 \code {python roentgen.py -b <lon1>,<lat1>,<lon2>,<lat2>} {bash}
 
-(e.g. \tt {python roentgen.py -b 2.284,48.86,2.29,48.865}).  It will automatically download OSM data and write output map to \tt {map.svg}.  For more options see \href {#map-generation} {Map Generation section}.
+(e.g. \tt {python roentgen.py -b 2.284,48.86,2.29,48.865}).  It will automatically download OSM data and write output map to \tt {map.svg}.  For more options see \href {#map-generation} {Map Generation}.
 
 \2 {Map features} {features}
 
@@ -94,7 +94,7 @@ Every way and node displayed with the random color picked for each author with \
 
 \image {doc/user.png} {Author mode}
 
-\2 {Map generation} {map_generation}
+\2 {Map generation} {map-generation}
 
 \b {Requirements}\: Python (at least 3.8) and Python libraries (install everything using \tt {pip install -r requirements.txt}).
 

@@ -3,7 +3,21 @@ OSM address tag processing.
 
 Author: Sergey Vartanov (me@enzet.ru).
 """
+from dataclasses import dataclass
 from typing import Any, Dict, List
+
+from colour import Color
+DEFAULT_COLOR: Color = Color("#444444")
+
+
+@dataclass
+class Label:
+    """
+    Text label.
+    """
+    text: str
+    fill: Color = DEFAULT_COLOR
+    size: float = 10.0
 
 
 def get_address(tags: Dict[str, Any], draw_captions_mode: str) -> List[str]:
