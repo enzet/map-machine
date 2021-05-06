@@ -168,12 +168,12 @@
      inkscape:object-paths="true"
      inkscape:guide-bbox="true"
      showguides="false"
-     showgrid="true"
+     showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="401.52812"
-     inkscape:cx="171.64141"
-     inkscape:zoom="2.8284271"
+     inkscape:cy="132.85433"
+     inkscape:cx="263.20995"
+     inkscape:zoom="5.6568542"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -566,6 +566,12 @@
      inkscape:label="main"
      id="layer1"
      style="display:inline">
+    <path
+       inkscape:connector-curvature="0"
+       id="path7898"
+       d="m 257.5,452.5 c 3,0 5,-1 6,-3 1,2 3,3 6,3 z"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#cccccc;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       sodipodi:nodetypes="cccc" />
     <path
        style="opacity:1;fill:none;fill-opacity:1;stroke:#cccccc;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="m 115,461 c 4,0 4,-6 8,-6"
@@ -14757,21 +14763,15 @@
       <title
          id="title7617">rocket on launch pad</title>
     </path>
-    <path
-       sodipodi:nodetypes="ccccccc"
-       inkscape:connector-curvature="0"
-       id="path6749"
-       d="m 263,449.5 1,0 c 1,1.5 3,2.5 6,2.5 l 0,1 -13,0 0,-1 c 3,0 5,-1 6,-2.5 z"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <rect
        rx="0.5"
        ry="0.5"
-       y="449"
+       y="452"
        x="263"
-       height="14"
+       height="5"
        width="1"
        id="rect6751"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.10000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
@@ -14798,15 +14798,6 @@
        inkscape:connector-curvature="0">
       <title
          id="title6791">table and two chairs</title>
-    </path>
-    <path
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 263.5,465 c -0.277,0 -0.5,0.223 -0.5,0.5 -1,1.5 -3,2.5 -6,2.5 l 0,1 6,0 0,9.5 c 0,0.277 0.223,0.5 0.5,0.5 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-9.5 6,0 0,-1 c -3,0 -5,-1 -6,-2.5 0,-0.277 -0.223,-0.5 -0.5,-0.5 z"
-       id="umbrella"
-       inkscape:label="#path6769"
-       inkscape:connector-curvature="0">
-      <title
-         id="title6789">umbrella</title>
     </path>
     <rect
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
@@ -15371,5 +15362,21 @@
        d="m 328,68 -2,1 1,-2 -1,-2 2,1 2,-1 -1,2 1,2 z"
        id="path7863"
        inkscape:connector-curvature="0" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 244,125 0,-2 2,0 0,-2 2,0 0,-2 2,0 0,3 -3,3 z"
+       id="path7896"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccc" />
+    <path
+       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       d="m 263.50391,465 c -0.19102,-0.001 -0.36611,0.1063 -0.45118,0.27734 C 262.14218,467.09846 260.38889,468 257.5,468 l 0,1 5.5,0 0,3.5 c 0,0.277 0.223,0.5 0.5,0.5 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-3.5 5.5,0 0,-1 c -2.88889,0 -4.64218,-0.90154 -5.55273,-2.72266 -0.0838,-0.16852 -0.25516,-0.2757 -0.44336,-0.27734 z"
+       id="umbrella"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccsssccccc"
+       inkscape:label="#path7900">
+      <title
+         id="title7909">umbrella</title>
+    </path>
   </g>
 </svg>
