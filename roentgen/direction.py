@@ -61,7 +61,7 @@ class Sector:
 
     def __init__(self, text: str, angle: Optional[float] = None):
         """
-        :param text: sector text representation.  E.g. "70-210", "N-NW"
+        :param text: sector text representation (e.g. "70-210", "N-NW")
         :param angle: angle in degrees
         """
         self.start: Optional[np.array] = None
@@ -72,17 +72,17 @@ class Sector:
             self.start = parse_vector(parts[0])
             self.end = parse_vector(parts[1])
         else:
+            result_angle: float
             if angle is None:
-                angle = DEFAULT_ANGLE
+                result_angle = DEFAULT_ANGLE
             else:
-                angle = degree_to_radian(angle) / 2
-                angle = max(SMALLEST_ANGLE, angle)
+                result_angle = max(SMALLEST_ANGLE, degree_to_radian(angle) / 2)
 
             vector: Optional[np.array] = parse_vector(text)
 
             if vector is not None:
-                self.start = np.dot(rotation_matrix(angle), vector)
-                self.end = np.dot(rotation_matrix(-angle), vector)
+                self.start = np.dot(rotation_matrix(result_angle), vector)
+                self.end = np.dot(rotation_matrix(-result_angle), vector)
 
     def draw(self, center: np.array, radius: float) -> Optional[List[Path]]:
         """

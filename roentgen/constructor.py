@@ -25,7 +25,8 @@ from roentgen.util import MinMax
 DEBUG: bool = False
 TIME_COLOR_SCALE: List[Color] = [
     Color("#581845"), Color("#900C3F"), Color("#C70039"), Color("#FF5733"),
-    Color("#FFC300"), Color("#DAF7A6")]
+    Color("#FFC300"), Color("#DAF7A6")
+]
 
 
 def is_clockwise(polygon: List[OSMNode]) -> bool:
@@ -39,7 +40,8 @@ def is_clockwise(polygon: List[OSMNode]) -> bool:
         next_index: int = 0 if index == len(polygon) - 1 else index + 1
         count += (
             (polygon[next_index].coordinates[0] - node.coordinates[0]) *
-            (polygon[next_index].coordinates[1] + node.coordinates[1]))
+            (polygon[next_index].coordinates[1] + node.coordinates[1])
+        )
     return count >= 0
 
 
@@ -66,9 +68,9 @@ class Figure(Tagged):
     Some figure on the map: way or area.
     """
     def __init__(
-            self, tags: Dict[str, str], inners: List[List[OSMNode]],
-            outers: List[List[OSMNode]], line_style: LineStyle):
-
+        self, tags: Dict[str, str], inners: List[List[OSMNode]],
+        outers: List[List[OSMNode]], line_style: LineStyle
+    ):
         super().__init__()
 
         self.tags: Dict[str, str] = tags
@@ -82,20 +84,21 @@ class Figure(Tagged):
             self.outers.append(make_counter_clockwise(outer_nodes))
 
     def get_path(
-            self, flinger: Flinger, shift: np.array = np.array((0, 0))) -> str:
+        self, flinger: Flinger, shift: np.array = np.array((0, 0))
+    ) -> str:
         """
         Get SVG path commands.
 
-        :param flinger: convertor for geo coordinates
+        :param flinger: converter for geo coordinates
         :param shift: shift vector
         """
         path: str = ""
 
         for outer_nodes in self.outers:
-            path += get_path(outer_nodes, shift, flinger) + " "
+            path += f"{get_path(outer_nodes, shift, flinger)} "
 
         for inner_nodes in self.inners:
-            path += get_path(inner_nodes, shift, flinger) + " "
+            path += f"{get_path(inner_nodes, shift, flinger)} "
 
         return path
 
@@ -111,11 +114,14 @@ class Segment:
         difference: np.array = point_2 - point_1
         vector: np.array = difference / np.linalg.norm(difference)
         self.angle: float = (
-            np.arccos(np.dot(vector, np.array((0, 1)))) / np.pi)
+            np.arccos(np.dot(vector, np.array((0, 1)))) / np.pi
+        )
 
-    def __lt__(self, other: "Segment"):
-        return (((self.point_1 + self.point_2) / 2)[1] <
-                ((other.point_1 + other.point_2) / 2)[1])
+    def __lt__(self, other: "Segment") -> bool:
+        return (
+            ((self.point_1 + self.point_2) / 2)[1] <
+            ((other.point_1 + other.point_2) / 2)[1]
+        )
 
 
 class Building(Figure):
@@ -123,9 +129,9 @@ class Building(Figure):
     Building on the map.
     """
     def __init__(
-            self, tags: Dict[str, str], inners, outers, flinger: Flinger,
-            line_style: LineStyle):
-
+        self, tags: Dict[str, str], inners, outers, flinger: Flinger,
+        line_style: LineStyle
+    ):
         super().__init__(tags, inners, outers, line_style)
 
         self.parts = []
@@ -155,7 +161,7 @@ def line_center(nodes: List[OSMNode], flinger: Flinger) -> np.array:
     :param nodes: node list
     :param flinger: flinger that remap geo positions
     """
-    boundary = [MinMax(), MinMax()]
+    boundary: List[MinMax] = [MinMax(), MinMax()]
 
     for node in nodes:  # type: OSMNode
         boundary[0].update(node.coordinates[0])
@@ -250,10 +256,10 @@ class Constructor:
     Röntgen node and way constructor.
     """
     def __init__(
-            self, map_: Map, flinger: Flinger, scheme: Scheme,
-            icon_extractor: IconExtractor, check_level=lambda x: True,
-            mode: str = "normal", seed: str = ""):
-
+        self, map_: Map, flinger: Flinger, scheme: Scheme,
+        icon_extractor: IconExtractor, check_level=lambda x: True,
+        mode: str = "normal", seed: str = ""
+    ):
         self.check_level = check_level
         self.mode: str = mode
         self.seed: str = seed
@@ -301,8 +307,9 @@ class Constructor:
         ui.progress_bar(-1, len(self.map_.way_map), text="Constructing ways")
 
     def construct_line(
-            self, line: Optional[Tagged],
-            inners: List[List[OSMNode]], outers: List[List[OSMNode]]) -> None:
+        self, line: Optional[Tagged],
+        inners: List[List[OSMNode]], outers: List[List[OSMNode]]
+    ) -> None:
         """
         Way or relation construction.
 
@@ -394,23 +401,24 @@ class Constructor:
             tags = relation.tags
             if not self.check_level(tags):
                 continue
-            if "type" in tags and tags["type"] == "multipolygon":
-                inner_ways: List[OSMWay] = []
-                outer_ways: List[OSMWay] = []
-                for member in relation.members:  # type: OSMMember
-                    if member.type_ == "way":
-                        if member.role == "inner":
-                            if member.ref in self.map_.way_map:
-                                inner_ways.append(self.map_.way_map[member.ref])
-                        elif member.role == "outer":
-                            if member.ref in self.map_.way_map:
-                                outer_ways.append(self.map_.way_map[member.ref])
-                        else:
-                            print(f'Unknown member role "{member.role}".')
-                if outer_ways:
-                    inners_path: List[List[OSMNode]] = glue(inner_ways)
-                    outers_path: List[List[OSMNode]] = glue(outer_ways)
-                    self.construct_line(relation, inners_path, outers_path)
+            if "type" not in tags or tags["type"] != "multipolygon":
+                continue
+            inner_ways: List[OSMWay] = []
+            outer_ways: List[OSMWay] = []
+            for member in relation.members:  # type: OSMMember
+                if member.type_ == "way":
+                    if member.role == "inner":
+                        if member.ref in self.map_.way_map:
+                            inner_ways.append(self.map_.way_map[member.ref])
+                    elif member.role == "outer":
+                        if member.ref in self.map_.way_map:
+                            outer_ways.append(self.map_.way_map[member.ref])
+                    else:
+                        print(f'Unknown member role "{member.role}".')
+            if outer_ways:
+                inners_path: List[List[OSMNode]] = glue(inner_ways)
+                outers_path: List[List[OSMNode]] = glue(outer_ways)
+                self.construct_line(relation, inners_path, outers_path)
 
     def construct_nodes(self) -> None:
         """

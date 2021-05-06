@@ -21,8 +21,8 @@ def is_bright(color: Color) -> bool:
 
 
 def get_gradient_color(
-        value: Any, bounds: MinMax, colors: List[Color]
-    ) -> Color:
+    value: Any, bounds: MinMax, colors: List[Color]
+) -> Color:
     """
     Get color from the color scale for the value.
 

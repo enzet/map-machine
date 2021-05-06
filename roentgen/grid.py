@@ -149,9 +149,15 @@ def draw_grid(
 
 
 def draw_icon(
-        file_name: str, icon_ids: Set[str], extractor: IconExtractor
-    ) -> None:
+    file_name: str, icon_ids: Set[str], extractor: IconExtractor
+) -> None:
+    """
+    Draw icon to the SVG file.
 
+    :param file_name: output SVG file name
+    :param icon_ids: input shape string identifiers
+    :param extractor: icon extractor
+    """
     icon_set: List[Shape] = []
     for icon_id in icon_ids:  # type: str
         icon, extracted = extractor.get_path(icon_id)  # type: Shape, bool
