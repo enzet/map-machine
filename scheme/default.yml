@@ -226,8 +226,10 @@ node_icons:
   - tags: {amenity: clinic}
     icon: [greek_cross]
   - tags: {amenity: post_office}
+    location_restrictions: {include: world, exclude: jp}
     icon: [envelope]
-  - tags: {amenity: post_office, __country: Japan}
+  - tags: {amenity: post_office}
+    location_restrictions: {include: jp}
     icon: [japan_post]
   - tags: {shop: car_repair}
     icon: [car_repair]
@@ -375,7 +377,8 @@ node_icons:
     icon: [toy_horse]
   - tags: {building: office}
     icon: [briefcase]
-  - tags: {amenity: school, __country: Japan}
+  - tags: {amenity: school}
+    location_restrictions: {include: jp}
     icon: [japan_elementary_school]
   - tags: {office: telecommunication}
     icon: [telephone]
