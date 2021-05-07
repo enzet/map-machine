@@ -168,12 +168,12 @@
      inkscape:object-paths="true"
      inkscape:guide-bbox="true"
      showguides="false"
-     showgrid="false"
+     showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="95.082327"
-     inkscape:cx="248.78527"
-     inkscape:zoom="4"
+     inkscape:cy="481.33233"
+     inkscape:cx="330.46421"
+     inkscape:zoom="32"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -15415,5 +15415,26 @@
       <title
          id="title7939">crossed vertical rounded rectangle</title>
     </path>
+    <rect
+       transform="matrix(0,1,-1,0,0,0)"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect7950"
+       width="1"
+       height="13.999955"
+       x="109"
+       y="-335.00003"
+       ry="0.5"
+       rx="0.484375" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 322,109 c 1,0 2,-1 3,-1 0.41346,0 5.68304,0.0104 6,0 0.90995,-0.0298 2,1 3,1 l -6,0.5 z"
+       id="path7952"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cssccc" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 325 124 C 324 124 323 125 322 125 L 321.5 125 C 321.223 125 321 125.21603 321 125.48438 L 321 125.51562 C 321 125.78397 321.223 126 321.5 126 L 334.5 126 C 334.777 126 335 125.78397 335 125.51562 L 335 125.48438 C 335 125.21603 334.777 125 334.5 125 L 334 125 C 333 125 331.90995 123.9702 331 124 C 330.68304 124.0104 325.41346 124 325 124 z "
+       id="traffic_table"
+       inkscape:label="#rect7954" />
   </g>
 </svg>

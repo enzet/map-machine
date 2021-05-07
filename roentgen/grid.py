@@ -15,9 +15,10 @@ from roentgen.scheme import Scheme
 
 
 def draw_all_icons(
-        output_file_name: str, output_directory: str, columns: int = 16,
-        step: float = 24
-    ) -> None:
+    output_file_name: str, output_directory: str, columns: int = 16,
+    step: float = 24, background_color: Color = Color("white"),
+    color: Color = Color("black")
+) -> None:
     """
     Draw all possible icon combinations in grid.
 
@@ -26,6 +27,8 @@ def draw_all_icons(
         for icons
     :param columns: the number of columns in grid
     :param step: horizontal and vertical distance between icons
+    :param background_color: background color
+    :param color: icon color
     """
     tags_file_name: str = "scheme/default.yml"
     scheme: Scheme = Scheme(tags_file_name)
@@ -75,14 +78,16 @@ def draw_all_icons(
     )
 
     draw_grid(
-        output_file_name, to_draw, extractor, output_directory, columns, step
+        output_file_name, to_draw, extractor, output_directory, columns, step,
+        background_color=background_color, color=color
     )
 
 
 def draw_grid(
     file_name: str, combined_icon_ids: List[Set[str]],
     extractor: IconExtractor, output_directory: str, columns: int = 16,
-    step: float = 24, color=Color("#444444")
+    step: float = 24, background_color: Color = Color("white"),
+    color: Color = Color("black")
 ) -> List[List[Shape]]:
     """
     Draw icons in the form of table
@@ -95,7 +100,8 @@ def draw_grid(
         for icons
     :param columns: number of columns in grid
     :param step: horizontal and vertical distance between icons in grid
-    :param color: icon foreground color
+    :param background_color: background color
+    :param color: foreground color
     """
     point: np.array = np.array((step / 2, step / 2))
     width: float = step * columns
@@ -123,13 +129,12 @@ def draw_grid(
 
     height: int = int(int(number / (width / step) + 1) * step)
     svg: Drawing = Drawing(file_name, (width, height))
-    svg.add(svg.rect((0, 0), (width, height), fill="#FFFFFF"))
+    svg.add(svg.rect((0, 0), (width, height), fill=background_color.hex))
 
     for combined_icon in icons:  # type: List[Shape]
-        background_color = "#FFFFFF"
         svg.add(svg.rect(
             point - np.array((-10, -10)), (20, 20),
-            fill=background_color))
+            fill=background_color.hex))
         for icon in combined_icon:  # type: Shape
             path = icon.get_path(svg, point)
             path.update({"fill": color.hex})
