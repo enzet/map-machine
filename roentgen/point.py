@@ -149,7 +149,7 @@ class Point(Tagged):
         return True
 
     def draw_texts(
-        self, svg: svgwrite.Drawing, occupied: Optional[Occupied]
+        self, svg: svgwrite.Drawing, occupied: Optional[Occupied] = None
     ) -> None:
         """
         Draw all labels.
