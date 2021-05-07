@@ -1,8 +1,8 @@
 **Röntgen** project consists of
 
-  * simple Python [OpenStreetMap](http://openstreetmap.org) renderer,
-  * set of icons,
-  * and map styles.
+  * simple Python [OpenStreetMap](http://openstreetmap.org) renderer (see [usage](#usage), [renderer documentation](#map-generation)),
+  * [set of icons](#icons),
+  * and [map styles](#map-styles).
 
 [![Build Status](https://travis-ci.org/enzet/Roentgen.svg?branch=master)](https://travis-ci.org/enzet/Roentgen)
 
@@ -21,7 +21,7 @@ To get SVG map, just run
 python roentgen.py -b <lon1>,<lat1>,<lon2>,<lat2>
 ```
 
-(e.g. `python roentgen.py -b 2.284,48.86,2.29,48.865`). It will automatically download OSM data and write output map to `map.svg`. For more options see [Map Generation](#map-generation).
+(e.g. `python roentgen.py -b 2.284,48.86,2.29,48.865`). It will automatically download OSM data and write output map to `map.svg`. For more options see [Map generation](#map-generation).
 
 Map features
 ------------
@@ -103,7 +103,17 @@ Every way and node displayed with the random color picked for each author with `
 Map generation
 --------------
 
-**Requirements**: Python (at least 3.8) and Python libraries (install everything using `pip install -r requirements.txt`).
+### Requirements ###
+
+  * Python (at least 3.8).
+
+### Installation ###
+
+```bash
+pip install -r requirements.txt
+```
+
+### Script running ###
 
 There are simple Python renderer that generates SVG map from OpenStreetMap data. You can run it using:
 

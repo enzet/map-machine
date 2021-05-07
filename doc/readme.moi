@@ -1,9 +1,9 @@
 \b {Röntgen} project consists of
 
 \list
-    {simple Python \href {http://openstreetmap.org} {OpenStreetMap} renderer,}
-    {set of icons,}
-    {and map styles.}
+    {simple Python \href {http://openstreetmap.org} {OpenStreetMap} renderer (see \href {#usage} {usage}, \href {#map-generation} {renderer documentation}),}
+    {\href {#icons} {set of icons},}
+    {and \href {#map-styles} {map styles}.}
 
 \href {https://travis-ci.org/enzet/Roentgen} {\image {https://travis-ci.org/enzet/Roentgen.svg?branch=master} {Build Status}}
 
@@ -19,7 +19,7 @@ To get SVG map, just run
 
 \code {python roentgen.py -b <lon1>,<lat1>,<lon2>,<lat2>} {bash}
 
-(e.g. \tt {python roentgen.py -b 2.284,48.86,2.29,48.865}).  It will automatically download OSM data and write output map to \tt {map.svg}.  For more options see \href {#map-generation} {Map Generation}.
+(e.g. \tt {python roentgen.py -b 2.284,48.86,2.29,48.865}).  It will automatically download OSM data and write output map to \tt {map.svg}.  For more options see \href {#map-generation} {Map generation}.
 
 \2 {Map features} {features}
 
@@ -52,7 +52,7 @@ Visualize \osm {design} values used with \osm {power=tower} tag.
 
 \image {doc/emergency.png} {Emergency}
 
-\2 {Icon set} {icon_set}
+\2 {Icon set} {icons}
 
 If tag is drawable it is displayed using icon combination and colors.  All icons are under \href {http://creativecommons.org/licenses/by/4.0/} {CC BY} license.  So, do whatever you want but give appropriate credit.  Icon set is heavily inspired by \href {https://github.com/mapbox/maki} {Maki},  \href {https://github.com/gmgeo/osmic} {Osmic}, and \href {https://github.com/ideditor/temaki} {Temaki} icon sets.
 
@@ -68,7 +68,45 @@ Some icons can be combined into new icons.
 
 \image {doc/bus_stop.png} {Bus stop icon combination}
 
-\2 {Röntgen map styles} {map_styles}
+/*
+
+\3 {Icon settings} {icon_settings}
+
+\4 {Japanese map symbols} {japanese-map-symbols}
+
+\table
+    {
+        {}
+        {\code {\{
+    include: ['world'],
+    exclude: ['jp']
+\}} (\href {https://ideditor.github.io/location-conflation/?locationSet=%7Binclude%3A%20%5B%27world%27%5D%2C%20exclude%3A%20%5B%27jp%27%5D%7D&referrer=nsi} {view map})}
+        {\code {\{
+    include: ['jp']
+\}} (\href {https://ideditor.github.io/location-conflation/?locationSet=%7Binclude%3A%20%5B%27jp%27%5D%7D&referrer=nsi} {view map})}
+    }
+    {
+        {\tt {amenity=post_office}}
+        {\image {icon_set/envelope.svg} {-}}
+        {\image {icon_set/japan_post.svg} {-}}
+    }
+    {
+        {\tt {amenity=school}} {}
+        {\image {icon_set/japan_elementary_school.svg} {-}}
+    }
+
+\4 {Script direction} {script-direction}
+
+Countries with right-to-left script direction\:
+
+\code {\{include: [
+    'ae', 'af', 'bh', 'eg', 'il', 'iq', 'ir', 'jo', 'kw', 'lb', 'om', 'pk',
+    'ps', 'qa', 'sa', 'sy', 'ye'
+]\}}
+
+*/
+
+\2 {Röntgen map styles} {map-styles}
 
 \3 {All tags style} {all_tags_style}
 
@@ -96,7 +134,16 @@ Every way and node displayed with the random color picked for each author with \
 
 \2 {Map generation} {map-generation}
 
-\b {Requirements}\: Python (at least 3.8) and Python libraries (install everything using \tt {pip install -r requirements.txt}).
+\3 {Requirements} {requirements}
+
+\list
+    {Python (at least 3.8).}
+
+\3 {Installation} {installation}
+
+\code {pip install -r requirements.txt} {bash}
+
+\3 {Script running} {script}
 
 There are simple Python renderer that generates SVG map from OpenStreetMap data.  You can run it using\:
 
