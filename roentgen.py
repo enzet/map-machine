@@ -136,16 +136,10 @@ def draw_element(target: str, tags_description: str):
         icon, labels, tags, np.array((32, 32)), None, is_for_node=is_for_node,
         draw_outline=is_for_node
     )
-    border: int = 8
-    icon_size: int = 16
-    width: int = (
-        border * 2 + (1 + max(2, len(icon.extra_icons) - 1)) * icon_size
-    )
-    height: int = border * 2 + (1 + int(len(icon.extra_icons) / 3)) * icon_size
-    if len(labels):
-        height += 2 + 11 * len(labels)
-    point.point = np.array((width / 2, border + icon_size / 2))
-    svg = svgwrite.Drawing("test_icon.svg", (width, height))
+    border: np.array = np.array((16, 16))
+    size: np.array = point.get_size() + border
+    point.point = np.array((size[0] / 2, 16 / 2 + border[1] / 2))
+    svg = svgwrite.Drawing("test_icon.svg", size.astype(float))
     for style in scheme.get_style(tags, 18):
         style: LineStyle
         path = svg.path(d="M 0,0 L 64,0 L 64,64 L 0,64 L 0,0 Z")

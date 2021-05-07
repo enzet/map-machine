@@ -220,3 +220,15 @@ class Point(Tagged):
         ))
 
         self.y += 11
+
+    def get_size(self) -> np.array:
+        """
+        Get width and height of the point visual representation if there is
+        space for all elements.
+        """
+        icon_size: int = 16
+        width: int = (1 + max(2, len(self.icon.extra_icons) - 1)) * icon_size
+        height: int = (1 + int(len(self.icon.extra_icons) / 3)) * icon_size
+        if len(self.labels):
+            height += 2 + 11 * len(self.labels)
+        return np.array((width, height))
