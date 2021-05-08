@@ -171,9 +171,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="481.33233"
-     inkscape:cx="330.46421"
-     inkscape:zoom="32"
+     inkscape:cy="341.33233"
+     inkscape:cx="110.4642"
+     inkscape:zoom="2"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -740,22 +740,6 @@
        height="10"
        x="179"
        y="324" />
-    <circle
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.09999999;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="circle11421"
-       cx="136"
-       cy="264"
-       r="5" />
-    <path
-       sodipodi:nodetypes="ccsssscccsssscccccccccc"
-       inkscape:connector-curvature="0"
-       inkscape:label="#circle11427"
-       id="tfl"
-       d="m 136,275 c -2.37429,0.002 -4.41967,1.67368 -4.89453,4 L 130,279 c -0.277,0 -0.5,0.223 -0.5,0.5 l 0,1 c 0,0.277 0.223,0.5 0.5,0.5 l 1.10156,0 c 0.47515,2.32776 2.52268,3.99974 4.89844,4 2.37429,-0.002 4.41967,-1.67368 4.89453,-4 L 142,281 c 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-1 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 l -1.10156,0 c -0.47515,-2.32776 -2.52268,-3.99974 -4.89844,-4 z m 0,2 c 1.27052,9.6e-4 2.40266,0.80214 2.82617,2 l -5.65039,0 c 0.42327,-1.19718 1.55442,-1.99822 2.82422,-2 z m -2.82617,4 5.65039,0 c -0.42327,1.19718 -1.55442,1.99822 -2.82422,2 -1.27052,-9.6e-4 -2.40266,-0.80214 -2.82617,-2 z"
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.09999999;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1">
-      <title
-         id="title6070">TFL logo</title>
-    </path>
     <rect
        rx="0.5"
        ry="0.5"
@@ -7522,22 +7506,6 @@
        id="path11175"
        d="m 85,264 3,-3 3,3 -3,7 z"
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <path
-       inkscape:label="#path11187"
-       sodipodi:nodetypes="ccccccccccccccccccc"
-       inkscape:connector-curvature="0"
-       id="moscow_metro"
-       d="m 97,283 0,2 5,0 0,-2 -1,0 1,-2.5 2,3.5 2,-3.5 1,2.5 -1,0 0,2 5,0 0,-2 -1,0 -3,-8.5 -3,5 -3,-5 -3,8.5 z"
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1">
-      <title
-         id="title6068">Moscow metro logo</title>
-    </path>
-    <path
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 97,267 0,2 5,0 0,-2 -1,0 1,-2.5 2,3.5 2,-3.5 1,2.5 -1,0 0,2 5,0 0,-2 -1,0 -3,-8.5 -3,5 -3,-5 -3,8.5 z"
-       id="path11189"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccccccccccccccc" />
     <circle
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="circle11191"
@@ -7875,21 +7843,6 @@
        y="74"
        rx="0.5"
        ry="0.5" />
-    <circle
-       r="3"
-       cy="264"
-       cx="136"
-       id="path11419"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.10000001;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <rect
-       ry="0.5"
-       rx="0.5"
-       y="263"
-       x="129.5"
-       height="2"
-       width="13"
-       id="rect11423"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <rect
        ry="0.5"
        y="263"
@@ -9365,15 +9318,6 @@
        sodipodi:end="3.1415927"
        d="m 155,329 a 3,3 0 0 1 -1.5,2.59808 3,3 0 0 1 -3,0 A 3,3 0 0 1 149,329 l 3,0 z" />
     <path
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 146.5,338 c -0.277,0 -0.5,0.223 -0.5,0.5 l 0,11 c 0,0.277 0.223,0.5 0.5,0.5 l 11,0 c 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-11 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 l -11,0 z m 3,2 1,0 c 0.277,0 0.5,0.223 0.5,0.5 l 0,4.5 a 1,1 0 0 0 0.5,0.86523 1,1 0 0 0 1,0 A 1,1 0 0 0 153,345 l 0,-4.5 c 0,-0.277 0.223,-0.5 0.5,-0.5 l 1,0 c 0.277,0 0.5,0.223 0.5,0.5 l 0,4.5 a 3,3 0 0 1 -1.5,2.59766 3,3 0 0 1 -3,0 A 3,3 0 0 1 149,345 l 0,-4.5 c 0,-0.277 0.223,-0.5 0.5,-0.5 z"
-       id="u_bahn"
-       inkscape:label="#rect5457"
-       inkscape:connector-curvature="0">
-      <title
-         id="title6074">U-bahn logo</title>
-    </path>
-    <path
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path5442"
        sodipodi:type="arc"
@@ -10370,176 +10314,10 @@
        inkscape:label="#rect12089"
        inkscape:connector-curvature="0" />
     <path
-       d="m 136,359 a 3,3 0 0 1 2.77164,1.85195 3,3 0 0 1 -0.65032,3.26937 3,3 0 0 1 -3.26937,0.65032 A 3,3 0 0 1 133,362 l 3,0 z"
-       sodipodi:end="3.1415927"
-       sodipodi:start="4.712389"
-       sodipodi:ry="3"
-       sodipodi:rx="3"
-       sodipodi:cy="362"
-       sodipodi:cx="136"
-       sodipodi:type="arc"
-       id="path12108"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <path
-       d="m 136,361 a 1,1 0 0 1 0.92388,0.61732 1,1 0 0 1 -0.21677,1.08979 1,1 0 0 1 -1.08979,0.21677 A 1,1 0 0 1 135,362 l 1,0 z"
-       sodipodi:end="3.1415927"
-       sodipodi:start="4.712389"
-       sodipodi:ry="1"
-       sodipodi:rx="1"
-       sodipodi:cy="362"
-       sodipodi:cx="136"
-       sodipodi:type="arc"
-       id="path12110"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <path
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path12112"
-       sodipodi:type="arc"
-       sodipodi:cx="-136.00005"
-       sodipodi:cy="-358.00003"
-       sodipodi:rx="3"
-       sodipodi:ry="3"
-       sodipodi:start="4.712389"
-       sodipodi:end="3.1415927"
-       d="m -136.00005,-361.00003 a 3,3 0 0 1 2.77164,1.85195 3,3 0 0 1 -0.65032,3.26937 3,3 0 0 1 -3.26937,0.65032 3,3 0 0 1 -1.85195,-2.77164 l 3,0 z"
-       transform="scale(-1,-1)" />
-    <path
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path12114"
-       sodipodi:type="arc"
-       sodipodi:cx="-136.00005"
-       sodipodi:cy="-358.00003"
-       sodipodi:rx="1"
-       sodipodi:ry="1"
-       sodipodi:start="4.712389"
-       sodipodi:end="3.1415927"
-       d="m -136.00005,-359.00003 a 1,1 0 0 1 0.92388,0.61732 1,1 0 0 1 -0.21677,1.08979 1,1 0 0 1 -1.08979,0.21677 1,1 0 0 1 -0.61732,-0.92388 l 1,0 z"
-       transform="scale(-1,-1)" />
-    <rect
-       ry="0.5"
-       rx="0.5"
-       y="354"
-       x="130"
-       height="12"
-       width="12"
-       id="rect12116"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <rect
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect12120"
-       width="2"
-       height="11"
-       x="151"
-       y="354"
-       rx="0"
-       ry="0" />
-    <path
-       d="M 151,359 A 5,5 0 0 1 147.46447,357.53553 5,5 0 0 1 146,354 l 5,0 z"
-       sodipodi:end="3.1415927"
-       sodipodi:start="1.5707963"
-       sodipodi:ry="5"
-       sodipodi:rx="5"
-       sodipodi:cy="354"
-       sodipodi:cx="151"
-       sodipodi:type="arc"
-       id="path12124"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <path
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path12122"
-       sodipodi:type="arc"
-       sodipodi:cx="151"
-       sodipodi:cy="354"
-       sodipodi:rx="3"
-       sodipodi:ry="3"
-       sodipodi:start="1.5707963"
-       sodipodi:end="3.1415927"
-       d="M 151,357 A 3,3 0 0 1 148.87868,356.12132 3,3 0 0 1 148,354 l 3,0 z" />
-    <path
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path12127"
-       sodipodi:type="arc"
-       sodipodi:cx="-153"
-       sodipodi:cy="354"
-       sodipodi:rx="5"
-       sodipodi:ry="5"
-       sodipodi:start="1.5707963"
-       sodipodi:end="3.1415927"
-       d="m -153,359 a 5,5 0 0 1 -3.53553,-1.46447 A 5,5 0 0 1 -158,354 l 5,0 z"
-       transform="scale(-1,1)" />
-    <path
-       d="m -153,357 a 3,3 0 0 1 -2.12132,-0.87868 A 3,3 0 0 1 -156,354 l 3,0 z"
-       sodipodi:end="3.1415927"
-       sodipodi:start="1.5707963"
-       sodipodi:ry="3"
-       sodipodi:rx="3"
-       sodipodi:cy="354"
-       sodipodi:cx="-153"
-       sodipodi:type="arc"
-       id="path12129"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       transform="scale(-1,1)" />
-    <path
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path12131"
-       sodipodi:type="arc"
-       sodipodi:cx="151"
-       sodipodi:cy="-365"
-       sodipodi:rx="5"
-       sodipodi:ry="5"
-       sodipodi:start="1.5707963"
-       sodipodi:end="3.1415927"
-       d="m 151,-360 a 5,5 0 0 1 -3.53553,-1.46447 A 5,5 0 0 1 146,-365 l 5,0 z"
-       transform="scale(1,-1)" />
-    <path
-       d="m 151,-362 a 3,3 0 0 1 -2.12132,-0.87868 A 3,3 0 0 1 148,-365 l 3,0 z"
-       sodipodi:end="3.1415927"
-       sodipodi:start="1.5707963"
-       sodipodi:ry="3"
-       sodipodi:rx="3"
-       sodipodi:cy="-365"
-       sodipodi:cx="151"
-       sodipodi:type="arc"
-       id="path12133"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       transform="scale(1,-1)" />
-    <path
-       transform="scale(-1,-1)"
-       d="m -153,-360 a 5,5 0 0 1 -3.53553,-1.46447 A 5,5 0 0 1 -158,-365 l 5,0 z"
-       sodipodi:end="3.1415927"
-       sodipodi:start="1.5707963"
-       sodipodi:ry="5"
-       sodipodi:rx="5"
-       sodipodi:cy="-365"
-       sodipodi:cx="-153"
-       sodipodi:type="arc"
-       id="path12135"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <path
-       transform="scale(-1,-1)"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path12137"
-       sodipodi:type="arc"
-       sodipodi:cx="-153"
-       sodipodi:cy="-365"
-       sodipodi:rx="3"
-       sodipodi:ry="3"
-       sodipodi:start="1.5707963"
-       sodipodi:end="3.1415927"
-       d="m -153,-362 a 3,3 0 0 1 -2.12132,-0.87868 A 3,3 0 0 1 -156,-365 l 3,0 z" />
-    <path
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="M 263 275 C 261.892 275 261 275.892 261 277 L 261 278 L 259 278 C 258.446 278 258 278.446 258 279 L 258 285 C 258 285.554 258.446 286 259 286 L 269 286 C 269.554 286 270 285.554 270 285 L 270 279 C 270 278.446 269.554 278 269 278 L 267 278 L 267 277 C 267 275.892 266.108 275 265 275 L 263 275 z M 263 276 L 265 276 C 265.554 276 266 276.446 266 277 L 266 278 L 262 278 L 262 277 C 262 276.446 262.446 276 263 276 z "
        id="briefcase"
        inkscape:label="#rect52871" />
-    <path
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="M 146 370 A 5 5 0 0 0 147.46484 373.53516 A 5 5 0 0 0 151 375 L 151 376 A 5 5 0 0 0 147.46484 377.46484 A 5 5 0 0 0 146 381 L 148 381 A 3 3 0 0 1 148.87891 378.87891 A 3 3 0 0 1 151 378 L 151 381 L 153 381 L 153 378 A 3 3 0 0 1 155.12109 378.87891 A 3 3 0 0 1 156 381 L 158 381 A 5 5 0 0 0 156.53516 377.46484 A 5 5 0 0 0 153 376 L 153 375 A 5 5 0 0 0 156.53516 373.53516 A 5 5 0 0 0 158 370 L 156 370 A 3 3 0 0 1 155.12109 372.12109 A 3 3 0 0 1 153 373 L 153 370 L 151 370 L 151 373 A 3 3 0 0 1 148.87891 372.12109 A 3 3 0 0 1 148 370 L 146 370 z "
-       id="mtr"
-       inkscape:label="#rect52879">
-      <title
-         id="title6066">MTR logo</title>
-    </path>
     <rect
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect52901"
