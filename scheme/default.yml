@@ -692,13 +692,29 @@ node_icons:
   - tags: {traffic_sign: city_limit}
     icon: [city_limit_sign]
   - tags: {traffic_sign: maxspeed, maxspeed: "30"}
-    icon: [circle_30]
+    icon: [
+      circle_11,
+      {shape: digit_3, offset: [-2, 0], color: "#FFFFFF"},
+      {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+    ]
   - tags: {traffic_sign: maxspeed, maxspeed: "40"}
-    icon: [circle_40]
+    icon: [
+      circle_11,
+      {shape: digit_4, offset: [-2, 0], color: "#FFFFFF"},
+      {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+    ]
   - tags: {traffic_sign: maxspeed, maxspeed: "50"}
-    icon: [circle_50]
+    icon: [
+      circle_11,
+      {shape: digit_5, offset: [-2, 0], color: "#FFFFFF"},
+      {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+    ]
   - tags: {traffic_sign: maxspeed, maxspeed: "40_mph"}
-    icon: [speed_limit_40_mph]
+    icon: [
+      speed_limit_mph,
+      {shape: digit_4, offset: [-2, 2]},
+      {shape: digit_0, offset: [2, 2]},
+    ]
   - tags: {traffic_sign: stop}
     icon: [stop]
   - tags: {highway: give_way}
