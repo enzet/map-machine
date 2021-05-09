@@ -40,14 +40,17 @@ class Shape:
         """
         return self.id_ in [DEFAULT_SHAPE_ID, DEFAULT_SMALL_SHAPE_ID]
 
-    def get_path(self, svg: Drawing, point: np.array):
+    def get_path(
+        self, svg: Drawing, point: np.array, offset: np.array = np.array((0, 0))
+    ):
         """
         Draw icon into SVG file.
 
         :param svg: SVG file to draw to
         :param point: icon position
+        :param offset: additional offset
         """
-        shift: np.array = self.offset + point
+        shift: np.array = self.offset + point + offset
 
         return svg.path(
             d=self.path, transform=f"translate({shift[0]},{shift[1]})"

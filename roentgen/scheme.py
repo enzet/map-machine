@@ -27,6 +27,7 @@ class ShapeSpecification:
 
     shape: Shape
     color: Color = DEFAULT_COLOR
+    offset: np.array = np.array((0, 0))
 
     @classmethod
     def from_structure(
@@ -39,6 +40,7 @@ class ShapeSpecification:
         shape: Shape
         shape, _ = extractor.get_path(DEFAULT_SHAPE_ID)
         color: Color = color
+        offset: np.array = np.array((0, 0))
         if isinstance(structure, str):
             shape, _ = extractor.get_path(structure)
         elif isinstance(structure, dict):
@@ -46,7 +48,9 @@ class ShapeSpecification:
                 shape, _ = extractor.get_path(structure["shape"])
             if "color" in structure:
                 color = scheme.get_color(structure["color"])
-        return cls(shape, color)
+            if "offset" in structure:
+                offset = np.array(structure["offset"])
+        return cls(shape, color, offset)
 
     def is_default(self) -> bool:
         """
@@ -69,7 +73,7 @@ class ShapeSpecification:
         """
         point = np.array(list(map(int, point)))
 
-        path: svgwrite.path.Path = self.shape.get_path(svg, point)
+        path: svgwrite.path.Path = self.shape.get_path(svg, point, self.offset)
         path.update({"fill": self.color.hex})
         if outline:
             bright: bool = is_bright(self.color)
