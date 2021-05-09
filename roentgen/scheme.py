@@ -3,14 +3,16 @@ Röntgen drawing scheme.
 
 Author: Sergey Vartanov (me@enzet.ru).
 """
-import copy
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
+import numpy as np
+import svgwrite
 import yaml
 from colour import Color
 
+from roentgen.color import is_bright
 from roentgen.icon import DEFAULT_SHAPE_ID, IconExtractor, Shape
 from roentgen.text import Label, get_address, get_text
 
@@ -18,17 +20,85 @@ DEFAULT_COLOR: Color = Color("#444444")
 
 
 @dataclass
+class ShapeSpecification:
+    """
+    Specification for shape as a part of an icon.
+    """
+
+    shape: Shape
+    color: Color = DEFAULT_COLOR
+
+    @classmethod
+    def from_structure(
+        cls, structure: Any, extractor: IconExtractor, scheme: "Scheme",
+        color: Color = DEFAULT_COLOR
+    ) -> "ShapeSpecification":
+        """
+        Parse shape specification from structure.
+        """
+        shape: Shape
+        shape, _ = extractor.get_path(DEFAULT_SHAPE_ID)
+        color: Color = color
+        if isinstance(structure, str):
+            shape, _ = extractor.get_path(structure)
+        elif isinstance(structure, dict):
+            if "shape" in structure:
+                shape, _ = extractor.get_path(structure["shape"])
+            if "color" in structure:
+                color = scheme.get_color(structure["color"])
+        return cls(shape, color)
+
+    def is_default(self) -> bool:
+        """
+        Check whether shape is default.
+        """
+        return self.shape.id_ == DEFAULT_SHAPE_ID
+
+    def draw(
+        self, svg: svgwrite.Drawing, point: np.array,
+        tags: Dict[str, Any] = None, outline: bool = False
+    ) -> None:
+        """
+        Draw icon shape into SVG file.
+
+        :param svg: output SVG file
+        :param point: 2D position of the icon centre
+        :param opacity: icon opacity
+        :param tags: tags to be displayed as hint
+        :param outline: draw outline for the icon
+        """
+        point = np.array(list(map(int, point)))
+
+        path: svgwrite.path.Path = self.shape.get_path(svg, point)
+        path.update({"fill": self.color.hex})
+        if outline:
+            bright: bool = is_bright(self.color)
+            color: Color = Color("black") if bright else Color("white")
+            opacity: float = 0.7 if bright else 0.5
+
+            path.update({
+                "fill": color.hex,
+                "stroke": color.hex,
+                "stroke-width": 2.2,
+                "stroke-linejoin": "round",
+                "opacity": opacity,
+            })
+        if tags:
+            title: str = "\n".join(map(lambda x: x + ": " + tags[x], tags))
+            path.set_desc(title=title)
+        svg.add(path)
+
+
+@dataclass
 class Icon:
     """
     Node representation: icons and color.
     """
-    main_icon: List[Shape]  # list of icons
-    extra_icons: List[List[Shape]]  # list of lists of icons
-    color: Color  # fill color of all icons
+    main_icon: List[ShapeSpecification]  # list of shapes
+    extra_icons: List[List[ShapeSpecification]]  # list of lists of shapes
     # tag keys that were processed to create icon set (other
     # tag keys should be displayed by text or ignored)
     processed: Set[str]
-    is_default: bool
 
 
 @dataclass
@@ -148,9 +218,7 @@ class Scheme:
         try:
             return Color(color)
         except ValueError:
-            pass
-
-        return DEFAULT_COLOR
+            return DEFAULT_COLOR
 
     def is_no_drawable(self, key: str) -> bool:
         """
@@ -199,72 +267,79 @@ class Scheme:
         if tags_hash in self.cache:
             return self.cache[tags_hash]
 
-        main_icon_id: Optional[List[str]] = None
-        extra_icon_ids: List[List[str]] = []
+        main_icon: List[ShapeSpecification] = []
+        extra_icons: List[List[ShapeSpecification]] = []
         processed: Set[str] = set()
-        fill: Color = DEFAULT_COLOR
         priority: int = 0
 
         for index, matcher in enumerate(self.icons):
-            # type: (int, Dict[str, Any])
+            index: int
+            matcher: Dict[str, Any]
             matched: bool = is_matched(matcher, tags)
+            matcher_tags: Set[str] = matcher["tags"].keys()
             if not matched:
                 continue
             priority = len(self.icons) - index
             if "draw" in matcher and not matcher["draw"]:
-                processed |= set(matcher["tags"].keys())
+                processed |= set(matcher_tags)
             if "icon" in matcher:
-                main_icon_id = copy.deepcopy(matcher["icon"])
-                processed |= set(matcher["tags"].keys())
+                main_icon = [
+                    ShapeSpecification.from_structure(x, icon_extractor, self)
+                    for x in matcher["icon"]
+                ]
+                processed |= set(matcher_tags)
             if "over_icon" in matcher:
-                if main_icon_id:  # TODO: check main icon in under icons
-                    main_icon_id += matcher["over_icon"]
-                    for key in matcher["tags"].keys():
+                if main_icon:
+                    main_icon += [
+                        ShapeSpecification.from_structure(
+                            x, icon_extractor, self
+                        )
+                        for x in matcher["over_icon"]
+                    ]
+                    for key in matcher_tags:
                         processed.add(key)
             if "add_icon" in matcher:
-                extra_icon_ids += [matcher["add_icon"]]
-                for key in matcher["tags"].keys():
+                extra_icons += [[
+                    ShapeSpecification.from_structure(
+                        x, icon_extractor, self, Color("#888888")
+                    )
+                    for x in matcher["add_icon"]
+                ]]
+                for key in matcher_tags:
                     processed.add(key)
             if "color" in matcher:
-                fill = self.get_color(matcher["color"])
-                for key in matcher["tags"].keys():
-                    processed.add(key)
+                assert False
+            if "set_main_color" in matcher:
+                for shape in main_icon:
+                    shape.color = self.get_color(matcher["set_main_color"])
+
+        color: Optional[Color] = None
 
         for tag_key in tags:  # type: str
             if (tag_key.endswith(":color") or
                     tag_key.endswith(":colour")):
-                fill = self.get_color(tags[tag_key])
+                color = self.get_color(tags[tag_key])
                 processed.add(tag_key)
 
         for tag_key in tags:  # type: str
             if tag_key in ["color", "colour"]:
-                fill = self.get_color(tags[tag_key])
+                color = self.get_color(tags[tag_key])
                 processed.add(tag_key)
 
-        keys_left = list(filter(
-            lambda x: x not in processed and
-            not self.is_no_drawable(x), tags.keys()
-        ))
+        if color:
+            for shape_specification in main_icon:
+                shape_specification.color = color
 
-        is_default: bool = False
-        if not main_icon_id and not extra_icon_ids and keys_left:
-            main_icon_id = [DEFAULT_SHAPE_ID]
-            is_default = True
+        keys_left = [
+            x for x in tags.keys()
+            if x not in processed and not self.is_no_drawable(x)
+        ]
 
-        main_icon: List[Shape] = []
-        if main_icon_id:
-            main_icon = list(map(
-                lambda x: icon_extractor.get_path(x)[0], main_icon_id
-            ))
+        default_shape, _ = icon_extractor.get_path(DEFAULT_SHAPE_ID)
+        if not main_icon:
+            main_icon = [ShapeSpecification(default_shape)]
 
-        extra_icons: List[List[Shape]] = []
-        for icon_id in extra_icon_ids:
-            extra_icons.append(list(map(
-                lambda x: icon_extractor.get_path(x)[0], icon_id)))
-
-        returned: Icon = Icon(
-            main_icon, extra_icons, fill, processed, is_default
-        )
+        returned: Icon = Icon(main_icon, extra_icons, processed)
         self.cache[tags_hash] = returned, priority
 
         return returned, priority
@@ -283,8 +358,9 @@ class Scheme:
                 priority = element["priority"]
             for key in element:  # type: str
                 if key not in [
-                        "tags", "no_tags", "priority", "level", "icon",
-                        "r", "r1", "r2"]:
+                    "tags", "no_tags", "priority", "level", "icon", "r", "r1",
+                    "r2"
+                ]:
                     value = element[key]
                     if isinstance(value, str) and value.endswith("_color"):
                         value = self.get_color(value)
@@ -374,6 +450,9 @@ class Scheme:
             if k in tags:
                 texts.append(Label(tags[k], Color("#444444")))
                 tags.pop(k)
+        if "height" in tags:
+            texts.append(Label(f"↕ {tags['height']} m"))
+            tags.pop("height")
         for tag in tags:
             if self.is_writable(tag):
                 texts.append(Label(tags[tag]))

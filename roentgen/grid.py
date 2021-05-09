@@ -11,7 +11,7 @@ from colour import Color
 from svgwrite import Drawing
 
 from roentgen.icon import IconExtractor, Shape
-from roentgen.scheme import Scheme
+from roentgen.scheme import Scheme, ShapeSpecification
 
 
 def draw_all_icons(
@@ -35,9 +35,18 @@ def draw_all_icons(
 
     to_draw: List[Set[str]] = []
 
+    icons_file_name: str = "icons/icons.svg"
+    extractor: IconExtractor = IconExtractor(icons_file_name)
+
     for element in scheme.icons:  # type: Dict[str, Any]
-        if "icon" in element and set(element["icon"]) not in to_draw:
-            to_draw.append(set(element["icon"]))
+        if "icon" in element:
+            specifications = [
+                ShapeSpecification.from_structure(x, extractor, scheme)
+                for x in element["icon"]
+            ]
+            ids = set(x.shape.id_ for x in specifications)
+            if ids not in to_draw:
+                to_draw.append(ids)
         if "add_icon" in element and set(element["add_icon"]) not in to_draw:
             to_draw.append(set(element["add_icon"]))
         if "over_icon" not in element:
@@ -65,16 +74,13 @@ def draw_all_icons(
                             current_set not in to_draw):
                         to_draw.append(current_set)
 
-    icons_file_name: str = "icons/icons.svg"
-    extractor: IconExtractor = IconExtractor(icons_file_name)
-
     specified_ids: Set[str] = set()
 
     for icons_to_draw in to_draw:  # type: List[str]
         specified_ids |= icons_to_draw
     print(
         "Icons with no tag specification: \n    " +
-        ", ".join(sorted(extractor.icons.keys() - specified_ids)) + "."
+        ", ".join(sorted(extractor.shapes.keys() - specified_ids)) + "."
     )
 
     draw_grid(

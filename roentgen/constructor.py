@@ -19,7 +19,8 @@ from roentgen.osm_reader import (
     Map, OSMMember, OSMNode, OSMRelation, OSMWay, Tagged
 )
 from roentgen.point import Point
-from roentgen.scheme import Icon, LineStyle, Scheme
+from roentgen.scheme import Icon, LineStyle, Scheme, ShapeSpecification, \
+    DEFAULT_COLOR
 from roentgen.util import MinMax
 
 DEBUG: bool = False
@@ -445,34 +446,35 @@ class Constructor:
                 continue
 
             priority: int
-            icon_set: Icon
+            icon: Icon
             draw_outline: bool = True
 
             if self.mode in ["time", "user-coloring"]:
                 if not tags:
                     continue
+                color = DEFAULT_COLOR
                 if self.mode == "user-coloring":
                     color = get_user_color(node.user, self.seed)
                 if self.mode == "time":
                     color = get_time_color(node.timestamp, self.map_.time)
                 dot, _ = self.icon_extractor.get_path(DEFAULT_SMALL_SHAPE_ID)
-                icon_set = Icon([dot], [], color, set(), True)
+                icon = Icon([ShapeSpecification(dot, color)], [], set())
                 priority = 0
                 draw_outline = False
                 labels = []
             else:
-                icon_set, priority = self.scheme.get_icon(
+                icon, priority = self.scheme.get_icon(
                     self.icon_extractor, tags
                 )
                 labels = self.scheme.construct_text(tags, True)
 
             self.nodes.append(Point(
-                icon_set, labels, tags, flung, node.coordinates,
+                icon, labels, tags, flung, node.coordinates,
                 priority=priority, draw_outline=draw_outline
             ))
 
             missing_tags.update(
                 f"{key}: {tags[key]}" for key in tags
-                if key not in icon_set.processed)
+                if key not in icon.processed)
 
         ui.progress_bar(-1, len(self.map_.node_map), text="Constructing nodes")

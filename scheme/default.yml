@@ -141,31 +141,24 @@ node_icons:
     icon: [electricity]
   # plant=*
   - tags: {plant: christmas_trees}
-    icon: [christmas_tree]
-    color: orchard_border_color
+    icon: [{shape: christmas_tree, color: orchard_border_color}]
   # produce=*
   - tags: {produce: apple}
-    icon: [apple]
-    color: orchard_border_color
+    icon: [{shape: apple, color: orchard_border_color}]
   - tags: {produce: christmas_trees}
-    icon: [christmas_tree]
-    color: orchard_border_color
+    icon: [{shape: christmas_tree, color: orchard_border_color}]
   - tags: {produce: pear}
-    icon: [pear]
-    color: orchard_border_color
+    icon: [{shape: pear, color: orchard_border_color}]
   # trees=*
   - tags: {trees: apple_trees}
-    icon: [apple]
-    color: orchard_border_color
+    icon: [{shape: apple, color: orchard_border_color}]
   - tags: {trees: pear_trees}
-    icon: [pear]
-    color: orchard_border_color
+    icon: [{shape: pear, color: orchard_border_color}]
 
   # Bigger objects
 
   - tags: {waterway: waterfall}
-    icon: [waterfall]
-    color: water_border_color
+    icon: [{shape: waterfall, color: water_border_color}]
   - tags: {natural: cliff}
     icon: [cliff]
   - tags: {natural: peak}
@@ -361,19 +354,15 @@ node_icons:
   # Emergency
 
   - tags: {emergency: defibrillator}
-    icon: [defibrillator]
-    color: emergency_color
+    icon: [{shape: defibrillator, color: emergency_color}]
   - tags: {emergency: fire_extinguisher}
-    icon: [fire_extinguisher]
-    color: emergency_color
+    icon: [{shape: fire_extinguisher, color: emergency_color}]
   - tags: {emergency: fire_hydrant}
     icon: [fire_hydrant]
   - tags: {emergency: life_ring}
-    icon: [life_ring]
-    color: emergency_color
+    icon: [{shape: life_ring, color: emergency_color}]
   - tags: {emergency: phone}
-    icon: [sos_phone]
-    color: emergency_color
+    icon: [{shape: sos_phone, color: emergency_color}]
 
   # Transport-important middle objects
 
@@ -628,8 +617,7 @@ node_icons:
   - tags: {amenity: clock}
     icon: [clock]
   - tags: {amenity: fountain}
-    icon: [fountain]
-    color: water_border_color
+    icon: [{shape: fountain, color: water_border_color}]
   - tags: {amenity: waste_basket}
     icon: [waste_basket]
   - tags: {highway: street_lamp}
@@ -666,50 +654,38 @@ node_icons:
     icon: [lowered_kerb]
     # Trees
   - tags: {natural: tree}
-    icon: [tree]
-    color: tree_color
+    icon: [{shape: tree, color: tree_color}]
   - tags: {leaf_type: broadleaved}
-    icon: [tree_with_leaf]
-    color: tree_color
+    icon: [{shape: tree_with_leaf, color: tree_color}]
   - tags: {leaf_type: needleleaved}
-    icon: [needleleaved_tree]
-    color: tree_color
+    icon: [{shape: needleleaved_tree, color: tree_color}]
   - tags: {leaf_type: palm}
-    icon: [palm]
-    color: tree_color
+    icon: [{shape: palm, color: tree_color}]
   - tags: {natural: tree, leaf_type: broadleaved}
-    icon: [tree_with_leaf]
-    color: tree_color
+    icon: [{shape: tree_with_leaf, color: tree_color}]
   - tags: {natural: tree, leaf_type: needleleaved}
-    icon: [needleleaved_tree]
-    color: tree_color
+    icon: [{shape: needleleaved_tree, color: tree_color}]
   - tags: {natural: tree, leaf_type: palm}
-    icon: [palm]
-    color: tree_color
+    icon: [{shape: palm, color: tree_color}]
   - tags: {natural: tree, type: conifer}
-    icon: [needleleaved_tree]
-    color: tree_color
+    icon: [{shape: needleleaved_tree, color: tree_color}]
   - tags: {leaf_cycle: deciduous}
-    color: decidious_color
+    set_main_color: decidious_color
   - tags: {leaf_cycle: evergreen}
-    color: evergreen_color
+    set_main_color: evergreen_color
   - tags: {natural: tree, leaf_cycle: deciduous}
-    color: decidious_color
+    set_main_color: decidious_color
   - tags: {natural: tree, leaf_cycle: evergreen}
-    color: evergreen_color
+    set_main_color: evergreen_color
   - tags: {natural: bush}
-    icon: [bush]
-    color: tree_color
+    icon: [{shape: bush, color: tree_color}]
     # Tree genus
   - tags: {natural: tree, genus: Betula}
-    icon: [betula]
-    color: tree_color
+    icon: [{shape: betula, color: tree_color}]
   - tags: {natural: tree, "genus:en": Birch}
-    icon: [betula]
-    color: tree_color
+    icon: [{shape: betula, color: tree_color}]
   - tags: {natural: tree, "genus:ru": Берёза}
-    icon: [betula]
-    color: tree_color
+    icon: [{shape: betula, color: tree_color}]
 
   - tags: {railway: buffer_stop}
     icon: [buffer_stop]

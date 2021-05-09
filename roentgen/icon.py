@@ -5,12 +5,10 @@ Author: Sergey Vartanov (me@enzet.ru).
 """
 import re
 from dataclasses import dataclass
-from typing import Any, Dict, Optional
+from typing import Dict, Optional
 from xml.dom.minidom import Document, Element, Node, parse
 
 import numpy as np
-import svgwrite
-from colour import Color
 from svgwrite import Drawing
 
 from roentgen import ui
@@ -55,56 +53,6 @@ class Shape:
             d=self.path, transform=f"translate({shift[0]},{shift[1]})"
         )
 
-    def draw(
-        self, svg: svgwrite.Drawing, point: np.array, color: Color,
-        opacity: float = 1.0, tags: Dict[str, Any] = None, outline: bool = False
-    ) -> None:
-        """
-        Draw icon shape into SVG file.
-
-        :param svg: output SVG file
-        :param point: 2D position of the icon centre
-        :param color: fill color
-        :param opacity: icon opacity
-        :param tags: tags to be displayed as hint
-        :param outline: draw outline for the icon
-        """
-        point = np.array(list(map(int, point)))
-
-        path: svgwrite.path.Path = self.get_path(svg, point)
-        path.update({"fill": color.hex})
-        if outline:
-            opacity: float = 0.5
-
-            path.update({
-                "fill": color.hex,
-                "stroke": color.hex,
-                "stroke-width": 2.2,
-                "stroke-linejoin": "round",
-            })
-        if opacity != 1.0:
-            path.update({"opacity": opacity})
-        if tags:
-            title: str = "\n".join(map(lambda x: x + ": " + tags[x], tags))
-            path.set_desc(title=title)
-        svg.add(path)
-
-
-def is_standard(id_: str):
-    """
-    Check whether SVG object ID is standard Inkscape ID.
-    """
-    matcher = re.match(STANDARD_INKSCAPE_ID, id_)
-    return matcher is not None
-    if id_ == "base":
-        return True
-    for prefix in [
-    ]:
-        matcher = re.match(prefix + "\\d+", id_)
-        if matcher:
-            return True
-    return False
-
 
 class IconExtractor:
     """
@@ -118,10 +66,10 @@ class IconExtractor:
         :param svg_file_name: input SVG file name with icons.  File may contain
             any other irrelevant graphics.
         """
-        self.icons: Dict[str, Shape] = {}
+        self.shapes: Dict[str, Shape] = {}
 
         with open(svg_file_name) as input_file:
-            content = parse(input_file)  # type: Document
+            content: Document = parse(input_file)
             for element in content.childNodes:  # type: Element
                 if element.nodeName != "svg":
                     continue
@@ -145,7 +93,7 @@ class IconExtractor:
             return
 
         id_: str = node.getAttribute("id")
-        if is_standard(id_):
+        if re.match(STANDARD_INKSCAPE_ID, id_) is not None:
             return
 
         if node.hasAttribute("d"):
@@ -172,7 +120,7 @@ class IconExtractor:
                     name = child_node.childNodes[0].nodeValue
                     break
 
-            self.icons[id_] = Shape(path, point, id_, name)
+            self.shapes[id_] = Shape(path, point, id_, name)
         else:
             ui.error(f"not standard ID {id_}")
 
@@ -182,8 +130,8 @@ class IconExtractor:
 
         :param id_: string icon identifier
         """
-        if id_ in self.icons:
-            return self.icons[id_], True
+        if id_ in self.shapes:
+            return self.shapes[id_], True
 
-        ui.error(f"no such icon ID {id_}")
-        return self.icons[DEFAULT_SHAPE_ID], False
+        ui.error(f"no such shape ID {id_}")
+        return self.shapes[DEFAULT_SHAPE_ID], False

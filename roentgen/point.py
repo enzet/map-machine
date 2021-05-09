@@ -7,7 +7,7 @@ from colour import Color
 from roentgen.color import is_bright
 from roentgen.icon import Shape
 from roentgen.osm_reader import Tagged
-from roentgen.scheme import Icon
+from roentgen.scheme import Icon, ShapeSpecification
 from roentgen.text import Label
 
 DEFAULT_FONT: str = "Roboto"
@@ -71,17 +71,17 @@ class Point(Tagged):
         Draw main shape for one node.
         """
         if (
-            self.icon.main_icon and
-            (not self.icon.main_icon[0].is_default() or
-             self.is_for_node)
+            self.icon.main_icon[0].is_default() and
+            not self.icon.extra_icons
         ):
-            position = self.point + np.array((0, self.y))
-            self.main_icon_painted: bool = self.draw_point_shape(
-                svg, self.icon.main_icon,
-                position, self.icon.color, occupied,
-                tags=self.tags)
-            if self.main_icon_painted:
-                self.y += 16
+            return
+
+        position = self.point + np.array((0, self.y))
+        self.main_icon_painted: bool = self.draw_point_shape(
+            svg, self.icon.main_icon, position, occupied, tags=self.tags
+        )
+        if self.main_icon_painted:
+            self.y += 16
 
     def draw_extra_shapes(
         self, svg: svgwrite.Drawing, occupied: Optional[Occupied] = None
@@ -108,14 +108,14 @@ class Point(Tagged):
             for shape_ids in self.icon.extra_icons:
                 self.draw_point_shape(
                     svg, shape_ids, self.point + np.array((left, self.y)),
-                    Color("#888888"), occupied)
+                    occupied=occupied)
                 left += 16
             if self.icon.extra_icons:
                 self.y += 16
 
     def draw_point_shape(
-        self, svg: svgwrite.Drawing, shapes: List[Shape], position,
-        fill: Color, occupied, tags: Optional[Dict[str, str]] = None
+        self, svg: svgwrite.Drawing, shapes: List[ShapeSpecification], position,
+        occupied, tags: Optional[Dict[str, str]] = None
     ) -> bool:
         """
         Draw one combined icon and its outline.
@@ -129,16 +129,13 @@ class Point(Tagged):
         # Draw outlines.
 
         if self.draw_outline:
-            for icon in shapes:  # type: Shape
-                bright: bool = is_bright(fill)
-                color: Color = Color("black") if bright else Color("white")
-                opacity: float = 0.7 if bright else 0.5
-                icon.draw(svg, position, color, opacity=opacity, outline=True)
+            for shape in shapes:
+                shape.draw(svg, position, outline=True)
 
         # Draw icons.
 
-        for icon in shapes:  # type: Shape
-            icon.draw(svg, position, fill, tags=tags)
+        for shape in shapes:  # type: ShapeSpecification
+            shape.draw(svg, position, tags=tags)
 
         if occupied:
             overlap: int = occupied.overlap
