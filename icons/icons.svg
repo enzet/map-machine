@@ -151,6 +151,19 @@
        gradientUnits="userSpaceOnUse"
        spreadMethod="pad"
        gradientTransform="translate(-16,0)" />
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8051"
+       x="-0.048"
+       width="1.096"
+       y="-0.048"
+       height="1.096">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.18"
+         id="feGaussianBlur8053" />
+    </filter>
   </defs>
   <sodipodi:namedview
      inkscape:document-rotation="0"
@@ -171,9 +184,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="594.89388"
-     inkscape:cx="53.87433"
-     inkscape:zoom="5.6568542"
+     inkscape:cy="179.04494"
+     inkscape:cx="112.68908"
+     inkscape:zoom="2"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -4916,10 +4929,10 @@
        inkscape:connector-curvature="0"
        id="circle_9"
        d="M 76,23.5 A 4.5,4.5 0 0 1 71.5,28 4.5,4.5 0 0 1 67,23.5 4.5,4.5 0 0 1 71.5,19 4.5,4.5 0 0 1 76,23.5 Z"
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter8051)"
        inkscape:label="#manhole">
       <title
-         id="title5986">circle 9px</title>
+         id="title5986">circle 9 px</title>
     </path>
     <rect
        rx="0.484375"
@@ -6146,75 +6159,6 @@
        inkscape:connector-curvature="0"
        id="path5072"
        d="m 162,13 11,0 -1,1 -9,0 z"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <rect
-       y="6"
-       x="170"
-       height="1"
-       width="2"
-       id="rect5074"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <rect
-       y="10"
-       x="170"
-       height="1"
-       width="2"
-       id="rect5076"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <rect
-       y="8"
-       x="173"
-       height="1"
-       width="1"
-       id="rect5078"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <path
-       d="m 172,6 a 2,2 0 0 1 2,2"
-       sodipodi:open="true"
-       sodipodi:end="0"
-       sodipodi:start="4.712389"
-       sodipodi:ry="2"
-       sodipodi:rx="2"
-       sodipodi:cy="8"
-       sodipodi:cx="172"
-       sodipodi:type="arc"
-       id="path5080"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <path
-       d="m 174,9 a 2,2 0 0 1 -2,2"
-       sodipodi:open="true"
-       sodipodi:end="1.5707963"
-       sodipodi:start="0"
-       sodipodi:ry="2"
-       sodipodi:rx="2"
-       sodipodi:cy="9"
-       sodipodi:cx="172"
-       sodipodi:type="arc"
-       id="path5082"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <path
-       d="m 173,9 a 1,1 0 0 1 -1,1"
-       sodipodi:open="true"
-       sodipodi:end="1.5707963"
-       sodipodi:start="0"
-       sodipodi:ry="1"
-       sodipodi:rx="1"
-       sodipodi:cy="9"
-       sodipodi:cx="172"
-       sodipodi:type="arc"
-       id="path5084"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <path
-       sodipodi:open="true"
-       d="m 172,7 a 1,1 0 0 1 1,1"
-       sodipodi:end="0"
-       sodipodi:start="4.712389"
-       sodipodi:ry="1"
-       sodipodi:rx="1"
-       sodipodi:cy="8"
-       sodipodi:cx="172"
-       sodipodi:type="arc"
-       id="path5086"
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <rect
        rx="0.5"
@@ -12595,7 +12539,7 @@
        width="5"
        height="1"
        x="455"
-       y="-56"
+       y="-55"
        ry="0.5"
        rx="0.5" />
     <path
@@ -12604,28 +12548,28 @@
        id="path7109"
        sodipodi:type="arc"
        sodipodi:cx="456.5"
-       sodipodi:cy="-54.5"
+       sodipodi:cy="-53.5"
        sodipodi:rx="1.5"
        sodipodi:ry="1.5"
        sodipodi:start="4.712389"
        sodipodi:end="1.5707963"
-       d="m 456.5,-56 a 1.5,1.5 0 0 1 1.5,1.5 1.5,1.5 0 0 1 -1.5,1.5 l 0,-1.5 z" />
+       d="m 456.5,-55 a 1.5,1.5 0 0 1 1.5,1.5 1.5,1.5 0 0 1 -1.5,1.5 l 0,-1.5 z" />
     <path
        transform="matrix(0,1,-1,0,0,0)"
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path7111"
        sodipodi:type="arc"
        sodipodi:cx="456.5"
-       sodipodi:cy="-54.5"
+       sodipodi:cy="-53.5"
        sodipodi:rx="0.5"
        sodipodi:ry="0.5"
        sodipodi:start="4.712389"
        sodipodi:end="1.5707963"
-       d="m 456.5,-55 a 0.5,0.5 0 0 1 0.5,0.5 0.5,0.5 0 0 1 -0.5,0.5 l 0,-0.5 z" />
+       d="m 456.5,-54 a 0.5,0.5 0 0 1 0.5,0.5 0.5,0.5 0 0 1 -0.5,0.5 l 0,-0.5 z" />
     <rect
        transform="matrix(0,1,-1,0,0,0)"
        ry="0.5"
-       y="-54"
+       y="-53"
        x="455"
        height="1"
        width="2"
@@ -12637,7 +12581,7 @@
        id="rect7115"
        width="1"
        height="3"
-       x="58"
+       x="57"
        y="456"
        rx="0.5"
        ry="0.5" />
@@ -12646,7 +12590,7 @@
        id="rect7117"
        width="3"
        height="5"
-       x="57"
+       x="56"
        y="455"
        rx="1.5"
        ry="1.5" />
@@ -12655,7 +12599,7 @@
        id="rect7137"
        width="11"
        height="12"
-       x="51"
+       x="50"
        y="450"
        rx="0.5"
        ry="0.5" />
@@ -12664,7 +12608,7 @@
        id="rect7139"
        width="9"
        height="10"
-       x="52"
+       x="51"
        y="451"
        rx="0"
        ry="0" />
@@ -12673,13 +12617,13 @@
        id="rect7143"
        width="7"
        height="1"
-       x="53"
+       x="52"
        y="452"
        rx="0.5"
        ry="0.5" />
     <path
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 51.5,466 c -0.277,0 -0.5,0.223 -0.5,0.5 l 0,11 c 0,0.277 0.223,0.5 0.5,0.5 l 10,0 c 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-11 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 z m 0.5,1 9,0 0,10 -9,0 z m 1.5,1 c -0.277,0 -0.5,0.223 -0.5,0.5 0,0.277 0.223,0.5 0.5,0.5 l 6,0 c 0.277,0 0.5,-0.223 0.5,-0.5 0,-0.277 -0.223,-0.5 -0.5,-0.5 z m 0,3 c -0.277,0 -0.5,0.223 -0.5,0.5 l 0,1 c 0,0.82843 0.67157,1.5 1.5,1.5 0.17045,-6.8e-4 0.33954,-0.0304 0.5,-0.0879 l 0,1.58789 c 0,0.277 0.223,0.5 0.5,0.5 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-3 0,-1 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 -0.277,0 -0.5,0.223 -0.5,0.5 l 0,1 c 0,0.27614 -0.22386,0.5 -0.5,0.5 -0.27614,0 -0.5,-0.22386 -0.5,-0.5 l 0,-1 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 z m 5,0 c -0.831,0 -1.5,0.669 -1.5,1.5 l 0,2 c 0,0.831 0.669,1.5 1.5,1.5 0.831,0 1.5,-0.669 1.5,-1.5 l 0,-2 c 0,-0.831 -0.669,-1.5 -1.5,-1.5 z m 0,1 c 0.277,0 0.5,0.223 0.5,0.5 l 0,2 c 0,0.277 -0.223,0.5 -0.5,0.5 -0.277,0 -0.5,-0.223 -0.5,-0.5 l 0,-2 c 0,-0.277 0.223,-0.5 0.5,-0.5 z"
+       d="m 50.5,466 c -0.277,0 -0.5,0.223 -0.5,0.5 l 0,11 c 0,0.277 0.223,0.5 0.5,0.5 l 10,0 c 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-11 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 z m 0.5,1 9,0 0,10 -9,0 z m 1.5,1 c -0.277,0 -0.5,0.223 -0.5,0.5 0,0.277 0.223,0.5 0.5,0.5 l 6,0 c 0.277,0 0.5,-0.223 0.5,-0.5 0,-0.277 -0.223,-0.5 -0.5,-0.5 z m 0,3 c -0.277,0 -0.5,0.223 -0.5,0.5 l 0,1 c 0,0.82843 0.67157,1.5 1.5,1.5 0.17045,-6.8e-4 0.33954,-0.0304 0.5,-0.0879 l 0,1.58789 c 0,0.277 0.223,0.5 0.5,0.5 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-3 0,-1 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 -0.277,0 -0.5,0.223 -0.5,0.5 l 0,1 c 0,0.27614 -0.22386,0.5 -0.5,0.5 -0.27614,0 -0.5,-0.22386 -0.5,-0.5 l 0,-1 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 z m 5,0 c -0.831,0 -1.5,0.669 -1.5,1.5 l 0,2 c 0,0.831 0.669,1.5 1.5,1.5 0.831,0 1.5,-0.669 1.5,-1.5 l 0,-2 c 0,-0.831 -0.669,-1.5 -1.5,-1.5 z m 0,1 c 0.277,0 0.5,0.223 0.5,0.5 l 0,2 c 0,0.277 -0.223,0.5 -0.5,0.5 -0.277,0 -0.5,-0.223 -0.5,-0.5 l 0,-2 c 0,-0.277 0.223,-0.5 0.5,-0.5 z"
        id="speed_limit_40_mph"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ssssssssscccccssssssssssccssscssssssssssssssssssssss"
@@ -15256,6 +15200,77 @@
        inkscape:connector-curvature="0">
       <title
          id="title7995">burger</title>
+    </path>
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect7999"
+       width="6"
+       height="5"
+       x="168"
+       y="6"
+       rx="2"
+       ry="2" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect8001"
+       width="4"
+       height="3"
+       x="169"
+       y="7"
+       rx="1"
+       ry="1" />
+    <path
+       inkscape:label="#rect7147"
+       sodipodi:nodetypes="ssssssssscccccsssssss"
+       inkscape:connector-curvature="0"
+       id="speed_limit_mph"
+       d="m 66.5,466 c -0.277,0 -0.5,0.223 -0.5,0.5 l 0,11 c 0,0.277 0.223,0.5 0.5,0.5 l 10,0 c 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-11 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 z m 0.5,1 9,0 0,10 -9,0 z m 1.5,1 c -0.277,0 -0.5,0.223 -0.5,0.5 0,0.277 0.223,0.5 0.5,0.5 l 6,0 c 0.277,0 0.5,-0.223 0.5,-0.5 0,-0.277 -0.223,-0.5 -0.5,-0.5 z"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1">
+      <title
+         id="title8057">speed limit box for mph</title>
+    </path>
+    <rect
+       ry="0.5"
+       rx="0.5"
+       y="450"
+       x="66"
+       height="12"
+       width="11"
+       id="rect8017"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       ry="0"
+       rx="0"
+       y="451"
+       x="67"
+       height="10"
+       width="9"
+       id="rect8019"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.09999999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       ry="0.5"
+       rx="0.5"
+       y="452"
+       x="68"
+       height="1"
+       width="7"
+       id="rect8021"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <circle
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="circle8023"
+       cx="135.5"
+       cy="359.5"
+       r="5.5" />
+    <path
+       inkscape:connector-curvature="0"
+       inkscape:label="#circle7064"
+       id="circle_11"
+       d="m 135.5,370 c -3.03757,0 -5.5,2.46243 -5.5,5.5 0,3.03757 2.46243,5.5 5.5,5.5 3.03757,0 5.5,-2.46243 5.5,-5.5 0,-3.03757 -2.46243,-5.5 -5.5,-5.5 z"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       sodipodi:nodetypes="sssss">
+      <title
+         id="title8055">circle 11 px</title>
     </path>
   </g>
 </svg>
