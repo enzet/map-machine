@@ -38,42 +38,42 @@ def draw_all_icons(
     icons_file_name: str = "icons/icons.svg"
     extractor: ShapeExtractor = ShapeExtractor(icons_file_name)
 
+    def add():
+        specifications = [
+            ShapeSpecification.from_structure(x, extractor, scheme)
+            for x in current_set
+        ]
+        icon: Icon = Icon(specifications)
+        icon.recolor(Color("#444444"), exclude=Color("white"))
+        if icon not in icons:
+            icons.append(icon)
+
     for element in scheme.icons:  # type: Dict[str, Any]
         for key in ["icon", "add_icon"]:
             if key in element:
-                specifications = [
-                    ShapeSpecification.from_structure(x, extractor, scheme)
-                    for x in element[key]
-                ]
-                icon: Icon = Icon(specifications)
-                icon.recolor(Color("#444444"), exclude=Color("white"))
-                if icon not in icons:
-                    icons.append(icon)
-        continue
+                current_set = element[key]
+                add()
         if "over_icon" not in element:
             continue
         if "under_icon" in element:
             for icon_id in element["under_icon"]:  # type: str
                 current_set = set([icon_id] + element["over_icon"])
-                if current_set not in icons:
-                    icons.append(current_set)
+                add()
         if not ("under_icon" in element and "with_icon" in element):
             continue
         for icon_id in element["under_icon"]:  # type: str
             for icon_2_id in element["with_icon"]:  # type: str
                 current_set: Set[str] = set(
                     [icon_id] + [icon_2_id] + element["over_icon"])
-                if current_set not in icons:
-                    icons.append(current_set)
+                add()
             for icon_2_id in element["with_icon"]:  # type: str
                 for icon_3_id in element["with_icon"]:  # type: str
                     current_set = set(
                         [icon_id] + [icon_2_id] + [icon_3_id] +
                         element["over_icon"])
                     if (icon_2_id != icon_3_id and icon_2_id != icon_id and
-                            icon_3_id != icon_id and
-                            current_set not in icons):
-                        icons.append(current_set)
+                            icon_3_id != icon_id):
+                        add()
 
     specified_ids: Set[str] = set()
 
