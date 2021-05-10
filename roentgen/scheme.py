@@ -7,111 +7,29 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
-import numpy as np
-import svgwrite
 import yaml
 from colour import Color
 
-from roentgen.color import is_bright
-from roentgen.icon import DEFAULT_SHAPE_ID, IconExtractor, Shape
+from roentgen.icon import (
+    IconSet, ShapeSpecification, DEFAULT_SHAPE_ID, ShapeExtractor,
+    DEFAULT_COLOR,
+    Icon)
 from roentgen.text import Label, get_address, get_text
-
-DEFAULT_COLOR: Color = Color("#444444")
-
-
-@dataclass
-class ShapeSpecification:
-    """
-    Specification for shape as a part of an icon.
-    """
-
-    shape: Shape
-    color: Color = DEFAULT_COLOR
-    offset: np.array = np.array((0, 0))
-
-    @classmethod
-    def from_structure(
-        cls, structure: Any, extractor: IconExtractor, scheme: "Scheme",
-        color: Color = DEFAULT_COLOR
-    ) -> "ShapeSpecification":
-        """
-        Parse shape specification from structure.
-        """
-        shape: Shape
-        shape, _ = extractor.get_path(DEFAULT_SHAPE_ID)
-        color: Color = color
-        offset: np.array = np.array((0, 0))
-        if isinstance(structure, str):
-            shape, _ = extractor.get_path(structure)
-        elif isinstance(structure, dict):
-            if "shape" in structure:
-                shape, _ = extractor.get_path(structure["shape"])
-            if "color" in structure:
-                color = scheme.get_color(structure["color"])
-            if "offset" in structure:
-                offset = np.array(structure["offset"])
-        return cls(shape, color, offset)
-
-    def is_default(self) -> bool:
-        """
-        Check whether shape is default.
-        """
-        return self.shape.id_ == DEFAULT_SHAPE_ID
-
-    def draw(
-        self, svg: svgwrite.Drawing, point: np.array,
-        tags: Dict[str, Any] = None, outline: bool = False
-    ) -> None:
-        """
-        Draw icon shape into SVG file.
-
-        :param svg: output SVG file
-        :param point: 2D position of the icon centre
-        :param opacity: icon opacity
-        :param tags: tags to be displayed as hint
-        :param outline: draw outline for the icon
-        """
-        point = np.array(list(map(int, point)))
-
-        path: svgwrite.path.Path = self.shape.get_path(svg, point, self.offset)
-        path.update({"fill": self.color.hex})
-        if outline:
-            bright: bool = is_bright(self.color)
-            color: Color = Color("black") if bright else Color("white")
-            opacity: float = 0.7 if bright else 0.5
-
-            path.update({
-                "fill": color.hex,
-                "stroke": color.hex,
-                "stroke-width": 2.2,
-                "stroke-linejoin": "round",
-                "opacity": opacity,
-            })
-        if tags:
-            title: str = "\n".join(map(lambda x: x + ": " + tags[x], tags))
-            path.set_desc(title=title)
-        svg.add(path)
-
-
-@dataclass
-class Icon:
-    """
-    Node representation: icons and color.
-    """
-    main_icon: List[ShapeSpecification]  # list of shapes
-    extra_icons: List[List[ShapeSpecification]]  # list of lists of shapes
-    # tag keys that were processed to create icon set (other
-    # tag keys should be displayed by text or ignored)
-    processed: Set[str]
 
 
 @dataclass
 class LineStyle:
+    """
+    SVG line style and its priority.
+    """
     style: Dict[str, Union[int, float, str]]
     priority: float = 0.0
 
 
 class MatchingType(Enum):
+    """
+    Description on how tag was matched.
+    """
     NOT_MATCHED = 0
     MATCHED_BY_SET = 1
     MATCHED_BY_WILDCARD = 2
@@ -206,7 +124,7 @@ class Scheme:
         self.prefix_to_skip: List[str] = content["prefix_to_skip"]
 
         # Storage for created icon sets.
-        self.cache: Dict[str, Tuple[Icon, int]] = {}
+        self.cache: Dict[str, Tuple[IconSet, int]] = {}
 
     def get_color(self, color: str) -> Color:
         """
@@ -255,9 +173,9 @@ class Scheme:
         return False
 
     def get_icon(
-        self, icon_extractor: IconExtractor, tags: Dict[str, Any],
+        self, icon_extractor: ShapeExtractor, tags: Dict[str, Any],
         for_: str = "node"
-    ) -> Tuple[Icon, int]:
+    ) -> Tuple[IconSet, int]:
         """
         Construct icon set.
 
@@ -271,8 +189,8 @@ class Scheme:
         if tags_hash in self.cache:
             return self.cache[tags_hash]
 
-        main_icon: List[ShapeSpecification] = []
-        extra_icons: List[List[ShapeSpecification]] = []
+        main_icon: Icon = None
+        extra_icons: List[Icon] = []
         processed: Set[str] = set()
         priority: int = 0
 
@@ -287,35 +205,34 @@ class Scheme:
             if "draw" in matcher and not matcher["draw"]:
                 processed |= set(matcher_tags)
             if "icon" in matcher:
-                main_icon = [
+                main_icon = Icon([
                     ShapeSpecification.from_structure(x, icon_extractor, self)
                     for x in matcher["icon"]
-                ]
+                ])
                 processed |= set(matcher_tags)
             if "over_icon" in matcher:
                 if main_icon:
-                    main_icon += [
+                    main_icon.add_specifications([
                         ShapeSpecification.from_structure(
                             x, icon_extractor, self
                         )
                         for x in matcher["over_icon"]
-                    ]
+                    ])
                     for key in matcher_tags:
                         processed.add(key)
             if "add_icon" in matcher:
-                extra_icons += [[
+                extra_icons += [Icon([
                     ShapeSpecification.from_structure(
                         x, icon_extractor, self, Color("#888888")
                     )
                     for x in matcher["add_icon"]
-                ]]
+                ])]
                 for key in matcher_tags:
                     processed.add(key)
             if "color" in matcher:
                 assert False
             if "set_main_color" in matcher:
-                for shape in main_icon:
-                    shape.color = self.get_color(matcher["set_main_color"])
+                main_icon.recolor(self.get_color(matcher["set_main_color"]))
 
         color: Optional[Color] = None
 
@@ -330,20 +247,19 @@ class Scheme:
                 color = self.get_color(tags[tag_key])
                 processed.add(tag_key)
 
-        if color:
-            for shape_specification in main_icon:
-                shape_specification.color = color
+        if main_icon and color:
+            main_icon.recolor(color)
 
         keys_left = [
             x for x in tags.keys()
             if x not in processed and not self.is_no_drawable(x)
         ]
 
-        default_shape, _ = icon_extractor.get_path(DEFAULT_SHAPE_ID)
+        default_shape = icon_extractor.get_shape(DEFAULT_SHAPE_ID)
         if not main_icon:
-            main_icon = [ShapeSpecification(default_shape)]
+            main_icon = Icon([ShapeSpecification(default_shape)])
 
-        returned: Icon = Icon(main_icon, extra_icons, processed)
+        returned: IconSet = IconSet(main_icon, extra_icons, processed)
         self.cache[tags_hash] = returned, priority
 
         return returned, priority

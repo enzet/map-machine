@@ -709,6 +709,12 @@ node_icons:
       {shape: digit_5, offset: [-2, 0], color: "#FFFFFF"},
       {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
     ]
+  - tags: {traffic_sign: maxspeed, maxspeed: "60"}
+    icon: [
+      circle_11,
+      {shape: digit_6, offset: [-2, 0], color: "#FFFFFF"},
+      {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+    ]
   - tags: {traffic_sign: maxspeed, maxspeed: "40_mph"}
     icon: [
       speed_limit_mph,

@@ -4,16 +4,18 @@ import numpy as np
 import svgwrite
 from colour import Color
 
-from roentgen.color import is_bright
-from roentgen.icon import Shape
+from roentgen.icon import Icon, IconSet
 from roentgen.osm_reader import Tagged
-from roentgen.scheme import Icon, ShapeSpecification
 from roentgen.text import Label
 
 DEFAULT_FONT: str = "Roboto"
 
 
 class Occupied:
+    """
+    Structure that remembers places of the canvas occupied by elements (icons,
+    texts, shapes).
+    """
     def __init__(self, width: int, height: int, overlap: float):
         self.matrix = np.full((int(width), int(height)), False, dtype=bool)
         self.width = width
@@ -21,11 +23,17 @@ class Occupied:
         self.overlap = overlap
 
     def check(self, point) -> bool:
+        """
+        Check whether point is already occupied by other elements.
+        """
         if 0 <= point[0] < self.width and 0 <= point[1] < self.height:
             return self.matrix[point[0], point[1]] == True
         return True
 
     def register(self, point) -> None:
+        """
+        Register that point is occupied by an element.
+        """
         if 0 <= point[0] < self.width and 0 <= point[1] < self.height:
             self.matrix[point[0], point[1]] = True
             assert self.matrix[point[0], point[1]] == True
@@ -43,7 +51,7 @@ class Point(Tagged):
     """
 
     def __init__(
-        self, icon: Icon, labels: List[Label], tags: Dict[str, str],
+        self, icon_set: IconSet, labels: List[Label], tags: Dict[str, str],
         point: np.array, coordinates: np.array, priority: float = 0,
         is_for_node: bool = True, draw_outline: bool = True
     ):
@@ -51,7 +59,7 @@ class Point(Tagged):
 
         assert point is not None
 
-        self.icon: Icon = icon
+        self.icon_set: IconSet = icon_set
         self.labels: List[Label] = labels
         self.tags: Dict[str, str] = tags
         self.point: np.array = point
@@ -71,14 +79,14 @@ class Point(Tagged):
         Draw main shape for one node.
         """
         if (
-            self.icon.main_icon[0].is_default() and
-            not self.icon.extra_icons
+            self.icon_set.main_icon.is_default() and
+            not self.icon_set.extra_icons
         ):
             return
 
         position = self.point + np.array((0, self.y))
         self.main_icon_painted: bool = self.draw_point_shape(
-            svg, self.icon.main_icon, position, occupied, tags=self.tags
+            svg, self.icon_set.main_icon, position, occupied, tags=self.tags
         )
         if self.main_icon_painted:
             self.y += 16
@@ -89,13 +97,13 @@ class Point(Tagged):
         """
         Draw secondary shapes.
         """
-        if not self.icon.extra_icons or not self.main_icon_painted:
+        if not self.icon_set.extra_icons or not self.main_icon_painted:
             return
 
         is_place_for_extra: bool = True
         if occupied:
-            left: float = -(len(self.icon.extra_icons) - 1) * 8
-            for _ in self.icon.extra_icons:
+            left: float = -(len(self.icon_set.extra_icons) - 1) * 8
+            for _ in self.icon_set.extra_icons:
                 if occupied.check(
                     (int(self.point[0] + left), int(self.point[1] + self.y))
                 ):
@@ -104,17 +112,17 @@ class Point(Tagged):
                 left += 16
 
         if is_place_for_extra:
-            left: float = -(len(self.icon.extra_icons) - 1) * 8
-            for shape_ids in self.icon.extra_icons:
+            left: float = -(len(self.icon_set.extra_icons) - 1) * 8
+            for icon in self.icon_set.extra_icons:
                 self.draw_point_shape(
-                    svg, shape_ids, self.point + np.array((left, self.y)),
+                    svg, icon, self.point + np.array((left, self.y)),
                     occupied=occupied)
                 left += 16
-            if self.icon.extra_icons:
+            if self.icon_set.extra_icons:
                 self.y += 16
 
     def draw_point_shape(
-        self, svg: svgwrite.Drawing, shapes: List[ShapeSpecification], position,
+        self, svg: svgwrite.Drawing, icon: Icon, position,
         occupied, tags: Optional[Dict[str, str]] = None
     ) -> bool:
         """
@@ -129,13 +137,11 @@ class Point(Tagged):
         # Draw outlines.
 
         if self.draw_outline:
-            for shape in shapes:
-                shape.draw(svg, position, outline=True)
+            icon.draw(svg, position, outline=True)
 
         # Draw icons.
 
-        for shape in shapes:  # type: ShapeSpecification
-            shape.draw(svg, position, tags=tags)
+        icon.draw(svg, position, tags=tags)
 
         if occupied:
             overlap: int = occupied.overlap
@@ -224,8 +230,8 @@ class Point(Tagged):
         space for all elements.
         """
         icon_size: int = 16
-        width: int = (1 + max(2, len(self.icon.extra_icons) - 1)) * icon_size
-        height: int = (1 + int(len(self.icon.extra_icons) / 3)) * icon_size
+        width: int = (1 + max(2, len(self.icon_set.extra_icons) - 1)) * icon_size
+        height: int = (1 + int(len(self.icon_set.extra_icons) / 3)) * icon_size
         if len(self.labels):
             height += 2 + 11 * len(self.labels)
         return np.array((width, height))

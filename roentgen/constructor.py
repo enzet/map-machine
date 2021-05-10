@@ -14,13 +14,14 @@ from colour import Color
 from roentgen import ui
 from roentgen.color import get_gradient_color
 from roentgen.flinger import Flinger
-from roentgen.icon import DEFAULT_SMALL_SHAPE_ID, IconExtractor
+from roentgen.icon import (
+    DEFAULT_SMALL_SHAPE_ID, ShapeExtractor, Icon, IconSet, ShapeSpecification
+)
 from roentgen.osm_reader import (
     Map, OSMMember, OSMNode, OSMRelation, OSMWay, Tagged
 )
 from roentgen.point import Point
-from roentgen.scheme import Icon, LineStyle, Scheme, ShapeSpecification, \
-    DEFAULT_COLOR
+from roentgen.scheme import LineStyle, Scheme, DEFAULT_COLOR
 from roentgen.util import MinMax
 
 DEBUG: bool = False
@@ -258,7 +259,7 @@ class Constructor:
     """
     def __init__(
         self, map_: Map, flinger: Flinger, scheme: Scheme,
-        icon_extractor: IconExtractor, check_level=lambda x: True,
+        icon_extractor: ShapeExtractor, check_level=lambda x: True,
         mode: str = "normal", seed: str = ""
     ):
         self.check_level = check_level
@@ -364,14 +365,14 @@ class Constructor:
                 self.scheme.is_area(line.tags)
             ):
                 priority: int
-                icon: Icon
-                icon, priority = self.scheme.get_icon(
+                icon_set: IconSet
+                icon_set, priority = self.scheme.get_icon(
                     self.icon_extractor, line.tags, for_="line"
                 )
                 labels = self.scheme.construct_text(line.tags, True)
 
                 self.nodes.append(Point(
-                    icon, labels, line.tags, center_point, center_coordinates,
+                    icon_set, labels, line.tags, center_point, center_coordinates,
                     is_for_node=False, priority=priority
                 ))
 
@@ -384,14 +385,16 @@ class Constructor:
                     line.tags, inners, outers, LineStyle(style, 1000)))
 
             priority: int
-            icon_set: Icon
+            icon_set: IconSet
             icon_set, priority = self.scheme.get_icon(
-                self.icon_extractor, line.tags)
+                self.icon_extractor, line.tags
+            )
             labels = self.scheme.construct_text(line.tags, True)
 
             self.nodes.append(Point(
                 icon_set, labels, line.tags, center_point, center_coordinates,
-                is_for_node=False, priority=priority))
+                is_for_node=False, priority=priority
+            ))
 
     def construct_relations(self) -> None:
         """
@@ -446,7 +449,7 @@ class Constructor:
                 continue
 
             priority: int
-            icon: Icon
+            icon_set: IconSet
             draw_outline: bool = True
 
             if self.mode in ["time", "user-coloring"]:
@@ -457,24 +460,26 @@ class Constructor:
                     color = get_user_color(node.user, self.seed)
                 if self.mode == "time":
                     color = get_time_color(node.timestamp, self.map_.time)
-                dot, _ = self.icon_extractor.get_path(DEFAULT_SMALL_SHAPE_ID)
-                icon = Icon([ShapeSpecification(dot, color)], [], set())
+                dot = self.icon_extractor.get_shape(DEFAULT_SMALL_SHAPE_ID)
+                icon_set = IconSet(
+                    Icon([ShapeSpecification(dot, color)]), [], set()
+                )
                 priority = 0
                 draw_outline = False
                 labels = []
             else:
-                icon, priority = self.scheme.get_icon(
+                icon_set, priority = self.scheme.get_icon(
                     self.icon_extractor, tags
                 )
                 labels = self.scheme.construct_text(tags, True)
 
             self.nodes.append(Point(
-                icon, labels, tags, flung, node.coordinates,
+                icon_set, labels, tags, flung, node.coordinates,
                 priority=priority, draw_outline=draw_outline
             ))
 
             missing_tags.update(
                 f"{key}: {tags[key]}" for key in tags
-                if key not in icon.processed)
+                if key not in icon_set.processed)
 
         ui.progress_bar(-1, len(self.map_.node_map), text="Constructing nodes")

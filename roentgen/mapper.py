@@ -16,7 +16,7 @@ from roentgen import ui
 from roentgen.constructor import Building, Constructor, Figure, Segment
 from roentgen.direction import DirectionSet, Sector
 from roentgen.flinger import Flinger
-from roentgen.icon import IconExtractor
+from roentgen.icon import ShapeExtractor
 from roentgen.osm_reader import Map
 from roentgen.point import Occupied, Point
 from roentgen.scheme import Scheme
@@ -36,7 +36,7 @@ class Painter:
 
     def __init__(
             self, map_: Map, flinger: Flinger,
-            svg: svgwrite.Drawing, icon_extractor: IconExtractor,
+            svg: svgwrite.Drawing, icon_extractor: ShapeExtractor,
             scheme: Scheme, show_missing_tags: bool = False, overlap: int = 12,
             mode: str = "normal", draw_captions: str = "main"):
 
@@ -177,18 +177,20 @@ class Painter:
                     angle = float(node.get_tag("camera:angle"))
                 if "angle" in node.tags:
                     angle = float(node.get_tag("angle"))
-                direction_radius: float = (25)
+                direction_radius: float = 25
                 direction_color: Color = (
-                    self.scheme.get_color("direction_camera_color"))
+                    self.scheme.get_color("direction_camera_color")
+                )
             elif node.get_tag("traffic_sign") == "stop":
                 direction = node.get_tag("direction")
-                direction_radius: float = (25)
+                direction_radius: float = 25
                 direction_color: Color = Color("red")
             else:
                 direction = node.get_tag("direction")
-                direction_radius: float = (50)
+                direction_radius: float = 50
                 direction_color: Color = (
-                    self.scheme.get_color("direction_view_color"))
+                    self.scheme.get_color("direction_view_color")
+                )
                 is_revert_gradient = True
 
             if not direction:
@@ -206,13 +208,17 @@ class Painter:
                     center=point, r=direction_radius,
                     gradientUnits="userSpaceOnUse"))
                 if is_revert_gradient:
-                    gradient \
-                        .add_stop_color(0, direction_color.hex, opacity=0) \
-                        .add_stop_color(1, direction_color.hex, opacity=0.7)
+                    (
+                        gradient
+                            .add_stop_color(0, direction_color.hex, opacity=0)
+                            .add_stop_color(1, direction_color.hex, opacity=0.7)
+                    )
                 else:
-                    gradient \
-                        .add_stop_color(0, direction_color.hex, opacity=0.4) \
-                        .add_stop_color(1, direction_color.hex, opacity=0)
+                    (
+                        gradient
+                            .add_stop_color(0, direction_color.hex, opacity=0.4)
+                            .add_stop_color(1, direction_color.hex, opacity=0)
+                    )
                 self.svg.add(self.svg.path(
                     d=["M", point] + path + ["L", point, "Z"],
                     fill=gradient.get_paint_server()))
@@ -291,5 +297,3 @@ def check_level_overground(tags: Dict[str, Any]) -> bool:
     if "parking" in tags and tags["parking"] == "underground":
         return False
     return True
-
-

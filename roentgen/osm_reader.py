@@ -103,7 +103,7 @@ class OSMWay(Tagged):
 
     def parse_from_xml(self, text: str, is_full: bool = False) -> "OSMWay":
         """
-        Parse from XML way representation.
+        Parse way from XML way representation.
 
         :param text: XML way representation
         :param is_full: if false, parse only ID
@@ -120,8 +120,15 @@ class OSMWay(Tagged):
 
         return self
 
-    def parse_from_structure(self, structure: Dict[str, Any], nodes) -> "OSMWay":
+    def parse_from_structure(
+        self, structure: Dict[str, Any], nodes
+    ) -> "OSMWay":
+        """
+        Parse way from Overpass-like structure.
 
+        :param structure: input structure
+        :param nodes: node structure
+        """
         self.id_ = structure["id"]
         for node_id in structure["nodes"]:
             self.nodes.append(nodes[node_id])

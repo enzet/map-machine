@@ -10,8 +10,8 @@ import numpy as np
 from colour import Color
 from svgwrite import Drawing
 
-from roentgen.icon import IconExtractor, Shape
-from roentgen.scheme import Scheme, ShapeSpecification
+from roentgen.icon import ShapeExtractor, Shape, Icon, ShapeSpecification
+from roentgen.scheme import Scheme
 
 
 def draw_all_icons(
@@ -33,37 +33,37 @@ def draw_all_icons(
     tags_file_name: str = "scheme/default.yml"
     scheme: Scheme = Scheme(tags_file_name)
 
-    to_draw: List[Set[str]] = []
+    icons: List[Icon] = []
 
     icons_file_name: str = "icons/icons.svg"
-    extractor: IconExtractor = IconExtractor(icons_file_name)
+    extractor: ShapeExtractor = ShapeExtractor(icons_file_name)
 
     for element in scheme.icons:  # type: Dict[str, Any]
-        if "icon" in element:
-            specifications = [
-                ShapeSpecification.from_structure(x, extractor, scheme)
-                for x in element["icon"]
-            ]
-            ids = set(x.shape.id_ for x in specifications)
-            if ids not in to_draw:
-                to_draw.append(ids)
-        if "add_icon" in element and set(element["add_icon"]) not in to_draw:
-            to_draw.append(set(element["add_icon"]))
+        for key in ["icon", "add_icon"]:
+            if key in element:
+                specifications = [
+                    ShapeSpecification.from_structure(x, extractor, scheme)
+                    for x in element[key]
+                ]
+                icon: Icon = Icon(specifications)
+                if icon not in icons:
+                    icons.append(icon)
+        continue
         if "over_icon" not in element:
             continue
         if "under_icon" in element:
             for icon_id in element["under_icon"]:  # type: str
                 current_set = set([icon_id] + element["over_icon"])
-                if current_set not in to_draw:
-                    to_draw.append(current_set)
+                if current_set not in icons:
+                    icons.append(current_set)
         if not ("under_icon" in element and "with_icon" in element):
             continue
         for icon_id in element["under_icon"]:  # type: str
             for icon_2_id in element["with_icon"]:  # type: str
                 current_set: Set[str] = set(
                     [icon_id] + [icon_2_id] + element["over_icon"])
-                if current_set not in to_draw:
-                    to_draw.append(current_set)
+                if current_set not in icons:
+                    icons.append(current_set)
             for icon_2_id in element["with_icon"]:  # type: str
                 for icon_3_id in element["with_icon"]:  # type: str
                     current_set = set(
@@ -71,39 +71,38 @@ def draw_all_icons(
                         element["over_icon"])
                     if (icon_2_id != icon_3_id and icon_2_id != icon_id and
                             icon_3_id != icon_id and
-                            current_set not in to_draw):
-                        to_draw.append(current_set)
+                            current_set not in icons):
+                        icons.append(current_set)
 
     specified_ids: Set[str] = set()
 
-    for icons_to_draw in to_draw:  # type: List[str]
-        specified_ids |= icons_to_draw
+    for icon in icons:
+        specified_ids |= icon.get_shape_ids()
     print(
         "Icons with no tag specification: \n    " +
         ", ".join(sorted(extractor.shapes.keys() - specified_ids)) + "."
     )
 
+    for icon in icons:  # type: Icon
+        icon.draw_to_file(join(
+            output_directory, f"{' + '.join(icon.get_names())}.svg"
+        ))
+
     draw_grid(
-        output_file_name, to_draw, extractor, output_directory, columns, step,
+        output_file_name, icons, columns, step,
         background_color=background_color, color=color
     )
 
 
 def draw_grid(
-    file_name: str, combined_icon_ids: List[Set[str]],
-    extractor: IconExtractor, output_directory: str, columns: int = 16,
-    step: float = 24, background_color: Color = Color("white"),
-    color: Color = Color("black")
-) -> List[List[Shape]]:
+    file_name: str, icons: List[Icon], columns: int = 16, step: float = 24,
+    background_color: Color = Color("white"), color: Color = Color("black")
+):
     """
     Draw icons in the form of table
 
     :param file_name: output SVG file name
-    :param combined_icon_ids: list of set of icon string identifiers
-    :param extractor: icon extractor that generates icon SVG path commands using
-        its string identifier
-    :param output_directory: path to the directory to store individual SVG files
-        for icons
+    :param icons: list of icons
     :param columns: number of columns in grid
     :param step: horizontal and vertical distance between icons in grid
     :param background_color: background color
@@ -111,76 +110,25 @@ def draw_grid(
     """
     point: np.array = np.array((step / 2, step / 2))
     width: float = step * columns
-    number: int = 0
-    icons: List[List[Shape]] = []
 
-    for icons_to_draw in combined_icon_ids:  # type: Set[str]
-        found: bool = False
-        icon_set: List[Shape] = []
-        names = []
-        for icon_id in icons_to_draw:  # type: str
-            icon, extracted = extractor.get_path(icon_id)  # type: Shape, bool
-            assert extracted, f"no icon with ID {icon_id}"
-            icon_set.append(icon)
-            found = True
-            if icon.name:
-                names.append(icon.name)
-        if found:
-            icons.append(icon_set)
-            number += 1
-        draw_icon(
-            join(output_directory, f"Röntgen {' + '.join(names)}.svg"),
-            icons_to_draw, extractor
-        )
-
-    height: int = int(int(number / (width / step) + 1) * step)
+    height: int = int(int(len(icons) / (width / step) + 1) * step)
     svg: Drawing = Drawing(file_name, (width, height))
     svg.add(svg.rect((0, 0), (width, height), fill=background_color.hex))
 
-    for combined_icon in icons:  # type: List[Shape]
+    for icon in icons:
+        icon: Icon
         svg.add(svg.rect(
             point - np.array((-10, -10)), (20, 20),
             fill=background_color.hex))
-        for icon in combined_icon:  # type: Shape
-            path = icon.get_path(svg, point)
-            path.update({"fill": color.hex})
-            svg.add(path)
+        icon.draw(svg, point)
         point += np.array((step, 0))
         if point[0] > width - 8:
             point[0] = step / 2
             point += np.array((0, step))
             height += step
 
-    print(f"Icons: {number}.")
+    print(f"Icons: {len(icons)}.")
 
     with open(file_name, "w") as output_file:
         svg.write(output_file)
 
-    return icons
-
-
-def draw_icon(
-    file_name: str, icon_ids: Set[str], extractor: IconExtractor
-) -> None:
-    """
-    Draw icon to the SVG file.
-
-    :param file_name: output SVG file name
-    :param icon_ids: input shape string identifiers
-    :param extractor: icon extractor
-    """
-    icon_set: List[Shape] = []
-    for icon_id in icon_ids:  # type: str
-        icon, extracted = extractor.get_path(icon_id)  # type: Shape, bool
-        assert extracted, f"no icon with ID {icon_id}"
-        icon_set.append(icon)
-
-    svg: Drawing = Drawing(file_name, (16, 16))
-
-    for icon in icon_set:  # type: Shape
-        path = icon.get_path(svg, (8, 8))
-        path.update({"fill": "black"})
-        svg.add(path)
-
-    with open(file_name, "w") as output_file:
-        svg.write(output_file)

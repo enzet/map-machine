@@ -7,7 +7,7 @@ from os import makedirs
 from typing import Dict
 
 from roentgen.grid import draw_all_icons
-from roentgen.icon import IconExtractor
+from roentgen.icon import ShapeExtractor
 from roentgen.scheme import Scheme
 
 
@@ -19,7 +19,7 @@ def test_icons() -> None:
 
 def get_icon(tags: Dict[str, str]):
     scheme = Scheme("scheme/default.yml")
-    icon_extractor = IconExtractor("icons/icons.svg")
+    icon_extractor = ShapeExtractor("icons/icons.svg")
     icon, _ = scheme.get_icon(icon_extractor, tags)
     return icon
 
@@ -30,7 +30,7 @@ def test_no_icons() -> None:
     shape.
     """
     icon = get_icon({"aaa": "bbb"})
-    assert icon.main_icon[0].is_default()
+    assert icon.main_icon.is_default()
 
 
 def test_icon() -> None:
@@ -39,7 +39,7 @@ def test_icon() -> None:
     icons.
     """
     icon = get_icon({"natural": "tree"})
-    assert not icon.main_icon[0].is_default()
+    assert not icon.main_icon.is_default()
     assert not icon.extra_icons
 
 
@@ -48,7 +48,7 @@ def test_icon_1_extra() -> None:
     Tags that should be visualized with single main icon and single extra icon.
     """
     icon = get_icon({"barrier": "gate", "access": "private"})
-    assert not icon.main_icon[0].is_default()
+    assert not icon.main_icon.is_default()
     assert len(icon.extra_icons) == 1
 
 
@@ -57,7 +57,7 @@ def test_icon_2_extra() -> None:
     Tags that should be visualized with single main icon and two extra icons.
     """
     icon = get_icon({"barrier": "gate", "access": "private", "bicycle": "yes"})
-    assert not icon.main_icon[0].is_default()
+    assert not icon.main_icon.is_default()
     assert len(icon.extra_icons) == 2
 
 
@@ -66,7 +66,7 @@ def __test_no_icon_1_extra() -> None:
     Tags that should be visualized with default main icon and single extra icon.
     """
     icon = get_icon({"access": "private"})
-    assert icon.main_icon[0].is_default()
+    assert icon.main_icon.is_default()
     assert len(icon.extra_icons) == 1
 
 
@@ -75,5 +75,5 @@ def __test_no_icon_2_extra() -> None:
     Tags that should be visualized with default main icon and two extra icons.
     """
     icon = get_icon({"access": "private", "bicycle": "yes"})
-    assert icon.main_icon[0].is_default()
+    assert icon.main_icon.is_default()
     assert len(icon.extra_icons) == 2
