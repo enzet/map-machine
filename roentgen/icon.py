@@ -284,12 +284,13 @@ class Icon:
         """
         return self.shape_specifications[0].is_default()
 
-    def recolor(self, color: Color) -> None:
+    def recolor(self, color: Color, exclude: Optional[Color] = None) -> None:
         """
         Paint all shapes in the color.
         """
         for shape_specification in self.shape_specifications:
-            shape_specification.color = color
+            if not exclude or shape_specification.color != exclude:
+                shape_specification.color = color
 
     def add_specifications(
         self, specifications: List[ShapeSpecification]

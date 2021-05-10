@@ -46,6 +46,7 @@ def draw_all_icons(
                     for x in element[key]
                 ]
                 icon: Icon = Icon(specifications)
+                icon.recolor(Color("#444444"), exclude=Color("white"))
                 if icon not in icons:
                     icons.append(icon)
         continue
