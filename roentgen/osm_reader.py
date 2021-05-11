@@ -74,7 +74,11 @@ class OSMNode(Tagged):
         return self
 
     def parse_from_structure(self, structure: Dict[str, Any]) -> "OSMNode":
+        """
+        Parse node from Overpass-like structure.
 
+        :param structure: input structure
+        """
         self.id_ = structure["id"]
         self.coordinates = np.array((structure["lat"], structure["lon"]))
         if "tags" in structure:
@@ -190,7 +194,11 @@ class OSMRelation(Tagged):
         return self
 
     def parse_from_structure(self, structure: Dict[str, Any]) -> "OSMRelation":
+        """
+        Parse relation from Overpass-like structure.
 
+        :param structure: input structure
+        """
         self.id_ = structure["id"]
         for member in structure["members"]:
             mem = OSMMember()
@@ -214,6 +222,11 @@ class OSMMember:
         self.role = ""
 
     def parse_from_xml(self, text: str) -> "OSMMember":
+        """
+        Parse relation member from XML way representation.
+
+        :param text: XML relation member representation
+        """
         self.type_: str = get_value("type", text)
         self.ref: int = int(get_value("ref", text))
         self.role: str = get_value("role", text)
@@ -275,10 +288,18 @@ class Map:
 
 
 class OverpassReader:
+    """
+    Reader for JSON structure extracted from Overpass API.
+
+    See https://wiki.openstreetmap.org/wiki/Overpass_API
+    """
     def __init__(self):
         self.map_ = Map()
 
     def parse_json_file(self, file_name: str) -> Map:
+        """
+        Parse JSON structure from the file and construct map.
+        """
         with open(file_name) as input_file:
             structure = json.load(input_file)
 
@@ -311,13 +332,14 @@ class OSMReader:
         self.map_ = Map()
 
     def parse_osm_file(
-            self, file_name: str, parse_nodes: bool = True,
-            parse_ways: bool = True, parse_relations: bool = True,
-            full: bool = False) -> Map:
+        self, file_name: str, parse_nodes: bool = True,
+        parse_ways: bool = True, parse_relations: bool = True,
+        full: bool = False
+    ) -> Map:
         """
         Parse OSM XML representation.
 
-        :param file_name input OSM XML file name
+        :param file_name: input OSM XML file name
         """
         with open(file_name) as input_file:
             lines_number: int = sum(1 for _ in input_file)

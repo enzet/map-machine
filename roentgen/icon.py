@@ -5,7 +5,7 @@ Author: Sergey Vartanov (me@enzet.ru).
 """
 import re
 from dataclasses import dataclass
-from typing import Dict, Optional, List, Set, Any
+from typing import Any, Dict, List, Optional, Set
 from xml.dom.minidom import Document, Element, Node, parse
 
 import numpy as np
@@ -140,6 +140,8 @@ class ShapeExtractor:
         if id_ in self.shapes:
             return self.shapes[id_]
 
+        return None
+
 
 @dataclass
 class ShapeSpecification:
@@ -153,7 +155,7 @@ class ShapeSpecification:
 
     @classmethod
     def from_structure(
-        cls, structure: Any, extractor: ShapeExtractor, scheme: "Scheme",
+        cls, structure: Any, extractor: ShapeExtractor, scheme,
         color: Color = DEFAULT_COLOR
     ) -> "ShapeSpecification":
         """

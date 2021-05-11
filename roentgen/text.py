@@ -70,15 +70,19 @@ def format_voltage(value: str) -> str:
 
 
 def format_frequency(value: str) -> str:
+    """
+    Format frequency value to more human-readable form.
+    """
     try:
-        int_value: int = int(value)
         return f"{value} Hz"
     except ValueError:
         return value
 
 
 def get_text(tags: Dict[str, Any]) -> List[str]:
-
+    """
+    Get text representation of writable tags.
+    """
     texts: List[str] = []
 
     values: List[str] = []
@@ -92,6 +96,7 @@ def get_text(tags: Dict[str, Any]) -> List[str]:
 
     if "frequency" in tags:
         texts.append(", ".join(map(
-            format_frequency, tags["frequency"].split(";"))))
+            format_frequency, tags["frequency"].split(";")
+        )))
 
     return texts

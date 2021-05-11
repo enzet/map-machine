@@ -14,14 +14,13 @@ from colour import Color
 from roentgen import ui
 from roentgen.color import get_gradient_color
 from roentgen.flinger import Flinger
-from roentgen.icon import (
-    DEFAULT_SMALL_SHAPE_ID, ShapeExtractor, Icon, IconSet, ShapeSpecification
-)
+from roentgen.icon import (DEFAULT_SMALL_SHAPE_ID, Icon, IconSet,
+                           ShapeExtractor, ShapeSpecification)
 from roentgen.osm_reader import (
     Map, OSMMember, OSMNode, OSMRelation, OSMWay, Tagged
 )
 from roentgen.point import Point
-from roentgen.scheme import LineStyle, Scheme, DEFAULT_COLOR
+from roentgen.scheme import DEFAULT_COLOR, LineStyle, Scheme
 from roentgen.util import MinMax
 
 DEBUG: bool = False
@@ -372,8 +371,8 @@ class Constructor:
                 labels = self.scheme.construct_text(line.tags, True)
 
                 self.nodes.append(Point(
-                    icon_set, labels, line.tags, center_point, center_coordinates,
-                    is_for_node=False, priority=priority
+                    icon_set, labels, line.tags, center_point,
+                    center_coordinates, is_for_node=False, priority=priority
                 ))
 
         if not line_styles:

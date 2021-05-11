@@ -76,29 +76,9 @@ def parse_options(args) -> argparse.Namespace:
     return arguments
 
 
-def progress_bar1(
-        number: int, total: int, length: int = 20, step: int = 1000) -> None:
-    """
-    Draw progress bar using Unicode symbols.
-
-    :param number: current value
-    :param total: maximum value
-    :param length: progress bar length.
-    :param step: frequency of progress bar updating (assuming that numbers go
-        subsequently)
-    :param text: short description
-    """
-    ratio: float = number / total
-    parts: int = int(ratio * length * BOXES_LENGTH)
-    fill_length: int = int(parts / BOXES_LENGTH)
-    box: str = BOXES[int(parts - fill_length * BOXES_LENGTH)]
-    return (
-        f"{fill_length * '█'}{box}{int(length - fill_length - 1) * ' '}")
-
-
 def progress_bar(
-        number: int, total: int, length: int = 20, step: int = 1000,
-        text: str = "") -> None:
+    number: int, total: int, length: int = 20, step: int = 1000, text: str = ""
+) -> None:
     """
     Draw progress bar using Unicode symbols.
 
@@ -118,7 +98,8 @@ def progress_bar(
         box: str = BOXES[int(parts - fill_length * BOXES_LENGTH)]
         print(
             f"{str(int(int(ratio * 1000) / 10)):>3} % {fill_length * '█'}{box}"
-            f"{int(length - fill_length - 1) * ' '}▏{text}")
+            f"{int(length - fill_length - 1) * ' '}▏{text}"
+        )
         sys.stdout.write("\033[F")
 
 

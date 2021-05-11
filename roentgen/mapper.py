@@ -13,7 +13,7 @@ from svgwrite.path import Path
 from svgwrite.shapes import Rect
 
 from roentgen import ui
-from roentgen.constructor import Building, Constructor, Figure, Segment
+from roentgen.constructor import Building, Constructor, Segment
 from roentgen.direction import DirectionSet, Sector
 from roentgen.flinger import Flinger
 from roentgen.icon import ShapeExtractor
@@ -35,11 +35,11 @@ class Painter:
     """
 
     def __init__(
-            self, map_: Map, flinger: Flinger,
-            svg: svgwrite.Drawing, icon_extractor: ShapeExtractor,
-            scheme: Scheme, show_missing_tags: bool = False, overlap: int = 12,
-            mode: str = "normal", draw_captions: str = "main"):
-
+        self, map_: Map, flinger: Flinger,
+        svg: svgwrite.Drawing, icon_extractor: ShapeExtractor,
+        scheme: Scheme, show_missing_tags: bool = False, overlap: int = 12,
+        mode: str = "normal", draw_captions: str = "main"
+    ):
         self.show_missing_tags: bool = show_missing_tags
         self.overlap: int = overlap
         self.mode: str = mode
@@ -55,7 +55,7 @@ class Painter:
         if self.mode in [AUTHOR_MODE, CREATION_TIME_MODE]:
             self.background_color: Color = Color("#111111")
 
-    def draw(self, constructor: Constructor):
+    def draw(self, constructor: Constructor) -> None:
         """
         Draw map.
         """
@@ -64,7 +64,7 @@ class Painter:
 
         ways = sorted(constructor.figures, key=lambda x: x.line_style.priority)
         ways_length: int = len(ways)
-        for index, way in enumerate(ways):  # type: Figure
+        for index, way in enumerate(ways):
             ui.progress_bar(index, ways_length, step=10, text="Drawing ways")
             path_commands: str = way.get_path(self.flinger)
             if path_commands:

@@ -10,7 +10,7 @@ import numpy as np
 from colour import Color
 from svgwrite import Drawing
 
-from roentgen.icon import ShapeExtractor, Shape, Icon, ShapeSpecification
+from roentgen.icon import Icon, ShapeExtractor, ShapeSpecification
 from roentgen.scheme import Scheme
 
 
@@ -38,15 +38,18 @@ def draw_all_icons(
     icons_file_name: str = "icons/icons.svg"
     extractor: ShapeExtractor = ShapeExtractor(icons_file_name)
 
-    def add():
+    def add() -> None:
+        """
+        Construct icon and add it to the list.
+        """
         specifications = [
             ShapeSpecification.from_structure(x, extractor, scheme)
             for x in current_set
         ]
-        icon: Icon = Icon(specifications)
-        icon.recolor(color, white=background_color)
-        if icon not in icons:
-            icons.append(icon)
+        constructed_icon: Icon = Icon(specifications)
+        constructed_icon.recolor(color, white=background_color)
+        if constructed_icon not in icons:
+            icons.append(constructed_icon)
 
     for element in scheme.icons:  # type: Dict[str, Any]
         for key in ["icon", "add_icon"]:
@@ -91,13 +94,13 @@ def draw_all_icons(
 
     draw_grid(
         output_file_name, icons, columns, step,
-        background_color=background_color, color=color
+        background_color=background_color
     )
 
 
 def draw_grid(
     file_name: str, icons: List[Icon], columns: int = 16, step: float = 24,
-    background_color: Color = Color("white"), color: Color = Color("black")
+    background_color: Color = Color("white")
 ):
     """
     Draw icons in the form of table
@@ -107,7 +110,6 @@ def draw_grid(
     :param columns: number of columns in grid
     :param step: horizontal and vertical distance between icons in grid
     :param background_color: background color
-    :param color: foreground color
     """
     point: np.array = np.array((step / 2, step / 2))
     width: float = step * columns
@@ -133,4 +135,3 @@ def draw_grid(
 
     with open(file_name, "w") as output_file:
         svg.write(output_file)
-

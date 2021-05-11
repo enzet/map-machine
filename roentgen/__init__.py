@@ -1,3 +1,7 @@
+"""
+Röntgen project: simple Python map renderer for OpenStreetMap and icon set.
+"""
+
 __url__ = "https://github.com/enzet/Roentgen"
 __maintainer__ = "Sergey Vartanov"
 __maintainer_email__ = "me@enzet.ru"

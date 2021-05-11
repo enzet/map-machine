@@ -10,10 +10,8 @@ from typing import Any, Dict, List, Optional, Set, Tuple, Union
 import yaml
 from colour import Color
 
-from roentgen.icon import (
-    IconSet, ShapeSpecification, DEFAULT_SHAPE_ID, ShapeExtractor,
-    DEFAULT_COLOR,
-    Icon)
+from roentgen.icon import (DEFAULT_COLOR, DEFAULT_SHAPE_ID, Icon, IconSet,
+                           ShapeExtractor, ShapeSpecification)
 from roentgen.text import Label, get_address, get_text
 
 
@@ -163,9 +161,9 @@ class Scheme:
 
         :param key: OpenStreetMap tag key
         """
-        if key in self.tags_to_skip:  # type: str
+        if key in self.tags_to_skip:
             return False
-        if key in self.tags_to_write:  # type: str
+        if key in self.tags_to_write:
             return True
         for prefix in self.prefix_to_write:  # type: str
             if key[:len(prefix) + 1] == f"{prefix}:":
@@ -265,7 +263,9 @@ class Scheme:
         return returned, priority
 
     def get_style(self, tags: Dict[str, Any], scale):
-
+        """
+        Get line style based on tags and scale.
+        """
         line_styles = []
 
         for element in self.ways:  # type: Dict[str, Any]
@@ -366,10 +366,10 @@ class Scheme:
             link = link[:25] + ("..." if len(tags["website"]) > 25 else "")
             texts.append(Label(link, Color("#000088")))
             tags.pop("website", None)
-        for k in ["phone"]:
-            if k in tags:
-                texts.append(Label(tags[k], Color("#444444")))
-                tags.pop(k)
+        for key in ["phone"]:
+            if key in tags:
+                texts.append(Label(tags[key], Color("#444444")))
+                tags.pop(key)
         if "height" in tags:
             texts.append(Label(f"↕ {tags['height']} m"))
             tags.pop("height")
@@ -379,6 +379,9 @@ class Scheme:
         return texts
 
     def is_area(self, tags: Dict[str, str]) -> bool:
+        """
+        Check whether way described by tags is area.
+        """
         for matcher in self.area_tags:
             if is_matched(matcher, tags):
                 return True
