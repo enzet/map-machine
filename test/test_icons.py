@@ -61,7 +61,7 @@ def test_icon_2_extra() -> None:
     assert len(icon.extra_icons) == 2
 
 
-def __test_no_icon_1_extra() -> None:
+def test_no_icon_1_extra() -> None:
     """
     Tags that should be visualized with default main icon and single extra icon.
     """
@@ -70,7 +70,7 @@ def __test_no_icon_1_extra() -> None:
     assert len(icon.extra_icons) == 1
 
 
-def __test_no_icon_2_extra() -> None:
+def test_no_icon_2_extra() -> None:
     """
     Tags that should be visualized with default main icon and two extra icons.
     """
