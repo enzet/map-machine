@@ -44,7 +44,7 @@ def draw_all_icons(
             for x in current_set
         ]
         icon: Icon = Icon(specifications)
-        icon.recolor(Color("#444444"), exclude=Color("white"))
+        icon.recolor(color, white=background_color)
         if icon not in icons:
             icons.append(icon)
 
