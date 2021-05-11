@@ -1,3 +1,6 @@
+"""
+Point: node representation on the map.
+"""
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -18,16 +21,16 @@ class Occupied:
     """
     def __init__(self, width: int, height: int, overlap: float):
         self.matrix = np.full((int(width), int(height)), False, dtype=bool)
-        self.width = width
-        self.height = height
-        self.overlap = overlap
+        self.width: float = width
+        self.height: float = height
+        self.overlap: float = overlap
 
     def check(self, point) -> bool:
         """
         Check whether point is already occupied by other elements.
         """
         if 0 <= point[0] < self.width and 0 <= point[1] < self.height:
-            return self.matrix[point[0], point[1]] == True
+            return self.matrix[point[0], point[1]]
         return True
 
     def register(self, point) -> None:
@@ -36,11 +39,7 @@ class Occupied:
         """
         if 0 <= point[0] < self.width and 0 <= point[1] < self.height:
             self.matrix[point[0], point[1]] = True
-            assert self.matrix[point[0], point[1]] == True
-
-
-def in_range(position, points) -> bool:
-    return 0 <= position[0] < len(points) and 0 <= position[1] < len(points[0])
+            assert self.matrix[point[0], point[1]]
 
 
 class Point(Tagged):
@@ -230,8 +229,10 @@ class Point(Tagged):
         space for all elements.
         """
         icon_size: int = 16
-        width: int = (1 + max(2, len(self.icon_set.extra_icons) - 1)) * icon_size
-        height: int = (1 + int(len(self.icon_set.extra_icons) / 3)) * icon_size
+        width: int = icon_size * (
+            1 + max(2, len(self.icon_set.extra_icons) - 1)
+        )
+        height: int = icon_size * (1 + int(len(self.icon_set.extra_icons) / 3))
         if len(self.labels):
             height += 2 + 11 * len(self.labels)
         return np.array((width, height))
