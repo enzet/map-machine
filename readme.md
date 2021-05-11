@@ -34,7 +34,7 @@ Simple shapes for walls and shade in proportion to [`building:levels`](https://w
 
 ### Trees ###
 
-Tree leaf types, leaf cycles, and genes.
+Visualization of tree leaf types (broadleaved or needleleaved) and genus or taxon by means of icon shapes and leaf cycles (deciduous or evergreen) by means of color.
 
 ![Trees](doc/trees.png)
 

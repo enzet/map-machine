@@ -31,7 +31,23 @@ Simple shapes for walls and shade in proportion to \osm {building:levels} value.
 
 \3 {Trees} {trees}
 
-Tree leaf types, leaf cycles, and genes.
+Visualization of tree leaf types (broadleaved or needleleaved) and genus or taxon by means of icon shapes and leaf cycles (deciduous or evergreen) by means of color.
+
+/*
+
+\table
+	{{\osm {natural=tree}} {\icon {tree}}}
+	{{\osm {leaf_type=broadleaved}} {\icon {tree_with_leaf}}}
+	{{\osm {leaf_type=needleleaved}} {\icon {needleleaved_tree}}}
+	{{\osm {taxon=Arecaceae}} {\icon {palm}}}
+	{{\osm {genus=Betula}} {\icon {betula}}}
+
+\table
+	{{} {\color {#98AC64}}}
+	{{\osm {leaf_cycle=deciduous}} {\color {#fcaf3e}}}
+	{{\osm {leaf_cycle=evergreen}} {\color {#688C44}}}
+
+*/
 
 \image {doc/trees.png} {Trees}
 
@@ -87,12 +103,12 @@ Some icons can be combined into new icons.
     }
     {
         {\tt {amenity=post_office}}
-        {\image {icon_set/envelope.svg} {-}}
-        {\image {icon_set/japan_post.svg} {-}}
+        {\icon {envelope} {-}}
+        {\icon {japan_post} {-}}
     }
     {
         {\tt {amenity=school}} {}
-        {\image {icon_set/japan_elementary_school.svg} {-}}
+        {\icon {japan_elementary_school} {-}}
     }
 
 \4 {Script direction} {script-direction}
