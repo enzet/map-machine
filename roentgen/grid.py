@@ -119,8 +119,9 @@ def draw_grid(
     for icon in icons:
         icon: Icon
         svg.add(svg.rect(
-            point - np.array((-10, -10)), (20, 20),
-            fill=background_color.hex))
+            point - np.array((10, 10)), (20, 20),
+            fill=background_color.hex
+        ))
         icon.draw(svg, point)
         point += np.array((step, 0))
         if point[0] > width - 8:
