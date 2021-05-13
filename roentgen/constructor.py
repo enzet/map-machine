@@ -368,7 +368,7 @@ class Constructor:
                 icon_set, priority = self.scheme.get_icon(
                     self.icon_extractor, line.tags, for_="line"
                 )
-                labels = self.scheme.construct_text(line.tags, True)
+                labels = self.scheme.construct_text(line.tags, "all")
 
                 self.nodes.append(Point(
                     icon_set, labels, line.tags, center_point,
@@ -388,7 +388,7 @@ class Constructor:
             icon_set, priority = self.scheme.get_icon(
                 self.icon_extractor, line.tags
             )
-            labels = self.scheme.construct_text(line.tags, True)
+            labels = self.scheme.construct_text(line.tags, "all")
 
             self.nodes.append(Point(
                 icon_set, labels, line.tags, center_point, center_coordinates,

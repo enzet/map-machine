@@ -10,8 +10,10 @@ from typing import Any, Dict, List, Optional, Set, Tuple, Union
 import yaml
 from colour import Color
 
-from roentgen.icon import (DEFAULT_COLOR, DEFAULT_SHAPE_ID, Icon, IconSet,
-                           ShapeExtractor, ShapeSpecification)
+from roentgen.icon import (
+    DEFAULT_COLOR, DEFAULT_SHAPE_ID, Icon, IconSet, ShapeExtractor,
+    ShapeSpecification
+)
 from roentgen.text import Label, get_address, get_text
 
 
@@ -296,7 +298,9 @@ class Scheme:
 
         return line_styles
 
-    def construct_text(self, tags, draw_captions) -> List[Label]:
+    def construct_text(
+        self, tags: Dict[str, str], draw_captions: str
+    ) -> List[Label]:
         """
         Construct labels for not processed tags.
         """
@@ -343,9 +347,7 @@ class Scheme:
         if draw_captions == "main":
             return texts
 
-        for text in get_text(tags):  # type: str
-            if text:
-                texts.append(Label(text))
+        texts += get_text(tags)
 
         if "route_ref" in tags:
             texts.append(Label(tags["route_ref"].replace(";", " ")))

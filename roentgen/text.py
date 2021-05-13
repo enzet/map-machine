@@ -79,11 +79,11 @@ def format_frequency(value: str) -> str:
         return value
 
 
-def get_text(tags: Dict[str, Any]) -> List[str]:
+def get_text(tags: Dict[str, Any]) -> List[Label]:
     """
     Get text representation of writable tags.
     """
-    texts: List[str] = []
+    texts: List[Label] = []
 
     values: List[str] = []
     if "voltage:primary" in tags:
@@ -92,11 +92,12 @@ def get_text(tags: Dict[str, Any]) -> List[str]:
         values.append(tags["voltage:secondary"])
     if "voltage" in tags:
         values = tags["voltage"].split(";")
-    texts.append(", ".join(map(format_voltage, values)))
+    if values:
+        texts.append(Label(", ".join(map(format_voltage, values))))
 
     if "frequency" in tags:
-        texts.append(", ".join(map(
+        texts.append(Label(", ".join(map(
             format_frequency, tags["frequency"].split(";")
-        )))
+        ))))
 
     return texts
