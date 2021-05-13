@@ -1,7 +1,7 @@
-**Röntgen** project consists of
+**Röntgen** (or **Roentgen** when ASCII is preferred) project consists of
 
   * simple Python [OpenStreetMap](http://openstreetmap.org) renderer (see [usage](#usage), [renderer documentation](#map-generation)),
-  * [set of icons](#icons),
+  * [set of icons](#icon-set),
   * and [map styles](#map-styles).
 
 [![Build Status](https://travis-ci.org/enzet/Roentgen.svg?branch=master)](https://travis-ci.org/enzet/Roentgen)
@@ -73,8 +73,8 @@ Some icons can be combined into new icons.
 
 ![Bus stop icon combination](doc/bus_stop.png)
 
-Röntgen map styles
-------------------
+Map styles
+----------
 
 ### All tags style ###
 

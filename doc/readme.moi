@@ -1,8 +1,8 @@
-\b {Röntgen} project consists of
+\b {Röntgen} (or \b {Roentgen} when ASCII is preferred) project consists of
 
 \list
     {simple Python \href {http://openstreetmap.org} {OpenStreetMap} renderer (see \href {#usage} {usage}, \href {#map-generation} {renderer documentation}),}
-    {\href {#icons} {set of icons},}
+    {\href {#icon-set} {set of icons},}
     {and \href {#map-styles} {map styles}.}
 
 \href {https://travis-ci.org/enzet/Roentgen} {\image {https://travis-ci.org/enzet/Roentgen.svg?branch=master} {Build Status}}
@@ -68,7 +68,7 @@ Visualize \osm {design} values used with \osm {power=tower} tag.
 
 \image {doc/emergency.png} {Emergency}
 
-\2 {Icon set} {icons}
+\2 {Icon set} {icon-set}
 
 If tag is drawable it is displayed using icon combination and colors.  All icons are under \href {http://creativecommons.org/licenses/by/4.0/} {CC BY} license.  So, do whatever you want but give appropriate credit.  Icon set is heavily inspired by \href {https://github.com/mapbox/maki} {Maki},  \href {https://github.com/gmgeo/osmic} {Osmic}, and \href {https://github.com/ideditor/temaki} {Temaki} icon sets.
 
@@ -122,7 +122,7 @@ Countries with right-to-left script direction\:
 
 */
 
-\2 {Röntgen map styles} {map-styles}
+\2 {Map styles} {map-styles}
 
 \3 {All tags style} {all_tags_style}
 
