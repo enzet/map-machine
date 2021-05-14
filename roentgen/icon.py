@@ -45,7 +45,9 @@ class Shape:
         return self.id_ in [DEFAULT_SHAPE_ID, DEFAULT_SMALL_SHAPE_ID]
 
     def get_path(
-        self, svg: Drawing, point: np.array, offset: np.array = np.array((0, 0))
+        self, svg: Drawing, point: np.array,
+        offset: np.array = np.array((0, 0)),
+        scale: np.array = np.array((1, 1)),
     ):
         """
         Draw icon into SVG file.
@@ -53,12 +55,15 @@ class Shape:
         :param svg: SVG file to draw to
         :param point: icon position
         :param offset: additional offset
+        :param scale: scale resulting image
         """
         shift: np.array = self.offset + point + offset
 
-        return svg.path(
-            d=self.path, transform=f"translate({shift[0]},{shift[1]})"
-        )
+        transformations: List[str] = [f"translate({shift[0]},{shift[1]})"]
+        if not np.allclose(scale, np.array((0, 0))):
+            transformations.append(f"scale({scale[0]},{scale[1]})")
+
+        return svg.path(d=self.path, transform=" ".join(transformations))
 
 
 class ShapeExtractor:
