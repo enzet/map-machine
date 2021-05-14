@@ -152,6 +152,8 @@ class ShapeSpecification:
     shape: Shape
     color: Color = DEFAULT_COLOR
     offset: np.array = np.array((0, 0))
+    flip_horizontally: bool = False
+    flip_vertically: bool = False
 
     @classmethod
     def from_structure(
@@ -166,6 +168,8 @@ class ShapeSpecification:
         shape: Shape = extractor.get_shape(DEFAULT_SHAPE_ID)
         color: Color = color
         offset: np.array = np.array((0, 0))
+        flip_horizontally: bool = False
+        flip_vertically: bool = False
 
         if isinstance(structure, str):
             shape = extractor.get_shape(structure)
@@ -178,8 +182,12 @@ class ShapeSpecification:
                 color = scheme.get_color(structure["color"])
             if "offset" in structure:
                 offset = np.array(structure["offset"])
+            if "flip_horizontally" in structure:
+                flip_horizontally = structure["flip_horizontally"]
+            if "flip_vertically" in structure:
+                flip_vertically = structure["flip_vertically"]
 
-        return cls(shape, color, offset)
+        return cls(shape, color, offset, flip_horizontally, flip_vertically)
 
     def is_default(self) -> bool:
         """
