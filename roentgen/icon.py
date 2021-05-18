@@ -57,11 +57,15 @@ class Shape:
         :param offset: additional offset
         :param scale: scale resulting image
         """
-        shift: np.array = self.offset + point + offset
+        transformations: List[str] = []
+        shift: np.array = point + offset
 
-        transformations: List[str] = [f"translate({shift[0]},{shift[1]})"]
-        if not np.allclose(scale, np.array((0, 0))):
+        transformations.append(f"translate({shift[0]},{shift[1]})")
+
+        if not np.allclose(scale, np.array((1, 1))):
             transformations.append(f"scale({scale[0]},{scale[1]})")
+
+        transformations.append(f"translate({self.offset[0]},{self.offset[1]})")
 
         return svg.path(d=self.path, transform=" ".join(transformations))
 
@@ -212,8 +216,14 @@ class ShapeSpecification:
         :param tags: tags to be displayed as hint
         :param outline: draw outline for the shape
         """
+        scale: np.array = np.array((1, 1))
+        if self.flip_vertically:
+            scale = np.array((1, -1))
+        if self.flip_horizontally:
+            scale = np.array((-1, 1))
+
         point = np.array(list(map(int, point)))
-        path = self.shape.get_path(svg, point, self.offset)
+        path = self.shape.get_path(svg, point, self.offset, scale)
         path.update({"fill": self.color.hex})
 
         if outline:
