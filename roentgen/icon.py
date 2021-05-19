@@ -3,8 +3,10 @@ Extract icons from SVG file.
 
 Author: Sergey Vartanov (me@enzet.ru).
 """
+import json
 import re
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
 from xml.dom.minidom import Document, Element, Node, parse
 
@@ -12,6 +14,7 @@ import numpy as np
 import svgwrite
 from colour import Color
 from svgwrite import Drawing
+from svgwrite.path import Path as SvgPath
 
 from roentgen.color import is_bright
 from roentgen.ui import error
@@ -45,10 +48,12 @@ class Shape:
         return self.id_ in [DEFAULT_SHAPE_ID, DEFAULT_SMALL_SHAPE_ID]
 
     def get_path(
-        self, svg: Drawing, point: np.array,
+        self,
+        svg: Drawing,
+        point: np.array,
         offset: np.array = np.array((0, 0)),
         scale: np.array = np.array((1, 1)),
-    ):
+    ) -> SvgPath:
         """
         Draw icon into SVG file.
 
@@ -68,6 +73,16 @@ class Shape:
         transformations.append(f"translate({self.offset[0]},{self.offset[1]})")
 
         return svg.path(d=self.path, transform=" ".join(transformations))
+
+
+class ShapeConfiguration:
+    """
+    Description of the icon shape properties.
+    """
+
+    def __init__(self, file_name: Path):
+        content = json.load(file_name)
+        self.right_directed: Set[str] = set(content["right_directed"])
 
 
 class ShapeExtractor:
