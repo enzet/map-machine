@@ -16,7 +16,9 @@ DEFAULT_ANGLE: float = np.pi / 30
 
 
 def degree_to_radian(degree: float) -> float:
-    """ Convert value in degrees to radians. """
+    """
+    Convert value in degrees to radians.
+    """
     return degree / 180 * np.pi
 
 
@@ -49,9 +51,9 @@ def rotation_matrix(angle) -> np.array:
 
     :param angle: angle in radians
     """
-    return np.array([
-        [np.cos(angle), np.sin(angle)],
-        [-np.sin(angle), np.cos(angle)]])
+    return np.array(
+        [[np.cos(angle), np.sin(angle)], [-np.sin(angle), np.cos(angle)]]
+    )
 
 
 class Sector:
@@ -66,11 +68,13 @@ class Sector:
         """
         self.start: Optional[np.array] = None
         self.end: Optional[np.array] = None
+        self.main_direction: Optional[np.array] = None
 
         if "-" in text:
             parts: List[str] = text.split("-")
             self.start = parse_vector(parts[0])
             self.end = parse_vector(parts[1])
+            self.main_direction = (self.start + self.end) / 2
         else:
             result_angle: float
             if angle is None:
@@ -79,6 +83,7 @@ class Sector:
                 result_angle = max(SMALLEST_ANGLE, degree_to_radian(angle) / 2)
 
             vector: Optional[np.array] = parse_vector(text)
+            self.main_direction = vector
 
             if vector is not None:
                 self.start = np.dot(rotation_matrix(result_angle), vector)
@@ -128,4 +133,5 @@ class DirectionSet:
         """
         return filter(
             lambda x: x is not None,
-            map(lambda x: x.draw(center, radius), self.sectors))
+            map(lambda x: x.draw(center, radius), self.sectors),
+        )
