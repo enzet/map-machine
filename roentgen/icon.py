@@ -81,7 +81,8 @@ class ShapeConfiguration:
     """
 
     def __init__(self, file_name: Path):
-        content = json.load(file_name)
+        with file_name.open() as input_file:
+            content = json.load(input_file)
         self.right_directed: Set[str] = set(content["right_directed"])
 
 
@@ -92,7 +93,7 @@ class ShapeExtractor:
     Shape is a single path with "id" attribute that aligned to 16×16 grid.
     """
 
-    def __init__(self, svg_file_name: str):
+    def __init__(self, svg_file_name: str, configuration_file_name: Path):
         """
         :param svg_file_name: input SVG file name with icons.  File may contain
             any other irrelevant graphics.
@@ -107,6 +108,8 @@ class ShapeExtractor:
                 for node in element.childNodes:  # type: Node
                     if isinstance(node, Element):
                         self.parse(node)
+
+        self.configuration = ShapeConfiguration(configuration_file_name)
 
     def parse(self, node: Element) -> None:
         """

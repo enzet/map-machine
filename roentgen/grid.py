@@ -4,6 +4,7 @@ Icon grid drawing.
 Author: Sergey Vartanov (me@enzet.ru).
 """
 from os.path import join
+from pathlib import Path
 from typing import Any, Dict, List, Set
 
 import numpy as np
@@ -36,7 +37,9 @@ def draw_all_icons(
     icons: List[Icon] = []
 
     icons_file_name: str = "icons/icons.svg"
-    extractor: ShapeExtractor = ShapeExtractor(icons_file_name)
+    extractor: ShapeExtractor = ShapeExtractor(
+        icons_file_name, Path("icons/config.json")
+    )
 
     def add() -> None:
         """

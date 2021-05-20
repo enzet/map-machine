@@ -173,8 +173,10 @@ class Scheme:
         return False
 
     def get_icon(
-        self, icon_extractor: ShapeExtractor, tags: Dict[str, Any],
-        for_: str = "node"
+        self,
+        icon_extractor: ShapeExtractor,
+        tags: Dict[str, Any],
+        for_: str = "node",
     ) -> Tuple[IconSet, int]:
         """
         Construct icon set.

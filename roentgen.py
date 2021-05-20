@@ -6,6 +6,7 @@ Author: Sergey Vartanov (me@enzet.ru).
 import argparse
 import os
 import sys
+from pathlib import Path
 
 import numpy as np
 import svgwrite
@@ -14,7 +15,7 @@ from roentgen import ui
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
 from roentgen.grid import draw_all_icons
-from roentgen.icon import ShapeExtractor
+from roentgen.icon import ShapeExtractor, ShapeConfiguration
 from roentgen.mapper import (
     AUTHOR_MODE, CREATION_TIME_MODE, ICONS_FILE_NAME, Painter, TAGS_FILE_NAME,
     check_level_number, check_level_overground
@@ -82,7 +83,9 @@ def main(argv) -> None:
     svg: svgwrite.Drawing = (
         svgwrite.Drawing(options.output_file_name, size=size))
 
-    icon_extractor: ShapeExtractor = ShapeExtractor(ICONS_FILE_NAME)
+    icon_extractor: ShapeExtractor = ShapeExtractor(
+        ICONS_FILE_NAME, Path("icons/config.json")
+    )
 
     def check_level(x) -> bool:
         """ Draw objects on all levels. """
@@ -128,8 +131,8 @@ def draw_element(target: str, tags_description: str):
     """
     tags = dict([x.split("=") for x in tags_description.split(",")])
     scheme = Scheme("scheme/default.yml")
-    icon_extractor = ShapeExtractor("icons/icons.svg")
-    icon, priority = scheme.get_icon(icon_extractor, tags)
+    extractor = ShapeExtractor("icons/icons.svg", Path("icons/config.json"))
+    icon, priority = scheme.get_icon(extractor, tags)
     is_for_node: bool = target == "node"
     labels = scheme.construct_text(tags, True)
     point = Point(

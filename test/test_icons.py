@@ -4,6 +4,7 @@ Test icon generation for nodes.
 Author: Sergey Vartanov (me@enzet.ru).
 """
 from os import makedirs
+from pathlib import Path
 from typing import Dict
 
 from roentgen.grid import draw_all_icons
@@ -19,7 +20,9 @@ def test_icons() -> None:
 
 def get_icon(tags: Dict[str, str]):
     scheme = Scheme("scheme/default.yml")
-    icon_extractor = ShapeExtractor("icons/icons.svg")
+    icon_extractor = ShapeExtractor(
+        "icons/icons.svg", Path("icons/config.json")
+    )
     icon, _ = scheme.get_icon(icon_extractor, tags)
     return icon
 
