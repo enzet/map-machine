@@ -8,7 +8,7 @@ from typing import Iterator, List, Optional, Union
 import numpy as np
 from portolan import middle
 
-Path = Union[float, str, np.array]
+SVGPath = Union[float, str, np.array]
 
 SHIFT: float = -np.pi / 2
 SMALLEST_ANGLE: float = np.pi / 15
@@ -89,7 +89,7 @@ class Sector:
                 self.start = np.dot(rotation_matrix(result_angle), vector)
                 self.end = np.dot(rotation_matrix(-result_angle), vector)
 
-    def draw(self, center: np.array, radius: float) -> Optional[List[Path]]:
+    def draw(self, center: np.array, radius: float) -> Optional[List[SVGPath]]:
         """
         Construct SVG path commands for arc element.
 
@@ -104,6 +104,20 @@ class Sector:
         end: np.array = center + radius * self.start
 
         return ["L", start, "A", radius, radius, 0, "0", 0, end]
+
+    def is_right(self) -> Optional[bool]:
+        """
+        Check if main direction of the sector is right.
+
+        :return: true if direction is right, false if direction is left, and
+            None otherwise.
+        """
+        if self.main_direction is not None:
+            if self.main_direction[0] > 0:
+                return True
+            elif self.main_direction[0] < 0:
+                return False
+            return None
 
     def __str__(self) -> str:
         return f"{self.start}-{self.end}"
@@ -123,7 +137,7 @@ class DirectionSet:
     def __str__(self) -> str:
         return ", ".join(map(str, self.sectors))
 
-    def draw(self, center: np.array, radius: float) -> Iterator[List[Path]]:
+    def draw(self, center: np.array, radius: float) -> Iterator[List[SVGPath]]:
         """
         Construct SVG "d" for arc elements.
 
@@ -135,3 +149,17 @@ class DirectionSet:
             lambda x: x is not None,
             map(lambda x: x.draw(center, radius), self.sectors),
         )
+
+    def is_right(self) -> Optional[bool]:
+        """
+        Check if main direction of the sector is right.
+
+        :return: true if direction is right, false if direction is left, and
+            None otherwise.
+        """
+        result = [x.is_right() for x in self.sectors]
+        if result == [True] * len(result):
+            return True
+        if result == [False] * len(result):
+            return False
+        return None
