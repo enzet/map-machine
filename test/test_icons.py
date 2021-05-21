@@ -11,6 +11,11 @@ from roentgen.grid import draw_all_icons
 from roentgen.icon import ShapeExtractor
 from roentgen.scheme import Scheme
 
+SCHEME: Scheme = Scheme("scheme/default.yml")
+ICON_EXTRACTOR: ShapeExtractor = ShapeExtractor(
+    "icons/icons.svg", Path("icons/config.json")
+)
+
 
 def test_icons() -> None:
     """ Test grid drawing. """
@@ -19,11 +24,7 @@ def test_icons() -> None:
 
 
 def get_icon(tags: Dict[str, str]):
-    scheme = Scheme("scheme/default.yml")
-    icon_extractor = ShapeExtractor(
-        "icons/icons.svg", Path("icons/config.json")
-    )
-    icon, _ = scheme.get_icon(icon_extractor, tags)
+    icon, _ = SCHEME.get_icon(ICON_EXTRACTOR, tags)
     return icon
 
 

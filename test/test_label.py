@@ -8,13 +8,14 @@ from typing import List
 from roentgen.scheme import Scheme
 from roentgen.text import Label
 
+SCHEME: Scheme = Scheme("scheme/default.yml")
+
 
 def construct_labels(tags) -> List[Label]:
     """
     Construct labels from OSM node tags.
     """
-    scheme = Scheme("scheme/default.yml")
-    return scheme.construct_text(tags, True)
+    return SCHEME.construct_text(tags, "all")
 
 
 def test_1_label() -> None:
