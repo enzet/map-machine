@@ -1,6 +1,4 @@
 """
-Author: Sergey Vartanov (me@enzet.ru)
-
 Geo projection.
 """
 from typing import Optional
@@ -8,6 +6,9 @@ from typing import Optional
 import numpy as np
 
 from roentgen.util import MinMax
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 EQUATOR_LENGTH: float = 40_075_017  # (in meters)
 

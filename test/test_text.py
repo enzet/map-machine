@@ -1,9 +1,10 @@
 """
 Test text generation.
-
-Author: Sergey Vartanov (me@enzet.ru).
 """
 from roentgen.text import format_voltage
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 
 def test_voltage() -> None:

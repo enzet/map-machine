@@ -69,744 +69,740 @@ colors:
 
 node_icons:
 
-  # No draw
+  - group: "No draw"
+    tags:
+    - tags: {type: multipolygon}
+      draw: false
+    - tags: {place: "*"}
+      draw: false
+    - tags: {building: "yes"}
+      draw: false
 
-  - tags: {type: multipolygon}
-    draw: false
-  - tags: {place: "*"}
-    draw: false
-  - tags: {building: "yes"}
-    draw: false
+  - group: "Transport hubs"
+    tags:
+    - tags: {amenity: ferry_terminal}
+      icon: [anchor]
+    - tags: {amenity: ferry_terminal, cargo: vehicle}
+      icon: [car_on_ferry]
+    - tags: {amenity: ferry_terminal, cargo: passengers}
+      icon: [human_on_ferry]
+    - tags: {aeroway: aerodrome}
+      icon: [plane]
+    - tags: {aeroway: helipad}
+      icon: [h]
+    - tags: {aeroway: spaceport}
+      icon: [rocket_on_launch_pad]
+    - tags: {aeroway: launchpad}
+      icon: [rocket_flying]
+    - tags: {aeroway: landingpad}
+      icon: [booster_landing]
+    - tags: {highway: bus_stop}
+      icon: [bus_stop]
+      add_icon: [bus]
+    - tags: {railway: station}
+      icon: [train]
+    - tags: {railway: station, station: subway, transport: subway}
+      icon: [train]
+    - tags: {railway: subway_entrance}
+      icon: [train]
+    - tags: {railway: subway_entrance, entrance: "yes"}
+      icon: [train]
+    - tags: {public_transport: stop_position}
+      icon: [bus_stop]
+    - tags: {railway: tram_station}
+      icon: [tram]
+    - tags: {railway: tram_stop}
+      icon: [tram]
+    - tags: {public_transport: platform}
+      icon: [bus_stop_sign]
+      with_icon: [bus_stop_bench, bus_stop_shelter]
+      over_icon: [platform]
+    - tags: {highway: bus_stop, public_transport: platform}
+      icon: [bus_stop_sign]
+      with_icon: [bus_stop_bench, bus_stop_shelter]
+      over_icon: [platform]
+    - tags: {highway: bus_stop, shelter: "yes"}
+      icon: [bus_stop_sign]
+      under_icon: [bus_stop_sign]
+      with_icon: [bus_stop_bench, platform]
+      over_icon: [bus_stop_shelter]
+    - tags: {highway: bus_stop, bench: "yes"}
+      under_icon: [bus_stop_sign]
+      with_icon: [bus_stop_shelter, platform]
+      over_icon: [bus_stop_bench]
+    - tags: {highway: stop}
+      icon: [stop]
 
-  # Transport hubs
+  - group: "Big territory"
+    tags:
+    - tags: {leisure: fishing}
+      icon: [fishing_angle]
+    - tags: {power: substation}
+      icon: [electricity]
+    - tags: {plant: christmas_trees}
+      icon: [{shape: christmas_tree, color: orchard_border_color}]
+    - tags: {produce: apple}
+      icon: [{shape: apple, color: orchard_border_color}]
+    - tags: {produce: christmas_trees}
+      icon: [{shape: christmas_tree, color: orchard_border_color}]
+    - tags: {produce: pear}
+      icon: [{shape: pear, color: orchard_border_color}]
+    - tags: {trees: apple_trees}
+      icon: [{shape: apple, color: orchard_border_color}]
+    - tags: {trees: pear_trees}
+      icon: [{shape: pear, color: orchard_border_color}]
 
-  - tags: {amenity: ferry_terminal}
-    icon: [anchor]
-  - tags: {amenity: ferry_terminal, cargo: vehicle}
-    icon: [car_on_ferry]
-  - tags: {amenity: ferry_terminal, cargo: passengers}
-    icon: [human_on_ferry]
-  - tags: {aeroway: aerodrome}
-    icon: [plane]
-  - tags: {aeroway: helipad}
-    icon: [h]
-  - tags: {aeroway: spaceport}
-    icon: [rocket_on_launch_pad]
-  - tags: {aeroway: launchpad}
-    icon: [rocket_flying]
-  - tags: {aeroway: landingpad}
-    icon: [booster_landing]
-  - tags: {highway: bus_stop}
-    icon: [bus_stop]
-    add_icon: [bus]
-  - tags: {railway: station}
-    icon: [train]
-  - tags: {railway: station, station: subway, transport: subway}
-    icon: [train]
-  - tags: {railway: subway_entrance}
-    icon: [train]
-  - tags: {railway: subway_entrance, entrance: "yes"}
-    icon: [train]
-  - tags: {public_transport: stop_position}
-    icon: [bus_stop]
-  - tags: {railway: tram_station}
-    icon: [tram]
-  - tags: {railway: tram_stop}
-    icon: [tram]
-  - tags: {public_transport: platform}
-    icon: [bus_stop_sign]
-    with_icon: [bus_stop_bench, bus_stop_shelter]
-    over_icon: [platform]
-  - tags: {highway: bus_stop, public_transport: platform}
-    icon: [bus_stop_sign]
-    with_icon: [bus_stop_bench, bus_stop_shelter]
-    over_icon: [platform]
-  - tags: {highway: bus_stop, shelter: "yes"}
-    icon: [bus_stop_sign]
-    under_icon: [bus_stop_sign]
-    with_icon: [bus_stop_bench, platform]
-    over_icon: [bus_stop_shelter]
-  - tags: {highway: bus_stop, bench: "yes"}
-    under_icon: [bus_stop_sign]
-    with_icon: [bus_stop_shelter, platform]
-    over_icon: [bus_stop_bench]
-  - tags: {highway: stop}
-    icon: [stop]
+  - group: "Bigger objects"
+    tags:
+    - tags: {waterway: waterfall}
+      icon: [{shape: waterfall, color: water_border_color}]
+    - tags: {natural: cliff}
+      icon: [cliff]
+    - tags: {natural: peak}
+      icon: [triangle_small]
+    - tags: {shop: mall}
+      icon: [bag]
+    - tags: {shop: mall, building: "yes"}
+      icon: [bag]
 
-  # Big territory
+  - group: "Important big objects"
+    tags:
+    - tags: {amenity: pharmacy}
+      icon: [medicine_bottle]
+    - tags: {amenity: embassy}
+      icon: [waving_flag]
+    - tags: {tourism: hotel}
+      icon: [bed]
+    - tags: {building: hotel}
+      icon: [bed]
+    - tags: {tourism: hostel}
+      icon: [two_beds]
+    - tags: {tourism: motel}  # Tourism?
+      icon: [motel]
+    - tags: {amenity: clinic}
+      icon: [greek_cross]
+    - tags: {amenity: post_office}
+      location_restrictions: {include: world, exclude: jp}
+      icon: [envelope]
+    - tags: {amenity: post_office}
+      location_restrictions: {include: jp}
+      icon: [japan_post]
+    - tags: {shop: car_repair}
+      icon: [car_repair]
+      # Place of worship
+    - tags: {religion: christian}
+      icon: [cross]
+    - tags: {amenity: place_of_worship, religion: christian}
+      icon: [cross]
+    - tags:
+        amenity: place_of_worship
+        religion: christian
+        denomination: catholic
+      icon: [cross]
+    - tags:
+        amenity: place_of_worship
+        religion: christian
+        denomination: russian_orthodox
+      icon: [russian_orthodox]
+    - tags:
+        amenity: place_of_worship
+        religion: christian
+        denomination: orthodox
+      icon: [orthodox]
+    - tags:
+        amenity: place_of_worship
+        religion: christian
+        denomination: baptist
+      icon: [baptist]
+    - tags: {amenity: place_of_worship, religion: muslim}
+      icon: [muslim]
+    - tags: {amenity: place_of_worship, religion: buddhist}
+      icon: [buddhist]
+    - tags: {amenity: place_of_worship, religion: jewish}
+      icon: [jewish]
+    - tags: {historic: tomb, tomb: mausoleum}
+      icon: [mausoleum]
 
-  - tags: {leisure: fishing}
-    icon: [fishing_angle]
-  - tags: {power: substation}
-    icon: [electricity]
-  # plant=*
-  - tags: {plant: christmas_trees}
-    icon: [{shape: christmas_tree, color: orchard_border_color}]
-  # produce=*
-  - tags: {produce: apple}
-    icon: [{shape: apple, color: orchard_border_color}]
-  - tags: {produce: christmas_trees}
-    icon: [{shape: christmas_tree, color: orchard_border_color}]
-  - tags: {produce: pear}
-    icon: [{shape: pear, color: orchard_border_color}]
-  # trees=*
-  - tags: {trees: apple_trees}
-    icon: [{shape: apple, color: orchard_border_color}]
-  - tags: {trees: pear_trees}
-    icon: [{shape: pear, color: orchard_border_color}]
+  - group: "Normal big objects"
+    tags:
+    - tags: {shop: supermarket}
+      icon: [supermarket_cart]
+    - tags: {amenity: arts_centre}
+      icon: [picture]
+    - tags: {amenity: bank}
+      icon: [money]
+    - tags: {amenity: cinema}
+      icon: [film]
+    - tags: {amenity: casino}
+      icon: [card_and_dice]
+    - tags: {amenity: community_centre}
+      icon: [two_people_together]
+    - tags: {amenity: internet_cafe}
+      icon: [at_in_square]
+    - tags: {amenity: library}
+      icon: [book]
+    - tags: {amenity: prison}
+      icon: [prison]
+    - tags: {man_made: survey_point}
+      icon: [survey_point]
+    - tags: {leisure: amusement_arcade}
+      icon: [pac_man]
+    - tags: {leisure: fitness_centre}
+      icon: [dumbbell]
+    - tags: {leisure: outdoor_seating}
+      icon: [table_and_two_chairs, umbrella]
+    - tags: {leisure: outdoor_seating, weather_protection: parasol}
+      icon: [table_and_two_chairs, umbrella]
+    - tags: {leisure: outdoor_seating, weather_protection: roof}
+      icon: [table_and_two_chairs, roof]
+    - tags: {leisure: outdoor_seating, weather_protection: awning}
+      icon: [table_and_two_chairs, awning]
+    - tags: {leisure: outdoor_seating, weather_protection: pavilion}
+      icon: [table_and_two_chairs, roof_and_walls]
+    - tags: {leisure: outdoor_seating, weather_protection: pergola}
+      icon: [table_and_two_chairs, pergola]
+    - tags: {leisure: playground}
+      icon: [toy_horse]
+    - tags: {amenity: theatre}
+      icon: [theatre]
+    - tags: {amenity: bar}
+      icon: [bar]
+    - tags: {amenity: pub}
+      icon: [beer_mug]
+    - tags: {amenity: fast_food}
+      icon: [burger]
+    - tags: {amenity: food_court}
+      icon: [food_court]
+    - tags: {amenity: shop, shop: fishing}
+      icon: [fishing_angle]
+    - tags: {shop: alcohol}
+      icon: [bottle]
+    - tags: {shop: bakery}
+      icon: [cupcake]
+    - tags: {shop: milk}
+      icon: [milk]
+    - tags: {building: store}
+      icon: [shop_convenience]
+    - tags: {shop: ticket}
+      icon: [ticket]
+    - tags: {shop: watches}
+      icon: [watches]
+    - tags: {craft: watchmaker}
+      icon: [watches]
+    - tags: {shop: frame}
+      icon: [frame]
+    - tags: {tourism: gallery}
+      icon: [picture]
+    - tags: {amenity: cafe}
+      icon: [coffee_cup]
+    - tags: {amenity: ice_cream}
+      icon: [ice_cream]
+    - tags: {amenity: biergarten}
+      icon: [beer_mug]
+    - tags: {amenity: nightclub}
+      icon: [night_club]
+    - tags: {amenity: restaurant}
+      icon: [restaurant]
+    - tags: {amenity: restaurant;bar}
+      icon: [restaurant]
+      add_icon: [bar]
+    - tags: {shop: ice_cream}
+      icon: [ice_cream]
+    - tags: {shop: gift}
+      icon: [gift]
+    - tags: {shop: clothes}
+      icon: [shop_clothes]
+    - tags: {amenity: shop, shop: clothes}
+      icon: [shop_clothes]
+    - tags: {shop: convenience}
+      icon: [shop_convenience]
+    - tags: {amenity: shop, shop: convenience}
+      icon: [shop_convenience]
+    - tags: {shop: electronics}
+      icon: [tv]
 
-  # Bigger objects
+  - group: "Big objects not for all"
+    tags:
+    - tags: {building: apartments}
+      icon: [apartments]
+    - tags: {building: kindergarten}
+      icon: [toy_horse]
+    - tags: {amenity: kindergarten}
+      icon: [toy_horse]
+    - tags: {building: kindergarten, amenity: kindergarten}
+      icon: [toy_horse]
+    - tags: {building: office}
+      icon: [briefcase]
+    - tags: {amenity: school}
+      location_restrictions: {include: jp}
+      icon: [japan_elementary_school]
+    - tags: {office: telecommunication}
+      icon: [telephone]
 
-  - tags: {waterway: waterfall}
-    icon: [{shape: waterfall, color: water_border_color}]
-  - tags: {natural: cliff}
-    icon: [cliff]
-  - tags: {natural: peak}
-    icon: [triangle_small]
-  - tags: {shop: mall}
-    icon: [bag]
-  - tags: {shop: mall, building: "yes"}
-    icon: [bag]
+  - group: "Not important big objects"
+    tags:
+    - tags: {man_made: tower}
+      icon: [tower]
+    - tags: {building: garages}
+      icon: [garages]
+    - tags: {building: garage}
+      icon: [garages]
 
-  # Important big objects
+  - group: "Emergency"
+    tags:
+    - tags: {emergency: defibrillator}
+      icon: [{shape: defibrillator, color: emergency_color}]
+    - tags: {emergency: fire_extinguisher}
+      icon: [{shape: fire_extinguisher, color: emergency_color}]
+    - tags: {emergency: fire_hydrant}
+      icon: [fire_hydrant]
+    - tags: {emergency: life_ring}
+      icon: [{shape: life_ring, color: emergency_color}]
+    - tags: {emergency: phone}
+      icon: [{shape: sos_phone, color: emergency_color}]
 
-  - tags: {amenity: pharmacy}
-    icon: [medicine_bottle]
-  - tags: {amenity: embassy}
-    icon: [waving_flag]
-  - tags: {tourism: hotel}
-    icon: [bed]
-  - tags: {building: hotel}
-    icon: [bed]
-  - tags: {tourism: hostel}
-    icon: [two_beds]
-  - tags: {tourism: motel}  # Tourism?
-    icon: [motel]
-  - tags: {amenity: clinic}
-    icon: [greek_cross]
-  - tags: {amenity: post_office}
-    location_restrictions: {include: world, exclude: jp}
-    icon: [envelope]
-  - tags: {amenity: post_office}
-    location_restrictions: {include: jp}
-    icon: [japan_post]
-  - tags: {shop: car_repair}
-    icon: [car_repair]
-    # Place of worship
-  - tags: {religion: christian}
-    icon: [cross]
-  - tags: {amenity: place_of_worship, religion: christian}
-    icon: [cross]
-  - tags:
-      amenity: place_of_worship
-      religion: christian
-      denomination: catholic
-    icon: [cross]
-  - tags:
-      amenity: place_of_worship
-      religion: christian
-      denomination: russian_orthodox
-    icon: [russian_orthodox]
-  - tags:
-      amenity: place_of_worship
-      religion: christian
-      denomination: orthodox
-    icon: [orthodox]
-  - tags:
-      amenity: place_of_worship
-      religion: christian
-      denomination: baptist
-    icon: [baptist]
-  - tags: {amenity: place_of_worship, religion: muslim}
-    icon: [muslim]
-  - tags: {amenity: place_of_worship, religion: buddhist}
-    icon: [buddhist]
-  - tags: {amenity: place_of_worship, religion: jewish}
-    icon: [jewish]
-  - tags: {historic: tomb, tomb: mausoleum}
-    icon: [mausoleum]
+  - group: "Transport-important middle objects"
+    tags:
+    - tags: {ford: "yes"}
+      icon: [ford]
+    - tags: {amenity: charging_station}
+      icon: [charging_station]
+    - tags: {amenity: bicycle_repair_station}
+      icon: [bicycle_repair]
+    - tags: {amenity: fuel}
+      icon: [fuel_station]
+    - tags: {amenity: parking}
+      icon: [p]
+    - tags: {highway: turning_circle}
+      icon: [circle_empty]
+    - tags: {highway: crossing}
+      icon: [crossing]
+    - tags: {crossing: zebra}
+      icon: [crossing]
+    - tags: {highway: crossing, crossing: zebra}
+      icon: [crossing]
+    - tags: {crossing: marked}
+      icon: [crossing]
+    - tags: {highway: crossing, crossing: marked}
+      icon: [crossing]
+    - tags: {highway: crossing, crossing_ref: zebra}
+      icon: [crossing]
+    - tags: {highway: crossing, crossing: uncontrolled}
+      add_icon: [no_traffic_signals]
+    - tags: {highway: crossing, crossing: traffic_signals}
+      add_icon: [traffic_signals]
+    - tags: {highway: traffic_signals}
+      icon: [traffic_signals]
+    - tags: {crossing_ref: toucan}
+      icon: [toucan_crossing]
 
-  # Normal big objects
+  - group: "Important middle objects"
+    tags:
+    - tags: {tourism: attraction, attraction: amusement_ride}
+      icon: [amusement_ride]
+    - tags: {amenity: toilets}
+      icon: [woman_and_man]
 
-  - tags: {shop: supermarket}
-    icon: [supermarket_cart]
-  - tags: {amenity: arts_centre}
-    icon: [picture]
-  - tags: {amenity: bank}
-    icon: [money]
-  - tags: {amenity: cinema}
-    icon: [film]
-  - tags: {amenity: casino}
-    icon: [card_and_dice]
-  - tags: {amenity: community_centre}
-    icon: [two_people_together]
-  - tags: {amenity: internet_cafe}
-    icon: [at_in_square]
-  - tags: {amenity: library}
-    icon: [book]
-  - tags: {amenity: prison}
-    icon: [prison]
-  - tags: {man_made: survey_point}
-    icon: [survey_point]
-  - tags: {leisure: amusement_arcade}
-    icon: [pac_man]
-  - tags: {leisure: fitness_centre}
-    icon: [dumbbell]
-  - tags: {leisure: outdoor_seating}
-    icon: [table_and_two_chairs, umbrella]
-  - tags: {leisure: outdoor_seating, weather_protection: parasol}
-    icon: [table_and_two_chairs, umbrella]
-  - tags: {leisure: outdoor_seating, weather_protection: roof}
-    icon: [table_and_two_chairs, roof]
-  - tags: {leisure: outdoor_seating, weather_protection: awning}
-    icon: [table_and_two_chairs, awning]
-  - tags: {leisure: outdoor_seating, weather_protection: pavilion}
-    icon: [table_and_two_chairs, roof_and_walls]
-  - tags: {leisure: outdoor_seating, weather_protection: pergola}
-    icon: [table_and_two_chairs, pergola]
-  - tags: {leisure: playground}
-    icon: [toy_horse]
-  - tags: {amenity: theatre}
-    icon: [theatre]
-  - tags: {amenity: bar}
-    icon: [bar]
-  - tags: {amenity: pub}
-    icon: [beer_mug]
-  - tags: {amenity: fast_food}
-    icon: [burger]
-  - tags: {amenity: food_court}
-    icon: [food_court]
-  - tags: {amenity: shop, shop: fishing}
-    icon: [fishing_angle]
-  - tags: {shop: alcohol}
-    icon: [bottle]
-  - tags: {shop: bakery}
-    icon: [cupcake]
-  - tags: {shop: milk}
-    icon: [milk]
-  - tags: {building: store}
-    icon: [shop_convenience]
-  - tags: {shop: ticket}
-    icon: [ticket]
-  - tags: {shop: watches}
-    icon: [watches]
-  - tags: {craft: watchmaker}
-    icon: [watches]
-  - tags: {shop: frame}
-    icon: [frame]
-  - tags: {tourism: gallery}
-    icon: [picture]
-  - tags: {amenity: cafe}
-    icon: [coffee_cup]
-  - tags: {amenity: ice_cream}
-    icon: [ice_cream]
-  - tags: {amenity: biergarten}
-    icon: [beer_mug]
-  - tags: {amenity: nightclub}
-    icon: [night_club]
-  - tags: {amenity: restaurant}
-    icon: [restaurant]
-  - tags: {amenity: restaurant;bar}
-    icon: [restaurant]
-    add_icon: [bar]
-  - tags: {shop: ice_cream}
-    icon: [ice_cream]
-  - tags: {shop: gift}
-    icon: [gift]
-  - tags: {shop: clothes}
-    icon: [shop_clothes]
-  - tags: {amenity: shop, shop: clothes}
-    icon: [shop_clothes]
-  - tags: {shop: convenience}
-    icon: [shop_convenience]
-  - tags: {amenity: shop, shop: convenience}
-    icon: [shop_convenience]
-  - tags: {shop: electronics}
-    icon: [tv]
+  - group: "Normal middle objects"
+    tags:
+    - tags: {shop: kiosk}
+      icon: [kiosk]
+    - tags: {building: "yes", shop: kiosk}
+      icon: [kiosk]
+    - tags: {amenity: shop, shop: kiosk}
+      icon: [kiosk]
+    - tags: {amenity: stage}
+      icon: [theatre]
+    - tags: {natural: cave_entrance}
+      icon: [cave]
 
-  # Big objects not for all
+  - group: "Not important middle objects"
+    tags:
+    - tags: {building: ventilation_shaft}
+      icon: [ventilation]
+    - tags: {power: generator}
+      icon: [power_generator]
+    - tags: {amenity: public_bookcase}
+      icon: [books]
+    - tags: {power: transformer}
+      icon: [transformer]
+    - tags: {power: generator, generator:source: solar}
+      icon: [solar_panel]
+    - tags: {power: generator, generator:source: wind}
+      icon: [wind_turbine]
+    - tags: {power: tower}
+      icon: [power_tower_2_level]
+    - tags: {power: tower, design: one-level}
+      icon: [power_tower_1_level]
+    - tags: {power: tower, design: two-level}
+      icon: [power_tower_2_level]
+    - tags: {power: tower, design: three-level}
+      icon: [power_tower_3_level]
+    - tags: {power: tower, design: four-level}
+      icon: [power_tower_4_level]
+    - tags: {power: tower, design: donau}
+      icon: [power_tower_donau]
+    - tags: {power: tower, design: barrel}
+      icon: [power_tower_barrel]
+    - tags: {power: tower, design: asymmetric}
+      icon: [power_tower_asymmetric]
+    - tags: {power: tower, design: triangle}
+      icon: [power_tower_triangle]
+    - tags: {power: tower, design: delta}
+      icon: [power_tower_delta]
+    - tags: {power: tower, design: delta_two-level}
+      icon: [power_tower_delta_2_level]
+    - tags: {power: tower, design: delta_three-level}
+      icon: [power_tower_delta_3_level]
+    - tags: {power: tower, design: y-frame}
+      icon: [power_tower_y_frame]
+    - tags: {power: tower, design: x-frame}
+      icon: [power_tower_x_frame]
+    - tags: {power: tower, design: h-frame}
+      icon: [power_tower_h_frame]
+    - tags: {power: tower, design: h-frame_two-level}
+      icon: [power_tower_h_frame_2_level]
+    - tags: {power: tower, design: guyed_h-frame}
+      icon: [power_tower_guyed_h_frame]
+    - tags: {power: portal}
+      icon: [power_tower_portal]
+    - tags: {power: tower, design: portal}
+      icon: [power_tower_portal]
+    - tags: {power: tower, design: portal_two-level}
+      icon: [power_tower_portal_2_level]
+    - tags: {power: tower, design: portal_three-level}
+      icon: [power_tower_portal_3_level]
 
-  - tags: {building: apartments}
-    icon: [apartments]
-  - tags: {building: kindergarten}
-    icon: [toy_horse]
-  - tags: {amenity: kindergarten}
-    icon: [toy_horse]
-  - tags: {building: kindergarten, amenity: kindergarten}
-    icon: [toy_horse]
-  - tags: {building: office}
-    icon: [briefcase]
-  - tags: {amenity: school}
-    location_restrictions: {include: jp}
-    icon: [japan_elementary_school]
-  - tags: {office: telecommunication}
-    icon: [telephone]
+  - group: "Important small objects"
+    tags:
+    - tags: {historic: memorial}
+      icon: [memorial]
+    - tags: {historic: memorial, memorial: plaque}
+      icon: [plaque]
+    - tags: {historic: memorial, memorial: statue}
+      icon: [statue]
+    - tags: {historic: stone}
+      icon: [stone_with_inscription]
+    - tags: {historic: memorial, memorial: stone}
+      icon: [stone_with_inscription]
+    - tags: {historic: tomb}
+      icon: [tomb]
+    - tags: {tomb: "*"}
+      to_tags: {tomb: mausoleum}
+      icon: [tomb]
+    - tags: {barrier: lift_gate}
+      icon: [lift_gate]
+    - tags: {barrier: turnstile}
+      icon: [turnstile]
+    - tags: {railway: level_crossing}
+      icon: [x]
+    - tags: {railway: crossing}
+      icon: [x]
+    - tags: {amenity: atm}
+      icon: [atm]
+    - tags: {amenity: bicycle_parking}
+      icon: [bicycle_p]
+    - tags: {amenity: telephone}
+      icon: [telephone]
+    - tags: {information: "*"}
+      icon: [information]
+    - tags: {tourism: "*"}
+      icon: [historic]
+    - tags: {tourism: information}
+      icon: [information]
+    - tags: {information: guidepost}
+      icon: [guidepost]
+    - tags: {tourism: viewpoint}
+      icon: [binocular]
+    - tags: {information: board}
+      icon: [information_board]
+    - tags: {vending: admission_tickets}
+      icon: [vending_tickets]
+    - tags: {vending: candles}
+      icon: [vending_candles]
+    - tags: {vending: chemist}
+      icon: [vending_chemist]
+    - tags: {vending: drinks}
+      icon: [vending_bottle]
+    - tags: {vending: fishing_tackle}
+      icon: [vending_angle]
+    - tags: {vending: public_transport_tickets}
+      icon: [vending_tickets]
+    - tags: {vending: water}
+      icon: [vending_drop]
+    - tags: {buoy: "*"}
+      icon: [buoy]
+    - tags: {"seamark:type": "*"}
+      icon: [buoy]
+    - tags: {"waterway:sign": "*"}
+      icon: [buoy]
+    - tags: {amenity: drinking_water}
+      icon: [drinking_water]
+    - tags: {tourism: artwork}
+      icon: [picture]
+    - tags: {tourism: artwork, artwork_type: statue}
+      icon: [statue]
+    - tags: {tourism: artwork, artwork_type: sculpture}
+      icon: [statue]
+    - tags: {tourism: attraction}
+      icon: [photo_camera]
+    - tags: {xmas:feature: tree}
+      icon: {christmas_tree}
 
-  # Not important big objects
+  - group: "Normal small objects"
+    tags:
+    - tags: {amenity: binoculars}
+      icon: [binoculars_on_pole]
+    - tags: {amenity: post_box}
+      icon: [envelope]
+    - tags: {amenity: recycling}
+      icon: [recycling_container]
+    - tags: {amenity: recycling, recycling_type: container}
+      icon: [recycling_container]
+    - tags: {amenity: vending_machine}
+      icon: [vending_machine]
+    - tags: {amenity: vending_machine, vending: excrement_bags}
+      icon: [vending_excrement_bag]
+    - tags: {fitness_station: horizontal_bar}
+      icon: [horizontal_bar]
+    - tags: {fitness_station: wall_bars}
+      icon: [wall_bars]
+    - tags: {fitness_station: sit-up}
+      icon: [sit_up]
+    - tags: {fitness_station: horizontal_ladder}
+      icon: [horizontal_ladder]
+    - tags: {fitness_station: push-up}
+      icon: [low_horizontal_bars]
+    - tags: {playground: slide}
+      icon: [slide]
+    - tags: {playground: roundabout}
+      icon: [roundabout]
+    - tags: {playground: seesaw}
+      icon: [seesaw]
+    - tags: {playground: horizontal_bar}
+      icon: [horizontal_bar]
+    - tags: {leisure: picnic_table}
+      icon: [table]
 
-  - tags: {man_made: tower}
-    icon: [tower]
-  - tags: {building: garages}
-    icon: [garages]
-  - tags: {building: garage}
-    icon: [garages]
+  - group: "Entrances"
+    tags:
+    - tags: {barrier: gate}
+      icon: [gate]
+    - tags: {entrance: main}
+      icon: [main_entrance]
+    - tags: {barrier: entrance}
+      icon: [entrance]
+    - tags: {entrance: "yes"}
+      icon: [entrance]
+    - tags: {entrance: exit}
+      icon: [exit]
+    - tags: {entrance: service}
+      icon: [door_with_keyhole]
+    - tags: {entrance: staircase}
+      icon: [staircase]
+    - tags: {door: "no"}
+      icon: [no_door]
 
-  # Emergency
+  - group: "Not important small objects"
+    tags:
+    - tags: {amenity: bench}
+      icon: [bench]
+    - tags: {amenity: bench, backrest: "yes"}
+      icon: [bench_backrest]
+    - tags: {amenity: bench, backrest: "no"}
+      icon: [bench_no_backrest]
+    - tags: {amenity: clock}
+      icon: [clock]
+    - tags: {amenity: fountain}
+      icon: [{shape: fountain, color: water_border_color}]
+    - tags: {amenity: waste_basket}
+      icon: [waste_basket]
+    - tags: {highway: street_lamp}
+      icon: [street_lamp]
+    - tags: {man_made: cross}
+      icon: [cross]
+    - tags: {man_made: flagpole}
+      icon: [flagpole]
+    - tags: {man_made: manhole}
+      icon: [circle_9]
+    - tags: {manhole: drain}
+      icon: [manhole_drain]
+    - tags: {man_made: pole}
+      icon: [pole]
+    - tags: {man_made: pole, highway: street_lamp}
+      icon: [pole_lamp]
+    - tags: {man_made: street_cabinet}
+      icon: [street_cabinet]
+    - tags: {man_made: surveillance}
+      icon: [cctv]
+    - tags: {man_made: ventilation_shaft}
+      icon: [ventilation]
+    - tags: {power: pole}
+      icon: [pole]
+    - tags: {advertising: billboard}
+      icon: [billboard]
+    - tags: {natural: rock}
+      icon: [stone]
+    - tags: {natural: stone}
+      icon: [stone]
+    - tags: {sloped_curb: "yes"}
+      icon: [lowered_kerb]
+    - tags: {kerb: lowered}
+      icon: [lowered_kerb]
 
-  - tags: {emergency: defibrillator}
-    icon: [{shape: defibrillator, color: emergency_color}]
-  - tags: {emergency: fire_extinguisher}
-    icon: [{shape: fire_extinguisher, color: emergency_color}]
-  - tags: {emergency: fire_hydrant}
-    icon: [fire_hydrant]
-  - tags: {emergency: life_ring}
-    icon: [{shape: life_ring, color: emergency_color}]
-  - tags: {emergency: phone}
-    icon: [{shape: sos_phone, color: emergency_color}]
+    - tags: {natural: tree}
+      icon: [{shape: tree, color: tree_color}]
+    - tags: {leaf_type: broadleaved}
+      icon: [{shape: tree_with_leaf, color: tree_color}]
+    - tags: {leaf_type: needleleaved}
+      icon: [{shape: needleleaved_tree, color: tree_color}]
+    - tags: {leaf_type: palm}
+      icon: [{shape: palm, color: tree_color}]
+    - tags: {natural: tree, leaf_type: broadleaved}
+      icon: [{shape: tree_with_leaf, color: tree_color}]
+    - tags: {natural: tree, leaf_type: needleleaved}
+      icon: [{shape: needleleaved_tree, color: tree_color}]
+    - tags: {natural: tree, leaf_type: palm}
+      icon: [{shape: palm, color: tree_color}]
+    - tags: {natural: tree, type: conifer}
+      icon: [{shape: needleleaved_tree, color: tree_color}]
+    - tags: {leaf_cycle: deciduous}
+      set_main_color: decidious_color
+    - tags: {leaf_cycle: evergreen}
+      set_main_color: evergreen_color
+    - tags: {natural: tree, leaf_cycle: deciduous}
+      set_main_color: decidious_color
+    - tags: {natural: tree, leaf_cycle: evergreen}
+      set_main_color: evergreen_color
+    - tags: {natural: bush}
+      icon: [{shape: bush, color: tree_color}]
+    - tags: {natural: tree, genus: Betula}
+      icon: [{shape: betula, color: tree_color}]
+    - tags: {natural: tree, "genus:en": Birch}
+      icon: [{shape: betula, color: tree_color}]
+    - tags: {natural: tree, "genus:ru": Берёза}
+      icon: [{shape: betula, color: tree_color}]
 
-  # Transport-important middle objects
+    - tags: {railway: buffer_stop}
+      icon: [buffer_stop]
+    - tags: {traffic_sign: city_limit}
+      icon: [city_limit_sign]
+    - tags: {traffic_sign: maxspeed, maxspeed: "30"}
+      icon: [
+        circle_11,
+        {shape: digit_3, offset: [-2, 0], color: "#FFFFFF"},
+        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+      ]
+    - tags: {traffic_sign: maxspeed, maxspeed: "40"}
+      icon: [
+        circle_11,
+        {shape: digit_4, offset: [-2, 0], color: "#FFFFFF"},
+        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+      ]
+    - tags: {traffic_sign: maxspeed, maxspeed: "50"}
+      icon: [
+        circle_11,
+        {shape: digit_5, offset: [-2, 0], color: "#FFFFFF"},
+        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+      ]
+    - tags: {traffic_sign: maxspeed, maxspeed: "60"}
+      icon: [
+        circle_11,
+        {shape: digit_6, offset: [-2, 0], color: "#FFFFFF"},
+        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+      ]
+    - tags: {traffic_sign: maxspeed, maxspeed: "40_mph"}
+      icon: [
+        speed_limit_mph,
+        {shape: digit_4, offset: [-2, 2]},
+        {shape: digit_0, offset: [2, 2]},
+      ]
+    - tags: {traffic_sign: stop}
+      icon: [stop]
+    - tags: {highway: give_way}
+      icon: [triangle_down_hollow]
+    - tags: {noexit: "yes"}
+      icon: [noexit]
+    - tags: {barrier: block}
+      icon: [block]
+    - tags: {barrier: rock}
+      icon: [stone]
+    - tags: {barrier: bollard}
+      icon: [bollard]
 
-  - tags: {ford: "yes"}
-    icon: [ford]
-  - tags: {amenity: charging_station}
-    icon: [charging_station]
-  - tags: {amenity: bicycle_repair_station}
-    icon: [bicycle_repair]
-  - tags: {amenity: fuel}
-    icon: [fuel_station]
-  - tags: {amenity: parking}
-    icon: [p]
-  - tags: {highway: turning_circle}
-    icon: [circle_empty]
-  - tags: {highway: crossing}
-    icon: [crossing]
-  - tags: {crossing: zebra}
-    icon: [crossing]
-  - tags: {highway: crossing, crossing: zebra}
-    icon: [crossing]
-  - tags: {crossing: marked}
-    icon: [crossing]
-  - tags: {highway: crossing, crossing: marked}
-    icon: [crossing]
-  - tags: {highway: crossing, crossing_ref: zebra}
-    icon: [crossing]
-  - tags: {highway: crossing, crossing: uncontrolled}
-    add_icon: [no_traffic_signals]
-  - tags: {highway: crossing, crossing: traffic_signals}
-    add_icon: [traffic_signals]
-  - tags: {highway: traffic_signals}
-    icon: [traffic_signals]
-  - tags: {crossing_ref: toucan}
-    icon: [toucan_crossing]
+  - group: "Indoor"
+    tags:
+    - tags: {door: "yes"}
+      icon: [entrance]
 
-  # Important middle objects
+  - group: "Add and over"
+    tags:
+    - tags: {support: pole}
+      over_icon: [support_pole]
+      under_icon: [clock, information_board]
+    - tags: {support: wall_mounted}
+      over_icon: [support_wall]
+      under_icon: [clock, information_board]
+    - tags: {support: column}
+      over_icon: [support_column]
+      under_icon: [clock, information_board]
+    - tags: {amenity: "*", karaoke: "yes"}
+      add_icon: [microphone]
+    - tags: {building: "*", "roof:shape": onion}
+      add_icon: [onion_roof_shape]
+    - tags: {natural: tree, denotation: urban}
+      over_icon: [urban_tree_pot]
+      under_icon: [tree, tree_with_leaf, needleleaved_tree, betula, palm]
+    - tags: {natural: tree, denotation: avenue}
+      over_icon: [bottom_right_horizontal_line]
+      under_icon: [tree, tree_with_leaf, needleleaved_tree, betula, palm]
 
-  - tags: {tourism: attraction, attraction: amusement_ride}
-    icon: [amusement_ride]
-  - tags: {amenity: toilets}
-    icon: [woman_and_man]
+    - tags: {wheelchair: "yes"}
+      add_icon: [wheelchair]
+    - tags: {wheelchair: "no"}
+      add_icon: [no_wheelchair]
+    - tags: {foot: "yes"}
+      add_icon: [foot]
+    - tags: {foot: "no"}
+      add_icon: [no_foot]
+    - tags: {bicycle: "yes"}
+      add_icon: [bicycle]
+    - tags: {bicycle: "no"}
+      add_icon: [no_bicycle]
+    - tags: {internet_access: wlan, "internet_access:fee": "no"}
+      add_icon: [free_wlan]
+    - tags: {internet_access: wlan}
+      no_tags: {"internet_access:fee": "*"}
+      add_icon: [wlan]
+    - tags: {material: wood}
+      add_icon: [wood]
+    - tags: {access: private}
+      add_icon: [lock_with_keyhole]
+    - tags: {direction: clockwise}
+      add_icon: [clockwise]
+    - tags: {direction: contrclockwise}
+      add_icon: [contrclockwise]
+    - tags: {atm: "yes"}
+      add_icon: [atm]
+    - tags: {tactile_paving: "yes"}
+      add_icon: [tactile_paving]
+    - tags: {"payment:credit_cards": "yes"}
+      add_icon: [credit_card]
 
-  # Normal middle objects
+    - tags: {bus: "yes"}
+      add_icon: [bus]
+    - tags: {monorail: "yes"}
+      add_icon: [monorail]
+    - tags: {trolleybus: "yes"}
+      add_icon: [trolleybus]
 
-  - tags: {shop: kiosk}
-    icon: [kiosk]
-  - tags: {building: "yes", shop: kiosk}
-    icon: [kiosk]
-  - tags: {amenity: shop, shop: kiosk}
-    icon: [kiosk]
-  - tags: {amenity: stage}
-    icon: [theatre]
-  - tags: {natural: cave_entrance}
-    icon: [cave]
+    - tags: {recycling:glass_bottles: "yes"}
+      add_icon: [bottle]
 
-  # Not important middle objects
-
-  - tags: {building: ventilation_shaft}
-    icon: [ventilation]
-  - tags: {power: generator}
-    icon: [power_generator]
-  - tags: {amenity: public_bookcase}
-    icon: [books]
-  - tags: {power: transformer}
-    icon: [transformer]
-  - tags: {power: generator, generator:source: solar}
-    icon: [solar_panel]
-  - tags: {power: generator, generator:source: wind}
-    icon: [wind_turbine]
-  - tags: {power: tower}
-    icon: [power_tower_2_level]
-  - tags: {power: tower, design: one-level}
-    icon: [power_tower_1_level]
-  - tags: {power: tower, design: two-level}
-    icon: [power_tower_2_level]
-  - tags: {power: tower, design: three-level}
-    icon: [power_tower_3_level]
-  - tags: {power: tower, design: four-level}
-    icon: [power_tower_4_level]
-  - tags: {power: tower, design: donau}
-    icon: [power_tower_donau]
-  - tags: {power: tower, design: barrel}
-    icon: [power_tower_barrel]
-  - tags: {power: tower, design: asymmetric}
-    icon: [power_tower_asymmetric]
-  - tags: {power: tower, design: triangle}
-    icon: [power_tower_triangle]
-  - tags: {power: tower, design: delta}
-    icon: [power_tower_delta]
-  - tags: {power: tower, design: delta_two-level}
-    icon: [power_tower_delta_2_level]
-  - tags: {power: tower, design: delta_three-level}
-    icon: [power_tower_delta_3_level]
-  - tags: {power: tower, design: y-frame}
-    icon: [power_tower_y_frame]
-  - tags: {power: tower, design: x-frame}
-    icon: [power_tower_x_frame]
-  - tags: {power: tower, design: h-frame}
-    icon: [power_tower_h_frame]
-  - tags: {power: tower, design: h-frame_two-level}
-    icon: [power_tower_h_frame_2_level]
-  - tags: {power: tower, design: guyed_h-frame}
-    icon: [power_tower_guyed_h_frame]
-  - tags: {power: portal}
-    icon: [power_tower_portal]
-  - tags: {power: tower, design: portal}
-    icon: [power_tower_portal]
-  - tags: {power: tower, design: portal_two-level}
-    icon: [power_tower_portal_2_level]
-  - tags: {power: tower, design: portal_three-level}
-    icon: [power_tower_portal_3_level]
-
-  # Important small objects
-
-  - tags: {historic: memorial}
-    icon: [memorial]
-  - tags: {historic: memorial, memorial: plaque}
-    icon: [plaque]
-  - tags: {historic: memorial, memorial: statue}
-    icon: [statue]
-  - tags: {historic: stone}
-    icon: [stone_with_inscription]
-  - tags: {historic: memorial, memorial: stone}
-    icon: [stone_with_inscription]
-  - tags: {historic: tomb}
-    icon: [tomb]
-  - tags: {tomb: "*"}
-    to_tags: {tomb: mausoleum}
-    icon: [tomb]
-  - tags: {barrier: lift_gate}
-    icon: [lift_gate]
-  - tags: {barrier: turnstile}
-    icon: [turnstile]
-  - tags: {railway: level_crossing}
-    icon: [x]
-  - tags: {railway: crossing}
-    icon: [x]
-  - tags: {amenity: atm}
-    icon: [atm]
-  - tags: {amenity: bicycle_parking}
-    icon: [bicycle_p]
-  - tags: {amenity: telephone}
-    icon: [telephone]
-  - tags: {information: "*"}
-    icon: [information]
-  - tags: {tourism: "*"}
-    icon: [historic]
-  - tags: {tourism: information}
-    icon: [information]
-  - tags: {information: guidepost}
-    icon: [guidepost]
-  - tags: {tourism: viewpoint}
-    icon: [binocular]
-  - tags: {information: board}
-    icon: [information_board]
-  - tags: {vending: admission_tickets}
-    icon: [vending_tickets]
-  - tags: {vending: candles}
-    icon: [vending_candles]
-  - tags: {vending: chemist}
-    icon: [vending_chemist]
-  - tags: {vending: drinks}
-    icon: [vending_bottle]
-  - tags: {vending: fishing_tackle}
-    icon: [vending_angle]
-  - tags: {vending: public_transport_tickets}
-    icon: [vending_tickets]
-  - tags: {vending: water}
-    icon: [vending_drop]
-  - tags: {buoy: "*"}
-    icon: [buoy]
-  - tags: {"seamark:type": "*"}
-    icon: [buoy]
-  - tags: {"waterway:sign": "*"}
-    icon: [buoy]
-  - tags: {amenity: drinking_water}
-    icon: [drinking_water]
-  - tags: {tourism: artwork}
-    icon: [picture]
-  - tags: {tourism: artwork, artwork_type: statue}
-    icon: [statue]
-  - tags: {tourism: artwork, artwork_type: sculpture}
-    icon: [statue]
-  - tags: {tourism: attraction}
-    icon: [photo_camera]
-  - tags: {xmas:feature: tree}
-    icon: {christmas_tree}
-
-  # Normal small objects
-
-  - tags: {amenity: binoculars}
-    icon: [binoculars_on_pole]
-  - tags: {amenity: post_box}
-    icon: [envelope]
-  - tags: {amenity: recycling}
-    icon: [recycling_container]
-  - tags: {amenity: recycling, recycling_type: container}
-    icon: [recycling_container]
-  - tags: {amenity: vending_machine}
-    icon: [vending_machine]
-  - tags: {amenity: vending_machine, vending: excrement_bags}
-    icon: [vending_excrement_bag]
-  - tags: {fitness_station: horizontal_bar}
-    icon: [horizontal_bar]
-  - tags: {fitness_station: wall_bars}
-    icon: [wall_bars]
-  - tags: {fitness_station: sit-up}
-    icon: [sit_up]
-  - tags: {fitness_station: horizontal_ladder}
-    icon: [horizontal_ladder]
-  - tags: {fitness_station: push-up}
-    icon: [low_horizontal_bars]
-  - tags: {playground: slide}
-    icon: [slide]
-  - tags: {playground: roundabout}
-    icon: [roundabout]
-  - tags: {playground: seesaw}
-    icon: [seesaw]
-  - tags: {playground: horizontal_bar}
-    icon: [horizontal_bar]
-  - tags: {leisure: picnic_table}
-    icon: [table]
-
-  # Entrances
-
-  - tags: {barrier: gate}
-    icon: [gate]
-  - tags: {entrance: main}
-    icon: [main_entrance]
-  - tags: {barrier: entrance}
-    icon: [entrance]
-  - tags: {entrance: "yes"}
-    icon: [entrance]
-  - tags: {entrance: exit}
-    icon: [exit]
-  - tags: {entrance: service}
-    icon: [door_with_keyhole]
-  - tags: {entrance: staircase}
-    icon: [staircase]
-  - tags: {door: "no"}
-    icon: [no_door]
-
-  # Not important small objects
-
-  - tags: {amenity: bench}
-    icon: [bench]
-  - tags: {amenity: bench, backrest: "yes"}
-    icon: [bench_backrest]
-  - tags: {amenity: bench, backrest: "no"}
-    icon: [bench_no_backrest]
-  - tags: {amenity: clock}
-    icon: [clock]
-  - tags: {amenity: fountain}
-    icon: [{shape: fountain, color: water_border_color}]
-  - tags: {amenity: waste_basket}
-    icon: [waste_basket]
-  - tags: {highway: street_lamp}
-    icon: [street_lamp]
-  - tags: {man_made: cross}
-    icon: [cross]
-  - tags: {man_made: flagpole}
-    icon: [flagpole]
-  - tags: {man_made: manhole}
-    icon: [circle_9]
-  - tags: {manhole: drain}
-    icon: [manhole_drain]
-  - tags: {man_made: pole}
-    icon: [pole]
-  - tags: {man_made: pole, highway: street_lamp}
-    icon: [pole_lamp]
-  - tags: {man_made: street_cabinet}
-    icon: [street_cabinet]
-  - tags: {man_made: surveillance}
-    icon: [cctv]
-  - tags: {man_made: ventilation_shaft}
-    icon: [ventilation]
-  - tags: {power: pole}
-    icon: [pole]
-  - tags: {advertising: billboard}
-    icon: [billboard]
-  - tags: {natural: rock}
-    icon: [stone]
-  - tags: {natural: stone}
-    icon: [stone]
-  - tags: {sloped_curb: "yes"}
-    icon: [lowered_kerb]
-  - tags: {kerb: lowered}
-    icon: [lowered_kerb]
-    # Trees
-  - tags: {natural: tree}
-    icon: [{shape: tree, color: tree_color}]
-  - tags: {leaf_type: broadleaved}
-    icon: [{shape: tree_with_leaf, color: tree_color}]
-  - tags: {leaf_type: needleleaved}
-    icon: [{shape: needleleaved_tree, color: tree_color}]
-  - tags: {leaf_type: palm}
-    icon: [{shape: palm, color: tree_color}]
-  - tags: {natural: tree, leaf_type: broadleaved}
-    icon: [{shape: tree_with_leaf, color: tree_color}]
-  - tags: {natural: tree, leaf_type: needleleaved}
-    icon: [{shape: needleleaved_tree, color: tree_color}]
-  - tags: {natural: tree, leaf_type: palm}
-    icon: [{shape: palm, color: tree_color}]
-  - tags: {natural: tree, type: conifer}
-    icon: [{shape: needleleaved_tree, color: tree_color}]
-  - tags: {leaf_cycle: deciduous}
-    set_main_color: decidious_color
-  - tags: {leaf_cycle: evergreen}
-    set_main_color: evergreen_color
-  - tags: {natural: tree, leaf_cycle: deciduous}
-    set_main_color: decidious_color
-  - tags: {natural: tree, leaf_cycle: evergreen}
-    set_main_color: evergreen_color
-  - tags: {natural: bush}
-    icon: [{shape: bush, color: tree_color}]
-    # Tree genus
-  - tags: {natural: tree, genus: Betula}
-    icon: [{shape: betula, color: tree_color}]
-  - tags: {natural: tree, "genus:en": Birch}
-    icon: [{shape: betula, color: tree_color}]
-  - tags: {natural: tree, "genus:ru": Берёза}
-    icon: [{shape: betula, color: tree_color}]
-
-  - tags: {railway: buffer_stop}
-    icon: [buffer_stop]
-  - tags: {traffic_sign: city_limit}
-    icon: [city_limit_sign]
-  - tags: {traffic_sign: maxspeed, maxspeed: "30"}
-    icon: [
-      circle_11,
-      {shape: digit_3, offset: [-2, 0], color: "#FFFFFF"},
-      {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-    ]
-  - tags: {traffic_sign: maxspeed, maxspeed: "40"}
-    icon: [
-      circle_11,
-      {shape: digit_4, offset: [-2, 0], color: "#FFFFFF"},
-      {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-    ]
-  - tags: {traffic_sign: maxspeed, maxspeed: "50"}
-    icon: [
-      circle_11,
-      {shape: digit_5, offset: [-2, 0], color: "#FFFFFF"},
-      {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-    ]
-  - tags: {traffic_sign: maxspeed, maxspeed: "60"}
-    icon: [
-      circle_11,
-      {shape: digit_6, offset: [-2, 0], color: "#FFFFFF"},
-      {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-    ]
-  - tags: {traffic_sign: maxspeed, maxspeed: "40_mph"}
-    icon: [
-      speed_limit_mph,
-      {shape: digit_4, offset: [-2, 2]},
-      {shape: digit_0, offset: [2, 2]},
-    ]
-  - tags: {traffic_sign: stop}
-    icon: [stop]
-  - tags: {highway: give_way}
-    icon: [triangle_down_hollow]
-  - tags: {noexit: "yes"}
-    icon: [noexit]
-  - tags: {barrier: block}
-    icon: [block]
-  - tags: {barrier: rock}
-    icon: [stone]
-  - tags: {barrier: bollard}
-    icon: [bollard]
-
-    # Indoor
-
-  - tags: {door: "yes"}
-    icon: [entrance]
-
-    # Add and over
-
-  - tags: {support: pole}
-    over_icon: [support_pole]
-    under_icon: [clock, information_board]
-  - tags: {support: wall_mounted}
-    over_icon: [support_wall]
-    under_icon: [clock, information_board]
-  - tags: {support: column}
-    over_icon: [support_column]
-    under_icon: [clock, information_board]
-  - tags: {amenity: "*", karaoke: "yes"}
-    add_icon: [microphone]
-  - tags: {building: "*", "roof:shape": onion}
-    add_icon: [onion_roof_shape]
-  - tags: {natural: tree, denotation: urban}
-    over_icon: [urban_tree_pot]
-    under_icon: [tree, tree_with_leaf, needleleaved_tree, betula, palm]
-  - tags: {natural: tree, denotation: avenue}
-    over_icon: [bottom_right_horizontal_line]
-    under_icon: [tree, tree_with_leaf, needleleaved_tree, betula, palm]
-
-  - tags: {wheelchair: "yes"}
-    add_icon: [wheelchair]
-  - tags: {wheelchair: "no"}
-    add_icon: [no_wheelchair]
-  - tags: {foot: "yes"}
-    add_icon: [foot]
-  - tags: {foot: "no"}
-    add_icon: [no_foot]
-  - tags: {bicycle: "yes"}
-    add_icon: [bicycle]
-  - tags: {bicycle: "no"}
-    add_icon: [no_bicycle]
-  - tags: {internet_access: wlan, "internet_access:fee": "no"}
-    add_icon: [free_wlan]
-  - tags: {internet_access: wlan}
-    no_tags: {"internet_access:fee": "*"}
-    add_icon: [wlan]
-  - tags: {material: wood}
-    add_icon: [wood]
-  - tags: {access: private}
-    add_icon: [lock_with_keyhole]
-  - tags: {direction: clockwise}
-    add_icon: [clockwise]
-  - tags: {direction: contrclockwise}
-    add_icon: [contrclockwise]
-  - tags: {atm: "yes"}
-    add_icon: [atm]
-  - tags: {tactile_paving: "yes"}
-    add_icon: [tactile_paving]
-  - tags: {"payment:credit_cards": "yes"}
-    add_icon: [credit_card]
-
-  - tags: {bus: "yes"}
-    add_icon: [bus]
-  - tags: {monorail: "yes"}
-    add_icon: [monorail]
-  - tags: {trolleybus: "yes"}
-    add_icon: [trolleybus]
-
-  - tags: {recycling:glass_bottles: "yes"}
-    add_icon: [bottle]
-
-  - tags: {crossing:island: "yes"}
-    add_icon: [rectangle_vertical_rounded]
-  - tags: {crossing:island: "no"}
-    add_icon: [rectangle_vertical_rounded_crossed]
+    - tags: {crossing:island: "yes"}
+      add_icon: [rectangle_vertical_rounded]
+    - tags: {crossing:island: "no"}
+      add_icon: [rectangle_vertical_rounded_crossed]
 
 ways:
   - tags: {indoor: area}

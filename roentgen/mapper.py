@@ -1,7 +1,5 @@
 """
 Simple OpenStreetMap renderer.
-
-Author: Sergey Vartanov (me@enzet.ru).
 """
 from typing import Any, Dict
 
@@ -20,6 +18,9 @@ from roentgen.icon import ShapeExtractor
 from roentgen.osm_reader import Map
 from roentgen.point import Occupied, Point
 from roentgen.scheme import Scheme
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 ICONS_FILE_NAME: str = "icons/icons.svg"
 TAGS_FILE_NAME: str = "scheme/default.yml"

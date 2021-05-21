@@ -1,12 +1,13 @@
 """
 Direction tag support.
-
-Author: Sergey Vartanov (me@enzet.ru).
 """
 from typing import Iterator, List, Optional, Union
 
 import numpy as np
 from portolan import middle
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 SVGPath = Union[float, str, np.array]
 

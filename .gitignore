@@ -22,8 +22,10 @@ missed_tags.yml
 
 # Cache
 
-map/  # OSM XML files
+cache/
+map/
 
 # Generated files
 
-icon_set/  # Generated SVG icon files
+icon_set/
+out/

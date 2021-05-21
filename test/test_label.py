@@ -1,14 +1,16 @@
 """
 Test label generation for nodes.
-
-Author: Sergey Vartanov (me@enzet.ru).
 """
+from pathlib import Path
 from typing import List
 
 from roentgen.scheme import Scheme
 from roentgen.text import Label
 
-SCHEME: Scheme = Scheme("scheme/default.yml")
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
+SCHEME: Scheme = Scheme(Path("scheme/default.yml"))
 
 
 def construct_labels(tags) -> List[Label]:

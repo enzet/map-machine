@@ -7,6 +7,7 @@ import argparse
 import os
 import sys
 from pathlib import Path
+from typing import List
 
 import numpy as np
 import svgwrite
@@ -15,7 +16,7 @@ from roentgen import ui
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
 from roentgen.grid import draw_all_icons
-from roentgen.icon import ShapeExtractor, ShapeConfiguration
+from roentgen.icon import ShapeExtractor
 from roentgen.mapper import (
     AUTHOR_MODE, CREATION_TIME_MODE, ICONS_FILE_NAME, Painter, TAGS_FILE_NAME,
     check_level_number, check_level_overground
@@ -38,22 +39,26 @@ def main(argv) -> None:
     if not options:
         sys.exit(1)
 
+    input_file_names: List[Path]
+
     if options.input_file_name:
-        input_file_name = options.input_file_name
+        input_file_names = list(map(Path, options.input_file_name))
     else:
         content = get_osm(options.boundary_box)
         if not content:
             ui.error("cannot download OSM data")
-        input_file_name = [os.path.join("map", options.boundary_box + ".osm")]
+        input_file_names = ["map" / Path(options.boundary_box + ".osm")]
 
-    scheme: Scheme = Scheme(TAGS_FILE_NAME)
+    scheme: Scheme = Scheme(Path(TAGS_FILE_NAME))
+    min_: np.array
+    max_: np.array
 
-    if input_file_name[0].endswith(".json"):
+    if input_file_names[0].name.endswith(".json"):
         reader: OverpassReader = OverpassReader()
-        reader.parse_json_file(input_file_name[0])
+        reader.parse_json_file(input_file_names[0])
         map_ = reader.map_
-        min1 = np.array((map_.boundary_box[0].min_, map_.boundary_box[1].min_))
-        max1 = np.array((map_.boundary_box[0].max_, map_.boundary_box[1].max_))
+        min_ = np.array((map_.boundary_box[0].min_, map_.boundary_box[1].min_))
+        max_ = np.array((map_.boundary_box[0].max_, map_.boundary_box[1].max_))
     else:
 
         boundary_box = list(map(float, options.boundary_box.split(',')))
@@ -65,19 +70,19 @@ def main(argv) -> None:
 
         osm_reader = OSMReader()
 
-        for file_name in input_file_name:
-            if not os.path.isfile(file_name):
-                print("Fatal: no such file: " + file_name + ".")
+        for file_name in input_file_names:
+            if not file_name.is_file():
+                print(f"Fatal: no such file: {file_name}.")
                 sys.exit(1)
 
             osm_reader.parse_osm_file(file_name, full=full)
 
         map_: Map = osm_reader.map_
 
-        min1: np.array = np.array((boundary_box[1], boundary_box[0]))
-        max1: np.array = np.array((boundary_box[3], boundary_box[2]))
+        min_ = np.array((boundary_box[1], boundary_box[0]))
+        max_ = np.array((boundary_box[3], boundary_box[2]))
 
-    flinger: Flinger = Flinger(MinMax(min1, max1), options.scale)
+    flinger: Flinger = Flinger(MinMax(min_, max_), options.scale)
     size: np.array = flinger.size
 
     svg: svgwrite.Drawing = (
@@ -130,11 +135,13 @@ def draw_element(target: str, tags_description: str):
         comma, key from value is separated by equals sign.
     """
     tags = dict([x.split("=") for x in tags_description.split(",")])
-    scheme = Scheme("scheme/default.yml")
-    extractor = ShapeExtractor("icons/icons.svg", Path("icons/config.json"))
+    scheme = Scheme(Path("scheme/default.yml"))
+    extractor = ShapeExtractor(
+        Path("icons/icons.svg"), Path("icons/config.json")
+    )
     icon, priority = scheme.get_icon(extractor, tags)
     is_for_node: bool = target == "node"
-    labels = scheme.construct_text(tags, True)
+    labels = scheme.construct_text(tags, "all")
     point = Point(
         icon, labels, tags, np.array((32, 32)), None, is_for_node=is_for_node,
         draw_outline=is_for_node
@@ -154,7 +161,7 @@ def draw_element(target: str, tags_description: str):
     svg.write(open("test_icon.svg", "w+"))
 
 
-def draw_grid():
+def draw_grid() -> None:
     """
     Draw all possible icon shapes combinations as grid.
     """

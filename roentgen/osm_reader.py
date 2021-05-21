@@ -1,16 +1,18 @@
 """
 Reading OpenStreetMap data from XML file.
-
-Author: Sergey Vartanov (me@enzet.ru).
 """
 import json
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Union
 
 import numpy as np
 
 from roentgen.ui import progress_bar
 from roentgen.util import MinMax
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 OSM_TIME_PATTERN: str = "%Y-%m-%dT%H:%M:%SZ"
 
@@ -67,7 +69,8 @@ class OSMNode(Tagged):
             self.visible = get_value("visible", text)
             self.changeset = get_value("changeset", text)
             self.timestamp = datetime.strptime(
-                get_value("timestamp", text), OSM_TIME_PATTERN)
+                get_value("timestamp", text), OSM_TIME_PATTERN
+            )
             self.user = get_value("user", text)
             self.uid = get_value("uid", text)
 
@@ -296,11 +299,11 @@ class OverpassReader:
     def __init__(self):
         self.map_ = Map()
 
-    def parse_json_file(self, file_name: str) -> Map:
+    def parse_json_file(self, file_name: Path) -> Map:
         """
         Parse JSON structure from the file and construct map.
         """
-        with open(file_name) as input_file:
+        with file_name.open() as input_file:
             structure = json.load(input_file)
 
         node_map = {}
@@ -332,7 +335,7 @@ class OSMReader:
         self.map_ = Map()
 
     def parse_osm_file(
-        self, file_name: str, parse_nodes: bool = True,
+        self, file_name: Path, parse_nodes: bool = True,
         parse_ways: bool = True, parse_relations: bool = True,
         full: bool = False
     ) -> Map:
@@ -341,7 +344,7 @@ class OSMReader:
 
         :param file_name: input OSM XML file name
         """
-        with open(file_name) as input_file:
+        with file_name.open() as input_file:
             lines_number: int = sum(1 for _ in input_file)
 
         print(f"Parsing OSM file {file_name}...")
@@ -349,7 +352,7 @@ class OSMReader:
 
         element: Optional[Union[OSMNode, OSMWay, OSMRelation]] = None
 
-        with open(file_name) as input_file:
+        with file_name.open() as input_file:
             for line in input_file.readlines():  # type: str
 
                 line = line.strip()

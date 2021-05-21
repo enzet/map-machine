@@ -1,7 +1,5 @@
 """
 Icon grid drawing.
-
-Author: Sergey Vartanov (me@enzet.ru).
 """
 from os.path import join
 from pathlib import Path
@@ -13,6 +11,9 @@ from svgwrite import Drawing
 
 from roentgen.icon import Icon, ShapeExtractor, ShapeSpecification
 from roentgen.scheme import Scheme
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 
 def draw_all_icons(
@@ -31,14 +32,13 @@ def draw_all_icons(
     :param background_color: background color
     :param color: icon color
     """
-    tags_file_name: str = "scheme/default.yml"
-    scheme: Scheme = Scheme(tags_file_name)
+    scheme: Scheme = Scheme(Path("scheme/default.yml"))
 
     icons: List[Icon] = []
 
     icons_file_name: str = "icons/icons.svg"
     extractor: ShapeExtractor = ShapeExtractor(
-        icons_file_name, Path("icons/config.json")
+        Path(icons_file_name), Path("icons/config.json")
     )
 
     def add() -> None:
@@ -54,32 +54,33 @@ def draw_all_icons(
         if constructed_icon not in icons:
             icons.append(constructed_icon)
 
-    for element in scheme.icons:  # type: Dict[str, Any]
-        for key in ["icon", "add_icon"]:
-            if key in element:
-                current_set = element[key]
-                add()
-        if "over_icon" not in element:
-            continue
-        if "under_icon" in element:
+    for group in scheme.icons:
+        for element in group["tags"]:  # type: Dict[str, Any]
+            for key in ["icon", "add_icon"]:
+                if key in element:
+                    current_set = element[key]
+                    add()
+            if "over_icon" not in element:
+                continue
+            if "under_icon" in element:
+                for icon_id in element["under_icon"]:  # type: str
+                    current_set = set([icon_id] + element["over_icon"])
+                    add()
+            if not ("under_icon" in element and "with_icon" in element):
+                continue
             for icon_id in element["under_icon"]:  # type: str
-                current_set = set([icon_id] + element["over_icon"])
-                add()
-        if not ("under_icon" in element and "with_icon" in element):
-            continue
-        for icon_id in element["under_icon"]:  # type: str
-            for icon_2_id in element["with_icon"]:  # type: str
-                current_set: Set[str] = set(
-                    [icon_id] + [icon_2_id] + element["over_icon"])
-                add()
-            for icon_2_id in element["with_icon"]:  # type: str
-                for icon_3_id in element["with_icon"]:  # type: str
-                    current_set = set(
-                        [icon_id] + [icon_2_id] + [icon_3_id] +
-                        element["over_icon"])
-                    if (icon_2_id != icon_3_id and icon_2_id != icon_id and
-                            icon_3_id != icon_id):
-                        add()
+                for icon_2_id in element["with_icon"]:  # type: str
+                    current_set: Set[str] = set(
+                        [icon_id] + [icon_2_id] + element["over_icon"])
+                    add()
+                for icon_2_id in element["with_icon"]:  # type: str
+                    for icon_3_id in element["with_icon"]:  # type: str
+                        current_set = set(
+                            [icon_id] + [icon_2_id] + [icon_3_id] +
+                            element["over_icon"])
+                        if (icon_2_id != icon_3_id and icon_2_id != icon_id and
+                                icon_3_id != icon_id):
+                            add()
 
     specified_ids: Set[str] = set()
 

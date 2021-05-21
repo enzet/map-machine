@@ -1,7 +1,5 @@
 """
 Test icon generation for nodes.
-
-Author: Sergey Vartanov (me@enzet.ru).
 """
 from os import makedirs
 from pathlib import Path
@@ -11,9 +9,12 @@ from roentgen.grid import draw_all_icons
 from roentgen.icon import ShapeExtractor
 from roentgen.scheme import Scheme
 
-SCHEME: Scheme = Scheme("scheme/default.yml")
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
+SCHEME: Scheme = Scheme(Path("scheme/default.yml"))
 ICON_EXTRACTOR: ShapeExtractor = ShapeExtractor(
-    "icons/icons.svg", Path("icons/config.json")
+    Path("icons/icons.svg"), Path("icons/config.json")
 )
 
 

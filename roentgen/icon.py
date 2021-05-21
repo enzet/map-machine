@@ -1,7 +1,5 @@
 """
 Extract icons from SVG file.
-
-Author: Sergey Vartanov (me@enzet.ru).
 """
 import json
 import re
@@ -18,6 +16,9 @@ from svgwrite.path import Path as SvgPath
 
 from roentgen.color import is_bright
 from roentgen.ui import error
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 DEFAULT_COLOR: Color = Color("#444444")
 DEFAULT_SHAPE_ID: str = "default"
@@ -94,7 +95,7 @@ class ShapeExtractor:
     Shape is a single path with "id" attribute that aligned to 16×16 grid.
     """
 
-    def __init__(self, svg_file_name: str, configuration_file_name: Path):
+    def __init__(self, svg_file_name: Path, configuration_file_name: Path):
         """
         :param svg_file_name: input SVG file name with icons.  File may contain
             any other irrelevant graphics.
@@ -102,7 +103,7 @@ class ShapeExtractor:
         self.configuration = ShapeConfiguration(configuration_file_name)
         self.shapes: Dict[str, Shape] = {}
 
-        with open(svg_file_name) as input_file:
+        with svg_file_name.open() as input_file:
             content: Document = parse(input_file)
             for element in content.childNodes:  # type: Element
                 if element.nodeName != "svg":

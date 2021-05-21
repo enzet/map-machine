@@ -1,10 +1,9 @@
 """
 Röntgen drawing scheme.
-
-Author: Sergey Vartanov (me@enzet.ru).
 """
 from dataclasses import dataclass
 from enum import Enum
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 import yaml
@@ -16,6 +15,9 @@ from roentgen.icon import (
     ShapeSpecification
 )
 from roentgen.text import Label, get_address, get_text
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 
 @dataclass
@@ -103,12 +105,12 @@ class Scheme:
 
     Specifies map colors and rules to draw icons for OpenStreetMap tags.
     """
-    def __init__(self, file_name: str):
+    def __init__(self, file_name: Path):
         """
-        :param file_name: scheme file name with tags, colors, and tag key
+        :param file_name: name of the scheme file with tags, colors, and tag key
             specification
         """
-        with open(file_name) as input_file:
+        with file_name.open() as input_file:
             content: Dict[str, Any] = yaml.load(
                 input_file.read(), Loader=yaml.FullLoader)
 
@@ -198,45 +200,49 @@ class Scheme:
         processed: Set[str] = set()
         priority: int = 0
 
-        for index, matcher in enumerate(self.icons):
-            index: int
-            matcher: Dict[str, Any]
-            matched: bool = is_matched(matcher, tags)
-            matcher_tags: Set[str] = matcher["tags"].keys()
-            if not matched:
-                continue
-            priority = len(self.icons) - index
-            if "draw" in matcher and not matcher["draw"]:
-                processed |= set(matcher_tags)
-            if "icon" in matcher:
-                main_icon = Icon([
-                    ShapeSpecification.from_structure(x, icon_extractor, self)
-                    for x in matcher["icon"]
-                ])
-                processed |= set(matcher_tags)
-            if "over_icon" in matcher:
-                if main_icon:
-                    main_icon.add_specifications([
-                        ShapeSpecification.from_structure(
-                            x, icon_extractor, self
-                        )
-                        for x in matcher["over_icon"]
+        index: int = 0
+
+        for group in self.icons:
+            for matcher in group["tags"]:
+                matcher: Dict[str, Any]
+                matched: bool = is_matched(matcher, tags)
+                matcher_tags: Set[str] = matcher["tags"].keys()
+                if not matched:
+                    continue
+                priority = len(self.icons) - index
+                if "draw" in matcher and not matcher["draw"]:
+                    processed |= set(matcher_tags)
+                if "icon" in matcher:
+                    main_icon = Icon([
+                        ShapeSpecification.from_structure(x, icon_extractor, self)
+                        for x in matcher["icon"]
                     ])
+                    processed |= set(matcher_tags)
+                if "over_icon" in matcher:
+                    if main_icon:
+                        main_icon.add_specifications([
+                            ShapeSpecification.from_structure(
+                                x, icon_extractor, self
+                            )
+                            for x in matcher["over_icon"]
+                        ])
+                        for key in matcher_tags:
+                            processed.add(key)
+                if "add_icon" in matcher:
+                    extra_icons += [Icon([
+                        ShapeSpecification.from_structure(
+                            x, icon_extractor, self, Color("#888888")
+                        )
+                        for x in matcher["add_icon"]
+                    ])]
                     for key in matcher_tags:
                         processed.add(key)
-            if "add_icon" in matcher:
-                extra_icons += [Icon([
-                    ShapeSpecification.from_structure(
-                        x, icon_extractor, self, Color("#888888")
-                    )
-                    for x in matcher["add_icon"]
-                ])]
-                for key in matcher_tags:
-                    processed.add(key)
-            if "color" in matcher:
-                assert False
-            if "set_main_color" in matcher:
-                main_icon.recolor(self.get_color(matcher["set_main_color"]))
+                if "color" in matcher:
+                    assert False
+                if "set_main_color" in matcher:
+                    main_icon.recolor(self.get_color(matcher["set_main_color"]))
+
+                index += 1
 
         color: Optional[Color] = None
 

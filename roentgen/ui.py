@@ -1,10 +1,13 @@
 """
-Author: Sergey Vartanov (me@enzet.ru).
+Command-line user interface.
 """
 import argparse
 import sys
 
 from typing import List, Optional
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 BOXES: List[str] = [" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉"]
 BOXES_LENGTH: int = len(BOXES)

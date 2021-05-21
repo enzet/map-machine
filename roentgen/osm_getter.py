@@ -1,17 +1,18 @@
 """
 Getting OpenStreetMap data from the web.
-
-Author: Sergey Vartanov (me@enzet.ru).
 """
-import os
 import re
 import time
 import urllib
+from pathlib import Path
 from typing import Dict, Optional
 
 import urllib3
 
 from roentgen.ui import error
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 
 def get_osm(boundary_box: str, to_update: bool = False) -> Optional[str]:
@@ -21,10 +22,10 @@ def get_osm(boundary_box: str, to_update: bool = False) -> Optional[str]:
     :param boundary_box: borders of the map part to download
     :param to_update: update cache files
     """
-    result_file_name = os.path.join("map", boundary_box + ".osm")
+    result_file_name: Path = "map" / Path(boundary_box + ".osm")
 
-    if not to_update and os.path.isfile(result_file_name):
-        return open(result_file_name).read()
+    if not to_update and result_file_name.is_file():
+        return result_file_name.open().read()
 
     matcher = re.match(
         "(?P<left>[0-9.-]*),(?P<bottom>[0-9.-]*)," +
@@ -58,7 +59,7 @@ def get_osm(boundary_box: str, to_update: bool = False) -> Optional[str]:
         "api.openstreetmap.org/api/0.6/map",
         {"bbox": boundary_box}, is_secure=True)
 
-    open(result_file_name, "w+").write(content.decode("utf-8"))
+    result_file_name.open("w+").write(content.decode("utf-8"))
 
     return content.decode("utf-8")
 

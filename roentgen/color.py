@@ -1,13 +1,14 @@
 """
 Color utility.
-
-Author: Sergey Vartanov (me@enzet.ru)
 """
 from typing import Any, List
 
 from colour import Color
 
 from roentgen.util import MinMax
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 
 def is_bright(color: Color) -> bool:

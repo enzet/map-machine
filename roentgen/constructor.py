@@ -1,7 +1,5 @@
 """
 Construct Röntgen nodes and ways.
-
-Author: Sergey Vartanov (me@enzet.ru).
 """
 from collections import Counter
 from datetime import datetime
@@ -22,6 +20,9 @@ from roentgen.osm_reader import (
 from roentgen.point import Point
 from roentgen.scheme import DEFAULT_COLOR, LineStyle, Scheme
 from roentgen.util import MinMax
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 DEBUG: bool = False
 TIME_COLOR_SCALE: List[Color] = [

@@ -11,6 +11,9 @@ from roentgen.icon import Icon, IconSet
 from roentgen.osm_reader import Tagged
 from roentgen.text import Label
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
 DEFAULT_FONT: str = "Roboto"
 
 

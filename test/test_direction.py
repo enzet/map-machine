@@ -1,11 +1,12 @@
 """
 Test direction processing.
-
-Author: Sergey Vartanov (me@enzet.ru).
 """
 import numpy as np
 
 from roentgen.direction import parse_vector
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 
 def test_compass_points_1() -> None:

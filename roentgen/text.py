@@ -1,12 +1,13 @@
 """
 OSM address tag processing.
-
-Author: Sergey Vartanov (me@enzet.ru).
 """
 from dataclasses import dataclass
 from typing import Any, Dict, List
 
 from colour import Color
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 DEFAULT_COLOR: Color = Color("#444444")
 
