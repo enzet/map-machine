@@ -39,6 +39,7 @@ class Shape:
     offset: np.array  # vector that should be used to shift the path
     id_: str  # shape identifier
     name: Optional[str] = None  # icon description
+    is_right_directed: bool = False
 
     def is_default(self) -> bool:
         """
@@ -98,6 +99,7 @@ class ShapeExtractor:
         :param svg_file_name: input SVG file name with icons.  File may contain
             any other irrelevant graphics.
         """
+        self.configuration = ShapeConfiguration(configuration_file_name)
         self.shapes: Dict[str, Shape] = {}
 
         with open(svg_file_name) as input_file:
@@ -108,8 +110,6 @@ class ShapeExtractor:
                 for node in element.childNodes:  # type: Node
                     if isinstance(node, Element):
                         self.parse(node)
-
-        self.configuration = ShapeConfiguration(configuration_file_name)
 
     def parse(self, node: Element) -> None:
         """
@@ -154,7 +154,10 @@ class ShapeExtractor:
                     name = child_node.childNodes[0].nodeValue
                     break
 
-            self.shapes[id_] = Shape(path, point, id_, name)
+            is_right_directed: bool = (
+                id_ in self.configuration.right_directed
+            )
+            self.shapes[id_] = Shape(path, point, id_, name, is_right_directed)
         else:
             error(f"not standard ID {id_}")
 

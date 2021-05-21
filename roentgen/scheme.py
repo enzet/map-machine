@@ -10,6 +10,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple, Union
 import yaml
 from colour import Color
 
+from roentgen.direction import DirectionSet
 from roentgen.icon import (
     DEFAULT_COLOR, DEFAULT_SHAPE_ID, Icon, IconSet, ShapeExtractor,
     ShapeSpecification
@@ -184,6 +185,7 @@ class Scheme:
         :param icon_extractor: extractor with icon specifications
         :param tags: OpenStreetMap element tags dictionary
         :param for_: target (node, way, area or relation)
+        :return (icon set, icon priority)
         """
         tags_hash: str = (
             ",".join(tags.keys()) + ":" + ",".join(map(str, tags.values()))
@@ -191,7 +193,7 @@ class Scheme:
         if tags_hash in self.cache:
             return self.cache[tags_hash]
 
-        main_icon: Icon = None
+        main_icon: Optional[Icon] = None
         extra_icons: List[Icon] = []
         processed: Set[str] = set()
         priority: int = 0
@@ -263,6 +265,12 @@ class Scheme:
 
         returned: IconSet = IconSet(main_icon, extra_icons, processed)
         self.cache[tags_hash] = returned, priority
+
+        if "direction" in tags:
+            if DirectionSet(tags["direction"]).is_right() is False:
+                for specification in main_icon.shape_specifications:
+                    if specification.shape.is_right_directed:
+                        specification.flip_horizontally = True
 
         return returned, priority
 
