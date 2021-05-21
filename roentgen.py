@@ -89,7 +89,7 @@ def main(argv) -> None:
         svgwrite.Drawing(options.output_file_name, size=size))
 
     icon_extractor: ShapeExtractor = ShapeExtractor(
-        ICONS_FILE_NAME, Path("icons/config.json")
+        Path(ICONS_FILE_NAME), Path("icons/config.json")
     )
 
     def check_level(x) -> bool:
