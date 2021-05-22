@@ -11,7 +11,6 @@ import numpy as np
 
 import xml.etree.ElementTree as ET
 
-from roentgen.ui import progress_bar
 from roentgen.util import MinMax
 
 __author__ = "Sergey Vartanov"
@@ -58,29 +57,6 @@ class OSMNode(Tagged):
         self.timestamp: Optional[datetime] = None
         self.user: Optional[str] = None
         self.uid: Optional[str] = None
-
-    def parse_from_xml(self, text: str, is_full: bool = False) -> "OSMNode":
-        """
-        Parse from XML node representation.
-
-        :param text: XML node representation
-        :param is_full: if false, parse only ID, latitude and longitude
-        """
-        self.id_ = int(get_value("id", text))
-        self.coordinates = np.array(
-            (float(get_value("lat", text)), float(get_value("lon", text)))
-        )
-
-        if is_full:
-            self.visible = get_value("visible", text)
-            self.changeset = get_value("changeset", text)
-            self.timestamp = datetime.strptime(
-                get_value("timestamp", text), OSM_TIME_PATTERN
-            )
-            self.user = get_value("user", text)
-            self.uid = get_value("uid", text)
-
-        return self
 
     @classmethod
     def from_xml_structure(cls, element, is_full: bool = False) -> "OSMNode":
@@ -136,26 +112,6 @@ class OSMWay(Tagged):
         self.user: Optional[str] = None
         self.timestamp: Optional[datetime] = None
         self.uid: Optional[str] = None
-
-    def parse_from_xml(self, text: str, is_full: bool = False) -> "OSMWay":
-        """
-        Parse way from XML way representation.
-
-        :param text: XML way representation
-        :param is_full: if false, parse only ID
-        """
-        self.id_ = int(get_value("id", text))
-
-        if is_full:
-            self.visible = get_value("visible", text)
-            self.changeset = get_value("changeset", text)
-            self.timestamp = datetime.strptime(
-                get_value("timestamp", text), OSM_TIME_PATTERN
-            )
-            self.user = get_value("user", text)
-            self.uid = get_value("uid", text)
-
-        return self
 
     @classmethod
     def from_xml_structure(cls, element, nodes, is_full: bool) -> "OSMWay":
@@ -231,20 +187,6 @@ class OSMRelation(Tagged):
         self.user: Optional[str] = None
         self.timestamp: Optional[datetime] = None
 
-    def parse_from_xml(self, text: str) -> "OSMRelation":
-        """
-        Parse from XML relation representation.
-
-        :param text: XML way representation
-        """
-        self.id_ = int(get_value("id", text))
-
-        self.user = get_value("user", text)
-        self.timestamp = datetime.strptime(
-            get_value("timestamp", text), OSM_TIME_PATTERN
-        )
-        return self
-
     @classmethod
     def from_xml_structure(cls, element, is_full: bool) -> "OSMRelation":
         attributes = element.attrib
@@ -296,31 +238,6 @@ class OSMMember:
     type_: str = ""
     ref: int = 0
     role: str = ""
-
-    def parse_from_xml(self, text: str) -> "OSMMember":
-        """
-        Parse relation member from XML way representation.
-
-        :param text: XML relation member representation
-        """
-        self.type_: str = get_value("type", text)
-        self.ref: int = int(get_value("ref", text))
-        self.role: str = get_value("role", text)
-
-        return self
-
-
-def get_value(key: str, text: str):
-    """
-    Parse xml value from the tag in the format of key="value".
-    """
-    if key + '="' in text:
-        start_index: int = text.find(key + '="') + 2
-        end_index: int = start_index + len(key)
-        value = text[end_index : text.find('"', end_index)]
-        return value
-
-    return None
 
 
 class Map:
@@ -402,7 +319,11 @@ class OverpassReader:
         return self.map_
 
 
-class OSMReaderET:
+class OSMReader:
+    """
+    OpenStreetMap XML file parser.
+    """
+
     def __init__(self):
         self.map_ = Map()
 
@@ -414,8 +335,18 @@ class OSMReaderET:
         parse_relations: bool = True,
         is_full: bool = False,
     ) -> Map:
-        tree = ET.parse(file_name)
-        root = tree.getroot()
+        """
+        Parse OSM XML file.
+
+        :param file_name: input XML file
+        :param parse_nodes: whether nodes should be parsed
+        :param parse_ways:  whether ways should be parsed
+        :param parse_relations:  whether relations should be parsed
+        :param is_full:  whether metadata should be parsed
+        :return: parsed map
+        """
+        root = ET.parse(file_name).getroot()
+
         for element in root:
             if element.tag == "node" and parse_nodes:
                 node = OSMNode.from_xml_structure(element, is_full)
@@ -430,102 +361,4 @@ class OSMReaderET:
                 self.map_.add_relation(
                     OSMRelation.from_xml_structure(element, is_full)
                 )
-        return self.map_
-
-
-class OSMReader:
-    """
-    OSM XML representation reader.
-    """
-
-    def __init__(self):
-        self.map_ = Map()
-
-    def parse_osm_file(
-        self,
-        file_name: Path,
-        parse_nodes: bool = True,
-        parse_ways: bool = True,
-        parse_relations: bool = True,
-        full: bool = False,
-    ) -> Map:
-        """
-        Parse OSM XML representation.
-
-        :param file_name: input OSM XML file name
-        """
-        with file_name.open() as input_file:
-            lines_number: int = sum(1 for _ in input_file)
-
-        print(f"Parsing OSM file {file_name}...")
-        line_number: int = 0
-
-        element: Optional[Union[OSMNode, OSMWay, OSMRelation]] = None
-
-        with file_name.open() as input_file:
-            for line in input_file.readlines():  # type: str
-
-                line = line.strip()
-
-                line_number += 1
-                progress_bar(line_number, lines_number, text="Parsing")
-
-                # Node parsing.
-
-                if line.startswith("<node"):
-                    if not parse_nodes:
-                        if parse_ways or parse_relations:
-                            continue
-                        break
-                    if line[-2] == "/":
-                        node: OSMNode = OSMNode().parse_from_xml(line, full)
-                        self.map_.add_node(node)
-                    else:
-                        element = OSMNode().parse_from_xml(line, full)
-                elif line == "</node>":
-                    self.map_.add_node(element)
-
-                # Way parsing.
-
-                elif line.startswith("<way"):
-                    if not parse_ways:
-                        if parse_relations:
-                            continue
-                        break
-                    if line[-2] == "/":
-                        way = OSMWay().parse_from_xml(line, full)
-                        self.map_.add_way(way)
-                    else:
-                        element = OSMWay().parse_from_xml(line, full)
-                elif line == "</way>":
-                    self.map_.add_way(element)
-
-                # Relation parsing.
-
-                elif line.startswith("<relation"):
-                    if not parse_relations:
-                        break
-                    if line[-2] == "/":
-                        relation = OSMRelation().parse_from_xml(line)
-                        self.map_.add_relation(relation)
-                    else:
-                        element = OSMRelation().parse_from_xml(line)
-                elif line == "</relation>":
-                    self.map_.add_relation(element)
-
-                # Elements parsing.
-
-                elif line.startswith("<tag"):
-                    key: str = get_value("k", line)
-                    value = get_value("v", line)
-                    element.tags[key] = value
-                elif line.startswith("<nd"):
-                    element.nodes.append(
-                        self.map_.node_map[int(get_value("ref", line))]
-                    )
-                elif line.startswith("<member"):
-                    element.members.append(OSMMember().parse_from_xml(line))
-
-        progress_bar(-1, lines_number, text="Parsing")
-
         return self.map_

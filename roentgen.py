@@ -23,7 +23,7 @@ from roentgen.mapper import (
     check_level_number, check_level_overground
 )
 from roentgen.osm_getter import get_osm
-from roentgen.osm_reader import Map, OSMReader, OSMReaderET, OverpassReader
+from roentgen.osm_reader import Map, OSMReader, OverpassReader
 from roentgen.point import Point
 from roentgen.scheme import LineStyle, Scheme
 from roentgen.util import MinMax
@@ -69,7 +69,7 @@ def main(argv) -> None:
         if options.mode in [AUTHOR_MODE, CREATION_TIME_MODE]:
             full = True
 
-        osm_reader = OSMReaderET()
+        osm_reader = OSMReader()
 
         for file_name in input_file_names:
             if not file_name.is_file():
