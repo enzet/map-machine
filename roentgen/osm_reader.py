@@ -2,11 +2,14 @@
 Reading OpenStreetMap data from XML file.
 """
 import json
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Union
 
 import numpy as np
+
+import xml.etree.ElementTree as ET
 
 from roentgen.ui import progress_bar
 from roentgen.util import MinMax
@@ -21,6 +24,7 @@ class Tagged:
     """
     OpenStreetMap element (node, way or relation) with tags.
     """
+
     def __init__(self):
         self.tags: Dict[str, str] = {}
 
@@ -42,6 +46,7 @@ class OSMNode(Tagged):
 
     See https://wiki.openstreetmap.org/wiki/Node
     """
+
     def __init__(self):
         super().__init__()
 
@@ -62,8 +67,9 @@ class OSMNode(Tagged):
         :param is_full: if false, parse only ID, latitude and longitude
         """
         self.id_ = int(get_value("id", text))
-        self.coordinates = np.array((
-            float(get_value("lat", text)), float(get_value("lon", text))))
+        self.coordinates = np.array(
+            (float(get_value("lat", text)), float(get_value("lon", text)))
+        )
 
         if is_full:
             self.visible = get_value("visible", text)
@@ -75,6 +81,28 @@ class OSMNode(Tagged):
             self.uid = get_value("uid", text)
 
         return self
+
+    @classmethod
+    def from_xml_structure(cls, element, is_full: bool = False) -> "OSMNode":
+        node = cls()
+        attributes = element.attrib
+        node.id_ = int(attributes["id"])
+        node.coordinates = np.array(
+            (float(attributes["lat"]), float(attributes["lon"]))
+        )
+        if is_full:
+            node.visible = attributes["visible"]
+            node.changeset = attributes["changeset"]
+            node.timestamp = datetime.strptime(
+                attributes["timestamp"], OSM_TIME_PATTERN
+            )
+            node.user = attributes["user"]
+            node.uid = attributes["uid"]
+        for subelement in element:
+            if subelement.tag == "tag":
+                subattributes = subelement.attrib
+                node.tags[subattributes["k"]] = subattributes["v"]
+        return node
 
     def parse_from_structure(self, structure: Dict[str, Any]) -> "OSMNode":
         """
@@ -96,6 +124,7 @@ class OSMWay(Tagged):
 
     See https://wiki.openstreetmap.org/wiki/Way
     """
+
     def __init__(self, id_: int = 0, nodes: Optional[List[OSMNode]] = None):
         super().__init__()
 
@@ -121,11 +150,30 @@ class OSMWay(Tagged):
             self.visible = get_value("visible", text)
             self.changeset = get_value("changeset", text)
             self.timestamp = datetime.strptime(
-                get_value("timestamp", text), OSM_TIME_PATTERN)
+                get_value("timestamp", text), OSM_TIME_PATTERN
+            )
             self.user = get_value("user", text)
             self.uid = get_value("uid", text)
 
         return self
+
+    @classmethod
+    def from_xml_structure(cls, element, nodes, is_full: bool) -> "OSMWay":
+        way = cls(int(element.attrib["id"]))
+        if is_full:
+            way.visible = element.attrib["visible"]
+            way.changeset = element.attrib["changeset"]
+            way.timestamp = datetime.strptime(
+                element.attrib["timestamp"], OSM_TIME_PATTERN
+            )
+            way.user = element.attrib["user"]
+            way.uid = element.attrib["uid"]
+        for subelement in element:
+            if subelement.tag == "nd":
+                way.nodes.append(nodes[int(subelement.attrib["ref"])])
+            if subelement.tag == "tag":
+                way.tags[subelement.attrib["k"]] = subelement.attrib["v"]
+        return way
 
     def parse_from_structure(
         self, structure: Dict[str, Any], nodes
@@ -174,6 +222,7 @@ class OSMRelation(Tagged):
 
     See https://wiki.openstreetmap.org/wiki/Relation
     """
+
     def __init__(self, id_: int = 0):
         super().__init__()
 
@@ -192,9 +241,32 @@ class OSMRelation(Tagged):
 
         self.user = get_value("user", text)
         self.timestamp = datetime.strptime(
-            get_value("timestamp", text), OSM_TIME_PATTERN)
-
+            get_value("timestamp", text), OSM_TIME_PATTERN
+        )
         return self
+
+    @classmethod
+    def from_xml_structure(cls, element, is_full: bool) -> "OSMRelation":
+        attributes = element.attrib
+        relation = cls(int(attributes["id"]))
+        if is_full:
+            relation.user = attributes["user"]
+            relation.timestamp = datetime.strptime(
+                attributes["timestamp"], OSM_TIME_PATTERN
+            )
+        for subelement in element:
+            if subelement.tag == "member":
+                subattributes = subelement.attrib
+                relation.members.append(
+                    OSMMember(
+                        subattributes["type"],
+                        int(subattributes["ref"]),
+                        subattributes["role"],
+                    )
+                )
+            if subelement.tag == "tag":
+                relation.tags[subelement.attrib["k"]] = subelement.attrib["v"]
+        return relation
 
     def parse_from_structure(self, structure: Dict[str, Any]) -> "OSMRelation":
         """
@@ -215,14 +287,15 @@ class OSMRelation(Tagged):
         return self
 
 
+@dataclass
 class OSMMember:
     """
     Member of OpenStreetMap relation.
     """
-    def __init__(self):
-        self.type_ = ""
-        self.ref = 0
-        self.role = ""
+
+    type_: str = ""
+    ref: int = 0
+    role: str = ""
 
     def parse_from_xml(self, text: str) -> "OSMMember":
         """
@@ -244,7 +317,7 @@ def get_value(key: str, text: str):
     if key + '="' in text:
         start_index: int = text.find(key + '="') + 2
         end_index: int = start_index + len(key)
-        value = text[end_index:text.find('"', end_index)]
+        value = text[end_index : text.find('"', end_index)]
         return value
 
     return None
@@ -254,6 +327,7 @@ class Map:
     """
     The whole OpenStreetMap information about nodes, ways, and relations.
     """
+
     def __init__(self):
         self.node_map: Dict[int, OSMNode] = {}
         self.way_map: Dict[int, OSMWay] = {}
@@ -296,6 +370,7 @@ class OverpassReader:
 
     See https://wiki.openstreetmap.org/wiki/Overpass_API
     """
+
     def __init__(self):
         self.map_ = Map()
 
@@ -327,17 +402,52 @@ class OverpassReader:
         return self.map_
 
 
-class OSMReader:
-    """
-    OSM XML representation reader.
-    """
+class OSMReaderET:
     def __init__(self):
         self.map_ = Map()
 
     def parse_osm_file(
-        self, file_name: Path, parse_nodes: bool = True,
-        parse_ways: bool = True, parse_relations: bool = True,
-        full: bool = False
+        self,
+        file_name: Path,
+        parse_nodes: bool = True,
+        parse_ways: bool = True,
+        parse_relations: bool = True,
+        is_full: bool = False,
+    ) -> Map:
+        tree = ET.parse(file_name)
+        root = tree.getroot()
+        for element in root:
+            if element.tag == "node" and parse_nodes:
+                node = OSMNode.from_xml_structure(element, is_full)
+                self.map_.add_node(node)
+            if element.tag == "way" and parse_ways:
+                self.map_.add_way(
+                    OSMWay.from_xml_structure(
+                        element, self.map_.node_map, is_full
+                    )
+                )
+            if element.tag == "relation" and parse_relations:
+                self.map_.add_relation(
+                    OSMRelation.from_xml_structure(element, is_full)
+                )
+        return self.map_
+
+
+class OSMReader:
+    """
+    OSM XML representation reader.
+    """
+
+    def __init__(self):
+        self.map_ = Map()
+
+    def parse_osm_file(
+        self,
+        file_name: Path,
+        parse_nodes: bool = True,
+        parse_ways: bool = True,
+        parse_relations: bool = True,
+        full: bool = False,
     ) -> Map:
         """
         Parse OSM XML representation.
@@ -411,7 +521,8 @@ class OSMReader:
                     element.tags[key] = value
                 elif line.startswith("<nd"):
                     element.nodes.append(
-                        self.map_.node_map[int(get_value("ref", line))])
+                        self.map_.node_map[int(get_value("ref", line))]
+                    )
                 elif line.startswith("<member"):
                     element.members.append(OSMMember().parse_from_xml(line))
 
