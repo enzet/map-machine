@@ -2,14 +2,13 @@
 Reading OpenStreetMap data from XML file.
 """
 import json
+import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Union
+from typing import Any, Dict, List, Optional, Set
 
 import numpy as np
-
-import xml.etree.ElementTree as ET
 
 from roentgen.util import MinMax
 

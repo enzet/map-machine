@@ -363,7 +363,8 @@ class Scheme:
         if draw_captions == "main":
             return texts
 
-        texts += get_text(tags)
+        processed: Set[str] = set()
+        texts += get_text(tags, processed)
 
         if "route_ref" in tags:
             texts.append(Label(tags["route_ref"].replace(";", " ")))

@@ -2,7 +2,7 @@
 OSM address tag processing.
 """
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Set
 
 from colour import Color
 
@@ -74,13 +74,10 @@ def format_frequency(value: str) -> str:
     """
     Format frequency value to more human-readable form.
     """
-    try:
-        return f"{value} Hz"
-    except ValueError:
-        return value
+    return f"{value} "
 
 
-def get_text(tags: Dict[str, Any]) -> List[Label]:
+def get_text(tags: Dict[str, Any], processed: Set[str]) -> List[Label]:
     """
     Get text representation of writable tags.
     """
@@ -89,10 +86,13 @@ def get_text(tags: Dict[str, Any]) -> List[Label]:
     values: List[str] = []
     if "voltage:primary" in tags:
         values.append(tags["voltage:primary"])
+        processed.add("voltage:primary")
     if "voltage:secondary" in tags:
         values.append(tags["voltage:secondary"])
+    processed.add("voltage:secondary")
     if "voltage" in tags:
         values = tags["voltage"].split(";")
+        processed.add("voltage")
     if values:
         texts.append(Label(", ".join(map(format_voltage, values))))
 
@@ -100,5 +100,6 @@ def get_text(tags: Dict[str, Any]) -> List[Label]:
         texts.append(Label(", ".join(map(
             format_frequency, tags["frequency"].split(";")
         ))))
+        processed.add("frequency")
 
     return texts

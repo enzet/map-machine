@@ -76,7 +76,7 @@ class Painter:
 
         # Trees
 
-        for node in constructor.nodes:
+        for node in constructor.points:
             if not (node.get_tag("natural") == "tree" and
                     ("diameter_crown" in node.tags or
                      "circumference" in node.tags)):
@@ -167,7 +167,7 @@ class Painter:
 
         # Directions
 
-        for node in constructor.nodes:  # type: Point
+        for node in constructor.points:  # type: Point
 
             angle = None
             is_revert_gradient: bool = False
@@ -232,7 +232,7 @@ class Painter:
             occupied = Occupied(
                 self.flinger.size[0], self.flinger.size[1], self.overlap)
 
-        nodes = sorted(constructor.nodes, key=lambda x: -x.priority)
+        nodes = sorted(constructor.points, key=lambda x: -x.priority)
         steps: int = len(nodes)
 
         for index, node in enumerate(nodes):  # type: int, Point

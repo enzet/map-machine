@@ -6,14 +6,13 @@ Author: Sergey Vartanov (me@enzet.ru).
 import argparse
 import os
 import sys
-from datetime import datetime
 from pathlib import Path
 from typing import List
 
 import numpy as np
 import svgwrite
 
-from roentgen import ui
+from roentgen.ui import error, parse_options
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
 from roentgen.grid import draw_all_icons
@@ -35,7 +34,7 @@ def main(argv) -> None:
 
     :param argv: command-line arguments
     """
-    options: argparse.Namespace = ui.parse_options(argv)
+    options: argparse.Namespace = parse_options(argv)
 
     if not options:
         sys.exit(1)
@@ -47,7 +46,7 @@ def main(argv) -> None:
     else:
         content = get_osm(options.boundary_box)
         if not content:
-            ui.error("cannot download OSM data")
+            error("cannot download OSM data")
         input_file_names = ["map" / Path(options.boundary_box + ".osm")]
 
     scheme: Scheme = Scheme(Path(TAGS_FILE_NAME))
@@ -123,8 +122,8 @@ def main(argv) -> None:
     painter.draw(constructor)
 
     print("Writing output SVG...")
-    svg.write(open(options.output_file_name, "w"))
-    print("Done.")
+    with open(options.output_file_name, "w") as output_file:
+        svg.write(output_file)
 
 
 def draw_element(target: str, tags_description: str):

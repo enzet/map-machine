@@ -12,8 +12,9 @@ from colour import Color
 from roentgen import ui
 from roentgen.color import get_gradient_color
 from roentgen.flinger import Flinger
-from roentgen.icon import (DEFAULT_SMALL_SHAPE_ID, Icon, IconSet,
-                           ShapeExtractor, ShapeSpecification)
+from roentgen.icon import (
+    DEFAULT_SMALL_SHAPE_ID, Icon, IconSet, ShapeExtractor, ShapeSpecification
+)
 from roentgen.osm_reader import (
     Map, OSMMember, OSMNode, OSMRelation, OSMWay, Tagged
 )
@@ -257,6 +258,7 @@ class Constructor:
     """
     Röntgen node and way constructor.
     """
+
     def __init__(
         self, map_: Map, flinger: Flinger, scheme: Scheme,
         icon_extractor: ShapeExtractor, check_level=lambda x: True,
@@ -270,11 +272,11 @@ class Constructor:
         self.scheme: Scheme = scheme
         self.icon_extractor = icon_extractor
 
-        self.nodes: List[Point] = []
+        self.points: List[Point] = []
         self.figures: List[Figure] = []
         self.buildings: List[Figure] = []
 
-        self.levels: Set[float] = {0.5, 1}
+        self.levels: Set[float] = {0.5, 1.0}
 
     def add_building(self, building: Building) -> None:
         """
@@ -371,7 +373,7 @@ class Constructor:
                 )
                 labels = self.scheme.construct_text(line.tags, "all")
 
-                self.nodes.append(Point(
+                self.points.append(Point(
                     icon_set, labels, line.tags, center_point,
                     center_coordinates, is_for_node=False, priority=priority
                 ))
@@ -391,7 +393,7 @@ class Constructor:
             )
             labels = self.scheme.construct_text(line.tags, "all")
 
-            self.nodes.append(Point(
+            self.points.append(Point(
                 icon_set, labels, line.tags, center_point, center_coordinates,
                 is_for_node=False, priority=priority
             ))
@@ -471,9 +473,9 @@ class Constructor:
                 icon_set, priority = self.scheme.get_icon(
                     self.icon_extractor, tags
                 )
-                labels = self.scheme.construct_text(tags, True)
+                labels = self.scheme.construct_text(tags, "all")
 
-            self.nodes.append(Point(
+            self.points.append(Point(
                 icon_set, labels, tags, flung, node.coordinates,
                 priority=priority, draw_outline=draw_outline
             ))

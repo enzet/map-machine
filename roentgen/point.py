@@ -49,7 +49,7 @@ class Point(Tagged):
     """
     Object on the map with no dimensional attributes.
 
-    It may have icons and text.
+    It may have icons and labels.
     """
 
     def __init__(
