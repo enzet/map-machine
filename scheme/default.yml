@@ -225,6 +225,10 @@ node_icons:
       shapes: [jewish]
     - tags: {historic: tomb, tomb: mausoleum}
       shapes: [mausoleum]
+    - tags: {historic: "*"}
+      shapes: [japan_historic]
+      replace_shapes: no
+      location_restrictions: {include: jp}
 
   - group: "Normal big objects"
     tags:
