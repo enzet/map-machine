@@ -85,10 +85,10 @@ def is_matched(matcher: Dict[str, Any], tags: Dict[str, str]) -> bool:
             matched = False
             break
 
-    if "no_tags" in matcher:
-        for config_tag_key in matcher["no_tags"]:
+    if "exception" in matcher:
+        for config_tag_key in matcher["exception"]:
             config_tag_key: str
-            tag_matcher = matcher["no_tags"][config_tag_key]
+            tag_matcher = matcher["exception"][config_tag_key]
             if (
                 is_matched_tag(config_tag_key, tag_matcher, tags) !=
                     MatchingType.NOT_MATCHED
@@ -212,10 +212,10 @@ class Scheme:
                 priority = len(self.icons) - index
                 if "draw" in matcher and not matcher["draw"]:
                     processed |= set(matcher_tags)
-                if "icon" in matcher:
+                if "shapes" in matcher:
                     main_icon = Icon([
                         ShapeSpecification.from_structure(x, icon_extractor, self)
-                        for x in matcher["icon"]
+                        for x in matcher["shapes"]
                     ])
                     processed |= set(matcher_tags)
                 if "over_icon" in matcher:
@@ -228,12 +228,12 @@ class Scheme:
                         ])
                         for key in matcher_tags:
                             processed.add(key)
-                if "add_icon" in matcher:
+                if "add_shapes" in matcher:
                     extra_icons += [Icon([
                         ShapeSpecification.from_structure(
                             x, icon_extractor, self, Color("#888888")
                         )
-                        for x in matcher["add_icon"]
+                        for x in matcher["add_shapes"]
                     ])]
                     for key in matcher_tags:
                         processed.add(key)
@@ -296,8 +296,8 @@ class Scheme:
                 priority = element["priority"]
             for key in element:  # type: str
                 if key not in [
-                    "tags", "no_tags", "priority", "level", "icon", "r", "r1",
-                    "r2"
+                    "tags", "exception", "priority", "level", "shapes", "r",
+                    "r1", "r2"
                 ]:
                     value = element[key]
                     if isinstance(value, str) and value.endswith("_color"):

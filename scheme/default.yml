@@ -81,48 +81,48 @@ node_icons:
   - group: "Transport hubs"
     tags:
     - tags: {amenity: ferry_terminal}
-      icon: [anchor]
+      shapes: [anchor]
     - tags: {amenity: ferry_terminal, cargo: vehicle}
-      icon: [car_on_ferry]
+      shapes: [car_on_ferry]
     - tags: {amenity: ferry_terminal, cargo: passengers}
-      icon: [human_on_ferry]
+      shapes: [human_on_ferry]
     - tags: {aeroway: aerodrome}
-      icon: [plane]
+      shapes: [plane]
     - tags: {aeroway: helipad}
-      icon: [h]
+      shapes: [h]
     - tags: {aeroway: spaceport}
-      icon: [rocket_on_launch_pad]
+      shapes: [rocket_on_launch_pad]
     - tags: {aeroway: launchpad}
-      icon: [rocket_flying]
+      shapes: [rocket_flying]
     - tags: {aeroway: landingpad}
-      icon: [booster_landing]
+      shapes: [booster_landing]
     - tags: {highway: bus_stop}
-      icon: [bus_stop]
-      add_icon: [bus]
+      shapes: [bus_stop]
+      add_shapes: [bus]
     - tags: {railway: station}
-      icon: [train]
+      shapes: [train]
     - tags: {railway: station, station: subway, transport: subway}
-      icon: [train]
+      shapes: [train]
     - tags: {railway: subway_entrance}
-      icon: [train]
+      shapes: [train]
     - tags: {railway: subway_entrance, entrance: "yes"}
-      icon: [train]
+      shapes: [train]
     - tags: {public_transport: stop_position}
-      icon: [bus_stop]
+      shapes: [bus_stop]
     - tags: {railway: tram_station}
-      icon: [tram]
+      shapes: [tram]
     - tags: {railway: tram_stop}
-      icon: [tram]
+      shapes: [tram]
     - tags: {public_transport: platform}
-      icon: [bus_stop_sign]
+      shapes: [bus_stop_sign]
       with_icon: [bus_stop_bench, bus_stop_shelter]
       over_icon: [platform]
     - tags: {highway: bus_stop, public_transport: platform}
-      icon: [bus_stop_sign]
+      shapes: [bus_stop_sign]
       with_icon: [bus_stop_bench, bus_stop_shelter]
       over_icon: [platform]
     - tags: {highway: bus_stop, shelter: "yes"}
-      icon: [bus_stop_sign]
+      shapes: [bus_stop_sign]
       under_icon: [bus_stop_sign]
       with_icon: [bus_stop_bench, platform]
       over_icon: [bus_stop_shelter]
@@ -131,547 +131,547 @@ node_icons:
       with_icon: [bus_stop_shelter, platform]
       over_icon: [bus_stop_bench]
     - tags: {highway: stop}
-      icon: [stop]
+      shapes: [stop]
 
   - group: "Big territory"
     tags:
     - tags: {leisure: fishing}
-      icon: [fishing_angle]
+      shapes: [fishing_angle]
     - tags: {power: substation}
-      icon: [electricity]
+      shapes: [electricity]
     - tags: {plant: christmas_trees}
-      icon: [{shape: christmas_tree, color: orchard_border_color}]
+      shapes: [{shape: christmas_tree, color: orchard_border_color}]
     - tags: {produce: apple}
-      icon: [{shape: apple, color: orchard_border_color}]
+      shapes: [{shape: apple, color: orchard_border_color}]
     - tags: {produce: christmas_trees}
-      icon: [{shape: christmas_tree, color: orchard_border_color}]
+      shapes: [{shape: christmas_tree, color: orchard_border_color}]
     - tags: {produce: pear}
-      icon: [{shape: pear, color: orchard_border_color}]
+      shapes: [{shape: pear, color: orchard_border_color}]
     - tags: {trees: apple_trees}
-      icon: [{shape: apple, color: orchard_border_color}]
+      shapes: [{shape: apple, color: orchard_border_color}]
     - tags: {trees: pear_trees}
-      icon: [{shape: pear, color: orchard_border_color}]
+      shapes: [{shape: pear, color: orchard_border_color}]
 
   - group: "Bigger objects"
     tags:
     - tags: {waterway: waterfall}
-      icon: [{shape: waterfall, color: water_border_color}]
+      shapes: [{shape: waterfall, color: water_border_color}]
     - tags: {natural: cliff}
-      icon: [cliff]
+      shapes: [cliff]
     - tags: {natural: peak}
-      icon: [triangle_small]
+      shapes: [triangle_small]
     - tags: {historic: castle}
       location_restrictions: {include: jp}
-      icon: [japan_castle]
+      shapes: [japan_castle]
     - tags: {shop: mall}
-      icon: [bag]
+      shapes: [bag]
     - tags: {shop: mall, building: "yes"}
-      icon: [bag]
+      shapes: [bag]
 
   - group: "Important big objects"
     tags:
     - tags: {amenity: pharmacy}
-      icon: [medicine_bottle]
+      shapes: [medicine_bottle]
     - tags: {amenity: embassy}
-      icon: [waving_flag]
+      shapes: [waving_flag]
     - tags: {tourism: hotel}
-      icon: [bed]
+      shapes: [bed]
     - tags: {building: hotel}
-      icon: [bed]
+      shapes: [bed]
     - tags: {tourism: hostel}
-      icon: [two_beds]
+      shapes: [two_beds]
     - tags: {tourism: motel}  # Tourism?
-      icon: [motel]
+      shapes: [motel]
     - tags: {amenity: clinic}
-      icon: [greek_cross]
+      shapes: [greek_cross]
     - tags: {amenity: post_office}
       location_restrictions: {include: world, exclude: jp}
-      icon: [envelope]
+      shapes: [envelope]
     - tags: {amenity: post_office}
       location_restrictions: {include: jp}
-      icon: [japan_post]
+      shapes: [japan_post]
     - tags: {shop: car_repair}
-      icon: [car_repair]
+      shapes: [car_repair]
       # Place of worship
     - tags: {religion: christian}
-      icon: [cross]
+      shapes: [cross]
     - tags: {amenity: place_of_worship, religion: christian}
-      icon: [cross]
+      shapes: [cross]
     - tags:
         amenity: place_of_worship
         religion: christian
         denomination: catholic
-      icon: [cross]
+      shapes: [cross]
     - tags:
         amenity: place_of_worship
         religion: christian
         denomination: russian_orthodox
-      icon: [russian_orthodox]
+      shapes: [russian_orthodox]
     - tags:
         amenity: place_of_worship
         religion: christian
         denomination: orthodox
-      icon: [orthodox]
+      shapes: [orthodox]
     - tags:
         amenity: place_of_worship
         religion: christian
         denomination: baptist
-      icon: [baptist]
+      shapes: [baptist]
     - tags: {amenity: place_of_worship, religion: muslim}
-      icon: [muslim]
+      shapes: [muslim]
     - tags: {amenity: place_of_worship, religion: buddhist}
-      icon: [buddhist]
+      shapes: [buddhist]
     - tags: {amenity: place_of_worship, religion: jewish}
-      icon: [jewish]
+      shapes: [jewish]
     - tags: {historic: tomb, tomb: mausoleum}
-      icon: [mausoleum]
+      shapes: [mausoleum]
 
   - group: "Normal big objects"
     tags:
     - tags: {shop: supermarket}
-      icon: [supermarket_cart]
+      shapes: [supermarket_cart]
     - tags: {amenity: arts_centre}
-      icon: [picture]
+      shapes: [picture]
     - tags: {amenity: bank}
-      icon: [money]
+      shapes: [money]
     - tags: {amenity: cinema}
-      icon: [film]
+      shapes: [film]
     - tags: {amenity: casino}
-      icon: [card_and_dice]
+      shapes: [card_and_dice]
     - tags: {amenity: community_centre}
-      icon: [two_people_together]
+      shapes: [two_people_together]
     - tags: {amenity: internet_cafe}
-      icon: [at_in_square]
+      shapes: [at_in_square]
     - tags: {amenity: library}
-      icon: [book]
+      shapes: [book]
     - tags: {amenity: prison}
-      icon: [prison]
+      shapes: [prison]
     - tags: {man_made: survey_point}
-      icon: [survey_point]
+      shapes: [survey_point]
     - tags: {leisure: amusement_arcade}
-      icon: [pac_man]
+      shapes: [pac_man]
     - tags: {leisure: fitness_centre}
-      icon: [dumbbell]
+      shapes: [dumbbell]
     - tags: {leisure: outdoor_seating}
-      icon: [table_and_two_chairs, umbrella]
+      shapes: [table_and_two_chairs, umbrella]
     - tags: {leisure: outdoor_seating, weather_protection: parasol}
-      icon: [table_and_two_chairs, umbrella]
+      shapes: [table_and_two_chairs, umbrella]
     - tags: {leisure: outdoor_seating, weather_protection: roof}
-      icon: [table_and_two_chairs, roof]
+      shapes: [table_and_two_chairs, roof]
     - tags: {leisure: outdoor_seating, weather_protection: awning}
-      icon: [table_and_two_chairs, awning]
+      shapes: [table_and_two_chairs, awning]
     - tags: {leisure: outdoor_seating, weather_protection: pavilion}
-      icon: [table_and_two_chairs, roof_and_walls]
+      shapes: [table_and_two_chairs, roof_and_walls]
     - tags: {leisure: outdoor_seating, weather_protection: pergola}
-      icon: [table_and_two_chairs, pergola]
+      shapes: [table_and_two_chairs, pergola]
     - tags: {leisure: playground}
-      icon: [toy_horse]
+      shapes: [toy_horse]
     - tags: {amenity: theatre}
-      icon: [theatre]
+      shapes: [theatre]
     - tags: {amenity: bar}
-      icon: [bar]
+      shapes: [bar]
     - tags: {amenity: pub}
-      icon: [beer_mug]
+      shapes: [beer_mug]
     - tags: {amenity: fast_food}
-      icon: [burger]
+      shapes: [burger]
     - tags: {amenity: food_court}
-      icon: [food_court]
+      shapes: [food_court]
     - tags: {amenity: shop, shop: fishing}
-      icon: [fishing_angle]
+      shapes: [fishing_angle]
     - tags: {shop: alcohol}
-      icon: [bottle]
+      shapes: [bottle]
     - tags: {shop: bakery}
-      icon: [cupcake]
+      shapes: [cupcake]
     - tags: {shop: milk}
-      icon: [milk]
+      shapes: [milk]
     - tags: {building: store}
-      icon: [shop_convenience]
+      shapes: [shop_convenience]
     - tags: {shop: ticket}
-      icon: [ticket]
+      shapes: [ticket]
     - tags: {shop: watches}
-      icon: [watches]
+      shapes: [watches]
     - tags: {craft: watchmaker}
-      icon: [watches]
+      shapes: [watches]
     - tags: {shop: frame}
-      icon: [frame]
+      shapes: [frame]
     - tags: {tourism: gallery}
-      icon: [picture]
+      shapes: [picture]
     - tags: {amenity: cafe}
-      icon: [coffee_cup]
+      shapes: [coffee_cup]
     - tags: {amenity: ice_cream}
-      icon: [ice_cream]
+      shapes: [ice_cream]
     - tags: {amenity: biergarten}
-      icon: [beer_mug]
+      shapes: [beer_mug]
     - tags: {amenity: nightclub}
-      icon: [night_club]
+      shapes: [night_club]
     - tags: {amenity: restaurant}
-      icon: [restaurant]
+      shapes: [restaurant]
     - tags: {amenity: restaurant;bar}
-      icon: [restaurant]
-      add_icon: [bar]
+      shapes: [restaurant]
+      add_shapes: [bar]
     - tags: {shop: ice_cream}
-      icon: [ice_cream]
+      shapes: [ice_cream]
     - tags: {shop: gift}
-      icon: [gift]
+      shapes: [gift]
     - tags: {shop: clothes}
-      icon: [shop_clothes]
+      shapes: [shop_clothes]
     - tags: {amenity: shop, shop: clothes}
-      icon: [shop_clothes]
+      shapes: [shop_clothes]
     - tags: {shop: convenience}
-      icon: [shop_convenience]
+      shapes: [shop_convenience]
     - tags: {amenity: shop, shop: convenience}
-      icon: [shop_convenience]
+      shapes: [shop_convenience]
     - tags: {shop: electronics}
-      icon: [tv]
+      shapes: [tv]
 
   - group: "Big objects not for all"
     tags:
     - tags: {building: apartments}
-      icon: [apartments]
+      shapes: [apartments]
     - tags: {building: kindergarten}
-      icon: [toy_horse]
+      shapes: [toy_horse]
     - tags: {amenity: kindergarten}
-      icon: [toy_horse]
+      shapes: [toy_horse]
     - tags: {building: kindergarten, amenity: kindergarten}
-      icon: [toy_horse]
+      shapes: [toy_horse]
     - tags: {building: office}
-      icon: [briefcase]
+      shapes: [briefcase]
     - tags: {amenity: school}
       location_restrictions: {include: jp}
-      icon: [japan_elementary_school]
+      shapes: [japan_elementary_school]
     - tags: {office: telecommunication}
-      icon: [telephone]
+      shapes: [telephone]
 
   - group: "Not important big objects"
     tags:
     - tags: {man_made: communications_tower}
       location_restrictions: {include: jp}
-      icon: [japan_tv_tower]
+      shapes: [japan_tv_tower]
     - tags: {man_made: tower}
-      icon: [tower]
+      shapes: [tower]
     - tags: {building: garages}
-      icon: [garages]
+      shapes: [garages]
     - tags: {building: garage}
-      icon: [garages]
+      shapes: [garages]
 
   - group: "Emergency"
     tags:
     - tags: {emergency: defibrillator}
-      icon: [{shape: defibrillator, color: emergency_color}]
+      shapes: [{shape: defibrillator, color: emergency_color}]
     - tags: {emergency: fire_extinguisher}
-      icon: [{shape: fire_extinguisher, color: emergency_color}]
+      shapes: [{shape: fire_extinguisher, color: emergency_color}]
     - tags: {emergency: fire_hydrant}
-      icon: [fire_hydrant]
+      shapes: [fire_hydrant]
     - tags: {emergency: life_ring}
-      icon: [{shape: life_ring, color: emergency_color}]
+      shapes: [{shape: life_ring, color: emergency_color}]
     - tags: {emergency: phone}
-      icon: [{shape: sos_phone, color: emergency_color}]
+      shapes: [{shape: sos_phone, color: emergency_color}]
 
   - group: "Transport-important middle objects"
     tags:
     - tags: {ford: "yes"}
-      icon: [ford]
+      shapes: [ford]
     - tags: {amenity: charging_station}
-      icon: [charging_station]
+      shapes: [charging_station]
     - tags: {amenity: bicycle_repair_station}
-      icon: [bicycle_repair]
+      shapes: [bicycle_repair]
     - tags: {amenity: fuel}
-      icon: [fuel_station]
+      shapes: [fuel_station]
     - tags: {amenity: parking}
-      icon: [p]
+      shapes: [p]
     - tags: {highway: turning_circle}
-      icon: [circle_empty]
+      shapes: [circle_empty]
     - tags: {highway: crossing}
-      icon: [crossing]
+      shapes: [crossing]
     - tags: {crossing: zebra}
-      icon: [crossing]
+      shapes: [crossing]
     - tags: {highway: crossing, crossing: zebra}
-      icon: [crossing]
+      shapes: [crossing]
     - tags: {crossing: marked}
-      icon: [crossing]
+      shapes: [crossing]
     - tags: {highway: crossing, crossing: marked}
-      icon: [crossing]
+      shapes: [crossing]
     - tags: {highway: crossing, crossing_ref: zebra}
-      icon: [crossing]
+      shapes: [crossing]
     - tags: {highway: crossing, crossing: uncontrolled}
-      add_icon: [no_traffic_signals]
+      add_shapes: [no_traffic_signals]
     - tags: {highway: crossing, crossing: traffic_signals}
-      add_icon: [traffic_signals]
+      add_shapes: [traffic_signals]
     - tags: {highway: traffic_signals}
-      icon: [traffic_signals]
+      shapes: [traffic_signals]
     - tags: {crossing_ref: toucan}
-      icon: [toucan_crossing]
+      shapes: [toucan_crossing]
 
   - group: "Important middle objects"
     tags:
     - tags: {tourism: attraction, attraction: amusement_ride}
-      icon: [amusement_ride]
+      shapes: [amusement_ride]
     - tags: {amenity: toilets}
-      icon: [woman_and_man]
+      shapes: [woman_and_man]
 
   - group: "Normal middle objects"
     tags:
     - tags: {shop: kiosk}
-      icon: [kiosk]
+      shapes: [kiosk]
     - tags: {building: "yes", shop: kiosk}
-      icon: [kiosk]
+      shapes: [kiosk]
     - tags: {amenity: shop, shop: kiosk}
-      icon: [kiosk]
+      shapes: [kiosk]
     - tags: {amenity: stage}
-      icon: [theatre]
+      shapes: [theatre]
     - tags: {natural: cave_entrance}
-      icon: [cave]
+      shapes: [cave]
 
   - group: "Not important middle objects"
     tags:
     - tags: {building: ventilation_shaft}
-      icon: [ventilation]
+      shapes: [ventilation]
     - tags: {power: generator}
-      icon: [power_generator]
+      shapes: [power_generator]
     - tags: {amenity: public_bookcase}
-      icon: [books]
+      shapes: [books]
     - tags: {power: transformer}
-      icon: [transformer]
+      shapes: [transformer]
     - tags: {power: generator, generator:source: solar}
-      icon: [solar_panel]
+      shapes: [solar_panel]
     - tags: {power: generator, generator:source: wind}
-      icon: [wind_turbine]
+      shapes: [wind_turbine]
     - tags: {power: tower}
-      icon: [power_tower_2_level]
+      shapes: [power_tower_2_level]
     - tags: {power: tower, design: one-level}
-      icon: [power_tower_1_level]
+      shapes: [power_tower_1_level]
     - tags: {power: tower, design: two-level}
-      icon: [power_tower_2_level]
+      shapes: [power_tower_2_level]
     - tags: {power: tower, design: three-level}
-      icon: [power_tower_3_level]
+      shapes: [power_tower_3_level]
     - tags: {power: tower, design: four-level}
-      icon: [power_tower_4_level]
+      shapes: [power_tower_4_level]
     - tags: {power: tower, design: donau}
-      icon: [power_tower_donau]
+      shapes: [power_tower_donau]
     - tags: {power: tower, design: barrel}
-      icon: [power_tower_barrel]
+      shapes: [power_tower_barrel]
     - tags: {power: tower, design: asymmetric}
-      icon: [power_tower_asymmetric]
+      shapes: [power_tower_asymmetric]
     - tags: {power: tower, design: triangle}
-      icon: [power_tower_triangle]
+      shapes: [power_tower_triangle]
     - tags: {power: tower, design: delta}
-      icon: [power_tower_delta]
+      shapes: [power_tower_delta]
     - tags: {power: tower, design: delta_two-level}
-      icon: [power_tower_delta_2_level]
+      shapes: [power_tower_delta_2_level]
     - tags: {power: tower, design: delta_three-level}
-      icon: [power_tower_delta_3_level]
+      shapes: [power_tower_delta_3_level]
     - tags: {power: tower, design: y-frame}
-      icon: [power_tower_y_frame]
+      shapes: [power_tower_y_frame]
     - tags: {power: tower, design: x-frame}
-      icon: [power_tower_x_frame]
+      shapes: [power_tower_x_frame]
     - tags: {power: tower, design: h-frame}
-      icon: [power_tower_h_frame]
+      shapes: [power_tower_h_frame]
     - tags: {power: tower, design: h-frame_two-level}
-      icon: [power_tower_h_frame_2_level]
+      shapes: [power_tower_h_frame_2_level]
     - tags: {power: tower, design: guyed_h-frame}
-      icon: [power_tower_guyed_h_frame]
+      shapes: [power_tower_guyed_h_frame]
     - tags: {power: portal}
-      icon: [power_tower_portal]
+      shapes: [power_tower_portal]
     - tags: {power: tower, design: portal}
-      icon: [power_tower_portal]
+      shapes: [power_tower_portal]
     - tags: {power: tower, design: portal_two-level}
-      icon: [power_tower_portal_2_level]
+      shapes: [power_tower_portal_2_level]
     - tags: {power: tower, design: portal_three-level}
-      icon: [power_tower_portal_3_level]
+      shapes: [power_tower_portal_3_level]
 
   - group: "Important small objects"
     tags:
     - tags: {historic: memorial}
-      icon: [memorial]
+      shapes: [memorial]
     - tags: {historic: memorial, memorial: plaque}
-      icon: [plaque]
+      shapes: [plaque]
     - tags: {historic: memorial, memorial: statue}
-      icon: [statue]
+      shapes: [statue]
     - tags: {historic: stone}
-      icon: [stone_with_inscription]
+      shapes: [stone_with_inscription]
     - tags: {historic: memorial, memorial: stone}
-      icon: [stone_with_inscription]
+      shapes: [stone_with_inscription]
     - tags: {historic: tomb}
-      icon: [tomb]
+      shapes: [tomb]
     - tags: {tomb: "*"}
-      to_tags: {tomb: mausoleum}
-      icon: [tomb]
+      exception: {tomb: mausoleum}
+      shapes: [tomb]
     - tags: {barrier: lift_gate}
-      icon: [lift_gate]
+      shapes: [lift_gate]
     - tags: {barrier: turnstile}
-      icon: [turnstile]
+      shapes: [turnstile]
     - tags: {railway: level_crossing}
-      icon: [x]
+      shapes: [x]
     - tags: {railway: crossing}
-      icon: [x]
+      shapes: [x]
     - tags: {amenity: atm}
-      icon: [atm]
+      shapes: [atm]
     - tags: {amenity: bicycle_parking}
-      icon: [bicycle_p]
+      shapes: [bicycle_p]
     - tags: {amenity: telephone}
-      icon: [telephone]
+      shapes: [telephone]
     - tags: {information: "*"}
-      icon: [information]
+      shapes: [information]
     - tags: {tourism: "*"}
-      icon: [historic]
+      shapes: [historic]
     - tags: {tourism: information}
-      icon: [information]
+      shapes: [information]
     - tags: {information: guidepost}
-      icon: [guidepost]
+      shapes: [guidepost]
     - tags: {tourism: viewpoint}
-      icon: [binocular]
+      shapes: [binocular]
     - tags: {information: board}
-      icon: [information_board]
+      shapes: [information_board]
     - tags: {vending: admission_tickets}
-      icon: [vending_tickets]
+      shapes: [vending_tickets]
     - tags: {vending: candles}
-      icon: [vending_candles]
+      shapes: [vending_candles]
     - tags: {vending: chemist}
-      icon: [vending_chemist]
+      shapes: [vending_chemist]
     - tags: {vending: drinks}
-      icon: [vending_bottle]
+      shapes: [vending_bottle]
     - tags: {vending: fishing_tackle}
-      icon: [vending_angle]
+      shapes: [vending_angle]
     - tags: {vending: public_transport_tickets}
-      icon: [vending_tickets]
+      shapes: [vending_tickets]
     - tags: {vending: water}
-      icon: [vending_drop]
+      shapes: [vending_drop]
     - tags: {buoy: "*"}
-      icon: [buoy]
+      shapes: [buoy]
     - tags: {"seamark:type": "*"}
-      icon: [buoy]
+      shapes: [buoy]
     - tags: {"waterway:sign": "*"}
-      icon: [buoy]
+      shapes: [buoy]
     - tags: {amenity: drinking_water}
-      icon: [drinking_water]
+      shapes: [drinking_water]
     - tags: {tourism: artwork}
-      icon: [picture]
+      shapes: [picture]
     - tags: {tourism: artwork, artwork_type: statue}
-      icon: [statue]
+      shapes: [statue]
     - tags: {tourism: artwork, artwork_type: sculpture}
-      icon: [statue]
+      shapes: [statue]
     - tags: {tourism: attraction}
-      icon: [photo_camera]
+      shapes: [photo_camera]
     - tags: {xmas:feature: tree}
-      icon: {christmas_tree}
+      shapes: {christmas_tree}
 
   - group: "Normal small objects"
     tags:
     - tags: {amenity: binoculars}
-      icon: [binoculars_on_pole]
+      shapes: [binoculars_on_pole]
     - tags: {amenity: post_box}
-      icon: [envelope]
+      shapes: [envelope]
     - tags: {amenity: recycling}
-      icon: [recycling_container]
+      shapes: [recycling_container]
     - tags: {amenity: recycling, recycling_type: container}
-      icon: [recycling_container]
+      shapes: [recycling_container]
     - tags: {amenity: vending_machine}
-      icon: [vending_machine]
+      shapes: [vending_machine]
     - tags: {amenity: vending_machine, vending: excrement_bags}
-      icon: [vending_excrement_bag]
+      shapes: [vending_excrement_bag]
     - tags: {fitness_station: horizontal_bar}
-      icon: [horizontal_bar]
+      shapes: [horizontal_bar]
     - tags: {fitness_station: wall_bars}
-      icon: [wall_bars]
+      shapes: [wall_bars]
     - tags: {fitness_station: sit-up}
-      icon: [sit_up]
+      shapes: [sit_up]
     - tags: {fitness_station: horizontal_ladder}
-      icon: [horizontal_ladder]
+      shapes: [horizontal_ladder]
     - tags: {fitness_station: push-up}
-      icon: [low_horizontal_bars]
+      shapes: [low_horizontal_bars]
     - tags: {playground: slide}
-      icon: [slide]
+      shapes: [slide]
     - tags: {playground: roundabout}
-      icon: [roundabout]
+      shapes: [roundabout]
     - tags: {playground: seesaw}
-      icon: [seesaw]
+      shapes: [seesaw]
     - tags: {playground: horizontal_bar}
-      icon: [horizontal_bar]
+      shapes: [horizontal_bar]
     - tags: {leisure: picnic_table}
-      icon: [table]
+      shapes: [table]
 
   - group: "Entrances"
     tags:
     - tags: {barrier: gate}
-      icon: [gate]
+      shapes: [gate]
     - tags: {entrance: main}
-      icon: [main_entrance]
+      shapes: [main_entrance]
     - tags: {barrier: entrance}
-      icon: [entrance]
+      shapes: [entrance]
     - tags: {entrance: "yes"}
-      icon: [entrance]
+      shapes: [entrance]
     - tags: {entrance: exit}
-      icon: [exit]
+      shapes: [exit]
     - tags: {entrance: service}
-      icon: [door_with_keyhole]
+      shapes: [door_with_keyhole]
     - tags: {entrance: staircase}
-      icon: [staircase]
+      shapes: [staircase]
     - tags: {door: "no"}
-      icon: [no_door]
+      shapes: [no_door]
 
   - group: "Not important small objects"
     tags:
     - tags: {amenity: bench}
-      icon: [bench]
+      shapes: [bench]
     - tags: {amenity: bench, backrest: "yes"}
-      icon: [bench_backrest]
+      shapes: [bench_backrest]
     - tags: {amenity: bench, backrest: "no"}
-      icon: [bench_no_backrest]
+      shapes: [bench_no_backrest]
     - tags: {amenity: clock}
-      icon: [clock]
+      shapes: [clock]
     - tags: {amenity: fountain}
-      icon: [{shape: fountain, color: water_border_color}]
+      shapes: [{shape: fountain, color: water_border_color}]
     - tags: {amenity: waste_basket}
-      icon: [waste_basket]
+      shapes: [waste_basket]
     - tags: {highway: street_lamp}
-      icon: [street_lamp]
+      shapes: [street_lamp]
     - tags: {man_made: cross}
-      icon: [cross]
+      shapes: [cross]
     - tags: {man_made: flagpole}
-      icon: [flagpole]
+      shapes: [flagpole]
     - tags: {man_made: manhole}
-      icon: [circle_9]
+      shapes: [circle_9]
     - tags: {manhole: drain}
-      icon: [manhole_drain]
+      shapes: [manhole_drain]
     - tags: {man_made: pole}
-      icon: [pole]
+      shapes: [pole]
     - tags: {man_made: pole, highway: street_lamp}
-      icon: [pole_lamp]
+      shapes: [pole_lamp]
     - tags: {man_made: street_cabinet}
-      icon: [street_cabinet]
+      shapes: [street_cabinet]
     - tags: {man_made: surveillance}
-      icon: [cctv]
+      shapes: [cctv]
     - tags: {man_made: ventilation_shaft}
-      icon: [ventilation]
+      shapes: [ventilation]
     - tags: {power: pole}
-      icon: [pole]
+      shapes: [pole]
     - tags: {advertising: billboard}
-      icon: [billboard]
+      shapes: [billboard]
     - tags: {natural: rock}
-      icon: [stone]
+      shapes: [stone]
     - tags: {natural: stone}
-      icon: [stone]
+      shapes: [stone]
     - tags: {sloped_curb: "yes"}
-      icon: [lowered_kerb]
+      shapes: [lowered_kerb]
     - tags: {kerb: lowered}
-      icon: [lowered_kerb]
+      shapes: [lowered_kerb]
 
     - tags: {natural: tree}
-      icon: [{shape: tree, color: tree_color}]
+      shapes: [{shape: tree, color: tree_color}]
     - tags: {leaf_type: broadleaved}
-      icon: [{shape: tree_with_leaf, color: tree_color}]
+      shapes: [{shape: tree_with_leaf, color: tree_color}]
     - tags: {leaf_type: needleleaved}
-      icon: [{shape: needleleaved_tree, color: tree_color}]
+      shapes: [{shape: needleleaved_tree, color: tree_color}]
     - tags: {leaf_type: palm}
-      icon: [{shape: palm, color: tree_color}]
+      shapes: [{shape: palm, color: tree_color}]
     - tags: {natural: tree, leaf_type: broadleaved}
-      icon: [{shape: tree_with_leaf, color: tree_color}]
+      shapes: [{shape: tree_with_leaf, color: tree_color}]
     - tags: {natural: tree, leaf_type: needleleaved}
-      icon: [{shape: needleleaved_tree, color: tree_color}]
+      shapes: [{shape: needleleaved_tree, color: tree_color}]
     - tags: {natural: tree, leaf_type: palm}
-      icon: [{shape: palm, color: tree_color}]
+      shapes: [{shape: palm, color: tree_color}]
     - tags: {natural: tree, type: conifer}
-      icon: [{shape: needleleaved_tree, color: tree_color}]
+      shapes: [{shape: needleleaved_tree, color: tree_color}]
     - tags: {leaf_cycle: deciduous}
       set_main_color: decidious_color
     - tags: {leaf_cycle: evergreen}
@@ -681,65 +681,65 @@ node_icons:
     - tags: {natural: tree, leaf_cycle: evergreen}
       set_main_color: evergreen_color
     - tags: {natural: bush}
-      icon: [{shape: bush, color: tree_color}]
+      shapes: [{shape: bush, color: tree_color}]
     - tags: {natural: tree, genus: Betula}
-      icon: [{shape: betula, color: tree_color}]
+      shapes: [{shape: betula, color: tree_color}]
     - tags: {natural: tree, "genus:en": Birch}
-      icon: [{shape: betula, color: tree_color}]
+      shapes: [{shape: betula, color: tree_color}]
     - tags: {natural: tree, "genus:ru": Берёза}
-      icon: [{shape: betula, color: tree_color}]
+      shapes: [{shape: betula, color: tree_color}]
 
     - tags: {railway: buffer_stop}
-      icon: [buffer_stop]
+      shapes: [buffer_stop]
     - tags: {traffic_sign: city_limit}
-      icon: [city_limit_sign]
+      shapes: [city_limit_sign]
     - tags: {traffic_sign: maxspeed, maxspeed: "30"}
-      icon: [
+      shapes: [
         circle_11,
         {shape: digit_3, offset: [-2, 0], color: "#FFFFFF"},
         {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
       ]
     - tags: {traffic_sign: maxspeed, maxspeed: "40"}
-      icon: [
+      shapes: [
         circle_11,
         {shape: digit_4, offset: [-2, 0], color: "#FFFFFF"},
         {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
       ]
     - tags: {traffic_sign: maxspeed, maxspeed: "50"}
-      icon: [
+      shapes: [
         circle_11,
         {shape: digit_5, offset: [-2, 0], color: "#FFFFFF"},
         {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
       ]
     - tags: {traffic_sign: maxspeed, maxspeed: "60"}
-      icon: [
+      shapes: [
         circle_11,
         {shape: digit_6, offset: [-2, 0], color: "#FFFFFF"},
         {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
       ]
     - tags: {traffic_sign: maxspeed, maxspeed: "40_mph"}
-      icon: [
+      shapes: [
         speed_limit_mph,
         {shape: digit_4, offset: [-2, 2]},
         {shape: digit_0, offset: [2, 2]},
       ]
     - tags: {traffic_sign: stop}
-      icon: [stop]
+      shapes: [stop]
     - tags: {highway: give_way}
-      icon: [triangle_down_hollow]
+      shapes: [triangle_down_hollow]
     - tags: {noexit: "yes"}
-      icon: [noexit]
+      shapes: [noexit]
     - tags: {barrier: block}
-      icon: [block]
+      shapes: [block]
     - tags: {barrier: rock}
-      icon: [stone]
+      shapes: [stone]
     - tags: {barrier: bollard}
-      icon: [bollard]
+      shapes: [bollard]
 
   - group: "Indoor"
     tags:
     - tags: {door: "yes"}
-      icon: [entrance]
+      shapes: [entrance]
 
   - group: "Add and over"
     tags:
@@ -753,9 +753,9 @@ node_icons:
       over_icon: [support_column]
       under_icon: [clock, information_board]
     - tags: {amenity: "*", karaoke: "yes"}
-      add_icon: [microphone]
+      add_shapes: [microphone]
     - tags: {building: "*", "roof:shape": onion}
-      add_icon: [onion_roof_shape]
+      add_shapes: [onion_roof_shape]
     - tags: {natural: tree, denotation: urban}
       over_icon: [urban_tree_pot]
       under_icon: [tree, tree_with_leaf, needleleaved_tree, betula, palm]
@@ -764,51 +764,51 @@ node_icons:
       under_icon: [tree, tree_with_leaf, needleleaved_tree, betula, palm]
 
     - tags: {wheelchair: "yes"}
-      add_icon: [wheelchair]
+      add_shapes: [wheelchair]
     - tags: {wheelchair: "no"}
-      add_icon: [no_wheelchair]
+      add_shapes: [no_wheelchair]
     - tags: {foot: "yes"}
-      add_icon: [foot]
+      add_shapes: [foot]
     - tags: {foot: "no"}
-      add_icon: [no_foot]
+      add_shapes: [no_foot]
     - tags: {bicycle: "yes"}
-      add_icon: [bicycle]
+      add_shapes: [bicycle]
     - tags: {bicycle: "no"}
-      add_icon: [no_bicycle]
+      add_shapes: [no_bicycle]
     - tags: {internet_access: wlan, "internet_access:fee": "no"}
-      add_icon: [free_wlan]
+      add_shapes: [free_wlan]
     - tags: {internet_access: wlan}
-      no_tags: {"internet_access:fee": "*"}
-      add_icon: [wlan]
+      exception: {"internet_access:fee": "*"}
+      add_shapes: [wlan]
     - tags: {material: wood}
-      add_icon: [wood]
+      add_shapes: [wood]
     - tags: {access: private}
-      add_icon: [lock_with_keyhole]
+      add_shapes: [lock_with_keyhole]
     - tags: {direction: clockwise}
-      add_icon: [clockwise]
+      add_shapes: [clockwise]
     - tags: {direction: contrclockwise}
-      add_icon: [contrclockwise]
+      add_shapes: [contrclockwise]
     - tags: {atm: "yes"}
-      add_icon: [atm]
+      add_shapes: [atm]
     - tags: {tactile_paving: "yes"}
-      add_icon: [tactile_paving]
+      add_shapes: [tactile_paving]
     - tags: {"payment:credit_cards": "yes"}
-      add_icon: [credit_card]
+      add_shapes: [credit_card]
 
     - tags: {bus: "yes"}
-      add_icon: [bus]
+      add_shapes: [bus]
     - tags: {monorail: "yes"}
-      add_icon: [monorail]
+      add_shapes: [monorail]
     - tags: {trolleybus: "yes"}
-      add_icon: [trolleybus]
+      add_shapes: [trolleybus]
 
     - tags: {recycling:glass_bottles: "yes"}
-      add_icon: [bottle]
+      add_shapes: [bottle]
 
     - tags: {crossing:island: "yes"}
-      add_icon: [rectangle_vertical_rounded]
+      add_shapes: [rectangle_vertical_rounded]
     - tags: {crossing:island: "no"}
-      add_icon: [rectangle_vertical_rounded_crossed]
+      add_shapes: [rectangle_vertical_rounded_crossed]
 
 ways:
   - tags: {indoor: area}
@@ -1051,7 +1051,7 @@ ways:
     stroke-linejoin: round
     priority: 41
   - tags: {highway: service}
-    no_tags: {service: parking_aisle}
+    exception: {service: parking_aisle}
     r2: 3
     stroke: road_border_color
     stroke-linecap: round
@@ -1070,7 +1070,7 @@ ways:
     stroke-linejoin: round
     priority: 41
   - tags: {highway: [footway, pedestrian, cycleway]}
-    no_tags: {area: "yes"}
+    exception: {area: "yes"}
     stroke-width: 3
     stroke: foot_border_color
     stroke-linecap: round
@@ -1140,7 +1140,7 @@ ways:
     stroke-linejoin: round
     priority: 42
   - tags: {highway: service}
-    no_tags: {service: parking_aisle}
+    exception: {service: parking_aisle}
     r: 3
     stroke: "#FFFFFF"
     stroke-linecap: round
@@ -1153,7 +1153,7 @@ ways:
     stroke-linejoin: round
     priority: 42
   - tags: {highway: [footway, pedestrian]}
-    no_tags: {area: "yes"}
+    exception: {area: "yes"}
     stroke-width: 1.5
     stroke-dasharray: 7,3
     stroke-linecap: round
@@ -1167,7 +1167,7 @@ ways:
     stroke-linejoin: round
     priority: -55  # FIXME
   - tags: {highway: cycleway}
-    no_tags: {area: "yes"}
+    exception: {area: "yes"}
     stroke-width: 1
     stroke: cycle_color
     stroke-dasharray: 8,2
@@ -1180,7 +1180,7 @@ ways:
     stroke: "#888888"
     priority: 42
   - tags: {highway: steps}
-    no_tags: {conveying: "*"}
+    exception: {conveying: "*"}
     stroke-width: 5
     stroke-dasharray: 1.5,2
     stroke-linecap: butt
@@ -1284,7 +1284,7 @@ area_tags:
   - tags: {landuse: "*"}
   - tags: {leisure: "*"}
   - tags: {natural: "*"}
-    no_tags: {natural: "tree_row"}
+    exception: {natural: "tree_row"}
   - tags: {indoor: "corridor"}
   - tags: {power: ["compensator", "substation"]}
 

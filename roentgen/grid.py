@@ -56,7 +56,7 @@ def draw_all_icons(
 
     for group in scheme.icons:
         for element in group["tags"]:  # type: Dict[str, Any]
-            for key in ["icon", "add_icon"]:
+            for key in ["shapes", "add_shapes"]:
                 if key in element:
                     current_set = element[key]
                     add()
