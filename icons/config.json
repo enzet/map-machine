@@ -1,5 +1,10 @@
 {
     "right_directed": [
-        "cctv"
+        "cannon",
+        "cctv",
+        "guidepost",
+        "pole_lamp",
+        "slide",
+        "waterfall"
     ]
 }
