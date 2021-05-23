@@ -139,25 +139,23 @@ class ShapeExtractor:
 
             name: Optional[str] = None
 
-            def get_offset(value: float):
+            def get_offset(value: str):
                 """
                 Get negated icon offset from the origin.
                 """
-                return -int(value / GRID_STEP) * GRID_STEP - GRID_STEP / 2
+                return (
+                    -int(float(value) / GRID_STEP) * GRID_STEP - GRID_STEP / 2
+                )
 
-            point: np.array = np.array((
-                get_offset(float(matcher.group(1))),
-                get_offset(float(matcher.group(2))),
-            ))
-
+            point: np.array = np.array(
+                (get_offset(matcher.group(1)), get_offset(matcher.group(2)))
+            )
             for child_node in node.childNodes:
                 if isinstance(child_node, Element):
                     name = child_node.childNodes[0].nodeValue
                     break
 
-            is_right_directed: bool = (
-                id_ in self.configuration.right_directed
-            )
+            is_right_directed: bool = id_ in self.configuration.right_directed
             self.shapes[id_] = Shape(path, point, id_, name, is_right_directed)
         else:
             error(f"not standard ID {id_}")
@@ -188,8 +186,11 @@ class ShapeSpecification:
 
     @classmethod
     def from_structure(
-        cls, structure: Any, extractor: ShapeExtractor, scheme,
-        color: Color = DEFAULT_COLOR
+        cls,
+        structure: Any,
+        extractor: ShapeExtractor,
+        scheme,
+        color: Color = DEFAULT_COLOR,
     ) -> "ShapeSpecification":
         """
         Parse shape specification from structure, that is just shape string
@@ -227,8 +228,11 @@ class ShapeSpecification:
         return self.shape.id_ == DEFAULT_SHAPE_ID
 
     def draw(
-        self, svg: svgwrite.Drawing, point: np.array,
-        tags: Dict[str, Any] = None, outline: bool = False
+        self,
+        svg: svgwrite.Drawing,
+        point: np.array,
+        tags: Dict[str, Any] = None,
+        outline: bool = False,
     ) -> None:
         """
         Draw icon shape into SVG file.
@@ -253,13 +257,14 @@ class ShapeSpecification:
             color: Color = Color("black") if bright else Color("white")
             opacity: float = 0.7 if bright else 0.5
 
-            path.update({
+            style: Dict[str, Any] = {
                 "fill": color.hex,
                 "stroke": color.hex,
                 "stroke-width": 2.2,
                 "stroke-linejoin": "round",
                 "opacity": opacity,
-            })
+            }
+            path.update(style)
         if tags:
             title: str = "\n".join(map(lambda x: x + ": " + tags[x], tags))
             path.set_desc(title=title)
@@ -268,10 +273,13 @@ class ShapeSpecification:
 
     def __eq__(self, other: "ShapeSpecification") -> bool:
         return (
-            self.shape == other.shape and
-            self.color == other.color and
-            np.allclose(self.offset, other.offset)
+            self.shape == other.shape
+            and self.color == other.color
+            and np.allclose(self.offset, other.offset)
         )
+
+    def __lt__(self, other):
+        return self.shape.id_ < other.shape.id_
 
 
 @dataclass
@@ -279,6 +287,7 @@ class Icon:
     """
     Icon that consists of (probably) multiple shapes.
     """
+
     shape_specifications: List[ShapeSpecification]
 
     def get_shape_ids(self) -> Set[str]:
@@ -297,8 +306,11 @@ class Icon:
         ]
 
     def draw(
-        self, svg: svgwrite.Drawing, point: np.array,
-        tags: Dict[str, Any] = None, outline: bool = False
+        self,
+        svg: svgwrite.Drawing,
+        point: np.array,
+        tags: Dict[str, Any] = None,
+        outline: bool = False,
     ) -> None:
         """
         Draw icon to SVG.
@@ -349,12 +361,16 @@ class Icon:
         """
         self.shape_specifications += specifications
 
+    def __eq__(self, other) -> bool:
+        return sorted(self.shape_specifications) == sorted(other.shape_specifications)
+
 
 @dataclass
 class IconSet:
     """
     Node representation: icons and color.
     """
+
     main_icon: Icon
     extra_icons: List[Icon]
 
