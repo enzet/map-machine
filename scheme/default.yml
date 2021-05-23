@@ -160,6 +160,9 @@ node_icons:
       icon: [cliff]
     - tags: {natural: peak}
       icon: [triangle_small]
+    - tags: {historic: castle}
+      location_restrictions: {include: jp}
+      icon: [japan_castle]
     - tags: {shop: mall}
       icon: [bag]
     - tags: {shop: mall, building: "yes"}

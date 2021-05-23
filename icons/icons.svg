@@ -184,9 +184,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="127.97523"
-     inkscape:cx="119.85441"
-     inkscape:zoom="22.627417"
+     inkscape:cy="382.53367"
+     inkscape:cx="289.56003"
+     inkscape:zoom="2.8284271"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -15012,10 +15012,14 @@
        sodipodi:nodetypes="ccccccccccccccccc" />
     <path
        inkscape:connector-curvature="0"
-       id="path11525"
+       id="japan_castle"
        d="m 324,189 -2,0 0,-6 3,0 0,-4 6,0 0,4 3,0 0,6 -2,0 0,-4 -3,0 0,-4 -2,0 0,4 -3,0 z"
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       sodipodi:nodetypes="ccccccccccccccccc" />
+       sodipodi:nodetypes="ccccccccccccccccc"
+       inkscape:label="#path11525">
+      <title
+         id="title6326">Japanese map symbol for castle</title>
+    </path>
     <path
        inkscape:connector-curvature="0"
        id="path11558"
@@ -15049,9 +15053,13 @@
     <path
        style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        d="m 339.5,178.08594 -1.41406,1.41406 0.70703,0.70703 1.20703,1.20703 0,5.17188 -1.20703,1.20703 -0.70703,0.70703 1.41406,1.41406 0.70703,-0.70703 1.20703,-1.20703 5.17188,0 1.20703,1.20703 0.70703,0.70703 1.41406,-1.41406 -0.70703,-0.70703 -1.20703,-1.20703 0,-5.17188 1.20703,-1.20703 0.70703,-0.70703 -1.41406,-1.41406 -0.70703,0.70703 -1.20703,1.20703 -5.17188,0 -1.20703,-1.20703 z M 342,182 l 4,0 0,4 -4,0 z"
-       id="path11568"
+       id="japan_tv_tower"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccccccccccccccccccccccccccc" />
+       sodipodi:nodetypes="cccccccccccccccccccccccccccccc"
+       inkscape:label="#path11568">
+      <title
+         id="title6324">Japanese map symbol for TV tower</title>
+    </path>
     <circle
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path11589"
@@ -15070,23 +15078,13 @@
        cx="363.5"
        cy="171.5"
        r="1.5" />
-    <circle
-       r="1.5"
-       cy="187.5"
-       cx="355.5"
-       id="circle11595"
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <circle
-       r="1.5"
-       cy="180.5"
-       cx="359.5"
-       id="circle11597"
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <circle
-       r="1.5"
-       cy="187.5"
-       cx="363.5"
-       id="circle11599"
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 359.5 179 A 1.5 1.5 0 0 0 358 180.5 A 1.5 1.5 0 0 0 359.5 182 A 1.5 1.5 0 0 0 361 180.5 A 1.5 1.5 0 0 0 359.5 179 z M 355.5 186 A 1.5 1.5 0 0 0 354 187.5 A 1.5 1.5 0 0 0 355.5 189 A 1.5 1.5 0 0 0 357 187.5 A 1.5 1.5 0 0 0 355.5 186 z M 363.5 186 A 1.5 1.5 0 0 0 362 187.5 A 1.5 1.5 0 0 0 363.5 189 A 1.5 1.5 0 0 0 365 187.5 A 1.5 1.5 0 0 0 363.5 186 z "
+       id="japan_historic"
+       inkscape:label="#circle11595">
+      <title
+         id="title6322">Japanese map symbol for place of historic, cultural, or scenic interest</title>
+    </path>
   </g>
 </svg>
