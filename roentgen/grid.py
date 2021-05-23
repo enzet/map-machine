@@ -91,13 +91,13 @@ def draw_all_icons(
         ", ".join(sorted(extractor.shapes.keys() - specified_ids)) + "."
     )
 
-    for icon in icons:  # type: Icon
+    for icon in icons:
         icon.draw_to_file(join(
             output_directory, f"{' + '.join(icon.get_names())}.svg"
         ))
 
     draw_grid(
-        output_file_name, icons, columns, step,
+        output_file_name, sorted(icons), columns, step,
         background_color=background_color
     )
 

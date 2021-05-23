@@ -362,7 +362,15 @@ class Icon:
         self.shape_specifications += specifications
 
     def __eq__(self, other) -> bool:
-        return sorted(self.shape_specifications) == sorted(other.shape_specifications)
+        return sorted(self.shape_specifications) == sorted(
+            other.shape_specifications
+        )
+
+    def __lt__(self, other) -> bool:
+        return (
+            sorted(self.shape_specifications)[0].shape.id_
+            < sorted(other.shape_specifications)[0].shape.id_
+        )
 
 
 @dataclass
