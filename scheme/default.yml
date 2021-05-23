@@ -344,6 +344,9 @@ node_icons:
 
   - group: "Not important big objects"
     tags:
+    - tags: {man_made: communications_tower}
+      location_restrictions: {include: jp}
+      icon: [japan_tv_tower]
     - tags: {man_made: tower}
       icon: [tower]
     - tags: {building: garages}
