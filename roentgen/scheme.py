@@ -205,6 +205,8 @@ class Scheme:
         for group in self.icons:
             for matcher in group["tags"]:
                 matcher: Dict[str, Any]
+                if "replace_shapes" in matcher and main_icon:
+                    continue
                 matched: bool = is_matched(matcher, tags)
                 matcher_tags: Set[str] = matcher["tags"].keys()
                 if not matched:

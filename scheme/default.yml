@@ -512,8 +512,10 @@ node_icons:
       shapes: [telephone]
     - tags: {information: "*"}
       shapes: [information]
+      replace_shapes: no
     - tags: {tourism: "*"}
       shapes: [historic]
+      replace_shapes: no
     - tags: {tourism: information}
       shapes: [information]
     - tags: {information: guidepost}
