@@ -135,8 +135,8 @@ def draw_element(target: str, tags_description: str):
         comma, key from value is separated by equals sign.
     """
     tags = dict([x.split("=") for x in tags_description.split(",")])
-    scheme = Scheme(Path("scheme/default.yml"))
-    extractor = ShapeExtractor(
+    scheme: Scheme = Scheme(Path("scheme/default.yml"))
+    extractor: ShapeExtractor = ShapeExtractor(
         Path("icons/icons.svg"), Path("icons/config.json")
     )
     icon, priority = scheme.get_icon(extractor, tags)
@@ -166,7 +166,11 @@ def draw_grid() -> None:
     Draw all possible icon shapes combinations as grid.
     """
     os.makedirs("icon_set", exist_ok=True)
-    draw_all_icons("icon_grid.svg", "icon_set")
+    scheme: Scheme = Scheme(Path("scheme/default.yml"))
+    extractor: ShapeExtractor = ShapeExtractor(
+        Path("icons/icons.svg"), Path("icons/config.json")
+    )
+    draw_all_icons(scheme, extractor, "icon_grid.svg", "icon_set")
 
 
 if __name__ == "__main__":

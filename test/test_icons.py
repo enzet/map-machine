@@ -6,7 +6,7 @@ from typing import Dict
 
 from roentgen.grid import draw_all_icons
 
-from test import SCHEME, ICON_EXTRACTOR
+from test import SCHEME, SCHEME_EXTRACTOR
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -15,11 +15,11 @@ __email__ = "me@enzet.ru"
 def test_icons() -> None:
     """ Test grid drawing. """
     makedirs("icon_set", exist_ok=True)
-    draw_all_icons("temp.svg", "icon_set")
+    draw_all_icons(SCHEME, SCHEME_EXTRACTOR, "temp.svg", "icon_set")
 
 
 def get_icon(tags: Dict[str, str]):
-    icon, _ = SCHEME.get_icon(ICON_EXTRACTOR, tags)
+    icon, _ = SCHEME.get_icon(SCHEME_EXTRACTOR, tags)
     return icon
 
 

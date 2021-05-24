@@ -17,6 +17,7 @@ __email__ = "me@enzet.ru"
 
 
 def draw_all_icons(
+    scheme: Scheme, extractor: ShapeExtractor,
     output_file_name: str, output_directory: str, columns: int = 16,
     step: float = 24, background_color: Color = Color("white"),
     color: Color = Color("black")
@@ -24,6 +25,8 @@ def draw_all_icons(
     """
     Draw all possible icon combinations in grid.
 
+    :param scheme: tag specification
+    :param extractor: shape extractor for icon creation
     :param output_file_name: output SVG file name for icon grid
     :param output_directory: path to the directory to store individual SVG files
         for icons
@@ -32,14 +35,7 @@ def draw_all_icons(
     :param background_color: background color
     :param color: icon color
     """
-    scheme: Scheme = Scheme(Path("scheme/default.yml"))
-
     icons: List[Icon] = []
-
-    icons_file_name: str = "icons/icons.svg"
-    extractor: ShapeExtractor = ShapeExtractor(
-        Path(icons_file_name), Path("icons/config.json")
-    )
 
     def add() -> None:
         """
