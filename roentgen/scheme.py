@@ -66,37 +66,119 @@ def is_matched_tag(
     return MatchingType.NOT_MATCHED
 
 
-def is_matched(matcher: Dict[str, Any], tags: Dict[str, str]) -> bool:
-    """
-    Check whether element tags matches tag matcher.
+class Matcher:
+    def __init__(self, structure: Dict[str, Any]):
+        self.tags = structure["tags"]
 
-    :param matcher: dictionary with tag keys and values, value lists, or "*"
-    :param tags: element tags to match
-    """
-    matched: bool = True
+        self.exception = None
 
-    for config_tag_key in matcher["tags"]:
-        config_tag_key: str
-        tag_matcher = matcher["tags"][config_tag_key]
-        if (
-            is_matched_tag(config_tag_key, tag_matcher, tags) ==
-                MatchingType.NOT_MATCHED
-        ):
-            matched = False
-            break
+        if "exception" in structure:
+            self.exception = structure["exception"]
 
-    if "exception" in matcher:
-        for config_tag_key in matcher["exception"]:
+        self.replace_shapes: bool = True
+        if "replace_shapes" in structure:
+            self.replace_shapes = structure["replace_shapes"]
+
+    def is_matched(self, tags: Dict[str, str]) -> bool:
+        """
+        Check whether element tags matches tag matcher.
+
+        :param tags: element tags to match
+        """
+        matched: bool = True
+
+        for config_tag_key in self.tags:
             config_tag_key: str
-            tag_matcher = matcher["exception"][config_tag_key]
+            tag_matcher = self.tags[config_tag_key]
             if (
-                is_matched_tag(config_tag_key, tag_matcher, tags) !=
-                    MatchingType.NOT_MATCHED
+                is_matched_tag(config_tag_key, tag_matcher, tags) ==
+                MatchingType.NOT_MATCHED
             ):
                 matched = False
                 break
 
-    return matched
+        if self.exception:
+            for config_tag_key in self.exception:
+                config_tag_key: str
+                tag_matcher = self.exception[config_tag_key]
+                if (
+                    is_matched_tag(config_tag_key, tag_matcher, tags) !=
+                    MatchingType.NOT_MATCHED
+                ):
+                    matched = False
+                    break
+
+        return matched
+
+
+class NodeMatcher(Matcher):
+    """
+    Tag specification matcher.
+    """
+    def __init__(self, structure: Dict[str, Any]):
+        # Dictionary with tag keys and values, value lists, or "*"
+        super().__init__(structure)
+
+        self.draw: bool = True
+        if "draw" in structure:
+            self.draw = structure["draw"]
+
+        self.shapes = None
+        if "shapes" in structure:
+            self.shapes = structure["shapes"]
+
+        self.over_icon = None
+        if "over_icon" in structure:
+            self.over_icon = structure["over_icon"]
+
+        self.add_shapes = None
+        if "add_shapes" in structure:
+            self.add_shapes = structure["add_shapes"]
+
+        self.set_main_color = None
+        if "set_main_color" in structure:
+            self.set_main_color = structure["set_main_color"]
+
+        self.under_icon = None
+        if "under_icon" in structure:
+            self.under_icon = structure["under_icon"]
+
+        self.with_icon = None
+        if "with_icon" in structure:
+            self.with_icon = structure["with_icon"]
+
+
+class WayMatcher(Matcher):
+    def __init__(self, structure: Dict[str, Any], colors):
+        super().__init__(structure)
+        self.style: Dict[str, Any] = {"fill": "none"}
+        if "style" in structure:
+            style: Dict[str, Any] = structure["style"]
+            for key in style:
+                if str(style[key]).endswith("_color"):
+                    self.style[key] = colors[style[key]]
+                else:
+                    self.style[key] = style[key]
+        self.priority = 0
+        if "priority" in structure:
+            self.priority = structure["priority"]
+
+        self.r = None
+        if "r" in structure:
+            self.r = structure["r"]
+            self.l = 0
+        if "r1" in structure:
+            self.r = structure["r1"]
+            self.l = 1
+        if "r2" in structure:
+            self.r = structure["r2"]
+            self.l = 2
+
+    def get_style(self, scale):
+        if self.r:
+            return {**self.style, **{"stroke-width": self.r * scale + self.l}}
+        else:
+            return self.style
 
 
 class Scheme:
@@ -112,15 +194,21 @@ class Scheme:
         """
         with file_name.open() as input_file:
             content: Dict[str, Any] = yaml.load(
-                input_file.read(), Loader=yaml.FullLoader)
-
-        self.icons: List[Dict[str, Any]] = content["node_icons"]
-        self.ways: List[Dict[str, Any]] = content["ways"]
+                input_file.read(), Loader=yaml.FullLoader
+            )
+        self.node_matchers: List[NodeMatcher] = []
+        for group in content["node_icons"]:
+            for element in group["tags"]:
+                self.node_matchers.append(NodeMatcher(element))
 
         self.colors: Dict[str, str] = content["colors"]
 
-        self.area_tags: List[Dict[str, str]] = content["area_tags"]
-
+        self.way_matchers: List[WayMatcher] = [
+            WayMatcher(x, self.colors) for x in content["ways"]
+        ]
+        self.area_matchers: List[Matcher] = [
+            Matcher(x) for x in content["area_tags"]
+        ]
         self.tags_to_write: List[str] = content["tags_to_write"]
         self.prefix_to_write: List[str] = content["prefix_to_write"]
         self.tags_to_skip: List[str] = content["tags_to_skip"]
@@ -202,49 +290,43 @@ class Scheme:
 
         index: int = 0
 
-        for group in self.icons:
-            for matcher in group["tags"]:
-                matcher: Dict[str, Any]
-                if "replace_shapes" in matcher and main_icon:
-                    continue
-                matched: bool = is_matched(matcher, tags)
-                matcher_tags: Set[str] = matcher["tags"].keys()
-                if not matched:
-                    continue
-                priority = len(self.icons) - index
-                if "draw" in matcher and not matcher["draw"]:
-                    processed |= set(matcher_tags)
-                if "shapes" in matcher:
-                    main_icon = Icon([
-                        ShapeSpecification.from_structure(x, icon_extractor, self)
-                        for x in matcher["shapes"]
-                    ])
-                    processed |= set(matcher_tags)
-                if "over_icon" in matcher:
-                    if main_icon:
-                        main_icon.add_specifications([
-                            ShapeSpecification.from_structure(
-                                x, icon_extractor, self
-                            )
-                            for x in matcher["over_icon"]
-                        ])
-                        for key in matcher_tags:
-                            processed.add(key)
-                if "add_shapes" in matcher:
-                    extra_icons += [Icon([
+        for matcher in self.node_matchers:
+            if not matcher.replace_shapes and main_icon:
+                continue
+            matched: bool = matcher.is_matched(tags)
+            if not matched:
+                continue
+            matcher_tags: Set[str] = set(matcher.tags.keys())
+            priority = len(self.node_matchers) - index
+            if not matcher.draw:
+                processed |= matcher_tags
+            if matcher.shapes:
+                main_icon = Icon([
+                    ShapeSpecification.from_structure(x, icon_extractor, self)
+                    for x in matcher.shapes
+                ])
+                processed |= matcher_tags
+            if matcher.over_icon:
+                if main_icon:
+                    main_icon.add_specifications([
                         ShapeSpecification.from_structure(
-                            x, icon_extractor, self, Color("#888888")
+                            x, icon_extractor, self
                         )
-                        for x in matcher["add_shapes"]
-                    ])]
-                    for key in matcher_tags:
-                        processed.add(key)
-                if "color" in matcher:
-                    assert False
-                if "set_main_color" in matcher:
-                    main_icon.recolor(self.get_color(matcher["set_main_color"]))
+                        for x in matcher.over_icon
+                    ])
+                    processed |= matcher_tags
+            if matcher.add_shapes:
+                extra_icons += [Icon([
+                    ShapeSpecification.from_structure(
+                        x, icon_extractor, self, Color("#888888")
+                    )
+                    for x in matcher.add_shapes
+                ])]
+                processed |= matcher_tags
+            if matcher.set_main_color:
+                main_icon.recolor(self.get_color(matcher.set_main_color))
 
-                index += 1
+            index += 1
 
         color: Optional[Color] = None
 
@@ -288,31 +370,13 @@ class Scheme:
         """
         line_styles = []
 
-        for element in self.ways:  # type: Dict[str, Any]
-            priority = 0
-            matched: bool = is_matched(element, tags)
-            if not matched:
+        for matcher in self.way_matchers:
+            if not matcher.is_matched(tags):
                 continue
-            style: Dict[str, Any] = {"fill": "none"}
-            if "priority" in element:
-                priority = element["priority"]
-            for key in element:  # type: str
-                if key not in [
-                    "tags", "exception", "priority", "level", "shapes", "r",
-                    "r1", "r2"
-                ]:
-                    value = element[key]
-                    if isinstance(value, str) and value.endswith("_color"):
-                        value = self.get_color(value)
-                    style[key] = value
-            if "r" in element:
-                style["stroke-width"] = (element["r"] * scale)
-            if "r1" in element:
-                style["stroke-width"] = (element["r1"] * scale + 1)
-            if "r2" in element:
-                style["stroke-width"] = (element["r2"] * scale + 2)
 
-            line_styles.append(LineStyle(style, priority))
+            line_styles.append(
+                LineStyle(matcher.get_style(scale), matcher.priority)
+            )
 
         return line_styles
 
@@ -403,7 +467,7 @@ class Scheme:
         """
         Check whether way described by tags is area.
         """
-        for matcher in self.area_tags:
-            if is_matched(matcher, tags):
+        for matcher in self.area_matchers:
+            if matcher.is_matched(tags):
                 return True
         return False

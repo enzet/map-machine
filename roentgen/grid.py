@@ -54,33 +54,34 @@ def draw_all_icons(
         if constructed_icon not in icons:
             icons.append(constructed_icon)
 
-    for group in scheme.icons:
-        for element in group["tags"]:  # type: Dict[str, Any]
-            for key in ["shapes", "add_shapes"]:
-                if key in element:
-                    current_set = element[key]
-                    add()
-            if "over_icon" not in element:
-                continue
-            if "under_icon" in element:
-                for icon_id in element["under_icon"]:  # type: str
-                    current_set = set([icon_id] + element["over_icon"])
-                    add()
-            if not ("under_icon" in element and "with_icon" in element):
-                continue
-            for icon_id in element["under_icon"]:  # type: str
-                for icon_2_id in element["with_icon"]:  # type: str
-                    current_set: Set[str] = set(
-                        [icon_id] + [icon_2_id] + element["over_icon"])
-                    add()
-                for icon_2_id in element["with_icon"]:  # type: str
-                    for icon_3_id in element["with_icon"]:  # type: str
-                        current_set = set(
-                            [icon_id] + [icon_2_id] + [icon_3_id] +
-                            element["over_icon"])
-                        if (icon_2_id != icon_3_id and icon_2_id != icon_id and
-                                icon_3_id != icon_id):
-                            add()
+    for matcher in scheme.node_matchers:
+        if matcher.shapes:
+            current_set = matcher.shapes
+            add()
+        if matcher.add_shapes:
+            current_set = matcher.add_shapes
+            add()
+        if not matcher.over_icon:
+            continue
+        if matcher.under_icon:
+            for icon_id in matcher.under_icon:
+                current_set = set([icon_id] + matcher.over_icon)
+                add()
+        if not (matcher.under_icon and matcher.with_icon):
+            continue
+        for icon_id in matcher.under_icon:
+            for icon_2_id in matcher.with_icon:
+                current_set: Set[str] = set(
+                    [icon_id] + [icon_2_id] + matcher.over_icon)
+                add()
+            for icon_2_id in matcher.with_icon:
+                for icon_3_id in matcher.with_icon:
+                    current_set = set(
+                        [icon_id] + [icon_2_id] + [icon_3_id] +
+                        matcher.over_icon)
+                    if (icon_2_id != icon_3_id and icon_2_id != icon_id and
+                            icon_3_id != icon_id):
+                        add()
 
     specified_ids: Set[str] = set()
 
