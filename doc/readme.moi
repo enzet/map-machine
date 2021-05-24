@@ -68,6 +68,12 @@ Visualize \osm {design} values used with \osm {power=tower} tag.
 
 \image {doc/emergency.png} {Emergency}
 
+\3 {Japanese map symbols} {japanese-map-symbols}
+
+There are \href {https://en.wikipedia.org/wiki/List_of_Japanese_map_symbols} {special symbols} appearing on Japanese maps.
+
+\image {doc/japanese.png} {Japanese map symbols}
+
 \2 {Icon set} {icon-set}
 
 If tag is drawable it is displayed using icon combination and colors.  All icons are under \href {http://creativecommons.org/licenses/by/4.0/} {CC BY} license.  So, do whatever you want but give appropriate credit.  Icon set is heavily inspired by \href {https://github.com/mapbox/maki} {Maki},  \href {https://github.com/gmgeo/osmic} {Osmic}, and \href {https://github.com/ideditor/temaki} {Temaki} icon sets.

@@ -56,6 +56,12 @@ Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used
 
 ![Emergency](doc/emergency.png)
 
+### Japanese map symbols ###
+
+There are [special symbols](https://en.wikipedia.org/wiki/List_of_Japanese_map_symbols) appearing on Japanese maps.
+
+![Japanese map symbols](doc/japanese.png)
+
 Icon set
 --------
 
