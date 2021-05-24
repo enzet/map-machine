@@ -19,3 +19,12 @@ def test_style_unknown() -> None:
     Test constructing style of unknown tags.
     """
     assert SCHEME.get_style({"aaa": "bbb"}, 18) == []
+
+
+def test_style_area() -> None:
+    """
+    Test constructing style of landuse=grass.
+    """
+    style = SCHEME.get_style({"landuse": "grass"}, 18)
+    assert len(style) == 1
+    assert style[0].style == {"fill": "#CFE0A8", "stroke": "#BFD098"}
