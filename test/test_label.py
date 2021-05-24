@@ -1,12 +1,9 @@
 """
 Test label generation for nodes.
 """
-from pathlib import Path
 from typing import List
 
-from roentgen.scheme import Scheme
 from roentgen.text import Label
-
 from test import SCHEME
 
 __author__ = "Sergey Vartanov"

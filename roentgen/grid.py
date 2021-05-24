@@ -2,8 +2,7 @@
 Icon grid drawing.
 """
 from os.path import join
-from pathlib import Path
-from typing import Any, Dict, List, Set
+from typing import List, Set
 
 import numpy as np
 from colour import Color

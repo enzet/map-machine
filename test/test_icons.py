@@ -5,7 +5,6 @@ from os import makedirs
 from typing import Dict
 
 from roentgen.grid import draw_all_icons
-
 from test import SCHEME, SCHEME_EXTRACTOR
 
 __author__ = "Sergey Vartanov"

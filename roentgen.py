@@ -12,7 +12,6 @@ from typing import List
 import numpy as np
 import svgwrite
 
-from roentgen.ui import error, parse_options
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
 from roentgen.grid import draw_all_icons
@@ -25,6 +24,7 @@ from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader, OverpassReader
 from roentgen.point import Point
 from roentgen.scheme import LineStyle, Scheme
+from roentgen.ui import error, parse_options
 from roentgen.util import MinMax
 
 
