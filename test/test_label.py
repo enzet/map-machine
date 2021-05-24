@@ -7,10 +7,10 @@ from typing import List
 from roentgen.scheme import Scheme
 from roentgen.text import Label
 
+from test import SCHEME
+
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
-
-SCHEME: Scheme = Scheme(Path("scheme/default.yml"))
 
 
 def construct_labels(tags) -> List[Label]:

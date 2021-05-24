@@ -2,20 +2,14 @@
 Test icon generation for nodes.
 """
 from os import makedirs
-from pathlib import Path
 from typing import Dict
 
 from roentgen.grid import draw_all_icons
-from roentgen.icon import ShapeExtractor
-from roentgen.scheme import Scheme
+
+from test import SCHEME, ICON_EXTRACTOR
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
-
-SCHEME: Scheme = Scheme(Path("scheme/default.yml"))
-ICON_EXTRACTOR: ShapeExtractor = ShapeExtractor(
-    Path("icons/icons.svg"), Path("icons/config.json")
-)
 
 
 def test_icons() -> None:
