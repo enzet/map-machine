@@ -136,9 +136,12 @@ class Building(Figure):
 
     def __init__(
         self, tags: Dict[str, str], inners, outers, flinger: Flinger,
-        line_style: LineStyle
+        scheme: Scheme
     ):
-        super().__init__(tags, inners, outers, line_style)
+        super().__init__(tags, inners, outers, LineStyle({
+            "fill": scheme.get_color("building_color").hex,
+            "stroke": scheme.get_color("building_border_color").hex,
+        }))
 
         self.parts = []
 
@@ -158,6 +161,18 @@ class Building(Figure):
             return max(3.0, float(self.get_tag("building:levels")))
         except (ValueError, TypeError):
             return 3
+
+
+class Road(Figure):
+    """
+    Road or track on the map.
+    """
+
+    def __init__(
+        self, tags: Dict[str, str], inners, outers, flinger: Flinger,
+        line_style: LineStyle
+    ):
+        super().__init__(tags, inners, outers, line_style)
 
 
 def line_center(nodes: List[OSMNode], flinger: Flinger) -> np.array:
@@ -278,6 +293,7 @@ class Constructor:
         self.points: List[Point] = []
         self.figures: List[Figure] = []
         self.buildings: List[Building] = []
+        self.roads: List[Road] = []
 
         self.levels: Set[float] = {0.5, 1.0}
 
@@ -304,7 +320,8 @@ class Constructor:
         for way_id in self.map_.way_map:  # type: int
             ui.progress_bar(
                 way_number, len(self.map_.way_map), step=10,
-                text="Constructing ways")
+                text="Constructing ways"
+            )
             way_number += 1
             way: OSMWay = self.map_.way_map[way_id]
             if not self.check_level(way.tags):
@@ -314,8 +331,10 @@ class Constructor:
         ui.progress_bar(-1, len(self.map_.way_map), text="Constructing ways")
 
     def construct_line(
-        self, line: Optional[Tagged],
-        inners: List[List[OSMNode]], outers: List[List[OSMNode]]
+        self,
+        line: Optional[Tagged],
+        inners: List[List[OSMNode]],
+        outers: List[List[OSMNode]],
     ) -> None:
         """
         Way or relation construction.
@@ -327,8 +346,8 @@ class Constructor:
         assert len(outers) >= 1
 
         center_point, center_coordinates = (
-            line_center(outers[0], self.flinger))
-
+            line_center(outers[0], self.flinger)
+        )
         if self.mode == "user-coloring":
             user_color = get_user_color(line.user, self.seed)
             self.figures.append(Figure(
@@ -356,14 +375,16 @@ class Constructor:
 
         line_styles: List[LineStyle] = self.scheme.get_style(line.tags, scale)
 
+        if "building" in line.tags:
+            self.add_building(
+                Building(line.tags, inners, outers, self.flinger, self.scheme)
+            )
+
         for line_style in line_styles:  # type: LineStyle
-            if "building" in line.tags:
-                self.add_building(Building(
-                    line.tags, inners, outers, self.flinger, line_style
-                ))
-            else:
-                self.figures.append(
-                    Figure(line.tags, inners, outers, line_style))
+            self.figures.append(
+                Figure(line.tags, inners, outers, line_style)
+            )
+
             if (
                 line.get_tag("area") == "yes" or
                 is_cycle(outers[0]) and line.get_tag("area") != "no" and
@@ -384,10 +405,13 @@ class Constructor:
         if not line_styles:
             if DEBUG:
                 style: Dict[str, Any] = {
-                    "fill": "none", "stroke": Color("red").hex,
-                    "stroke-width": 1}
+                    "fill": "none",
+                    "stroke": Color("red").hex,
+                    "stroke-width": 1
+                }
                 self.figures.append(Figure(
-                    line.tags, inners, outers, LineStyle(style, 1000)))
+                    line.tags, inners, outers, LineStyle(style, 1000)
+                ))
 
             priority: int
             icon_set: IconSet

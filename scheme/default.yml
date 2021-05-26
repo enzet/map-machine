@@ -1001,14 +1001,6 @@ ways:
       fill: hidden_color
       opacity: 0.05
 
-  - tags: {building: "*"}
-    style:
-      fill: building_color
-      stroke: building_border_color
-  #- tags: {building:part: "*"}
-  #  fill: building_color
-  #  stroke: building_border_color
-
   - tags: {amenity: ferry_terminal}
     style:
       fill: ferry_terminal_color
