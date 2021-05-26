@@ -60,9 +60,9 @@ class Painter:
         """
         Draw map.
         """
-        self.svg.add(Rect(
-            (0, 0), self.flinger.size, fill=self.background_color))
-
+        self.svg.add(
+            Rect((0, 0), self.flinger.size, fill=self.background_color)
+        )
         ways = sorted(constructor.figures, key=lambda x: x.line_style.priority)
         ways_length: int = len(ways)
         for index, way in enumerate(ways):
@@ -104,12 +104,12 @@ class Painter:
         building_shade: Group = Group(opacity=0.1)
         length: float = self.flinger.get_scale()
 
-        for way in constructor.buildings:  # type: Building
-            shift = np.array((length * way.get_levels(), 0))
-            for nodes11 in way.inners + way.outers:
-                for i in range(len(nodes11) - 1):  # type: int
-                    flung_1 = self.flinger.fling(nodes11[i].coordinates)
-                    flung_2 = self.flinger.fling(nodes11[i + 1].coordinates)
+        for building in constructor.buildings:
+            shift = np.array((length * building.get_levels(), 0))
+            for nodes in building.inners + building.outers:
+                for i in range(len(nodes) - 1):  # type: int
+                    flung_1 = self.flinger.fling(nodes[i].coordinates)
+                    flung_2 = self.flinger.fling(nodes[i + 1].coordinates)
                     building_shade.add(Path(
                         ("M", flung_1, "L", flung_2, np.add(flung_2, shift),
                          np.add(flung_1, shift), "Z"),

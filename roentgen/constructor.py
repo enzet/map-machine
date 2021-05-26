@@ -70,6 +70,7 @@ class Figure(Tagged):
     """
     Some figure on the map: way or area.
     """
+
     def __init__(
         self, tags: Dict[str, str], inners: List[List[OSMNode]],
         outers: List[List[OSMNode]], line_style: LineStyle
@@ -110,6 +111,7 @@ class Segment:
     """
     Line segment.
     """
+
     def __init__(self, point_1: np.array, point_2: np.array):
         self.point_1 = point_1
         self.point_2 = point_2
@@ -131,6 +133,7 @@ class Building(Figure):
     """
     Building on the map.
     """
+
     def __init__(
         self, tags: Dict[str, str], inners, outers, flinger: Flinger,
         line_style: LineStyle
@@ -274,7 +277,7 @@ class Constructor:
 
         self.points: List[Point] = []
         self.figures: List[Figure] = []
-        self.buildings: List[Figure] = []
+        self.buildings: List[Building] = []
 
         self.levels: Set[float] = {0.5, 1.0}
 
