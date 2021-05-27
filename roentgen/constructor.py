@@ -30,6 +30,12 @@ TIME_COLOR_SCALE: List[Color] = [
     Color("#581845"), Color("#900C3F"), Color("#C70039"), Color("#FF5733"),
     Color("#FFC300"), Color("#DAF7A6")
 ]
+ROAD_HIGHWAY_VALUES: List[str] = [
+    "motorway", "trunk", "primary", "secondary", "tertiary", "unclassified",
+    "residential", "motorway_link", "trunk_link", "primary_link",
+    "secondary_link", "tertiary_link", "living_street", "service",
+    "pedestrian", "track", "bus_guideway", "escape", "raceway", "road", "busway"
+]
 
 
 def is_clockwise(polygon: List[OSMNode]) -> bool:
@@ -170,9 +176,10 @@ class Road(Figure):
 
     def __init__(
         self, tags: Dict[str, str], inners, outers, flinger: Flinger,
-        line_style: LineStyle
+        line_styles: List[LineStyle]
     ):
-        super().__init__(tags, inners, outers, line_style)
+        super().__init__(tags, inners, outers, None)
+        self.line_styles = line_styles
 
 
 def line_center(nodes: List[OSMNode], flinger: Flinger) -> np.array:
@@ -379,6 +386,15 @@ class Constructor:
             self.add_building(
                 Building(line.tags, inners, outers, self.flinger, self.scheme)
             )
+
+        if (
+            "highway" in line.tags
+            and line.tags["highway"] in ROAD_HIGHWAY_VALUES
+        ):
+            self.roads.append(
+                Road(line.tags, inners, outers, self.flinger, line_styles)
+            )
+            return
 
         for line_style in line_styles:  # type: LineStyle
             self.figures.append(

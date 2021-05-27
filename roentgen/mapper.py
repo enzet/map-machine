@@ -74,6 +74,20 @@ class Painter:
                 self.svg.add(path)
         ui.progress_bar(-1, 0, text="Drawing ways")
 
+        roads = sorted(
+            constructor.roads, key=lambda x: x.line_styles[0].priority
+        )
+        for road in roads:
+            path_commands: str = road.get_path(self.flinger)
+            path = Path(d=path_commands)
+            path.update(road.line_styles[0].style)
+            self.svg.add(path)
+        for road in roads:
+            path_commands: str = road.get_path(self.flinger)
+            path = Path(d=path_commands)
+            path.update(road.line_styles[1].style)
+            self.svg.add(path)
+
         # Trees
 
         for node in constructor.points:
