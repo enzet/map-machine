@@ -192,6 +192,13 @@ class Road(Figure):
         super().__init__(tags, inners, outers)
         self.matcher: RoadMatcher = matcher
 
+        self.width: Optional[float] = None
+        if "width" in tags:
+            try:
+                self.width = float(tags["width"])
+            except ValueError:
+                pass
+
 
 def line_center(nodes: List[OSMNode], flinger: Flinger) -> np.array:
     """

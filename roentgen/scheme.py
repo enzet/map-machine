@@ -149,14 +149,14 @@ class NodeMatcher(Matcher):
 
 
 class WayMatcher(Matcher):
-    def __init__(self, structure: Dict[str, Any], colors):
+    def __init__(self, structure: Dict[str, Any], scheme: "Scheme"):
         super().__init__(structure)
         self.style: Dict[str, Any] = {"fill": "none"}
         if "style" in structure:
             style: Dict[str, Any] = structure["style"]
             for key in style:
                 if str(style[key]).endswith("_color"):
-                    self.style[key] = colors[style[key]]
+                    self.style[key] = scheme.get_color(style[key])
                 else:
                     self.style[key] = style[key]
         self.priority = 0
@@ -165,9 +165,11 @@ class WayMatcher(Matcher):
 
 
 class RoadMatcher(Matcher):
-    def __init__(self, structure: Dict[str, Any], scheme):
+    def __init__(self, structure: Dict[str, Any], scheme: "Scheme"):
         super().__init__(structure)
-        self.border_color: Color = Color(scheme.get_color(structure["border_color"]))
+        self.border_color: Color = Color(
+            scheme.get_color(structure["border_color"])
+        )
         self.color: Color = Color("white")
         if "color" in structure:
             self.color = Color(scheme.get_color(structure["color"]))
@@ -200,7 +202,7 @@ class Scheme:
         self.colors: Dict[str, str] = content["colors"]
 
         self.way_matchers: List[WayMatcher] = [
-            WayMatcher(x, self.colors) for x in content["ways"]
+            WayMatcher(x, self) for x in content["ways"]
         ]
         self.road_matchers: List[RoadMatcher] = [
             RoadMatcher(x, self) for x in content["roads"]

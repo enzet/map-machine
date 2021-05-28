@@ -11,7 +11,7 @@ from svgwrite.path import Path
 from svgwrite.shapes import Rect
 
 from roentgen import ui
-from roentgen.constructor import Building, Constructor, Segment
+from roentgen.constructor import Building, Constructor, Segment, Road
 from roentgen.direction import DirectionSet, Sector
 from roentgen.flinger import Flinger
 from roentgen.icon import ShapeExtractor
@@ -78,31 +78,9 @@ class Painter:
             constructor.roads, key=lambda x: x.matcher.priority
         )
         for road in roads:
-            path_commands: str = road.get_path(self.flinger)
-            path = Path(d=path_commands)
-            path.update({
-                "fill": "none",
-                "stroke": road.matcher.border_color.hex,
-                "stroke-linecap": "round",
-                "stroke-linejoin": "round",
-                "stroke-width":
-                    road.matcher.default_width
-                    * self.flinger.get_scale(road.outers[0][0].coordinates) + 2
-            })
-            self.svg.add(path)
+            self.draw_road(road, road.matcher.border_color, 2)
         for road in roads:
-            path_commands: str = road.get_path(self.flinger)
-            path = Path(d=path_commands)
-            path.update({
-                "fill": "none",
-                "stroke": road.matcher.color.hex,
-                "stroke-linecap": "round",
-                "stroke-linejoin": "round",
-                "stroke-width":
-                    road.matcher.default_width
-                    * self.flinger.get_scale(road.outers[0][0].coordinates)
-            })
-            self.svg.add(path)
+            self.draw_road(road, road.matcher.color)
 
         # Trees
 
@@ -290,6 +268,26 @@ class Painter:
                 point.draw_texts(self.svg, occupied)
 
         ui.progress_bar(-1, len(nodes), step=10, text="Drawing nodes")
+
+    def draw_road(
+        self, road: Road, color: Color, extra_width: float = 0
+    ) -> None:
+        self.flinger.get_scale()
+        if road.width is not None:
+            width = road.width
+        else:
+            width = road.matcher.default_width
+        scale = self.flinger.get_scale(road.outers[0][0].coordinates)
+        path_commands: str = road.get_path(self.flinger)
+        path = Path(d=path_commands)
+        path.update({
+            "fill": "none",
+            "stroke": color.hex,
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": scale * width + extra_width
+        })
+        self.svg.add(path)
 
 
 def check_level_number(tags: Dict[str, Any], level: float):
