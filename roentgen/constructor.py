@@ -72,15 +72,16 @@ class Figure(Tagged):
     """
 
     def __init__(
-        self, tags: Dict[str, str], inners: List[List[OSMNode]],
-        outers: List[List[OSMNode]], line_style: LineStyle
+        self,
+        tags: Dict[str, str],
+        inners: List[List[OSMNode]],
+        outers: List[List[OSMNode]]
     ):
         super().__init__()
 
         self.tags: Dict[str, str] = tags
         self.inners: List[List[OSMNode]] = []
         self.outers: List[List[OSMNode]] = []
-        self.line_style = line_style
 
         for inner_nodes in inners:
             self.inners.append(make_clockwise(inner_nodes))
@@ -107,6 +108,22 @@ class Figure(Tagged):
         return path
 
 
+class StyledFigure(Figure):
+    """
+    Figure with stroke and fill style.
+    """
+
+    def __init__(
+        self,
+        tags: Dict[str, str],
+        inners: List[List[OSMNode]],
+        outers: List[List[OSMNode]],
+        line_style: LineStyle
+    ):
+        super().__init__(tags, inners, outers)
+        self.line_style = line_style
+
+
 class Segment:
     """
     Line segment.
@@ -124,8 +141,8 @@ class Segment:
 
     def __lt__(self, other: "Segment") -> bool:
         return (
-            ((self.point_1 + self.point_2) / 2)[1] <
-            ((other.point_1 + other.point_2) / 2)[1]
+            ((self.point_1 + self.point_2) / 2)[1]
+            < ((other.point_1 + other.point_2) / 2)[1]
         )
 
 
@@ -138,11 +155,12 @@ class Building(Figure):
         self, tags: Dict[str, str], inners, outers, flinger: Flinger,
         scheme: Scheme
     ):
-        super().__init__(tags, inners, outers, LineStyle({
+        super().__init__(tags, inners, outers)
+
+        self.line_style = LineStyle({
             "fill": scheme.get_color("building_color").hex,
             "stroke": scheme.get_color("building_border_color").hex,
-        }))
-
+        })
         self.parts = []
 
         for nodes in self.inners + self.outers:
@@ -171,7 +189,7 @@ class Road(Figure):
     def __init__(
         self, tags: Dict[str, str], inners, outers, matcher
     ):
-        super().__init__(tags, inners, outers, None)
+        super().__init__(tags, inners, outers)
         self.matcher: RoadMatcher = matcher
 
 
@@ -291,7 +309,7 @@ class Constructor:
         self.icon_extractor = icon_extractor
 
         self.points: List[Point] = []
-        self.figures: List[Figure] = []
+        self.figures: List[StyledFigure] = []
         self.buildings: List[Building] = []
         self.roads: List[Road] = []
 
@@ -350,7 +368,7 @@ class Constructor:
         )
         if self.mode == "user-coloring":
             user_color = get_user_color(line.user, self.seed)
-            self.figures.append(Figure(
+            self.figures.append(StyledFigure(
                 line.tags, inners, outers,
                 LineStyle({
                     "fill": "none", "stroke": user_color.hex, "stroke-width": 1
@@ -360,7 +378,7 @@ class Constructor:
 
         if self.mode == "time":
             time_color = get_time_color(line.timestamp, self.map_.time)
-            self.figures.append(Figure(
+            self.figures.append(StyledFigure(
                 line.tags, inners, outers,
                 LineStyle({
                     "fill": "none", "stroke": time_color.hex, "stroke-width": 1
@@ -389,9 +407,8 @@ class Constructor:
 
         for line_style in line_styles:  # type: LineStyle
             self.figures.append(
-                Figure(line.tags, inners, outers, line_style)
+                StyledFigure(line.tags, inners, outers, line_style)
             )
-
             if (
                 line.get_tag("area") == "yes" or
                 is_cycle(outers[0]) and line.get_tag("area") != "no" and
@@ -416,7 +433,7 @@ class Constructor:
                     "stroke": Color("red").hex,
                     "stroke-width": 1
                 }
-                self.figures.append(Figure(
+                self.figures.append(StyledFigure(
                     line.tags, inners, outers, LineStyle(style, 1000)
                 ))
 
