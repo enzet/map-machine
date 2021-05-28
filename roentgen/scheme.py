@@ -156,7 +156,7 @@ class WayMatcher(Matcher):
             style: Dict[str, Any] = structure["style"]
             for key in style:
                 if str(style[key]).endswith("_color"):
-                    self.style[key] = scheme.get_color(style[key])
+                    self.style[key] = scheme.get_color(style[key]).hex.upper()
                 else:
                     self.style[key] = style[key]
         self.priority = 0
