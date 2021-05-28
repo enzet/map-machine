@@ -822,6 +822,56 @@ node_icons:
     - tags: {crossing:island: "no"}
       add_shapes: [rectangle_vertical_rounded_crossed]
 
+roads:
+  - tags: {highway: motorway}
+    default_width: 15
+    border_color: road_border_color
+    color: "#FFFFFF"
+  - tags: {highway: trunk}
+    default_width: 13
+    border_color: road_border_color
+    priority: 41
+  - tags: {highway: primary}
+    default_width: 11
+    border_color: primary_border_color
+    color: primary_color
+    priority: 41.9
+  - tags: {highway: motorway_link}
+    default_width: 9
+    border_color: road_border_color
+    priority: 41
+  - tags: {highway: secondary}
+    default_width: 9
+    border_color: secondary_border_color
+    priority: 41.8
+    color: secondary_color
+  - tags: {highway: tertiary}
+    default_width: 7
+    border_color: tertiary_border_color
+    priority: 41.7
+    color: tertiary_color
+  - tags: {highway: unclassified}
+    default_width: 5
+    border_color: road_border_color
+    priority: 41
+  - tags: {highway: residential}
+    default_width: 5
+    border_color: road_border_color
+    priority: 41
+  - tags: {highway: living_street}
+    default_width: 4
+    border_color: road_border_color
+    priority: 41
+  - tags: {highway: service}
+    exception: {service: parking_aisle}
+    default_width: 3
+    border_color: road_border_color
+    priority: 41
+  - tags: {highway: service, service: parking_aisle}
+    default_width: 2
+    border_color: road_border_color
+    priority: 41
+
 ways:
   - tags: {indoor: area}
     style:
@@ -865,6 +915,79 @@ ways:
       stroke-width: 1
       opacity: 0.1
     priority: 80
+
+  - tags: {highway: track}
+    style:
+      stroke-width: 1.5
+      stroke: track_color
+      stroke-linecap: round
+      stroke-linejoin: round
+    priority: 41
+  - tags: {highway: [footway, pedestrian, cycleway]}
+    exception: {area: "yes"}
+    style:
+      stroke-width: 3
+      stroke: foot_border_color
+      stroke-linecap: round
+      stroke-linejoin: round
+    priority: 41
+  - tags: {highway: steps}
+    style:
+      stroke-width: 6
+      stroke: foot_border_color
+      stroke-linecap: butt
+  - tags: {highway: path}
+    style:
+      stroke-width: 3
+      stroke: foot_border_color
+    priority: 41
+
+  - tags: {highway: [footway, pedestrian]}
+    exception: {area: "yes"}
+    style:
+      stroke-width: 1.5
+      stroke-dasharray: 7,3
+      stroke-linecap: round
+      stroke-linejoin: round
+      stroke: foot_color
+    priority: 42
+  - tags: {highway: [footway, pedestrian], area: "yes"}
+    style:
+      stroke: none
+      fill: "#DDDDDD"
+      stroke-linecap: round
+      stroke-linejoin: round
+    priority: -55  # FIXME
+  - tags: {highway: cycleway}
+    exception: {area: "yes"}
+    style:
+      stroke-width: 1
+      stroke: cycle_color
+      stroke-dasharray: 8,2
+      stroke-linecap: butt
+    priority: 42
+  - tags: {highway: steps, conveying: "*"}
+    style:
+      stroke-width: 5
+      stroke-dasharray: 1.5,2
+      stroke-linecap: butt
+      stroke: "#888888"
+    priority: 42
+  - tags: {highway: steps}
+    exception: {conveying: "*"}
+    style:
+      stroke-width: 5
+      stroke-dasharray: 1.5,2
+      stroke-linecap: butt
+      stroke: foot_color
+    priority: 42
+  - tags: {highway: path}
+    style:
+      stroke-width: 1.5
+      stroke-dasharray: 5,3
+      stroke-linecap: butt
+      stroke: foot_color
+    priority: 42
 
   - tags: {natural: wood}
     style:
@@ -1004,7 +1127,7 @@ ways:
   - tags: {amenity: ferry_terminal}
     style:
       fill: ferry_terminal_color
-      priority: 50
+    priority: 50
   - tags: {amenity: parking}
     style:
       fill: parking_color
@@ -1046,235 +1169,6 @@ ways:
       stroke-width: 1
       stroke: platform_border_color
     priority: 41
-
-  - tags: {highway: motorway}
-    r2: 15
-    style:
-      stroke: road_border_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41
-  - tags: {highway: trunk}
-    r2: 13
-    style:
-      stroke: road_border_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41
-  - tags: {highway: primary}
-    r2: 11
-    style:
-      stroke: primary_border_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41.9
-  - tags: {highway: motorway_link}
-    r2: 9
-    style:
-      stroke: road_border_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41
-  - tags: {highway: secondary}
-    r2: 9
-    style:
-      stroke: secondary_border_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41.8
-  - tags: {highway: tertiary}
-    r2: 7
-    style:
-      stroke: tertiary_border_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41.7
-  - tags: {highway: unclassified}
-    r2: 5
-    style:
-      stroke: road_border_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41
-  - tags: {highway: residential}
-    r2: 5
-    style:
-      stroke: road_border_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41
-  - tags: {highway: living_street}
-    r2: 4
-    style:
-      stroke: road_border_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41
-  - tags: {highway: service}
-    exception: {service: parking_aisle}
-    r2: 3
-    style:
-      stroke: road_border_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41
-  - tags: {highway: service, service: parking_aisle}
-    r2: 2
-    style:
-      stroke: road_border_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41
-  - tags: {highway: track}
-    style:
-      stroke-width: 1.5
-      stroke: track_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41
-  - tags: {highway: [footway, pedestrian, cycleway]}
-    exception: {area: "yes"}
-    style:
-      stroke-width: 3
-      stroke: foot_border_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41
-  - tags: {highway: steps}
-    style:
-      stroke-width: 6
-      stroke: foot_border_color
-      stroke-linecap: butt
-  - tags: {highway: path}
-    style:
-      stroke-width: 3
-      stroke: foot_border_color
-    priority: 41
-
-  - tags: {highway: motorway}
-    r: 15
-    style:
-      stroke: "#FFFFFF"
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 42
-  - tags: {highway: trunk}
-    r: 13
-    style:
-      stroke:  "#FFFFFF"
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 42
-  - tags: {highway: primary}
-    r: 11
-    style:
-      stroke: primary_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 42.9
-  - tags: {highway: secondary}
-    r: 9
-    style:
-      stroke: secondary_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 42.8
-  - tags: {highway: motorway_link}
-    r: 9
-    style:
-      stroke: "#FFFFFF"
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 42
-  - tags: {highway: tertiary}
-    r: 7
-    style:
-      stroke: tertiary_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 42.7
-  - tags: {highway: unclassified}
-    r: 5
-    style:
-      stroke: "#FFFFFF"
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 42
-  - tags: {highway: residential}
-    r: 5
-    style:
-      stroke: "#FFFFFF"
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 42
-  - tags: {highway: living_street}
-    r: 4
-    style:
-      stroke: "#FFFFFF"
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 42
-  - tags: {highway: service}
-    exception: {service: parking_aisle}
-    r: 3
-    style:
-      stroke: "#FFFFFF"
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 42
-  - tags: {highway: service, service: parking_aisle}
-    r: 2
-    style:
-      stroke: "#FFFFFF"
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 42
-  - tags: {highway: [footway, pedestrian]}
-    exception: {area: "yes"}
-    style:
-      stroke-width: 1.5
-      stroke-dasharray: 7,3
-      stroke-linecap: round
-      stroke-linejoin: round
-      stroke: foot_color
-    priority: 42
-  - tags: {highway: [footway, pedestrian], area: "yes"}
-    style:
-      stroke: none
-      fill: "#DDDDDD"
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: -55  # FIXME
-  - tags: {highway: cycleway}
-    exception: {area: "yes"}
-    style:
-      stroke-width: 1
-      stroke: cycle_color
-      stroke-dasharray: 8,2
-      stroke-linecap: butt
-    priority: 42
-  - tags: {highway: steps, conveying: "*"}
-    style:
-      stroke-width: 5
-      stroke-dasharray: 1.5,2
-      stroke-linecap: butt
-      stroke: "#888888"
-    priority: 42
-  - tags: {highway: steps}
-    exception: {conveying: "*"}
-    style:
-      stroke-width: 5
-      stroke-dasharray: 1.5,2
-      stroke-linecap: butt
-      stroke: foot_color
-    priority: 42
-  - tags: {highway: path}
-    style:
-      stroke-width: 1.5
-      stroke-dasharray: 5,3
-      stroke-linecap: butt
-      stroke: foot_color
-    priority: 42
 
   - tags: {route: ferry}
     style:

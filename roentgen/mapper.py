@@ -75,17 +75,33 @@ class Painter:
         ui.progress_bar(-1, 0, text="Drawing ways")
 
         roads = sorted(
-            constructor.roads, key=lambda x: x.line_styles[0].priority
+            constructor.roads, key=lambda x: x.matcher.priority
         )
         for road in roads:
             path_commands: str = road.get_path(self.flinger)
             path = Path(d=path_commands)
-            path.update(road.line_styles[0].style)
+            path.update({
+                "fill": "none",
+                "stroke": road.matcher.border_color.hex,
+                "stroke-linecap": "round",
+                "stroke-linejoin": "round",
+                "stroke-width":
+                    road.matcher.default_width
+                    * self.flinger.get_scale(road.outers[0][0].coordinates) + 2
+            })
             self.svg.add(path)
         for road in roads:
             path_commands: str = road.get_path(self.flinger)
             path = Path(d=path_commands)
-            path.update(road.line_styles[1].style)
+            path.update({
+                "fill": "none",
+                "stroke": road.matcher.color.hex,
+                "stroke-linecap": "round",
+                "stroke-linejoin": "round",
+                "stroke-width":
+                    road.matcher.default_width
+                    * self.flinger.get_scale(road.outers[0][0].coordinates)
+            })
             self.svg.add(path)
 
         # Trees

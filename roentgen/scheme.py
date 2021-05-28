@@ -163,22 +163,18 @@ class WayMatcher(Matcher):
         if "priority" in structure:
             self.priority = structure["priority"]
 
-        self.r = None
-        if "r" in structure:
-            self.r = structure["r"]
-            self.l = 0
-        if "r1" in structure:
-            self.r = structure["r1"]
-            self.l = 1
-        if "r2" in structure:
-            self.r = structure["r2"]
-            self.l = 2
 
-    def get_style(self, scale):
-        if self.r:
-            return {**self.style, **{"stroke-width": self.r * scale + self.l}}
-        else:
-            return self.style
+class RoadMatcher(Matcher):
+    def __init__(self, structure: Dict[str, Any], scheme):
+        super().__init__(structure)
+        self.border_color: Color = Color(scheme.get_color(structure["border_color"]))
+        self.color: Color = Color("white")
+        if "color" in structure:
+            self.color = Color(scheme.get_color(structure["color"]))
+        self.default_width: float = structure["default_width"]
+        self.priority: float = 0
+        if "priority" in structure:
+            self.priority = structure["priority"]
 
 
 class Scheme:
@@ -205,6 +201,9 @@ class Scheme:
 
         self.way_matchers: List[WayMatcher] = [
             WayMatcher(x, self.colors) for x in content["ways"]
+        ]
+        self.road_matchers: List[RoadMatcher] = [
+            RoadMatcher(x, self) for x in content["roads"]
         ]
         self.area_matchers: List[Matcher] = [
             Matcher(x) for x in content["area_tags"]
@@ -374,11 +373,16 @@ class Scheme:
             if not matcher.is_matched(tags):
                 continue
 
-            line_styles.append(
-                LineStyle(matcher.get_style(scale), matcher.priority)
-            )
+            line_styles.append(LineStyle(matcher.style, matcher.priority))
 
         return line_styles
+
+    def get_road(self, tags: Dict[str, Any]) -> Optional[RoadMatcher]:
+        for matcher in self.road_matchers:
+            if not matcher.is_matched(tags):
+                continue
+            return matcher
+        return None
 
     def construct_text(
         self, tags: Dict[str, str], draw_captions: str
