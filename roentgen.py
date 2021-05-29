@@ -52,33 +52,30 @@ def main(argv) -> None:
     scheme: Scheme = Scheme(Path(TAGS_FILE_NAME))
     min_: np.array
     max_: np.array
+    map_: Map
 
     if input_file_names[0].name.endswith(".json"):
         reader: OverpassReader = OverpassReader()
         reader.parse_json_file(input_file_names[0])
+
         map_ = reader.map_
         min_ = np.array((map_.boundary_box[0].min_, map_.boundary_box[1].min_))
         max_ = np.array((map_.boundary_box[0].max_, map_.boundary_box[1].max_))
     else:
-
-        boundary_box = list(map(float, options.boundary_box.split(',')))
-
-        full = False  # Full keys getting
-
-        if options.mode in [AUTHOR_MODE, CREATION_TIME_MODE]:
-            full = True
-
-        osm_reader = OSMReader()
+        boundary_box: List[float] = list(
+            map(float, options.boundary_box.split(','))
+        )
+        is_full: bool = options.mode in [AUTHOR_MODE, CREATION_TIME_MODE]
+        osm_reader = OSMReader(is_full=is_full)
 
         for file_name in input_file_names:
             if not file_name.is_file():
                 print(f"Fatal: no such file: {file_name}.")
                 sys.exit(1)
 
-            osm_reader.parse_osm_file(file_name, is_full=full)
+            osm_reader.parse_osm_file(file_name)
 
-        map_: Map = osm_reader.map_
-
+        map_ = osm_reader.map_
         min_ = np.array((boundary_box[1], boundary_box[0]))
         max_ = np.array((boundary_box[3], boundary_box[2]))
 

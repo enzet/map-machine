@@ -323,41 +323,63 @@ class OSMReader:
     OpenStreetMap XML file parser.
     """
 
-    def __init__(self):
-        self.map_ = Map()
-
-    def parse_osm_file(
+    def __init__(
         self,
-        file_name: Path,
         parse_nodes: bool = True,
         parse_ways: bool = True,
         parse_relations: bool = True,
         is_full: bool = False,
-    ) -> Map:
+    ):
+        """
+        :param parse_nodes: whether nodes should be parsed
+        :param parse_ways:  whether ways should be parsed
+        :param parse_relations: whether relations should be parsed
+        :param is_full: whether metadata should be parsed: tags `visible`,
+            `changeset`, `timestamp`, `user`, `uid`
+        """
+        self.map_ = Map()
+        self.parse_nodes: bool = parse_nodes
+        self.parse_ways: bool = parse_ways
+        self.parse_relations: bool = parse_relations
+        self.is_full: bool = is_full
+
+    def parse_osm_file(self, file_name: Path) -> Map:
         """
         Parse OSM XML file.
 
         :param file_name: input XML file
-        :param parse_nodes: whether nodes should be parsed
-        :param parse_ways:  whether ways should be parsed
-        :param parse_relations:  whether relations should be parsed
-        :param is_full:  whether metadata should be parsed
         :return: parsed map
         """
-        root = ET.parse(file_name).getroot()
+        return self.parse_osm(ET.parse(file_name).getroot())
 
+    def parse_osm_text(self, text: str) -> Map:
+        """
+        Parse OSM XML data from text representation.
+
+        :param text: XML text representation
+        :return: parsed map
+        """
+        return self.parse_osm(ET.fromstring(text))
+
+    def parse_osm(self, root) -> Map:
+        """
+        Parse OSM XML data.
+
+        :param root: root of XML data
+        :return: parsed map
+        """
         for element in root:
-            if element.tag == "node" and parse_nodes:
-                node = OSMNode.from_xml_structure(element, is_full)
+            if element.tag == "node" and self.parse_nodes:
+                node = OSMNode.from_xml_structure(element, self.is_full)
                 self.map_.add_node(node)
-            if element.tag == "way" and parse_ways:
+            if element.tag == "way" and self.parse_ways:
                 self.map_.add_way(
                     OSMWay.from_xml_structure(
-                        element, self.map_.node_map, is_full
+                        element, self.map_.node_map, self.is_full
                     )
                 )
-            if element.tag == "relation" and parse_relations:
+            if element.tag == "relation" and self.parse_relations:
                 self.map_.add_relation(
-                    OSMRelation.from_xml_structure(element, is_full)
+                    OSMRelation.from_xml_structure(element, self.is_full)
                 )
         return self.map_
