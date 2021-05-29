@@ -36,15 +36,21 @@ class Painter:
     """
 
     def __init__(
-        self, map_: Map, flinger: Flinger,
-        svg: svgwrite.Drawing, icon_extractor: ShapeExtractor,
-        scheme: Scheme, show_missing_tags: bool = False, overlap: int = 12,
-        mode: str = "normal", draw_captions: str = "main"
+        self,
+        map_: Map,
+        flinger: Flinger,
+        svg: svgwrite.Drawing,
+        icon_extractor: ShapeExtractor,
+        scheme: Scheme,
+        show_missing_tags: bool = False,
+        overlap: int = 12,
+        mode: str = "normal",
+        label_mode: str = "main"
     ):
         self.show_missing_tags: bool = show_missing_tags
         self.overlap: int = overlap
         self.mode: str = mode
-        self.draw_captions: str = draw_captions
+        self.label_mode: str = label_mode
 
         self.map_: Map = map_
         self.flinger: Flinger = flinger
@@ -263,9 +269,11 @@ class Painter:
             ui.progress_bar(
                 steps * 2 + index, steps * 3, step=10, text="Drawing texts"
             )
-            if (self.mode not in [CREATION_TIME_MODE, AUTHOR_MODE] and
-                    self.draw_captions != "no"):
-                point.draw_texts(self.svg, occupied)
+            if (
+                self.mode not in [CREATION_TIME_MODE, AUTHOR_MODE]
+                and self.label_mode != "no"
+            ):
+                point.draw_texts(self.svg, occupied, self.label_mode)
 
         ui.progress_bar(-1, len(nodes), step=10, text="Drawing nodes")
 

@@ -45,8 +45,9 @@ def parse_options(args) -> argparse.Namespace:
         dest="scale",
         type=float)
     parser.add_argument(
-        "--captions", "--no-draw-captions",
-        dest="draw_captions",
+        "--labels",
+        help="label drawing mode: `no`, `main`, or `all`",
+        dest="label_mode",
         default="main")
     parser.add_argument(
         "--show-missing-tags",

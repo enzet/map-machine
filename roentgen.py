@@ -115,7 +115,7 @@ def main(argv) -> None:
 
     painter: Painter = Painter(
         show_missing_tags=options.show_missing_tags, overlap=options.overlap,
-        mode=options.mode, draw_captions=options.draw_captions,
+        mode=options.mode, label_mode=options.label_mode,
         map_=map_, flinger=flinger, svg=svg, icon_extractor=icon_extractor,
         scheme=scheme)
 

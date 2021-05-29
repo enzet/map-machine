@@ -154,19 +154,31 @@ class Point(Tagged):
         return True
 
     def draw_texts(
-        self, svg: svgwrite.Drawing, occupied: Optional[Occupied] = None
+        self,
+        svg: svgwrite.Drawing,
+        occupied: Optional[Occupied] = None,
+        label_mode: str = "main",
     ) -> None:
         """
         Draw all labels.
         """
-        for text_struct in self.labels:  # type: Label
-            text = text_struct.text
+        labels: List[Label]
+
+        if label_mode == "main":
+            labels = self.labels[:1]
+        elif label_mode == "all":
+            labels = self.labels
+        else:
+            return
+
+        for label in labels:
+            text = label.text
             text = text.replace("&quot;", '"')
             text = text.replace("&amp;", '&')
             text = text[:26] + ("..." if len(text) > 26 else "")
             self.draw_text(
                 svg, text, self.point + np.array((0, self.y)),
-                occupied, text_struct.fill, size=text_struct.size
+                occupied, label.fill, size=label.size
             )
 
     def draw_text(
