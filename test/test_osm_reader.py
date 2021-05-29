@@ -4,6 +4,9 @@ Test OSM XML parsing.
 import numpy as np
 from roentgen.osm_reader import OSMNode, OSMReader, OSMRelation, OSMWay
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
 
 def test_node() -> None:
     """

@@ -1,12 +1,15 @@
+"""
+Test color functions.
+"""
 from colour import Color
 
 from roentgen.color import is_bright
 
-__author__: str = "Sergey Vartanov"
-__email__: str = "me@enzet.ru"
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 
-def test_is_bright():
+def test_is_bright() -> None:
     """
     Test detecting color brightness.
     """
