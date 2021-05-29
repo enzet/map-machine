@@ -40,3 +40,40 @@ def test_node_with_tag() -> None:
     assert node.id_ == 42
     assert np.allclose(node.coordinates, np.array([10, 5]))
     assert node.tags["key"] == "value"
+
+
+def test_way() -> None:
+    """
+    Test OSM way parsing from XML.
+    """
+    reader = OSMReader()
+    map_ = reader.parse_osm_text(
+        """<?xml version="1.0"?>
+<osm>
+  <way id="42" />
+</osm>"""
+    )
+    assert 42 in map_.way_map
+    way: OSMWay = map_.way_map[42]
+    assert way.id_ == 42
+
+
+def test_nodes() -> None:
+    """
+    Test OSM node parsing from XML.
+    """
+    reader = OSMReader()
+    map_ = reader.parse_osm_text(
+        """<?xml version="1.0"?>
+<osm>
+  <node id="1" lon="5" lat="10" />
+  <way id="2">
+    <nd ref="1" />
+    <tag k="key" v="value" />
+  </way>
+</osm>"""
+    )
+    way: OSMWay = map_.way_map[2]
+    assert len(way.nodes) == 1
+    assert way.nodes[0].id_ == 1
+    assert way.tags["key"] == "value"
