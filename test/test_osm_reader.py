@@ -77,3 +77,30 @@ def test_nodes() -> None:
     assert len(way.nodes) == 1
     assert way.nodes[0].id_ == 1
     assert way.tags["key"] == "value"
+
+
+def test_relation() -> None:
+    """
+    Test OSM node parsing from XML.
+    """
+    reader = OSMReader()
+    map_ = reader.parse_osm_text(
+        """<?xml version="1.0"?>
+<osm>
+  <node id="1" lon="5" lat="10" />
+  <way id="2">
+    <nd ref="1" />
+  </way>
+  <relation id="3">
+    <member type="way" ref="2" role="outer" />
+    <tag k="key" v="value" />
+  </relation>
+</osm>"""
+    )
+    assert 3 in map_.relation_map
+    relation: OSMRelation = map_.relation_map[3]
+    assert relation.id_ == 3
+    assert relation.tags["key"] == "value"
+    assert len(relation.members) == 1
+    assert relation.members[0].type_ == "way"
+    assert relation.members[0].ref == 2
