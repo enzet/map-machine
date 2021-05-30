@@ -1,7 +1,13 @@
+"""
+Tests for Röntgen project.
+"""
 from pathlib import Path
 
 from roentgen.icon import ShapeExtractor
 from roentgen.scheme import Scheme
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 SCHEME: Scheme = Scheme(Path("scheme/default.yml"))
 SCHEME_EXTRACTOR: ShapeExtractor = ShapeExtractor(
