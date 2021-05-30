@@ -28,7 +28,7 @@ class Occupied:
         self.height: float = height
         self.overlap: float = overlap
 
-    def check(self, point) -> bool:
+    def check(self, point: np.array) -> bool:
         """
         Check whether point is already occupied by other elements.
         """

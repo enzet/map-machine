@@ -158,7 +158,7 @@ class DirectionSet:
         :return: true if direction is right, false if direction is left, and
             None otherwise.
         """
-        result = [x.is_right() for x in self.sectors]
+        result: List[bool] = [x.is_right() for x in self.sectors]
         if result == [True] * len(result):
             return True
         if result == [False] * len(result):

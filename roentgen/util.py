@@ -35,5 +35,11 @@ class MinMax:
         """
         return (self.min_ + self.max_) / 2
 
+    def is_empty(self) -> bool:
+        """
+        Check if interval is empty.
+        """
+        return self.min_ == self.max_
+
     def __repr__(self) -> str:
         return f"{self.min_}:{self.max_}"

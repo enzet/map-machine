@@ -34,17 +34,19 @@ def get_gradient_color(
     color_length: int = len(colors) - 1
     scale: List[Color] = colors + [Color("black")]
 
+    range_coefficient: float = (
+        0 if bounds.is_empty() else (value - bounds.min_) / bounds.delta()
+    )
+    range_coefficient = min(1.0, max(0.0, range_coefficient))
+    index: int = int(range_coefficient * color_length)
     coefficient: float = (
-        0 if bounds.max_ == bounds.min_ else
-        (value - bounds.min_) / (bounds.max_ - bounds.min_)
-    )
-    coefficient = min(1.0, max(0.0, coefficient))
-    index: int = int(coefficient * color_length)
-    color_coefficient: float = (
-        (coefficient - index / color_length) * color_length
-    )
+        range_coefficient - index / color_length
+    ) * color_length
 
-    return Color(rgb=[
-        scale[index].rgb[i] + color_coefficient *
-        (scale[index + 1].rgb[i] - scale[index].rgb[i]) for i in range(3)
-    ])
+    return Color(
+        rgb=[
+            scale[index].rgb[i]
+            + coefficient * (scale[index + 1].rgb[i] - scale[index].rgb[i])
+            for i in range(3)
+        ]
+    )

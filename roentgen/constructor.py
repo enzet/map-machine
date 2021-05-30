@@ -12,6 +12,8 @@ from colour import Color
 from roentgen import ui
 from roentgen.color import get_gradient_color
 from roentgen.flinger import Flinger
+
+# fmt: off
 from roentgen.icon import (
     DEFAULT_SMALL_SHAPE_ID, Icon, IconSet, ShapeExtractor, ShapeSpecification
 )
@@ -19,7 +21,7 @@ from roentgen.osm_reader import (
     Map, OSMMember, OSMNode, OSMRelation, OSMWay, Tagged
 )
 from roentgen.point import Point
-from roentgen.scheme import DEFAULT_COLOR, LineStyle, Scheme, RoadMatcher
+from roentgen.scheme import DEFAULT_COLOR, LineStyle, RoadMatcher, Scheme
 from roentgen.util import MinMax
 
 __author__ = "Sergey Vartanov"
@@ -27,9 +29,10 @@ __email__ = "me@enzet.ru"
 
 DEBUG: bool = False
 TIME_COLOR_SCALE: List[Color] = [
-    Color("#581845"), Color("#900C3F"), Color("#C70039"), Color("#FF5733"),
-    Color("#FFC300"), Color("#DAF7A6")
+    Color("#581845"), Color("#900C3F"), Color("#C70039"),
+    Color("#FF5733"), Color("#FFC300"), Color("#DAF7A6"),
 ]
+# fmt: on
 
 
 def is_clockwise(polygon: List[OSMNode]) -> bool:
@@ -41,9 +44,8 @@ def is_clockwise(polygon: List[OSMNode]) -> bool:
     count: float = 0
     for index, node in enumerate(polygon):  # type: int, OSMNode
         next_index: int = 0 if index == len(polygon) - 1 else index + 1
-        count += (
-            (polygon[next_index].coordinates[0] - node.coordinates[0]) *
-            (polygon[next_index].coordinates[1] + node.coordinates[1])
+        count += (polygon[next_index].coordinates[0] - node.coordinates[0]) * (
+            polygon[next_index].coordinates[1] + node.coordinates[1]
         )
     return count >= 0
 
@@ -75,7 +77,7 @@ class Figure(Tagged):
         self,
         tags: Dict[str, str],
         inners: List[List[OSMNode]],
-        outers: List[List[OSMNode]]
+        outers: List[List[OSMNode]],
     ):
         super().__init__()
 
@@ -118,7 +120,7 @@ class StyledFigure(Figure):
         tags: Dict[str, str],
         inners: List[List[OSMNode]],
         outers: List[List[OSMNode]],
-        line_style: LineStyle
+        line_style: LineStyle,
     ):
         super().__init__(tags, inners, outers)
         self.line_style = line_style
@@ -135,15 +137,13 @@ class Segment:
 
         difference: np.array = point_2 - point_1
         vector: np.array = difference / np.linalg.norm(difference)
-        self.angle: float = (
-            np.arccos(np.dot(vector, np.array((0, 1)))) / np.pi
-        )
+        self.angle: float = np.arccos(np.dot(vector, np.array((0, 1)))) / np.pi
 
     def __lt__(self, other: "Segment") -> bool:
         return (
             ((self.point_1 + self.point_2) / 2)[1]
             < ((other.point_1 + other.point_2) / 2)[1]
-        )
+        )  # fmt: skip
 
 
 class Building(Figure):
@@ -152,15 +152,20 @@ class Building(Figure):
     """
 
     def __init__(
-        self, tags: Dict[str, str], inners, outers, flinger: Flinger,
-        scheme: Scheme
+        self,
+        tags: Dict[str, str],
+        inners: List[List[OSMNode]],
+        outers: List[List[OSMNode]],
+        flinger: Flinger,
+        scheme: Scheme,
     ):
         super().__init__(tags, inners, outers)
 
-        self.line_style = LineStyle({
+        style: Dict[str, Any] = {
             "fill": scheme.get_color("building_color").hex,
             "stroke": scheme.get_color("building_border_color").hex,
-        })
+        }
+        self.line_style = LineStyle(style)
         self.parts = []
 
         for nodes in self.inners + self.outers:
@@ -187,7 +192,11 @@ class Road(Figure):
     """
 
     def __init__(
-        self, tags: Dict[str, str], inners, outers, matcher
+        self,
+        tags: Dict[str, str],
+        inners: List[List[OSMNode]],
+        outers: List[List[OSMNode]],
+        matcher: RoadMatcher,
     ):
         super().__init__(tags, inners, outers)
         self.matcher: RoadMatcher = matcher
@@ -308,9 +317,14 @@ class Constructor:
     """
 
     def __init__(
-        self, map_: Map, flinger: Flinger, scheme: Scheme,
-        icon_extractor: ShapeExtractor, check_level=lambda x: True,
-        mode: str = "normal", seed: str = ""
+        self,
+        map_: Map,
+        flinger: Flinger,
+        scheme: Scheme,
+        icon_extractor: ShapeExtractor,
+        check_level=lambda x: True,
+        mode: str = "normal",
+        seed: str = "",
     ):
         self.check_level = check_level
         self.mode: str = mode
@@ -349,8 +363,10 @@ class Constructor:
         way_number: int = 0
         for way_id in self.map_.way_map:  # type: int
             ui.progress_bar(
-                way_number, len(self.map_.way_map), step=10,
-                text="Constructing ways"
+                way_number,
+                len(self.map_.way_map),
+                step=10,
+                text="Constructing ways",
             )
             way_number += 1
             way: OSMWay = self.map_.way_map[way_id]
@@ -375,27 +391,13 @@ class Constructor:
         """
         assert len(outers) >= 1
 
-        center_point, center_coordinates = (
-            line_center(outers[0], self.flinger)
-        )
-        if self.mode == "user-coloring":
-            user_color = get_user_color(line.user, self.seed)
-            self.figures.append(StyledFigure(
-                line.tags, inners, outers,
-                LineStyle({
-                    "fill": "none", "stroke": user_color.hex, "stroke-width": 1
-                })
-            ))
-            return
-
-        if self.mode == "time":
-            time_color = get_time_color(line.timestamp, self.map_.time)
-            self.figures.append(StyledFigure(
-                line.tags, inners, outers,
-                LineStyle({
-                    "fill": "none", "stroke": time_color.hex, "stroke-width": 1
-                })
-            ))
+        center_point, center_coordinates = line_center(outers[0], self.flinger)
+        if self.mode in ["user-coloring", "time"]:
+            if self.mode == "user-coloring":
+                color = get_user_color(line.user, self.seed)
+            else:  # self.mode == "time":
+                color = get_time_color(line.timestamp, self.map_.time)
+            self.draw_special_mode(inners, line, outers, color)
             return
 
         if not line.tags:
@@ -412,9 +414,7 @@ class Constructor:
 
         road_matcher = self.scheme.get_road(line.tags)
         if road_matcher:
-            self.roads.append(
-                Road(line.tags, inners, outers, road_matcher)
-            )
+            self.roads.append(Road(line.tags, inners, outers, road_matcher))
             return
 
         for line_style in line_styles:  # type: LineStyle
@@ -422,9 +422,10 @@ class Constructor:
                 StyledFigure(line.tags, inners, outers, line_style)
             )
             if (
-                line.get_tag("area") == "yes" or
-                is_cycle(outers[0]) and line.get_tag("area") != "no" and
-                self.scheme.is_area(line.tags)
+                line.get_tag("area") == "yes"
+                or is_cycle(outers[0])
+                and line.get_tag("area") != "no"
+                and self.scheme.is_area(line.tags)
             ):
                 priority: int
                 icon_set: IconSet
@@ -432,22 +433,28 @@ class Constructor:
                     self.icon_extractor, line.tags, for_="line"
                 )
                 labels = self.scheme.construct_text(line.tags, "all")
-
-                self.points.append(Point(
-                    icon_set, labels, line.tags, center_point,
-                    center_coordinates, is_for_node=False, priority=priority
-                ))
+                point: Point = Point(
+                    icon_set,
+                    labels,
+                    line.tags,
+                    center_point,
+                    center_coordinates,
+                    is_for_node=False,
+                    priority=priority,
+                )  # fmt: skip
+                self.points.append(point)
 
         if not line_styles:
             if DEBUG:
                 style: Dict[str, Any] = {
                     "fill": "none",
                     "stroke": Color("red").hex,
-                    "stroke-width": 1
+                    "stroke-width": 1,
                 }
-                self.figures.append(StyledFigure(
+                figure: StyledFigure = StyledFigure(
                     line.tags, inners, outers, LineStyle(style, 1000)
-                ))
+                )
+                self.figures.append(figure)
 
             priority: int
             icon_set: IconSet
@@ -455,11 +462,24 @@ class Constructor:
                 self.icon_extractor, line.tags
             )
             labels = self.scheme.construct_text(line.tags, "all")
-
-            self.points.append(Point(
+            point: Point = Point(
                 icon_set, labels, line.tags, center_point, center_coordinates,
-                is_for_node=False, priority=priority
-            ))
+                is_for_node=False, priority=priority,
+            )  # fmt: skip
+            self.points.append(point)
+
+    def draw_special_mode(self, inners, line, outers, color) -> None:
+        """
+        Add figure for special mode: time or author.
+        """
+        style: Dict[str, Any] = {
+            "fill": "none",
+            "stroke": color.hex,
+            "stroke-width": 1,
+        }
+        self.figures.append(
+            StyledFigure(line.tags, inners, outers, LineStyle(style))
+        )
 
     def construct_relations(self) -> None:
         """
@@ -497,15 +517,16 @@ class Constructor:
 
         sorted_node_ids: Iterator[int] = sorted(
             self.map_.node_map.keys(),
-            key=lambda x: -self.map_.node_map[x].coordinates[0])
+            key=lambda x: -self.map_.node_map[x].coordinates[0],
+        )
 
         missing_tags = Counter()
 
         for node_id in sorted_node_ids:  # type: int
             node_number += 1
             ui.progress_bar(
-                node_number, len(self.map_.node_map),
-                text="Constructing nodes")
+                node_number, len(self.map_.node_map), text="Constructing nodes"
+            )
             node: OSMNode = self.map_.node_map[node_id]
             flung = self.flinger.fling(node.coordinates)
             tags = node.tags
@@ -537,14 +558,16 @@ class Constructor:
                     self.icon_extractor, tags
                 )
                 labels = self.scheme.construct_text(tags, "all")
-
-            self.points.append(Point(
+            point: Point = Point(
                 icon_set, labels, tags, flung, node.coordinates,
-                priority=priority, draw_outline=draw_outline
-            ))
+                priority=priority, draw_outline=draw_outline,
+            )  # fmt: skip
+            self.points.append(point)
 
             missing_tags.update(
-                f"{key}: {tags[key]}" for key in tags
-                if key not in icon_set.processed)
+                f"{key}: {tags[key]}"
+                for key in tags
+                if key not in icon_set.processed
+            )
 
         ui.progress_bar(-1, len(self.map_.node_map), text="Constructing nodes")

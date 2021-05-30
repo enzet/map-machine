@@ -11,7 +11,7 @@ from svgwrite.path import Path
 from svgwrite.shapes import Rect
 
 from roentgen import ui
-from roentgen.constructor import Building, Constructor, Segment, Road
+from roentgen.constructor import Building, Constructor, Road, Segment
 from roentgen.direction import DirectionSet, Sector
 from roentgen.flinger import Flinger
 from roentgen.icon import ShapeExtractor
