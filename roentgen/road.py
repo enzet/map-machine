@@ -2,12 +2,13 @@
 Road shape drawing.
 """
 from dataclasses import dataclass
-from typing import List
+from typing import List, Any, Dict
 
 import numpy as np
 import svgwrite
 from shapely.geometry import LineString, Point
 
+from roentgen.constructor import Road
 from roentgen.flinger import Flinger, angle, turn_by_angle, norm
 from roentgen.osm_reader import OSMNode
 
@@ -64,13 +65,15 @@ class RoadPart:
         node_1: OSMNode,
         node_2: OSMNode,
         flinger: Flinger,
-        left_offset: float,
-        right_offset: float,
-        lanes: List[Lane],
+        road: Road,
     ) -> "RoadPart":
         """
         Construct road part from OSM nodes.
         """
+        left_offset: float = road.width / 2
+        right_offset: float = road.width / 2
+        lanes = [Lane(road.width / road.lanes)] * road.lanes
+
         return cls(
             flinger.fling(node_1.coordinates),
             flinger.fling(node_2.coordinates),

@@ -202,9 +202,12 @@ class Road(Figure):
         self.matcher: RoadMatcher = matcher
 
         self.width: Optional[float] = None
+        self.lanes: int = 1
+
         if "lanes" in tags:
             try:
                 self.width = float(tags["lanes"]) * 3.7
+                self.lanes = float(tags["lanes"])
             except ValueError:
                 pass
         if "width" in tags:
