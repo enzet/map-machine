@@ -26,22 +26,29 @@ class RoadPart:
         right_offset: float,
         lanes: List[float],
     ):
+        """
+        :param point_1: start point of the road part
+        :param point_2: end point of the road part
+        :param left_offset: offset from the central line to the left border
+        :param right_offset:  offset from the central line to the right border
+        :param lanes: lane specification
+        """
         self.point_1: np.array = point_1
         self.point_2: np.array = point_2
         self.left_offset: float = left_offset
         self.right_offset: float = right_offset
         self.lanes: List[float] = lanes
 
-        self.turned = norm(
+        self.turned: np.array = norm(
             turn_by_angle(self.point_2 - self.point_1, np.pi / 2)
         )
-        self.right = self.turned * self.right_offset
-        self.left = -self.turned * self.left_offset
+        self.right_vector: np.array = self.turned * self.right_offset
+        self.left_vector: np.array = -self.turned * self.left_offset
 
-        self.rm = None
-        self.lm = None
-        self.rp = None
-        self.lp = None
+        self.right_connection: np.array = None
+        self.left_connection: np.array = None
+        self.right_projection: np.array = None
+        self.left_projection: np.array = None
 
     @classmethod
     def from_nodes(
@@ -68,9 +75,16 @@ class RoadPart:
         """
         Compute additional points.
         """
-        if self.rp is not None and self.lp is not None:
-            self.rm = self.lp + self.right - self.left
-            self.lm = self.rp - self.right + self.left
+        if (
+            self.right_connection is not None
+            and self.left_connection is not None
+        ):
+            self.right_projection = (
+                self.left_connection + self.right_vector - self.left_vector
+            )
+            self.left_projection = (
+                self.right_connection - self.right_vector + self.left_vector
+            )
 
     def get_angle(self) -> float:
         """
@@ -89,64 +103,75 @@ class RoadPart:
         )
         drawing.add(line)
         line = drawing.path(
-            ("M", self.point_1 + self.right, "L", self.point_2 + self.right),
+            (
+                "M", self.point_1 + self.right_vector,
+                "L", self.point_2 + self.right_vector,
+            ),
             fill="none",
             stroke="#FF0000",
             stroke_width=0.5,
         )
         drawing.add(line)
         line = drawing.path(
-            ("M", self.point_1 + self.left, "L", self.point_2 + self.left),
+            (
+                "M", self.point_1 + self.left_vector,
+                "L", self.point_2 + self.left_vector,
+            ),
             fill="none",
             stroke="#0000FF",
             stroke_width=0.5,
         )
         drawing.add(line)
 
-        if self.rp is not None:
-            circle = drawing.circle(self.rp, 2)
+        if self.right_connection is not None:
+            circle = drawing.circle(self.right_connection, 2)
             drawing.add(circle)
-        if self.lp is not None:
-            circle = drawing.circle(self.lp, 2)
+        if self.left_connection is not None:
+            circle = drawing.circle(self.left_connection, 2)
             drawing.add(circle)
-        if self.rm is not None:
-            circle = drawing.circle(self.rm, 2, fill="#FF0000")
+        if self.right_projection is not None:
+            circle = drawing.circle(self.right_projection, 2, fill="#FF0000")
             drawing.add(circle)
-        if self.lm is not None:
-            circle = drawing.circle(self.lm, 2, fill="#0000FF")
+        if self.left_projection is not None:
+            circle = drawing.circle(self.left_projection, 2, fill="#0000FF")
             drawing.add(circle)
 
     def draw(self, drawing: svgwrite.Drawing):
         """
         Draw road part.
         """
-        d = [
-            "M", self.point_2 + self.right,
-            "L", self.point_2 + self.left,
-            "L", self.lp,
-            "L", self.rp,
+        path_commands = [
+            "M", self.point_2 + self.right_vector,
+            "L", self.point_2 + self.left_vector,
+            "L", self.left_connection,
+            "L", self.right_connection,
             "Z",
         ]
-        drawing.add(drawing.path(d, fill="#CCCCCC"))
+        drawing.add(drawing.path(path_commands, fill="#CCCCCC"))
 
-        d = ["M", self.rm, "L", self.rp, "L", self.lm, "L", self.lp, "Z"]
-        drawing.add(drawing.path(d, fill="#C0C0C0"))
+        path_commands = [
+            "M", self.right_projection,
+            "L", self.right_connection,
+            "L", self.left_projection,
+            "L", self.left_connection,
+            "Z",
+        ]
+        drawing.add(drawing.path(path_commands, fill="#C0C0C0"))
 
     def draw_lanes(self, drawing: svgwrite.Drawing):
         """
         Draw lane delimiters.
         """
         for lane in self.lanes:
-            a = self.right - self.turned * lane
-            drawing.add(
-                drawing.path(
-                    ["M", self.point_2 + a, "L", self.point_1 + a],
-                    fill="none",
-                    stroke="#FFFFFF",
-                    stroke_width=2,
-                    stroke_dasharray="7,7",
-                )
+            a = self.right_vector - self.turned * lane
+            path = drawing.path(
+                ["M", self.point_2 + a, "L", self.point_1 + a],
+                fill="none",
+                stroke="#FFFFFF",
+                stroke_width=2,
+                stroke_dasharray="7,7",
             )
+            drawing.add(path)
 
 
 class Intersection:
@@ -163,18 +188,21 @@ class Intersection:
             part_1 = self.parts[index]
             part_2 = self.parts[next_index]
             line_1 = LineString(
-                [part_1.point_1 + part_1.right, part_1.point_2 + part_1.right]
+                [
+                    part_1.point_1 + part_1.right_vector,
+                    part_1.point_2 + part_1.right_vector,
+                ]
             )
             line_2 = LineString(
-                [part_2.point_1 + part_2.left, part_2.point_2 + part_2.left]
+                [
+                    part_2.point_1 + part_2.left_vector,
+                    part_2.point_2 + part_2.left_vector,
+                ]
             )
-            print(line_1)
-            print(line_2)
             a = line_1.intersection(line_2)
-            print(a)
             if isinstance(a, Point):
-                part_1.rp = np.array((a.x, a.y))
-                part_2.lp = np.array((a.x, a.y))
+                part_1.right_connection = np.array((a.x, a.y))
+                part_2.left_connection = np.array((a.x, a.y))
                 part_1.update()
                 part_2.update()
 
@@ -187,9 +215,9 @@ class Intersection:
         for part in self.parts:
             part.draw_lanes(drawing)
 
-        d = ["M"]
+        path_commands = ["M"]
         for part in self.parts:
-            d += [part.lp, "L"]
-        d[-1] = "Z"
+            path_commands += [part.left_connection, "L"]
+        path_commands[-1] = "Z"
 
-        drawing.add(drawing.path(d, fill="#BBBBBB"))
+        drawing.add(drawing.path(path_commands, fill="#BBBBBB"))
