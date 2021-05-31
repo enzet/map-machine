@@ -144,6 +144,8 @@ class RoadPart:
             circle = drawing.circle(self.left_projection, 2, fill="#0000FF")
             drawing.add(circle)
 
+        self.draw_entrance(drawing, True)
+
     def draw(self, drawing: svgwrite.Drawing):
         """
         Draw road part.
@@ -157,6 +159,9 @@ class RoadPart:
         ]
         drawing.add(drawing.path(path_commands, fill="#CCCCCC"))
 
+        self.draw_entrance(drawing, False)
+
+    def draw_entrance(self, drawing: svgwrite.Drawing, is_debug: bool):
         path_commands = [
             "M", self.right_projection,
             "L", self.right_connection,
@@ -164,7 +169,13 @@ class RoadPart:
             "L", self.left_connection,
             "Z",
         ]
-        drawing.add(drawing.path(path_commands, fill="#C0C0C0"))
+        if is_debug:
+            path = drawing.path(
+                path_commands, fill="none", stroke="#880088", stroke_width=0.5
+            )
+            drawing.add(path)
+        else:
+            drawing.add(drawing.path(path_commands, fill="#BBBBBB"))
 
     def draw_lanes(self, drawing: svgwrite.Drawing):
         """
@@ -214,18 +225,24 @@ class Intersection:
                 part_1.update()
                 part_2.update()
 
-    def draw(self, drawing: svgwrite.Drawing):
+    def draw(self, drawing: svgwrite.Drawing, is_debug: bool):
         """
         Draw all road parts and intersection.
         """
-        for part in self.parts:
-            part.draw(drawing)
-        for part in self.parts:
-            part.draw_lanes(drawing)
-
         path_commands = ["M"]
         for part in self.parts:
             path_commands += [part.left_connection, "L"]
         path_commands[-1] = "Z"
 
-        drawing.add(drawing.path(path_commands, fill="#BBBBBB"))
+        if is_debug:
+            drawing.add(drawing.path(path_commands, fill="#DDFFDD"))
+
+        for part in self.parts:
+            if is_debug:
+                part.draw_debug(drawing)
+            else:
+                part.draw(drawing)
+        if not is_debug:
+            for part in self.parts:
+                part.draw_lanes(drawing)
+            drawing.add(drawing.path(path_commands, fill="#AAAAAA"))
