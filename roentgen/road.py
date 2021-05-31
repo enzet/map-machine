@@ -13,9 +13,21 @@ class RoadPart:
     """
     Line part of the road.
     """
-    def __init__(self, node_1: OSMNode, node_2: OSMNode, flinger: Flinger):
-        self.point_1: np.array = flinger.fling(node_1.coordinates)
-        self.point_2: np.array = flinger.fling(node_2.coordinates)
+    def __init__(self, point_1: np.array, point_2: np.array):
+        self.point_1 = point_1
+        self.point_2 = point_2
+
+    @classmethod
+    def from_nodes(
+        cls, node_1: OSMNode, node_2: OSMNode, flinger: Flinger
+    ) -> "RoadPart":
+        """
+        Construct road part from OSM nodes.
+        """
+        return cls(
+            flinger.fling(node_1.coordinates),
+            flinger.fling(node_2.coordinates)
+        )
 
     def get_angle(self) -> float:
         """
