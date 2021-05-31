@@ -82,9 +82,9 @@ def main(argv) -> None:
     flinger: Flinger = Flinger(MinMax(min_, max_), options.scale)
     size: np.array = flinger.size
 
-    svg: svgwrite.Drawing = (
-        svgwrite.Drawing(options.output_file_name, size=size))
-
+    svg: svgwrite.Drawing = svgwrite.Drawing(
+        options.output_file_name, size=size
+    )
     icon_extractor: ShapeExtractor = ShapeExtractor(
         Path(ICONS_FILE_NAME), Path("icons/config.json")
     )

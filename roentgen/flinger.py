@@ -13,27 +13,34 @@ __email__ = "me@enzet.ru"
 EQUATOR_LENGTH: float = 40_075_017  # (in meters)
 
 
-def dotproduct(vector_1: np.array, vector_2: np.array) -> float:
+def angle(vector: np.array):
     """
-    Dot product of two vectors.
+    For the given vector compute an angle between it and (1, 0) vector.  The
+    result is in [0, 2π].
     """
-    return sum((a * b) for a, b in zip(vector_1, vector_2))
+    if vector[0] < 0:
+        return np.arctan(vector[1] / vector[0]) + np.pi
+    if vector[1] < 0:
+        return np.arctan(vector[1] / vector[0]) + 2 * np.pi
+    else:
+        return np.arctan(vector[1] / vector[0])
 
 
-def length(vector: np.array) -> float:
+def turn_by_angle(vector: np.array, angle: float):
     """
-    Length of the vector.
+    Turn vector by an angle.
     """
-    return np.sqrt(dotproduct(vector, vector))
+    return np.array((
+        vector[0] * np.cos(angle) - vector[1] * np.sin(angle),
+        vector[0] * np.sin(angle) + vector[1] * np.cos(angle),
+    ))
 
 
-def angle(vector_1: np.array, vector_2: np.array) -> float:
+def norm(vector: np.array) -> np.array:
     """
-    Angle between two vectors.
+    Compute vector with the same direction and length 1.
     """
-    return np.acos(
-        dotproduct(vector_1, vector_2) / (length(vector_1) * length(vector_2))
-    )
+    return vector / np.linalg.norm(vector)
 
 
 def pseudo_mercator(coordinates: np.array) -> np.array:
@@ -60,9 +67,13 @@ class Flinger:
     """
     Convert geo coordinates into SVG position points.
     """
+
     def __init__(
-            self, geo_boundaries: MinMax, scale: float = 18,
-            border: np.array = np.array((0, 0))):
+        self,
+        geo_boundaries: MinMax,
+        scale: float = 18,
+        border: np.array = np.array((0, 0)),
+    ):
         """
         :param geo_boundaries: minimum and maximum latitude and longitude
         :param scale: OSM zoom level
