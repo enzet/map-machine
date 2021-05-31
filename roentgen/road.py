@@ -13,6 +13,14 @@ from roentgen.osm_reader import OSMNode
 
 
 @dataclass
+class Lane:
+    """
+    Road lane specification.
+    """
+
+    width: float  # Width in meters
+
+
 class RoadPart:
     """
     Line part of the road.
@@ -24,7 +32,7 @@ class RoadPart:
         point_2: np.array,
         left_offset: float,
         right_offset: float,
-        lanes: List[float],
+        lanes: List[Lane],
     ):
         """
         :param point_1: start point of the road part
@@ -37,7 +45,7 @@ class RoadPart:
         self.point_2: np.array = point_2
         self.left_offset: float = left_offset
         self.right_offset: float = right_offset
-        self.lanes: List[float] = lanes
+        self.lanes: List[Lane] = lanes
 
         self.turned: np.array = norm(
             turn_by_angle(self.point_2 - self.point_1, np.pi / 2)
@@ -58,7 +66,7 @@ class RoadPart:
         flinger: Flinger,
         left_offset: float,
         right_offset: float,
-        lanes: List[float],
+        lanes: List[Lane],
     ) -> "RoadPart":
         """
         Construct road part from OSM nodes.
@@ -71,7 +79,7 @@ class RoadPart:
             lanes,
         )
 
-    def update(self):
+    def update(self) -> None:
         """
         Compute additional points.
         """
@@ -163,7 +171,7 @@ class RoadPart:
         Draw lane delimiters.
         """
         for lane in self.lanes:
-            a = self.right_vector - self.turned * lane
+            a = self.right_vector - self.turned * lane.width
             path = drawing.path(
                 ["M", self.point_2 + a, "L", self.point_1 + a],
                 fill="none",
