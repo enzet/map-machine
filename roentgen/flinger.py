@@ -13,6 +13,29 @@ __email__ = "me@enzet.ru"
 EQUATOR_LENGTH: float = 40_075_017  # (in meters)
 
 
+def dotproduct(vector_1: np.array, vector_2: np.array) -> float:
+    """
+    Dot product of two vectors.
+    """
+    return sum((a * b) for a, b in zip(vector_1, vector_2))
+
+
+def length(vector: np.array) -> float:
+    """
+    Length of the vector.
+    """
+    return np.sqrt(dotproduct(vector, vector))
+
+
+def angle(vector_1: np.array, vector_2: np.array) -> float:
+    """
+    Angle between two vectors.
+    """
+    return np.acos(
+        dotproduct(vector_1, vector_2) / (length(vector_1) * length(vector_2))
+    )
+
+
 def pseudo_mercator(coordinates: np.array) -> np.array:
     """
     Use spherical pseudo-Mercator projection to convert geo coordinates into
