@@ -6,11 +6,10 @@ from typing import List
 
 import numpy as np
 import svgwrite
-from shapely.geometry import LineString, Point
 
 from roentgen.constructor import Road
 from roentgen.flinger import Flinger
-from roentgen.vector import angle, turn_by_angle, norm
+from roentgen.vector import angle, turn_by_angle, norm, Line
 from roentgen.osm_reader import OSMNode
 
 
@@ -163,7 +162,7 @@ class RoadPart:
         ]
         drawing.add(drawing.path(path_commands, fill="#CCCCCC"))
 
-        self.draw_entrance(drawing, False)
+        # self.draw_entrance(drawing, False)
 
     def draw_entrance(self, drawing: svgwrite.Drawing, is_debug: bool):
         path_commands = [
@@ -210,26 +209,21 @@ class Intersection:
             next_index: int = 0 if index == len(self.parts) - 1 else index + 1
             part_1 = self.parts[index]
             part_2 = self.parts[next_index]
-            line_1 = LineString(
-                [
-                    part_1.point_1 + part_1.right_vector,
-                    part_1.point_2 + part_1.right_vector,
-                ]
+            line_1 = Line(
+                part_1.point_1 + part_1.right_vector,
+                part_1.point_2 + part_1.right_vector,
             )
-            line_2 = LineString(
-                [
-                    part_2.point_1 + part_2.left_vector,
-                    part_2.point_2 + part_2.left_vector,
-                ]
+            line_2 = Line(
+                part_2.point_1 + part_2.left_vector,
+                part_2.point_2 + part_2.left_vector,
             )
-            a = line_1.intersection(line_2)
-            if isinstance(a, Point):
-                part_1.right_connection = np.array((a.x, a.y))
-                part_2.left_connection = np.array((a.x, a.y))
-                part_1.update()
-                part_2.update()
+            a = line_1.get_intersection_point(line_2)
+            part_1.right_connection = a
+            part_2.left_connection = a
+            part_1.update()
+            part_2.update()
 
-    def draw(self, drawing: svgwrite.Drawing, is_debug: bool):
+    def draw(self, drawing: svgwrite.Drawing, is_debug: bool = False):
         """
         Draw all road parts and intersection.
         """

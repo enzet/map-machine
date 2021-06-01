@@ -21,10 +21,12 @@ def turn_by_angle(vector: np.array, angle: float):
     """
     Turn vector by an angle.
     """
-    return np.array((
-        vector[0] * np.cos(angle) - vector[1] * np.sin(angle),
-        vector[0] * np.sin(angle) + vector[1] * np.cos(angle),
-    ))
+    return np.array(
+        (
+            vector[0] * np.cos(angle) - vector[1] * np.sin(angle),
+            vector[0] * np.sin(angle) + vector[1] * np.cos(angle),
+        )
+    )
 
 
 def norm(vector: np.array) -> np.array:
@@ -44,7 +46,7 @@ class Line:
         #     util.error("cannot create line by one point")
         self.a: float = start[1] - end[1]
         self.b: float = end[0] - start[0]
-        self.c: float = start.x * end.y - end.x * start.y
+        self.c: float = start[0] * end[1] - end[0] * start[1]
 
     def parallel_shift(self, shift: np.array):
         """
