@@ -96,6 +96,12 @@ class RoadPart:
             self.left_projection = (
                 self.right_connection - self.right_vector + self.left_vector
             )
+            a = np.linalg.norm(self.right_connection - self.point_2)
+            b = np.linalg.norm(self.right_projection - self.point_2)
+            if a < b:
+                self.point_middle = self.right_connection - self.right_vector
+            else:
+                self.point_middle = self.right_projection - self.right_vector
 
     def get_angle(self) -> float:
         """
@@ -146,6 +152,8 @@ class RoadPart:
         if self.left_projection is not None:
             circle = drawing.circle(self.left_projection, 1.2, fill="#0000FF")
             drawing.add(circle)
+        circle = drawing.circle(self.point_middle, 1.2, fill="#000000")
+        drawing.add(circle)
 
         self.draw_entrance(drawing, True)
 
@@ -162,9 +170,10 @@ class RoadPart:
         ]
         drawing.add(drawing.path(path_commands, fill="#CCCCCC"))
 
-        # self.draw_entrance(drawing, False)
-
     def draw_entrance(self, drawing: svgwrite.Drawing, is_debug: bool):
+        """
+        Draw intersection entrance part.
+        """
         path_commands = [
             "M", self.right_projection,
             "L", self.right_connection,
@@ -187,7 +196,7 @@ class RoadPart:
         for lane in self.lanes:
             a = self.right_vector - self.turned * lane.width
             path = drawing.path(
-                ["M", self.point_2 + a, "L", self.point_1 + a],
+                ["M", self.point_middle + a, "L", self.point_2 + a],
                 fill="none",
                 stroke="#FFFFFF",
                 stroke_width=2,
@@ -207,20 +216,20 @@ class Intersection:
 
         for index in range(len(self.parts)):
             next_index: int = 0 if index == len(self.parts) - 1 else index + 1
-            part_1 = self.parts[index]
-            part_2 = self.parts[next_index]
-            line_1 = Line(
+            part_1: RoadPart = self.parts[index]
+            part_2: RoadPart = self.parts[next_index]
+            line_1: Line = Line(
                 part_1.point_1 + part_1.right_vector,
                 part_1.point_2 + part_1.right_vector,
             )
-            line_2 = Line(
+            line_2: Line = Line(
                 part_2.point_1 + part_2.left_vector,
                 part_2.point_2 + part_2.left_vector,
             )
-            a = line_1.get_intersection_point(line_2)
-            part_1.right_connection = a
-            part_2.left_connection = a
+            intersection: np.array = line_1.get_intersection_point(line_2)
+            part_1.right_connection = intersection
             part_1.update()
+            part_2.left_connection = intersection
             part_2.update()
 
     def draw(self, drawing: svgwrite.Drawing, is_debug: bool = False):
@@ -243,4 +252,4 @@ class Intersection:
         if not is_debug:
             for part in self.parts:
                 part.draw_lanes(drawing)
-            drawing.add(drawing.path(path_commands, fill="#AAAAAA"))
+            drawing.add(drawing.path(path_commands, fill="#CCCCCC"))
