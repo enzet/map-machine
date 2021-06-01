@@ -2,14 +2,15 @@
 Road shape drawing.
 """
 from dataclasses import dataclass
-from typing import List, Any, Dict
+from typing import List
 
 import numpy as np
 import svgwrite
 from shapely.geometry import LineString, Point
 
 from roentgen.constructor import Road
-from roentgen.flinger import Flinger, angle, turn_by_angle, norm
+from roentgen.flinger import Flinger
+from roentgen.vector import angle, turn_by_angle, norm
 from roentgen.osm_reader import OSMNode
 
 
@@ -135,16 +136,16 @@ class RoadPart:
         drawing.add(line)
 
         if self.right_connection is not None:
-            circle = drawing.circle(self.right_connection, 2)
+            circle = drawing.circle(self.right_connection, 1.2)
             drawing.add(circle)
         if self.left_connection is not None:
-            circle = drawing.circle(self.left_connection, 2)
+            circle = drawing.circle(self.left_connection, 1.2)
             drawing.add(circle)
         if self.right_projection is not None:
-            circle = drawing.circle(self.right_projection, 2, fill="#FF0000")
+            circle = drawing.circle(self.right_projection, 1.2, fill="#FF0000")
             drawing.add(circle)
         if self.left_projection is not None:
-            circle = drawing.circle(self.left_projection, 2, fill="#0000FF")
+            circle = drawing.circle(self.left_projection, 1.2, fill="#0000FF")
             drawing.add(circle)
 
         self.draw_entrance(drawing, True)

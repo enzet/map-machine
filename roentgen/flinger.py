@@ -13,36 +13,6 @@ __email__ = "me@enzet.ru"
 EQUATOR_LENGTH: float = 40_075_017  # (in meters)
 
 
-def angle(vector: np.array):
-    """
-    For the given vector compute an angle between it and (1, 0) vector.  The
-    result is in [0, 2π].
-    """
-    if vector[0] < 0:
-        return np.arctan(vector[1] / vector[0]) + np.pi
-    if vector[1] < 0:
-        return np.arctan(vector[1] / vector[0]) + 2 * np.pi
-    else:
-        return np.arctan(vector[1] / vector[0])
-
-
-def turn_by_angle(vector: np.array, angle: float):
-    """
-    Turn vector by an angle.
-    """
-    return np.array((
-        vector[0] * np.cos(angle) - vector[1] * np.sin(angle),
-        vector[0] * np.sin(angle) + vector[1] * np.cos(angle),
-    ))
-
-
-def norm(vector: np.array) -> np.array:
-    """
-    Compute vector with the same direction and length 1.
-    """
-    return vector / np.linalg.norm(vector)
-
-
 def pseudo_mercator(coordinates: np.array) -> np.array:
     """
     Use spherical pseudo-Mercator projection to convert geo coordinates into
