@@ -2,7 +2,7 @@
 Road shape drawing.
 """
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 import svgwrite
@@ -19,7 +19,13 @@ class Lane:
     Road lane specification.
     """
 
-    width: float  # Width in meters
+    width: Optional[float] = None  # Width in meters
+    is_forward: Optional[bool] = None  # Whether lane is forward or backward
+    min_speed: Optional[float] = None  # Minimal speed on the lane
+    # "none", "merge_to_left", "slight_left", "slight_right"
+    turn: Optional[str] = None
+    change: Optional[str] = None  # "not_left", "not_right"
+    destination: Optional[str] = None  # Lane destination
 
 
 class RoadPart:
