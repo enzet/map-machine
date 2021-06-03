@@ -12,6 +12,9 @@ __email__ = "me@enzet.ru"
 BOXES: List[str] = [" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉"]
 BOXES_LENGTH: int = len(BOXES)
 
+AUTHOR_MODE: str = "author"
+TIME_MODE: str = "time"
+
 
 def parse_options(args) -> argparse.Namespace:
     """

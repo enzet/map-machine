@@ -7,7 +7,6 @@ from typing import List, Optional
 import numpy as np
 import svgwrite
 
-from roentgen.constructor import Road
 from roentgen.flinger import Flinger
 from roentgen.vector import angle, turn_by_angle, norm, Line
 from roentgen.osm_reader import OSMNode
@@ -26,6 +25,9 @@ class Lane:
     turn: Optional[str] = None
     change: Optional[str] = None  # "not_left", "not_right"
     destination: Optional[str] = None  # Lane destination
+
+    def set_forward(self, is_forward: bool) -> None:
+        self.is_forward = is_forward
 
 
 class RoadPart:
@@ -71,7 +73,7 @@ class RoadPart:
         node_1: OSMNode,
         node_2: OSMNode,
         flinger: Flinger,
-        road: Road,
+        road,
     ) -> "RoadPart":
         """
         Construct road part from OSM nodes.
