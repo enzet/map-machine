@@ -357,11 +357,12 @@ class Scheme:
         returned: IconSet = IconSet(main_icon, extra_icons, processed)
         self.cache[tags_hash] = returned, priority
 
-        if "direction" in tags:
-            if DirectionSet(tags["direction"]).is_right() is False:
-                for specification in main_icon.shape_specifications:
-                    if specification.shape.is_right_directed:
-                        specification.flip_horizontally = True
+        for key in ["direction", "camera:direction"]:
+            if key in tags:
+                if DirectionSet(tags[key]).is_right() is False:
+                    for specification in main_icon.shape_specifications:
+                        if specification.shape.is_right_directed:
+                            specification.flip_horizontally = True
 
         return returned, priority
 
