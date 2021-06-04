@@ -114,11 +114,12 @@ class Sector:
             None otherwise.
         """
         if self.main_direction is not None:
-            if self.main_direction[0] > 0:
+            if np.allclose(self.main_direction[0], 0):
+                return None
+            elif self.main_direction[0] > 0:
                 return True
-            elif self.main_direction[0] < 0:
+            else:
                 return False
-            return None
 
     def __str__(self) -> str:
         return f"{self.start}-{self.end}"
