@@ -170,20 +170,20 @@ class Constructor:
         Construct Röntgen ways.
         """
         way_number: int = 0
-        for way_id in self.map_.way_map:  # type: int
+        for way_id in self.map_.ways:  # type: int
             ui.progress_bar(
                 way_number,
-                len(self.map_.way_map),
+                len(self.map_.ways),
                 step=10,
                 text="Constructing ways",
             )
             way_number += 1
-            way: OSMWay = self.map_.way_map[way_id]
+            way: OSMWay = self.map_.ways[way_id]
             if not self.check_level(way.tags):
                 continue
             self.construct_line(way, [], [way.nodes])
 
-        ui.progress_bar(-1, len(self.map_.way_map), text="Constructing ways")
+        ui.progress_bar(-1, len(self.map_.ways), text="Constructing ways")
 
     def construct_line(
         self,
@@ -294,8 +294,8 @@ class Constructor:
         """
         Construct Röntgen ways from OSM relations.
         """
-        for relation_id in self.map_.relation_map:
-            relation: OSMRelation = self.map_.relation_map[relation_id]
+        for relation_id in self.map_.relations:
+            relation: OSMRelation = self.map_.relations[relation_id]
             tags = relation.tags
             if not self.check_level(tags):
                 continue
@@ -306,11 +306,11 @@ class Constructor:
             for member in relation.members:  # type: OSMMember
                 if member.type_ == "way":
                     if member.role == "inner":
-                        if member.ref in self.map_.way_map:
-                            inner_ways.append(self.map_.way_map[member.ref])
+                        if member.ref in self.map_.ways:
+                            inner_ways.append(self.map_.ways[member.ref])
                     elif member.role == "outer":
-                        if member.ref in self.map_.way_map:
-                            outer_ways.append(self.map_.way_map[member.ref])
+                        if member.ref in self.map_.ways:
+                            outer_ways.append(self.map_.ways[member.ref])
                     else:
                         print(f'Unknown member role "{member.role}".')
             if outer_ways:
@@ -325,8 +325,8 @@ class Constructor:
         node_number: int = 0
 
         sorted_node_ids: Iterator[int] = sorted(
-            self.map_.node_map.keys(),
-            key=lambda x: -self.map_.node_map[x].coordinates[0],
+            self.map_.nodes.keys(),
+            key=lambda x: -self.map_.nodes[x].coordinates[0],
         )
 
         missing_tags = Counter()
@@ -334,9 +334,9 @@ class Constructor:
         for node_id in sorted_node_ids:  # type: int
             node_number += 1
             ui.progress_bar(
-                node_number, len(self.map_.node_map), text="Constructing nodes"
+                node_number, len(self.map_.nodes), text="Constructing nodes"
             )
-            node: OSMNode = self.map_.node_map[node_id]
+            node: OSMNode = self.map_.nodes[node_id]
             flung = self.flinger.fling(node.coordinates)
             tags = node.tags
 
@@ -379,4 +379,4 @@ class Constructor:
                 if key not in icon_set.processed
             )
 
-        ui.progress_bar(-1, len(self.map_.node_map), text="Constructing nodes")
+        ui.progress_bar(-1, len(self.map_.nodes), text="Constructing nodes")

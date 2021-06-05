@@ -19,8 +19,8 @@ def test_node() -> None:
   <node id="42" lon="5" lat="10" />
 </osm>"""
     )
-    assert 42 in map_.node_map
-    node: OSMNode = map_.node_map[42]
+    assert 42 in map_.nodes
+    node: OSMNode = map_.nodes[42]
     assert node.id_ == 42
     assert np.allclose(node.coordinates, np.array([10, 5]))
 
@@ -38,8 +38,8 @@ def test_node_with_tag() -> None:
   </node>
 </osm>"""
     )
-    assert 42 in map_.node_map
-    node: OSMNode = map_.node_map[42]
+    assert 42 in map_.nodes
+    node: OSMNode = map_.nodes[42]
     assert node.id_ == 42
     assert np.allclose(node.coordinates, np.array([10, 5]))
     assert node.tags["key"] == "value"
@@ -56,8 +56,8 @@ def test_way() -> None:
   <way id="42" />
 </osm>"""
     )
-    assert 42 in map_.way_map
-    way: OSMWay = map_.way_map[42]
+    assert 42 in map_.ways
+    way: OSMWay = map_.ways[42]
     assert way.id_ == 42
 
 
@@ -76,7 +76,7 @@ def test_nodes() -> None:
   </way>
 </osm>"""
     )
-    way: OSMWay = map_.way_map[2]
+    way: OSMWay = map_.ways[2]
     assert len(way.nodes) == 1
     assert way.nodes[0].id_ == 1
     assert way.tags["key"] == "value"
@@ -100,8 +100,8 @@ def test_relation() -> None:
   </relation>
 </osm>"""
     )
-    assert 3 in map_.relation_map
-    relation: OSMRelation = map_.relation_map[3]
+    assert 3 in map_.relations
+    relation: OSMRelation = map_.relations[3]
     assert relation.id_ == 3
     assert relation.tags["key"] == "value"
     assert len(relation.members) == 1

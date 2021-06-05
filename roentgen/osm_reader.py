@@ -59,6 +59,9 @@ class OSMNode(Tagged):
 
     @classmethod
     def from_xml_structure(cls, element, is_full: bool = False) -> "OSMNode":
+        """
+        Parse node from OSM XML `<node>` element.
+        """
         node = cls()
         attributes = element.attrib
         node.id_ = int(attributes["id"])
@@ -114,6 +117,9 @@ class OSMWay(Tagged):
 
     @classmethod
     def from_xml_structure(cls, element, nodes, is_full: bool) -> "OSMWay":
+        """
+        Parse way from OSM XML `<way>` element.
+        """
         way = cls(int(element.attrib["id"]))
         if is_full:
             way.visible = element.attrib["visible"]
@@ -188,6 +194,9 @@ class OSMRelation(Tagged):
 
     @classmethod
     def from_xml_structure(cls, element, is_full: bool) -> "OSMRelation":
+        """
+        Parse relation from OSM XML `<relation>` element.
+        """
         attributes = element.attrib
         relation = cls(int(attributes["id"]))
         if is_full:
@@ -245,39 +254,39 @@ class Map:
     """
 
     def __init__(self):
-        self.node_map: Dict[int, OSMNode] = {}
-        self.way_map: Dict[int, OSMWay] = {}
-        self.relation_map: Dict[int, OSMRelation] = {}
+        self.nodes: Dict[int, OSMNode] = {}
+        self.ways: Dict[int, OSMWay] = {}
+        self.relations: Dict[int, OSMRelation] = {}
 
         self.authors: Set[str] = set()
         self.time: MinMax = MinMax()
         self.boundary_box: List[MinMax] = [MinMax(), MinMax()]
 
-    def add_node(self, node: OSMNode):
+    def add_node(self, node: OSMNode) -> None:
         """
         Add node and update map parameters.
         """
-        self.node_map[node.id_] = node
+        self.nodes[node.id_] = node
         if node.user:
             self.authors.add(node.user)
         self.time.update(node.timestamp)
         self.boundary_box[0].update(node.coordinates[0])
         self.boundary_box[1].update(node.coordinates[1])
 
-    def add_way(self, way: OSMWay):
+    def add_way(self, way: OSMWay) -> None:
         """
         Add way and update map parameters.
         """
-        self.way_map[way.id_] = way
+        self.ways[way.id_] = way
         if way.user:
             self.authors.add(way.user)
         self.time.update(way.timestamp)
 
-    def add_relation(self, relation: OSMRelation):
+    def add_relation(self, relation: OSMRelation) -> None:
         """
         Add relation and update map parameters.
         """
-        self.relation_map[relation.id_] = relation
+        self.relations[relation.id_] = relation
 
 
 class OverpassReader:
@@ -321,6 +330,8 @@ class OverpassReader:
 class OSMReader:
     """
     OpenStreetMap XML file parser.
+
+    See https://wiki.openstreetmap.org/wiki/OSM_XML
     """
 
     def __init__(
@@ -375,7 +386,7 @@ class OSMReader:
             if element.tag == "way" and self.parse_ways:
                 self.map_.add_way(
                     OSMWay.from_xml_structure(
-                        element, self.map_.node_map, self.is_full
+                        element, self.map_.nodes, self.is_full
                     )
                 )
             if element.tag == "relation" and self.parse_relations:
