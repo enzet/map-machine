@@ -1,7 +1,7 @@
 """
 Simple OpenStreetMap renderer.
 """
-from typing import Any, Dict
+from typing import Any, Dict, Set, Iterator
 
 import numpy as np
 import svgwrite
@@ -13,11 +13,12 @@ from svgwrite.shapes import Rect
 from roentgen import ui
 from roentgen.constructor import Constructor
 from roentgen.direction import DirectionSet, Sector
-from roentgen.figure import Building, Road, Segment
+from roentgen.figure import Road
 from roentgen.flinger import Flinger
 from roentgen.icon import ShapeExtractor
-from roentgen.osm_reader import Map
+from roentgen.osm_reader import Map, OSMNode
 from roentgen.point import Occupied, Point
+from roentgen.road import RoadPart, Intersection
 from roentgen.scheme import Scheme
 
 __author__ = "Sergey Vartanov"
@@ -81,7 +82,7 @@ class Painter:
                 self.svg.add(path)
         ui.progress_bar(-1, 0, text="Drawing ways")
 
-        roads = sorted(
+        roads: Iterator[Road] = sorted(
             constructor.roads, key=lambda x: x.matcher.priority
         )
         for road in roads:
@@ -142,12 +143,12 @@ class Painter:
             ui.progress_bar(
                 index, level_count, step=1, text="Drawing buildings")
             fill: Color()
-            for way in constructor.buildings:  # type: Building
+            for way in constructor.buildings:
                 if way.get_levels() < level:
                     continue
                 shift_1 = [0, -previous_level * level_height]
                 shift_2 = [0, -level * level_height]
-                for segment in way.parts:  # type: Segment
+                for segment in way.parts:
                     if level == 0.5:
                         fill = Color("#AAAAAA")
                     elif level == 1:
@@ -167,7 +168,7 @@ class Painter:
 
             # Draw building roofs.
 
-            for way in constructor.buildings:  # type: Building
+            for way in constructor.buildings:
                 if way.get_levels() == level:
                     shift = np.array([0, -way.get_levels() * level_height])
                     path_commands: str = way.get_path(self.flinger, shift)
@@ -289,14 +290,44 @@ class Painter:
         scale = self.flinger.get_scale(road.outers[0][0].coordinates)
         path_commands: str = road.get_path(self.flinger)
         path = Path(d=path_commands)
-        path.update({
+        style: Dict[str, Any] = {
             "fill": "none",
             "stroke": color.hex,
             "stroke-linecap": "round",
             "stroke-linejoin": "round",
             "stroke-width": scale * width + extra_width
-        })
+        }
+        path.update(style)
         self.svg.add(path)
+
+    def draw_roads(self, roads: Iterator[Road]) -> None:
+        nodes: Dict[OSMNode, Set[RoadPart]] = {}
+
+        for road in roads:
+            for index in range(len(road.outers[0]) - 1):
+                node_1: OSMNode = road.outers[0][index]
+                node_2: OSMNode = road.outers[0][index + 1]
+                point_1: np.array = self.flinger.fling(node_1.coordinates)
+                point_2: np.array = self.flinger.fling(node_2.coordinates)
+                scale: float = self.flinger.get_scale(node_1.coordinates)
+                part_1: RoadPart = RoadPart(point_1, point_2, road.lanes, scale)
+                part_2: RoadPart = RoadPart(point_2, point_1, road.lanes, scale)
+                # part_1.draw_normal(self.svg)
+
+                for node in node_1, node_2:
+                    if node not in nodes:
+                        nodes[node] = set()
+
+                nodes[node_1].add(part_1)
+                nodes[node_2].add(part_2)
+
+        for node in nodes:
+            parts = nodes[node]
+            if len(parts) < 4:
+                continue
+            scale: float = self.flinger.get_scale(node.coordinates)
+            intersection: Intersection = Intersection(list(parts))
+            intersection.draw(self.svg, scale, True)
 
 
 def check_level_number(tags: Dict[str, Any], level: float):
