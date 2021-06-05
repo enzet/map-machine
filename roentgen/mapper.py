@@ -90,8 +90,53 @@ class Painter:
         for road in roads:
             self.draw_road(road, road.matcher.color)
 
-        # Trees
+        self.draw_trees(constructor)
+        self.draw_buildings(constructor)
+        self.draw_direction(constructor)
 
+        # All other points
+
+        if self.overlap == 0:
+            occupied = None
+        else:
+            occupied = Occupied(
+                self.flinger.size[0], self.flinger.size[1], self.overlap)
+
+        nodes = sorted(constructor.points, key=lambda x: -x.priority)
+        steps: int = len(nodes)
+
+        for index, node in enumerate(nodes):  # type: int, Point
+            if (node.get_tag("natural") == "tree" and
+                    ("diameter_crown" in node.tags or
+                     "circumference" in node.tags)):
+                continue
+            ui.progress_bar(
+                index, steps * 3, step=10, text="Drawing main icons"
+            )
+            node.draw_main_shapes(self.svg, occupied)
+
+        for index, point in enumerate(nodes):  # type: int, Point
+            ui.progress_bar(
+                steps + index, steps * 3, step=10, text="Drawing extra icons"
+            )
+            point.draw_extra_shapes(self.svg, occupied)
+
+        for index, point in enumerate(nodes):  # type: int, Point
+            ui.progress_bar(
+                steps * 2 + index, steps * 3, step=10, text="Drawing texts"
+            )
+            if (
+                self.mode not in [CREATION_TIME_MODE, AUTHOR_MODE]
+                and self.label_mode != "no"
+            ):
+                point.draw_texts(self.svg, occupied, self.label_mode)
+
+        ui.progress_bar(-1, len(nodes), step=10, text="Drawing nodes")
+
+    def draw_trees(self, constructor) -> None:
+        """
+        Draw trunk and circumference.
+        """
         for node in constructor.points:
             if not (node.get_tag("natural") == "tree" and
                     ("diameter_crown" in node.tags or
@@ -115,11 +160,12 @@ class Painter:
                     self.flinger.get_scale(node.coordinates),
                     fill="#B89A74"))
 
-        # Draw building shade.
-
+    def draw_buildings(self, constructor) -> None:
+        """
+        Draw buildings: shade, walls, and roof.
+        """
         building_shade: Group = Group(opacity=0.1)
         length: float = self.flinger.get_scale()
-
         for building in constructor.buildings:
             shift = np.array((length * building.get_levels(), 0))
             for nodes in building.inners + building.outers:
@@ -130,15 +176,11 @@ class Painter:
                         ("M", flung_1, "L", flung_2, np.add(flung_2, shift),
                          np.add(flung_1, shift), "Z"),
                         fill="#000000", stroke="#000000", stroke_width=1))
-
         self.svg.add(building_shade)
-
         # Draw buildings.
-
         previous_level: float = 0
         level_height: float = self.flinger.get_scale()
         level_count: int = len(constructor.levels)
-
         for index, level in enumerate(sorted(constructor.levels)):
             ui.progress_bar(
                 index, level_count, step=1, text="Drawing buildings")
@@ -178,11 +220,12 @@ class Painter:
                     self.svg.add(path)
 
             previous_level = level
-
         ui.progress_bar(-1, level_count, step=1, text="Drawing buildings")
 
-        # Directions
-
+    def draw_direction(self, constructor) -> None:
+        """
+        Draw gradient sectors for directions.
+        """
         for node in constructor.points:  # type: Point
 
             angle = None
@@ -227,61 +270,25 @@ class Painter:
                 if is_revert_gradient:
                     (
                         gradient
-                            .add_stop_color(0, direction_color.hex, opacity=0)
-                            .add_stop_color(1, direction_color.hex, opacity=0.7)
+                        .add_stop_color(0, direction_color.hex, opacity=0)
+                        .add_stop_color(1, direction_color.hex, opacity=0.7)
                     )
                 else:
                     (
                         gradient
-                            .add_stop_color(0, direction_color.hex, opacity=0.4)
-                            .add_stop_color(1, direction_color.hex, opacity=0)
+                        .add_stop_color(0, direction_color.hex, opacity=0.4)
+                        .add_stop_color(1, direction_color.hex, opacity=0)
                     )
                 self.svg.add(self.svg.path(
                     d=["M", point] + path + ["L", point, "Z"],
                     fill=gradient.get_paint_server()))
 
-        # All other points
-
-        if self.overlap == 0:
-            occupied = None
-        else:
-            occupied = Occupied(
-                self.flinger.size[0], self.flinger.size[1], self.overlap)
-
-        nodes = sorted(constructor.points, key=lambda x: -x.priority)
-        steps: int = len(nodes)
-
-        for index, node in enumerate(nodes):  # type: int, Point
-            if (node.get_tag("natural") == "tree" and
-                    ("diameter_crown" in node.tags or
-                     "circumference" in node.tags)):
-                continue
-            ui.progress_bar(
-                index, steps * 3, step=10, text="Drawing main icons"
-            )
-            node.draw_main_shapes(self.svg, occupied)
-
-        for index, point in enumerate(nodes):  # type: int, Point
-            ui.progress_bar(
-                steps + index, steps * 3, step=10, text="Drawing extra icons"
-            )
-            point.draw_extra_shapes(self.svg, occupied)
-
-        for index, point in enumerate(nodes):  # type: int, Point
-            ui.progress_bar(
-                steps * 2 + index, steps * 3, step=10, text="Drawing texts"
-            )
-            if (
-                self.mode not in [CREATION_TIME_MODE, AUTHOR_MODE]
-                and self.label_mode != "no"
-            ):
-                point.draw_texts(self.svg, occupied, self.label_mode)
-
-        ui.progress_bar(-1, len(nodes), step=10, text="Drawing nodes")
-
     def draw_road(
         self, road: Road, color: Color, extra_width: float = 0
     ) -> None:
+        """
+        Draw road as simple SVG path.
+        """
         self.flinger.get_scale()
         if road.width is not None:
             width = road.width
@@ -301,6 +308,9 @@ class Painter:
         self.svg.add(path)
 
     def draw_roads(self, roads: Iterator[Road]) -> None:
+        """
+        Draw road as simple SVG path.
+        """
         nodes: Dict[OSMNode, Set[RoadPart]] = {}
 
         for road in roads:
