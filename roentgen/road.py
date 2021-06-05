@@ -1,5 +1,5 @@
 """
-Road shape drawing.
+WIP: road shape drawing.
 """
 from dataclasses import dataclass
 from typing import List, Optional
@@ -29,6 +29,14 @@ class Lane:
     def set_forward(self, is_forward: bool) -> None:
         self.is_forward = is_forward
 
+    def get_width(self, scale: float):
+        """
+        Get lane width.  We use standard 3.7 m lane.
+        """
+        if self.width is None:
+            return 3.7 * scale
+        return self.width * scale
+
 
 class RoadPart:
     """
@@ -39,22 +47,23 @@ class RoadPart:
         self,
         point_1: np.array,
         point_2: np.array,
-        left_offset: float,
-        right_offset: float,
         lanes: List[Lane],
+        scale: False,
     ):
         """
         :param point_1: start point of the road part
         :param point_2: end point of the road part
-        :param left_offset: offset from the central line to the left border
-        :param right_offset:  offset from the central line to the right border
         :param lanes: lane specification
         """
         self.point_1: np.array = point_1
         self.point_2: np.array = point_2
-        self.left_offset: float = left_offset
-        self.right_offset: float = right_offset
         self.lanes: List[Lane] = lanes
+        if lanes:
+            self.width = sum(map(lambda x: x.get_width(scale), lanes))
+        else:
+            self.width = 1
+        self.left_offset: float = self.width / 2
+        self.right_offset: float = self.width / 2
 
         self.turned: np.array = norm(
             turn_by_angle(self.point_2 - self.point_1, np.pi / 2)
@@ -74,20 +83,18 @@ class RoadPart:
         node_2: OSMNode,
         flinger: Flinger,
         road,
+        scale,
     ) -> "RoadPart":
         """
         Construct road part from OSM nodes.
         """
-        left_offset: float = road.width / 2
-        right_offset: float = road.width / 2
         lanes = [Lane(road.width / road.lanes)] * road.lanes
 
         return cls(
             flinger.fling(node_1.coordinates),
             flinger.fling(node_2.coordinates),
-            left_offset,
-            right_offset,
             lanes,
+            scale,
         )
 
     def update(self) -> None:
@@ -104,18 +111,42 @@ class RoadPart:
             self.left_projection = (
                 self.right_connection - self.right_vector + self.left_vector
             )
-            a = np.linalg.norm(self.right_connection - self.point_2)
-            b = np.linalg.norm(self.right_projection - self.point_2)
-            if a < b:
-                self.point_middle = self.right_connection - self.right_vector
+            a = np.linalg.norm(self.right_connection - self.point_1)
+            b = np.linalg.norm(self.right_projection - self.point_1)
+            if a > b:
+                self.right_outer = self.right_connection
+                self.left_outer = self.left_projection
             else:
-                self.point_middle = self.right_projection - self.right_vector
+                self.right_outer = self.right_projection
+                self.left_outer = self.left_connection
+            self.point_middle = self.right_outer - self.right_vector
+
+            max_: float = 100
+
+            if np.linalg.norm(self.point_middle - self.point_1) > max_:
+                self.point_a = self.point_1 + max_ * norm(self.point_middle - self.point_1)
+                self.right_outer = self.point_a + self.right_vector
+                self.left_outer = self.point_a + self.left_vector
+            else:
+                self.point_a = self.point_middle
 
     def get_angle(self) -> float:
         """
         Get an angle between line and x axis.
         """
         return angle(self.point_2 - self.point_1)
+
+    def draw_normal(self, drawing: svgwrite.Drawing):
+        """
+        Draw some debug lines.
+        """
+        line = drawing.path(
+            ("M", self.point_1, "L", self.point_2),
+            fill="none",
+            stroke="#8888FF",
+            stroke_width=self.width,
+        )
+        drawing.add(line)
 
     def draw_debug(self, drawing: svgwrite.Drawing):
         """
@@ -148,19 +179,31 @@ class RoadPart:
         )
         drawing.add(line)
 
+        opacity: float = 0.4
+        radius: float = 2
+
         if self.right_connection is not None:
-            circle = drawing.circle(self.right_connection, 1.2)
+            circle = drawing.circle(self.right_connection, radius, fill="#FF0000", opacity=opacity)
             drawing.add(circle)
         if self.left_connection is not None:
-            circle = drawing.circle(self.left_connection, 1.2)
+            circle = drawing.circle(self.left_connection, radius, fill="#0000FF", opacity=opacity)
             drawing.add(circle)
+
         if self.right_projection is not None:
-            circle = drawing.circle(self.right_projection, 1.2, fill="#FF0000")
+            circle = drawing.circle(self.right_projection, radius, fill="#FF0000", opacity=opacity)
             drawing.add(circle)
         if self.left_projection is not None:
-            circle = drawing.circle(self.left_projection, 1.2, fill="#0000FF")
+            circle = drawing.circle(self.left_projection, radius, fill="#0000FF", opacity=opacity)
             drawing.add(circle)
-        circle = drawing.circle(self.point_middle, 1.2, fill="#000000")
+
+        if self.right_projection is not None:
+            circle = drawing.circle(self.right_outer, radius, fill="#FF0000", opacity=opacity)
+            drawing.add(circle)
+        if self.left_projection is not None:
+            circle = drawing.circle(self.left_outer, radius, fill="#0000FF", opacity=opacity)
+            drawing.add(circle)
+
+        circle = drawing.circle(self.point_a, radius, fill="#000000")
         drawing.add(circle)
 
         self.draw_entrance(drawing, True)
@@ -178,7 +221,7 @@ class RoadPart:
         ]
         drawing.add(drawing.path(path_commands, fill="#CCCCCC"))
 
-    def draw_entrance(self, drawing: svgwrite.Drawing, is_debug: bool):
+    def draw_entrance(self, drawing: svgwrite.Drawing, is_debug: bool = False):
         """
         Draw intersection entrance part.
         """
@@ -195,16 +238,16 @@ class RoadPart:
             )
             drawing.add(path)
         else:
-            drawing.add(drawing.path(path_commands, fill="#BBBBBB"))
+            drawing.add(drawing.path(path_commands, fill="#88FF88"))
 
-    def draw_lanes(self, drawing: svgwrite.Drawing):
+    def draw_lanes(self, drawing: svgwrite.Drawing, scale: float):
         """
         Draw lane delimiters.
         """
         for lane in self.lanes:
-            a = self.right_vector - self.turned * lane.width
+            shift = self.right_vector - self.turned * lane.get_width(scale)
             path = drawing.path(
-                ["M", self.point_middle + a, "L", self.point_2 + a],
+                ["M", self.point_middle + shift, "L", self.point_2 + shift],
                 fill="none",
                 stroke="#FFFFFF",
                 stroke_width=2,
@@ -240,24 +283,37 @@ class Intersection:
             part_2.left_connection = intersection
             part_2.update()
 
-    def draw(self, drawing: svgwrite.Drawing, is_debug: bool = False):
+    def draw(
+        self, drawing: svgwrite.Drawing, scale: float, is_debug: bool = False
+    ) -> None:
         """
         Draw all road parts and intersection.
         """
-        path_commands = ["M"]
+        inner_commands = ["M"]
         for part in self.parts:
-            path_commands += [part.left_connection, "L"]
-        path_commands[-1] = "Z"
+            inner_commands += [part.left_connection, "L"]
+        inner_commands[-1] = "Z"
+
+        outer_commands = ["M"]
+        for part in self.parts:
+            outer_commands += [part.left_connection, "L"]
+            outer_commands += [part.left_outer, "L"]
+            outer_commands += [part.right_outer, "L"]
+        outer_commands[-1] = "Z"
+
+        # for part in self.parts:
+        #     part.draw_normal(drawing)
 
         if is_debug:
-            drawing.add(drawing.path(path_commands, fill="#DDFFDD"))
+            drawing.add(drawing.path(outer_commands, fill="#0000FF", opacity=0.2))
+            drawing.add(drawing.path(inner_commands, fill="#FF0000", opacity=0.2))
 
         for part in self.parts:
             if is_debug:
                 part.draw_debug(drawing)
             else:
-                part.draw(drawing)
+                part.draw_entrance(drawing)
         if not is_debug:
-            for part in self.parts:
-                part.draw_lanes(drawing)
-            drawing.add(drawing.path(path_commands, fill="#CCCCCC"))
+            # for part in self.parts:
+            #     part.draw_lanes(drawing, scale)
+            drawing.add(drawing.path(inner_commands, fill="#FF8888"))
