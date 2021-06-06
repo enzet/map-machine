@@ -483,6 +483,27 @@ node_icons:
     - tags: {power: tower, design: portal_three-level}
       shapes: [power_tower_portal_3_level]
 
+    - tags: {power: pole}
+      shapes: [power_pole_2_level]
+    - tags: {power: pole, design: one-level}
+      shapes: [power_pole_1_level]
+    - tags: {power: pole, design: two-level}
+      shapes: [power_pole_2_level]
+    - tags: {power: pole, design: three-level}
+      shapes: [power_pole_3_level]
+    - tags: {power: pole, design: four-level}
+      shapes: [power_pole_4_level]
+    - tags: {power: pole, design: asymmetric}
+      shapes: [power_pole_asymmetric]
+    - tags: {power: pole, design: triangle}
+      shapes: [power_pole_triangle]
+    - tags: {power: pole, design: armless_asymmetric}
+      shapes: [power_pole_asymmetric_armless]
+    - tags: {power: pole, design: armless_triangle}
+      shapes: [power_pole_triangle_armless]
+    - tags: {power: pole, design: delta}
+      shapes: [power_pole_delta]
+
   - group: "Important small objects"
     tags:
     - tags: {historic: memorial}
