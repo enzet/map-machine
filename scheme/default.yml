@@ -670,8 +670,6 @@ node_icons:
       shapes: [cctv]
     - tags: {man_made: ventilation_shaft}
       shapes: [ventilation]
-    - tags: {power: pole}
-      shapes: [pole]
     - tags: {advertising: billboard}
       shapes: [billboard]
     - tags: {natural: rock}
@@ -830,6 +828,8 @@ node_icons:
 
     - tags: {bus: "yes"}
       add_shapes: [bus]
+    - tags: {motocar: "yes"}
+      add_shapes: [car]
     - tags: {monorail: "yes"}
       add_shapes: [monorail]
     - tags: {trolleybus: "yes"}
