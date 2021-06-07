@@ -60,20 +60,22 @@ def draw_all_icons(
             continue
         if matcher.under_icon:
             for icon_id in matcher.under_icon:
-                current_set = set([icon_id] + matcher.over_icon)
+                current_set = [icon_id] + matcher.over_icon
                 add()
         if not (matcher.under_icon and matcher.with_icon):
             continue
         for icon_id in matcher.under_icon:
             for icon_2_id in matcher.with_icon:
-                current_set: Set[str] = set(
-                    [icon_id] + [icon_2_id] + matcher.over_icon)
+                current_set: List[str] = (
+                    [icon_id] + [icon_2_id] + matcher.over_icon
+                )
                 add()
             for icon_2_id in matcher.with_icon:
                 for icon_3_id in matcher.with_icon:
-                    current_set = set(
+                    current_set = (
                         [icon_id] + [icon_2_id] + [icon_3_id] +
-                        matcher.over_icon)
+                        matcher.over_icon
+                    )
                     if (icon_2_id != icon_3_id and icon_2_id != icon_id and
                             icon_3_id != icon_id):
                         add()
@@ -81,7 +83,7 @@ def draw_all_icons(
     specified_ids: Set[str] = set()
 
     for icon in icons:
-        specified_ids |= icon.get_shape_ids()
+        specified_ids |= set(icon.get_shape_ids())
     print(
         "Icons with no tag specification: \n    " +
         ", ".join(sorted(extractor.shapes.keys() - specified_ids)) + "."

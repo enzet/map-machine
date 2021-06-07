@@ -290,11 +290,11 @@ class Icon:
 
     shape_specifications: List[ShapeSpecification]
 
-    def get_shape_ids(self) -> Set[str]:
+    def get_shape_ids(self) -> List[str]:
         """
         Get all shape identifiers in the icon.
         """
-        return set(x.shape.id_ for x in self.shape_specifications)
+        return [x.shape.id_ for x in self.shape_specifications]
 
     def get_names(self) -> List[str]:
         """
@@ -368,8 +368,8 @@ class Icon:
 
     def __lt__(self, other) -> bool:
         return (
-            sorted(self.shape_specifications)[0].shape.id_
-            < sorted(other.shape_specifications)[0].shape.id_
+            "".join([x.shape.id_ for x in self.shape_specifications])
+            < "".join([x.shape.id_ for x in other.shape_specifications])
         )
 
 
