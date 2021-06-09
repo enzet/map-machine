@@ -2,7 +2,9 @@
 Test icon generation for nodes.
 """
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Tuple
+
+import pytest
 
 from roentgen.icon import IconSet
 from roentgen.grid import IconCollection
@@ -12,21 +14,34 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
-def test_icons() -> None:
-    """
-    Test grid drawing.
-    """
+@pytest.fixture
+def init_directories() -> Tuple[Path, Path]:
+    """Create temporary directories."""
     temp_directory: Path = Path("temp")
     temp_directory.mkdir(exist_ok=True)
 
     set_directory: Path = temp_directory / "icon_set"
     set_directory.mkdir(exist_ok=True)
 
-    collection: IconCollection = IconCollection.from_scheme(
-        SCHEME, SHAPE_EXTRACTOR
-    )
-    collection.draw_grid(temp_directory / "grid.svg")
-    collection.draw_icons(set_directory)
+    return temp_directory, set_directory
+
+
+@pytest.fixture
+def init_collection() -> IconCollection:
+    """Create collection of all possible icon sets."""
+    return IconCollection.from_scheme(SCHEME, SHAPE_EXTRACTOR)
+
+
+def test_grid(init_collection, init_directories) -> None:
+    """Test grid drawing."""
+    temp_directory, _ = init_directories
+    init_collection.draw_grid(temp_directory / "grid.svg")
+
+
+def test_icons(init_collection, init_directories) -> None:
+    """Test individual icons drawing."""
+    _, set_directory = init_directories
+    init_collection.draw_icons(set_directory)
 
 
 def get_icon(tags: Dict[str, str]) -> IconSet:
