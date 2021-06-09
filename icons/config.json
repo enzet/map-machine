@@ -1,4 +1,7 @@
 {
+  "amusement_ride": {
+    "emoji": "🎠"
+  },
   "anchor": {
     "emoji": "⚓"
   },
@@ -7,6 +10,9 @@
       "🍎",
       "🍏"
     ]
+  },
+  "at_in_square": {
+    "emoji": "@"
   },
   "bed": {
     "emoji": "🛌"
@@ -20,6 +26,12 @@
   "book": {
     "emoji": "📕"
   },
+  "books": {
+    "emoji": "📚"
+  },
+  "burger": {
+    "emoji": "🍔"
+  },
   "bus": {
     "emoji": "🚌"
   },
@@ -29,11 +41,17 @@
   "cannon": {
     "directed": "right"
   },
+  "cart": {
+    "emoji": "🛒"
+  },
   "cctv": {
     "directed": "right"
   },
   "christmas_tree": {
     "emoji": "🎄"
+  },
+  "circle_9": {
+    "emoji": "🕳"
   },
   "clock": {
     "emoji": "⌚"
@@ -68,20 +86,38 @@
   "fire_extinguisher": {
     "emoji": "🧯"
   },
+  "flagpole": {
+    "emoji": "🏴"
+  },
+  "foot": {
+    "emoji": "👣"
+  },
   "fountain": {
     "emoji": "⛲"
+  },
+  "fuel_station": {
+    "emoji": "⛽️"
   },
   "gift": {
     "emoji": "🎁"
   },
+  "glass": {
+    "emoji": "🍸"
+  },
   "guidepost": {
     "directed": "right"
+  },
+  "h": {
+    "emoji": "H"
   },
   "ice_cream": {
     "emoji": "🍨"
   },
   "jewish": {
     "emoji": "✡️"
+  },
+  "lock_with_keyhole": {
+    "emoji": "🔒"
   },
   "microphone": {
     "emoji": "🎤"
@@ -95,11 +131,17 @@
   "orthodox": {
     "emoji": "☦️"
   },
+  "p": {
+    "emoji": "P"
+  },
   "palm": {
     "emoji": "🌴"
   },
   "pear": {
     "emoji": "🍐"
+  },
+  "photo_camera": {
+    "emoji": "📷"
   },
   "plane": {
     "emoji": "✈️"
@@ -116,11 +158,29 @@
   "slide": {
     "directed": "right"
   },
+  "stone": {
+    "emoji": "??"
+  },
   "stop": {
-    "emoji": ["🛑", "⛔️"]
+    "emoji": [
+      "🛑",
+      "⛔️"
+    ]
+  },
+  "suitcase": {
+    "emoji": "💼"
   },
   "telephone": {
     "emoji": "☎️"
+  },
+  "ticket": {
+    "emoji": [
+      "🎫",
+      "🎟"
+    ]
+  },
+  "tomb": {
+    "emoji": "🪦"
   },
   "traffic_signals": {
     "emoji": "🚦"
@@ -140,70 +200,16 @@
   "waterfall": {
     "directed": "right"
   },
+  "wheelchair": {
+    "emoji": "🦽"
+  },
   "woman_and_man": {
     "emoji": "🚻"
-  },
-  "x": {
-    "emoji": "❌"
   },
   "wood": {
     "emoji": "🪵"
   },
-  "foot": {
-    "emoji": "👣"
-  },
-  "suitcase": {
-    "emoji": "💼"
-  },
-  "burger": {
-    "emoji": "🍔"
-  },
-  "glass": {
-    "emoji": "🍸"
-  },
-  "ticket": {
-    "emoji": ["🎫", "🎟"]
-  },
-  "wheelchair": {
-    "emoji": "🦽"
-  },
-  "fuel_station": {
-    "emoji": "⛽️"
-  },
-  "amusement_ride": {
-    "emoji": "🎠"
-  },
-  "photo_camera": {
-    "emoji": "📷"
-  },
-  "tomb": {
-    "emoji": "🪦"
-  },
-  "circle_9": {
-    "emoji": "🕳"
-  },
-  "cart": {
-    "emoji": "🛒"
-  },
-  "books": {
-    "emoji": "📚"
-  },
-  "lock_with_keyhole": {
-    "emoji": "🔒"
-  },
-  "flagpole": {
-    "emoji": "🏴"
-  },
-  "at_in_square": {
-    "emoji": "@"
-  },
-  "p": {
-    "emoji": "P"
-  },
-  "h": {
-    "emoji": "H"
-  },
-  "stone": {
-    "emoji": "??"
+  "x": {
+    "emoji": "❌"
   }
 }
