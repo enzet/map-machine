@@ -458,6 +458,8 @@ node_icons:
       shapes: [power_tower_asymmetric]
     - tags: {power: tower, design: triangle}
       shapes: [power_tower_triangle]
+    - tags: {power: tower, design: flag}
+      shapes: [power_tower_flag]
     - tags: {power: tower, design: delta}
       shapes: [power_tower_delta]
     - tags: {power: tower, design: delta_two-level}
@@ -497,6 +499,8 @@ node_icons:
       shapes: [power_pole_asymmetric]
     - tags: {power: pole, design: triangle}
       shapes: [power_pole_triangle]
+    - tags: {power: pole, design: flag}
+      shapes: [power_pole_flag]
     - tags: {power: pole, design: armless_asymmetric}
       shapes: [power_pole_asymmetric_armless]
     - tags: {power: pole, design: armless_triangle}
