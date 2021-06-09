@@ -323,13 +323,13 @@ class Icon:
         for shape_specification in self.shape_specifications:
             shape_specification.draw(svg, point, tags, outline)
 
-    def draw_to_file(self, file_name: str):
+    def draw_to_file(self, file_name: Path):
         """
         Draw icon to the SVG file.
 
         :param file_name: output SVG file name
         """
-        svg: Drawing = Drawing(file_name, (16, 16))
+        svg: Drawing = Drawing(str(file_name), (16, 16))
 
         for shape_specification in self.shape_specifications:
             shape_specification.draw(svg, (8, 8))

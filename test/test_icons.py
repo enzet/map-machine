@@ -1,11 +1,11 @@
 """
 Test icon generation for nodes.
 """
-from os import makedirs
+from pathlib import Path
 from typing import Dict
 
 from roentgen.icon import IconSet
-from roentgen.grid import draw_all_icons
+from roentgen.grid import IconCollection
 from test import SCHEME, SHAPE_EXTRACTOR
 
 __author__ = "Sergey Vartanov"
@@ -16,8 +16,17 @@ def test_icons() -> None:
     """
     Test grid drawing.
     """
-    makedirs("icon_set", exist_ok=True)
-    draw_all_icons(SCHEME, SHAPE_EXTRACTOR, "temp.svg", "icon_set")
+    temp_directory: Path = Path("temp")
+    temp_directory.mkdir(exist_ok=True)
+
+    set_directory: Path = temp_directory / "icon_set"
+    set_directory.mkdir(exist_ok=True)
+
+    collection: IconCollection = IconCollection.from_scheme(
+        SCHEME, SHAPE_EXTRACTOR
+    )
+    collection.draw_grid(temp_directory / "grid.svg")
+    collection.draw_icons(set_directory)
 
 
 def get_icon(tags: Dict[str, str]) -> IconSet:

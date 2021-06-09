@@ -14,7 +14,7 @@ import svgwrite
 
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
-from roentgen.grid import draw_all_icons
+from roentgen.grid import IconCollection
 from roentgen.icon import ShapeExtractor
 from roentgen.mapper import (
     AUTHOR_MODE, CREATION_TIME_MODE, ICONS_FILE_NAME, Painter, TAGS_FILE_NAME,
@@ -158,22 +158,25 @@ def draw_element(target: str, tags_description: str):
     svg.write(open("test_icon.svg", "w+"))
 
 
-def draw_grid() -> None:
+def draw_icons() -> None:
     """
-    Draw all possible icon shapes combinations as grid.
+    Draw all possible icon shapes combinations as grid in one SVG file and as
+    individual SVG files.
     """
     os.makedirs("icon_set", exist_ok=True)
     scheme: Scheme = Scheme(Path("scheme/default.yml"))
     extractor: ShapeExtractor = ShapeExtractor(
         Path("icons/icons.svg"), Path("icons/config.json")
     )
-    draw_all_icons(scheme, extractor, "icon_grid.svg", "icon_set")
+    collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
+    collection.draw_grid(Path("icon_grid.svg"))
+    collection.draw_icons(Path("icon_set"))
 
 
 if __name__ == "__main__":
     if len(sys.argv) == 3 and sys.argv[1] in ["node", "way", "area"]:
         draw_element(sys.argv[1], sys.argv[2])
-    elif len(sys.argv) == 2 and sys.argv[1] == "grid":
-        draw_grid()
+    elif len(sys.argv) == 2 and sys.argv[1] == "icons":
+        draw_icons()
     else:
         main(sys.argv)
