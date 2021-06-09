@@ -1,6 +1,7 @@
 """
 Icon grid drawing.
 """
+from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Set
 
@@ -15,9 +16,13 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
+@dataclass
 class IconCollection:
-    def __init__(self, icons):
-        self.icons: List[Icon] = icons
+    """
+    Collection of icons.
+    """
+
+    icons: List[Icon]
 
     @classmethod
     def from_scheme(
@@ -28,7 +33,7 @@ class IconCollection:
         color: Color = Color("black")
     ) -> "IconCollection":
         """
-        Draw all possible icon combinations in grid.
+        Collect all possible icon combinations in grid.
 
         :param scheme: tag specification
         :param extractor: shape extractor for icon creation
@@ -93,8 +98,8 @@ class IconCollection:
 
     def draw_icons(self, output_directory: Path):
         """
-        :param output_directory: path to the directory to store individual SVG files
-            for icons
+        :param output_directory: path to the directory to store individual SVG
+            files for icons
         """
         for icon in self.icons:
             icon.draw_to_file(
@@ -137,7 +142,7 @@ class IconCollection:
                 point += np.array((0, step))
                 height += step
 
-        with open(file_name, "w") as output_file:
+        with file_name.open("w") as output_file:
             svg.write(output_file)
 
     def __len__(self) -> int:

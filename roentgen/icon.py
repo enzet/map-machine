@@ -3,7 +3,7 @@ Extract icons from SVG file.
 """
 import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
 from xml.dom.minidom import Document, Element, Node, parse
@@ -40,7 +40,28 @@ class Shape:
     offset: np.array  # vector that should be used to shift the path
     id_: str  # shape identifier
     name: Optional[str] = None  # icon description
-    is_right_directed: bool = False
+    directed: Optional[bool] = None
+    emojis: Set[str] = field(default_factory=set)
+
+    @classmethod
+    def from_structure(
+        cls,
+        structure: Dict[str, None],
+        path: str,
+        offset: np.array,
+        id_: str,
+        name: Optional[str] = None,
+    ) -> "Shape":
+        shape = cls(path, offset, id_, name)
+
+        if "right_directed" in structure:
+            shape.right_directed = structure["right_directed"]
+
+        if "emoji" in structure:
+            emojis = structure["emojis"]
+            shape.emojis = [emojis] if isinstance(emojis, str) else emojis
+
+        return shape
 
     def is_default(self) -> bool:
         """
@@ -77,17 +98,6 @@ class Shape:
         return svg.path(d=self.path, transform=" ".join(transformations))
 
 
-class ShapeConfiguration:
-    """
-    Description of the icon shape properties.
-    """
-
-    def __init__(self, file_name: Path):
-        with file_name.open() as input_file:
-            content = json.load(input_file)
-        self.right_directed: Set[str] = set(content["right_directed"])
-
-
 class ShapeExtractor:
     """
     Extract shapes from SVG file.
@@ -100,9 +110,10 @@ class ShapeExtractor:
         :param svg_file_name: input SVG file name with icons.  File may contain
             any other irrelevant graphics.
         """
-        self.configuration = ShapeConfiguration(configuration_file_name)
         self.shapes: Dict[str, Shape] = {}
-
+        self.configuration: Dict[str, Any] = json.load(
+            configuration_file_name.open()
+        )
         with svg_file_name.open() as input_file:
             content: Document = parse(input_file)
             for element in content.childNodes:  # type: Element
@@ -155,8 +166,9 @@ class ShapeExtractor:
                     name = child_node.childNodes[0].nodeValue
                     break
 
-            is_right_directed: bool = id_ in self.configuration.right_directed
-            self.shapes[id_] = Shape(path, point, id_, name, is_right_directed)
+            self.shapes[id_] = Shape.from_structure(
+                self.configuration, path, point, id_, name
+            )
         else:
             error(f"not standard ID {id_}")
 
@@ -278,7 +290,7 @@ class ShapeSpecification:
             and np.allclose(self.offset, other.offset)
         )
 
-    def __lt__(self, other):
+    def __lt__(self, other) -> bool:
         return self.shape.id_ < other.shape.id_
 
 
@@ -334,7 +346,7 @@ class Icon:
         for shape_specification in self.shape_specifications:
             shape_specification.draw(svg, (8, 8))
 
-        with open(file_name, "w") as output_file:
+        with file_name.open("w") as output_file:
             svg.write(output_file)
 
     def is_default(self) -> bool:
