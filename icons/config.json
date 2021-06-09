@@ -1,10 +1,209 @@
 {
-    "right_directed": [
-        "cannon",
-        "cctv",
-        "guidepost",
-        "pole_lamp",
-        "slide",
-        "waterfall"
+  "anchor": {
+    "emoji": "⚓"
+  },
+  "apple": {
+    "emoji": [
+      "🍎",
+      "🍏"
     ]
+  },
+  "bed": {
+    "emoji": "🛌"
+  },
+  "beer_mug": {
+    "emoji": "🍺"
+  },
+  "bicycle": {
+    "emoji": "🚲"
+  },
+  "book": {
+    "emoji": "📕"
+  },
+  "bus": {
+    "emoji": "🚌"
+  },
+  "bus_stop": {
+    "emoji": "🚏"
+  },
+  "cannon": {
+    "directed": "right"
+  },
+  "cctv": {
+    "directed": "right"
+  },
+  "christmas_tree": {
+    "emoji": "🎄"
+  },
+  "clock": {
+    "emoji": "⌚"
+  },
+  "coffee_cup": {
+    "emoji": "☕"
+  },
+  "credit_card": {
+    "emoji": "💳"
+  },
+  "cross": {
+    "emoji": "✝️"
+  },
+  "cupcake": {
+    "emoji": "🧁"
+  },
+  "door": {
+    "emoji": "🚪"
+  },
+  "drinking_water": {
+    "emoji": "🚰"
+  },
+  "electricity": {
+    "emoji": "⚡"
+  },
+  "envelope": {
+    "emoji": "✉️"
+  },
+  "film": {
+    "emoji": "🎞️"
+  },
+  "fire_extinguisher": {
+    "emoji": "🧯"
+  },
+  "fountain": {
+    "emoji": "⛲"
+  },
+  "gift": {
+    "emoji": "🎁"
+  },
+  "guidepost": {
+    "directed": "right"
+  },
+  "ice_cream": {
+    "emoji": "🍨"
+  },
+  "jewish": {
+    "emoji": "✡️"
+  },
+  "microphone": {
+    "emoji": "🎤"
+  },
+  "muslim": {
+    "emoji": "☪️"
+  },
+  "needleleaved_tree": {
+    "emoji": "🌲"
+  },
+  "orthodox": {
+    "emoji": "☦️"
+  },
+  "palm": {
+    "emoji": "🌴"
+  },
+  "pear": {
+    "emoji": "🍐"
+  },
+  "plane": {
+    "emoji": "✈️"
+  },
+  "pole_lamp": {
+    "directed": "right"
+  },
+  "restaurant": {
+    "emoji": "🍴"
+  },
+  "rocket_flying": {
+    "emoji": "🚀"
+  },
+  "slide": {
+    "directed": "right"
+  },
+  "stop": {
+    "emoji": ["🛑", "⛔️"]
+  },
+  "telephone": {
+    "emoji": "☎️"
+  },
+  "traffic_signals": {
+    "emoji": "🚦"
+  },
+  "train": {
+    "emoji": "🚆"
+  },
+  "tram": {
+    "emoji": "🚊"
+  },
+  "tree": {
+    "emoji": "🌳"
+  },
+  "triangle_small": {
+    "emoji": "⛰️"
+  },
+  "waterfall": {
+    "directed": "right"
+  },
+  "woman_and_man": {
+    "emoji": "🚻"
+  },
+  "x": {
+    "emoji": "❌"
+  },
+  "wood": {
+    "emoji": "🪵"
+  },
+  "foot": {
+    "emoji": "👣"
+  },
+  "suitcase": {
+    "emoji": "💼"
+  },
+  "burger": {
+    "emoji": "🍔"
+  },
+  "glass": {
+    "emoji": "🍸"
+  },
+  "ticket": {
+    "emoji": ["🎫", "🎟"]
+  },
+  "wheelchair": {
+    "emoji": "🦽"
+  },
+  "fuel_station": {
+    "emoji": "⛽️"
+  },
+  "amusement_ride": {
+    "emoji": "🎠"
+  },
+  "photo_camera": {
+    "emoji": "📷"
+  },
+  "tomb": {
+    "emoji": "🪦"
+  },
+  "circle_9": {
+    "emoji": "🕳"
+  },
+  "cart": {
+    "emoji": "🛒"
+  },
+  "books": {
+    "emoji": "📚"
+  },
+  "lock_with_keyhole": {
+    "emoji": "🔒"
+  },
+  "flagpole": {
+    "emoji": "🏴"
+  },
+  "at_in_square": {
+    "emoji": "@"
+  },
+  "p": {
+    "emoji": "P"
+  },
+  "h": {
+    "emoji": "H"
+  },
+  "stone": {
+    "emoji": "??"
+  }
 }
