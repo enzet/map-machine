@@ -6,7 +6,7 @@ See https://wiki.openstreetmap.org/wiki/Tiles
 import argparse
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Tuple, Optional
+from typing import Tuple, Optional, List
 
 import numpy as np
 import svgwrite
@@ -173,15 +173,13 @@ def ui(args) -> None:
     Simple user interface for tile generation.
     """
     parser: argparse.ArgumentParser = argparse.ArgumentParser()
-    parser.add_argument("-lat", required=True)
-    parser.add_argument("-lon", required=True)
+    parser.add_argument("-c", required=True)
     parser.add_argument("-s", required=True)
     options = parser.parse_args(args)
 
     directory: Path = Path("tiles")
     directory.mkdir(exist_ok=True)
-    tile: Tile = Tile.from_coordinates(
-        np.array((float(options.lat), float(options.lon))), int(options.s)
-    )
+    coordinates: List[float] = list(map(float, options.c.split(",")))
+    tile: Tile = Tile.from_coordinates(np.array(coordinates), int(options.s))
     tile.draw(directory)
     print(tile.get_carto_address())
