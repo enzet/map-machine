@@ -1,3 +1,8 @@
+"""
+Tile generation.
+
+See https://wiki.openstreetmap.org/wiki/Tiles
+"""
 import argparse
 from dataclasses import dataclass
 from pathlib import Path
@@ -19,6 +24,11 @@ from roentgen.util import MinMax
 
 @dataclass
 class Tile:
+    """
+    OpenStreetMap tile, square bitmap graphics displayed in a grid arrangement
+    to show a map.
+    """
+
     x: int
     y: int
     scale: int
