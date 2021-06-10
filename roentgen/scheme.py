@@ -361,7 +361,7 @@ class Scheme:
             if key in tags:
                 if DirectionSet(tags[key]).is_right() is False:
                     for specification in main_icon.shape_specifications:
-                        if specification.shape.is_right_directed:
+                        if specification.shape.is_right_directed is True:
                             specification.flip_horizontally = True
 
         return returned, priority

@@ -40,7 +40,7 @@ class Shape:
     offset: np.array  # vector that should be used to shift the path
     id_: str  # shape identifier
     name: Optional[str] = None  # icon description
-    directed: Optional[bool] = None
+    is_right_directed: Optional[bool] = None
     emojis: Set[str] = field(default_factory=set)
 
     @classmethod
@@ -55,7 +55,7 @@ class Shape:
         shape = cls(path, offset, id_, name)
 
         if "right_directed" in structure:
-            shape.right_directed = structure["right_directed"]
+            shape.is_right_directed = structure["right_directed"]
 
         if "emoji" in structure:
             emojis = structure["emojis"]
