@@ -183,7 +183,7 @@ Example\:
 \4 {Required} {required_arguments}
 
 \list
-    {\tt {--boundary-box} or \tt {-b}\: boundary box to draw. Value\: \tt {<longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>}.  Use space before first \tt {-} to escape negative values.}
+    {\tt {--boundary-box} or \tt {-b}\: boundary box to draw. Value\: \tt {<longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>}.  If first longitude is negative, use quotation marks and space before first \tt {-}.  For example, \tt {-b " -122.335,47.614,-122.325,47.617"}.}
 
 \4 {Optional} {optional_arguments}
 
@@ -204,6 +204,6 @@ Tile will be stored as SVG file to \tt {tiles/tile_<zoom level>_<x>_<y>.svg}, wh
 
 Example\:
 
-\code {python3 roentgen.py tile -c 55.7510637,37.6270761 -s 18} {bash}
+\code {python roentgen.py tile -c 55.7510637,37.6270761 -s 18} {bash}
 
 will generate SVG file \tt {tiles/tile_18_158471_81953.svg}.

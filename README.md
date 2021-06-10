@@ -140,7 +140,7 @@ python roentgen.py -b 2.284,48.86,2.29,48.865
 
 #### Required ####
 
-  * `--boundary-box` or `-b`: boundary box to draw. Value: `<longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>`. Use space before first `-` to escape negative values.
+  * `--boundary-box` or `-b`: boundary box to draw. Value: `<longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>`. If first value is negative, use quotation marks and space before first `-`. For example, `-b " -122.335,47.614,-122.325,47.617"`.
 
 #### Optional ####
 
@@ -164,7 +164,7 @@ Tile will be stored as SVG file to `tiles/tile_<zoom level>_<x>_<y>.svg`, where 
 Example:
 
 ```bash
-python3 roentgen.py tile -c 55.7510637,37.6270761 -s 18
+python roentgen.py tile -c 55.7510637,37.6270761 -s 18
 ```
 
 will generate SVG file `tiles/tile_18_158471_81953.svg`.
