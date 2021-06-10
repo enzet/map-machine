@@ -57,20 +57,38 @@ class Tile:
         return np.array((lat_deg, lon_deg))
 
     def get_boundary_box(self) -> Tuple[np.array, np.array]:
+        """
+        Get geographical boundary box of the tile: north-west and south-east
+        points.
+        """
         return (
             self.get_coordinates(),
             Tile(self.x + 1, self.y + 1, self.scale).get_coordinates(),
         )
 
     def get_extended_boundary_box(self) -> Tuple[np.array, np.array]:
-        lat1, lon1 = self.get_coordinates()
-        lat2, lon2 = Tile(self.x + 1, self.y + 1, self.scale).get_coordinates()
-        return (
-            np.array((int(lat1 * 1000) / 1000 + 0.002, int(lon1 * 1000) / 1000 - 0.001)),
-            np.array((int(lat2 * 1000) / 1000 - 0.001, int(lon2 * 1000) / 1000 + 0.002)),
+        """
+        Same as get_boundary_box, but with extended boundaries.
+        """
+        point_1: np.array = self.get_coordinates()
+        point_2: np.array = Tile(
+            self.x + 1, self.y + 1, self.scale
+        ).get_coordinates()
+
+        extended_1: Tuple[float, float] = (
+            int(point_1[0] * 1000) / 1000 + 0.002,
+            int(point_1[1] * 1000) / 1000 - 0.001,
         )
+        extended_2: Tuple[float, float] = (
+            int(point_2[0] * 1000) / 1000 - 0.001,
+            int(point_2[1] * 1000) / 1000 + 0.002,
+        )
+        return np.array(extended_1), np.array(extended_2)
 
     def load_map(self) -> Optional[Map]:
+        """
+        Construct map data from extended boundary box.
+        """
         coordinates_1, coordinates_2 = self.get_extended_boundary_box()
         lat1, lon1 = coordinates_1
         lat2, lon2 = coordinates_2
@@ -92,6 +110,9 @@ class Tile:
         return osm_reader.map_
 
     def get_map_name(self, directory_name: Path) -> Path:
+        """
+        Get tile output SVG file path.
+        """
         return directory_name / f"tile_{self.scale}_{self.x}_{self.y}.svg"
 
     def get_carto_address(self) -> str:
@@ -103,19 +124,23 @@ class Tile:
         )
 
     def draw(self, directory_name: Path):
+        """
+        Draw tile to SVG file.
 
+        :param directory_name: output directory to storing tiles
+        """
         map_ = self.load_map()
 
         lat1, lon1 = self.get_coordinates()
         lat2, lon2 = Tile(self.x + 1, self.y + 1, self.scale).get_coordinates()
 
-        min_ = np.array((min(lat1, lat2), min(lon1, lon2)))
-        max_ = np.array((max(lat1, lat2), max(lon1, lon2)))
+        min_: np.array = np.array((min(lat1, lat2), min(lon1, lon2)))
+        max_: np.array = np.array((max(lat1, lat2), max(lon1, lon2)))
 
         flinger: Flinger = Flinger(MinMax(min_, max_), self.scale)
         size: np.array = flinger.size
 
-        output_file_name = self.get_map_name(directory_name)
+        output_file_name: Path = self.get_map_name(directory_name)
 
         svg: svgwrite.Drawing = svgwrite.Drawing(
             str(output_file_name), size=size
