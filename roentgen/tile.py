@@ -1,3 +1,4 @@
+import argparse
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Tuple, Optional
@@ -132,11 +133,20 @@ class Tile:
             svg.write(output_file)
 
 
-if __name__ == '__main__':
-    directory = Path("tiles")
+def ui(args) -> None:
+    """
+    Simple user interface for tile generation.
+    """
+    parser: argparse.ArgumentParser = argparse.ArgumentParser()
+    parser.add_argument("-lat", required=True)
+    parser.add_argument("-lon", required=True)
+    parser.add_argument("-s", required=True)
+    options = parser.parse_args(args)
+
+    directory: Path = Path("tiles")
     directory.mkdir(exist_ok=True)
-    tile18 = Tile.from_coordinates(np.array((55.73, 37.62)), 18)
-    tile18.draw(directory)
-    Tile(tile18.x + 1, tile18.y + 0, 18).draw(directory)
-    Tile(tile18.x + 0, tile18.y - 1, 18).draw(directory)
-    Tile(tile18.x + 1, tile18.y - 1, 18).draw(directory)
+    tile: Tile = Tile.from_coordinates(
+        np.array((float(options.lat), float(options.lon))), int(options.s)
+    )
+    tile.draw(directory)
+    print(tile.get_carto_address())
