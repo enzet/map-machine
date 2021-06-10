@@ -193,3 +193,17 @@ Example\:
     {\tt {-i}\: path to input XML file name.  If this argument is not set, XML file will be downloaded through OpenStreetMap API.}
 
 Check all arguments with \tt {python roentgen.py --help}.
+
+\2 {Tile generation} {tile-generation}
+
+\code {python roentgen.py tile \\
+    -c $\{LATITUDE\},$\{LONGITUDE\} \\
+    -s $\{OSM_ZOOM_LEVEL\}} {bash}
+
+Tile will be stored as SVG file to \tt {tiles/tile_<zoom level>_<x>_<y>.svg}, where \tt {x} and \tt {y} are tile coordinates.
+
+Example\:
+
+\code {python3 roentgen.py tile -c 55.7510637,37.6270761 -s 18} {bash}
+
+will generate SVG file \tt {tiles/tile_18_158471_81953.svg}.

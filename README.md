@@ -150,3 +150,22 @@ python roentgen.py -b 2.284,48.86,2.29,48.865
 
 Check all arguments with `python roentgen.py --help`.
 
+Tile generation
+---------------
+
+```bash
+python roentgen.py tile \
+    -c ${LATITUDE},${LONGITUDE} \
+    -s ${OSM_ZOOM_LEVEL}
+```
+
+Tile will be stored as SVG file to `tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates.
+
+Example:
+
+```bash
+python3 roentgen.py tile -c 55.7510637,37.6270761 -s 18
+```
+
+will generate SVG file `tiles/tile_18_158471_81953.svg`.
+
