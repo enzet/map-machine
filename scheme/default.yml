@@ -286,6 +286,8 @@ node_icons:
       shapes: [bottle]
     - tags: {shop: bakery}
       shapes: [cupcake]
+    - tags: {shop: fireplace}
+      shapes: [fireplace]
     - tags: {shop: milk}
       shapes: [milk]
     - tags: {building: store}
