@@ -147,3 +147,7 @@ class IconCollection:
 
     def __len__(self) -> int:
         return len(self.icons)
+
+    def sort(self) -> None:
+        """Sort icon list."""
+        self.icons = sorted(self.icons)
