@@ -143,6 +143,8 @@ node_icons:
       shapes: [electricity]
     - tags: {plant: christmas_trees}
       shapes: [{shape: christmas_tree, color: orchard_border_color}]
+    - tags: {crop: sunflower}
+      shapes: [{shape: sunflower, color: farmland_border_color}]
     - tags: {produce: apple}
       shapes: [{shape: apple, color: orchard_border_color}]
     - tags: {produce: christmas_trees}
