@@ -626,6 +626,10 @@ node_icons:
       shapes: [horizontal_bar]
     - tags: {leisure: picnic_table}
       shapes: [table]
+    - tags: {golf: tee}
+      shapes: [golf_tee]
+    - tags: {golf: pin}
+      shapes: [golf_pin]
 
   - group: "Entrances"
     tags:

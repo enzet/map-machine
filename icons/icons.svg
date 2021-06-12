@@ -171,8 +171,8 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="254.89563"
-     inkscape:cx="554.7429"
+     inkscape:cy="428.1368"
+     inkscape:cx="633.36434"
      inkscape:zoom="11.313708"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -559,6 +559,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -15816,5 +15817,67 @@
        d="M 552 338 A 1 1 0 0 0 551 339 A 1 1 0 0 0 552 340 A 1 1 0 0 0 553 339 A 1 1 0 0 0 552 338 z M 550.5 341 C 550.223 341 550 341.223 550 341.5 L 550 343.5 C 550 343.777 550.223 344 550.5 344 L 551 344 L 551 346.5 C 551 346.777 551.223 347 551.5 347 L 552.5 347 C 552.777 347 553 346.777 553 346.5 L 553 344 L 553.5 344 C 553.777 344 554 343.777 554 343.5 L 554 341.5 C 554 341.223 553.777 341 553.5 341 L 550.5 341 z M 549 348.04297 L 548.64648 348.39648 C 548.20541 348.83756 547.83333 349 547.5 349 C 547.16667 349 546.79459 348.83756 546.35352 348.39648 L 545.64648 349.10352 C 546.20541 349.66244 546.83333 350 547.5 350 C 548.03939 350 548.52735 349.65579 549 349.27539 C 549.47265 349.65579 549.96061 350 550.5 350 C 551.03939 350 551.52735 349.65579 552 349.27539 C 552.47265 349.65579 552.96061 350 553.5 350 C 554.03939 350 554.52735 349.65579 555 349.27539 C 555.47265 349.65579 555.96061 350 556.5 350 C 557.16667 350 557.79459 349.66244 558.35352 349.10352 L 557.64648 348.39648 C 557.20541 348.83756 556.83333 349 556.5 349 C 556.16667 349 555.79459 348.83756 555.35352 348.39648 L 555 348.04297 L 554.64648 348.39648 C 554.20541 348.83756 553.83333 349 553.5 349 C 553.16667 349 552.79459 348.83756 552.35352 348.39648 L 552 348.04297 L 551.64648 348.39648 C 551.20541 348.83756 550.83333 349 550.5 349 C 550.16667 349 549.79459 348.83756 549.35352 348.39648 L 549 348.04297 z "
        id="human_on_ferry"
        inkscape:label="#circle6864" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path18454"
+       d="m 628,162.5 5,2 -5,2 z"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       ry="0.5"
+       rx="0.5"
+       y="162"
+       x="627"
+       height="5"
+       width="1"
+       id="rect18456"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       ry="0"
+       rx="0"
+       y="165"
+       x="627"
+       height="8.9499998"
+       width="1"
+       id="rect18458"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <circle
+       r="2.9789882"
+       cy="164.99998"
+       cx="647.99994"
+       id="circle18460"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.09999995;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       ry="0.5"
+       rx="0.5"
+       y="169"
+       x="645.04999"
+       height="1"
+       width="5.9000001"
+       id="rect18462"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path18464"
+       d="m 646,170 4,0 -1,1 -0.5,3 -1,0 -0.5,-3 z"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <ellipse
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path18466"
+       cx="633.5"
+       cy="172.52499"
+       rx="3.5"
+       ry="1.475" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 627.5 178 C 627.223 178 627 178.223 627 178.5 L 627 182.5 L 627 189.94922 L 628 189.94922 L 628 182.5 L 633 180.5 L 628 178.5 C 628 178.223 627.777 178 627.5 178 z M 633.5 187.05078 A 3.5 1.475 0 0 0 630 188.52539 A 3.5 1.475 0 0 0 633.5 190 A 3.5 1.475 0 0 0 637 188.52539 A 3.5 1.475 0 0 0 633.5 187.05078 z "
+       id="golf_pin"
+       inkscape:label="#path18468" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.09999995;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 648 178.02148 A 2.9789882 2.9789882 0 0 0 645.02148 181 A 2.9789882 2.9789882 0 0 0 648 183.97852 A 2.9789882 2.9789882 0 0 0 650.97852 181 A 2.9789882 2.9789882 0 0 0 648 178.02148 z M 645.55078 185 C 645.27378 185 645.05078 185.223 645.05078 185.5 C 645.05078 185.777 645.27378 186 645.55078 186 L 646 186 L 647 187 L 647.5 190 L 648.5 190 L 649 187 L 650 186 L 650.44922 186 C 650.72622 186 650.94922 185.777 650.94922 185.5 C 650.94922 185.223 650.72622 185 650.44922 185 L 645.55078 185 z "
+       id="golf_tee"
+       inkscape:label="#circle18474" />
   </g>
 </svg>
