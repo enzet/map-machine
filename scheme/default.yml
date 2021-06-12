@@ -518,6 +518,8 @@ node_icons:
 
   - group: "Important small objects"
     tags:
+    - tags: {historic: cannon}
+      shapes: [cannon]
     - tags: {historic: memorial}
       shapes: [memorial]
     - tags: {historic: memorial, memorial: plaque}
