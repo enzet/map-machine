@@ -169,6 +169,8 @@ node_icons:
       shapes: [bag]
     - tags: {shop: mall, building: "yes"}
       shapes: [bag]
+    - tags: {leisure: water_park}
+      shapes: [slide_and_water]
 
   - group: "Important big objects"
     tags:
