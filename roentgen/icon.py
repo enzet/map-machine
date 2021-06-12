@@ -195,6 +195,7 @@ class ShapeSpecification:
     offset: np.array = np.array((0, 0))
     flip_horizontally: bool = False
     flip_vertically: bool = False
+    use_outline: bool = True
 
     @classmethod
     def from_structure(
@@ -214,6 +215,7 @@ class ShapeSpecification:
         offset: np.array = np.array((0, 0))
         flip_horizontally: bool = False
         flip_vertically: bool = False
+        use_outline: bool = True
 
         if isinstance(structure, str):
             shape = extractor.get_shape(structure)
@@ -230,8 +232,13 @@ class ShapeSpecification:
                 flip_horizontally = structure["flip_horizontally"]
             if "flip_vertically" in structure:
                 flip_vertically = structure["flip_vertically"]
+            if "outline" in structure:
+                use_outline = structure["outline"]
 
-        return cls(shape, color, offset, flip_horizontally, flip_vertically)
+        return cls(
+            shape, color, offset, flip_horizontally, flip_vertically,
+            use_outline
+        )
 
     def is_default(self) -> bool:
         """
@@ -264,7 +271,7 @@ class ShapeSpecification:
         path = self.shape.get_path(svg, point, self.offset, scale)
         path.update({"fill": self.color.hex})
 
-        if outline:
+        if outline and self.use_outline:
             bright: bool = is_bright(self.color)
             color: Color = Color("black") if bright else Color("white")
             opacity: float = 0.7 if bright else 0.5

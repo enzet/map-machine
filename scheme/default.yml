@@ -20,6 +20,7 @@ colors:
   evergreen_color: "#688C44"
   farmland_color: "#FFEEBB"
   farmland_border_color: "#DDCC99"
+  farmland_darker_color: "#998855"
   ferry_terminal_color: "#AABBDD"
   foot_border_color: "#FFFFFF"
   foot_color: "#B89A74"
@@ -144,7 +145,7 @@ node_icons:
     - tags: {plant: christmas_trees}
       shapes: [{shape: christmas_tree, color: orchard_border_color}]
     - tags: {crop: sunflower}
-      shapes: [{shape: sunflower, color: farmland_border_color}]
+      shapes: [{shape: sunflower, color: farmland_darker_color, outline: no}]
     - tags: {produce: apple}
       shapes: [{shape: apple, color: orchard_border_color}]
     - tags: {produce: christmas_trees}
