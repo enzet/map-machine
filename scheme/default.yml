@@ -721,12 +721,20 @@ node_icons:
       set_main_color: evergreen_color
     - tags: {natural: bush}
       shapes: [{shape: bush, color: tree_color}]
+
     - tags: {natural: tree, genus: Betula}
       shapes: [{shape: betula, color: tree_color}]
     - tags: {natural: tree, "genus:en": Birch}
       shapes: [{shape: betula, color: tree_color}]
     - tags: {natural: tree, "genus:ru": Берёза}
       shapes: [{shape: betula, color: tree_color}]
+
+    - tags: {natural: tree, genus: Acer}
+      shapes: [{shape: tree, color: tree_color}]
+      add_shapes: [{shape: leaf_maple, color: tree_color}]
+    - tags: {natural: tree, "genus:en": Maple}
+      shapes: [{shape: tree, color: tree_color}]
+      add_shapes: [{shape: leaf_maple, color: tree_color}]
 
     - tags: {railway: buffer_stop}
       shapes: [buffer_stop]
@@ -1224,6 +1232,10 @@ ways:
       fill: grass_color
     priority: 21
   - tags: {leisure: park}
+    style:
+      fill: grass_color
+      opacity: 0.5
+  - tags: {leisure: golf_course}
     style:
       fill: grass_color
       opacity: 0.5
