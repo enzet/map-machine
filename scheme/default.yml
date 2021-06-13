@@ -164,6 +164,8 @@ node_icons:
       shapes: [{shape: ear_botany, color: rye_dark_color, outline: no}]
     - tags: {crop: wheat}
       shapes: [{shape: ear_botany, color: wheat_dark_color, outline: no}]
+    - tags: {crop: rape}
+      shapes: [{shape: rape, color: wheat_dark_color, outline: no}]
     - tags: {produce: apple}
       shapes: [{shape: apple, color: orchard_border_color}]
     - tags: {produce: christmas_trees}
