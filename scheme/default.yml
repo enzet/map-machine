@@ -146,6 +146,8 @@ node_icons:
       shapes: [{shape: christmas_tree, color: orchard_border_color}]
     - tags: {crop: sunflower}
       shapes: [{shape: sunflower, color: farmland_darker_color, outline: no}]
+    - tags: {crop: wheat}
+      shapes: [{shape: wheat, color: farmland_darker_color, outline: no}]
     - tags: {produce: apple}
       shapes: [{shape: apple, color: orchard_border_color}]
     - tags: {produce: christmas_trees}
