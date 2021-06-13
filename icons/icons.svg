@@ -171,8 +171,8 @@
      showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="163.85808"
-     inkscape:cx="225.58617"
+     inkscape:cy="158.85808"
+     inkscape:cx="215.58617"
      inkscape:zoom="16"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -16194,7 +16194,7 @@
     <path
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="M 232.5 433.5 C 231 435 231 436 232.5 437.5 C 234 436 234 435 232.5 433.5 z M 229 437 C 229 440 230 439 232 440 C 232 437 231 438 229 437 z M 236 437 C 234 438 233 437 233 440 C 235 439 236 440 236 437 z M 229 440 C 229 443 230 442 232 443 C 232 440 231 441 229 440 z M 236 440 C 234 441 233 440 233 443 C 235 442 236 443 236 440 z M 232.5 444 C 232.223 444 232 444.223 232 444.5 L 232 446.5 C 232 446.777 232.223 447 232.5 447 C 232.777 447 233 446.777 233 446.5 L 233 444.5 C 233 444.223 232.777 444 232.5 444 z "
-       id="wheat"
+       id="ear_botany"
        inkscape:label="#path18745" />
   </g>
 </svg>

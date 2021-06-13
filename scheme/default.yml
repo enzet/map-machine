@@ -7,6 +7,18 @@ colors:
 
   background_color: "#EEEEEE"
 
+  wheat_color: "#F0DCAA"
+  wheat_border_color: "#F4D67F"
+  wheat_dark_color: "#BF9340"
+  rye_color: "#E0CA96"
+  rye_dark_color: "#AE955D"
+  oat_color: "#EDDDB7"
+  oat_dark_color: "#C4894A"
+  barley_color: "#F3EEC4"
+  barley_border_color: "#D2CE9D"
+  barley_dark_color: "#908F62"
+  sunflower_dark_color: "#DEAC4A"
+
   allotments_color: "#D0E0D0"
   beach_color: "#F0E0C0"
   boundary_color: "#880088"
@@ -145,9 +157,13 @@ node_icons:
     - tags: {plant: christmas_trees}
       shapes: [{shape: christmas_tree, color: orchard_border_color}]
     - tags: {crop: sunflower}
-      shapes: [{shape: sunflower, color: farmland_darker_color, outline: no}]
+      shapes: [{shape: sunflower, color: sunflower_dark_color, outline: no}]
+    - tags: {crop: barley}
+      shapes: [{shape: ear_botany, color: barley_dark_color, outline: no}]
+    - tags: {crop: rye}
+      shapes: [{shape: ear_botany, color: rye_dark_color, outline: no}]
     - tags: {crop: wheat}
-      shapes: [{shape: wheat, color: farmland_darker_color, outline: no}]
+      shapes: [{shape: ear_botany, color: wheat_dark_color, outline: no}]
     - tags: {produce: apple}
       shapes: [{shape: apple, color: orchard_border_color}]
     - tags: {produce: christmas_trees}
@@ -1124,9 +1140,16 @@ ways:
     style:
       fill: construction_color
   - tags: {landuse: farmland}
-    style:
-      fill: farmland_color
-      stroke: farmland_border_color
+    style: {fill: farmland_color, stroke: farmland_border_color}
+    priority: 20
+  - tags: {landuse: farmland, crop: wheat}
+    style: {fill: wheat_color, stroke: wheat_border_color}
+    priority: 20
+  - tags: {landuse: farmland, crop: barley}
+    style: {fill: barley_color, stroke: barley_border_color}
+    priority: 20
+  - tags: {landuse: farmland, crop: rye}
+    style: {fill: rye_color, stroke: rye_dark_color}
     priority: 20
   - tags: {landuse: forest}
     style:
