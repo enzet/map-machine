@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg19034"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="colors.svg">
+  <defs
+     id="defs19036" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.6"
+     inkscape:cx="69.285714"
+     inkscape:cy="970"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1440"
+     inkscape:window-height="855"
+     inkscape:window-x="0"
+     inkscape:window-y="1"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid19582" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata19039">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect style="fill:#F0DCAA;stroke:#F4D67F;stroke-width:1;" width="10" height="10" x="50" y="50" id="wheat" />
+
+
+    <rect style="fill:#F3EEC4;stroke:#D2CE9D;stroke-width:1;" width="10" height="10" x="10" y="20" id="barley" />
+    <rect style="fill:#F8F0E8;stroke:#E0D0C0;stroke-width:1;" width="10" height="10" x="10" y="30" id="building" />
+    <rect style="fill:#FFEEBB;stroke:#DDCC99;stroke-width:1;" width="10" height="10" x="10" y="40" id="farmland" />
+    <rect style="fill:#B89A74;stroke:#FFFFFF;stroke-width:1;" width="10" height="10" x="10" y="50" id="foot" />
+    <rect style="fill:#CFE0A8;stroke:#BFD098;stroke-width:1;" width="10" height="10" x="10" y="60" id="grass" />
+    <rect style="fill:#E8E4E0;stroke:#C0B8B0;stroke-width:1;" width="10" height="10" x="10" y="70" id="indoor" />
+    <rect style="fill:#CFE088;stroke:#BFD078;stroke-width:1;" width="10" height="10" x="10" y="80" id="meadow" />
+    <rect style="fill:#B8DCA4;stroke:#98BC84;stroke-width:1;" width="10" height="10" x="10" y="90" id="orchard" />
+    <rect style="fill:#AADDCC;stroke:#88BBAA;stroke-width:1;" width="10" height="10" x="10" y="100" id="pitch" />
+    <rect style="fill:#CCCCCC;stroke:#AAAAAA;stroke-width:1;" width="10" height="10" x="10" y="110" id="platform" />
+    <rect style="fill:#FFDD66;stroke:#AA8800;stroke-width:1;" width="10" height="10" x="10" y="120" id="primary" />
+    <rect style="fill:#884400;stroke:#663300;stroke-width:1;" width="10" height="10" x="10" y="130" id="playground" />
+    <rect style="fill:#FFEE77;stroke:#BB9911;stroke-width:1;" width="10" height="10" x="10" y="140" id="secondary" />
+    <rect style="fill:#FFFF88;stroke:#CCAA22;stroke-width:1;" width="10" height="10" x="10" y="150" id="tertiary" />
+    <rect style="fill:#B8CC84;stroke:#A8BC74;stroke-width:1;" width="10" height="10" x="10" y="160" id="wood" />
+    <rect style="fill:#AACCFF;stroke:#6688BB;stroke-width:1;" width="10" height="10" x="10" y="170" id="water" />
+
+
+    <rect style="fill:#E0F0FF" width="10" height="10" x="30" y="10" id="direction_view" />
+    <rect style="fill:#0088FF" width="10" height="10" x="30" y="20" id="direction_camera" />
+    <rect style="fill:#EEEEEE" width="10" height="10" x="30" y="30" id="background" />
+    <rect style="fill:#BF9340" width="10" height="10" x="30" y="40" id="wheat_dark" />
+    <rect style="fill:#E0CA96" width="10" height="10" x="30" y="50" id="rye" />
+    <rect style="fill:#AE955D" width="10" height="10" x="30" y="60" id="rye_dark" />
+    <rect style="fill:#EDDDB7" width="10" height="10" x="30" y="70" id="oat" />
+    <rect style="fill:#C4894A" width="10" height="10" x="30" y="80" id="oat_dark" />
+    <rect style="fill:#908F62" width="10" height="10" x="30" y="90" id="barley_dark" />
+    <rect style="fill:#DEAC4A" width="10" height="10" x="30" y="100" id="sunflower_dark" />
+    <rect style="fill:#D0E0D0" width="10" height="10" x="30" y="110" id="allotments" />
+    <rect style="fill:#F0E0C0" width="10" height="10" x="30" y="120" id="beach" />
+    <rect style="fill:#880088" width="10" height="10" x="30" y="130" id="boundary" />
+    <rect style="fill:#CCCCCC" width="10" height="10" x="30" y="140" id="construction" />
+    <rect style="fill:#4444EE" width="10" height="10" x="30" y="150" id="cycle" />
+    <rect style="fill:#F0E0D0" width="10" height="10" x="30" y="160" id="desert" />
+    <rect style="fill:#FCAF3E" width="10" height="10" x="30" y="170" id="decidious" />
+    <rect style="fill:#DD2222" width="10" height="10" x="30" y="180" id="emergency" />
+    <rect style="fill:#688C44" width="10" height="10" x="30" y="190" id="evergreen" />
+    <rect style="fill:#998855" width="10" height="10" x="30" y="200" id="farmland_darker" />
+    <rect style="fill:#AABBDD" width="10" height="10" x="30" y="210" id="ferry_terminal" />
+    <rect style="fill:#228833" width="10" height="10" x="30" y="210" id="guide_strips" />
+    <rect style="fill:#000000" width="10" height="10" x="30" y="220" id="hidden" />
+    <rect style="fill:#FFFFFF" width="10" height="10" x="30" y="230" id="outline" />
+    <rect style="fill:#DDCC99" width="10" height="10" x="30" y="240" id="parking" />
+    <rect style="fill:#884444" width="10" height="10" x="30" y="250" id="private_access" />
+    <rect style="fill:#000000" width="10" height="10" x="30" y="260" id="ridge" />
+    <rect style="fill:#CCCCCC" width="10" height="10" x="30" y="270" id="road_border" />
+    <rect style="fill:#DDDDDD" width="10" height="10" x="30" y="280" id="rock" />
+    <rect style="fill:#FFFFFF" width="10" height="10" x="30" y="290" id="route" />
+    <rect style="fill:#E8E0C0" width="10" height="10" x="30" y="300" id="sand" />
+    <rect style="fill:#CCCCCC" width="10" height="10" x="30" y="310" id="scree" />
+    <rect style="fill:#A88A64" width="10" height="10" x="30" y="320" id="track" />
+    <rect style="fill:#98AC64" width="10" height="10" x="30" y="330" id="tree" />
+    <rect style="fill:#BFE0D8" width="10" height="10" x="30" y="340" id="wetland" />
+  </g>
+</svg>
