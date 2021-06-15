@@ -66,6 +66,7 @@ colors:
   tertiary_border_color: "#CCAA22"
   tertiary_color: "#FFFF88"
   track_color: "#A88A64"
+  trunk_color: "#97612b"
   tree_color: "#98AC64"
   water_border_color: "#6688BB"
   water_color: "#AACCFF"
@@ -859,7 +860,7 @@ node_icons:
       exception: {"internet_access:fee": "*"}
       add_shapes: [wlan]
     - tags: {material: wood}
-      add_shapes: [wood]
+      add_shapes: [{shape: wood, color: trunk_color}]
     - tags: {access: private}
       add_shapes: [lock_with_keyhole]
     - tags: {direction: clockwise}

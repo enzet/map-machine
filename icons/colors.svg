@@ -25,12 +25,12 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6"
+     inkscape:zoom="1.4"
      inkscape:cx="60.324517"
      inkscape:cy="451.68741"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     showgrid="false"
+     showgrid="true"
      inkscape:window-width="1440"
      inkscape:window-height="855"
      inkscape:window-x="0"
@@ -540,5 +540,13 @@
        width="10"
        style="fill:#e0d0c0;stroke:none;stroke-width:1"
        inkscape:label="#rect4218" />
+    <rect
+       id="trunk"
+       y="602.36218"
+       x="170"
+       height="10"
+       width="10"
+       style="fill:#97612b;stroke:none;stroke-width:1;fill-opacity:1"
+       inkscape:label="#rect4220" />
   </g>
 </svg>
