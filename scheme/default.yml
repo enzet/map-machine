@@ -322,6 +322,8 @@ node_icons:
       shapes: [fireplace]
     - tags: {shop: houseware}
       shapes: [pan]
+    - tags: {shop: massage}
+      shapes: [massage]
     - tags: {shop: milk}
       shapes: [milk]
     - tags: {building: store}
