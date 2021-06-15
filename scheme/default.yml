@@ -149,6 +149,8 @@ node_icons:
     tags:
     - tags: {leisure: fishing}
       shapes: [fishing_angle]
+    - tags: {leisure: swimming_area}
+      shapes: [swimming_area]
     - tags: {leisure: golf_course}
       shapes: [golf_club_and_ball]
     - tags: {power: substation}
