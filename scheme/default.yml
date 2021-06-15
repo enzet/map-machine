@@ -288,6 +288,8 @@ node_icons:
       shapes: [dumbbell]
     - tags: {leisure: fitness_station}
       shapes: [dumbbell]
+    - tags: {leisure: sauna}
+      shapes: [sauna]
     - tags: {leisure: outdoor_seating}
       shapes: [table_and_two_chairs, umbrella]
     - tags: {leisure: outdoor_seating, weather_protection: parasol}
