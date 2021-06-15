@@ -210,8 +210,8 @@ node_icons:
       shapes: [bed]
     - tags: {tourism: hostel}
       shapes: [two_beds]
-    - tags: {tourism: motel}  # Tourism?
-      shapes: [motel]
+    - tags: {tourism: motel}
+      shapes: [car_and_bed]
     - tags: {amenity: clinic}
       shapes: [greek_cross]
     - tags: {amenity: post_office}
