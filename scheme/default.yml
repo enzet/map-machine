@@ -294,6 +294,8 @@ node_icons:
       shapes: [bowling_ball]
     - tags: {leisure: dog_park}
       shapes: [dog]
+    - tags: {leisure: miniature_golf}
+      shapes: [golf_club_and_ball]
     - tags: {leisure: sauna}
       shapes: [sauna]
     - tags: {leisure: outdoor_seating}
