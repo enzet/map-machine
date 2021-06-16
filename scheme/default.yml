@@ -74,6 +74,8 @@ colors:
   wood_border_color: "#A8BC74"
   wood_color: "#B8CC84"
 
+  sell_color: "#880088"
+
   # Colors not in W3C
 
   rose: "#FF007F"  # Wikipedia
@@ -327,17 +329,17 @@ node_icons:
     - tags: {amenity: food_court}
       shapes: [food_court]
     - tags: {amenity: shop, shop: fishing}
-      shapes: [fishing_angle]
+      shapes: [{shape: fishing_angle, color: sell_color}]
     - tags: {shop: alcohol}
-      shapes: [bottle]
+      shapes: [{shape: bottle, color: sell_color}]
     - tags: {shop: bakery}
       shapes: [cupcake]
     - tags: {shop: dairy}
       shapes: [milk]
     - tags: {shop: fireplace}
-      shapes: [fireplace]
+      shapes: [{shape: fireplace, color: sell_color}]
     - tags: {shop: houseware}
-      shapes: [pan]
+      shapes: [{shape: pan, color: sell_color}]
     - tags: {shop: massage}
       shapes: [massage]
     - tags: {shop: milk}
@@ -347,11 +349,11 @@ node_icons:
     - tags: {shop: ticket}
       shapes: [ticket]
     - tags: {shop: watches}
-      shapes: [watches]
+      shapes: [{shape: watches, color: sell_color}]
     - tags: {craft: watchmaker}
       shapes: [watches]
     - tags: {shop: frame}
-      shapes: [frame]
+      shapes: [{shape: frame, color: sell_color}]
     - tags: {tourism: gallery}
       shapes: [picture]
     - tags: {amenity: cafe}
@@ -372,7 +374,7 @@ node_icons:
     - tags: {shop: gift}
       shapes: [gift]
     - tags: {shop: clothes}
-      shapes: [shop_clothes]
+      shapes: [{shape: shop_clothes, color: sell_color}]
     - tags: {amenity: shop, shop: clothes}
       shapes: [shop_clothes]
     - tags: {shop: convenience}
@@ -380,7 +382,7 @@ node_icons:
     - tags: {amenity: shop, shop: convenience}
       shapes: [shop_convenience]
     - tags: {shop: electronics}
-      shapes: [tv]
+      shapes: [{shape: tv, color: sell_color}]
 
   - group: "Big objects not for all"
     tags:
