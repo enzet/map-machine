@@ -290,6 +290,8 @@ node_icons:
       shapes: [dumbbell]
     - tags: {leisure: fitness_station}
       shapes: [dumbbell]
+    - tags: {leisure: bowling_alley}
+      shapes: [bowling_ball]
     - tags: {leisure: sauna}
       shapes: [sauna]
     - tags: {leisure: outdoor_seating}
