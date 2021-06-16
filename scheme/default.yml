@@ -153,6 +153,8 @@ node_icons:
       shapes: [swimming_area]
     - tags: {sport: swimming}
       shapes: [swimming_area]
+    - tags: {leisure: beach}
+      shapes: [beach]
     - tags: {amenity: public_bath}
       shapes: [swimming_area]
     - tags: {leisure: golf_course}
