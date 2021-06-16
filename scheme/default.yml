@@ -284,6 +284,8 @@ node_icons:
       shapes: [book]
     - tags: {amenity: prison}
       shapes: [prison]
+    - tags: {club: computer}
+      shapes: [glider]
     - tags: {man_made: survey_point}
       shapes: [survey_point]
     - tags: {leisure: amusement_arcade}

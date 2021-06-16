@@ -148,9 +148,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="224.83617"
-     inkscape:cx="167.74818"
-     inkscape:zoom="32"
+     inkscape:cy="309.61539"
+     inkscape:cx="541.20782"
+     inkscape:zoom="11.313708"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -12902,7 +12902,7 @@
     <path
        style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        d="m 536,306 a 2,2 0 0 0 -2,2 2,2 0 0 0 2,2 2,2 0 0 0 2,-2 2,2 0 0 0 -2,-2 z m 4,4 a 2,2 0 0 0 -2,2 2,2 0 0 0 2,2 2,2 0 0 0 2,-2 2,2 0 0 0 -2,-2 z m 0,4 a 2,2 0 0 0 -2,2 2,2 0 0 0 2,2 2,2 0 0 0 2,-2 2,2 0 0 0 -2,-2 z m -2,2 a 2,2 0 0 0 -2,-2 2,2 0 0 0 -2,2 2,2 0 0 0 2,2 2,2 0 0 0 2,-2 z m -4,0 a 2,2 0 0 0 -2,-2 2,2 0 0 0 -2,2 2,2 0 0 0 2,2 2,2 0 0 0 2,-2 z"
-       id="glider"
+       id="glider_2"
        inkscape:label="#circle6664">
       <title
          id="title6675">glider</title>
@@ -17048,5 +17048,55 @@
        d="M 167.5 370 C 167.223 370 167 370.223 167 370.5 L 167 371 L 164.5 371 C 164.223 371 164 371.223 164 371.5 L 164 372 L 167.5 372 L 171.5 372 L 172 372 L 172 371.5 C 172 371.223 171.777 371 171.5 371 L 169 371 L 169 370.5 C 169 370.223 168.777 370 168.5 370 L 167.5 370 z M 164.07031 373 L 164.9668 381.07031 A 1 1 0 0 0 164.9707 381.11133 A 1 1 0 0 0 165.96484 382 A 1 1 0 0 0 166 382 L 168 382 L 170 382 A 1 1 0 0 0 170.03516 382 A 1 1 0 0 0 171.0332 381.07031 L 171.92969 373 L 168 373 L 164.07031 373 z "
        id="waste_disposal"
        inkscape:label="#path22669" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect22684"
+       width="3"
+       height="3"
+       x="550"
+       y="290"
+       rx="0.46875"
+       ry="0.5" />
+    <rect
+       ry="0.5"
+       rx="0.46875"
+       y="294"
+       x="554"
+       height="3"
+       width="3"
+       id="rect22686"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect22688"
+       width="3"
+       height="3"
+       x="554"
+       y="298"
+       rx="0.46875"
+       ry="0.5" />
+    <rect
+       ry="0.5"
+       rx="0.46875"
+       y="298"
+       x="550"
+       height="3"
+       width="3"
+       id="rect22690"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect22692"
+       width="3"
+       height="3"
+       x="546"
+       y="298"
+       rx="0.46875"
+       ry="0.5" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 550.46875 306 C 550.20906 306 550 306.223 550 306.5 L 550 308.5 C 550 308.777 550.20906 309 550.46875 309 L 552.53125 309 C 552.79094 309 553 308.777 553 308.5 L 553 306.5 C 553 306.223 552.79094 306 552.53125 306 L 550.46875 306 z M 554.46875 310 C 554.20906 310 554 310.223 554 310.5 L 554 312.5 C 554 312.777 554.20906 313 554.46875 313 L 556.53125 313 C 556.79094 313 557 312.777 557 312.5 L 557 310.5 C 557 310.223 556.79094 310 556.53125 310 L 554.46875 310 z M 546.46875 314 C 546.20906 314 546 314.223 546 314.5 L 546 316.5 C 546 316.777 546.20906 317 546.46875 317 L 548.53125 317 C 548.79094 317 549 316.777 549 316.5 L 549 314.5 C 549 314.223 548.79094 314 548.53125 314 L 546.46875 314 z M 550.46875 314 C 550.20906 314 550 314.223 550 314.5 L 550 316.5 C 550 316.777 550.20906 317 550.46875 317 L 552.53125 317 C 552.79094 317 553 316.777 553 316.5 L 553 314.5 C 553 314.223 552.79094 314 552.53125 314 L 550.46875 314 z M 554.46875 314 C 554.20906 314 554 314.223 554 314.5 L 554 316.5 C 554 316.777 554.20906 317 554.46875 317 L 556.53125 317 C 556.79094 317 557 316.777 557 316.5 L 557 314.5 C 557 314.223 556.79094 314 556.53125 314 L 554.46875 314 z "
+       id="glider"
+       inkscape:label="#rect22694" />
   </g>
 </svg>
