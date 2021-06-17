@@ -46,12 +46,21 @@ class Shape:
     @classmethod
     def from_structure(
         cls,
-        structure: Dict[str, None],
+        structure: Dict[str, Any],
         path: str,
         offset: np.array,
         id_: str,
         name: Optional[str] = None,
     ) -> "Shape":
+        """
+        Parse shape description from structure.
+
+        :param structure: input structure
+        :param path: SVG path commands in string form
+        :param offset: shape offset in the input file
+        :param id_: shape unique identifier
+        :param name: shape text description
+        """
         shape = cls(path, offset, id_, name)
 
         if "right_directed" in structure:
@@ -151,9 +160,7 @@ class ShapeExtractor:
             name: Optional[str] = None
 
             def get_offset(value: str):
-                """
-                Get negated icon offset from the origin.
-                """
+                """Get negated icon offset from the origin."""
                 return (
                     -int(float(value) / GRID_STEP) * GRID_STEP - GRID_STEP / 2
                 )
@@ -181,7 +188,7 @@ class ShapeExtractor:
         if id_ in self.shapes:
             return self.shapes[id_]
 
-        return None
+        assert False, f"no shape with id {id_} in icons file"
 
 
 @dataclass
