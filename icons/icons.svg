@@ -148,9 +148,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="514.50344"
-     inkscape:cx="137.23772"
-     inkscape:zoom="11.313708"
+     inkscape:cy="555.16208"
+     inkscape:cx="241.26573"
+     inkscape:zoom="16"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -17147,5 +17147,16 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cscsccssssccscscccssccccssccccccc"
        inkscape:label="#rect22806" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 242,39 3,-3 6,0 3,3 -6,6 z"
+       id="path22816"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="diamond"
+       d="m 242,55 3,-3 6,0 3,3 -6,6 z"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       inkscape:label="#path22818" />
   </g>
 </svg>

@@ -352,6 +352,10 @@ node_icons:
       shapes: [{shape: fireplace, color: sell_color}]
     - tags: {shop: houseware}
       shapes: [{shape: pan, color: sell_color}]
+    - tags: {shop: jewelry}
+      shapes: [{shape: diamond, color: sell_color}]
+    - tags: {shop: jewellery}
+      shapes: [{shape: diamond, color: sell_color}]
     - tags: {shop: massage}
       shapes: [massage]
     - tags: {shop: pet}
