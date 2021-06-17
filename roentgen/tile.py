@@ -4,6 +4,7 @@ Tile generation.
 See https://wiki.openstreetmap.org/wiki/Tiles
 """
 import argparse
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Tuple, Optional, List
@@ -102,12 +103,7 @@ class Tile:
             error("cannot download OSM data")
             return None
 
-        input_file_name = "map" / Path(boundary_box + ".osm")
-
-        osm_reader = OSMReader()
-        osm_reader.parse_osm_file(input_file_name)
-
-        return osm_reader.map_
+        return OSMReader().parse_osm_file("map" / Path(boundary_box + ".osm"))
 
     def get_map_name(self, directory_name: Path) -> Path:
         """
@@ -173,13 +169,23 @@ def ui(args) -> None:
     Simple user interface for tile generation.
     """
     parser: argparse.ArgumentParser = argparse.ArgumentParser()
-    parser.add_argument("-c", required=True)
-    parser.add_argument("-s", required=True)
+    parser.add_argument("-c")
+    parser.add_argument("-s")
+    parser.add_argument("-t")
     options = parser.parse_args(args)
 
     directory: Path = Path("tiles")
     directory.mkdir(exist_ok=True)
-    coordinates: List[float] = list(map(float, options.c.split(",")))
-    tile: Tile = Tile.from_coordinates(np.array(coordinates), int(options.s))
+
+    tile: Tile
+    if options.c and options.s:
+        coordinates: List[float] = list(map(float, options.c.split(",")))
+        tile = Tile.from_coordinates(np.array(coordinates), int(options.s))
+    elif options.t:
+        scale, x, y = map(int, options.t.split("/"))
+        tile = Tile(x, y, scale)
+    else:
+        sys.exit(1)
+
     tile.draw(directory)
     print(tile.get_carto_address())
