@@ -370,6 +370,8 @@ node_icons:
       shapes: [ticket]
     - tags: {shop: video}
       shapes: [{shape: film, color: sell_color}]
+    - tags: {shop: video_games}
+      shapes: [{shape: pac_man, color: sell_color}]
     - tags: {shop: watches}
       shapes: [{shape: watches, color: sell_color}]
     - tags: {craft: watchmaker}
