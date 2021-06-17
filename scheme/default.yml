@@ -332,8 +332,20 @@ node_icons:
       shapes: [{shape: fishing_angle, color: sell_color}]
     - tags: {shop: alcohol}
       shapes: [{shape: bottle, color: sell_color}]
+    - tags: {shop: art}
+      shapes: [{shape: picture, color: sell_color}]
     - tags: {shop: bakery}
       shapes: [cupcake]
+    - tags: {shop: bed}
+      shapes: [{shape: bed, color: sell_color}]
+    - tags: {shop: bicycle}
+      shapes: [{shape: bicycle, color: sell_color}]
+    - tags: {shop: books}
+      shapes: [{shape: book, color: sell_color}]
+    - tags: {shop: car}
+      shapes: [{shape: car, color: sell_color}]
+    - tags: {shop: coffee}
+      shapes: [{shape: coffee_cup, color: sell_color}]
     - tags: {shop: dairy}
       shapes: [milk]
     - tags: {shop: fireplace}
@@ -342,12 +354,20 @@ node_icons:
       shapes: [{shape: pan, color: sell_color}]
     - tags: {shop: massage}
       shapes: [massage]
+    - tags: {shop: pet}
+      shapes: [{shape: dog, color: sell_color}]
+    - tags: {shop: photo}
+      shapes: [{shape: photo_camera, color: sell_color}]
+    - tags: {shop: sports}
+      shapes: [{shape: dumbbell, color: sell_color}]
     - tags: {shop: milk}
       shapes: [milk]
     - tags: {building: store}
       shapes: [shop_convenience]
     - tags: {shop: ticket}
       shapes: [ticket]
+    - tags: {shop: video}
+      shapes: [{shape: film, color: sell_color}]
     - tags: {shop: watches}
       shapes: [{shape: watches, color: sell_color}]
     - tags: {craft: watchmaker}
