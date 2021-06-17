@@ -3,176 +3,535 @@
     "emoji": "🎠"
   },
   "anchor": {
-    "emoji": "⚓"
+    "emoji": "⚓",
+    "name": "anchor"
   },
+  "apartments": {},
   "apple": {
     "emoji": [
       "🍎",
       "🍏"
-    ]
+    ],
+    "name": "apple"
   },
   "at_in_square": {
-    "emoji": "@"
+    "emoji": "@",
+    "name": "@ in square"
   },
+  "atm": {},
+  "bag": {},
+  "baptist": {},
+  "bar": {},
+  "beach": {},
   "bed": {
     "emoji": "🛌"
   },
   "beer_mug": {
-    "emoji": "🍺"
+    "emoji": "🍺",
+    "name": "beer mug"
+  },
+  "bench": {},
+  "bench_backrest": {},
+  "bench_no_backrest": {},
+  "bench_with_shelter": {},
+  "betula": {
+    "name": "betula"
   },
   "bicycle": {
-    "emoji": "🚲"
+    "emoji": "🚲",
+    "name": "bicycle"
   },
+  "bicycle_p": {
+    "name": "bicycle with letter P in top left corner"
+  },
+  "bicycle_repair": {},
+  "billboard": {
+    "name": "billboard"
+  },
+  "binocular": {
+    "name": "binocular"
+  },
+  "binoculars_on_pole": {
+    "name": "binoculars on pole"
+  },
+  "block": {},
+  "bollard": {},
   "book": {
-    "emoji": "📕"
+    "emoji": "📕",
+    "name": "book"
   },
   "books": {
-    "emoji": "📚"
+    "emoji": "📚",
+    "name": "books"
   },
+  "booster_landing": {
+    "name": "landing booster"
+  },
+  "bottle": {},
+  "bowling_ball": {},
+  "bricks": {},
+  "briefcase": {},
+  "buffer_stop": {
+    "name": "buffer stop"
+  },
+  "building": {},
+  "bump": {},
+  "buoy": {},
   "burger": {
-    "emoji": "🍔"
+    "emoji": "🍔",
+    "name": "burger"
   },
   "bus": {
-    "emoji": "🚌"
+    "emoji": "🚌",
+    "name": "bus"
   },
   "bus_stop": {
     "emoji": "🚏"
   },
+  "bus_stop_sign": {},
+  "bush": {},
   "cannon": {
-    "directed": "right"
+    "directed": "right",
+    "name": "cannon"
+  },
+  "car": {
+    "name": "car"
+  },
+  "car_and_bed": {},
+  "car_on_ferry": {},
+  "car_repair": {},
+  "card_and_dice": {
+    "name": "card and dice"
   },
   "cart": {
     "emoji": "🛒"
   },
+  "cave": {},
   "cctv": {
     "directed": "right"
   },
+  "charging_station": {},
   "christmas_tree": {
-    "emoji": "🎄"
+    "emoji": "🎄",
+    "name": "Christmas tree"
+  },
+  "circle_11": {
+    "name": "circle 11 px"
   },
   "circle_9": {
-    "emoji": "🕳"
+    "emoji": "🕳",
+    "name": "circle 9 px"
   },
+  "circle_empty": {},
+  "city_limit_sign": {},
+  "cliff": {},
   "clock": {
-    "emoji": "⌚"
+    "emoji": "⌚",
+    "name": "clock"
   },
+  "clockwise": {},
   "coffee_cup": {
-    "emoji": "☕"
+    "emoji": "☕",
+    "name": "coffee cup"
   },
+  "contrclockwise": {},
   "credit_card": {
-    "emoji": "💳"
+    "emoji": "💳",
+    "name": "payment card"
   },
   "cross": {
     "emoji": "✝️"
   },
+  "crossing": {},
   "cupcake": {
     "emoji": "🧁"
   },
+  "default": {},
+  "default_small": {},
+  "defibrillator": {},
+  "dharmachakra": {},
+  "digit_1": {},
+  "digit_2": {},
+  "digit_7": {},
+  "digit_8": {},
+  "digit_9": {},
+  "digital_clock": {},
+  "dog": {},
+  "dog_and_cross": {},
   "door": {
     "emoji": "🚪"
+  },
+  "door_with_keyhole": {
+    "name": "door with keyhole"
   },
   "drinking_water": {
     "emoji": "🚰"
   },
+  "dumbbell": {
+    "name": "dumbbell"
+  },
+  "ear_botany": {},
+  "ear_botany_2": {},
   "electricity": {
     "emoji": "⚡"
   },
-  "envelope": {
-    "emoji": "✉️"
+  "entrance": {
+    "name": "door"
   },
+  "envelope": {
+    "emoji": "✉️",
+    "name": "envelope"
+  },
+  "exit": {},
   "film": {
-    "emoji": "🎞️"
+    "emoji": "🎞️",
+    "name": "film"
   },
   "fire_extinguisher": {
     "emoji": "🧯"
   },
+  "fire_hydrant": {},
+  "fireplace": {},
+  "fishing_angle": {
+    "name": "fishing angle"
+  },
   "flagpole": {
     "emoji": "🏴"
+  },
+  "food_court": {
+    "name": "food court"
   },
   "foot": {
     "emoji": "👣"
   },
+  "ford": {},
   "fountain": {
     "emoji": "⛲"
   },
+  "frame": {
+    "name": "picture frame"
+  },
+  "free_wlan": {},
   "fuel_station": {
     "emoji": "⛽️"
   },
+  "garages": {},
+  "gate": {},
   "gift": {
     "emoji": "🎁"
   },
   "glass": {
     "emoji": "🍸"
   },
+  "glider": {},
+  "golf_club_and_ball": {},
+  "golf_pin": {},
+  "golf_tee": {},
+  "grapes": {},
+  "grapes_2": {},
+  "grapes_3": {},
+  "greek_cross": {
+    "name": "greek cross"
+  },
   "guidepost": {
     "directed": "right"
   },
   "h": {
-    "emoji": "H"
+    "emoji": "H",
+    "name": "H letter"
   },
+  "hanging_monorail": {},
+  "historic": {},
+  "horizontal_bar": {
+    "name": "high horizontal bar"
+  },
+  "horizontal_ladder": {
+    "name": "high horizontal ladder"
+  },
+  "human_on_ferry": {},
   "ice_cream": {
     "emoji": "🍨"
+  },
+  "ice_cream_2": {},
+  "information": {
+    "name": "i letter"
+  },
+  "information_board": {},
+  "japan_castle": {
+    "name": "Japanese map symbol for castle"
+  },
+  "japan_elementary_school": {},
+  "japan_historic": {
+    "name": "Japanese map symbol for place of historic, cultural, or scenic interest"
+  },
+  "japan_post": {},
+  "japan_tv_tower": {
+    "name": "Japanese map symbol for TV tower"
   },
   "jewish": {
     "emoji": "✡️"
   },
+  "judgement": {},
+  "kiosk": {},
+  "leaf_maple": {},
+  "life_ring": {},
+  "lift_gate": {},
   "lock_with_keyhole": {
     "emoji": "🔒"
   },
-  "microphone": {
-    "emoji": "🎤"
+  "low_horizontal_bars": {
+    "name": "low horizontal bars"
   },
+  "lowered_kerb": {},
+  "maglev": {},
+  "main_entrance": {},
+  "manhole_drain": {
+    "name": "drain manhole cover"
+  },
+  "massage": {},
+  "mausoleum": {
+    "name": "mausoleum"
+  },
+  "medicine_bottle": {
+    "name": "medicine bottle"
+  },
+  "memorial": {},
+  "microphone": {
+    "emoji": "🎤",
+    "name": "microphone"
+  },
+  "milk": {},
+  "money": {},
+  "monorail": {},
   "muslim": {
     "emoji": "☪️"
   },
   "needleleaved_tree": {
-    "emoji": "🌲"
+    "emoji": "🌲",
+    "name": "needleleaved tree"
+  },
+  "night_club": {},
+  "no_bicycle": {
+    "name": "bicycle with cross in top left corner"
+  },
+  "no_door": {},
+  "no_foot": {},
+  "no_traffic_signals": {},
+  "no_wheelchair": {},
+  "noexit": {
+    "name": "letter T"
+  },
+  "oat": {},
+  "oat_2": {},
+  "onion_roof_shape": {
+    "name": "onion roof shape"
   },
   "orthodox": {
     "emoji": "☦️"
   },
   "p": {
-    "emoji": "P"
+    "emoji": "P",
+    "name": "letter P"
+  },
+  "pac_man": {
+    "name": "Pac-Man"
   },
   "palm": {
     "emoji": "🌴"
   },
+  "pan": {},
+  "peach": {},
   "pear": {
-    "emoji": "🍐"
+    "emoji": "🍐",
+    "name": "pear"
   },
   "photo_camera": {
     "emoji": "📷"
   },
+  "picture": {},
   "plane": {
-    "emoji": "✈️"
+    "emoji": "✈️",
+    "name": "plane"
   },
+  "plaque": {
+    "name": "plaque with inscription"
+  },
+  "pole": {},
   "pole_lamp": {
-    "directed": "right"
+    "directed": "right",
+    "name": "pole lamp"
+  },
+  "power_generator": {},
+  "power_pole_1_level": {
+    "name": "one-level transmission pole"
+  },
+  "power_pole_2_level": {
+    "name": "two-level transmission pole"
+  },
+  "power_pole_3_level": {
+    "name": "three-level transmission pole"
+  },
+  "power_pole_4_level": {
+    "name": "four-level transmission pole"
+  },
+  "power_pole_asymmetric": {
+    "name": "asymmetric transmission pole"
+  },
+  "power_pole_asymmetric_armless": {
+    "name": "asymmetric armless transmission pole"
+  },
+  "power_pole_delta": {
+    "name": "delta transmission pole"
+  },
+  "power_pole_flag": {
+    "name": "flag transmission pole"
+  },
+  "power_pole_triangle": {
+    "name": "triangle transmission pole"
+  },
+  "power_pole_triangle_armless": {
+    "name": "armless triangle transmission pole"
+  },
+  "power_tower_1_level": {
+    "name": "one-level transmission tower"
+  },
+  "power_tower_2_level": {
+    "name": "two-level transmission tower"
+  },
+  "power_tower_3_level": {
+    "name": "three-level transmission tower"
+  },
+  "power_tower_4_level": {
+    "name": "four-level transmission tower"
+  },
+  "power_tower_asymmetric": {
+    "name": "asymmetric transmission tower"
+  },
+  "power_tower_barrel": {
+    "name": "barrel transmission tower"
+  },
+  "power_tower_delta": {
+    "name": "delta transmission tower"
+  },
+  "power_tower_delta_2_level": {
+    "name": "delta two-level transmission tower"
+  },
+  "power_tower_delta_3_level": {
+    "name": "delta three-level transmission tower"
+  },
+  "power_tower_donau": {
+    "name": "donau transmission tower"
+  },
+  "power_tower_flag": {
+    "name": "flag transmission tower"
+  },
+  "power_tower_guyed_h_frame": {
+    "name": "guyed h-frame transmission tower"
+  },
+  "power_tower_h_frame": {
+    "name": "h-frame transmission tower"
+  },
+  "power_tower_h_frame_2_level": {
+    "name": "h-frame two-level transmission tower"
+  },
+  "power_tower_portal": {
+    "name": "portal transmission tower"
+  },
+  "power_tower_portal_2_level": {
+    "name": "portal two-level transmission tower"
+  },
+  "power_tower_portal_3_level": {
+    "name": "portal three-level transmission tower"
+  },
+  "power_tower_triangle": {
+    "name": "triangle transmission tower"
+  },
+  "power_tower_x_frame": {
+    "name": "x-frame transmission tower"
+  },
+  "power_tower_y_frame": {
+    "name": "y-frame transmission tower"
+  },
+  "prison": {},
+  "rape": {},
+  "rape_2": {},
+  "rectangle_vertical_rounded": {
+    "name": "vertical rounded rectangle"
+  },
+  "rectangle_vertical_rounded_crossed": {
+    "name": "crossed vertical rounded rectangle"
+  },
+  "recycling_container": {
+    "name": "recycling container"
   },
   "restaurant": {
     "emoji": "🍴"
   },
   "rocket_flying": {
-    "emoji": "🚀"
+    "emoji": "🚀",
+    "name": "flying rocket"
+  },
+  "rocket_on_launch_pad": {
+    "name": "rocket on launch pad"
+  },
+  "roundabout": {},
+  "russian_orthodox": {},
+  "sauna": {},
+  "seesaw": {
+    "name": "seesaw"
+  },
+  "shop_clothes": {},
+  "shop_convenience": {},
+  "sit_up": {
+    "name": "incline bench"
   },
   "slide": {
-    "directed": "right"
+    "directed": "right",
+    "name": "slide"
+  },
+  "slide_and_water": {},
+  "solar_panel": {},
+  "sos_phone": {
+    "name": "phone with SOS"
+  },
+  "speed_limit_mph": {
+    "name": "speed limit box for mph"
+  },
+  "staircase": {
+    "name": "door with stairs"
+  },
+  "statue": {
+    "name": "statue"
   },
   "stone": {
     "emoji": "??"
   },
+  "stone_with_inscription": {},
   "stop": {
     "emoji": [
       "🛑",
       "⛔️"
     ]
   },
+  "street_cabinet": {},
+  "street_lamp": {},
   "suitcase": {
     "emoji": "💼"
   },
+  "sunflower": {},
+  "supermarket_cart": {},
+  "survey_point": {},
+  "swimming_area": {},
+  "table": {},
+  "table_and_two_chairs": {
+    "name": "table and two chairs"
+  },
+  "tactile_paving": {},
+  "taxi": {},
   "telephone": {
     "emoji": "☎️"
   },
+  "theatre": {},
   "ticket": {
     "emoji": [
       "🎫",
@@ -182,29 +541,78 @@
   "tomb": {
     "emoji": "🪦"
   },
+  "toucan_crossing": {},
+  "tower": {},
+  "toy_horse": {},
+  "traffic_cushion": {},
   "traffic_signals": {
     "emoji": "🚦"
   },
+  "traffic_table": {},
   "train": {
-    "emoji": "🚆"
+    "emoji": "🚆",
+    "name": "train"
   },
   "tram": {
-    "emoji": "🚊"
+    "emoji": "🚊",
+    "name": "tram"
+  },
+  "transformer": {
+    "name": "transformer"
   },
   "tree": {
-    "emoji": "🌳"
+    "emoji": "🌳",
+    "name": "tree"
   },
+  "tree_with_leaf": {
+    "name": "tree with leaf"
+  },
+  "triangle_down_hollow": {},
   "triangle_small": {
-    "emoji": "⛰️"
+    "emoji": "⛰️",
+    "name": "small triangle"
   },
+  "trolleybus": {
+    "name": "trolleybus"
+  },
+  "turnstile": {
+    "name": "turnstile"
+  },
+  "tv": {},
+  "two_beds": {},
+  "two_people_together": {},
+  "vending_angle": {},
+  "vending_bottle": {},
+  "vending_candles": {},
+  "vending_chemist": {},
+  "vending_drop": {},
+  "vending_excrement_bag": {
+    "name": "excrement bag vending"
+  },
+  "vending_machine": {},
+  "vending_tickets": {},
+  "ventilation": {},
+  "wall_bars": {
+    "name": "wall bars"
+  },
+  "waste_basket": {
+    "name": "waste basket"
+  },
+  "waste_disposal": {},
+  "watches": {},
   "waterfall": {
-    "directed": "right"
+    "directed": "right",
+    "name": "waterfall"
   },
+  "waving_flag": {},
   "wheelchair": {
     "emoji": "🦽"
   },
+  "wind_turbine": {},
+  "wlan": {},
   "woman_and_man": {
-    "emoji": "🚻"
+    "emoji": "🚻",
+    "name": "woman and man"
   },
   "wood": {
     "emoji": "🪵"
