@@ -362,6 +362,8 @@ node_icons:
       shapes: [{shape: dumbbell, color: sell_color}]
     - tags: {shop: milk}
       shapes: [milk]
+    - tags: {shop: wine}
+      shapes: [{shape: bottle_and_wine_glass, color: sell_color}]
     - tags: {building: store}
       shapes: [shop_convenience]
     - tags: {shop: ticket}
