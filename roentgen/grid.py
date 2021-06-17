@@ -30,7 +30,8 @@ class IconCollection:
         scheme: Scheme,
         extractor: ShapeExtractor,
         background_color: Color = Color("white"),
-        color: Color = Color("black")
+        color: Color = Color("black"),
+        add_unused: bool = False
     ) -> "IconCollection":
         """
         Collect all possible icon combinations in grid.
@@ -90,10 +91,13 @@ class IconCollection:
 
         for icon in icons:
             specified_ids |= set(icon.get_shape_ids())
-        print(
-            "Icons with no tag specification: \n    " +
-            ", ".join(sorted(extractor.shapes.keys() - specified_ids)) + "."
-        )
+
+        if add_unused:
+            for shape_id in extractor.shapes.keys() - specified_ids:
+                icon = Icon([ShapeSpecification(extractor.get_shape(shape_id))])
+                icon.recolor(color)
+                icons.append(icon)
+
         return cls(icons)
 
     def draw_icons(self, output_directory: Path):
