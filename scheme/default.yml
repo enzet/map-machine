@@ -256,7 +256,7 @@ node_icons:
     - tags: {amenity: place_of_worship, religion: muslim}
       shapes: [muslim]
     - tags: {amenity: place_of_worship, religion: buddhist}
-      shapes: [buddhist]
+      shapes: [dharmachakra]
     - tags: {amenity: place_of_worship, religion: jewish}
       shapes: [jewish]
     - tags: {historic: tomb, tomb: mausoleum}
