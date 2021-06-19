@@ -742,6 +742,8 @@ node_icons:
       shapes: [clock]
     - tags: {amenity: fountain}
       shapes: [{shape: fountain, color: water_border_color}]
+    - tags: {fountain: roman_wolf}
+      shapes: [fountain_roman_wolf]
     - tags: {amenity: waste_basket}
       shapes: [waste_basket]
     - tags: {amenity: waste_disposal}
