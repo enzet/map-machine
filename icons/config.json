@@ -35,6 +35,7 @@
   "bench_no_backrest": {},
   "bench_with_shelter": {},
   "betula": {
+    "group": "plant",
     "name": "betula"
   },
   "bicycle": {
@@ -68,8 +69,10 @@
     "name": "landing booster"
   },
   "bottle": {},
+  "bottle_and_wine_glass": {},
   "bowling_ball": {},
   "bricks": {},
+  "bricks_2": {},
   "briefcase": {},
   "buffer_stop": {
     "name": "buffer stop"
@@ -150,13 +153,18 @@
   "default_small": {},
   "defibrillator": {},
   "dharmachakra": {},
+  "diamond": {
+    "emoji": "💎"
+  },
   "digit_1": {},
   "digit_2": {},
   "digit_7": {},
   "digit_8": {},
   "digit_9": {},
   "digital_clock": {},
-  "dog": {},
+  "dog": {
+    "emoji": "🐕"
+  },
   "dog_and_cross": {},
   "door": {
     "emoji": "🚪"
@@ -208,6 +216,11 @@
   "fountain": {
     "emoji": "⛲"
   },
+  "fountain_bubbler": {},
+  "fountain_cascade": {},
+  "fountain_drinking": {},
+  "fountain_roman_wolf": {},
+  "fountain_toret": {},
   "frame": {
     "name": "picture frame"
   },
@@ -273,7 +286,9 @@
   },
   "judgement": {},
   "kiosk": {},
-  "leaf_maple": {},
+  "leaf_maple": {
+    "group": "plant"
+  },
   "life_ring": {},
   "lift_gate": {},
   "lock_with_keyhole": {
@@ -504,7 +519,7 @@
     "name": "statue"
   },
   "stone": {
-    "emoji": "??"
+    "emoji": "🪨"
   },
   "stone_with_inscription": {},
   "stop": {
