@@ -165,13 +165,16 @@ def draw_icons() -> None:
     individual SVG files.
     """
     os.makedirs("icon_set", exist_ok=True)
+    os.makedirs("icon_set/ids", exist_ok=True)
+    os.makedirs("icon_set/names", exist_ok=True)
     scheme: Scheme = Scheme(Path("scheme/default.yml"))
     extractor: ShapeExtractor = ShapeExtractor(
         Path("icons/icons.svg"), Path("icons/config.json")
     )
     collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
     collection.draw_grid(Path("icon_grid.svg"))
-    collection.draw_icons(Path("icon_set"))
+    collection.draw_icons(Path("icon_set/ids"))
+    collection.draw_icons(Path("icon_set/names"), by_name=True)
 
 
 if __name__ == "__main__":
