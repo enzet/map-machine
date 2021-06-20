@@ -100,15 +100,20 @@ class IconCollection:
 
         return cls(icons)
 
-    def draw_icons(self, output_directory: Path):
+    def draw_icons(self, output_directory: Path, by_name: bool = False):
         """
         :param output_directory: path to the directory to store individual SVG
             files for icons
         """
+        if by_name:
+            def get_file_name(x):
+                return f"Röntgen {' + '.join(x.get_names())}.svg"
+        else:
+            def get_file_name(x):
+                return f"{'___'.join(x.get_shape_ids())}.svg"
+
         for icon in self.icons:
-            icon.draw_to_file(
-                output_directory / f"{'___'.join(icon.get_shape_ids())}.svg"
-            )
+            icon.draw_to_file(output_directory / get_file_name(icon))
 
     def draw_grid(
         self,
