@@ -9,7 +9,7 @@ import numpy as np
 from colour import Color
 from svgwrite import Drawing
 
-from roentgen.icon import Icon, ShapeExtractor, ShapeSpecification
+from roentgen.icon import Icon, ShapeExtractor, ShapeSpecification, Shape
 from roentgen.scheme import Scheme
 
 __author__ = "Sergey Vartanov"
@@ -94,7 +94,10 @@ class IconCollection:
 
         if add_unused:
             for shape_id in extractor.shapes.keys() - specified_ids:
-                icon = Icon([ShapeSpecification(extractor.get_shape(shape_id))])
+                shape: Shape = extractor.get_shape(shape_id)
+                if shape.is_part:
+                    continue
+                icon: Icon = Icon([ShapeSpecification(shape)])
                 icon.recolor(color)
                 icons.append(icon)
 

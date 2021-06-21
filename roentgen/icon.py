@@ -42,6 +42,7 @@ class Shape:
     name: Optional[str] = None  # icon description
     is_right_directed: Optional[bool] = None
     emojis: Set[str] = field(default_factory=set)
+    is_part: bool = False
 
     @classmethod
     def from_structure(
@@ -67,8 +68,11 @@ class Shape:
             shape.is_right_directed = structure["right_directed"]
 
         if "emoji" in structure:
-            emojis = structure["emojis"]
+            emojis = structure["emoji"]
             shape.emojis = [emojis] if isinstance(emojis, str) else emojis
+
+        if "is_part" in structure:
+            shape.is_part = structure["is_part"]
 
         return shape
 
@@ -174,7 +178,7 @@ class ShapeExtractor:
                     break
 
             self.shapes[id_] = Shape.from_structure(
-                self.configuration, path, point, id_, name
+                self.configuration[id_], path, point, id_, name
             )
         else:
             error(f"not standard ID {id_}")

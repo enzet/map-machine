@@ -19,6 +19,9 @@
     "name": "@ in square"
   },
   "atm": {},
+  "awning": {
+    "is_part": true
+  },
   "bag": {},
   "baptist": {},
   "bar": {},
@@ -70,6 +73,9 @@
   },
   "bottle": {},
   "bottle_and_wine_glass": {},
+  "bottom_right_horizontal_line": {
+    "is_part": true
+  },
   "bowling_ball": {},
   "bricks": {},
   "bricks_2": {},
@@ -90,6 +96,12 @@
   },
   "bus_stop": {
     "emoji": "🚏"
+  },
+  "bus_stop_bench": {
+    "is_part": true
+  },
+  "bus_stop_shelter": {
+    "is_part": true
   },
   "bus_stop_sign": {},
   "buses": {
@@ -397,6 +409,9 @@
     "emoji": "🍐",
     "name": "pear"
   },
+  "pergola": {
+    "is_part": true
+  },
   "photo_camera": {
     "emoji": "📷"
   },
@@ -407,6 +422,9 @@
   },
   "plaque": {
     "name": "plaque with inscription"
+  },
+  "platform": {
+    "is_part": true
   },
   "pole": {},
   "pole_lamp": {
@@ -526,6 +544,12 @@
   "rocket_on_launch_pad": {
     "name": "rocket on launch pad"
   },
+  "roof": {
+    "is_part": true
+  },
+  "roof_and_walls": {
+    "is_part": true
+  },
   "roundabout": {},
   "russian_orthodox": {},
   "sauna": {},
@@ -572,6 +596,15 @@
   },
   "sunflower": {},
   "supermarket_cart": {},
+  "support_column": {
+    "is_part": true
+  },
+  "support_pole": {
+    "is_part": true
+  },
+  "support_wall": {
+    "is_part": true
+  },
   "survey_point": {},
   "swimming_area": {},
   "table": {},
@@ -633,6 +666,12 @@
   "tv": {},
   "two_beds": {},
   "two_people_together": {},
+  "umbrella": {
+    "is_part": true
+  },
+  "urban_tree_pot": {
+    "is_part": true
+  },
   "vending_angle": {},
   "vending_bottle": {},
   "vending_candles": {},
