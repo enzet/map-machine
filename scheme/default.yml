@@ -467,6 +467,8 @@ node_icons:
       shapes: [fuel_station]
     - tags: {amenity: parking}
       shapes: [p]
+    - tags: {amenity: parking, parking: multi-storey}
+      shapes: [cars]
     - tags: {highway: turning_circle}
       shapes: [circle_empty]
     - tags: {highway: crossing}
