@@ -148,9 +148,9 @@
      showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="458.57556"
-     inkscape:cx="680.9412"
-     inkscape:zoom="8"
+     inkscape:cy="352.3408"
+     inkscape:cx="105.6379"
+     inkscape:zoom="11.313708"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -17832,6 +17832,96 @@
        inkscape:label="#path24719">
       <title
          id="title24747">letter P with down arrow</title>
+    </path>
+    <rect
+       ry="0.5"
+       rx="0.5"
+       y="225"
+       x="98.999939"
+       height="13.999998"
+       width="10"
+       id="rect24749"
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none" />
+    <rect
+       transform="matrix(0,-1,-1,0,0,0)"
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect24751"
+       width="2"
+       height="1"
+       x="-229"
+       y="-108"
+       rx="0.5"
+       ry="0.5" />
+    <rect
+       ry="0.5"
+       rx="0.5"
+       y="-106"
+       x="-236"
+       height="6"
+       width="9"
+       id="rect24753"
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none"
+       transform="matrix(0,-1,-1,0,0,0)" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect24759"
+       width="1"
+       height="5"
+       x="101"
+       y="229"
+       ry="0.5"
+       rx="0.5" />
+    <path
+       sodipodi:arc-type="arc"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path24761"
+       sodipodi:type="arc"
+       sodipodi:cx="103.5"
+       sodipodi:cy="230.5"
+       sodipodi:rx="1.5"
+       sodipodi:ry="1.5"
+       sodipodi:start="4.712389"
+       sodipodi:end="1.5707963"
+       d="m 103.5,229 a 1.5,1.5 0 0 1 1.5,1.5 1.5,1.5 0 0 1 -1.5,1.5"
+       sodipodi:open="true" />
+    <path
+       sodipodi:arc-type="arc"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path24763"
+       sodipodi:type="arc"
+       sodipodi:cx="103.5"
+       sodipodi:cy="230.5"
+       sodipodi:rx="0.5"
+       sodipodi:ry="0.5"
+       sodipodi:start="4.712389"
+       sodipodi:end="1.5707963"
+       d="m 103.5,230 a 0.5,0.5 0 0 1 0.5,0.5 0.5,0.5 0 0 1 -0.5,0.5"
+       sodipodi:open="true" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect24765"
+       width="3"
+       height="1"
+       x="101"
+       y="229"
+       ry="0.45580584"
+       rx="0.5" />
+    <rect
+       y="231"
+       x="101"
+       height="1"
+       width="3"
+       id="rect24767"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       ry="0.45580584"
+       rx="0.5" />
+    <path
+       style="fill:#000000;stroke:none;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 99.5 241 C 99.223 241 99 241.223 99 241.5 L 99 254.5 C 99 254.777 99.223 255 99.5 255 L 108.5 255 C 108.777 255 109 254.777 109 254.5 L 109 241.5 C 109 241.223 108.777 241 108.5 241 L 99.5 241 z M 100.5 243 L 105.5 243 C 105.777 243 106 243.223 106 243.5 L 106 251.5 C 106 251.777 105.777 252 105.5 252 L 100.5 252 C 100.223 252 100 251.777 100 251.5 L 100 243.5 C 100 243.223 100.223 243 100.5 243 z M 107.5 243 C 107.777 243 108 243.223 108 243.5 L 108 244.5 C 108 244.777 107.777 245 107.5 245 C 107.223 245 107 244.777 107 244.5 L 107 243.5 C 107 243.223 107.223 243 107.5 243 z M 101.5 245 C 101.223 245 101 245.20256 101 245.45508 L 101 245.54492 L 101 247.45508 L 101 247.54492 L 101 249.5 C 101 249.777 101.223 250 101.5 250 C 101.777 250 102 249.777 102 249.5 L 102 248 L 103.5 248 A 1.5 1.5 0 0 0 105 246.5 A 1.5 1.5 0 0 0 103.5 245 L 101.5 245 z M 102 246 L 103.5 246 A 0.5 0.5 0 0 1 104 246.5 A 0.5 0.5 0 0 1 103.5 247 L 102 247 L 102 246 z "
+       id="vending_p"
+       inkscape:label="#rect24769">
+      <title
+         id="title24790">vending machine with letter P</title>
     </path>
   </g>
 </svg>

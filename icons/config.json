@@ -614,6 +614,9 @@
     "name": "excrement bag vending"
   },
   "vending_machine": {},
+  "vending_p": {
+    "name": "vending machine with letter P"
+  },
   "vending_tickets": {},
   "ventilation": {},
   "wall_bars": {
