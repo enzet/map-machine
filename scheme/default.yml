@@ -146,6 +146,8 @@ node_icons:
       over_icon: [bus_stop_bench]
     - tags: {highway: stop}
       shapes: [stop]
+    - tags: {amenity: taxi}
+      shapes: [taxi]
 
   - group: "Big territory"
     tags:
