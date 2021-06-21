@@ -76,6 +76,10 @@ class RoadPart:
         self.right_projection: np.array = None
         self.left_projection: np.array = None
 
+        self.left_outer = None
+        self.right_outer = None
+        self.point_a = None
+
     @classmethod
     def from_nodes(
         cls,
@@ -101,16 +105,15 @@ class RoadPart:
         """
         Compute additional points.
         """
-        if (
-            self.right_connection is not None
-            and self.left_connection is not None
-        ):
+        if self.left_connection is not None:
             self.right_projection = (
                 self.left_connection + self.right_vector - self.left_vector
             )
+        if self.right_connection is not None:
             self.left_projection = (
                 self.right_connection - self.right_vector + self.left_vector
             )
+        if self.left_connection is not None and self.right_connection is not None:
             a = np.linalg.norm(self.right_connection - self.point_1)
             b = np.linalg.norm(self.right_projection - self.point_1)
             if a > b:
@@ -183,62 +186,65 @@ class RoadPart:
         radius: float = 2
 
         if self.right_connection is not None:
-            circle = drawing.circle(self.right_connection, radius, fill="#FF0000", opacity=opacity)
+            circle = drawing.circle(self.right_connection, 2.5, fill="#FF0000", opacity=opacity)
             drawing.add(circle)
         if self.left_connection is not None:
-            circle = drawing.circle(self.left_connection, radius, fill="#0000FF", opacity=opacity)
+            circle = drawing.circle(self.left_connection, 2.5, fill="#0000FF", opacity=opacity)
             drawing.add(circle)
 
         if self.right_projection is not None:
-            circle = drawing.circle(self.right_projection, radius, fill="#FF0000", opacity=opacity)
+            circle = drawing.circle(self.right_projection, 1.5, fill="#FF0000", opacity=opacity)
             drawing.add(circle)
         if self.left_projection is not None:
-            circle = drawing.circle(self.left_projection, radius, fill="#0000FF", opacity=opacity)
+            circle = drawing.circle(self.left_projection, 1.5, fill="#0000FF", opacity=opacity)
             drawing.add(circle)
 
-        if self.right_projection is not None:
-            circle = drawing.circle(self.right_outer, radius, fill="#FF0000", opacity=opacity)
+        if self.right_outer is not None:
+            circle = drawing.circle(self.right_outer, 3.5, stroke_width=0.5, fill="none", stroke="#FF0000", opacity=opacity)
             drawing.add(circle)
-        if self.left_projection is not None:
-            circle = drawing.circle(self.left_outer, radius, fill="#0000FF", opacity=opacity)
+        if self.left_outer is not None:
+            circle = drawing.circle(self.left_outer, 3.5, stroke_width=0.5, fill="none", stroke="#0000FF", opacity=opacity)
             drawing.add(circle)
 
-        circle = drawing.circle(self.point_a, radius, fill="#000000")
-        drawing.add(circle)
+        if self.point_a is not None:
+            circle = drawing.circle(self.point_a, radius, fill="#000000")
+            drawing.add(circle)
 
-        self.draw_entrance(drawing, True)
+        # self.draw_entrance(drawing, True)
 
     def draw(self, drawing: svgwrite.Drawing):
         """
         Draw road part.
         """
-        path_commands = [
-            "M", self.point_2 + self.right_vector,
-            "L", self.point_2 + self.left_vector,
-            "L", self.left_connection,
-            "L", self.right_connection,
-            "Z",
-        ]
-        drawing.add(drawing.path(path_commands, fill="#CCCCCC"))
+        if self.left_connection is not None:
+            path_commands = [
+                "M", self.point_2 + self.right_vector,
+                "L", self.point_2 + self.left_vector,
+                "L", self.left_connection,
+                "L", self.right_connection,
+                "Z",
+            ]
+            drawing.add(drawing.path(path_commands, fill="#CCCCCC"))
 
     def draw_entrance(self, drawing: svgwrite.Drawing, is_debug: bool = False):
         """
         Draw intersection entrance part.
         """
-        path_commands = [
-            "M", self.right_projection,
-            "L", self.right_connection,
-            "L", self.left_projection,
-            "L", self.left_connection,
-            "Z",
-        ]
-        if is_debug:
-            path = drawing.path(
-                path_commands, fill="none", stroke="#880088", stroke_width=0.5
-            )
-            drawing.add(path)
-        else:
-            drawing.add(drawing.path(path_commands, fill="#88FF88"))
+        if self.left_connection is not None and self.right_connection is not None:
+            path_commands = [
+                "M", self.right_projection,
+                "L", self.right_connection,
+                "L", self.left_projection,
+                "L", self.left_connection,
+                "Z",
+            ]
+            if is_debug:
+                path = drawing.path(
+                    path_commands, fill="none", stroke="#880088", stroke_width=0.5
+                )
+                drawing.add(path)
+            else:
+                drawing.add(drawing.path(path_commands, fill="#88FF88"))
 
     def draw_lanes(self, drawing: svgwrite.Drawing, scale: float):
         """
@@ -278,9 +284,29 @@ class Intersection:
                 part_2.point_2 + part_2.left_vector,
             )
             intersection: np.array = line_1.get_intersection_point(line_2)
+            # if np.linalg.norm(intersection - part_1.point_2) < 300:
             part_1.right_connection = intersection
-            part_1.update()
             part_2.left_connection = intersection
+            part_1.update()
+            part_2.update()
+
+        for index in range(len(self.parts)):
+            next_index: int = 0 if index == len(self.parts) - 1 else index + 1
+            part_1: RoadPart = self.parts[index]
+            part_2: RoadPart = self.parts[next_index]
+            part_1.update()
+            part_2.update()
+
+            if (
+                part_1.right_connection is None
+                and part_2.left_connection is None
+            ):
+                part_1.left_connection = part_1.right_projection
+                part_2.right_connection = part_2.left_projection
+                part_1.left_outer = part_1.right_projection
+                part_2.right_outer = part_2.left_projection
+
+            part_1.update()
             part_2.update()
 
     def draw(
