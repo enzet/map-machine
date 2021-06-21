@@ -110,6 +110,8 @@ node_icons:
       shapes: [rocket_flying]
     - tags: {aeroway: landingpad}
       shapes: [booster_landing]
+    - tags: {highway: bus_station}
+      shapes: [buses]
     - tags: {highway: bus_stop}
       shapes: [bus_stop]
       add_shapes: [bus]

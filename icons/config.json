@@ -92,6 +92,9 @@
     "emoji": "🚏"
   },
   "bus_stop_sign": {},
+  "buses": {
+    "name": "two buses"
+  },
   "bush": {},
   "cannon": {
     "directed": "right",
@@ -159,11 +162,36 @@
   "diamond": {
     "emoji": "💎"
   },
-  "digit_1": {},
-  "digit_2": {},
-  "digit_7": {},
-  "digit_8": {},
-  "digit_9": {},
+  "digit_0": {
+    "is_part": true
+  },
+  "digit_1": {
+    "is_part": true
+  },
+  "digit_2": {
+    "is_part": true
+  },
+  "digit_3": {
+    "is_part": true
+  },
+  "digit_4": {
+    "is_part": true
+  },
+  "digit_5": {
+    "is_part": true
+  },
+  "digit_6": {
+    "is_part": true
+  },
+  "digit_7": {
+    "is_part": true
+  },
+  "digit_8": {
+    "is_part": true
+  },
+  "digit_9": {
+    "is_part": true
+  },
   "digital_clock": {},
   "dog": {
     "emoji": "🐕"

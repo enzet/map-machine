@@ -145,12 +145,12 @@
      inkscape:object-paths="true"
      inkscape:guide-bbox="true"
      showguides="true"
-     showgrid="false"
+     showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="352.3408"
-     inkscape:cx="105.6379"
-     inkscape:zoom="11.313708"
+     inkscape:cy="68.198662"
+     inkscape:cx="244.52878"
+     inkscape:zoom="22.627417"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -17922,6 +17922,74 @@
        inkscape:label="#rect24769">
       <title
          id="title24790">vending machine with letter P</title>
+    </path>
+    <rect
+       rx="0.5"
+       ry="0.5"
+       y="516"
+       x="248"
+       height="7"
+       width="6"
+       id="rect24804"
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none" />
+    <rect
+       rx="0"
+       ry="0"
+       y="517"
+       x="249"
+       height="3"
+       width="4"
+       id="rect24810"
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect24816"
+       width="6"
+       height="7"
+       x="241"
+       y="516"
+       ry="0.5"
+       rx="0.5" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect24822"
+       width="4"
+       height="3"
+       x="242"
+       y="517"
+       ry="0"
+       rx="0" />
+    <circle
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.10000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path24857"
+       cx="252.50002"
+       cy="521.5"
+       r="0.72727275" />
+    <circle
+       r="0.72727275"
+       cy="521.5"
+       cx="249.50002"
+       id="circle24859"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.10000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <circle
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.10000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="circle24861"
+       cx="245.50002"
+       cy="521.5"
+       r="0.72727275" />
+    <circle
+       r="0.72727275"
+       cy="521.5"
+       cx="242.50002"
+       id="circle24863"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.10000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       style="fill:#000000;stroke:none;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 241.5 532 C 241.223 532 241 532.223 241 532.5 L 241 538.5 C 241 538.777 241.223 539 241.5 539 L 246.5 539 C 246.777 539 247 538.777 247 538.5 L 247 532.5 C 247 532.223 246.777 532 246.5 532 L 241.5 532 z M 248.5 532 C 248.223 532 248 532.223 248 532.5 L 248 538.5 C 248 538.777 248.223 539 248.5 539 L 253.5 539 C 253.777 539 254 538.777 254 538.5 L 254 532.5 C 254 532.223 253.777 532 253.5 532 L 248.5 532 z M 242 533 L 246 533 L 246 536 L 242 536 L 242 533 z M 249 533 L 253 533 L 253 536 L 249 536 L 249 533 z M 242.5 536.77344 A 0.72727275 0.72727275 0 0 1 243.22656 537.5 A 0.72727275 0.72727275 0 0 1 242.5 538.22656 A 0.72727275 0.72727275 0 0 1 241.77344 537.5 A 0.72727275 0.72727275 0 0 1 242.5 536.77344 z M 245.5 536.77344 A 0.72727275 0.72727275 0 0 1 246.22656 537.5 A 0.72727275 0.72727275 0 0 1 245.5 538.22656 A 0.72727275 0.72727275 0 0 1 244.77344 537.5 A 0.72727275 0.72727275 0 0 1 245.5 536.77344 z M 249.5 536.77344 A 0.72727275 0.72727275 0 0 1 250.22656 537.5 A 0.72727275 0.72727275 0 0 1 249.5 538.22656 A 0.72727275 0.72727275 0 0 1 248.77344 537.5 A 0.72727275 0.72727275 0 0 1 249.5 536.77344 z M 252.5 536.77344 A 0.72727275 0.72727275 0 0 1 253.22656 537.5 A 0.72727275 0.72727275 0 0 1 252.5 538.22656 A 0.72727275 0.72727275 0 0 1 251.77344 537.5 A 0.72727275 0.72727275 0 0 1 252.5 536.77344 z "
+       id="buses"
+       inkscape:label="#rect24886">
+      <title
+         id="title24905">two buses</title>
     </path>
   </g>
 </svg>
