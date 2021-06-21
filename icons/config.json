@@ -107,7 +107,7 @@
     "name": "card and dice"
   },
   "cars": {
-    "name": "two cars"
+    "name": "car"
   },
   "cart": {
     "emoji": "🛒"
@@ -350,6 +350,12 @@
   "p": {
     "emoji": "P",
     "name": "letter P"
+  },
+  "p_arrow_down": {
+    "name": "letter P with down arrow"
+  },
+  "p_arrow_up": {
+    "name": "letter P with up arrow"
   },
   "pac_man": {
     "name": "Pac-Man"

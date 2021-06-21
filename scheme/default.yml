@@ -715,6 +715,10 @@ node_icons:
 
   - group: "Entrances"
     tags:
+    - tags: {amenity: parking_entrance, parking: underground}
+      shapes: [p_arrow_down]
+    - tags: {amenity: parking_entrance, parking: multi-storey}
+      shapes: [p_arrow_up]
     - tags: {barrier: gate}
       shapes: [gate]
     - tags: {entrance: main}
