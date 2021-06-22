@@ -504,6 +504,8 @@ node_icons:
       shapes: [amusement_ride]
     - tags: {amenity: toilets}
       shapes: [woman_and_man]
+    - tags: {amenity: shelter}
+      shapes: [shelter]
 
   - group: "Normal middle objects"
     tags:

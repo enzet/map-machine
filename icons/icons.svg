@@ -148,9 +148,9 @@
      showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="325.89157"
-     inkscape:cx="317.16334"
-     inkscape:zoom="1"
+     inkscape:cy="81.185946"
+     inkscape:cx="157.45771"
+     inkscape:zoom="8"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -18045,7 +18045,11 @@
     <path
        style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        d="M 135.51172 498 C 135.45402 497.999 135.39655 498.00699 135.3418 498.02539 L 129.3418 500.02539 C 128.80289 500.20442 128.93213 501.00063 129.5 501 L 130 501 L 130 510 L 131 510 L 131 501 L 140 501 L 140 510 L 141 510 L 141 501 L 141.5 501 C 142.06791 501.00066 142.19716 500.20439 141.6582 500.02539 L 135.6582 498.02539 C 135.6109 498.00969 135.5615 498.0011 135.51172 498 z "
-       id="path24929" />
+       id="shelter"
+       inkscape:label="#path24929">
+      <title
+         id="title25082">shelter</title>
+    </path>
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
