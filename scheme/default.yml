@@ -214,6 +214,8 @@ node_icons:
       shapes: [medicine_bottle]
     - tags: {amenity: embassy}
       shapes: [waving_flag]
+    - tags: {amenity: veterinary}
+      shapes: [dog_and_cross]
     - tags: {tourism: hotel}
       shapes: [bed]
     - tags: {building: hotel}
