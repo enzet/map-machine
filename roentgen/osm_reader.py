@@ -2,6 +2,7 @@
 Reading OpenStreetMap data from XML file.
 """
 import json
+import re
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from datetime import datetime
@@ -16,6 +17,16 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 OSM_TIME_PATTERN: str = "%Y-%m-%dT%H:%M:%SZ"
+
+METERS_PATTERN = re.compile("(?P<value>\\d*\\.?\\d*)( )?m")
+KILOMETERS_PATTERN = re.compile("(?P<value>\\d*\\.?\\d*)( )?km")
+
+
+def parse_float(string: str) -> Optional[float]:
+    try:
+        return float(string)
+    except (TypeError, ValueError):
+        return None
 
 
 class Tagged:
@@ -35,6 +46,26 @@ class Tagged:
         """
         if key in self.tags:
             return self.tags[key]
+        return None
+
+    def get_float(self, key: str) -> Optional[float]:
+        if key in self.tags:
+            return parse_float(self.tags[key])
+        return None
+
+    def get_length(self, key: str) -> Optional[float]:
+        """
+        Get length in meters.
+        """
+        if key in self.tags:
+            value: str = self.tags[key]
+            matcher = METERS_PATTERN.match(value)
+            if matcher:
+                return parse_float(matcher.group("value"))
+            matcher = KILOMETERS_PATTERN.match(value)
+            if matcher:
+                return parse_float(matcher.group("value")) * 1000
+            return self.get_float(key)
         return None
 
 

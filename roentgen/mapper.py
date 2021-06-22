@@ -160,40 +160,49 @@ class Painter:
                     self.flinger.get_scale(node.coordinates),
                     fill="#B89A74"))
 
-    def draw_buildings(self, constructor) -> None:
+    def draw_buildings(self, constructor: Constructor) -> None:
         """
         Draw buildings: shade, walls, and roof.
         """
+        # Draw shade.
+
         building_shade: Group = Group(opacity=0.1)
-        length: float = self.flinger.get_scale()
+        scale: float = self.flinger.get_scale() / 3.0
         for building in constructor.buildings:
-            shift = np.array((length * building.get_levels(), 0))
+            shift_1 = np.array((scale * building.min_height, 0))
+            shift_2 = np.array((scale * building.height, 0))
+            commands: str = building.get_path(self.flinger, shift_1)
+            path = Path(
+                d=commands, fill="#000000", stroke="#000000", stroke_width=1
+            )
+            building_shade.add(path)
             for nodes in building.inners + building.outers:
                 for i in range(len(nodes) - 1):  # type: int
                     flung_1 = self.flinger.fling(nodes[i].coordinates)
                     flung_2 = self.flinger.fling(nodes[i + 1].coordinates)
                     building_shade.add(Path(
-                        ("M", flung_1, "L", flung_2, np.add(flung_2, shift),
-                         np.add(flung_1, shift), "Z"),
+                        ("M", np.add(flung_1, shift_1), "L",
+                         np.add(flung_2, shift_1), np.add(flung_2, shift_2),
+                         np.add(flung_1, shift_2), "Z"),
                         fill="#000000", stroke="#000000", stroke_width=1))
         self.svg.add(building_shade)
+
         # Draw buildings.
-        previous_level: float = 0
-        level_height: float = self.flinger.get_scale()
-        level_count: int = len(constructor.levels)
-        for index, level in enumerate(sorted(constructor.levels)):
-            ui.progress_bar(
-                index, level_count, step=1, text="Drawing buildings")
+
+        previous_height: float = 0
+        count: int = len(constructor.heights)
+        for index, height in enumerate(sorted(constructor.heights)):
+            ui.progress_bar(index, count, step=1, text="Drawing buildings")
             fill: Color()
             for way in constructor.buildings:
-                if way.get_levels() < level:
+                if way.height < height or way.min_height > height:
                     continue
-                shift_1 = [0, -previous_level * level_height]
-                shift_2 = [0, -level * level_height]
+                shift_1 = [0, -previous_height * scale]
+                shift_2 = [0, -height * scale]
                 for segment in way.parts:
-                    if level == 0.5:
+                    if height == 2:
                         fill = Color("#AAAAAA")
-                    elif level == 1:
+                    elif height == 4:
                         fill = Color("#C3C3C3")
                     else:
                         color_part: float = 0.8 + segment.angle * 0.2
@@ -211,16 +220,16 @@ class Painter:
             # Draw building roofs.
 
             for way in constructor.buildings:
-                if way.get_levels() == level:
-                    shift = np.array([0, -way.get_levels() * level_height])
+                if way.height == height:
+                    shift = np.array([0, -way.height * scale])
                     path_commands: str = way.get_path(self.flinger, shift)
                     path = Path(d=path_commands, opacity=1)
                     path.update(way.line_style.style)
                     path.update({"stroke-linejoin": "round"})
                     self.svg.add(path)
 
-            previous_level = level
-        ui.progress_bar(-1, level_count, step=1, text="Drawing buildings")
+            previous_height = height
+        ui.progress_bar(-1, count, step=1, text="Drawing buildings")
 
     def draw_direction(self, constructor) -> None:
         """

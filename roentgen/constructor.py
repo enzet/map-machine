@@ -148,14 +148,15 @@ class Constructor:
         self.buildings: List[Building] = []
         self.roads: List[Road] = []
 
-        self.levels: Set[float] = {0.5, 1.0}
+        self.heights: Set[float] = {2, 4}
 
     def add_building(self, building: Building) -> None:
         """
         Add building and update levels.
         """
         self.buildings.append(building)
-        self.levels.add(building.get_levels())
+        self.heights.add(building.height)
+        self.heights.add(building.min_height)
 
     def construct(self) -> None:
         """
@@ -216,7 +217,7 @@ class Constructor:
 
         line_styles: List[LineStyle] = self.scheme.get_style(line.tags, scale)
 
-        if "building" in line.tags:
+        if "building:part" in line.tags or "building" in line.tags:
             self.add_building(
                 Building(line.tags, inners, outers, self.flinger, self.scheme)
             )
