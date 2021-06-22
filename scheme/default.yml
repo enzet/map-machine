@@ -232,6 +232,8 @@ node_icons:
       shapes: [japan_post]
     - tags: {shop: car_repair}
       shapes: [car_repair]
+    - tags: {amenity: car_wash}
+      shapes: [car_wash]
       # Place of worship
     - tags: {religion: christian}
       shapes: [cross]

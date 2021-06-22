@@ -121,6 +121,9 @@
   "car_and_bed": {},
   "car_on_ferry": {},
   "car_repair": {},
+  "car_wash": {
+    "name": "car_wash"
+  },
   "card_and_dice": {
     "name": "card and dice"
   },

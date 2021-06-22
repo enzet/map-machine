@@ -148,9 +148,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="384.02604"
-     inkscape:cx="469.2344"
-     inkscape:zoom="22.627417"
+     inkscape:cy="419.38138"
+     inkscape:cx="221.74703"
+     inkscape:zoom="5.6568542"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -9686,8 +9686,12 @@
     <path
        style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        d="m 247,145 -2,2 6,0 -2,-2 z m -2.5,3 c -0.277,0 -0.5,0.21376 -0.5,0.47852 l 0,0.043 c 0,0.26472 0.223,0.47848 0.5,0.47848 l 1,0 c 0.277,0 0.5,-0.21376 0.5,-0.47852 l 0,-0.043 C 246,148.21376 245.777,148 245.5,148 Z m 3,0 c -0.277,0 -0.5,0.21376 -0.5,0.47852 l 0,0.043 c 0,0.26472 0.223,0.47848 0.5,0.47848 l 1,0 c 0.277,0 0.5,-0.21376 0.5,-0.47852 l 0,-0.043 C 249,148.21376 248.777,148 248.5,148 Z m 3,0 c -0.277,0 -0.5,0.21376 -0.5,0.47852 l 0,0.043 c 0,0.26472 0.223,0.47848 0.5,0.47848 l 1,0 c 0.277,0 0.5,-0.21376 0.5,-0.47852 l 0,-0.043 C 252,148.21376 251.777,148 251.5,148 Z m -7,2 c -0.277,0 -0.5,0.21376 -0.5,0.47852 l 0,0.043 c 0,0.26472 0.223,0.47848 0.5,0.47848 l 1,0 c 0.277,0 0.5,-0.21376 0.5,-0.47852 l 0,-0.043 C 245,150.21376 244.777,150 244.5,150 Z m 4,0 c -0.277,0 -0.5,0.21376 -0.5,0.47852 l 0,0.043 c 0,0.26472 0.223,0.47848 0.5,0.47848 l 1,0 c 0.277,0 0.5,-0.21376 0.5,-0.47852 l 0,-0.043 C 249,150.21376 248.777,150 248.5,150 Z m 4,0 c -0.277,0 -0.5,0.21376 -0.5,0.47852 l 0,0.043 c 0,0.26472 0.223,0.47848 0.5,0.47848 l 1,0 c 0.277,0 0.5,-0.21376 0.5,-0.47852 l 0,-0.043 C 253,150.21376 252.777,150 252.5,150 Z m -4.5,2 c -0.22713,-1.7e-4 -0.44755,0.077 -0.625,0.21875 L 244.14844,154 243,154 c -0.55226,6e-5 -0.99994,0.44774 -1,1 l 0,1 c 6e-5,0.55226 0.44774,0.99994 1,1 0,-1.108 0.892,-2 2,-2 1.108,0 2,0.892 2,2 l 2,0 c 0,-1.108 0.892,-2 2,-2 1.108,0 2,0.892 2,2 0.55226,-6e-5 0.99994,-0.44774 1,-1 l 0,-1 c -6e-5,-0.55226 -0.44774,-0.99994 -1,-1 l -0.58594,0 -1.70703,-1.70703 C 250.51952,152.10543 250.2652,152.00005 250,152 Z m -2,4 c -0.554,0 -1,0.446 -1,1 0,0.554 0.446,1 1,1 0.554,0 1,-0.446 1,-1 0,-0.554 -0.446,-1 -1,-1 z m 6,0 c -0.554,0 -1,0.446 -1,1 0,0.554 0.446,1 1,1 0.554,0 1,-0.446 1,-1 0,-0.554 -0.446,-1 -1,-1 z"
-       id="path9884"
-       inkscape:connector-curvature="0" />
+       id="car_wash"
+       inkscape:connector-curvature="0"
+       inkscape:label="#path9884">
+      <title
+         id="title25159">car_wash</title>
+    </path>
     <rect
        rx="0.484375"
        ry="0.5"
