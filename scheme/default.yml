@@ -415,6 +415,8 @@ node_icons:
       shapes: [shop_convenience]
     - tags: {shop: electronics}
       shapes: [{shape: tv, color: sell_color}]
+    - tags: {tourism: camp_site}
+      shapes: [camp]
 
   - group: "Big objects not for all"
     tags:

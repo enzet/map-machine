@@ -108,6 +108,9 @@
     "name": "two buses"
   },
   "bush": {},
+  "camp": {
+    "name": "camp"
+  },
   "cannon": {
     "directed": "right",
     "name": "cannon"
