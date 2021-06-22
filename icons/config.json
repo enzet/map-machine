@@ -236,6 +236,9 @@
     "emoji": "✉️",
     "name": "envelope"
   },
+  "exchange": {
+    "name": "exchange"
+  },
   "exit": {},
   "film": {
     "emoji": "🎞️",

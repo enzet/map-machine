@@ -521,6 +521,8 @@ node_icons:
       shapes: [theatre]
     - tags: {natural: cave_entrance}
       shapes: [cave]
+    - tags: {amenity: bureau_de_change}
+      shapes: [exchange]
 
   - group: "Not important middle objects"
     tags:
