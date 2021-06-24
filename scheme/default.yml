@@ -848,6 +848,14 @@ node_icons:
       shapes: [{shape: tree, color: tree_color}]
       add_shapes: [{shape: leaf_maple, color: tree_color}]
 
+    - tags: {natural: tree, genus: Malus}
+      shapes: [{shape: tree, color: tree_color}]
+      add_shapes: [{shape: apple, color: tree_color}]
+
+    - tags: {natural: tree, genus: Pyrus}
+      shapes: [{shape: tree, color: tree_color}]
+      add_shapes: [{shape: pear, color: tree_color}]
+
     - tags: {railway: buffer_stop}
       shapes: [buffer_stop]
     - tags: {traffic_sign: city_limit}
