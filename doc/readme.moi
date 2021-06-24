@@ -2,8 +2,7 @@
 
 \list
     {simple Python \href {http://openstreetmap.org} {OpenStreetMap} renderer (see \href {#usage} {usage}, \href {#map-generation} {renderer documentation}),}
-    {\href {#icon-set} {set of icons},}
-    {and \href {#map-styles} {map styles}.}
+    {\href {#icon-set} {set of CC-BY 4.0 icons} that can be used outside the project.}
 
 \href {https://travis-ci.org/enzet/Roentgen} {\image {https://travis-ci.org/enzet/Roentgen.svg?branch=master} {Build Status}}
 
@@ -23,9 +22,18 @@ To get SVG map, just run
 
 \2 {Map features} {features}
 
-\3 {Building levels} {levels}
+Röntgen features\:
+\list
+    {detailed icons to display subtypes like \href {#power-tower-design} {power tower design},}
+    {can display multiple icons for one entity to cover more features,}
+    {use color to visualize \osm {colour} and other features like plant types,}
+    {display \href {#levels} {privitive 3D shapes} for buildings,}
+    {display \href {#direction} {directions} with gradient sectors,}
+    {use width to display roads.}
 
-Simple shapes for walls and shade in proportion to \osm {building:levels} value.
+\3 {Simple building shapes} {levels}
+
+Simple shapes for walls and shade in proportion to \osm {building:levels}, \osm {building:min_level}, \osm {height} and \osm {min_height} values.
 
 \image {doc/buildings.png} {3D buildings}
 
@@ -57,7 +65,7 @@ Visualize \osm {direction} tag for \osm {tourism=viewpoint} and \osm {camera:dir
 
 \image {doc/surveillance.png} {Surveillance}
 
-\3 {Power tower design} {power_tower_design}
+\3 {Power tower design} {power-tower-design}
 
 Visualize \osm {design} values used with \osm {power=tower} tag.
 

@@ -1,8 +1,7 @@
 **Röntgen** (or **Roentgen** when ASCII is preferred) project consists of
 
   * simple Python [OpenStreetMap](http://openstreetmap.org) renderer (see [usage](#usage), [renderer documentation](#map-generation)),
-  * [set of icons](#icon-set),
-  * and [map styles](#map-styles).
+  * [set of CC-BY 4.0 icons](#icon-set) that can be used outside the project.
 
 [![Build Status](https://travis-ci.org/enzet/Roentgen.svg?branch=master)](https://travis-ci.org/enzet/Roentgen)
 
@@ -26,9 +25,17 @@ python roentgen.py -b <lon1>,<lat1>,<lon2>,<lat2>
 Map features
 ------------
 
-### Building levels ###
+Röntgen features:
 
-Simple shapes for walls and shade in proportion to [`building:levels`](https://wiki.openstreetmap.org/wiki/Key:building:levels) value.
+  * detailed icons to display subtypes like [power tower design](#power-tower-design),
+  * can display multiple icons for one entity to cover more features,
+  * use color to visualize [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) and other features like plant types,
+  * display [privitive 3D shapes](#levels) for buildings,
+  * display [directions](#direction) with gradient sectors.
+
+### Simple building shapes ###
+
+Simple shapes for walls and shade in proportion to [`building:levels`](https://wiki.openstreetmap.org/wiki/Key:building:levels), [`building:min_level`](https://wiki.openstreetmap.org/wiki/Key:building:min_level), [`height`](https://wiki.openstreetmap.org/wiki/Key:height) and [`min_height`](https://wiki.openstreetmap.org/wiki/Key:min_height) values.
 
 ![3D buildings](doc/buildings.png)
 
