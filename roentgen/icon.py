@@ -177,8 +177,11 @@ class ShapeExtractor:
                     name = child_node.childNodes[0].nodeValue
                     break
 
+            configuration: Dict[str, Any] = (
+                self.configuration[id_] if id_ in self.configuration else {}
+            )
             self.shapes[id_] = Shape.from_structure(
-                self.configuration[id_], path, point, id_, name
+                configuration, path, point, id_, name
             )
         else:
             error(f"not standard ID {id_}")
