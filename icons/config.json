@@ -33,9 +33,15 @@
     "emoji": "🍺",
     "name": "beer mug"
   },
-  "bench": {},
-  "bench_backrest": {},
-  "bench_no_backrest": {},
+  "bench": {
+    "name": "bench"
+  },
+  "bench_backrest": {
+    "name": "bench with backrest"
+  },
+  "bench_no_backrest": {
+    "name": "bench without backrest"
+  },
   "bench_with_shelter": {},
   "betula": {
     "group": "plant",
@@ -268,13 +274,22 @@
   },
   "ford": {},
   "fountain": {
-    "emoji": "⛲"
+    "emoji": "⛲",
+    "name": "fountain"
   },
-  "fountain_bubbler": {},
-  "fountain_cascade": {},
+  "fountain_bubbler": {
+    "name": "bubbler fountain"
+  },
+  "fountain_cascade": {
+    "name": "cascade fountain"
+  },
   "fountain_drinking": {},
-  "fountain_roman_wolf": {},
-  "fountain_toret": {},
+  "fountain_roman_wolf": {
+    "name": "Roman wolf fountain"
+  },
+  "fountain_toret": {
+    "name": "toret fountain"
+  },
   "frame": {
     "name": "picture frame"
   },
