@@ -223,7 +223,7 @@ class Scheme:
         Return color if the color is in scheme, otherwise return default color.
 
         :param color: input color string representation
-        :return: 6-digit color specification with "#"
+        :return: color specification
         """
         if color in self.colors:
             return Color(self.colors[color])
@@ -231,7 +231,7 @@ class Scheme:
             return Color(self.colors[color.lower()])
         try:
             return Color(color)
-        except ValueError:
+        except (ValueError, AttributeError):
             return DEFAULT_COLOR
 
     def is_no_drawable(self, key: str) -> bool:
