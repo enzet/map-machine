@@ -533,6 +533,8 @@ node_icons:
       shapes: [cave]
     - tags: {amenity: bureau_de_change}
       shapes: [exchange]
+    - tags: {sport: skateboard}
+      shapes: [skateboard]
 
   - group: "Not important middle objects"
     tags:
