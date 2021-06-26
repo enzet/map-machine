@@ -2,7 +2,7 @@
 Test icon generation for nodes.
 """
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Set
 
 import pytest
 
@@ -48,7 +48,8 @@ def get_icon(tags: Dict[str, str]) -> IconSet:
     """
     Construct icon from tags.
     """
-    icon, _ = SCHEME.get_icon(SHAPE_EXTRACTOR, tags)
+    processed: Set[str] = set()
+    icon, _ = SCHEME.get_icon(SHAPE_EXTRACTOR, tags, processed)
     return icon
 
 

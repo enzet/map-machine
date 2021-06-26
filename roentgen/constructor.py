@@ -237,16 +237,19 @@ class Constructor:
                 and line.get_tag("area") != "no"
                 and self.scheme.is_area(line.tags)
             ):
+                processed: Set[str] = set()
+
                 priority: int
                 icon_set: IconSet
                 icon_set, priority = self.scheme.get_icon(
-                    self.icon_extractor, line.tags, for_="line"
+                    self.icon_extractor, line.tags, processed, for_="line"
                 )
-                labels = self.scheme.construct_text(line.tags, "all")
+                labels = self.scheme.construct_text(line.tags, "all", processed)
                 point: Point = Point(
                     icon_set,
                     labels,
                     line.tags,
+                    processed,
                     center_point,
                     center_coordinates,
                     is_for_node=False,
@@ -266,15 +269,17 @@ class Constructor:
                 )
                 self.figures.append(figure)
 
+            processed: Set[str] = set()
+
             priority: int
             icon_set: IconSet
             icon_set, priority = self.scheme.get_icon(
-                self.icon_extractor, line.tags
+                self.icon_extractor, line.tags, processed
             )
-            labels = self.scheme.construct_text(line.tags, "all")
+            labels = self.scheme.construct_text(line.tags, "all", processed)
             point: Point = Point(
-                icon_set, labels, line.tags, center_point, center_coordinates,
-                is_for_node=False, priority=priority,
+                icon_set, labels, line.tags, processed, center_point,
+                center_coordinates, is_for_node=False, priority=priority,
             )  # fmt: skip
             self.points.append(point)
 
@@ -333,6 +338,8 @@ class Constructor:
         missing_tags = Counter()
 
         for node_id in sorted_node_ids:  # type: int
+            processed: Set[str] = set()
+
             node_number += 1
             ui.progress_bar(
                 node_number, len(self.map_.nodes), text="Constructing nodes"
@@ -365,12 +372,12 @@ class Constructor:
                 labels = []
             else:
                 icon_set, priority = self.scheme.get_icon(
-                    self.icon_extractor, tags
+                    self.icon_extractor, tags, processed
                 )
-                labels = self.scheme.construct_text(tags, "all")
+                labels = self.scheme.construct_text(tags, "all", processed)
             point: Point = Point(
-                icon_set, labels, tags, flung, node.coordinates,
-                priority=priority, draw_outline=draw_outline,
+                icon_set, labels, tags, processed, flung, node.coordinates,
+                priority=priority, draw_outline=draw_outline
             )  # fmt: skip
             self.points.append(point)
 

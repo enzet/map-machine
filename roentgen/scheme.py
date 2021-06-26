@@ -268,6 +268,7 @@ class Scheme:
         self,
         icon_extractor: ShapeExtractor,
         tags: Dict[str, Any],
+        processed: Set[str],
         for_: str = "node",
     ) -> Tuple[IconSet, int]:
         """
@@ -276,6 +277,7 @@ class Scheme:
         :param icon_extractor: extractor with icon specifications
         :param tags: OpenStreetMap element tags dictionary
         :param for_: target (node, way, area or relation)
+        :param processed: set of already processed tag keys
         :return (icon set, icon priority)
         """
         tags_hash: str = (
@@ -286,7 +288,6 @@ class Scheme:
 
         main_icon: Optional[Icon] = None
         extra_icons: List[Icon] = []
-        processed: Set[str] = set()
         priority: int = 0
 
         index: int = 0
@@ -388,7 +389,7 @@ class Scheme:
         return None
 
     def construct_text(
-        self, tags: Dict[str, str], draw_captions: str
+        self, tags: Dict[str, str], draw_captions: str, processed: Set[str]
     ) -> List[Label]:
         """
         Construct labels for not processed tags.
@@ -399,24 +400,19 @@ class Scheme:
         alt_name = None
         if "name" in tags:
             name = tags["name"]
-            tags.pop("name", None)
-        if "name:ru" in tags:
-            if not name:
-                name = tags["name:ru"]
-                tags.pop("name:ru", None)
-            tags.pop("name:ru", None)
-        if "name:en" in tags:
+            processed.add("name")
+        elif "name:en" in tags:
             if not name:
                 name = tags["name:en"]
-                tags.pop("name:en", None)
-            tags.pop("name:en", None)
+                processed.add("name:en")
+            processed.add("name:en")
         if "alt_name" in tags:
             if alt_name:
                 alt_name += ", "
             else:
                 alt_name = ""
             alt_name += tags["alt_name"]
-            tags.pop("alt_name")
+            processed.add("alt_name")
         if "old_name" in tags:
             if alt_name:
                 alt_name += ", "
@@ -424,7 +420,7 @@ class Scheme:
                 alt_name = ""
             alt_name += "ex " + tags["old_name"]
 
-        address: List[str] = get_address(tags, draw_captions)
+        address: List[str] = get_address(tags, draw_captions, processed)
 
         if name:
             texts.append(Label(name, Color("black")))
@@ -436,15 +432,14 @@ class Scheme:
         if draw_captions == "main":
             return texts
 
-        processed: Set[str] = set()
         texts += get_text(tags, processed)
 
         if "route_ref" in tags:
             texts.append(Label(tags["route_ref"].replace(";", " ")))
-            tags.pop("route_ref", None)
+            processed.add("route_ref")
         if "cladr:code" in tags:
             texts.append(Label(tags["cladr:code"], size=7))
-            tags.pop("cladr:code", None)
+            processed.add("cladr:code")
         if "website" in tags:
             link = tags["website"]
             if link[:7] == "http://":
@@ -457,16 +452,16 @@ class Scheme:
                 link = link[:-1]
             link = link[:25] + ("..." if len(tags["website"]) > 25 else "")
             texts.append(Label(link, Color("#000088")))
-            tags.pop("website", None)
+            processed.add("website")
         for key in ["phone"]:
             if key in tags:
                 texts.append(Label(tags[key], Color("#444444")))
-                tags.pop(key)
+                processed.add(key)
         if "height" in tags:
             texts.append(Label(f"↕ {tags['height']} m"))
-            tags.pop("height")
+            processed.add("height")
         for tag in tags:
-            if self.is_writable(tag):
+            if self.is_writable(tag) and tag not in processed:
                 texts.append(Label(tags[tag]))
         return texts
 

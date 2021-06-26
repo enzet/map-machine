@@ -1,7 +1,7 @@
 """
 Point: node representation on the map.
 """
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Set
 
 import numpy as np
 import svgwrite
@@ -54,8 +54,8 @@ class Point(Tagged):
 
     def __init__(
         self, icon_set: IconSet, labels: List[Label], tags: Dict[str, str],
-        point: np.array, coordinates: np.array, priority: float = 0,
-        is_for_node: bool = True, draw_outline: bool = True
+        processed: Set[str], point: np.array, coordinates: np.array,
+        priority: float = 0, is_for_node: bool = True, draw_outline: bool = True
     ):
         super().__init__()
 
@@ -64,6 +64,7 @@ class Point(Tagged):
         self.icon_set: IconSet = icon_set
         self.labels: List[Label] = labels
         self.tags: Dict[str, str] = tags
+        self.processed: Set[str] = processed
         self.point: np.array = point
         self.coordinates: np.array = coordinates
         self.priority: float = priority
@@ -80,9 +81,14 @@ class Point(Tagged):
         """
         Draw main shape for one node.
         """
+        keys_left = [
+            x for x in self.tags.keys()
+            if x not in self.processed  # and not self.is_no_drawable(x)
+        ]
         if (
-            self.icon_set.main_icon.is_default() and
-            not self.icon_set.extra_icons
+            self.icon_set.main_icon.is_default()
+            and not self.icon_set.extra_icons
+            and (not keys_left or not self.is_for_node)
         ):
             return
 
@@ -177,7 +183,7 @@ class Point(Tagged):
             text = text.replace("&amp;", '&')
             text = text[:26] + ("..." if len(text) > 26 else "")
             self.draw_text(
-                svg, text, self.point + np.array((0, self.y)),
+                svg, text, self.point + np.array((0, self.y + 2)),
                 occupied, label.fill, size=label.size
             )
 
@@ -197,8 +203,6 @@ class Point(Tagged):
          #------#
           ######
         """
-        self.y += 2
-
         length = len(text) * 6
 
         if occupied:
@@ -249,5 +253,5 @@ class Point(Tagged):
         )
         height: int = icon_size * (1 + int(len(self.icon_set.extra_icons) / 3))
         if len(self.labels):
-            height += 2 + 11 * len(self.labels)
+            height += 4 + 11 * len(self.labels)
         return np.array((width, height))

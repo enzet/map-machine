@@ -22,7 +22,9 @@ class Label:
     size: float = 10.0
 
 
-def get_address(tags: Dict[str, Any], draw_captions_mode: str) -> List[str]:
+def get_address(
+    tags: Dict[str, Any], draw_captions_mode: str, processed: Set[str]
+) -> List[str]:
     """
     Construct address text list from the tags.
 
@@ -34,23 +36,23 @@ def get_address(tags: Dict[str, Any], draw_captions_mode: str) -> List[str]:
     if draw_captions_mode == "address":
         if "addr:postcode" in tags:
             address.append(tags["addr:postcode"])
-            tags.pop("addr:postcode", None)
+            processed.add("addr:postcode")
         if "addr:country" in tags:
             address.append(tags["addr:country"])
-            tags.pop("addr:country", None)
+            processed.add("addr:country")
         if "addr:city" in tags:
             address.append(tags["addr:city"])
-            tags.pop("addr:city", None)
+            processed.add("addr:city")
         if "addr:street" in tags:
             street = tags["addr:street"]
             if street.startswith("улица "):
                 street = "ул. " + street[len("улица "):]
             address.append(street)
-            tags.pop("addr:street", None)
+            processed.add("addr:street")
 
     if "addr:housenumber" in tags:
         address.append(tags["addr:housenumber"])
-        tags.pop("addr:housenumber", None)
+        processed.add("addr:housenumber")
 
     return address
 

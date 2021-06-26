@@ -1,7 +1,7 @@
 """
 Test label generation for nodes.
 """
-from typing import List
+from typing import List, Set
 
 from roentgen.text import Label
 from test import SCHEME
@@ -14,7 +14,8 @@ def construct_labels(tags) -> List[Label]:
     """
     Construct labels from OSM node tags.
     """
-    return SCHEME.construct_text(tags, "all")
+    processed: Set[str] = set()
+    return SCHEME.construct_text(tags, "all", processed)
 
 
 def test_1_label() -> None:
