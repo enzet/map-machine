@@ -5,11 +5,11 @@
 
 [![Build Status](https://travis-ci.org/enzet/Roentgen.svg?branch=master)](https://travis-ci.org/enzet/Roentgen)
 
-The idea behind Röntgen project is to have a possibility to *display any map feature* represented by OpenStreetMap data tags by means of colors, shapes, and icons.
+The idea behind the Röntgen project is to show all the richness of the OpenStreetMap data: to have a possibility to *display any map feature* represented by OpenStreetMap data tags by means of colors, shapes, and icons. Röntgen is created for OpenStreetMap contributors: to display all changes one made on the map even if they are small, and for users: to dig down into the map and find every detail that was mapped.
 
-Röntgen is primarily created for OpenStreetMap contributors. Suppose, you spent time adding colors for building walls, benches and shelters for bus stops but they are not represented on the standard tile layer. Röntgen helps to display all changes you made.
+Unlike standard OpenStreetMap layers, Röntgen is a playground for experiments where one can easily try to support proposed tags, tags with little or even single usage, deprecated tags.
 
-Nevertheless, Röntgen map generator can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users.
+Röntgen is intended to be highly configurable, so it can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users, can use slow algorithms for some experimental features.
 
 Usage
 -----
@@ -31,7 +31,8 @@ Röntgen features:
   * can display multiple icons for one entity to cover more features,
   * use color to visualize [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) and other features like plant types,
   * display [privitive 3D shapes](#levels) for buildings,
-  * display [directions](#direction) with gradient sectors.
+  * display [directions](#direction) with gradient sectors,
+  * use width to display roads.
 
 ### Simple building shapes ###
 
