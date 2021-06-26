@@ -790,6 +790,8 @@ node_icons:
       shapes: [waste_disposal]
     - tags: {highway: street_lamp}
       shapes: [street_lamp]
+    - tags: {amenity: bbq}
+      shapes: [bbq]
     - tags: {man_made: cross}
       shapes: [cross]
     - tags: {man_made: flagpole}
