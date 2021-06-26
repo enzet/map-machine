@@ -114,6 +114,7 @@
     "name": "two buses"
   },
   "bush": {},
+  "cactus": {},
   "camp": {
     "name": "camp"
   },
@@ -129,6 +130,9 @@
   "car_repair": {},
   "car_wash": {
     "name": "car_wash"
+  },
+  "caravan": {
+    "name": "caravan"
   },
   "card_and_dice": {
     "name": "card and dice"
@@ -420,6 +424,7 @@
   "p_arrow_down": {
     "name": "letter P with down arrow"
   },
+  "p_arrow_right": {},
   "p_arrow_up": {
     "name": "letter P with up arrow"
   },
@@ -590,6 +595,7 @@
   "sit_up": {
     "name": "incline bench"
   },
+  "skateboard": {},
   "slide": {
     "directed": "right",
     "name": "slide"

@@ -423,6 +423,8 @@ node_icons:
       shapes: [{shape: tv, color: sell_color}]
     - tags: {tourism: camp_site}
       shapes: [camp]
+    - tags: {tourism: caravan_site}
+      shapes: [caravan]
     - tags: {leisure: picnic_site}
       shapes: [table]
 
