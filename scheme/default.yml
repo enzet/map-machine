@@ -792,6 +792,8 @@ node_icons:
       shapes: [street_lamp]
     - tags: {amenity: bbq}
       shapes: [bbq]
+    - tags: {leisure: firepit}
+      shapes: [firepit]
     - tags: {man_made: cross}
       shapes: [cross]
     - tags: {man_made: flagpole}

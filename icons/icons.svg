@@ -148,9 +148,9 @@
      showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="523.44648"
-     inkscape:cx="364.03553"
-     inkscape:zoom="11.313708"
+     inkscape:cy="510.94648"
+     inkscape:cx="376.53553"
+     inkscape:zoom="16"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -18849,6 +18849,32 @@
        inkscape:label="#path13121">
       <title
          id="title13139">BBQ</title>
+    </path>
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 376.57812,68.640835 c -1.18495,0.451222 -1.5913,1.65797 -1.57812,2.859375 7e-5,0.535824 0.28596,1.030917 0.75,1.298828 0.4641,0.267949 1.0359,0.267949 1.5,0 0.46403,-0.267911 0.74992,-0.763004 0.75,-1.298828 0,-0.818561 -0.36794,-1.345314 -0.70716,-1.797516 0.004,0.464275 -0.17444,0.809087 -0.41495,1.01099 -0.63673,-0.526641 -0.71388,-1.20138 -0.29977,-2.072849 z"
+       id="path13141"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccsscccc" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#cccccc;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 372.5,74.5 8,3"
+       id="path13143"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path13145"
+       d="m 372.5,77.5 8,-3"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#cccccc;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 376.57812 84.640625 C 375.39317 85.091847 374.98682 86.298595 375 87.5 C 375.00007 88.035824 375.28596 88.530917 375.75 88.798828 C 376.2141 89.066777 376.7859 89.066777 377.25 88.798828 C 377.71403 88.530917 377.99992 88.035824 378 87.5 C 378 86.681439 377.63219 86.155327 377.29297 85.703125 C 377.29697 86.1674 377.11746 86.510988 376.87695 86.712891 C 376.24022 86.18625 376.16402 85.512094 376.57812 84.640625 z M 372.48047 89.998047 A 0.50005 0.50005 0 0 0 372.32422 90.96875 L 375.07422 92 L 372.32422 93.03125 A 0.50062478 0.50062478 0 0 0 372.67578 93.96875 L 376.5 92.535156 L 380.32422 93.96875 A 0.50062478 0.50062478 0 0 0 380.67578 93.03125 L 377.92578 92 L 380.67578 90.96875 A 0.50005 0.50005 0 0 0 380.50586 89.998047 A 0.50005 0.50005 0 0 0 380.32422 90.03125 L 376.5 91.464844 L 372.67578 90.03125 A 0.50005 0.50005 0 0 0 372.48047 89.998047 z "
+       id="firepit"
+       inkscape:label="#path13147">
+      <title
+         id="title13158">firepit</title>
     </path>
   </g>
 </svg>
