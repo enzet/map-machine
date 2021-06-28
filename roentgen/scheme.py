@@ -325,7 +325,7 @@ class Scheme:
                     for x in matcher.add_shapes
                 ])]
                 processed |= matcher_tags
-            if matcher.set_main_color:
+            if matcher.set_main_color and main_icon:
                 main_icon.recolor(self.get_color(matcher.set_main_color))
 
             index += 1
