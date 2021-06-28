@@ -27,6 +27,7 @@ from roentgen.scheme import LineStyle, Scheme
 from roentgen.ui import error, parse_options
 from roentgen.util import MinMax
 from roentgen import tile
+from roentgen import server
 
 
 def main(argv) -> None:
@@ -182,7 +183,9 @@ if __name__ == "__main__":
         draw_element(sys.argv[1], sys.argv[2])
     elif len(sys.argv) == 2 and sys.argv[1] == "icons":
         draw_icons()
-    elif len(sys.argv) > 1 and sys.argv[1] == "tile":
+    elif len(sys.argv) >= 2 and sys.argv[1] == "tile":
         tile.ui(sys.argv[2:])
+    elif len(sys.argv) >= 2 and sys.argv[1] == "server":
+        server.ui(sys.argv[2:])
     else:
         main(sys.argv)
