@@ -3,8 +3,6 @@
   * simple Python [OpenStreetMap](http://openstreetmap.org) renderer (see [usage](#usage), [renderer documentation](#map-generation)),
   * [set of CC-BY 4.0 icons](#icon-set) that can be used outside the project.
 
-[![Build Status](https://travis-ci.org/enzet/Roentgen.svg?branch=master)](https://travis-ci.org/enzet/Roentgen)
-
 The idea behind the Röntgen project is to show all the richness of the OpenStreetMap data: to have a possibility to *display any map feature* represented by OpenStreetMap data tags by means of colors, shapes, and icons. Röntgen is created for OpenStreetMap contributors: to display all changes one made on the map even if they are small, and for users: to dig down into the map and find every detail that was mapped.
 
 Unlike standard OpenStreetMap layers, Röntgen is a playground for experiments where one can easily try to support proposed tags, tags with little or even single usage, deprecated tags.
