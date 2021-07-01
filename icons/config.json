@@ -151,6 +151,9 @@
     "directed": "right"
   },
   "charging_station": {},
+  "chimney": {
+    "name": "chimney"
+  },
   "christmas_tree": {
     "emoji": "🎄",
     "name": "Christmas tree"
