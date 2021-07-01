@@ -620,6 +620,8 @@ node_icons:
     - tags: {power: pole, design: delta}
       shapes: [power_pole_delta]
 
+    - tags: {man_made: tower, tower:type: cooling}
+      shapes: [tower_cooling]
     - tags: {man_made: tower, tower:type: defensive}
       shapes: [tower_defensive]
     - tags: {man_made: mast, tower:type: lighting, tower:construction: guyed_tube}
