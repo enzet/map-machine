@@ -624,6 +624,8 @@ node_icons:
       shapes: [tower_cooling]
     - tags: {man_made: tower, tower:type: defensive}
       shapes: [tower_defensive]
+    - tags: {man_made: tower, tower:type: pagoda}
+      shapes: [pagoda]
     - tags: {man_made: mast, tower:type: lighting, tower:construction: guyed_tube}
       shapes: [tube_guyed, {shape: light_left, offset: [-3, -3]}, {shape: light_right, offset: [3, -3]}]
     - tags: {man_made: mast, tower:type: communication, tower:construction: guyed_tube}
