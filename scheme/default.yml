@@ -620,6 +620,24 @@ node_icons:
     - tags: {power: pole, design: delta}
       shapes: [power_pole_delta]
 
+    - tags: {man_made: mast, tower:type: lighting, tower:construction: guyed_tube}
+      shapes: [tube_guyed, {shape: light_left, offset: [-3, -3]}, {shape: light_right, offset: [3, -3]}]
+    - tags: {man_made: mast, tower:type: communication, tower:construction: guyed_tube}
+      shapes: [tube_guyed, {shape: wave_left, offset: [-3, -3]}, {shape: wave_right, offset: [3, -3]}]
+    - tags: {man_made: mast, tower:type: lighting, tower:construction: freestanding}
+      shapes: [tube, {shape: light_left, offset: [-3, -3]}, {shape: light_right, offset: [3, -3]}]
+    - tags: {man_made: mast, tower:type: communication, tower:construction: freestanding}
+      shapes: [tube, {shape: wave_left, offset: [-3, -3]}, {shape: wave_right, offset: [3, -3]}]
+
+    - tags: {man_made: mast, tower:type: lighting, tower:construction: guyed_lattice}
+      shapes: [lattice_guyed, {shape: light_left, offset: [-4, -3]}, {shape: light_right, offset: [3, -3]}]
+    - tags: {man_made: mast, tower:type: communication, tower:construction: guyed_lattice}
+      shapes: [lattice_guyed, {shape: wave_left, offset: [-4, -3]}, {shape: wave_right, offset: [3, -3]}]
+    - tags: {man_made: mast, tower:type: lighting, tower:construction: lattice}
+      shapes: [lattice, {shape: light_left, offset: [-4, -3]}, {shape: light_right, offset: [3, -3]}]
+    - tags: {man_made: mast, tower:type: communication, tower:construction: lattice}
+      shapes: [lattice, {shape: wave_left, offset: [-4, -3]}, {shape: wave_right, offset: [3, -3]}]
+
   - group: "Important small objects"
     tags:
     - tags: {historic: cannon}
