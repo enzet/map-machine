@@ -362,6 +362,8 @@ node_icons:
       shapes: [milk]
     - tags: {shop: fireplace}
       shapes: [{shape: fireplace, color: sell_color}]
+    - tags: {shop: hifi}
+      shapes: [{shape: hifi, color: sell_color}]
     - tags: {shop: houseware}
       shapes: [{shape: pan, color: sell_color}]
     - tags: {shop: jewelry}
