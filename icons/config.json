@@ -24,7 +24,6 @@
   },
   "bag": {},
   "baptist": {},
-  "bar": {},
   "bbq": {
     "name": "BBQ"
   },
@@ -87,7 +86,6 @@
   },
   "bowling_ball": {},
   "bricks": {},
-  "bricks_2": {},
   "briefcase": {},
   "buffer_stop": {
     "name": "buffer stop"
@@ -143,9 +141,6 @@
   "cars": {
     "name": "car"
   },
-  "cart": {
-    "emoji": "🛒"
-  },
   "cave": {},
   "cctv": {
     "directed": "right"
@@ -173,12 +168,15 @@
     "name": "clock"
   },
   "clockwise": {},
+  "cocktail_glass": {
+    "name": "cocktail glass"
+  },
+  "cocktail_glass_with_straw": {
+    "name": "cocktail glass with straw"
+  },
   "coffee_cup": {
     "emoji": "☕",
     "name": "coffee cup"
-  },
-  "communication_tower": {
-    "name": "communication tower"
   },
   "contrclockwise": {},
   "credit_card": {
@@ -235,9 +233,6 @@
   },
   "dog_and_cross": {
     "name": "dog and cross"
-  },
-  "door": {
-    "emoji": "🚪"
   },
   "door_with_keyhole": {
     "name": "door with keyhole"
@@ -299,7 +294,6 @@
   "fountain_cascade": {
     "name": "cascade fountain"
   },
-  "fountain_drinking": {},
   "fountain_roman_wolf": {
     "name": "Roman wolf fountain"
   },
@@ -318,9 +312,6 @@
   "gift": {
     "emoji": "🎁"
   },
-  "glass": {
-    "emoji": "🍸"
-  },
   "glider": {},
   "golf_club_and_ball": {},
   "golf_pin": {},
@@ -338,7 +329,9 @@
     "emoji": "H",
     "name": "H letter"
   },
-  "hanging_monorail": {},
+  "hifi": {
+    "name": "Hi-Fi"
+  },
   "historic": {},
   "horizontal_bar": {
     "name": "high horizontal bar"
@@ -371,12 +364,8 @@
   },
   "judgement": {},
   "kiosk": {},
-  "lattice": {
-    "is_part": true
-  },
-  "lattice_guyed": {
-    "is_part": true
-  },
+  "lattice": {},
+  "lattice_guyed": {},
   "leaf_maple": {
     "group": "plant"
   },
@@ -424,7 +413,6 @@
     "emoji": "🌲",
     "name": "needleleaved tree"
   },
-  "night_club": {},
   "no_bicycle": {
     "name": "bicycle with cross in top left corner"
   },
@@ -471,6 +459,9 @@
   },
   "pergola": {
     "is_part": true
+  },
+  "phone": {
+    "name": "phone"
   },
   "photo_camera": {
     "emoji": "📷"
@@ -616,10 +607,12 @@
   "seesaw": {
     "name": "seesaw"
   },
+  "sheets": {
+    "name": "two sheets"
+  },
   "shelter": {
     "name": "shelter"
   },
-  "shop_clothes": {},
   "shop_convenience": {},
   "sit_up": {
     "name": "incline bench"
@@ -643,6 +636,9 @@
   "statue": {
     "name": "statue"
   },
+  "steak_and_fork": {
+    "name": "steak and fork"
+  },
   "stone": {
     "emoji": "🪨"
   },
@@ -655,9 +651,6 @@
   },
   "street_cabinet": {},
   "street_lamp": {},
-  "suitcase": {
-    "emoji": "💼"
-  },
   "sunflower": {},
   "supermarket_cart": {},
   "support_column": {
@@ -670,7 +663,13 @@
     "is_part": true
   },
   "survey_point": {},
+  "suspension_railway": {
+    "name": "suspension railway"
+  },
   "swimming_area": {},
+  "t_shirt": {
+    "name": "t-shirt"
+  },
   "table": {},
   "table_and_two_chairs": {
     "name": "table and two chairs"
@@ -733,12 +732,8 @@
   "trolleybus": {
     "name": "trolleybus"
   },
-  "tube": {
-    "is_part": true
-  },
-  "tube_guyed": {
-    "is_part": true
-  },
+  "tube": {},
+  "tube_guyed": {},
   "turnstile": {
     "name": "turnstile"
   },
