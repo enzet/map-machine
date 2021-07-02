@@ -331,7 +331,7 @@ node_icons:
     - tags: {amenity: theatre}
       shapes: [theatre]
     - tags: {amenity: bar}
-      shapes: [bar]
+      shapes: [cocktail_glass]
     - tags: {amenity: pub}
       shapes: [beer_mug]
     - tags: {amenity: fast_food}
@@ -401,20 +401,20 @@ node_icons:
     - tags: {amenity: biergarten}
       shapes: [beer_mug]
     - tags: {amenity: nightclub}
-      shapes: [night_club]
+      shapes: [cocktail_glass_with_straw]
     - tags: {amenity: restaurant}
       shapes: [restaurant]
     - tags: {amenity: restaurant;bar}
       shapes: [restaurant]
-      add_shapes: [bar]
+      add_shapes: [cocktail_glass]
     - tags: {shop: ice_cream}
       shapes: [ice_cream]
     - tags: {shop: gift}
       shapes: [gift]
     - tags: {shop: clothes}
-      shapes: [{shape: shop_clothes, color: sell_color}]
+      shapes: [{shape: t_shirt, color: sell_color}]
     - tags: {amenity: shop, shop: clothes}
-      shapes: [shop_clothes]
+      shapes: [t_shirt]
     - tags: {shop: convenience}
       shapes: [shop_convenience]
     - tags: {amenity: shop, shop: convenience}
