@@ -1377,8 +1377,13 @@ ways:
     priority: 41
   - tags: {railway: [rail, narrow_gauge, tram]}
     style:
-      stroke-width: 2
-      stroke: "#000000"
+      stroke-width: 3
+      stroke: "#BBBBBB"
+    priority: 42
+  - tags: {railway: [rail, narrow_gauge, tram]}
+    style:
+      stroke-width: 1
+      stroke: "#444444"
     priority: 43
   - tags: {railway: platform}
     style:
