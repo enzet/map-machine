@@ -356,6 +356,8 @@ node_icons:
       shapes: [{shape: car, color: sell_color}]
     - tags: {shop: coffee}
       shapes: [{shape: coffee_cup, color: sell_color}]
+    - tags: {shop: copyshop}
+      shapes: [sheets]
     - tags: {shop: dairy}
       shapes: [milk]
     - tags: {shop: fireplace}
