@@ -372,6 +372,8 @@ node_icons:
       shapes: [{shape: diamond, color: sell_color}]
     - tags: {shop: massage}
       shapes: [massage]
+    - tags: {shop: mobile_phone}
+      shapes: [{shape: phone, color: sell_color}]
     - tags: {shop: pet}
       shapes: [{shape: dog, color: sell_color}]
     - tags: {shop: photo}
