@@ -636,6 +636,20 @@ node_icons:
       shapes: [tower_defensive]
     - tags: {man_made: tower, tower:type: pagoda}
       shapes: [pagoda]
+    - tags: {man_made: mast}
+      shapes: [tube]
+    - tags: {man_made: mast, tower:construction: guyed_tube}
+      shapes: [tube_guyed]
+    - tags: {man_made: mast, tower:construction: freestanding}
+      shapes: [tube]
+    - tags: {man_made: mast, tower:construction: lattice}
+      shapes: [lattice]
+    - tags: {man_made: mast, tower:construction: lattice_guyed}
+      shapes: [lattice_guyed]
+    - tags: {man_made: mast, tower:type: lighting}
+      shapes: [tube, {shape: light_left, offset: [-3, -3]}, {shape: light_right, offset: [3, -3]}]
+    - tags: {man_made: mast, tower:type: communication}
+      shapes: [tube, {shape: wave_left, offset: [-3, -3]}, {shape: wave_right, offset: [3, -3]}]
     - tags: {man_made: mast, tower:type: lighting, tower:construction: guyed_tube}
       shapes: [tube_guyed, {shape: light_left, offset: [-3, -3]}, {shape: light_right, offset: [3, -3]}]
     - tags: {man_made: mast, tower:type: communication, tower:construction: guyed_tube}
