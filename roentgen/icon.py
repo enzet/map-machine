@@ -64,8 +64,11 @@ class Shape:
         """
         shape = cls(path, offset, id_, name)
 
-        if "right_directed" in structure:
-            shape.is_right_directed = structure["right_directed"]
+        if "directed" in structure:
+            if structure["directed"] == "right":
+                shape.is_right_directed = True
+            if structure["directed"] == "left":
+                shape.is_right_directed = False
 
         if "emoji" in structure:
             emojis = structure["emoji"]
