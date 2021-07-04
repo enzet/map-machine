@@ -1020,6 +1020,8 @@ node_icons:
       add_shapes: [{shape: wood, color: trunk_color}]
     - tags: {access: private}
       add_shapes: [lock_with_keyhole]
+    - tags: {access: "no"}
+      add_shapes: [lock]
     - tags: {direction: clockwise}
       add_shapes: [clockwise]
     - tags: {direction: contrclockwise}
