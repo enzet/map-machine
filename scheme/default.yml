@@ -340,7 +340,7 @@ node_icons:
       shapes: [steak_and_fork]
     - tags: {amenity: food_court}
       shapes: [food_court]
-    - tags: {amenity: shop, shop: fishing}
+    - tags: {shop: fishing}
       shapes: [{shape: fishing_angle, color: sell_color}]
     - tags: {shop: alcohol}
       shapes: [{shape: bottle, color: sell_color}]
@@ -666,6 +666,8 @@ node_icons:
       shapes: [lattice, {shape: light_left, offset: [-4, -3]}, {shape: light_right, offset: [3, -3]}]
     - tags: {man_made: mast, tower:type: communication, tower:construction: lattice}
       shapes: [lattice, {shape: wave_left, offset: [-4, -3]}, {shape: wave_right, offset: [3, -3]}]
+    - tags: {communication:mobile_phone: "yes"}
+      add_shapes: [phone]
 
   - group: "Important small objects"
     tags:
@@ -1036,6 +1038,8 @@ node_icons:
     - tags: {bus: "yes"}
       add_shapes: [bus]
     - tags: {motocar: "yes"}
+      add_shapes: [car]
+    - tags: {car: "yes"}
       add_shapes: [car]
     - tags: {monorail: "yes"}
       add_shapes: [monorail]
