@@ -12,6 +12,7 @@ import numpy as np
 import svgwrite
 from colour import Color
 from svgwrite import Drawing
+from svgwrite.container import Group
 from svgwrite.path import Path as SvgPath
 
 from roentgen.color import is_bright
@@ -88,7 +89,6 @@ class Shape:
 
     def get_path(
         self,
-        svg: Drawing,
         point: np.array,
         offset: np.array = np.array((0, 0)),
         scale: np.array = np.array((1, 1)),
@@ -111,7 +111,7 @@ class Shape:
 
         transformations.append(f"translate({self.offset[0]},{self.offset[1]})")
 
-        return svg.path(d=self.path, transform=" ".join(transformations))
+        return svgwrite.path.Path(d=self.path, transform=" ".join(transformations))
 
 
 class ShapeExtractor:
@@ -265,7 +265,7 @@ class ShapeSpecification:
 
     def draw(
         self,
-        svg: svgwrite.Drawing,
+        svg,
         point: np.array,
         tags: Dict[str, Any] = None,
         outline: bool = False,
@@ -285,20 +285,18 @@ class ShapeSpecification:
             scale = np.array((-1, 1))
 
         point = np.array(list(map(int, point)))
-        path = self.shape.get_path(svg, point, self.offset, scale)
+        path = self.shape.get_path(point, self.offset, scale)
         path.update({"fill": self.color.hex})
 
         if outline and self.use_outline:
             bright: bool = is_bright(self.color)
             color: Color = Color("black") if bright else Color("white")
-            opacity: float = 0.7 if bright else 0.5
 
             style: Dict[str, Any] = {
                 "fill": color.hex,
                 "stroke": color.hex,
                 "stroke-width": 2.2,
                 "stroke-linejoin": "round",
-                "opacity": opacity,
             }
             path.update(style)
         if tags:
@@ -356,8 +354,16 @@ class Icon:
         :param tags: tags to be displayed as hint
         :param outline: draw outline for the icon
         """
-        for shape_specification in self.shape_specifications:
-            shape_specification.draw(svg, point, tags, outline)
+        bright: bool = is_bright(self.shape_specifications[0].color)
+        opacity: float = 0.7 if bright else 0.5
+        if outline:
+            outline_group: Group = Group(opacity=opacity)
+            for shape_specification in self.shape_specifications:
+                shape_specification.draw(outline_group, point, tags, True)
+            svg.add(outline_group)
+        else:
+            for shape_specification in self.shape_specifications:
+                shape_specification.draw(svg, point, tags)
 
     def draw_to_file(self, file_name: Path):
         """
