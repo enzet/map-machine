@@ -11,9 +11,8 @@ from colour import Color
 
 from roentgen import ui
 from roentgen.color import get_gradient_color
-from roentgen.figure import Building, StyledFigure, Road
+from roentgen.figure import Building, Road, StyledFigure
 from roentgen.flinger import Flinger
-
 # fmt: off
 from roentgen.icon import (
     DEFAULT_SMALL_SHAPE_ID, Icon, IconSet, ShapeExtractor, ShapeSpecification
@@ -24,6 +23,7 @@ from roentgen.osm_reader import (
 from roentgen.point import Point
 from roentgen.scheme import DEFAULT_COLOR, LineStyle, Scheme
 from roentgen.util import MinMax
+
 # fmt: on
 
 __author__ = "Sergey Vartanov"
@@ -375,6 +375,8 @@ class Constructor:
                     self.icon_extractor, tags, processed
                 )
                 labels = self.scheme.construct_text(tags, "all", processed)
+                self.scheme.process_ignored(tags, processed)
+
             point: Point = Point(
                 icon_set, labels, tags, processed, flung, node.coordinates,
                 priority=priority, draw_outline=draw_outline

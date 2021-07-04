@@ -477,3 +477,16 @@ class Scheme:
             if matcher.is_matched(tags):
                 return True
         return False
+
+    def process_ignored(
+        self, tags: Dict[str, str], processed: Set[str]
+    ) -> None:
+        """
+        Mark all ignored tag as processed.
+
+        :param tags: input tag dictionary
+        :param processed: processed set
+        """
+        for tag in tags:
+            if self.is_no_drawable(tag):
+                processed.add(tag)
