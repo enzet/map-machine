@@ -81,6 +81,11 @@ colors:
   rose: "#FF007F"  # Wikipedia
   slate_blue: "#6A5ACD"  # W3C slateblue
 
+material_colors:
+
+  bronze: "#CD7F32"
+  concrete: "#AAAAAA"
+
 node_icons:
 
   - group: "No draw"

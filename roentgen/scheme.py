@@ -40,8 +40,9 @@ class MatchingType(Enum):
 
 
 def is_matched_tag(
-    matcher_tag_key: str, matcher_tag_value: Union[str, list],
-    tags: Dict[str, str]
+    matcher_tag_key: str,
+    matcher_tag_value: Union[str, list],
+    tags: Dict[str, str],
 ) -> MatchingType:
     """
     Check whether element tags contradict tag matcher.
@@ -67,6 +68,9 @@ def is_matched_tag(
 
 
 class Matcher:
+    """
+    Tag matching.
+    """
     def __init__(self, structure: Dict[str, Any]):
         self.tags = structure["tags"]
 
@@ -149,6 +153,9 @@ class NodeMatcher(Matcher):
 
 
 class WayMatcher(Matcher):
+    """
+    Special tag matcher for ways.
+    """
     def __init__(self, structure: Dict[str, Any], scheme: "Scheme"):
         super().__init__(structure)
         self.style: Dict[str, Any] = {"fill": "none"}
@@ -165,6 +172,9 @@ class WayMatcher(Matcher):
 
 
 class RoadMatcher(Matcher):
+    """
+    Special tag matcher for highways.
+    """
     def __init__(self, structure: Dict[str, Any], scheme: "Scheme"):
         super().__init__(structure)
         self.border_color: Color = Color(
@@ -200,6 +210,7 @@ class Scheme:
                 self.node_matchers.append(NodeMatcher(element))
 
         self.colors: Dict[str, str] = content["colors"]
+        self.material_colors: Dict[str, str] = content["material_colors"]
 
         self.way_matchers: List[WayMatcher] = [
             WayMatcher(x, self) for x in content["ways"]
@@ -332,16 +343,22 @@ class Scheme:
 
         color: Optional[Color] = None
 
+        if "material" in tags:
+            value: str = tags["material"]
+            if value in self.material_colors:
+                color = self.get_color(self.material_colors[value])
+                processed.add("material")
+
         for tag_key in tags:  # type: str
             if (tag_key.endswith(":color") or
                     tag_key.endswith(":colour")):
                 color = self.get_color(tags[tag_key])
                 processed.add(tag_key)
 
-        for tag_key in tags:  # type: str
-            if tag_key in ["color", "colour"]:
-                color = self.get_color(tags[tag_key])
-                processed.add(tag_key)
+        for color_tag_key in ["color", "colour"]:
+            if color_tag_key in tags:
+                color = self.get_color(tags[color_tag_key])
+                processed.add(color_tag_key)
 
         if main_icon and color:
             main_icon.recolor(color)
