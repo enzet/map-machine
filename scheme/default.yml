@@ -336,6 +336,8 @@ node_icons:
       shapes: [beer_mug]
     - tags: {amenity: fast_food}
       shapes: [burger]
+    - tags: {amenity: fast_food, cuisine: steak_house}
+      shapes: [steak_and_fork]
     - tags: {amenity: food_court}
       shapes: [food_court]
     - tags: {amenity: shop, shop: fishing}
