@@ -18,11 +18,15 @@ __email__ = "me@enzet.ru"
 
 OSM_TIME_PATTERN: str = "%Y-%m-%dT%H:%M:%SZ"
 
-METERS_PATTERN = re.compile("(?P<value>\\d*\\.?\\d*)( )?m")
-KILOMETERS_PATTERN = re.compile("(?P<value>\\d*\\.?\\d*)( )?km")
+METERS_PATTERN = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*m$")
+KILOMETERS_PATTERN = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*km$")
+MILES_PATTERN = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*mi$")
 
 
 def parse_float(string: str) -> Optional[float]:
+    """
+    Parse string representation of a float or integer value.
+    """
     try:
         return float(string)
     except (TypeError, ValueError):
@@ -57,15 +61,26 @@ class Tagged:
         """
         Get length in meters.
         """
-        if key in self.tags:
-            value: str = self.tags[key]
-            matcher = METERS_PATTERN.match(value)
+        if key not in self.tags:
+            return None
+
+        value: str = self.tags[key]
+
+        float_value: float = parse_float(value) 
+        if float_value is not None:
+            return float_value
+
+        for pattern, ratio in [
+            (METERS_PATTERN, 1.0),
+            (KILOMETERS_PATTERN, 1000.0),
+            (MILES_PATTERN, 1609.344),
+        ]:
+            matcher = pattern.match(value)
             if matcher:
-                return parse_float(matcher.group("value"))
-            matcher = KILOMETERS_PATTERN.match(value)
-            if matcher:
-                return parse_float(matcher.group("value")) * 1000
-            return self.get_float(key)
+                float_value: float = parse_float(matcher.group("value")) 
+                if float_value is not None:
+                    return float_value * ratio
+
         return None
 
 
