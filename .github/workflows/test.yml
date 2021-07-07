@@ -2,15 +2,13 @@ name: Test
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.8
@@ -25,4 +23,6 @@ jobs:
     - name: Test with pytest
       run: |
         pytest -v
-
+    - name: Integration test
+      run: |
+        python roentgen.py -b 37.415,55.753,37.416,55.754 --cache test/data
