@@ -43,6 +43,8 @@ def main(argv) -> None:
 
     input_file_names: List[Path]
 
+    os.makedirs("map", exist_ok=True)
+
     if options.input_file_name:
         input_file_names = list(map(Path, options.input_file_name))
     else:
