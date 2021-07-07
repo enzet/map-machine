@@ -98,7 +98,7 @@ class Tile:
             f"{min(lon1, lon2):.3f},{min(lat1, lat2):.3f},"
             f"{max(lon1, lon2):.3f},{max(lat1, lat2):.3f}"
         )
-        content = get_osm(boundary_box)
+        content = get_osm(boundary_box, Path("cache"))
         if not content:
             error("cannot download OSM data")
             return None

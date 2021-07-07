@@ -41,17 +41,19 @@ def main(argv) -> None:
     if not options:
         sys.exit(1)
 
-    input_file_names: List[Path]
+    cache_path: Path = Path(options.cache)
+    cache_path.mkdir(parents=True, exist_ok=True)
 
-    os.makedirs("map", exist_ok=True)
+    input_file_names: List[Path]
 
     if options.input_file_name:
         input_file_names = list(map(Path, options.input_file_name))
     else:
-        content = get_osm(options.boundary_box)
+        content = get_osm(options.boundary_box, cache_path)
         if not content:
             error("cannot download OSM data")
-        input_file_names = ["map" / Path(options.boundary_box + ".osm")]
+            sys.exit(1)
+        input_file_names = [cache_path / f"{options.boundary_box}.osm"]
 
     scheme: Scheme = Scheme(Path(TAGS_FILE_NAME))
     min_: np.array

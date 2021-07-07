@@ -48,6 +48,11 @@ def parse_options(args) -> argparse.Namespace:
         dest="scale",
         type=float)
     parser.add_argument(
+        "--cache",
+        help="path for temporary OSM files",
+        default="cache"
+    )
+    parser.add_argument(
         "--labels",
         help="label drawing mode: `no`, `main`, or `all`",
         dest="label_mode",

@@ -15,14 +15,17 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
-def get_osm(boundary_box: str, to_update: bool = False) -> Optional[str]:
+def get_osm(
+    boundary_box: str, cache_path: Path, to_update: bool = False
+) -> Optional[str]:
     """
     Download OSM data from the web or get if from the cache.
 
     :param boundary_box: borders of the map part to download
+    :param cache_path: cache directory to store downloaded OSM files
     :param to_update: update cache files
     """
-    result_file_name: Path = "map" / Path(boundary_box + ".osm")
+    result_file_name: Path = cache_path / f"{boundary_box}.osm"
 
     if not to_update and result_file_name.is_file():
         return result_file_name.open().read()
@@ -30,7 +33,8 @@ def get_osm(boundary_box: str, to_update: bool = False) -> Optional[str]:
     matcher = re.match(
         "(?P<left>[0-9.-]*),(?P<bottom>[0-9.-]*)," +
         "(?P<right>[0-9.-]*),(?P<top>[0-9.-]*)",
-        boundary_box)
+        boundary_box
+    )
 
     if not matcher:
         error("invalid boundary box")
