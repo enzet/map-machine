@@ -66,6 +66,7 @@
   "binoculars_on_pole": {
     "name": "binoculars on pole"
   },
+  "bleachers": {},
   "block": {},
   "bollard": {},
   "book": {
@@ -129,6 +130,9 @@
   "car_and_bed": {},
   "car_on_ferry": {},
   "car_repair": {},
+  "car_sharing": {
+    "name": "car sharing"
+  },
   "car_wash": {
     "name": "car_wash"
   },
@@ -467,6 +471,7 @@
     "emoji": "📷"
   },
   "picture": {},
+  "pipeline": {},
   "plane": {
     "emoji": "✈️",
     "name": "plane"

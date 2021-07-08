@@ -311,6 +311,8 @@ node_icons:
       shapes: [dumbbell]
     - tags: {leisure: fitness_station}
       shapes: [dumbbell]
+    - tags: {leisure: bleachers}
+      shapes: [bleachers]
     - tags: {leisure: bowling_alley}
       shapes: [bowling_ball]
     - tags: {leisure: dog_park}
@@ -1108,6 +1110,11 @@ roads:
     default_width: 2
     border_color: road_border_color
     priority: 41
+  - tags: {leisure: track}
+    color: pitch_color
+    border_color: pitch_border_color
+    default_width: 5
+    priority: 21
 
 ways:
   - tags: {indoor: area}
@@ -1451,7 +1458,13 @@ ways:
       stroke: pitch_border_color
       stroke-width: 1
     priority: 21
-  - tags: {leisure: track}
+  - tags: {leisure: bleachers}
+    style:
+      fill: pitch_color
+      stroke: pitch_border_color
+      stroke-width: 1
+    priority: 21
+  - tags: {leisure: track, area: "yes"}
     style:
       fill: pitch_color
       stroke: pitch_border_color
