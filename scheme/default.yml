@@ -552,6 +552,8 @@ node_icons:
       shapes: [exchange]
     - tags: {sport: skateboard}
       shapes: [skateboard]
+    - tags: {pipeline: substation}
+      shapes: [pipeline]
 
   - group: "Not important middle objects"
     tags:
