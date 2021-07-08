@@ -474,6 +474,8 @@ node_icons:
       shapes: [tower]
     - tags: {building: garages}
       shapes: [garages]
+    - tags: {landuse: garages}
+      shapes: [garages]
     - tags: {building: garage}
       shapes: [garages]
 
@@ -1449,6 +1451,14 @@ ways:
       fill: grass_color
     priority: 21
   - tags: {leisure: park}
+    style:
+      fill: grass_color
+      opacity: 0.5
+  - tags: {landuse: recreation_ground}
+    style:
+      fill: grass_color
+      opacity: 0.5
+  - tags: {leisure: stadium}
     style:
       fill: grass_color
       opacity: 0.5
