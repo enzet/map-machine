@@ -12,6 +12,7 @@ from typing import List
 import numpy as np
 import svgwrite
 
+from roentgen import server, tile
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
 from roentgen.grid import IconCollection
@@ -26,8 +27,6 @@ from roentgen.point import Point
 from roentgen.scheme import LineStyle, Scheme
 from roentgen.ui import error, parse_options
 from roentgen.util import MinMax
-from roentgen import tile
-from roentgen import server
 
 
 def main(argv) -> None:
@@ -65,12 +64,11 @@ def main(argv) -> None:
         reader.parse_json_file(input_file_names[0])
 
         map_ = reader.map_
-        min_ = np.array((map_.boundary_box[0].min_, map_.boundary_box[1].min_))
-        max_ = np.array((map_.boundary_box[0].max_, map_.boundary_box[1].max_))
-    else:
-        boundary_box: List[float] = list(
-            map(float, options.boundary_box.split(','))
+        view_box = MinMax(
+            np.array((map_.boundary_box[0].min_, map_.boundary_box[1].min_)),
+            np.array((map_.boundary_box[0].max_, map_.boundary_box[1].max_))
         )
+    else:
         is_full: bool = options.mode in [AUTHOR_MODE, CREATION_TIME_MODE]
         osm_reader = OSMReader(is_full=is_full)
 
@@ -82,10 +80,19 @@ def main(argv) -> None:
             osm_reader.parse_osm_file(file_name)
 
         map_ = osm_reader.map_
-        min_ = np.array((boundary_box[1], boundary_box[0]))
-        max_ = np.array((boundary_box[3], boundary_box[2]))
 
-    flinger: Flinger = Flinger(MinMax(min_, max_), options.scale)
+        if options.boundary_box:
+            boundary_box: List[float] = list(
+                map(float, options.boundary_box.split(','))
+            )
+            view_box = MinMax(
+                np.array((boundary_box[1], boundary_box[0])),
+                np.array((boundary_box[3], boundary_box[2]))
+            )
+        else:
+            view_box = map_.view_box
+
+    flinger: Flinger = Flinger(view_box, options.scale)
     size: np.array = flinger.size
 
     svg: svgwrite.Drawing = svgwrite.Drawing(

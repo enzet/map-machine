@@ -307,6 +307,7 @@ class Map:
         self.authors: Set[str] = set()
         self.time: MinMax = MinMax()
         self.boundary_box: List[MinMax] = [MinMax(), MinMax()]
+        self.view_box = None
 
     def add_node(self, node: OSMNode) -> None:
         """
@@ -426,6 +427,8 @@ class OSMReader:
         :return: parsed map
         """
         for element in root:
+            if element.tag == "bounds":
+                self.parse_bounds(element)
             if element.tag == "node" and self.parse_nodes:
                 node = OSMNode.from_xml_structure(element, self.is_full)
                 self.map_.add_node(node)
@@ -440,3 +443,13 @@ class OSMReader:
                     OSMRelation.from_xml_structure(element, self.is_full)
                 )
         return self.map_
+
+    def parse_bounds(self, element) -> None:
+        """
+        Parse view box from XML element.
+        """
+        attributes = element.attrib
+        self.map_.view_box = MinMax(
+            np.array((float(attributes["minlat"]), float(attributes["minlon"]))),
+            np.array((float(attributes["maxlat"]), float(attributes["maxlon"])))
+        )
