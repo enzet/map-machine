@@ -526,6 +526,8 @@ node_icons:
       shapes: [traffic_signals]
     - tags: {crossing_ref: toucan}
       shapes: [toucan_crossing]
+    - tags: {traffic_calming: bump}
+      shapes: [bump]
 
   - group: "Important middle objects"
     tags:
