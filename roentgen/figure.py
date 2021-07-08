@@ -1,11 +1,11 @@
-from typing import Dict, List, Any, Optional
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 
 from roentgen.flinger import Flinger
 from roentgen.osm_reader import OSMNode, Tagged
 from roentgen.road import Lane
-from roentgen.scheme import Scheme, LineStyle, RoadMatcher
+from roentgen.scheme import LineStyle, RoadMatcher, Scheme
 
 
 class Figure(Tagged):
@@ -85,19 +85,19 @@ class Building(Figure):
 
         levels: Optional[str] = self.get_float("building:levels")
         if levels:
-            self.height = max(8.0, float(levels) * 2.5)
+            self.height = float(levels) * 2.5
 
         levels: Optional[str] = self.get_float("building:min_level")
         if levels:
-            self.min_height = max(8.0, float(levels) * 2.5)
+            self.min_height = float(levels) * 2.5
 
         height: Optional[str] = self.get_length("height")
         if height:
-            self.height = max(8.0, height)
+            self.height = height
 
         height: Optional[str] = self.get_length("min_height")
         if height:
-            self.min_height = max(8.0, height)
+            self.min_height = height
 
 
 class StyledFigure(Figure):
