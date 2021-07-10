@@ -72,10 +72,9 @@ class Matcher:
     Tag matching.
     """
     def __init__(self, structure: Dict[str, Any]):
-        self.tags = structure["tags"]
+        self.tags: Dict[str, str] = structure["tags"]
 
-        self.exception = None
-
+        self.exception: Dict[str, str] = {}
         if "exception" in structure:
             self.exception = structure["exception"]
 
@@ -154,6 +153,14 @@ class NodeMatcher(Matcher):
         self.with_icon = None
         if "with_icon" in structure:
             self.with_icon = structure["with_icon"]
+
+    def get_mapcss_selector(self) -> str:
+        """
+        Construct MapCSS 0.2 selector from the node matcher.
+
+        See https://wiki.openstreetmap.org/wiki/MapCSS/0.2
+        """
+        return "".join([f"[{x}={y}]" for (x, y) in self.tags.items()])
 
 
 class WayMatcher(Matcher):

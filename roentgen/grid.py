@@ -23,6 +23,7 @@ class IconCollection:
     """
 
     icons: List[Icon]
+    selectors: Dict[str, Icon]
 
     @classmethod
     def from_scheme(
@@ -40,10 +41,13 @@ class IconCollection:
         :param extractor: shape extractor for icon creation
         :param background_color: background color
         :param color: icon color
+        :param add_unused: create icons from shapes that have no corresponding
+            tags
         """
         icons: List[Icon] = []
+        selectors: Dict[str, Icon] = {}
 
-        def add() -> None:
+        def add() -> Icon:
             """
             Construct icon and add it to the list.
             """
@@ -56,10 +60,15 @@ class IconCollection:
             if constructed_icon not in icons:
                 icons.append(constructed_icon)
 
+            return constructed_icon
+
         for matcher in scheme.node_matchers:
+            matcher: NodeMatcher
             if matcher.shapes:
                 current_set = matcher.shapes
-                add()
+                icon = add()
+                if not matcher.location_restrictions:
+                    selectors[matcher.get_mapcss_selector()] = icon
             if matcher.add_shapes:
                 current_set = matcher.add_shapes
                 add()
@@ -101,7 +110,7 @@ class IconCollection:
                 icon.recolor(color)
                 icons.append(icon)
 
-        return cls(icons)
+        return cls(icons, selectors)
 
     def draw_icons(
         self,
@@ -171,6 +180,21 @@ class IconCollection:
 
         with file_name.open("w") as output_file:
             svg.write(output_file)
+
+    def get_mapcss_selectors(self) -> str:
+        """
+        Construct MapCSS 0.2 style scheme.
+        """
+        s = ""
+        for selector in self.selectors:
+            for target in ["node", "area"]:
+                s += target + selector + " {\n"
+                s += '    icon-image: "icon_set/josm/' + "___".join(
+                    self.selectors[selector].get_shape_ids()) + '.svg";\n'
+                s += "    set icon_z17;\n"
+                s += "    icon-width: 16;\n"
+                s += "}\n"
+        return s
 
     def __len__(self) -> int:
         return len(self.icons)
