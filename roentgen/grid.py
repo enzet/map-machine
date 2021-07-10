@@ -3,14 +3,14 @@ Icon grid drawing.
 """
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Set
+from typing import Dict, List, Optional, Set
 
 import numpy as np
 from colour import Color
 from svgwrite import Drawing
 
-from roentgen.icon import Icon, ShapeExtractor, ShapeSpecification, Shape
-from roentgen.scheme import Scheme
+from roentgen.icon import Icon, Shape, ShapeExtractor, ShapeSpecification
+from roentgen.scheme import NodeMatcher, Scheme
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -103,20 +103,35 @@ class IconCollection:
 
         return cls(icons)
 
-    def draw_icons(self, output_directory: Path, by_name: bool = False):
+    def draw_icons(
+        self,
+        output_directory: Path,
+        by_name: bool = False,
+        color: Optional[Color] = None,
+        outline: bool = False,
+    ):
         """
         :param output_directory: path to the directory to store individual SVG
             files for icons
+        :param by_name: use names instead of identifiers
+        :param color: fill color
+        :param outline: if true, draw outline beneath the icon
         """
         if by_name:
-            def get_file_name(x):
+            def get_file_name(x) -> str:
+                """Generate human-readable file name."""
                 return f"Röntgen {' + '.join(x.get_names())}.svg"
         else:
-            def get_file_name(x):
+            def get_file_name(x) -> str:
+                """Generate file name with unique identifier."""
                 return f"{'___'.join(x.get_shape_ids())}.svg"
 
         for icon in self.icons:
-            icon.draw_to_file(output_directory / get_file_name(icon))
+            icon.draw_to_file(
+                output_directory / get_file_name(icon),
+                color=color,
+                outline=outline,
+            )
 
     def draw_grid(
         self,

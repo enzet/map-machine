@@ -11,6 +11,7 @@ from typing import List
 
 import numpy as np
 import svgwrite
+from colour import Color
 
 from roentgen import server, tile
 from roentgen.constructor import Constructor
@@ -178,6 +179,7 @@ def draw_icons() -> None:
     """
     os.makedirs("icon_set", exist_ok=True)
     os.makedirs("icon_set/ids", exist_ok=True)
+    os.makedirs("icon_set/josm", exist_ok=True)
     os.makedirs("icon_set/names", exist_ok=True)
     scheme: Scheme = Scheme(Path("scheme/default.yml"))
     extractor: ShapeExtractor = ShapeExtractor(
@@ -186,6 +188,7 @@ def draw_icons() -> None:
     collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
     collection.draw_grid(Path("icon_grid.svg"))
     collection.draw_icons(Path("icon_set/ids"))
+    collection.draw_icons(Path("icon_set/josm"), color=Color("black"), outline=True)
     collection.draw_icons(Path("icon_set/names"), by_name=True)
 
 

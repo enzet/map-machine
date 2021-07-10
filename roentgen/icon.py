@@ -96,7 +96,6 @@ class Shape:
         """
         Draw icon into SVG file.
 
-        :param svg: SVG file to draw to
         :param point: icon position
         :param offset: additional offset
         :param scale: scale resulting image
@@ -111,7 +110,9 @@ class Shape:
 
         transformations.append(f"translate({self.offset[0]},{self.offset[1]})")
 
-        return svgwrite.path.Path(d=self.path, transform=" ".join(transformations))
+        return svgwrite.path.Path(
+            d=self.path, transform=" ".join(transformations)
+        )
 
 
 class ShapeExtractor:
@@ -365,15 +366,29 @@ class Icon:
             for shape_specification in self.shape_specifications:
                 shape_specification.draw(svg, point, tags)
 
-    def draw_to_file(self, file_name: Path):
+    def draw_to_file(
+        self,
+        file_name: Path,
+        color: Optional[Color] = None,
+        outline: bool = False,
+    ):
         """
         Draw icon to the SVG file.
 
         :param file_name: output SVG file name
+        :param color: fill color
+        :param outline: if true, draw outline beneath the icon
         """
         svg: Drawing = Drawing(str(file_name), (16, 16))
 
         for shape_specification in self.shape_specifications:
+            if color:
+                shape_specification.color = color
+            shape_specification.draw(svg, (8, 8), outline=outline)
+
+        for shape_specification in self.shape_specifications:
+            if color:
+                shape_specification.color = color
             shape_specification.draw(svg, (8, 8))
 
         with file_name.open("w") as output_file:
