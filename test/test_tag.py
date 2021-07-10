@@ -29,3 +29,19 @@ def test_meters() -> None:
     check_length(".05m", .05)
     check_length(".m", None)
     check_length("50   m", 50.0)
+
+
+def test_kilometers() -> None:
+    """
+    Test length in meters processing.
+    """
+    check_length("50km", 50_000.0)
+    check_length("50 km", 50_000.0)
+
+
+def test_miles() -> None:
+    """
+    Test length in meters processing.
+    """
+    check_length("1mi", 1609.344)
+    check_length("50 mi", 50 * 1609.344)
