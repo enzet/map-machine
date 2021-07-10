@@ -202,3 +202,54 @@ class IconCollection:
     def sort(self) -> None:
         """Sort icon list."""
         self.icons = sorted(self.icons)
+
+
+def draw_icons() -> None:
+    """
+    Draw all possible icon shapes combinations as grid in one SVG file and as
+    individual SVG files.
+    """
+    out_path: Path = Path("out")
+    icons_by_id_path: Path = out_path / "icons_by_id"
+    icons_by_name_path: Path = out_path / "icons_by_name"
+
+    for path in (
+        out_path, icons_by_id_path, icons_by_name_path
+    ):
+        path.mkdir(parents=True, exist_ok=True)
+
+    scheme: Scheme = Scheme(Path("scheme/default.yml"))
+    extractor: ShapeExtractor = ShapeExtractor(
+        Path("icons/icons.svg"), Path("icons/config.json")
+    )
+    collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
+    collection.draw_grid(out_path / "icon_grid.svg")
+    collection.draw_icons(icons_by_id_path)
+    collection.draw_icons(icons_by_name_path, by_name=True)
+
+
+def write_mapcss() -> None:
+    """
+    Write MapCSS 0.2 scheme.
+    """
+    out_path: Path = Path("out")
+    icons_with_outline_path: Path = out_path / "roentgen_icons" / "icons"
+
+    scheme: Scheme = Scheme(Path("scheme/default.yml"))
+    extractor: ShapeExtractor = ShapeExtractor(
+        Path("icons/icons.svg"), Path("icons/config.json")
+    )
+    collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
+    collection.draw_icons(
+        icons_with_outline_path, color=Color("black"), outline=True
+    )
+    (out_path / "roentgen_icons").mkdir(exist_ok=True)
+    with Path("data/roentgen_icons_part.mapcss").open() as input_file:
+        with (
+            out_path / "roentgen_icons" / "roentgen_icons.mapcss"
+        ).open("w+") as output_file:
+            for line in input_file.readlines():
+                if line == "%CONTENT%\n":
+                    output_file.write(collection.get_mapcss_selectors())
+                else:
+                    output_file.write(line)

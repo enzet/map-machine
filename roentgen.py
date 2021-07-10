@@ -4,19 +4,17 @@ Röntgen entry point.
 Author: Sergey Vartanov (me@enzet.ru).
 """
 import argparse
-import os
 import sys
 from pathlib import Path
 from typing import List
 
 import numpy as np
 import svgwrite
-from colour import Color
 
 from roentgen import server, tile
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
-from roentgen.grid import IconCollection
+from roentgen.grid import draw_icons, write_mapcss
 from roentgen.icon import ShapeExtractor
 from roentgen.mapper import (
     AUTHOR_MODE, CREATION_TIME_MODE, ICONS_FILE_NAME, Painter, TAGS_FILE_NAME,
@@ -172,50 +170,13 @@ def draw_element(target: str, tags_description: str):
     svg.write(open("test_icon.svg", "w+"))
 
 
-def draw_icons() -> None:
-    """
-    Draw all possible icon shapes combinations as grid in one SVG file and as
-    individual SVG files.
-    """
-    out_path: Path = Path("out")
-    icons_by_id_path: Path = out_path / "icons_by_id"
-    icons_by_name_path: Path = out_path / "icons_by_name"
-    icons_with_outline_path: Path = out_path / "roentgen_icons" / "icons"
-
-    for path in (
-        out_path, icons_by_id_path, icons_by_name_path, icons_with_outline_path
-    ):
-        path.mkdir(parents=True, exist_ok=True)
-
-    scheme: Scheme = Scheme(Path("scheme/default.yml"))
-    extractor: ShapeExtractor = ShapeExtractor(
-        Path("icons/icons.svg"), Path("icons/config.json")
-    )
-    collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
-    collection.draw_grid(out_path / "icon_grid.svg")
-    collection.draw_icons(icons_by_id_path)
-    collection.draw_icons(icons_by_name_path, by_name=True)
-
-    collection.draw_icons(
-        icons_with_outline_path, color=Color("black"), outline=True
-    )
-    (out_path / "roentgen_icons").mkdir(exist_ok=True)
-    with Path("data/roentgen_icons_part.mapcss").open() as input_file:
-        with (
-            out_path / "roentgen_icons" / "roentgen_icons.mapcss"
-        ).open("w+") as output_file:
-            for line in input_file.readlines():
-                if line == "%CONTENT%\n":
-                    output_file.write(collection.get_mapcss_selectors())
-                else:
-                    output_file.write(line)
-
-
 if __name__ == "__main__":
     if len(sys.argv) == 3 and sys.argv[1] in ["node", "way", "area"]:
         draw_element(sys.argv[1], sys.argv[2])
     elif len(sys.argv) == 2 and sys.argv[1] == "icons":
         draw_icons()
+    elif len(sys.argv) == 2 and sys.argv[1] == "mapcss":
+        write_mapcss()
     elif len(sys.argv) >= 2 and sys.argv[1] == "tile":
         tile.ui(sys.argv[2:])
     elif len(sys.argv) >= 2 and sys.argv[1] == "server":
