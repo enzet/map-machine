@@ -83,6 +83,10 @@ class Matcher:
         if "replace_shapes" in structure:
             self.replace_shapes = structure["replace_shapes"]
 
+        self.location_restrictions: Dict[str, str] = {}
+        if "location_restrictions" in structure:
+            self.location_restrictions = structure["location_restrictions"]
+
     def is_matched(self, tags: Dict[str, str]) -> bool:
         """
         Check whether element tags matches tag matcher.
@@ -384,7 +388,7 @@ class Scheme:
                         or specification.shape.is_right_directed is True
                         and specification.shape.is_right_directed is False
                     ):
-                            specification.flip_horizontally = True
+                        specification.flip_horizontally = True
 
         return returned, priority
 
