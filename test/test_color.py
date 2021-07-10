@@ -3,7 +3,7 @@ Test color functions.
 """
 from colour import Color
 
-from roentgen.color import is_bright, get_gradient_color
+from roentgen.color import get_gradient_color, is_bright
 from roentgen.util import MinMax
 
 __author__ = "Sergey Vartanov"

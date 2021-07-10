@@ -2,6 +2,7 @@
 Test OSM XML parsing.
 """
 import numpy as np
+
 from roentgen.osm_reader import OSMNode, OSMReader, OSMRelation, OSMWay
 
 __author__ = "Sergey Vartanov"

@@ -2,12 +2,12 @@
 Test icon generation for nodes.
 """
 from pathlib import Path
-from typing import Dict, Tuple, Set
+from typing import Dict, Set, Tuple
 
 import pytest
 
-from roentgen.icon import IconSet
 from roentgen.grid import IconCollection
+from roentgen.icon import IconSet
 from test import SCHEME, SHAPE_EXTRACTOR
 
 __author__ = "Sergey Vartanov"

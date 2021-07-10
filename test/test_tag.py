@@ -5,7 +5,6 @@ from typing import Optional
 
 from roentgen.osm_reader import Tagged
 
-
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 

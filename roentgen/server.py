@@ -1,6 +1,5 @@
 import logging
-from http.server import BaseHTTPRequestHandler
-from http.server import HTTPServer
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from typing import Optional
 

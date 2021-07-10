@@ -1,7 +1,7 @@
 """
 Simple OpenStreetMap renderer.
 """
-from typing import Any, Dict, Set, Iterator
+from typing import Any, Dict, Iterator, Set
 
 import numpy as np
 import svgwrite
@@ -18,7 +18,7 @@ from roentgen.flinger import Flinger
 from roentgen.icon import ShapeExtractor
 from roentgen.osm_reader import Map, OSMNode
 from roentgen.point import Occupied, Point
-from roentgen.road import RoadPart, Intersection
+from roentgen.road import Intersection, RoadPart
 from roentgen.scheme import Scheme
 
 __author__ = "Sergey Vartanov"

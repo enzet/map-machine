@@ -4,8 +4,7 @@ Test coordinates computation.
 import numpy as np
 
 from roentgen.flinger import (
-    pseudo_mercator,
-    osm_zoom_level_to_pixels_per_meter,
+    osm_zoom_level_to_pixels_per_meter, pseudo_mercator
 )
 
 __author__ = "Sergey Vartanov"

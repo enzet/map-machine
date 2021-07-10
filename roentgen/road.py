@@ -8,8 +8,8 @@ import numpy as np
 import svgwrite
 
 from roentgen.flinger import Flinger
-from roentgen.vector import angle, turn_by_angle, norm, Line
 from roentgen.osm_reader import OSMNode
+from roentgen.vector import Line, angle, norm, turn_by_angle
 
 
 @dataclass

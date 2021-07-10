@@ -7,7 +7,7 @@ import argparse
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Tuple, Optional, List
+from typing import List, Optional, Tuple
 
 import numpy as np
 import svgwrite
@@ -15,7 +15,7 @@ import svgwrite
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
 from roentgen.icon import ShapeExtractor
-from roentgen.mapper import TAGS_FILE_NAME, ICONS_FILE_NAME, Painter
+from roentgen.mapper import ICONS_FILE_NAME, Painter, TAGS_FILE_NAME
 from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader
 from roentgen.scheme import Scheme
