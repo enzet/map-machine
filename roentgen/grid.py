@@ -189,7 +189,7 @@ class IconCollection:
         for selector in self.selectors:
             for target in ["node", "area"]:
                 s += target + selector + " {\n"
-                s += '    icon-image: "icon_set/josm/' + "___".join(
+                s += '    icon-image: "icons/' + "___".join(
                     self.selectors[selector].get_shape_ids()) + '.svg";\n'
                 s += "    set icon_z17;\n"
                 s += "    icon-width: 16;\n"

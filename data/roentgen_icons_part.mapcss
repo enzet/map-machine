@@ -1,0 +1,13 @@
+/*
+Map paint style that adds icons from Röntgen icon set
+*/
+
+meta {
+    title: "Röntgen icons";
+    description: "Icons from Röntgen icon set for JOSM";
+    author: "Sergey Vartanov";
+    version: "0.1";
+    link: "https://github.com/enzet/Roentgen";
+}
+
+%CONTENT%
