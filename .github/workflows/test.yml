@@ -25,4 +25,4 @@ jobs:
         pytest -v
     - name: Integration test
       run: |
-        python roentgen.py -b 37.415,55.753,37.416,55.754 --cache test/data
+        python roentgen.py render -b 37.415,55.753,37.416,55.754 --cache test/data
