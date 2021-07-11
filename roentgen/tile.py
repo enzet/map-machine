@@ -86,7 +86,7 @@ class Tile:
         )
         return np.array(extended_1), np.array(extended_2)
 
-    def load_map(self) -> Optional[Map]:
+    def load_map(self, cache_path: Path) -> Optional[Map]:
         """
         Construct map data from extended boundary box.
         """
@@ -103,7 +103,7 @@ class Tile:
             error("cannot download OSM data")
             return None
 
-        return OSMReader().parse_osm_file("map" / Path(boundary_box + ".osm"))
+        return OSMReader().parse_osm_file(cache_path / (boundary_box + ".osm"))
 
     def get_map_name(self, directory_name: Path) -> Path:
         """
@@ -119,13 +119,13 @@ class Tile:
             f"https://tile.openstreetmap.org/{self.scale}/{self.x}/{self.y}.png"
         )
 
-    def draw(self, directory_name: Path):
+    def draw(self, directory_name: Path, cache_path: Path):
         """
         Draw tile to SVG file.
 
         :param directory_name: output directory to storing tiles
         """
-        map_ = self.load_map()
+        map_ = self.load_map(cache_path)
 
         lat1, lon1 = self.get_coordinates()
         lat2, lon2 = Tile(self.x + 1, self.y + 1, self.scale).get_coordinates()
@@ -164,18 +164,12 @@ class Tile:
             svg.write(output_file)
 
 
-def ui(args) -> None:
+def ui(options) -> None:
     """
     Simple user interface for tile generation.
     """
-    parser: argparse.ArgumentParser = argparse.ArgumentParser()
-    parser.add_argument("-c")
-    parser.add_argument("-s")
-    parser.add_argument("-t")
-    options = parser.parse_args(args)
-
-    directory: Path = Path("tiles")
-    directory.mkdir(exist_ok=True)
+    directory: Path = Path("out/tiles")
+    directory.mkdir(parents=True, exist_ok=True)
 
     tile: Tile
     if options.c and options.s:
@@ -187,5 +181,5 @@ def ui(args) -> None:
     else:
         sys.exit(1)
 
-    tile.draw(directory)
+    tile.draw(directory, Path(options.cache))
     print(tile.get_carto_address())

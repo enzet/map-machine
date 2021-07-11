@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 from typing import List
 
+import logging
 import numpy as np
 import svgwrite
 
@@ -17,8 +18,13 @@ from roentgen.flinger import Flinger
 from roentgen.grid import draw_icons, write_mapcss
 from roentgen.icon import ShapeExtractor
 from roentgen.mapper import (
-    AUTHOR_MODE, CREATION_TIME_MODE, ICONS_FILE_NAME, Painter, TAGS_FILE_NAME,
-    check_level_number, check_level_overground
+    AUTHOR_MODE,
+    CREATION_TIME_MODE,
+    ICONS_FILE_NAME,
+    Painter,
+    TAGS_FILE_NAME,
+    check_level_number,
+    check_level_overground,
 )
 from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader, OverpassReader
@@ -28,16 +34,14 @@ from roentgen.ui import error, parse_options
 from roentgen.util import MinMax
 
 
-def main(argv) -> None:
+def main(options) -> None:
     """
     Röntgen entry point.
 
     :param argv: command-line arguments
     """
-    options: argparse.Namespace = parse_options(argv)
-
-    if not options:
-        sys.exit(1)
+    if options.boundary_box:
+        options.boundary_box = options.boundary_box.replace(" ", "")
 
     cache_path: Path = Path(options.cache)
     cache_path.mkdir(parents=True, exist_ok=True)
@@ -65,7 +69,7 @@ def main(argv) -> None:
         map_ = reader.map_
         view_box = MinMax(
             np.array((map_.boundary_box[0].min_, map_.boundary_box[1].min_)),
-            np.array((map_.boundary_box[0].max_, map_.boundary_box[1].max_))
+            np.array((map_.boundary_box[0].max_, map_.boundary_box[1].max_)),
         )
     else:
         is_full: bool = options.mode in [AUTHOR_MODE, CREATION_TIME_MODE]
@@ -82,17 +86,19 @@ def main(argv) -> None:
 
         if options.boundary_box:
             boundary_box: List[float] = list(
-                map(float, options.boundary_box.split(','))
+                map(float, options.boundary_box.split(","))
             )
             view_box = MinMax(
                 np.array((boundary_box[1], boundary_box[0])),
-                np.array((boundary_box[3], boundary_box[2]))
+                np.array((boundary_box[3], boundary_box[2])),
             )
         else:
             view_box = map_.view_box
 
     flinger: Flinger = Flinger(view_box, options.scale)
     size: np.array = flinger.size
+
+    Path("out").mkdir(parents=True, exist_ok=True)
 
     svg: svgwrite.Drawing = svgwrite.Drawing(
         options.output_file_name, size=size
@@ -102,35 +108,49 @@ def main(argv) -> None:
     )
 
     def check_level(x) -> bool:
-        """ Draw objects on all levels. """
+        """Draw objects on all levels."""
         return True
 
     if options.level:
         if options.level == "overground":
             check_level = check_level_overground
         elif options.level == "underground":
+
             def check_level(x) -> bool:
-                """ Draw underground objects. """
+                """Draw underground objects."""
                 return not check_level_overground(x)
+
         else:
+
             def check_level(x) -> bool:
-                """ Draw objects on the specified level. """
+                """Draw objects on the specified level."""
                 return not check_level_number(x, float(options.level))
 
     constructor: Constructor = Constructor(
-        map_, flinger, scheme, icon_extractor, check_level, options.mode,
-        options.seed)
+        map_,
+        flinger,
+        scheme,
+        icon_extractor,
+        check_level,
+        options.mode,
+        options.seed,
+    )
     constructor.construct()
 
     painter: Painter = Painter(
-        show_missing_tags=options.show_missing_tags, overlap=options.overlap,
-        mode=options.mode, label_mode=options.label_mode,
-        map_=map_, flinger=flinger, svg=svg, icon_extractor=icon_extractor,
-        scheme=scheme)
+        overlap=options.overlap,
+        mode=options.mode,
+        label_mode=options.label_mode,
+        map_=map_,
+        flinger=flinger,
+        svg=svg,
+        icon_extractor=icon_extractor,
+        scheme=scheme,
+    )
 
     painter.draw(constructor)
 
-    print("Writing output SVG...")
+    print(f"Writing output SVG to {options.output_file_name}...")
     with open(options.output_file_name, "w") as output_file:
         svg.write(output_file)
 
@@ -152,8 +172,13 @@ def draw_element(target: str, tags_description: str):
     is_for_node: bool = target == "node"
     labels = scheme.construct_text(tags, "all")
     point = Point(
-        icon, labels, tags, np.array((32, 32)), None, is_for_node=is_for_node,
-        draw_outline=is_for_node
+        icon,
+        labels,
+        tags,
+        np.array((32, 32)),
+        None,
+        is_for_node=is_for_node,
+        draw_outline=is_for_node,
     )
     border: np.array = np.array((16, 16))
     size: np.array = point.get_size() + border
@@ -171,15 +196,20 @@ def draw_element(target: str, tags_description: str):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 3 and sys.argv[1] in ["node", "way", "area"]:
-        draw_element(sys.argv[1], sys.argv[2])
-    elif len(sys.argv) == 2 and sys.argv[1] == "icons":
+
+    logging.basicConfig(format='%(levelname)s %(message)s', level=logging.INFO)
+
+    options: argparse.Namespace = parse_options(sys.argv)
+
+    if options.command == "render":
+        main(options)
+    elif options.command == "tile":
+        tile.ui(options)
+    elif options.command == "icons":
         draw_icons()
-    elif len(sys.argv) == 2 and sys.argv[1] == "mapcss":
+    elif options.command == "mapcss":
         write_mapcss()
-    elif len(sys.argv) >= 2 and sys.argv[1] == "tile":
-        tile.ui(sys.argv[2:])
-    elif len(sys.argv) >= 2 and sys.argv[1] == "server":
+    elif options.command == "element":
+        draw_element(options)
+    elif options.command == "server":
         server.ui(sys.argv[2:])
-    else:
-        main(sys.argv)

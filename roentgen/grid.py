@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Set
 
+import logging
 import numpy as np
 from colour import Color
 from svgwrite import Drawing
@@ -231,9 +232,14 @@ def draw_icons() -> None:
         Path("icons/icons.svg"), Path("icons/config.json")
     )
     collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
-    collection.draw_grid(out_path / "icon_grid.svg")
+    icon_grid_path: Path = out_path / "icon_grid.svg"
+    collection.draw_grid(icon_grid_path)
+    logging.info(f"Icon grid is written to {icon_grid_path}.")
     collection.draw_icons(icons_by_id_path)
     collection.draw_icons(icons_by_name_path, by_name=True)
+    logging.info(
+        f"Icons are written to {icons_by_name_path} and {icons_by_id_path}."
+    )
 
 
 def write_mapcss() -> None:
@@ -241,7 +247,11 @@ def write_mapcss() -> None:
     Write MapCSS 0.2 scheme.
     """
     out_path: Path = Path("out")
-    icons_with_outline_path: Path = out_path / "roentgen_icons" / "icons"
+    directory: Path = (out_path / "roentgen_icons_mapcss")
+    directory.mkdir(exist_ok=True)
+    icons_with_outline_path: Path = directory / "icons"
+
+    icons_with_outline_path.mkdir(parents=True, exist_ok=True)
 
     scheme: Scheme = Scheme(Path("scheme/default.yml"))
     extractor: ShapeExtractor = ShapeExtractor(
@@ -251,13 +261,12 @@ def write_mapcss() -> None:
     collection.draw_icons(
         icons_with_outline_path, color=Color("black"), outline=True
     )
-    (out_path / "roentgen_icons").mkdir(exist_ok=True)
     with Path("data/roentgen_icons_part.mapcss").open() as input_file:
-        with (out_path / "roentgen_icons" / "roentgen_icons.mapcss").open(
-            "w+"
-        ) as output_file:
+        with (directory / "roentgen_icons.mapcss").open("w+") as output_file:
             for line in input_file.readlines():
                 if line == "%CONTENT%\n":
                     output_file.write(collection.get_mapcss_selectors())
                 else:
                     output_file.write(line)
+
+    logging.info(f"MapCSS 0.2 scheme is written to {directory}.")

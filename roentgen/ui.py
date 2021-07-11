@@ -20,65 +20,82 @@ def parse_options(args) -> argparse.Namespace:
     """
     Parse Röntgen command-line options.
     """
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="Röntgen. OpenStreetMap renderer with custom icon set"
+    )
+    subparser = parser.add_subparsers(dest="command")
 
-    parser.add_argument(
+    render = subparser.add_parser("render")
+    icons = subparser.add_parser("icons")
+    mapcss = subparser.add_parser("mapcss")
+    tile = subparser.add_parser("tile")
+
+    render.add_argument(
         "-i",
         "--input",
         dest="input_file_name",
         metavar="<path>",
         nargs="*",
-        help="input XML file name (if not specified, file will be downloaded "
-        "using OpenStreetMap API)",
+        help="input XML file name or names (if not specified, file will be "
+        "downloaded using OpenStreetMap API)",
     )
-    parser.add_argument(
+    render.add_argument(
         "-o",
         "--output",
         dest="output_file_name",
         metavar="<path>",
-        default="map.svg",
-        help="output SVG file name (map.svg by default)",
+        default="out/map.svg",
+        help="output SVG file name (out/map.svg by default)",
     )
-    parser.add_argument(
+    render.add_argument(
         "-b",
         "--boundary-box",
-        dest="boundary_box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
-        help='geo boundary box, use space before "-" for negative values',
+        help='geo boundary box, use space before "-" if the first value is '
+        "negative",
     )
-    parser.add_argument(
+    render.add_argument(
         "-s",
         "--scale",
         metavar="<float>",
         help="OSM zoom level (may not be integer, default is 18)",
         default=18,
-        dest="scale",
         type=float,
     )
-    parser.add_argument(
-        "--cache", help="path for temporary OSM files", default="cache"
+    render.add_argument(
+        "--cache",
+        help="path for temporary OSM files",
+        default="cache",
+        metavar="<path>",
     )
-    parser.add_argument(
+    render.add_argument(
         "--labels",
         help="label drawing mode: `no`, `main`, or `all`",
         dest="label_mode",
         default="main",
     )
-    parser.add_argument(
-        "--show-missing-tags", dest="show_missing_tags", action="store_true"
+    render.add_argument(
+        "--overlap",
+        dest="overlap",
+        default=12,
+        type=int,
+        help="how many pixels should be left around icons and text",
     )
-    parser.add_argument(
-        "--no-show-missing-tags", dest="show_missing_tags", action="store_false"
+    render.add_argument("--mode", default="normal")
+    render.add_argument("--seed", default="")
+    render.add_argument("--level", default=None)
+
+    tile.add_argument("-c")
+    tile.add_argument("-s")
+    tile.add_argument("-t")
+    tile.add_argument(
+        "--cache",
+        help="path for temporary OSM files",
+        default="cache",
+        metavar="<path>",
     )
-    parser.add_argument("--overlap", dest="overlap", default=12, type=int)
-    parser.add_argument("--mode", default="normal")
-    parser.add_argument("--seed", default="")
-    parser.add_argument("--level", default=None)
 
     arguments: argparse.Namespace = parser.parse_args(args[1:])
-
-    if arguments.boundary_box:
-        arguments.boundary_box = arguments.boundary_box.replace(" ", "")
 
     return arguments
 

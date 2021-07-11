@@ -335,8 +335,6 @@ class Constructor:
             key=lambda x: -self.map_.nodes[x].coordinates[0],
         )
 
-        missing_tags = Counter()
-
         for node_id in sorted_node_ids:  # type: int
             processed: Set[str] = set()
 
@@ -382,11 +380,5 @@ class Constructor:
                 priority=priority, draw_outline=draw_outline
             )  # fmt: skip
             self.points.append(point)
-
-            missing_tags.update(
-                f"{key}: {tags[key]}"
-                for key in tags
-                if key not in icon_set.processed
-            )
 
         ui.progress_bar(-1, len(self.map_.nodes), text="Constructing nodes")

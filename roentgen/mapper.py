@@ -26,7 +26,6 @@ __email__ = "me@enzet.ru"
 
 ICONS_FILE_NAME: str = "icons/icons.svg"
 TAGS_FILE_NAME: str = "scheme/default.yml"
-MISSING_TAGS_FILE_NAME: str = "missing_tags.yml"
 
 AUTHOR_MODE = "user-coloring"
 CREATION_TIME_MODE = "time"
@@ -44,12 +43,10 @@ class Painter:
         svg: svgwrite.Drawing,
         icon_extractor: ShapeExtractor,
         scheme: Scheme,
-        show_missing_tags: bool = False,
         overlap: int = 12,
         mode: str = "normal",
         label_mode: str = "main",
     ):
-        self.show_missing_tags: bool = show_missing_tags
         self.overlap: int = overlap
         self.mode: str = mode
         self.label_mode: str = label_mode
