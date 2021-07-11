@@ -11,9 +11,7 @@ class Handler(BaseHTTPRequestHandler):
 
     update_cache: bool = False
 
-    def __init__(
-        self, request, client_address, server
-    ):
+    def __init__(self, request, client_address, server):
         super().__init__(request, client_address, server)
 
     def write(self, message):

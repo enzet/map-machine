@@ -31,9 +31,9 @@ def get_osm(
         return result_file_name.open().read()
 
     matcher = re.match(
-        "(?P<left>[0-9.-]*),(?P<bottom>[0-9.-]*)," +
-        "(?P<right>[0-9.-]*),(?P<top>[0-9.-]*)",
-        boundary_box
+        "(?P<left>[0-9.-]*),(?P<bottom>[0-9.-]*),"
+        + "(?P<right>[0-9.-]*),(?P<top>[0-9.-]*)",
+        boundary_box,
     )
 
     if not matcher:
@@ -61,7 +61,9 @@ def get_osm(
 
     content = get_data(
         "api.openstreetmap.org/api/0.6/map",
-        {"bbox": boundary_box}, is_secure=True)
+        {"bbox": boundary_box},
+        is_secure=True,
+    )
 
     result_file_name.open("w+").write(content.decode("utf-8"))
 
@@ -69,8 +71,8 @@ def get_osm(
 
 
 def get_data(
-        address: str, parameters: Dict[str, str], is_secure: bool = False) \
-        -> bytes:
+    address: str, parameters: Dict[str, str], is_secure: bool = False
+) -> bytes:
     """
     Construct Internet page URL and get its descriptor.
 

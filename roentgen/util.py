@@ -13,6 +13,7 @@ class MinMax:
     """
     Minimum and maximum.
     """
+
     min_: Any = None
     max_: Any = None
 

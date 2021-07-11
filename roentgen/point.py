@@ -22,6 +22,7 @@ class Occupied:
     Structure that remembers places of the canvas occupied by elements (icons,
     texts, shapes).
     """
+
     def __init__(self, width: int, height: int, overlap: float):
         self.matrix = np.full((int(width), int(height)), False, dtype=bool)
         self.width: float = width
@@ -53,9 +54,16 @@ class Point(Tagged):
     """
 
     def __init__(
-        self, icon_set: IconSet, labels: List[Label], tags: Dict[str, str],
-        processed: Set[str], point: np.array, coordinates: np.array,
-        priority: float = 0, is_for_node: bool = True, draw_outline: bool = True
+        self,
+        icon_set: IconSet,
+        labels: List[Label],
+        tags: Dict[str, str],
+        processed: Set[str],
+        point: np.array,
+        coordinates: np.array,
+        priority: float = 0,
+        is_for_node: bool = True,
+        draw_outline: bool = True,
     ):
         super().__init__()
 
@@ -81,10 +89,7 @@ class Point(Tagged):
         """
         Draw main shape for one node.
         """
-        keys_left = [
-            x for x in self.tags.keys()
-            if x not in self.processed  # and not self.is_no_drawable(x)
-        ]
+        keys_left = [x for x in self.tags.keys() if x not in self.processed]
         if (
             self.icon_set.main_icon.is_default()
             and not self.icon_set.extra_icons
@@ -124,14 +129,19 @@ class Point(Tagged):
             for icon in self.icon_set.extra_icons:
                 self.draw_point_shape(
                     svg, icon, self.point + np.array((left, self.y)),
-                    occupied=occupied)
+                    occupied=occupied
+                )
                 left += 16
             if self.icon_set.extra_icons:
                 self.y += 16
 
     def draw_point_shape(
-        self, svg: svgwrite.Drawing, icon: Icon, position,
-        occupied, tags: Optional[Dict[str, str]] = None
+        self,
+        svg: svgwrite.Drawing,
+        icon: Icon,
+        position,
+        occupied,
+        tags: Optional[Dict[str, str]] = None,
     ) -> bool:
         """
         Draw one combined icon and its outline.
@@ -180,7 +190,7 @@ class Point(Tagged):
         for label in labels:
             text = label.text
             text = text.replace("&quot;", '"')
-            text = text.replace("&amp;", '&')
+            text = text.replace("&amp;", "&")
             text = text[:26] + ("..." if len(text) > 26 else "")
             self.draw_text(
                 svg, text, self.point + np.array((0, self.y + 2)),
@@ -188,11 +198,18 @@ class Point(Tagged):
             )
 
     def draw_text(
-        self, svg: svgwrite.Drawing, text: str, point,
-        occupied: Optional[Occupied], fill: Color, size: float = 10.0,
-        out_fill=Color("white"), out_opacity: float = 0.5,
-        out_fill_2: Optional[Color] = None, out_opacity_2: float = 1.0,
-        is_debug: bool = False
+        self,
+        svg: svgwrite.Drawing,
+        text: str,
+        point,
+        occupied: Optional[Occupied],
+        fill: Color,
+        size: float = 10.0,
+        out_fill=Color("white"),
+        out_opacity: float = 0.5,
+        out_fill_2: Optional[Color] = None,
+        out_opacity_2: float = 1.0,
+        is_debug: bool = False,
     ) -> None:
         """
         Drawing text.

@@ -25,6 +25,7 @@ class LineStyle:
     """
     SVG line style and its priority.
     """
+
     style: Dict[str, Union[int, float, str]]
     priority: float = 0.0
 
@@ -33,6 +34,7 @@ class MatchingType(Enum):
     """
     Description on how tag was matched.
     """
+
     NOT_MATCHED = 0
     MATCHED_BY_SET = 1
     MATCHED_BY_WILDCARD = 2
@@ -55,13 +57,13 @@ def is_matched_tag(
         if matcher_tag_value == "*":
             return MatchingType.MATCHED_BY_WILDCARD
         if (
-            isinstance(matcher_tag_value, str) and
-            tags[matcher_tag_key] == matcher_tag_value
+            isinstance(matcher_tag_value, str)
+            and tags[matcher_tag_key] == matcher_tag_value
         ):
             return MatchingType.MATCHED
         if (
-            isinstance(matcher_tag_value, list) and
-            tags[matcher_tag_key] in matcher_tag_value
+            isinstance(matcher_tag_value, list)
+            and tags[matcher_tag_key] in matcher_tag_value
         ):
             return MatchingType.MATCHED_BY_SET
     return MatchingType.NOT_MATCHED
@@ -71,6 +73,7 @@ class Matcher:
     """
     Tag matching.
     """
+
     def __init__(self, structure: Dict[str, Any]):
         self.tags: Dict[str, str] = structure["tags"]
 
@@ -98,8 +101,8 @@ class Matcher:
             config_tag_key: str
             tag_matcher = self.tags[config_tag_key]
             if (
-                is_matched_tag(config_tag_key, tag_matcher, tags) ==
-                MatchingType.NOT_MATCHED
+                is_matched_tag(config_tag_key, tag_matcher, tags)
+                == MatchingType.NOT_MATCHED
             ):
                 matched = False
                 break
@@ -109,8 +112,8 @@ class Matcher:
                 config_tag_key: str
                 tag_matcher = self.exception[config_tag_key]
                 if (
-                    is_matched_tag(config_tag_key, tag_matcher, tags) !=
-                    MatchingType.NOT_MATCHED
+                    is_matched_tag(config_tag_key, tag_matcher, tags)
+                    != MatchingType.NOT_MATCHED
                 ):
                     matched = False
                     break
@@ -122,6 +125,7 @@ class NodeMatcher(Matcher):
     """
     Tag specification matcher.
     """
+
     def __init__(self, structure: Dict[str, Any]):
         # Dictionary with tag keys and values, value lists, or "*"
         super().__init__(structure)
@@ -167,6 +171,7 @@ class WayMatcher(Matcher):
     """
     Special tag matcher for ways.
     """
+
     def __init__(self, structure: Dict[str, Any], scheme: "Scheme"):
         super().__init__(structure)
         self.style: Dict[str, Any] = {"fill": "none"}
@@ -186,6 +191,7 @@ class RoadMatcher(Matcher):
     """
     Special tag matcher for highways.
     """
+
     def __init__(self, structure: Dict[str, Any], scheme: "Scheme"):
         super().__init__(structure)
         self.border_color: Color = Color(
@@ -206,6 +212,7 @@ class Scheme:
 
     Specifies map colors and rules to draw icons for OpenStreetMap tags.
     """
+
     def __init__(self, file_name: Path):
         """
         :param file_name: name of the scheme file with tags, colors, and tag key
@@ -266,7 +273,7 @@ class Scheme:
         if key in self.tags_to_write or key in self.tags_to_skip:
             return True
         for prefix in self.prefix_to_write + self.prefix_to_skip:  # type: str
-            if key[:len(prefix) + 1] == f"{prefix}:":
+            if key[: len(prefix) + 1] == f"{prefix}:":
                 return True
         return False
 
@@ -282,7 +289,7 @@ class Scheme:
         if key in self.tags_to_write:
             return True
         for prefix in self.prefix_to_write:  # type: str
-            if key[:len(prefix) + 1] == f"{prefix}:":
+            if key[: len(prefix) + 1] == f"{prefix}:":
                 return True
         return False
 
@@ -361,8 +368,7 @@ class Scheme:
                 processed.add("material")
 
         for tag_key in tags:  # type: str
-            if (tag_key.endswith(":color") or
-                    tag_key.endswith(":colour")):
+            if tag_key.endswith(":color") or tag_key.endswith(":colour"):
                 color = self.get_color(tags[tag_key])
                 processed.add(tag_key)
 
@@ -375,7 +381,8 @@ class Scheme:
             main_icon.recolor(color)
 
         keys_left = [
-            x for x in tags.keys()
+            x
+            for x in tags.keys()
             if x not in processed and not self.is_no_drawable(x)
         ]
 
@@ -390,7 +397,7 @@ class Scheme:
             if key in tags:
                 for specification in main_icon.shape_specifications:
                     if (
-                        DirectionSet(tags[key]).is_right() is False 
+                        DirectionSet(tags[key]).is_right() is False
                         and specification.shape.is_right_directed is True
                         or specification.shape.is_right_directed is True
                         and specification.shape.is_right_directed is False

@@ -254,8 +254,12 @@ class ShapeSpecification:
                 use_outline = structure["outline"]
 
         return cls(
-            shape, color, offset, flip_horizontally, flip_vertically,
-            use_outline
+            shape,
+            color,
+            offset,
+            flip_horizontally,
+            flip_vertically,
+            use_outline,
         )
 
     def is_default(self) -> bool:
@@ -424,10 +428,9 @@ class Icon:
         )
 
     def __lt__(self, other) -> bool:
-        return (
-            "".join([x.shape.id_ for x in self.shape_specifications])
-            < "".join([x.shape.id_ for x in other.shape_specifications])
-        )
+        return "".join(
+            [x.shape.id_ for x in self.shape_specifications]
+        ) < "".join([x.shape.id_ for x in other.shape_specifications])
 
 
 @dataclass

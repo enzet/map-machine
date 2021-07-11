@@ -17,6 +17,7 @@ class Label:
     """
     Text label.
     """
+
     text: str
     fill: Color = DEFAULT_COLOR
     size: float = 10.0
@@ -46,7 +47,7 @@ def get_address(
         if "addr:street" in tags:
             street = tags["addr:street"]
             if street.startswith("улица "):
-                street = "ул. " + street[len("улица "):]
+                street = "ул. " + street[len("улица ") :]
             address.append(street)
             processed.add("addr:street")
 

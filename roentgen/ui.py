@@ -23,62 +23,57 @@ def parse_options(args) -> argparse.Namespace:
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "-i", "--input",
+        "-i",
+        "--input",
         dest="input_file_name",
         metavar="<path>",
         nargs="*",
         help="input XML file name (if not specified, file will be downloaded "
-             "using OpenStreetMap API)")
+        "using OpenStreetMap API)",
+    )
     parser.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         dest="output_file_name",
         metavar="<path>",
         default="map.svg",
-        help="output SVG file name (map.svg by default)")
+        help="output SVG file name (map.svg by default)",
+    )
     parser.add_argument(
-        "-b", "--boundary-box",
+        "-b",
+        "--boundary-box",
         dest="boundary_box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
-        help="geo boundary box, use space before \"-\" for negative values")
+        help='geo boundary box, use space before "-" for negative values',
+    )
     parser.add_argument(
-        "-s", "--scale",
+        "-s",
+        "--scale",
         metavar="<float>",
         help="OSM zoom level (may not be integer, default is 18)",
         default=18,
         dest="scale",
-        type=float)
+        type=float,
+    )
     parser.add_argument(
-        "--cache",
-        help="path for temporary OSM files",
-        default="cache"
+        "--cache", help="path for temporary OSM files", default="cache"
     )
     parser.add_argument(
         "--labels",
         help="label drawing mode: `no`, `main`, or `all`",
         dest="label_mode",
-        default="main")
+        default="main",
+    )
     parser.add_argument(
-        "--show-missing-tags",
-        dest="show_missing_tags",
-        action="store_true")
+        "--show-missing-tags", dest="show_missing_tags", action="store_true"
+    )
     parser.add_argument(
-        "--no-show-missing-tags",
-        dest="show_missing_tags",
-        action="store_false")
-    parser.add_argument(
-        "--overlap",
-        dest="overlap",
-        default=12,
-        type=int)
-    parser.add_argument(
-        "--mode",
-        default="normal")
-    parser.add_argument(
-        "--seed",
-        default="")
-    parser.add_argument(
-        "--level",
-        default=None)
+        "--no-show-missing-tags", dest="show_missing_tags", action="store_false"
+    )
+    parser.add_argument("--overlap", dest="overlap", default=12, type=int)
+    parser.add_argument("--mode", default="normal")
+    parser.add_argument("--seed", default="")
+    parser.add_argument("--level", default=None)
 
     arguments: argparse.Namespace = parser.parse_args(args[1:])
 

@@ -66,7 +66,7 @@ class Tagged:
 
         value: str = self.tags[key]
 
-        float_value: float = parse_float(value) 
+        float_value: float = parse_float(value)
         if float_value is not None:
             return float_value
 
@@ -77,7 +77,7 @@ class Tagged:
         ]:
             matcher = pattern.match(value)
             if matcher:
-                float_value: float = parse_float(matcher.group("value")) 
+                float_value: float = parse_float(matcher.group("value"))
                 if float_value is not None:
                     return float_value * ratio
 
@@ -450,6 +450,10 @@ class OSMReader:
         """
         attributes = element.attrib
         self.map_.view_box = MinMax(
-            np.array((float(attributes["minlat"]), float(attributes["minlon"]))),
-            np.array((float(attributes["maxlat"]), float(attributes["maxlon"])))
+            np.array(
+                (float(attributes["minlat"]), float(attributes["minlon"]))
+            ),
+            np.array(
+                (float(attributes["maxlat"]), float(attributes["maxlon"]))
+            ),
         )

@@ -32,7 +32,7 @@ class IconCollection:
         extractor: ShapeExtractor,
         background_color: Color = Color("white"),
         color: Color = Color("black"),
-        add_unused: bool = False
+        add_unused: bool = False,
     ) -> "IconCollection":
         """
         Collect all possible icon combinations in grid.
@@ -89,11 +89,16 @@ class IconCollection:
                 for icon_2_id in matcher.with_icon:
                     for icon_3_id in matcher.with_icon:
                         current_set = (
-                            [icon_id] + [icon_2_id] + [icon_3_id] +
-                            matcher.over_icon
+                            [icon_id]
+                            + [icon_2_id]
+                            + [icon_3_id]
+                            + matcher.over_icon
                         )
-                        if (icon_2_id != icon_3_id and icon_2_id != icon_id and
-                                icon_3_id != icon_id):
+                        if (
+                            icon_2_id != icon_3_id
+                            and icon_2_id != icon_id
+                            and icon_3_id != icon_id
+                        ):
                             add()
 
         specified_ids: Set[str] = set()
@@ -127,10 +132,13 @@ class IconCollection:
         :param outline: if true, draw outline beneath the icon
         """
         if by_name:
+
             def get_file_name(x) -> str:
                 """Generate human-readable file name."""
                 return f"Röntgen {' + '.join(x.get_names())}.svg"
+
         else:
+
             def get_file_name(x) -> str:
                 """Generate file name with unique identifier."""
                 return f"{'___'.join(x.get_shape_ids())}.svg"
@@ -167,8 +175,7 @@ class IconCollection:
         for icon in self.icons:
             icon: Icon
             rectangle = svg.rect(
-                point - np.array((10, 10)), (20, 20),
-                fill=background_color.hex
+                point - np.array((10, 10)), (20, 20), fill=background_color.hex
             )
             svg.add(rectangle)
             icon.draw(svg, point)
@@ -189,8 +196,11 @@ class IconCollection:
         for selector in self.selectors:
             for target in ["node", "area"]:
                 s += target + selector + " {\n"
-                s += '    icon-image: "icons/' + "___".join(
-                    self.selectors[selector].get_shape_ids()) + '.svg";\n'
+                s += (
+                    '    icon-image: "icons/'
+                    + "___".join(self.selectors[selector].get_shape_ids())
+                    + '.svg";\n'
+                )
                 s += "    set icon_z17;\n"
                 s += "    icon-width: 16;\n"
                 s += "}\n"
@@ -213,9 +223,7 @@ def draw_icons() -> None:
     icons_by_id_path: Path = out_path / "icons_by_id"
     icons_by_name_path: Path = out_path / "icons_by_name"
 
-    for path in (
-        out_path, icons_by_id_path, icons_by_name_path
-    ):
+    for path in (out_path, icons_by_id_path, icons_by_name_path):
         path.mkdir(parents=True, exist_ok=True)
 
     scheme: Scheme = Scheme(Path("scheme/default.yml"))
@@ -245,9 +253,9 @@ def write_mapcss() -> None:
     )
     (out_path / "roentgen_icons").mkdir(exist_ok=True)
     with Path("data/roentgen_icons_part.mapcss").open() as input_file:
-        with (
-            out_path / "roentgen_icons" / "roentgen_icons.mapcss"
-        ).open("w+") as output_file:
+        with (out_path / "roentgen_icons" / "roentgen_icons.mapcss").open(
+            "w+"
+        ) as output_file:
             for line in input_file.readlines():
                 if line == "%CONTENT%\n":
                     output_file.write(collection.get_mapcss_selectors())

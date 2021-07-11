@@ -47,7 +47,7 @@ class Painter:
         show_missing_tags: bool = False,
         overlap: int = 12,
         mode: str = "normal",
-        label_mode: str = "main"
+        label_mode: str = "main",
     ):
         self.show_missing_tags: bool = show_missing_tags
         self.overlap: int = overlap
@@ -100,15 +100,16 @@ class Painter:
             occupied = None
         else:
             occupied = Occupied(
-                self.flinger.size[0], self.flinger.size[1], self.overlap)
+                self.flinger.size[0], self.flinger.size[1], self.overlap
+            )
 
         nodes = sorted(constructor.points, key=lambda x: -x.priority)
         steps: int = len(nodes)
 
         for index, node in enumerate(nodes):  # type: int, Point
-            if (node.get_tag("natural") == "tree" and
-                    ("diameter_crown" in node.tags or
-                     "circumference" in node.tags)):
+            if node.get_tag("natural") == "tree" and (
+                "diameter_crown" in node.tags or "circumference" in node.tags
+            ):
                 continue
             ui.progress_bar(
                 index, steps * 3, step=10, text="Drawing main icons"
@@ -142,6 +143,9 @@ class Painter:
                     ("diameter_crown" in node.tags or
                      "circumference" in node.tags)):
                 continue
+
+            scale: float = self.flinger.get_scale(node.coordinates)
+
             if "circumference" in node.tags:
                 if "diameter_crown" in node.tags:
                     opacity = 0.7
@@ -149,16 +153,18 @@ class Painter:
                 else:
                     opacity = 0.3
                     radius = 2
-                self.svg.add(self.svg.circle(
-                    node.point,
-                    radius * self.flinger.get_scale(node.coordinates),
-                    fill=self.scheme.get_color("evergreen_color"),
-                    opacity=opacity))
-                self.svg.add(self.svg.circle(
-                    node.point,
-                    float(node.tags["circumference"]) / 2 / np.pi *
-                    self.flinger.get_scale(node.coordinates),
-                    fill="#B89A74"))
+                self.svg.add(
+                    self.svg.circle(
+                        node.point,
+                        radius * scale,
+                        fill=self.scheme.get_color("evergreen_color"),
+                        opacity=opacity,
+                    )
+                )
+                radius = float(node.tags["circumference"]) / 2 / np.pi
+                self.svg.add(
+                    self.svg.circle(node.point, radius * scale, fill="#B89A74")
+                )
 
     def draw_buildings(self, constructor: Constructor) -> None:
         """
@@ -311,7 +317,7 @@ class Painter:
             "stroke": color.hex,
             "stroke-linecap": "round",
             "stroke-linejoin": "round",
-            "stroke-width": scale * width + extra_width
+            "stroke-width": scale * width + extra_width,
         }
         path.update(style)
         self.svg.add(path)

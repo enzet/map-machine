@@ -4,9 +4,7 @@ from pathlib import Path
 from typing import List
 
 
-def rasterize(
-    from_: Path, to_: Path, area: str = "", dpi: float = 90
-) -> None:
+def rasterize(from_: Path, to_: Path, area: str = "", dpi: float = 90) -> None:
     """
     Make PNG image out of SVG using Inkscape.
     """
