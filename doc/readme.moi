@@ -14,9 +14,9 @@ Röntgen is intended to be highly configurable, so it can generate precise but m
 
 To get SVG map, just run
 
-\code {python roentgen.py -b <lon1>,<lat1>,<lon2>,<lat2>} {bash}
+\code {python roentgen.py render -b <lon1>,<lat1>,<lon2>,<lat2>} {bash}
 
-(e.g. \tt {python roentgen.py -b 2.284,48.86,2.29,48.865}).  It will automatically download OSM data and write output map to \tt {map.svg}.  For more options see \href {#map-generation} {Map generation}.
+(e.g. \tt {python roentgen.py render -b 2.284,48.86,2.29,48.865}).  It will automatically download OSM data and write output map to \tt {out/map.svg}.  For more options see \href {#map-generation} {Map generation}.
 
 \2 {Map features} {features}
 
@@ -160,47 +160,42 @@ Every way and node displayed with the random color picked for each author with \
 
 \image {doc/user.png} {Author mode}
 
-\2 {Map generation} {map-generation}
+\2 {Installation} {installation}
 
-\3 {Requirements} {requirements}
+Requirements: Python (at least 3.8).
 
-\list
-    {Python (at least 3.8).}
-
-\3 {Installation} {installation}
+To install all packages, run\:
 
 \code {pip install -r requirements.txt} {bash}
 
-\3 {Script running} {script}
+\2 {Map generation} {map-generation}
+
+Command\: \tt {render}.
 
 There are simple Python renderer that generates SVG map from OpenStreetMap data.  You can run it using\:
 
-\code {python roentgen.py \\
+\code {python roentgen.py render \\
     -b $\{LONGITUDE_1\},$\{LATITUDE_1\},$\{LONGITUDE_2\},$\{LATITUDE_2\} \\
     -o $\{OUTPUT_FILE_NAME\} \\
     -s $\{OSM_ZOOM_LEVEL\}} {bash}
 
 Example\:
 
-\code {python roentgen.py -b 2.284,48.86,2.29,48.865} {bash}
+\code {python roentgen.py render -b 2.284,48.86,2.29,48.865} {bash}
 
-\3 {Main arguments} {arguments}
-
-\4 {Required} {required_arguments}
+\3 {Arguments} {arguments}
 
 \list
     {\tt {--boundary-box} or \tt {-b}\: boundary box to draw. Value\: \tt {<longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>}.  If first value is negative, use quotation marks and space before first \tt {-}.  For example, \tt {-b " -122.335,47.614,-122.325,47.617"}.}
-
-\4 {Optional} {optional_arguments}
-
-\list
     {\tt {--scale} or \tt {-s}\: OSM \href {https://wiki.openstreetmap.org/wiki/Zoom_levels} {zoom level}.  Default is 18.}
-    {\tt {-o}\: path to output SVG file name.  Default is \tt {map.svg}.}
+    {\tt {-o}\: path to output SVG file name.  Default is \tt {out/map.svg}.}
     {\tt {-i}\: path to input XML file name.  If this argument is not set, XML file will be downloaded through OpenStreetMap API.}
 
-Check all arguments with \tt {python roentgen.py --help}.
+Check all arguments with \tt {python roentgen.py render --help}.
 
 \2 {Tile generation} {tile-generation}
+
+Command\: \tt {tile}.
 
 \code {python roentgen.py tile \\
     -c $\{LATITUDE\},$\{LONGITUDE\} \\
@@ -212,4 +207,4 @@ Example\:
 
 \code {python roentgen.py tile -c 55.7510637,37.6270761 -s 18} {bash}
 
-will generate SVG file \tt {tiles/tile_18_158471_81953.svg}.
+will generate SVG file \tt {out/tiles/tile_18_158471_81953.svg}.

@@ -15,10 +15,10 @@ Usage
 To get SVG map, just run
 
 ```bash
-python roentgen.py -b <lon1>,<lat1>,<lon2>,<lat2>
+python roentgen.py render -b <lon1>,<lat1>,<lon2>,<lat2>
 ```
 
-(e.g. `python roentgen.py -b 2.284,48.86,2.29,48.865`). It will automatically download OSM data and write output map to `map.svg`. For more options see [Map generation](#map-generation).
+(e.g. `python roentgen.py render -b 2.284,48.86,2.29,48.865`). It will automatically download OSM data and write output map to `out/map.svg`. For more options see [Map generation](#map-generation).
 
 Map features
 ------------
@@ -112,25 +112,26 @@ Every way and node displayed with the random color picked for each author with `
 
 ![Author mode](doc/user.png)
 
-Map generation
---------------
+Installation
+------------
 
-### Requirements ###
+Requirements: Python (at least 3.8).
 
-  * Python (at least 3.8).
-
-### Installation ###
+To install all packages, run:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Script running ###
+Map generation
+--------------
+
+Command: `render`.
 
 There are simple Python renderer that generates SVG map from OpenStreetMap data. You can run it using:
 
 ```bash
-python roentgen.py \
+python roentgen.py render \
     -b ${LONGITUDE_1},${LATITUDE_1},${LONGITUDE_2},${LATITUDE_2} \
     -o ${OUTPUT_FILE_NAME} \
     -s ${OSM_ZOOM_LEVEL}
@@ -139,25 +140,22 @@ python roentgen.py \
 Example:
 
 ```bash
-python roentgen.py -b 2.284,48.86,2.29,48.865
+python roentgen.py render -b 2.284,48.86,2.29,48.865
 ```
 
-### Main arguments ###
-
-#### Required ####
+### Arguments ###
 
   * `--boundary-box` or `-b`: boundary box to draw. Value: `<longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>`. If first value is negative, use quotation marks and space before first `-`. For example, `-b " -122.335,47.614,-122.325,47.617"`.
-
-#### Optional ####
-
   * `--scale` or `-s`: OSM [zoom level](https://wiki.openstreetmap.org/wiki/Zoom_levels). Default is 18.
-  * `-o`: path to output SVG file name. Default is `map.svg`.
+  * `-o`: path to output SVG file name. Default is `out/map.svg`.
   * `-i`: path to input XML file name. If this argument is not set, XML file will be downloaded through OpenStreetMap API.
 
-Check all arguments with `python roentgen.py --help`.
+Check all arguments with `python roentgen.py render --help`.
 
 Tile generation
 ---------------
+
+Command: `tile`.
 
 ```bash
 python roentgen.py tile \
@@ -173,5 +171,5 @@ Example:
 python roentgen.py tile -c 55.7510637,37.6270761 -s 18
 ```
 
-will generate SVG file `tiles/tile_18_158471_81953.svg`.
+will generate SVG file `out/tiles/tile_18_158471_81953.svg`.
 
