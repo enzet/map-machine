@@ -23,6 +23,12 @@ jobs:
     - name: Test with pytest
       run: |
         pytest -v
-    - name: Integration test
+    - name: Render test
       run: |
         python roentgen.py render -b 37.415,55.753,37.416,55.754 --cache test/data
+    - name: Icon generation test
+      run: |
+        python roentgen.py icons
+    - name: MapCSS 0.2 generation test
+      run: |
+        python roentgen.py mapcss
