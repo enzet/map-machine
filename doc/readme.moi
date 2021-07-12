@@ -208,3 +208,9 @@ Example\:
 \code {python roentgen.py tile -c 55.7510637,37.6270761 -s 18} {bash}
 
 will generate SVG file \tt {out/tiles/tile_18_158471_81953.svg}.
+
+\2 {MapCSS 0.2 generation} {mapcss-0-2-generation}
+
+Command\: \tt {mapcss}.
+
+\tt {python roentgen.py mapcss} will create \tt {out/roentgen_icons_mapcss} directory with \tt {.mapcss} file and directory with icons.

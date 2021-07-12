@@ -173,3 +173,10 @@ python roentgen.py tile -c 55.7510637,37.6270761 -s 18
 
 will generate SVG file `out/tiles/tile_18_158471_81953.svg`.
 
+MapCSS 0.2 generation
+---------------------
+
+Command: `mapcss`.
+
+`python roentgen.py mapcss` will create `out/roentgen_icons_mapcss` directory with `.mapcss` file and directory with icons.
+
