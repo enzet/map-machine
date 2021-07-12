@@ -155,7 +155,7 @@ def main(options) -> None:
         svg.write(output_file)
 
 
-def draw_element(target: str, tags_description: str):
+def draw_element(options):
     """
     Draw single node, line, or area.
 
@@ -163,18 +163,27 @@ def draw_element(target: str, tags_description: str):
     :param tags_description: text description of tags, pair are separated by
         comma, key from value is separated by equals sign.
     """
+    if options.node:
+        target = "node"
+        tags_description = options.node
+    else:
+        # Not implemented yet.
+        sys.exit(1)
+
     tags = dict([x.split("=") for x in tags_description.split(",")])
     scheme: Scheme = Scheme(Path("scheme/default.yml"))
     extractor: ShapeExtractor = ShapeExtractor(
         Path("icons/icons.svg"), Path("icons/config.json")
     )
-    icon, priority = scheme.get_icon(extractor, tags)
+    processed: Set[str] = set()
+    icon, priority = scheme.get_icon(extractor, tags, processed)
     is_for_node: bool = target == "node"
-    labels = scheme.construct_text(tags, "all")
+    labels = scheme.construct_text(tags, "all", processed)
     point = Point(
         icon,
         labels,
         tags,
+        processed,
         np.array((32, 32)),
         None,
         is_for_node=is_for_node,
@@ -183,7 +192,9 @@ def draw_element(target: str, tags_description: str):
     border: np.array = np.array((16, 16))
     size: np.array = point.get_size() + border
     point.point = np.array((size[0] / 2, 16 / 2 + border[1] / 2))
-    svg = svgwrite.Drawing("test_icon.svg", size.astype(float))
+
+    Path("out").mkdir(parents=True, exist_ok=True)
+    svg = svgwrite.Drawing("out/element.svg", size.astype(float))
     for style in scheme.get_style(tags, 18):
         style: LineStyle
         path = svg.path(d="M 0,0 L 64,0 L 64,64 L 0,64 L 0,0 Z")
@@ -192,7 +203,7 @@ def draw_element(target: str, tags_description: str):
     point.draw_main_shapes(svg)
     point.draw_extra_shapes(svg)
     point.draw_texts(svg)
-    svg.write(open("test_icon.svg", "w+"))
+    svg.write(open("out/element.svg", "w+"))
 
 
 if __name__ == "__main__":

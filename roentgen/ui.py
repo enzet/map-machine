@@ -29,6 +29,7 @@ def parse_options(args) -> argparse.Namespace:
     icons = subparser.add_parser("icons")
     mapcss = subparser.add_parser("mapcss")
     tile = subparser.add_parser("tile")
+    element = subparser.add_parser("element")
 
     render.add_argument(
         "-i",
@@ -94,6 +95,10 @@ def parse_options(args) -> argparse.Namespace:
         default="cache",
         metavar="<path>",
     )
+
+    element.add_argument("-n", "--node")
+    element.add_argument("-w", "--way")
+    element.add_argument("-r", "--relation")
 
     arguments: argparse.Namespace = parser.parse_args(args[1:])
 
