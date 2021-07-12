@@ -32,3 +32,6 @@ jobs:
     - name: MapCSS 0.2 generation test
       run: |
         python roentgen.py mapcss
+    - name: Element test
+      run: |
+        python roentgen.py element --node amenity=bench,material=wood
