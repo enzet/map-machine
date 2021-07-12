@@ -88,7 +88,7 @@ If tag is drawable it is displayed using icon combination and colors.  All icons
 
 Feel free to request new icons via issues for whatever you want to see on the map.  No matter how frequently the tag is used in OpenStreetMap since final goal is to cover all tags.  However, common used tags have priority, other things being equal.
 
-Generate icon grid and individual icons with \tt {python roentgen.py icons}.  It will create \tt {icon_grid.svg} file, and SVG files in \tt {icon_set/ids} directory where files are named using shape identifiers (e.g. \tt {power_tower_portal_2_level.svg}) and in \tt {icon_set/names} directory where files are named using shape names (e.g. \tt {Röntgen portal two-level transmission tower.svg}).  Files from the last directory are used in OpenStreetMap wiki (e.g. \href {https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg} {\tt {File:Röntgen_portal_two-level_transmission_tower.svg}}).
+Generate icon grid and sets of individual icons with \tt {python roentgen.py icons}.  It will create \tt {out/icon_grid.svg} file, and SVG files in \tt {out/icons_by_id} directory where files are named using shape identifiers (e.g. \tt {power_tower_portal_2_level.svg}) and in \tt {icons_by_name} directory where files are named using shape names (e.g. \tt {Röntgen portal two-level transmission tower.svg}).  Files from the last directory are used in OpenStreetMap wiki (e.g. \href {https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg} {\tt {File:Röntgen_portal_two-level_transmission_tower.svg}}).
 
 \3 {Icon combination} {icon_combination}
 
@@ -201,7 +201,7 @@ Command\: \tt {tile}.
     -c $\{LATITUDE\},$\{LONGITUDE\} \\
     -s $\{OSM_ZOOM_LEVEL\}} {bash}
 
-Tile will be stored as SVG file to \tt {tiles/tile_<zoom level>_<x>_<y>.svg}, where \tt {x} and \tt {y} are tile coordinates.
+Tile will be stored as SVG file to \tt {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \tt {x} and \tt {y} are tile coordinates.
 
 Example\:
 

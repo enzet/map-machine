@@ -77,7 +77,7 @@ If tag is drawable it is displayed using icon combination and colors. All icons 
 
 Feel free to request new icons via issues for whatever you want to see on the map. No matter how frequently the tag is used in OpenStreetMap since final goal is to cover all tags. However, common used tags have priority, other things being equal.
 
-Generate icon grid and individual icons with `python roentgen.py icons`. It will create `icon_grid.svg` file, and SVG files in `icon_set/ids` directory where files are named using shape identifiers (e.g. `power_tower_portal_2_level.svg`) and in `icon_set/names` directory where files are named using shape names (e.g. `Röntgen portal two-level transmission tower.svg`). Files from the last directory are used in OpenStreetMap wiki (e.g. [`File:Röntgen_portal_two-level_transmission_tower.svg`](https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg)).
+Generate icon grid and sets of individual icons with `python roentgen.py icons`. It will create `out/icon_grid.svg` file, and SVG files in `out/icons_by_id` directory where files are named using shape identifiers (e.g. `power_tower_portal_2_level.svg`) and in `icons_by_name` directory where files are named using shape names (e.g. `Röntgen portal two-level transmission tower.svg`). Files from the last directory are used in OpenStreetMap wiki (e.g. [`File:Röntgen_portal_two-level_transmission_tower.svg`](https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg)).
 
 ### Icon combination ###
 
@@ -163,7 +163,7 @@ python roentgen.py tile \
     -s ${OSM_ZOOM_LEVEL}
 ```
 
-Tile will be stored as SVG file to `tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates.
+Tile will be stored as SVG file to `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates.
 
 Example:
 
