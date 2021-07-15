@@ -788,6 +788,8 @@ node_icons:
       shapes: [horizontal_ladder]
     - tags: {fitness_station: push-up}
       shapes: [low_horizontal_bars]
+    - tags: {playground: hopscotch}
+      shapes: [hopscotch]
     - tags: {playground: slide}
       shapes: [slide]
     - tags: {playground: roundabout}

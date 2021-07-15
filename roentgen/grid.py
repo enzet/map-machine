@@ -1,7 +1,7 @@
 """
 Icon grid drawing.
 """
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Set
 
@@ -24,7 +24,7 @@ class IconCollection:
     """
 
     icons: List[Icon]
-    selectors: Dict[str, Icon]
+    selectors: Dict[str, Icon] = field(default_factory=dict)
 
     @classmethod
     def from_scheme(
