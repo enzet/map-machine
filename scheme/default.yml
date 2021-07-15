@@ -780,6 +780,8 @@ node_icons:
       shapes: [vending_excrement_bag]
     - tags: {fitness_station: horizontal_bar}
       shapes: [horizontal_bar]
+    - tags: {fitness_station: rings}
+      shapes: [rings]
     - tags: {fitness_station: wall_bars}
       shapes: [wall_bars]
     - tags: {fitness_station: sit-up}
