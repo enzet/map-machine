@@ -178,5 +178,5 @@ MapCSS 0.2 generation
 
 Command: `mapcss`.
 
-`python roentgen.py mapcss` will create `out/roentgen_icons_mapcss` directory with `.mapcss` file and directory with icons.
+`python roentgen.py mapcss` will create `out/roentgen_icons_mapcss` directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas: `.mapcss` file and directory with icons.
 
