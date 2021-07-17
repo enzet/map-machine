@@ -14,6 +14,18 @@
     ],
     "name": "apple"
   },
+  "arrow_down": {
+    "is_part": true
+  },
+  "arrow_left": {
+    "is_part": true
+  },
+  "arrow_right": {
+    "is_part": true
+  },
+  "arrow_up": {
+    "is_part": true
+  },
   "at_in_square": {
     "emoji": "@",
     "name": "@ in square"
@@ -57,6 +69,9 @@
     "name": "bicycle with letter P in top left corner"
   },
   "bicycle_repair": {},
+  "bicycle_share": {
+    "name": "bicycle with share sign"
+  },
   "billboard": {
     "name": "billboard"
   },
@@ -131,7 +146,7 @@
   "car_on_ferry": {},
   "car_repair": {},
   "car_sharing": {
-    "name": "car sharing"
+    "name": "car with sharing sign"
   },
   "car_wash": {
     "name": "car_wash"
@@ -362,7 +377,9 @@
   "japan_historic": {
     "name": "Japanese map symbol for place of historic, cultural, or scenic interest"
   },
-  "japan_post": {},
+  "japan_post": {
+    "name": "Japanese map symbol for post office"
+  },
   "japan_tv_tower": {
     "name": "Japanese map symbol for TV tower"
   },
