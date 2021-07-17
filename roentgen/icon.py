@@ -2,6 +2,7 @@
 Extract icons from SVG file.
 """
 import json
+import logging
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -117,6 +118,54 @@ class Shape:
         )
 
 
+def parse_length(text: str) -> float:
+    """
+    Parse length from SVG attribute.
+    """
+    if text.endswith("px"):
+        text = text[:-2]
+    return float(text)
+
+
+def verify_sketch_element(element, id_: str) -> bool:
+    """
+    Verify sketch SVG element from icon file.
+
+    :param element: SVG element
+    :param id_: element `id` attribute
+    :return: True iff SVG element has right style
+    """
+    if not element.getAttribute("style"):
+        return True
+
+    style: Dict = dict(
+        [x.split(":") for x in element.getAttribute("style").split(";")]
+    )
+    if (
+        style["fill"] == "none"
+        and style["stroke"] == "#000000"
+        and "stroke-width" in style
+        and np.allclose(parse_length(style["stroke-width"]), 0.1)
+    ):
+        return True
+
+    if (
+        style["fill"] == "none"
+        and style["stroke"] == "#000000"
+        and "opacity" in style
+        and np.allclose(float(style["opacity"]), 0.2)
+    ):
+        return True
+
+    if style["fill"] == "#0000ff" and style["stroke"] == "none":
+        return True
+
+    if style and not id_.startswith("use"):
+        return False
+
+    return True
+
+
 class ShapeExtractor:
     """
     Extract shapes from SVG file.
@@ -159,6 +208,8 @@ class ShapeExtractor:
 
         id_: str = node.getAttribute("id")
         if STANDARD_INKSCAPE_ID_MATCHER.match(id_) is not None:
+            if not verify_sketch_element(node, id_):
+                logging.warning(f"Not verified SVG element `{id_}`.")
             return
 
         if node.hasAttribute("d"):
