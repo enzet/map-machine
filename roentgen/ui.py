@@ -4,12 +4,12 @@ Command-line user interface.
 import argparse
 import sys
 
-from typing import List, Optional
+from typing import Optional
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-BOXES: List[str] = [" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉"]
+BOXES: str = " ▏▎▍▌▋▊▉"
 BOXES_LENGTH: int = len(BOXES)
 
 AUTHOR_MODE: str = "author"
@@ -31,6 +31,29 @@ def parse_options(args) -> argparse.Namespace:
     tile = subparser.add_parser("tile")
     element = subparser.add_parser("element")
 
+    add_render_arguments(render)
+
+    tile.add_argument("-c")
+    tile.add_argument("-s")
+    tile.add_argument("-t")
+    tile.add_argument(
+        "--cache",
+        help="path for temporary OSM files",
+        default="cache",
+        metavar="<path>",
+    )
+
+    element.add_argument("-n", "--node")
+    element.add_argument("-w", "--way")
+    element.add_argument("-r", "--relation")
+
+    arguments: argparse.Namespace = parser.parse_args(args[1:])
+
+    return arguments
+
+
+def add_render_arguments(render) -> None:
+    """Add arguments for render command."""
     render.add_argument(
         "-i",
         "--input",
@@ -46,20 +69,20 @@ def parse_options(args) -> argparse.Namespace:
         dest="output_file_name",
         metavar="<path>",
         default="out/map.svg",
-        help="output SVG file name (out/map.svg by default)",
+        help="output SVG file name",
     )
     render.add_argument(
         "-b",
         "--boundary-box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
         help='geo boundary box, use space before "-" if the first value is '
-        "negative",
+        'negative',
     )
     render.add_argument(
         "-s",
         "--scale",
         metavar="<float>",
-        help="OSM zoom level (may not be integer, default is 18)",
+        help="OSM zoom level (may not be integer)",
         default=18,
         type=float,
     )
@@ -82,27 +105,21 @@ def parse_options(args) -> argparse.Namespace:
         type=int,
         help="how many pixels should be left around icons and text",
     )
-    render.add_argument("--mode", default="normal")
-    render.add_argument("--seed", default="")
-    render.add_argument("--level", default=None)
-
-    tile.add_argument("-c")
-    tile.add_argument("-s")
-    tile.add_argument("-t")
-    tile.add_argument(
-        "--cache",
-        help="path for temporary OSM files",
-        default="cache",
-        metavar="<path>",
+    render.add_argument(
+        "--mode",
+        default="normal",
+        help="map drawing mode",
     )
-
-    element.add_argument("-n", "--node")
-    element.add_argument("-w", "--way")
-    element.add_argument("-r", "--relation")
-
-    arguments: argparse.Namespace = parser.parse_args(args[1:])
-
-    return arguments
+    render.add_argument(
+        "--seed",
+        default="",
+        help="seed for random",
+    )
+    render.add_argument(
+        "--level",
+        default=None,
+        help="display only this floor level",
+    )
 
 
 def progress_bar(
