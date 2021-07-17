@@ -24,9 +24,11 @@ __email__ = "me@enzet.ru"
 DEFAULT_COLOR: Color = Color("#444444")
 DEFAULT_SHAPE_ID: str = "default"
 DEFAULT_SMALL_SHAPE_ID: str = "default_small"
-STANDARD_INKSCAPE_ID: str = (
+
+STANDARD_INKSCAPE_ID_MATCHER = re.compile(
     "^((circle|defs|ellipse|metadata|path|rect|use)[\\d-]+|base)$"
 )
+PATH_MATCHER = re.compile("[Mm] ([0-9.e-]*)[, ]([0-9.e-]*)")
 
 GRID_STEP: int = 16
 
@@ -156,12 +158,12 @@ class ShapeExtractor:
             return
 
         id_: str = node.getAttribute("id")
-        if re.match(STANDARD_INKSCAPE_ID, id_) is not None:
+        if STANDARD_INKSCAPE_ID_MATCHER.match(id_) is not None:
             return
 
         if node.hasAttribute("d"):
             path: str = node.getAttribute("d")
-            matcher = re.match("[Mm] ([0-9.e-]*)[, ]([0-9.e-]*)", path)
+            matcher = PATH_MATCHER.match(path)
             if not matcher:
                 return
 
