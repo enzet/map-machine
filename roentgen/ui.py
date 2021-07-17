@@ -26,8 +26,8 @@ def parse_options(args) -> argparse.Namespace:
     subparser = parser.add_subparsers(dest="command")
 
     render = subparser.add_parser("render")
-    icons = subparser.add_parser("icons")
-    mapcss = subparser.add_parser("mapcss")
+    subparser.add_parser("icons")
+    subparser.add_parser("mapcss")
     tile = subparser.add_parser("tile")
     element = subparser.add_parser("element")
 
