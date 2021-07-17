@@ -5,7 +5,7 @@ import argparse
 from abc import ABC
 
 from moire.moire import Tag
-from moire.default import Default, DefaultMarkdown, DefaultWiki
+from moire.default import Default, DefaultHTML, DefaultMarkdown, DefaultWiki
 
 from roentgen.icon import ShapeExtractor
 from pathlib import Path
@@ -118,6 +118,41 @@ class RoentgenMoire(Default, ABC):
     def color(self, args: Arguments) -> str:
         """Simple color sample."""
         raise NotImplementedError
+
+
+class RoentgenHTML(RoentgenMoire, DefaultHTML):
+    """
+    Simple HTML.
+    """
+
+    images = {}
+
+    def osm(self, args: Arguments) -> str:
+        """OSM tag key or key–value pair of tag."""
+        return osm(self, args)
+
+    def color(self, args: Arguments) -> str:
+        """Simple color sample."""
+        return (
+            f'<span class="color" '
+            f'style="background-color: {self.clear(args[0])};"></span>'
+        )
+
+    def icon(self, args: Arguments) -> str:
+        """Image with Röntgen icon."""
+        size: str = self.clear(args[1]) if len(args) > 1 else 16
+        return (
+            f'<img class="icon" style="width: {size}px; height: {size}px;" '
+            f'src="icon_set/ids/{self.clear(args[0])}.svg" />'
+        )
+
+    def command(self, args: Arguments) -> str:
+        """
+        Bash command from GitHub Actions configuration.
+
+        See .github/workflows/test.yml
+        """
+        return test_configuration.get_command(self.clear(args[0]))
 
 
 class RoentgenOSMWiki(RoentgenMoire, DefaultWiki):
