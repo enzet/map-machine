@@ -5,8 +5,9 @@ import argparse
 from abc import ABC
 
 from moire.moire import Tag
-from moire.default import Default, DefaultMarkdown
+from moire.default import Default, DefaultMarkdown, DefaultWiki
 
+from roentgen.icon import ShapeExtractor
 from pathlib import Path
 from typing import Dict, List, Any
 import yaml
@@ -117,6 +118,39 @@ class RoentgenMoire(Default, ABC):
     def color(self, args: Arguments) -> str:
         """Simple color sample."""
         raise NotImplementedError
+
+
+class RoentgenOSMWiki(RoentgenMoire, DefaultWiki):
+    """
+    OpenStreetMap wiki.
+
+    See https://wiki.openstreetmap.org/wiki/Main_Page
+    """
+
+    images = {}
+    extractor = ShapeExtractor(
+        Path("icons/icons.svg"), Path("icons/config.json")
+    )
+
+    def osm(self, args: Arguments) -> str:
+        """OSM tag key or key–value pair of tag."""
+        spec: str = self.clear(args[0])
+        if "=" in spec:
+            key, tag = spec.split("=")
+            return f"{{{{Key|{key}|{tag}}}}}"
+        else:
+            return f"{{{{Tag|{spec}}}}}"
+
+    def color(self, args: Arguments) -> str:
+        """Simple color sample."""
+        return f"{{{{Color box|{self.clear(args[0])}}}}}"
+
+    def icon(self, args: Arguments) -> str:
+        """Image with Röntgen icon."""
+        size: str = self.clear(args[1]) if len(args) > 1 else 16
+        shape_id: str = self.clear(args[0])
+        name: str = self.extractor.get_shape(shape_id).name
+        return f"[[File:Röntgen {name}.svg|{size}px]]"
 
 
 class RoentgenMarkdown(RoentgenMoire, DefaultMarkdown):
