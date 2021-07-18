@@ -363,6 +363,8 @@ node_icons:
       shapes: [{shape: bicycle, color: sell_color}]
     - tags: {shop: books}
       shapes: [{shape: book, color: sell_color}]
+    - tags: {shop: butcher}
+      shapes: [knives]
     - tags: {shop: car}
       shapes: [{shape: car, color: sell_color}]
     - tags: {shop: coffee}

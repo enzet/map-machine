@@ -401,6 +401,9 @@
   },
   "judgement": {},
   "kiosk": {},
+  "knives": {
+    "name": "knives"
+  },
   "lattice": {},
   "lattice_guyed": {},
   "leaf_maple": {
