@@ -197,6 +197,9 @@
     "emoji": "☕",
     "name": "coffee cup"
   },
+  "comb_and_scissors": {
+    "name": "comb and scissors"
+  },
   "contrclockwise": {},
   "credit_card": {
     "emoji": "💳",
@@ -373,9 +376,19 @@
   "japan_castle": {
     "name": "Japanese map symbol for castle"
   },
+  "japan_court": {
+    "name": "Japanese map symbol for court house or building"
+  },
   "japan_elementary_school": {},
+  "japan_fire_station": {},
+  "japan_forest_service": {
+    "name": "Japanese map symbol for forest service office"
+  },
   "japan_historic": {
     "name": "Japanese map symbol for place of historic, cultural, or scenic interest"
+  },
+  "japan_koban": {
+    "name": "Japanese map symbol for kōban"
   },
   "japan_post": {
     "name": "Japanese map symbol for post office"

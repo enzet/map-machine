@@ -371,6 +371,8 @@ node_icons:
       shapes: [milk]
     - tags: {shop: fireplace}
       shapes: [{shape: fireplace, color: sell_color}]
+    - tags: {shop: hairdresser}
+      shapes: [comb_and_scissors]
     - tags: {shop: hifi}
       shapes: [{shape: hifi, color: sell_color}]
     - tags: {shop: houseware}
