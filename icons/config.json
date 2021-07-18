@@ -787,6 +787,9 @@
   "urban_tree_pot": {
     "is_part": true
   },
+  "vanity_mirror": {
+    "name": "vanity mirror"
+  },
   "vending_angle": {},
   "vending_bottle": {},
   "vending_candles": {},

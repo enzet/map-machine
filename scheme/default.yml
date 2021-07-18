@@ -357,6 +357,8 @@ node_icons:
       shapes: [cupcake]
     - tags: {shop: bed}
       shapes: [{shape: bed, color: sell_color}]
+    - tags: {shop: beauty}
+      shapes: [vanity_mirror]
     - tags: {shop: bicycle}
       shapes: [{shape: bicycle, color: sell_color}]
     - tags: {shop: books}
