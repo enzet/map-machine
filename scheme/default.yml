@@ -373,10 +373,14 @@ node_icons:
       shapes: [sheets]
     - tags: {shop: dairy}
       shapes: [milk]
+    - tags: {shop: doityourself}
+      shapes: [wretch_and_hammer]
     - tags: {shop: fireplace}
       shapes: [{shape: fireplace, color: sell_color}]
     - tags: {shop: hairdresser}
       shapes: [comb_and_scissors]
+    - tags: {shop: hardware}
+      shapes: [wretch_and_hammer]
     - tags: {shop: hifi}
       shapes: [{shape: hifi, color: sell_color}]
     - tags: {shop: houseware}

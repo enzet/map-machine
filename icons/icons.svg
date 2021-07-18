@@ -148,8 +148,8 @@
      showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="454.46607"
-     inkscape:cx="233.51219"
+     inkscape:cy="495.25035"
+     inkscape:cx="251.4151"
      inkscape:zoom="2"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -21695,10 +21695,6 @@
        cy="103.5"
        r="0.5" />
     <path
-       style="opacity:1;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="M 115.5 118 A 1.5 1.5 0 0 0 114 119.5 A 1.5 1.5 0 0 0 115.5 121 A 1.5 1.5 0 0 0 116.91211 120 L 117 120 C 118 120 119 121 119 122 L 126 122 L 126 120 L 126 118.5 C 126 118.223 125.777 118 125.5 118 L 120 118 L 115.5 118 z M 124.5 119 A 0.5 0.5 0 0 1 125 119.5 A 0.5 0.5 0 0 1 124.5 120 A 0.5 0.5 0 0 1 124 119.5 A 0.5 0.5 0 0 1 124.5 119 z "
-       id="circle7588" />
-    <path
        style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="m 131.5,99.5 0,10 1,0 0,-5 1,0 z"
        id="path7602"
@@ -21737,5 +21733,32 @@
        y="99"
        rx="0"
        ry="0" />
+    <circle
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="circle8246"
+       cx="-100"
+       cy="-165"
+       r="1"
+       transform="matrix(0,-1,-1,0,0,0)" />
+    <path
+       sodipodi:nodetypes="cccccccccccccc"
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 166,110.00001 0,-2 -1,-1 -1,1 0,2 -1,-1 0,-2 1,-1 0,-6 2,0 0,6 1,1 0,2 z"
+       id="path8248"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 170,110.00001 170,105 l 0.5,-2.5 -1,-0.5 -0.5,0 0,0.5 -1,1e-5 0,-2.50001 1,0 0,0.5 0.5,0 0.5,-0.5 2,0 c 1,0 1.5,0 2.5,1 l 0,0.50001 c -1,-1.00001 -3,-1.00001 -3,0.99999 l 0.5,2.5 0,5.00001 z"
+       id="path8250"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccccccccccc" />
+    <path
+       style="fill:#000000;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 165 115 A 1 1 0 0 0 164 116 L 164 122 L 163 123 L 163 125 L 164 126 L 164 124 L 165 123 L 166 124 L 166 126 L 167 125 L 167 123 L 166 122 L 166 116 A 1 1 0 0 0 165 115 z M 168 116 L 168 118.5 L 169 118.5 L 169 118 L 169.5 118 L 170.5 118.5 L 170 121 L 170 126 L 172 126 L 172 121 L 171.5 118.5 C 171.5 116.5 173.5 116.49999 174.5 117.5 L 174.5 117 C 173.5 116 173 116 172 116 L 170 116 L 169.5 116.5 L 169 116.5 L 169 116 L 168 116 z "
+       id="wretch_and_hammer"
+       inkscape:label="#circle8263">
+      <title
+         id="title8270">wretch and hammer</title>
+    </path>
   </g>
 </svg>
