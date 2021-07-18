@@ -247,7 +247,7 @@ def write_mapcss() -> None:
     Write MapCSS 0.2 scheme.
     """
     out_path: Path = Path("out")
-    directory: Path = (out_path / "roentgen_icons_mapcss")
+    directory: Path = out_path / "roentgen_icons_mapcss"
     directory.mkdir(exist_ok=True)
     icons_with_outline_path: Path = directory / "icons"
 

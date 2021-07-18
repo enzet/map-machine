@@ -85,24 +85,28 @@ def get_text(tags: Dict[str, Any], processed: Set[str]) -> List[Label]:
     Get text representation of writable tags.
     """
     texts: List[Label] = []
-
     values: List[str] = []
+
     if "voltage:primary" in tags:
         values.append(tags["voltage:primary"])
         processed.add("voltage:primary")
+
     if "voltage:secondary" in tags:
         values.append(tags["voltage:secondary"])
-    processed.add("voltage:secondary")
+        processed.add("voltage:secondary")
+
     if "voltage" in tags:
         values = tags["voltage"].split(";")
         processed.add("voltage")
+
     if values:
         texts.append(Label(", ".join(map(format_voltage, values))))
 
     if "frequency" in tags:
-        texts.append(Label(", ".join(map(
-            format_frequency, tags["frequency"].split(";")
-        ))))
+        text: str = ", ".join(
+            map(format_frequency, tags["frequency"].split(";"))
+        )
+        texts.append(Label(text))
         processed.add("frequency")
 
     return texts

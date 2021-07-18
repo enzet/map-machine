@@ -192,9 +192,9 @@ class Point(Tagged):
             text = text.replace("&quot;", '"')
             text = text.replace("&amp;", "&")
             text = text[:26] + ("..." if len(text) > 26 else "")
+            point = self.point + np.array((0, self.y + 2))
             self.draw_text(
-                svg, text, self.point + np.array((0, self.y + 2)),
-                occupied, label.fill, size=label.size
+                svg, text, point, occupied, label.fill, size=label.size
             )
 
     def draw_text(

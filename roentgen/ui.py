@@ -76,7 +76,7 @@ def add_render_arguments(render) -> None:
         "--boundary-box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
         help='geo boundary box, use space before "-" if the first value is '
-        'negative',
+        "negative",
     )
     render.add_argument(
         "-s",

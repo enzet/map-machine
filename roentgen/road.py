@@ -113,7 +113,10 @@ class RoadPart:
             self.left_projection = (
                 self.right_connection - self.right_vector + self.left_vector
             )
-        if self.left_connection is not None and self.right_connection is not None:
+        if (
+            self.left_connection is not None
+            and self.right_connection is not None
+        ):
             a = np.linalg.norm(self.right_connection - self.point_1)
             b = np.linalg.norm(self.right_projection - self.point_1)
             if a > b:
@@ -127,7 +130,9 @@ class RoadPart:
             max_: float = 100
 
             if np.linalg.norm(self.point_middle - self.point_1) > max_:
-                self.point_a = self.point_1 + max_ * norm(self.point_middle - self.point_1)
+                self.point_a = self.point_1 + max_ * norm(
+                    self.point_middle - self.point_1
+                )
                 self.right_outer = self.point_a + self.right_vector
                 self.left_outer = self.point_a + self.left_vector
             else:
@@ -186,24 +191,46 @@ class RoadPart:
         radius: float = 2
 
         if self.right_connection is not None:
-            circle = drawing.circle(self.right_connection, 2.5, fill="#FF0000", opacity=opacity)
+            circle = drawing.circle(
+                self.right_connection, 2.5, fill="#FF0000", opacity=opacity
+            )
             drawing.add(circle)
         if self.left_connection is not None:
-            circle = drawing.circle(self.left_connection, 2.5, fill="#0000FF", opacity=opacity)
+            circle = drawing.circle(
+                self.left_connection, 2.5, fill="#0000FF", opacity=opacity
+            )
             drawing.add(circle)
 
         if self.right_projection is not None:
-            circle = drawing.circle(self.right_projection, 1.5, fill="#FF0000", opacity=opacity)
+            circle = drawing.circle(
+                self.right_projection, 1.5, fill="#FF0000", opacity=opacity
+            )
             drawing.add(circle)
         if self.left_projection is not None:
-            circle = drawing.circle(self.left_projection, 1.5, fill="#0000FF", opacity=opacity)
+            circle = drawing.circle(
+                self.left_projection, 1.5, fill="#0000FF", opacity=opacity
+            )
             drawing.add(circle)
 
         if self.right_outer is not None:
-            circle = drawing.circle(self.right_outer, 3.5, stroke_width=0.5, fill="none", stroke="#FF0000", opacity=opacity)
+            circle = drawing.circle(
+                self.right_outer,
+                3.5,
+                stroke_width=0.5,
+                fill="none",
+                stroke="#FF0000",
+                opacity=opacity,
+            )
             drawing.add(circle)
         if self.left_outer is not None:
-            circle = drawing.circle(self.left_outer, 3.5, stroke_width=0.5, fill="none", stroke="#0000FF", opacity=opacity)
+            circle = drawing.circle(
+                self.left_outer,
+                3.5,
+                stroke_width=0.5,
+                fill="none",
+                stroke="#0000FF",
+                opacity=opacity,
+            )
             drawing.add(circle)
 
         if self.point_a is not None:
@@ -230,7 +257,10 @@ class RoadPart:
         """
         Draw intersection entrance part.
         """
-        if self.left_connection is not None and self.right_connection is not None:
+        if (
+            self.left_connection is not None
+            and self.right_connection is not None
+        ):
             path_commands = [
                 "M", self.right_projection,
                 "L", self.right_connection,
@@ -240,7 +270,10 @@ class RoadPart:
             ]
             if is_debug:
                 path = drawing.path(
-                    path_commands, fill="none", stroke="#880088", stroke_width=0.5
+                    path_commands,
+                    fill="none",
+                    stroke="#880088",
+                    stroke_width=0.5,
                 )
                 drawing.add(path)
             else:
@@ -331,8 +364,12 @@ class Intersection:
         #     part.draw_normal(drawing)
 
         if is_debug:
-            drawing.add(drawing.path(outer_commands, fill="#0000FF", opacity=0.2))
-            drawing.add(drawing.path(inner_commands, fill="#FF0000", opacity=0.2))
+            drawing.add(
+                drawing.path(outer_commands, fill="#0000FF", opacity=0.2)
+            )
+            drawing.add(
+                drawing.path(inner_commands, fill="#FF0000", opacity=0.2)
+            )
 
         for part in self.parts:
             if is_debug:

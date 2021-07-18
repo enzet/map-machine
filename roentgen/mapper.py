@@ -136,9 +136,13 @@ class Painter:
         Draw trunk and circumference.
         """
         for node in constructor.points:
-            if not (node.get_tag("natural") == "tree" and
-                    ("diameter_crown" in node.tags or
-                     "circumference" in node.tags)):
+            if not (
+                node.get_tag("natural") == "tree"
+                and (
+                    "diameter_crown" in node.tags
+                    or "circumference" in node.tags
+                )
+            ):
                 continue
 
             scale: float = self.flinger.get_scale(node.coordinates)
@@ -250,8 +254,8 @@ class Painter:
                 if "angle" in node.tags:
                     angle = float(node.get_tag("angle"))
                 direction_radius: float = 25
-                direction_color: Color = (
-                    self.scheme.get_color("direction_camera_color")
+                direction_color: Color = self.scheme.get_color(
+                    "direction_camera_color"
                 )
             elif node.get_tag("traffic_sign") == "stop":
                 direction = node.get_tag("direction")
@@ -260,8 +264,8 @@ class Painter:
             else:
                 direction = node.get_tag("direction")
                 direction_radius: float = 50
-                direction_color: Color = (
-                    self.scheme.get_color("direction_view_color")
+                direction_color: Color = self.scheme.get_color(
+                    "direction_view_color"
                 )
                 is_revert_gradient = True
 
