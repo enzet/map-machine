@@ -1,31 +1,17 @@
-# Input files
-
-*.bz2
-*.osm
-*.xml
-
-# Temporary files
-
-*.swp
-
 # Generated files
 
-*.pyc
+out/
 doc/*.html
 doc/*.svg
 doc/*.wiki
 missed_tags.yml
 
-# Test scheme files
-
-*.tm2
-
 # Cache
 
+*.pyc
 cache/
-map/
+.coverage
 
-# Generated files
+# Temporary files
 
-icon_set/
-out/
+*.swp
