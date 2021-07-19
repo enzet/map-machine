@@ -162,7 +162,7 @@ Every way and node displayed with the random color picked for each author with \
 
 \2 {Installation} {installation}
 
-Requirements: Python (at least 3.8).
+Requirements\: Python (at least 3.8).
 
 To install all packages, run\:
 
@@ -185,13 +185,7 @@ Example\:
 
 \3 {Arguments} {arguments}
 
-\list
-    {\tt {--boundary-box} or \tt {-b}\: boundary box to draw. Value\: \tt {<longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>}.  If first value is negative, use quotation marks and space before first \tt {-}.  For example, \tt {-b " -122.335,47.614,-122.325,47.617"}.}
-    {\tt {--scale} or \tt {-s}\: OSM \href {https://wiki.openstreetmap.org/wiki/Zoom_levels} {zoom level}.  Default is 18.}
-    {\tt {-o}\: path to output SVG file name.  Default is \tt {out/map.svg}.}
-    {\tt {-i}\: path to input XML file name.  If this argument is not set, XML file will be downloaded through OpenStreetMap API.}
-
-Check all arguments with \tt {python roentgen.py render --help}.
+\options {render}
 
 \2 {Tile generation} {tile-generation}
 

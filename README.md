@@ -145,12 +145,19 @@ python roentgen.py render -b 2.284,48.86,2.29,48.865
 
 ### Arguments ###
 
-  * `--boundary-box` or `-b`: boundary box to draw. Value: `<longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>`. If first value is negative, use quotation marks and space before first `-`. For example, `-b " -122.335,47.614,-122.325,47.617"`.
-  * `--scale` or `-s`: OSM [zoom level](https://wiki.openstreetmap.org/wiki/Zoom_levels). Default is 18.
-  * `-o`: path to output SVG file name. Default is `out/map.svg`.
-  * `-i`: path to input XML file name. If this argument is not set, XML file will be downloaded through OpenStreetMap API.
-
-Check all arguments with `python roentgen.py render --help`.
+| Option | Description |
+|---|---|
+| `-h`, `--help` | show this help message and exit |
+| `-i`, `--input` | input XML file name or names (if not specified, file will be downloaded using OpenStreetMap API) |
+| `-o`, `--output` | output SVG file name, default value: \tt {out/map.svg} |
+| `-b`, `--boundary-box` | geo boundary box, use space before "-" if the first value is negative |
+| `-s`, `--scale` | OSM zoom level (may not be integer), default value: \tt {18} |
+| `--cache` | path for temporary OSM files, default value: \tt {cache} |
+| `--labels` | label drawing mode: `no`, `main`, or `all`, default value: \tt {main} |
+| `--overlap` | how many pixels should be left around icons and text, default value: \tt {12} |
+| `--mode` | map drawing mode, default value: \tt {normal} |
+| `--seed` | seed for random, default value: \tt {} |
+| `--level` | display only this floor level, default value: \tt {None} |
 
 Tile generation
 ---------------
