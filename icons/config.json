@@ -714,6 +714,9 @@
   "t_shirt": {
     "name": "t-shirt"
   },
+  "t_shirt_and_scissors": {
+    "name": "t-shirt and scissors"
+  },
   "table": {},
   "table_and_two_chairs": {
     "name": "table and two chairs"

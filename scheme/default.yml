@@ -407,6 +407,10 @@ node_icons:
       shapes: [shop_convenience]
     - tags: {shop: ticket}
       shapes: [ticket]
+    - tags: {shop: tailor}
+      shapes: [t_shirt_and_scissors]
+    - tags: {craft: tailor}
+      shapes: [t_shirt_and_scissors]
     - tags: {shop: video}
       shapes: [{shape: film, color: sell_color}]
     - tags: {shop: video_games}
