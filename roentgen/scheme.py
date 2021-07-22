@@ -367,7 +367,7 @@ class Scheme:
                 color = self.get_color(self.material_colors[value])
                 processed.add("material")
 
-        for tag_key in tags:  # type: str
+        for tag_key in tags:
             if tag_key.endswith(":color") or tag_key.endswith(":colour"):
                 color = self.get_color(tags[tag_key])
                 processed.add(tag_key)

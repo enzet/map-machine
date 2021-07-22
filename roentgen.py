@@ -15,7 +15,7 @@ import svgwrite
 from roentgen import server, tile
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
-from roentgen.grid import draw_icons, write_mapcss
+from roentgen.grid import draw_icons
 from roentgen.icon import ShapeExtractor
 from roentgen.mapper import (
     AUTHOR_MODE,
@@ -219,6 +219,7 @@ if __name__ == "__main__":
     elif options.command == "icons":
         draw_icons()
     elif options.command == "mapcss":
+        from roentgen.mapcss import write_mapcss
         write_mapcss()
     elif options.command == "element":
         draw_element(options)

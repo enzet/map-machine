@@ -24,7 +24,6 @@ class IconCollection:
     """
 
     icons: List[Icon]
-    selectors: Dict[str, Icon] = field(default_factory=dict)
 
     @classmethod
     def from_scheme(
@@ -46,7 +45,6 @@ class IconCollection:
             tags
         """
         icons: List[Icon] = []
-        selectors: Dict[str, Icon] = {}
 
         def add() -> Icon:
             """
@@ -67,9 +65,7 @@ class IconCollection:
             matcher: NodeMatcher
             if matcher.shapes:
                 current_set = matcher.shapes
-                icon = add()
-                if not matcher.location_restrictions:
-                    selectors[matcher.get_mapcss_selector()] = icon
+                add()
             if matcher.add_shapes:
                 current_set = matcher.add_shapes
                 add()
@@ -116,7 +112,7 @@ class IconCollection:
                 icon.recolor(color)
                 icons.append(icon)
 
-        return cls(icons, selectors)
+        return cls(icons)
 
     def draw_icons(
         self,
@@ -189,24 +185,6 @@ class IconCollection:
         with file_name.open("w") as output_file:
             svg.write(output_file)
 
-    def get_mapcss_selectors(self) -> str:
-        """
-        Construct MapCSS 0.2 style scheme.
-        """
-        s = ""
-        for selector in self.selectors:
-            for target in ["node", "area"]:
-                s += target + selector + " {\n"
-                s += (
-                    '    icon-image: "icons/'
-                    + "___".join(self.selectors[selector].get_shape_ids())
-                    + '.svg";\n'
-                )
-                s += "    set icon_z17;\n"
-                s += "    icon-width: 16;\n"
-                s += "}\n"
-        return s
-
     def __len__(self) -> int:
         return len(self.icons)
 
@@ -240,33 +218,3 @@ def draw_icons() -> None:
     logging.info(
         f"Icons are written to {icons_by_name_path} and {icons_by_id_path}."
     )
-
-
-def write_mapcss() -> None:
-    """
-    Write MapCSS 0.2 scheme.
-    """
-    out_path: Path = Path("out")
-    directory: Path = out_path / "roentgen_icons_mapcss"
-    directory.mkdir(exist_ok=True)
-    icons_with_outline_path: Path = directory / "icons"
-
-    icons_with_outline_path.mkdir(parents=True, exist_ok=True)
-
-    scheme: Scheme = Scheme(Path("scheme/default.yml"))
-    extractor: ShapeExtractor = ShapeExtractor(
-        Path("icons/icons.svg"), Path("icons/config.json")
-    )
-    collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
-    collection.draw_icons(
-        icons_with_outline_path, color=Color("black"), outline=True
-    )
-    with Path("data/roentgen_icons_part.mapcss").open() as input_file:
-        with (directory / "roentgen_icons.mapcss").open("w+") as output_file:
-            for line in input_file.readlines():
-                if line == "%CONTENT%\n":
-                    output_file.write(collection.get_mapcss_selectors())
-                else:
-                    output_file.write(line)
-
-    logging.info(f"MapCSS 0.2 scheme is written to {directory}.")
