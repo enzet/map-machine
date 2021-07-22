@@ -148,8 +148,8 @@
      showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="494.57277"
-     inkscape:cx="398.30518"
+     inkscape:cy="328.31384"
+     inkscape:cx="361.69984"
      inkscape:zoom="11.313708"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -19901,9 +19901,8 @@
        inkscape:connector-curvature="0" />
     <path
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 359.5,274 1,0 c 0.277,0 0.5,0.223 0.5,0.5 l 0,11 c 0,0.277 -0.223,0.5 -0.5,0.5 l -1,0 c -0.277,0 -0.5,-0.223 -0.5,-0.5 l 0,-11 c 0,-0.277 0.223,-0.5 0.5,-0.5 z"
-       id="tube"
-       inkscape:label="#rect7260" />
+       d="M 359.5 274 C 359.223 274 359 274.223 359 274.5 L 359 285 L 358.5 285 C 358.223 285 358 285.223 358 285.5 C 358 285.777 358.223 286 358.5 286 L 359.5 286 L 360.5 286 L 361.5 286 C 361.777 286 362 285.777 362 285.5 C 362 285.223 361.777 285 361.5 285 L 361 285 L 361 274.5 C 361 274.223 360.777 274 360.5 274 L 359.5 274 z "
+       id="tube" />
     <path
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="M 375.5 274 C 375.223 274 375 274.223 375 274.5 L 375 280.32422 L 371.10938 285.1875 A 0.50024018 0.50024018 0 1 0 371.89062 285.8125 L 375 281.92578 L 375 285.5 C 375 285.777 375.223 286 375.5 286 L 376.5 286 C 376.777 286 377 285.777 377 285.5 L 377 281.92578 L 380.10938 285.8125 A 0.50024018 0.50024018 0 1 0 380.89062 285.1875 L 377 280.32422 L 377 274.5 C 377 274.223 376.777 274 376.5 274 L 375.5 274 z "
@@ -22041,5 +22040,14 @@
       <title
          id="title8489">t-shirt and scissors</title>
     </path>
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.10000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect8491"
+       width="4"
+       height="0.94999999"
+       x="358"
+       y="269.04999"
+       ry="0.5"
+       rx="0.5" />
   </g>
 </svg>
