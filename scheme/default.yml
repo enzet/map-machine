@@ -824,11 +824,11 @@ node_icons:
   - group: "Entrances"
     tags:
     - tags: {amenity: parking_entrance}
-      shapes: [p_arrow_right]
+      shapes: [{shape: p, offset: [-1, 0]}, {shape: arrow_right, offset: [4, 5]}]
     - tags: {amenity: parking_entrance, parking: underground}
-      shapes: [p_arrow_down]
+      shapes: [{shape: p, offset: [-1, 0]}, {shape: arrow_down, offset: [4, 5]}]
     - tags: {amenity: parking_entrance, parking: multi-storey}
-      shapes: [p_arrow_up]
+      shapes: [{shape: p, offset: [-1, 0]}, {shape: arrow_up, offset: [4, 5]}]
     - tags: {barrier: gate}
       shapes: [gate]
     - tags: {entrance: main}

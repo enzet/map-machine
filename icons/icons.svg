@@ -145,11 +145,11 @@
      inkscape:object-paths="true"
      inkscape:guide-bbox="true"
      showguides="false"
-     showgrid="false"
+     showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="328.31384"
-     inkscape:cx="361.69984"
+     inkscape:cy="449.73519"
+     inkscape:cx="693.83188"
      inkscape:zoom="11.313708"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -17738,22 +17738,6 @@
        id="path24705"
        d="m 697.5,140.50714 2,2 2,-2"
        style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <path
-       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-       d="M 675.5 147 C 675.223 147 675 147.223 675 147.5 L 675 155.5 C 675 155.777 675.223 156 675.5 156 L 676.5 156 C 676.777 156 677 155.777 677 155.5 L 677 153 L 680 153 C 681.64501 153 683 151.64501 683 150 C 683 148.35499 681.64501 147 680 147 L 676.5 147 L 675.5 147 z M 677 149 L 680 149 C 680.56413 149 681 149.43587 681 150 C 681 150.56413 680.56413 151 680 151 L 677 151 L 677 149 z M 683.49219 154 A 0.50005 0.50005 0 0 0 683.14648 154.14648 L 681.14648 156.14648 A 0.50005 0.50005 0 1 0 681.85352 156.85352 L 683 155.70703 L 683 158.5 A 0.50005 0.50005 0 1 0 684 158.5 L 684 155.70703 L 685.14648 156.85352 A 0.50005 0.50005 0 1 0 685.85352 156.14648 L 683.85352 154.14648 A 0.50005 0.50005 0 0 0 683.49219 154 z "
-       id="p_arrow_up"
-       inkscape:label="#path24707">
-      <title
-         id="title24745">letter P with up arrow</title>
-    </path>
-    <path
-       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-       d="M 691.5 147 C 691.223 147 691 147.223 691 147.5 L 691 155.5 C 691 155.777 691.223 156 691.5 156 L 692.5 156 C 692.777 156 693 155.777 693 155.5 L 693 153 L 696 153 C 697.64501 153 699 151.64501 699 150 C 699 148.35499 697.64501 147 696 147 L 692.5 147 L 691.5 147 z M 693 149 L 696 149 C 696.56413 149 697 149.43587 697 150 C 697 150.56413 696.56413 151 696 151 L 693 151 L 693 149 z M 699.49219 154 A 0.50005 0.50005 0 0 0 699 154.50781 L 699 157.30078 L 697.85352 156.1543 A 0.50005 0.50005 0 0 0 697.49414 156.00195 A 0.50005 0.50005 0 0 0 697.14648 156.86133 L 699.14648 158.86133 A 0.50005 0.50005 0 0 0 699.85352 158.86133 L 701.85352 156.86133 A 0.50005 0.50005 0 1 0 701.14648 156.1543 L 700 157.30078 L 700 154.50781 A 0.50005 0.50005 0 0 0 699.49219 154 z "
-       id="p_arrow_down"
-       inkscape:label="#path24719">
-      <title
-         id="title24747">letter P with down arrow</title>
-    </path>
     <rect
        ry="0.5"
        rx="0.5"
@@ -18646,11 +18630,6 @@
        d="m 715.50357,142.50357 2,-2 -2,-2"
        id="path25350"
        inkscape:connector-curvature="0" />
-    <path
-       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-       d="M 707.5 147 C 707.223 147 707 147.223 707 147.5 L 707 155.5 C 707 155.777 707.223 156 707.5 156 L 708.5 156 C 708.777 156 709 155.777 709 155.5 L 709 153 L 712 153 C 713.64501 153 715 151.64501 715 150 C 715 148.35499 713.64501 147 712 147 L 708.5 147 L 707.5 147 z M 709 149 L 712 149 C 712.56413 149 713 149.43587 713 150 C 713 150.56413 712.56413 151 712 151 L 709 151 L 709 149 z M 715.49805 153.99805 A 0.50005 0.50005 0 0 0 715.15039 154.85742 L 716.29688 156.00391 L 713.50391 156.00391 A 0.50005 0.50005 0 1 0 713.50391 157.00391 L 716.29688 157.00391 L 715.15039 158.15039 A 0.50005 0.50005 0 1 0 715.85742 158.85742 L 717.85742 156.85742 A 0.50005 0.50005 0 0 0 717.85742 156.15039 L 715.85742 154.15039 A 0.50005 0.50005 0 0 0 715.49805 153.99805 z "
-       id="p_arrow_right"
-       inkscape:label="#path25352" />
     <rect
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect11664"
@@ -21436,9 +21415,10 @@
        style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
        style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-       d="M 727.49219 149 A 0.50005 0.50005 0 0 0 727.14648 149.14648 L 725.14648 151.14648 A 0.50005 0.50005 0 1 0 725.85352 151.85352 L 727 150.70703 L 727 153.5 A 0.50005 0.50005 0 1 0 728 153.5 L 728 150.70703 L 729.14648 151.85352 A 0.50005 0.50005 0 1 0 729.85352 151.14648 L 727.85352 149.14648 A 0.50005 0.50005 0 0 0 727.49219 149 z "
+       d="m 727.49219,149 a 0.50005,0.50005 0 0 0 -0.34571,0.14648 l -2,2 a 0.50005,0.50005 0 1 0 0.70704,0.70704 L 727,150.70703 727,153.5 a 0.50005,0.50005 0 1 0 1,0 l 0,-2.79297 1.14648,1.14649 a 0.50005,0.50005 0 1 0 0.70704,-0.70704 l -2,-2 A 0.50005,0.50005 0 0 0 727.49219,149 Z"
        id="arrow_up"
-       inkscape:label="#path7329" />
+       inkscape:label="#path7329"
+       inkscape:connector-curvature="0" />
     <path
        style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        d="M 743.49805 148.99805 A 0.50005 0.50005 0 0 0 743.15039 149.85742 L 744.29688 151.00391 L 741.50391 151.00391 A 0.50005 0.50005 0 1 0 741.50391 152.00391 L 744.29688 152.00391 L 743.15039 153.15039 A 0.50005 0.50005 0 1 0 743.85742 153.85742 L 745.85742 151.85742 A 0.50005 0.50005 0 0 0 745.85742 151.15039 L 743.85742 149.15039 A 0.50005 0.50005 0 0 0 743.49805 148.99805 z "
