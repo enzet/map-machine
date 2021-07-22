@@ -719,6 +719,12 @@
   "telephone": {
     "emoji": "☎️"
   },
+  "telescope_gamma": {
+    "name": "gamma telescope"
+  },
+  "telescope_radio": {
+    "name": "radio telescope"
+  },
   "theatre": {},
   "ticket": {
     "emoji": [

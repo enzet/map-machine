@@ -486,6 +486,12 @@ node_icons:
       shapes: [japan_tv_tower]
     - tags: {man_made: tower}
       shapes: [tower]
+    - tags: {man_made: telescope}
+      shapes: [telescope_radio]
+    - tags: {man_made: telescope, telescope:type: radio}
+      shapes: [telescope_radio]
+    - tags: {man_made: telescope, telescope:type: gamma}
+      shapes: [telescope_gamma]
     - tags: {building: garages}
       shapes: [garages]
     - tags: {landuse: garages}
