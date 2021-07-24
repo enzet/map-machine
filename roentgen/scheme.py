@@ -168,7 +168,9 @@ class NodeMatcher(Matcher):
             """Get MapCSS 0.2 selector for one key."""
             if value == "*":
                 return f"[{key}]"
-            return f"[{key}={value}]"
+            if '"' in value:
+                return f"[{key}='{value}']"
+            return f'[{key}="{value}"]'
 
         return "".join([get_selector(x, y) for (x, y) in self.tags.items()])
 

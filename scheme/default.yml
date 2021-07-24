@@ -992,12 +992,6 @@ node_icons:
         {shape: digit_4, offset: [-2, 2]},
         {shape: digit_0, offset: [2, 2]},
       ]
-    - tags: {traffic_sign: maxspeed, maxspeed: ".."}
-      shapes: [
-        circle_11,
-        {shape: digit_3, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-      ]
     - tags: {traffic_sign: stop}
       shapes: [stop]
     - tags: {highway: give_way}
