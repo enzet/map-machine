@@ -164,7 +164,13 @@ class NodeMatcher(Matcher):
 
         See https://wiki.openstreetmap.org/wiki/MapCSS/0.2
         """
-        return "".join([f"[{x}={y}]" for (x, y) in self.tags.items()])
+        def get_selector(key: str, value: str) -> str:
+            """Get MapCSS 0.2 selector for one key."""
+            if value == "*":
+                return f"[{key}]"
+            return f"[{key}={value}]"
+
+        return "".join([get_selector(x, y) for (x, y) in self.tags.items()])
 
 
 class WayMatcher(Matcher):
