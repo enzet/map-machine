@@ -835,6 +835,8 @@ node_icons:
       shapes: [{shape: p, offset: [-1, 0]}, {shape: arrow_down, offset: [4, 5]}]
     - tags: {amenity: parking_entrance, parking: multi-storey}
       shapes: [{shape: p, offset: [-1, 0]}, {shape: arrow_up, offset: [4, 5]}]
+    - tags: {entrance: gate}
+      shapes: [gate]
     - tags: {barrier: gate}
       shapes: [gate]
     - tags: {entrance: main}
