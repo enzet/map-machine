@@ -149,15 +149,15 @@ python roentgen.py render -b 2.284,48.86,2.29,48.865
 |---|---|
 | `-h`, `--help` | show this help message and exit |
 | `-i`, `--input` | input XML file name or names (if not specified, file will be downloaded using OpenStreetMap API) |
-| `-o`, `--output` | output SVG file name, default value: \tt {out/map.svg} |
+| `-o`, `--output` | output SVG file name, default value: `out/map.svg` |
 | `-b`, `--boundary-box` | geo boundary box, use space before "-" if the first value is negative |
-| `-s`, `--scale` | OSM zoom level (may not be integer), default value: \tt {18} |
-| `--cache` | path for temporary OSM files, default value: \tt {cache} |
-| `--labels` | label drawing mode: `no`, `main`, or `all`, default value: \tt {main} |
-| `--overlap` | how many pixels should be left around icons and text, default value: \tt {12} |
-| `--mode` | map drawing mode, default value: \tt {normal} |
-| `--seed` | seed for random, default value: \tt {} |
-| `--level` | display only this floor level, default value: \tt {None} |
+| `-s`, `--scale` | OSM zoom level (may not be integer), default value: `18` |
+| `--cache` | path for temporary OSM files, default value: `cache` |
+| `--labels` | label drawing mode: `no`, `main`, or `all`, default value: `main` |
+| `--overlap` | how many pixels should be left around icons and text, default value: `12` |
+| `--mode` | map drawing mode, default value: `normal` |
+| `--seed` | seed for random |
+| `--level` | display only this floor level |
 
 Tile generation
 ---------------
