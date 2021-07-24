@@ -120,6 +120,22 @@ class Matcher:
 
         return matched
 
+    def get_mapcss_selector(self) -> str:
+        """
+        Construct MapCSS 0.2 selector from the node matcher.
+
+        See https://wiki.openstreetmap.org/wiki/MapCSS/0.2
+        """
+        def get_selector(key: str, value: str) -> str:
+            """Get MapCSS 0.2 selector for one key."""
+            if value == "*":
+                return f"[{key}]"
+            if '"' in value:
+                return f"[{key}='{value}']"
+            return f'[{key}="{value}"]'
+
+        return "".join([get_selector(x, y) for (x, y) in self.tags.items()])
+
 
 class NodeMatcher(Matcher):
     """
@@ -157,22 +173,6 @@ class NodeMatcher(Matcher):
         self.with_icon = None
         if "with_icon" in structure:
             self.with_icon = structure["with_icon"]
-
-    def get_mapcss_selector(self) -> str:
-        """
-        Construct MapCSS 0.2 selector from the node matcher.
-
-        See https://wiki.openstreetmap.org/wiki/MapCSS/0.2
-        """
-        def get_selector(key: str, value: str) -> str:
-            """Get MapCSS 0.2 selector for one key."""
-            if value == "*":
-                return f"[{key}]"
-            if '"' in value:
-                return f"[{key}='{value}']"
-            return f'[{key}="{value}"]'
-
-        return "".join([get_selector(x, y) for (x, y) in self.tags.items()])
 
 
 class WayMatcher(Matcher):
