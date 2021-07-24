@@ -301,6 +301,8 @@ node_icons:
       shapes: [book]
     - tags: {amenity: prison}
       shapes: [prison]
+    - tags: {amenity: stripclub}
+      shapes: [pole_dancer]
     - tags: {club: computer}
       shapes: [glider]
     - tags: {man_made: survey_point}

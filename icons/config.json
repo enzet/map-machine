@@ -512,6 +512,9 @@
     "is_part": true
   },
   "pole": {},
+  "pole_dancer": {
+    "name": "pole dancer"
+  },
   "pole_lamp": {
     "directed": "right",
     "name": "pole lamp"
