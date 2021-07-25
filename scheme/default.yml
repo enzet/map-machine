@@ -904,6 +904,8 @@ node_icons:
       shapes: [cctv]
     - tags: {man_made: ventilation_shaft}
       shapes: [ventilation]
+    - tags: {railway: ventilation_shaft}
+      shapes: [ventilation]
     - tags: {advertising: billboard}
       shapes: [billboard]
     - tags: {natural: rock}
