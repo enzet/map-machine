@@ -796,6 +796,8 @@ node_icons:
       shapes: [recycling_container]
     - tags: {amenity: recycling, recycling_type: container}
       shapes: [recycling_container]
+    - tags: {amenity: shower}
+      shapes: [shower]
     - tags: {amenity: vending_machine}
       shapes: [vending_machine]
     - tags: {amenity: vending_machine, vending: excrement_bags}

@@ -654,6 +654,9 @@
     "name": "shelter"
   },
   "shop_convenience": {},
+  "shower": {
+    "name": "shower"
+  },
   "sit_up": {
     "name": "incline bench"
   },
