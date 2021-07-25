@@ -708,6 +708,8 @@ node_icons:
     tags:
     - tags: {historic: cannon}
       shapes: [cannon]
+    - tags: {historic: olympic_flame}
+      shapes: [torch]
     - tags: {historic: memorial}
       shapes: [memorial]
     - tags: {historic: memorial, memorial: plaque}

@@ -741,6 +741,9 @@
   "tomb": {
     "emoji": "🪦"
   },
+  "torch": {
+    "name": "torch"
+  },
   "toucan_crossing": {},
   "tower": {},
   "tower_communication": {

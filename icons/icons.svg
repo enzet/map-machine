@@ -145,12 +145,12 @@
      inkscape:object-paths="true"
      inkscape:guide-bbox="true"
      showguides="false"
-     showgrid="true"
+     showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="549.89131"
-     inkscape:cx="351.01608"
-     inkscape:zoom="22.627417"
+     inkscape:cy="489.89131"
+     inkscape:cx="231.01608"
+     inkscape:zoom="2"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -22277,10 +22277,14 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc" />
     <path
-       style="opacity:1;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="M 359.57812,49.640625 C 358.39317,50.091847 357.98682,51.298595 358,52.5 c 7e-5,0.535824 0.28596,1.030917 0.75,1.298828 0.4641,0.267949 1.0359,0.267949 1.5,0 0.46403,-0.267911 0.74992,-0.763004 0.75,-1.298828 0,-0.818561 -0.36781,-1.344673 -0.70703,-1.796875 0.004,0.464275 -0.17551,0.807863 -0.41602,1.009766 -0.63673,-0.526641 -0.71293,-1.200797 -0.29883,-2.072266 z M 358,55 c -0.67616,-0.0096 -0.67616,1.009563 0,1 l 0.0762,0 0.92969,5.582031 c 0.0876,0.564529 0.90071,0.564529 0.98828,0 L 360.92383,56 361,56 c 0.67616,0.0096 0.67616,-1.009563 0,-1 l -0.48047,0 -2.01953,0 z"
-       id="path10018"
+       id="torch"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccssccccccccccccccc" />
+       sodipodi:nodetypes="ccssccccccccccccccc"
+       inkscape:label="#path10018">
+      <title
+         id="title10036">torch</title>
+    </path>
   </g>
 </svg>
