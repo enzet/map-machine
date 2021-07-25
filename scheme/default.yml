@@ -313,6 +313,8 @@ node_icons:
       shapes: [dumbbell]
     - tags: {leisure: fitness_station}
       shapes: [dumbbell]
+    - tags: {leisure: bird_hide}
+      shapes: [binoculars]
     - tags: {leisure: bleachers}
       shapes: [bleachers]
     - tags: {leisure: bowling_alley}
@@ -750,7 +752,7 @@ node_icons:
     - tags: {information: guidepost}
       shapes: [guidepost]
     - tags: {tourism: viewpoint}
-      shapes: [binocular]
+      shapes: [binoculars]
     - tags: {information: board}
       shapes: [information_board]
     - tags: {vending: admission_tickets}
