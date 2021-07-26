@@ -526,6 +526,8 @@ node_icons:
       shapes: [charging_station]
     - tags: {amenity: bicycle_repair_station}
       shapes: [bicycle_repair]
+    - tags: {amenity: bicycle_rental}
+      shapes: [{shape: bicycle, offset: [0, 2]}, {shape: key, offset: [1, -4]}]
     - tags: {amenity: fuel}
       shapes: [fuel_station]
     - tags: {amenity: parking}
