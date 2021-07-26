@@ -12,7 +12,7 @@ from roentgen.icon import ShapeExtractor
 from roentgen.scheme import Scheme
 
 
-def construct_selectors(scheme: Scheme, icon_directory_name: str):
+def construct_selectors(scheme: Scheme, icon_directory_name: str) -> str:
     """
     Construct icon selectors for MapCSS 0.2 scheme.
     """
@@ -21,10 +21,11 @@ def construct_selectors(scheme: Scheme, icon_directory_name: str):
         if matcher.shapes and not matcher.location_restrictions:
             # TODO: support location restrictions
             selectors[matcher.get_mapcss_selector()] = [
-                (x if isinstance(x, str) else x["shape"]) for x in matcher.shapes
+                (x if isinstance(x, str) else x["shape"])
+                for x in matcher.shapes
             ]
 
-    s = ""
+    s: str = ""
     for selector in selectors:
         for target in ["node", "area"]:
             s += (

@@ -6,7 +6,7 @@ Author: Sergey Vartanov (me@enzet.ru).
 import argparse
 import sys
 from pathlib import Path
-from typing import List
+from typing import List, Set
 
 import logging
 import numpy as np
@@ -206,6 +206,10 @@ def draw_element(options):
     svg.write(open("out/element.svg", "w+"))
 
 
+def init_scheme() -> Scheme:
+    return Scheme(Path("scheme/default.yml"))
+
+
 if __name__ == "__main__":
 
     logging.basicConfig(format='%(levelname)s %(message)s', level=logging.INFO)
@@ -225,3 +229,6 @@ if __name__ == "__main__":
         draw_element(options)
     elif options.command == "server":
         server.ui(sys.argv[2:])
+    elif options.command == "taginfo":
+        from roentgen.taginfo import write_taginfo_project_file
+        write_taginfo_project_file(init_scheme())
