@@ -400,6 +400,10 @@
     "emoji": "✡️"
   },
   "judgement": {},
+  "key": {
+    "is_part": true,
+    "name": "key"
+  },
   "kiosk": {},
   "knives": {
     "name": "knives"
