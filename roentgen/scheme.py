@@ -69,6 +69,17 @@ def is_matched_tag(
     return MatchingType.NOT_MATCHED
 
 
+def get_selector(key: str, value: str, prefix: str = "") -> str:
+    """Get MapCSS 0.2 selector for one key."""
+    if prefix:
+        key = f"{prefix}:{key}"
+    if value == "*":
+        return f"[{key}]"
+    if '"' in value:
+        return f"[{key}='{value}']"
+    return f'[{key}="{value}"]'
+
+
 class Matcher:
     """
     Tag matching.
@@ -120,21 +131,13 @@ class Matcher:
 
         return matched
 
-    def get_mapcss_selector(self) -> str:
+    def get_mapcss_selector(self, prefix: str = "") -> str:
         """
         Construct MapCSS 0.2 selector from the node matcher.
 
         See https://wiki.openstreetmap.org/wiki/MapCSS/0.2
         """
-        def get_selector(key: str, value: str) -> str:
-            """Get MapCSS 0.2 selector for one key."""
-            if value == "*":
-                return f"[{key}]"
-            if '"' in value:
-                return f"[{key}='{value}']"
-            return f'[{key}="{value}"]'
-
-        return "".join([get_selector(x, y) for (x, y) in self.tags.items()])
+        return "".join([get_selector(x, y, prefix) for (x, y) in self.tags.items()])
 
 
 class NodeMatcher(Matcher):

@@ -23,6 +23,18 @@ KILOMETERS_PATTERN = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*km$")
 MILES_PATTERN = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*mi$")
 
 
+STAGES_OF_DECAY: List[str] = [
+    "disused",
+    "abandoned",
+    "ruins",
+    "demolished",
+    "removed",
+    "razed",
+    "destroyed",
+    "was",  # is not actually a stage of decay
+]
+
+
 def parse_float(string: str) -> Optional[float]:
     """
     Parse string representation of a float or integer value.
