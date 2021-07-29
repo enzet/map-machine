@@ -121,6 +121,10 @@ def main(options) -> None:
             def check_level(x) -> bool:
                 """Draw objects on the specified level."""
                 return not check_level_number(x, float(options.level))
+    else:
+        def check_level(_) -> bool:
+            """Draw objects on any level."""
+            return True
 
     constructor: Constructor = Constructor(
         map_,
