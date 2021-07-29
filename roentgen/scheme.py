@@ -137,7 +137,15 @@ class Matcher:
 
         See https://wiki.openstreetmap.org/wiki/MapCSS/0.2
         """
-        return "".join([get_selector(x, y, prefix) for (x, y) in self.tags.items()])
+        return "".join(
+            [get_selector(x, y, prefix) for (x, y) in self.tags.items()]
+        )
+
+    def get_clean_shapes(self):
+        return None
+
+    def get_style(self):
+        return None
 
 
 class NodeMatcher(Matcher):
@@ -177,6 +185,11 @@ class NodeMatcher(Matcher):
         if "with_icon" in structure:
             self.with_icon = structure["with_icon"]
 
+    def get_clean_shapes(self):
+        if not self.shapes:
+            return
+        return [(x if isinstance(x, str) else x["shape"]) for x in self.shapes]
+
 
 class WayMatcher(Matcher):
     """
@@ -196,6 +209,9 @@ class WayMatcher(Matcher):
         self.priority = 0
         if "priority" in structure:
             self.priority = structure["priority"]
+
+    def get_style(self):
+        return self.style
 
 
 class RoadMatcher(Matcher):
@@ -391,11 +407,11 @@ class Scheme:
         if main_icon and color:
             main_icon.recolor(color)
 
-        keys_left = [
-            x
-            for x in tags.keys()
-            if x not in processed and not self.is_no_drawable(x)
-        ]
+        # keys_left = [
+        #     x
+        #     for x in tags.keys()
+        #     if x not in processed and not self.is_no_drawable(x)
+        # ]
 
         default_shape = icon_extractor.get_shape(DEFAULT_SHAPE_ID)
         if not main_icon:

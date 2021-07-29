@@ -1,7 +1,6 @@
 """
 Construct Röntgen nodes and ways.
 """
-from collections import Counter
 from datetime import datetime
 from hashlib import sha256
 from typing import Any, Dict, Iterator, List, Optional, Set

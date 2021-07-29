@@ -1,9 +1,9 @@
 """
 Icon grid drawing.
 """
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Set
+from typing import List, Optional, Set
 
 import logging
 import numpy as np

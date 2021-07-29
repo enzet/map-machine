@@ -51,9 +51,13 @@ class ArgumentParser(argparse.ArgumentParser):
 
             if "help" in option:
                 help_value: List = [option["help"]]
-                if "default" in option and option["default"] and option["default"] != "==SUPPRESS==":
+                if (
+                    "default" in option
+                    and option["default"]
+                    and option["default"] != "==SUPPRESS=="
+                ):
                     help_value += [
-                        f", default value: ", Tag("tt", [str(option['default'])])
+                        ", default value: ", Tag("tt", [str(option['default'])])
                     ]
                 row.append(help_value)
             else:

@@ -2,7 +2,7 @@
 MapCSS scheme creation.
 """
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import List, Optional, Dict
 
 import logging
 from colour import Color
@@ -23,13 +23,8 @@ class MapCSSWriter:
         self.add_icons_for_lifecycle = add_icons_for_lifecycle
         self.icon_directory_name = icon_directory_name
 
-        self.matchers: Dict[Matcher, List[str]] = {}
-        for matcher in scheme.node_matchers:
-            if matcher.shapes and not matcher.location_restrictions:
-                self.matchers[matcher] = [
-                    (x if isinstance(x, str) else x["shape"])
-                    for x in matcher.shapes
-                ]
+        self.point_matchers: List[Matcher] = scheme.node_matchers
+        self.line_matchers: List[Matcher] = scheme.way_matchers
 
     def add_selector(
         self,
@@ -38,15 +33,40 @@ class MapCSSWriter:
         prefix: str = "",
         opacity: Optional[float] = None,
     ) -> str:
-        selector = (
-            target + matcher.get_mapcss_selector(prefix) + " {\n"
-            f'    icon-image: "{self.icon_directory_name}/'
-            + "___".join(self.matchers[matcher])
-            + '.svg";\n'
-        )
-        if opacity is not None:
-            selector += f"    icon-opacity: {opacity:.2f};\n"
+        elements: Dict[str, str] = {}
+
+        clean_shapes = matcher.get_clean_shapes()
+        if clean_shapes:
+            elements["icon-image"] = (
+                f'"{self.icon_directory_name}/'
+                + "___".join(clean_shapes) + '.svg"'
+            )
+
+            if opacity is not None:
+                elements["icon-opacity"] = f"{opacity:.2f}"
+
+        style = matcher.get_style()
+        if style:
+            if "fill" in style:
+                elements["fill-color"] = style["fill"]
+            if "stroke" in style:
+                elements["color"] = style["stroke"]
+            if "stroke-width" in style:
+                elements["width"] = style["stroke-width"]
+            if "stroke-dasharray" in style:
+                elements["dashes"] = style["stroke-dasharray"]
+            if "opacity" in style:
+                elements["fill-opacity"] = style["opacity"]
+                elements["opacity"] = style["opacity"]
+
+        if not elements:
+            return ""
+
+        selector: str = target + matcher.get_mapcss_selector(prefix) + " {\n"
+        for element in elements:
+            selector += f"    {element}: {elements[element]};\n"
         selector += "}\n"
+
         return selector
 
     def write(self, output_file) -> None:
@@ -58,7 +78,11 @@ class MapCSSWriter:
 
         output_file.write("\n")
 
-        for matcher in self.matchers:
+        for line_matcher in self.line_matchers:
+            for target in ["way", "relation"]:
+                output_file.write(self.add_selector(target, line_matcher))
+
+        for matcher in self.point_matchers:
             for target in ["node", "area"]:
                 output_file.write(self.add_selector(target, matcher))
 
@@ -67,7 +91,7 @@ class MapCSSWriter:
 
         for index, stage_of_decay in enumerate(STAGES_OF_DECAY):
             opacity: float = 0.6 - 0.4 * index / (len(STAGES_OF_DECAY) - 1)
-            for matcher in self.matchers:
+            for matcher in self.point_matchers:
                 if len(matcher.tags) > 1:
                     continue
                 for target in ["node", "area"]:

@@ -13,5 +13,3 @@ SCHEME: Scheme = Scheme(Path("scheme/default.yml"))
 SHAPE_EXTRACTOR: ShapeExtractor = ShapeExtractor(
     Path("icons/icons.svg"), Path("icons/config.json")
 )
-
-

@@ -6,7 +6,7 @@ See https://wiki.openstreetmap.org/wiki/Taginfo/Projects
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List
+from typing import List
 
 import logging
 

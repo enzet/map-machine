@@ -107,10 +107,6 @@ def main(options) -> None:
         Path(ICONS_FILE_NAME), Path("icons/config.json")
     )
 
-    def check_level(x) -> bool:
-        """Draw objects on all levels."""
-        return True
-
     if options.level:
         if options.level == "overground":
             check_level = check_level_overground
