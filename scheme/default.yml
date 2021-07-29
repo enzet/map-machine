@@ -1205,7 +1205,19 @@ ways:
       stroke: "#00FF00"
       stroke-width: 5
     priority: 11
-  - tags: {indoor: ["yes", room, elevator], area: "yes"}
+  - tags: {indoor: "yes", area: "yes"}
+    style:
+      stroke: indoor_color
+      stroke-width: 1
+      fill: indoor_color
+    priority: 12
+  - tags: {indoor: room, area: "yes"}
+    style:
+      stroke: indoor_color
+      stroke-width: 1
+      fill: indoor_color
+    priority: 12
+  - tags: {indoor: elevator, area: "yes"}
     style:
       stroke: indoor_color
       stroke-width: 1
@@ -1244,7 +1256,23 @@ ways:
       stroke-linecap: round
       stroke-linejoin: round
     priority: 41
-  - tags: {highway: [footway, pedestrian, cycleway]}
+  - tags: {highway: footway}
+    exception: {area: "yes"}
+    style:
+      stroke-width: 3
+      stroke: foot_border_color
+      stroke-linecap: round
+      stroke-linejoin: round
+    priority: 41
+  - tags: {highway: pedestrian}
+    exception: {area: "yes"}
+    style:
+      stroke-width: 3
+      stroke: foot_border_color
+      stroke-linecap: round
+      stroke-linejoin: round
+    priority: 41
+  - tags: {highway: cycleway}
     exception: {area: "yes"}
     style:
       stroke-width: 3
@@ -1263,7 +1291,7 @@ ways:
       stroke: foot_border_color
     priority: 41
 
-  - tags: {highway: [footway, pedestrian]}
+  - tags: {highway: footway}
     exception: {area: "yes"}
     style:
       stroke-width: 1.5
@@ -1272,7 +1300,23 @@ ways:
       stroke-linejoin: round
       stroke: foot_color
     priority: 42
-  - tags: {highway: [footway, pedestrian], area: "yes"}
+  - tags: {highway: pedestrian}
+    exception: {area: "yes"}
+    style:
+      stroke-width: 1.5
+      stroke-dasharray: 7,3
+      stroke-linecap: round
+      stroke-linejoin: round
+      stroke: foot_color
+    priority: 42
+  - tags: {highway: footway, area: "yes"}
+    style:
+      stroke: none
+      fill: "#DDDDDD"
+      stroke-linecap: round
+      stroke-linejoin: round
+    priority: -55  # FIXME
+  - tags: {highway: pedestrian, area: "yes"}
     style:
       stroke: none
       fill: "#DDDDDD"
@@ -1486,12 +1530,32 @@ ways:
       stroke-width: 10
       stroke: "#DDDDDD"
     priority: 41
-  - tags: {railway: [rail, narrow_gauge, tram]}
+  - tags: {railway: rail}
     style:
       stroke-width: 3
       stroke: "#BBBBBB"
     priority: 42
-  - tags: {railway: [rail, narrow_gauge, tram]}
+  - tags: {railway: narrow_gauge}
+    style:
+      stroke-width: 3
+      stroke: "#BBBBBB"
+    priority: 42
+  - tags: {railway: tram}
+    style:
+      stroke-width: 3
+      stroke: "#BBBBBB"
+    priority: 42
+  - tags: {railway: rail}
+    style:
+      stroke-width: 1
+      stroke: "#444444"
+    priority: 43
+  - tags: {railway: narrow_gauge}
+    style:
+      stroke-width: 1
+      stroke: "#444444"
+    priority: 43
+  - tags: {railway: tram}
     style:
       stroke-width: 1
       stroke: "#444444"
@@ -1586,7 +1650,14 @@ ways:
       stroke-width: 1
       opacity: 0.3
     priority: 40
-  - tags: {barrier: [fence, retaining_wall]}
+  - tags: {barrier: fence}
+    style:
+      fill: none
+      stroke: "#000000"
+      stroke-width: 1
+      opacity: 0.25
+    priority: 40
+  - tags: {barrier: retaining_wall}
     style:
       fill: none
       stroke: "#000000"
@@ -1630,7 +1701,8 @@ area_tags:
   - tags: {natural: "*"}
     exception: {natural: "tree_row"}
   - tags: {indoor: "corridor"}
-  - tags: {power: ["compensator", "substation"]}
+  - tags: {power: "compensator"}
+  - tags: {power: "substation"}
 
 tags_to_write:
   - "STIF:zone"
