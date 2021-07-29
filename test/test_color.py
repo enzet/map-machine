@@ -24,7 +24,7 @@ def test_gradient() -> None:
     """
     Test color picking from gradient.
     """
-    assert (
-        get_gradient_color(0.5, MinMax(0, 1), [Color("black"), Color("white")])
-        == Color("#7F7F7F")
+    color: Color = get_gradient_color(
+        0.5, MinMax(0, 1), [Color("black"), Color("white")]
     )
+    assert color == Color("#7F7F7F")

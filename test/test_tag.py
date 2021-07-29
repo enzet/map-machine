@@ -25,7 +25,7 @@ def test_meters() -> None:
     check_length("50m", 50.0)
     check_length("50.m", 50.0)
     check_length("50.05m", 50.05)
-    check_length(".05m", .05)
+    check_length(".05m", 0.05)
     check_length(".m", None)
     check_length("50   m", 50.0)
 
