@@ -11,8 +11,12 @@ from colour import Color
 
 from roentgen.direction import DirectionSet
 from roentgen.icon import (
-    DEFAULT_COLOR, DEFAULT_SHAPE_ID, Icon, IconSet, ShapeExtractor,
-    ShapeSpecification
+    DEFAULT_COLOR,
+    DEFAULT_SHAPE_ID,
+    Icon,
+    IconSet,
+    ShapeExtractor,
+    ShapeSpecification,
 )
 from roentgen.text import Label, get_address, get_text
 
@@ -322,7 +326,7 @@ class Scheme:
 
     def get_icon(
         self,
-        icon_extractor: ShapeExtractor,
+        extractor: ShapeExtractor,
         tags: Dict[str, Any],
         processed: Set[str],
         for_: str = "node",
@@ -330,7 +334,7 @@ class Scheme:
         """
         Construct icon set.
 
-        :param icon_extractor: extractor with icon specifications
+        :param extractor: extractor with icon specifications
         :param tags: OpenStreetMap element tags dictionary
         :param for_: target (node, way, area or relation)
         :param processed: set of already processed tag keys
@@ -359,27 +363,27 @@ class Scheme:
             if not matcher.draw:
                 processed |= matcher_tags
             if matcher.shapes:
-                main_icon = Icon([
-                    ShapeSpecification.from_structure(x, icon_extractor, self)
+                specifications = [
+                    ShapeSpecification.from_structure(x, extractor, self)
                     for x in matcher.shapes
-                ])
+                ]
+                main_icon = Icon(specifications)
                 processed |= matcher_tags
-            if matcher.over_icon:
-                if main_icon:
-                    main_icon.add_specifications([
-                        ShapeSpecification.from_structure(
-                            x, icon_extractor, self
-                        )
-                        for x in matcher.over_icon
-                    ])
-                    processed |= matcher_tags
+            if matcher.over_icon and main_icon:
+                specifications = [
+                    ShapeSpecification.from_structure(x, extractor, self)
+                    for x in matcher.over_icon
+                ]
+                main_icon.add_specifications(specifications)
+                processed |= matcher_tags
             if matcher.add_shapes:
-                extra_icons += [Icon([
+                specifications = [
                     ShapeSpecification.from_structure(
-                        x, icon_extractor, self, Color("#888888")
+                        x, extractor, self, Color("#888888")
                     )
                     for x in matcher.add_shapes
-                ])]
+                ]
+                extra_icons += [Icon(specifications)]
                 processed |= matcher_tags
             if matcher.set_main_color and main_icon:
                 main_icon.recolor(self.get_color(matcher.set_main_color))
@@ -413,7 +417,7 @@ class Scheme:
         #     if x not in processed and not self.is_no_drawable(x)
         # ]
 
-        default_shape = icon_extractor.get_shape(DEFAULT_SHAPE_ID)
+        default_shape = extractor.get_shape(DEFAULT_SHAPE_ID)
         if not main_icon:
             main_icon = Icon([ShapeSpecification(default_shape)])
 

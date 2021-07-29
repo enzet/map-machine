@@ -187,11 +187,22 @@ class Painter:
                 for i in range(len(nodes) - 1):  # type: int
                     flung_1 = self.flinger.fling(nodes[i].coordinates)
                     flung_2 = self.flinger.fling(nodes[i + 1].coordinates)
-                    building_shade.add(Path(
-                        ("M", np.add(flung_1, shift_1), "L",
-                         np.add(flung_2, shift_1), np.add(flung_2, shift_2),
-                         np.add(flung_1, shift_2), "Z"),
-                        fill="#000000", stroke="#000000", stroke_width=1))
+                    command = (
+                        "M",
+                        np.add(flung_1, shift_1),
+                        "L",
+                        np.add(flung_2, shift_1),
+                        np.add(flung_2, shift_2),
+                        np.add(flung_1, shift_2),
+                        "Z",
+                    )
+                    path = Path(
+                        command,
+                        fill="#000000",
+                        stroke="#000000",
+                        stroke_width=1,
+                    )
+                    building_shade.add(path)
         self.svg.add(building_shade)
 
         # Draw buildings.
@@ -215,14 +226,24 @@ class Painter:
                         color_part: float = 0.8 + segment.angle * 0.2
                         fill = Color(rgb=(color_part, color_part, color_part))
 
-                    self.svg.add(self.svg.path(
-                        d=("M", segment.point_1 + shift_1, "L",
-                           segment.point_2 + shift_1,
-                           segment.point_2 + shift_2,
-                           segment.point_1 + shift_2,
-                           segment.point_1 + shift_1, "Z"),
-                        fill=fill.hex, stroke=fill.hex, stroke_width=1,
-                        stroke_linejoin="round"))
+                    command = (
+                        "M",
+                        segment.point_1 + shift_1,
+                        "L",
+                        segment.point_2 + shift_1,
+                        segment.point_2 + shift_2,
+                        segment.point_1 + shift_2,
+                        segment.point_1 + shift_1,
+                        "Z",
+                    )
+                    path = self.svg.path(
+                        d=command,
+                        fill=fill.hex,
+                        stroke=fill.hex,
+                        stroke_width=1,
+                        stroke_linejoin="round",
+                    )
+                    self.svg.add(path)
 
             # Draw building roofs.
 
@@ -280,24 +301,29 @@ class Painter:
                 paths = DirectionSet(direction).draw(point, direction_radius)
 
             for path in paths:
-                gradient = self.svg.defs.add(self.svg.radialGradient(
-                    center=point, r=direction_radius,
-                    gradientUnits="userSpaceOnUse"))
+                radial_gradient = self.svg.radialGradient(
+                    center=point,
+                    r=direction_radius,
+                    gradientUnits="userSpaceOnUse",
+                )
+                gradient = self.svg.defs.add(radial_gradient)
                 if is_revert_gradient:
                     (
                         gradient
                         .add_stop_color(0, direction_color.hex, opacity=0)
                         .add_stop_color(1, direction_color.hex, opacity=0.7)
-                    )
+                    )  # fmt: skip
                 else:
                     (
                         gradient
                         .add_stop_color(0, direction_color.hex, opacity=0.4)
                         .add_stop_color(1, direction_color.hex, opacity=0)
-                    )
-                self.svg.add(self.svg.path(
+                    )  # fmt: skip
+                path = self.svg.path(
                     d=["M", point] + path + ["L", point, "Z"],
-                    fill=gradient.get_paint_server()))
+                    fill=gradient.get_paint_server(),
+                )
+                self.svg.add(path)
 
     def draw_road(
         self, road: Road, color: Color, extra_width: float = 0
