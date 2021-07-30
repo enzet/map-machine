@@ -121,7 +121,9 @@ def main(options) -> None:
             def check_level(x) -> bool:
                 """Draw objects on the specified level."""
                 return not check_level_number(x, float(options.level))
+
     else:
+
         def check_level(_) -> bool:
             """Draw objects on any level."""
             return True
@@ -212,7 +214,7 @@ def init_scheme() -> Scheme:
 
 if __name__ == "__main__":
 
-    logging.basicConfig(format='%(levelname)s %(message)s', level=logging.INFO)
+    logging.basicConfig(format="%(levelname)s %(message)s", level=logging.INFO)
 
     options: argparse.Namespace = parse_options(sys.argv)
 
@@ -224,6 +226,7 @@ if __name__ == "__main__":
         draw_icons()
     elif options.command == "mapcss":
         from roentgen.mapcss import write_mapcss
+
         write_mapcss()
     elif options.command == "element":
         draw_element(options)
@@ -231,4 +234,5 @@ if __name__ == "__main__":
         server.ui(sys.argv[2:])
     elif options.command == "taginfo":
         from roentgen.taginfo import write_taginfo_project_file
+
         write_taginfo_project_file(init_scheme())
