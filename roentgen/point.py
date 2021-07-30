@@ -127,10 +127,8 @@ class Point(Tagged):
         if is_place_for_extra:
             left: float = -(len(self.icon_set.extra_icons) - 1) * 8
             for icon in self.icon_set.extra_icons:
-                self.draw_point_shape(
-                    svg, icon, self.point + np.array((left, self.y)),
-                    occupied=occupied
-                )
+                point: np.array = self.point + np.array((left, self.y))
+                self.draw_point_shape(svg, icon, point, occupied=occupied)
                 left += 16
             if self.icon_set.extra_icons:
                 self.y += 16
@@ -239,23 +237,26 @@ class Point(Tagged):
                         svg.add(svg.rect((point[0] + i, point[1] + j), (1, 1)))
 
         if out_fill_2:
-            svg.add(svg.text(
+            text_element = svg.text(
                 text, point, font_size=size, text_anchor="middle",
                 font_family=DEFAULT_FONT, fill=out_fill_2.hex,
-                stroke_linejoin="round", stroke_width=5,
-                stroke=out_fill_2.hex, opacity=out_opacity_2
-            ))
+                stroke_linejoin="round", stroke_width=5, stroke=out_fill_2.hex,
+                opacity=out_opacity_2
+            )  # fmt: skip
+            svg.add(text_element)
         if out_fill:
-            svg.add(svg.text(
+            text_element = svg.text(
                 text, point, font_size=size, text_anchor="middle",
                 font_family=DEFAULT_FONT, fill=out_fill.hex,
-                stroke_linejoin="round", stroke_width=3,
-                stroke=out_fill.hex, opacity=out_opacity
-            ))
-        svg.add(svg.text(
+                stroke_linejoin="round", stroke_width=3, stroke=out_fill.hex,
+                opacity=out_opacity,
+            )  # fmt: skip
+            svg.add(text_element)
+        text_element = svg.text(
             text, point, font_size=size, text_anchor="middle",
-            font_family=DEFAULT_FONT, fill=fill.hex
-        ))
+            font_family=DEFAULT_FONT, fill=fill.hex,
+        )  # fmt: skip
+        svg.add(text_element)
 
         self.y += 11
 

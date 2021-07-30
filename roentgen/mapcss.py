@@ -39,7 +39,8 @@ class MapCSSWriter:
         if clean_shapes:
             elements["icon-image"] = (
                 f'"{self.icon_directory_name}/'
-                + "___".join(clean_shapes) + '.svg"'
+                + "___".join(clean_shapes)
+                + '.svg"'
             )
 
             if opacity is not None:

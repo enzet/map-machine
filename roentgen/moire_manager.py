@@ -57,7 +57,8 @@ class ArgumentParser(argparse.ArgumentParser):
                     and option["default"] != "==SUPPRESS=="
                 ):
                     help_value += [
-                        ", default value: ", Tag("tt", [str(option['default'])])
+                        ", default value: ",
+                        Tag("tt", [str(option["default"])]),
                     ]
                 row.append(help_value)
             else:

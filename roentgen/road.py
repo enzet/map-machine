@@ -174,7 +174,7 @@ class RoadPart:
             fill="none",
             stroke="#FF0000",
             stroke_width=0.5,
-        )
+        )  # fmt: skip
         drawing.add(line)
         line = drawing.path(
             (
@@ -184,7 +184,7 @@ class RoadPart:
             fill="none",
             stroke="#0000FF",
             stroke_width=0.5,
-        )
+        )  # fmt: skip
         drawing.add(line)
 
         opacity: float = 0.4
@@ -250,7 +250,7 @@ class RoadPart:
                 "L", self.left_connection,
                 "L", self.right_connection,
                 "Z",
-            ]
+            ]  # fmt: skip
             drawing.add(drawing.path(path_commands, fill="#CCCCCC"))
 
     def draw_entrance(self, drawing: svgwrite.Drawing, is_debug: bool = False):
@@ -267,7 +267,7 @@ class RoadPart:
                 "L", self.left_projection,
                 "L", self.left_connection,
                 "Z",
-            ]
+            ]  # fmt: skip
             if is_debug:
                 path = drawing.path(
                     path_commands,
