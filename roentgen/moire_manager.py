@@ -108,9 +108,7 @@ class RoentgenMoire(Default, ABC):
             return (
                 self.get_ref_(f"{PREFIX}Key:{key}", self.m([key]))
                 + "="
-                + self.get_ref_(
-                    f"{PREFIX}Tag:{key}={tag}", self.m([tag])
-                )
+                + self.get_ref_(f"{PREFIX}Tag:{key}={tag}", self.m([tag]))
             )
         else:
             return self.get_ref_(f"{PREFIX}Key:{spec}", self.m([spec]))
