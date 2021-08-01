@@ -1,8 +1,8 @@
 \b {Röntgen} (or \b {Roentgen} when ASCII is preferred) project consists of
 
 \list
-    {simple Python \href {http://openstreetmap.org} {OpenStreetMap} renderer (see \href {#usage} {usage}, \href {#map-generation} {renderer documentation}),}
-    {\href {#icon-set} {set of CC-BY 4.0 icons} that can be used outside the project.}
+    {simple Python \ref {http://openstreetmap.org} {OpenStreetMap} renderer (see \ref {#usage} {usage}, \ref {#map-generation} {renderer documentation}),}
+    {\ref {#icon-set} {set of CC-BY 4.0 icons} that can be used outside the project.}
 
 The idea behind the Röntgen project is to \b {show all the richness of the OpenStreetMap data}\: to have a possibility to \i {display any map feature} represented by OpenStreetMap data tags by means of colors, shapes, and icons.  Röntgen is created for OpenStreetMap contributors\: to display all changes one made on the map even if they are small, and for users\: to dig down into the map and find every detail that was mapped.
 
@@ -16,17 +16,17 @@ To get SVG map, just run
 
 \code {python roentgen.py render -b <lon1>,<lat1>,<lon2>,<lat2>} {bash}
 
-(e.g. \tt {python roentgen.py render -b 2.284,48.86,2.29,48.865}).  It will automatically download OSM data and write output map to \tt {out/map.svg}.  For more options see \href {#map-generation} {Map generation}.
+(e.g. \m {python roentgen.py render -b 2.284,48.86,2.29,48.865}).  It will automatically download OSM data and write output map to \m {out/map.svg}.  For more options see \ref {#map-generation} {Map generation}.
 
 \2 {Map features} {features}
 
 Röntgen features\:
 \list
-    {detailed icons to display subtypes like \href {#power-tower-design} {power tower design},}
+    {detailed icons to display subtypes like \ref {#power-tower-design} {power tower design},}
     {can display multiple icons for one entity to cover more features,}
     {use color to visualize \osm {colour} and other features like plant types,}
-    {display \href {#levels} {privitive 3D shapes} for buildings,}
-    {display \href {#direction} {directions} with gradient sectors,}
+    {display \ref {#levels} {privitive 3D shapes} for buildings,}
+    {display \ref {#direction} {directions} with gradient sectors,}
     {use width to display roads.}
 
 \3 {Simple building shapes} {levels}
@@ -76,19 +76,19 @@ Visualize \osm {design} values used with \osm {power=tower} tag.
 
 \3 {Japanese map symbols} {japanese-map-symbols}
 
-There are \href {https://en.wikipedia.org/wiki/List_of_Japanese_map_symbols} {special symbols} appearing on Japanese maps.
+There are \ref {https://en.wikipedia.org/wiki/List_of_Japanese_map_symbols} {special symbols} appearing on Japanese maps.
 
 \image {doc/japanese.png} {Japanese map symbols}
 
 \2 {Icon set} {icon-set}
 
-If tag is drawable it is displayed using icon combination and colors.  All icons are under \href {http://creativecommons.org/licenses/by/4.0/} {CC BY} license.  So, do whatever you want but give appropriate credit.  Icon set is heavily inspired by \href {https://github.com/mapbox/maki} {Maki},  \href {https://github.com/gmgeo/osmic} {Osmic}, and \href {https://github.com/ideditor/temaki} {Temaki} icon sets.
+If tag is drawable it is displayed using icon combination and colors.  All icons are under \ref {http://creativecommons.org/licenses/by/4.0/} {CC BY} license.  So, do whatever you want but give appropriate credit.  Icon set is heavily inspired by \ref {https://github.com/mapbox/maki} {Maki},  \ref {https://github.com/gmgeo/osmic} {Osmic}, and \ref {https://github.com/ideditor/temaki} {Temaki} icon sets.
 
 \image {doc/grid.png} {Icons}
 
 Feel free to request new icons via issues for whatever you want to see on the map.  No matter how frequently the tag is used in OpenStreetMap since final goal is to cover all tags.  However, common used tags have priority, other things being equal.
 
-Generate icon grid and sets of individual icons with \tt {\command {Test icon generation}}.  It will create \tt {out/icon_grid.svg} file, and SVG files in \tt {out/icons_by_id} directory where files are named using shape identifiers (e.g. \tt {power_tower_portal_2_level.svg}) and in \tt {icons_by_name} directory where files are named using shape names (e.g. \tt {Röntgen portal two-level transmission tower.svg}).  Files from the last directory are used in OpenStreetMap wiki (e.g. \href {https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg} {\tt {File:Röntgen_portal_two-level_transmission_tower.svg}}).
+Generate icon grid and sets of individual icons with \m {\command {Test icon generation}}.  It will create \m {out/icon_grid.svg} file, and SVG files in \m {out/icons_by_id} directory where files are named using shape identifiers (e.g. \m {power_tower_portal_2_level.svg}) and in \m {icons_by_name} directory where files are named using shape names (e.g. \m {Röntgen portal two-level transmission tower.svg}).  Files from the last directory are used in OpenStreetMap wiki (e.g. \ref {https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg} {\m {File:Röntgen_portal_two-level_transmission_tower.svg}}).
 
 \3 {Icon combination} {icon_combination}
 
@@ -108,18 +108,18 @@ Some icons can be combined into new icons.
         {\code {\{
     include: ['world'],
     exclude: ['jp']
-\}} (\href {https://ideditor.github.io/location-conflation/?locationSet=%7Binclude%3A%20%5B%27world%27%5D%2C%20exclude%3A%20%5B%27jp%27%5D%7D&referrer=nsi} {view map})}
+\}} (\ref {https://ideditor.github.io/location-conflation/?locationSet=%7Binclude%3A%20%5B%27world%27%5D%2C%20exclude%3A%20%5B%27jp%27%5D%7D&referrer=nsi} {view map})}
         {\code {\{
     include: ['jp']
-\}} (\href {https://ideditor.github.io/location-conflation/?locationSet=%7Binclude%3A%20%5B%27jp%27%5D%7D&referrer=nsi} {view map})}
+\}} (\ref {https://ideditor.github.io/location-conflation/?locationSet=%7Binclude%3A%20%5B%27jp%27%5D%7D&referrer=nsi} {view map})}
     }
     {
-        {\tt {amenity=post_office}}
+        {\m {amenity=post_office}}
         {\icon {envelope} {-}}
         {\icon {japan_post} {-}}
     }
     {
-        {\tt {amenity=school}} {}
+        {\m {amenity=school}} {}
         {\icon {japan_elementary_school} {-}}
     }
 
@@ -138,25 +138,25 @@ Countries with right-to-left script direction\:
 
 \3 {All tags style} {all_tags_style}
 
-Options\: \tt {--show-missing-tags --overlap 0}.
+Options\: \m {--show-missing-tags --overlap 0}.
 
 Display as many OpenStreetMap data tags on the map as possible.
 
 \3 {Pretty style} {pretty_style}
 
-Options\: \tt {--draw-captions main --level overground}.
+Options\: \m {--draw-captions main --level overground}.
 
 Display only not overlapping icons and main captions.
 
 \3 {Creation time mode} {time_mode}
 
-Visualize element creation time with \tt {--mode time}.
+Visualize element creation time with \m {--mode time}.
 
 \image {doc/time.png} {Creation time mode}
 
 \3 {Author mode} {autor_mode}
 
-Every way and node displayed with the random color picked for each author with \tt {--mode user-coloring}.
+Every way and node displayed with the random color picked for each author with \m {--mode user-coloring}.
 
 \image {doc/user.png} {Author mode}
 
@@ -170,7 +170,7 @@ To install all packages, run\:
 
 \2 {Map generation} {map-generation}
 
-Command\: \tt {render}.
+Command\: \m {render}.
 
 There are simple Python renderer that generates SVG map from OpenStreetMap data.  You can run it using\:
 
@@ -189,22 +189,22 @@ Example\:
 
 \2 {Tile generation} {tile-generation}
 
-Command\: \tt {tile}.
+Command\: \m {tile}.
 
 \code {python roentgen.py tile \\
     -c $\{LATITUDE\},$\{LONGITUDE\} \\
     -s $\{OSM_ZOOM_LEVEL\}} {bash}
 
-Tile will be stored as SVG file to \tt {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \tt {x} and \tt {y} are tile coordinates.
+Tile will be stored as SVG file to \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.
 
 Example\:
 
 \code {python roentgen.py tile -c 55.7510637,37.6270761 -s 18} {bash}
 
-will generate SVG file \tt {out/tiles/tile_18_158471_81953.svg}.
+will generate SVG file \m {out/tiles/tile_18_158471_81953.svg}.
 
 \2 {MapCSS 0.2 generation} {mapcss-0-2-generation}
 
-Command\: \tt {mapcss}.
+Command\: \m {mapcss}.
 
-\tt {python roentgen.py mapcss} will create \tt {out/roentgen_icons_mapcss} directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas\: \tt {.mapcss} file and directory with icons.
+\m {python roentgen.py mapcss} will create \m {out/roentgen_icons_mapcss} directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas\: \m {.mapcss} file and directory with icons.

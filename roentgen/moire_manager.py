@@ -46,7 +46,7 @@ class ArgumentParser(argparse.ArgumentParser):
         table = [[["Option"], ["Description"]]]
 
         for option in self.arguments:
-            array = [[Tag("tt", [x]), ", "] for x in option["arguments"]]
+            array = [[Tag("m", [x]), ", "] for x in option["arguments"]]
             row = [[x for y in array for x in y][:-1]]
 
             if "help" in option:
@@ -58,7 +58,7 @@ class ArgumentParser(argparse.ArgumentParser):
                 ):
                     help_value += [
                         ", default value: ",
-                        Tag("tt", [str(option["default"])]),
+                        Tag("m", [str(option["default"])]),
                     ]
                 row.append(help_value)
             else:
@@ -95,22 +95,6 @@ test_configuration: TestConfiguration = TestConfiguration(
 )
 
 
-def osm(converter: Default, args: Arguments) -> str:
-    """OSM tag key or key–value pair of tag."""
-    spec: str = converter.clear(args[0])
-    if "=" in spec:
-        key, tag = spec.split("=")
-        return (
-            converter.get_href_(f"{PREFIX}Key:{key}", converter.tt([key]))
-            + "="
-            + converter.get_href_(
-                f"{PREFIX}Tag:{key}={tag}", converter.tt([tag])
-            )
-        )
-    else:
-        return converter.get_href_(f"{PREFIX}Key:{spec}", converter.tt([spec]))
-
-
 class RoentgenMoire(Default, ABC):
     """
     Moire extension stub for Röntgen.
@@ -118,11 +102,45 @@ class RoentgenMoire(Default, ABC):
 
     def osm(self, args: Arguments) -> str:
         """OSM tag key or key–value pair of tag."""
-        raise NotImplementedError
+        spec: str = self.clear(args[0])
+        if "=" in spec:
+            key, tag = spec.split("=")
+            return (
+                self.get_ref_(f"{PREFIX}Key:{key}", self.m([key]))
+                + "="
+                + self.get_ref_(
+                    f"{PREFIX}Tag:{key}={tag}", self.m([tag])
+                )
+            )
+        else:
+            return self.get_ref_(f"{PREFIX}Key:{spec}", self.m([spec]))
 
     def color(self, args: Arguments) -> str:
         """Simple color sample."""
-        raise NotImplementedError
+        raise NotImplementedError("color")
+
+    def command(self, args: Arguments) -> str:
+        """
+        Bash command from GitHub Actions configuration.
+
+        See .github/workflows/test.yml
+        """
+        return test_configuration.get_command(self.clear(args[0]))
+
+    def icon(self, args: Arguments) -> str:
+        raise NotImplementedError("icon")
+
+    def options(self, args: Arguments) -> str:
+        """Table with option descriptions."""
+        parser: ArgumentParser = ArgumentParser()
+        command: str = self.clear(args[0])
+        if command == "render":
+            add_render_arguments(parser)
+        else:
+            raise NotImplementedError(
+                "no separate function for render creation"
+            )
+        return self.parse(parser.get_moire_help())
 
 
 class RoentgenHTML(RoentgenMoire, DefaultHTML):
@@ -131,10 +149,6 @@ class RoentgenHTML(RoentgenMoire, DefaultHTML):
     """
 
     images = {}
-
-    def osm(self, args: Arguments) -> str:
-        """OSM tag key or key–value pair of tag."""
-        return osm(self, args)
 
     def color(self, args: Arguments) -> str:
         """Simple color sample."""
@@ -150,14 +164,6 @@ class RoentgenHTML(RoentgenMoire, DefaultHTML):
             f'<img class="icon" style="width: {size}px; height: {size}px;" '
             f'src="icon_set/ids/{self.clear(args[0])}.svg" />'
         )
-
-    def command(self, args: Arguments) -> str:
-        """
-        Bash command from GitHub Actions configuration.
-
-        See .github/workflows/test.yml
-        """
-        return test_configuration.get_command(self.clear(args[0]))
 
 
 class RoentgenOSMWiki(RoentgenMoire, DefaultWiki):
@@ -200,10 +206,6 @@ class RoentgenMarkdown(RoentgenMoire, DefaultMarkdown):
 
     images = {}
 
-    def osm(self, args: Arguments) -> str:
-        """OSM tag key or key–value pair of tag."""
-        return osm(self, args)
-
     def color(self, args: Arguments) -> str:
         """Simple color sample."""
         return self.clear(args[0])
@@ -211,23 +213,3 @@ class RoentgenMarkdown(RoentgenMoire, DefaultMarkdown):
     def icon(self, args: Arguments) -> str:
         """Image with Röntgen icon."""
         return f"[{self.clear(args[0])}]"
-
-    def command(self, args: Arguments) -> str:
-        """
-        Bash command from GitHub Actions configuration.
-
-        See .github/workflows/test.yml
-        """
-        return test_configuration.get_command(self.clear(args[0]))
-
-    def options(self, args: Arguments) -> str:
-        """Table with option descriptions."""
-        parser: ArgumentParser = ArgumentParser()
-        command: str = self.clear(args[0])
-        if command == "render":
-            add_render_arguments(parser)
-        else:
-            raise NotImplementedError(
-                "no separate function for render creation"
-            )
-        return self.parse(parser.get_moire_help())
