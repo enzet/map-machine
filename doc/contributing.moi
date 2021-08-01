@@ -1,0 +1,37 @@
+\1 {Contributing} {contributing}
+
+Thank you for your interest in the Röntgen project.  Since the primary goal of the project is to cover as many tags as possible, the project is crucially depend on contributions as OpenStreetMap itself.
+
+\2 {Suggest a tag to support} {}
+
+Please, create an issue with \m {icon} label.
+
+/*
+\2 {Add an icon} {}
+*/
+
+\2 {Report a bug} {}
+
+Please, create an issue with \m {bug} and \m {generator} labels.
+
+/*
+\2 {Fix a typo in documentation} {}
+
+This action is not that easy as it supposed to be.  We use \ref {http://github.com/enzet/Moire} {Moire} markup and converter to automatically generate documentation for GitHub, website, and \ref {http://wiki.openstreetmap.org/} {OpenStreetMap wiki}.  That's why editing Markdown files is not allowed.  To fix a typo, open corresponding Moire file in \m {doc} directory (e.g. \m {doc/readme.moi} for \m {README.md}), modify it, and run \m {python roentgen doc} script.
+*/
+
+\2 {Modify the code} {}
+
+First of all, configure your workspace.
+
+\list
+    {Install formatter, linter and test system\: \m {pip install black flake8 pytest}.}
+    /*
+    {Run \m {git config --local core.hooksPath .githooks/} to enable Git hooks (formatter and linter will automatically run for every commit, pytest will run for every push action).}
+    */
+
+\3 {Code style} {code-style}
+
+We use \ref {http://github.com/psf/black} {Black} code formatter with maximum 80 characters line lenght for all Python files within the project.  Reformat a file is as simple as \m {black -l 80 \formal {file name}}.
+
+If you create new Python file, make sure you add \m {__author__ = "\formal {first name} \formal {second name}"} and \m {__email__ = "\formal {author e-mail}"} string variables.
