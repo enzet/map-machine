@@ -36,10 +36,7 @@ def parse_options(args) -> argparse.Namespace:
     add_render_arguments(render)
     add_tile_arguments(tile)
     add_server_arguments(server)
-
-    element.add_argument("-n", "--node")
-    element.add_argument("-w", "--way")
-    element.add_argument("-r", "--relation")
+    add_element_arguments(element)
 
     arguments: argparse.Namespace = parser.parse_args(args[1:])
 
@@ -84,6 +81,13 @@ def add_server_arguments(tile) -> None:
         default="cache",
         metavar="<path>",
     )
+
+
+def add_element_arguments(element) -> None:
+    """Add arguments for element command."""
+    element.add_argument("-n", "--node")
+    element.add_argument("-w", "--way")
+    element.add_argument("-r", "--relation")
 
 
 def add_render_arguments(render) -> None:
