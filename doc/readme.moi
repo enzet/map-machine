@@ -191,6 +191,8 @@ Example\:
 
 Command\: \m {tile}.
 
+\options {tile}
+
 \code {python roentgen.py tile \\
     -c $\{LATITUDE\},$\{LONGITUDE\} \\
     -s $\{OSM_ZOOM_LEVEL\}} {bash}

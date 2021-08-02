@@ -164,6 +164,15 @@ Tile generation
 
 Command: `tile`.
 
+| Option | Description |
+|---|---|
+| `-h`, `--help` | show this help message and exit |
+| `-c`, `--coordinates` | coordinates of any location inside the tile |
+| `-s`, `--scale` | OSM zoom level, default value: `18` |
+| `-t`, `--tile` | tile specification |
+| `--cache` | path for temporary OSM files, default value: `cache` |
+
+
 ```bash
 python roentgen.py tile \
     -c ${LATITUDE},${LONGITUDE} \
