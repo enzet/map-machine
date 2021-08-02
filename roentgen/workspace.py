@@ -58,12 +58,12 @@ def get_mapcss_path() -> Path:
 
 def get_mapcss_file_path() -> Path:
     """Directory for MapCSS files."""
-    return check_and_create(_MAPCSS_PATH) / "roentgen_icons.mapcss"
+    return get_mapcss_path() / "roentgen_icons.mapcss"
 
 
 def get_mapcss_icons_path() -> Path:
     """Directory for icons used by MapCSS file."""
-    return get_mapcss_path() / MAPCSS_ICONS_DIRECTORY_NAME
+    return check_and_create(get_mapcss_path() / MAPCSS_ICONS_DIRECTORY_NAME)
 
 
 def get_icon_grid_path() -> Path:
