@@ -19,9 +19,11 @@ Modify the code
 First of all, configure your workspace.
 
   * Install formatter, linter and test system: `pip install black flake8 pytest`.
+  * Be sure to run `git config --local core.hooksPath data/githooks` to enable Git hooks.
 
 ### Code style ###
 
 We use [Black](http://github.com/psf/black) code formatter with maximum 80 characters line lenght for all Python files within the project. Reformat a file is as simple as `black -l 80 <file name>`.
 
 If you create new Python file, make sure you add `__author__ = "<first name> <second name>"` and `__email__ = "<author e-mail>"` string variables.
+

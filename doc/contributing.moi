@@ -26,9 +26,7 @@ First of all, configure your workspace.
 
 \list
     {Install formatter, linter and test system\: \m {pip install black flake8 pytest}.}
-    /*
-    {Run \m {git config --local core.hooksPath .githooks/} to enable Git hooks (formatter and linter will automatically run for every commit, pytest will run for every push action).}
-    */
+    {Be sure to run \m {git config --local core.hooksPath data/githooks} to enable Git hooks.}
 
 \3 {Code style} {code-style}
 
