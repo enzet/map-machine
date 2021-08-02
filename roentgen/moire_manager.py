@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Dict, List, Any
 import yaml
 
-from roentgen.ui import add_render_arguments
+from roentgen import ui
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -134,10 +134,16 @@ class RoentgenMoire(Default, ABC):
         parser: ArgumentParser = ArgumentParser()
         command: str = self.clear(args[0])
         if command == "render":
-            add_render_arguments(parser)
+            ui.add_render_arguments(parser)
+        elif command == "server":
+            ui.add_server_arguments(parser)
+        elif command == "tile":
+            ui.add_tile_arguments(parser)
+        elif command == "element":
+            ui.add_element_arguments(parser)
         else:
             raise NotImplementedError(
-                "no separate function for render creation"
+                "no separate function for parser creation"
             )
         return self.parse(parser.get_moire_help())
 
