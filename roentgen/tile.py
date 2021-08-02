@@ -3,6 +3,7 @@ Tile generation.
 
 See https://wiki.openstreetmap.org/wiki/Tiles
 """
+import logging
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -98,7 +99,7 @@ class Tile:
             f"{min(lon1, lon2):.3f},{min(lat1, lat2):.3f},"
             f"{max(lon1, lon2):.3f},{max(lat1, lat2):.3f}"
         )
-        content = get_osm(boundary_box, cache_path)
+        content = get_osm(boundary_box, Path("cache"))
         if not content:
             error("cannot download OSM data")
             return None
@@ -171,13 +172,16 @@ def ui(options) -> None:
     directory: Path = workspace.get_tile_path()
 
     tile: Tile
-    if options.c and options.s:
-        coordinates: List[float] = list(map(float, options.c.split(",")))
-        tile = Tile.from_coordinates(np.array(coordinates), int(options.s))
-    elif options.t:
-        scale, x, y = map(int, options.t.split("/"))
+    if options.coordinates:
+        coordinates: List[float] = list(
+            map(float, options.coordinates.strip().split(","))
+        )
+        tile = Tile.from_coordinates(np.array(coordinates), options.scale)
+    elif options.tile:
+        scale, x, y = map(int, options.tile.split("/"))
         tile = Tile(x, y, scale)
     else:
+        logging.fatal("specify either --coordinates, or --tile")
         sys.exit(1)
 
     tile.draw(directory, Path(options.cache))

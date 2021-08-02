@@ -33,16 +33,7 @@ def parse_options(args) -> argparse.Namespace:
     element = subparser.add_parser("element")
 
     add_render_arguments(render)
-
-    tile.add_argument("-c")
-    tile.add_argument("-s")
-    tile.add_argument("-t")
-    tile.add_argument(
-        "--cache",
-        help="path for temporary OSM files",
-        default="cache",
-        metavar="<path>",
-    )
+    add_tile_arguments(tile)
 
     element.add_argument("-n", "--node")
     element.add_argument("-w", "--way")
@@ -51,6 +42,36 @@ def parse_options(args) -> argparse.Namespace:
     arguments: argparse.Namespace = parser.parse_args(args[1:])
 
     return arguments
+
+
+def add_tile_arguments(tile) -> None:
+    """Add arguments for tile command."""
+    tile.add_argument(
+        "-c",
+        "--coordinates",
+        metavar="<latitude>,<longitude>",
+        help="coordinates of any location inside the tile",
+    )
+    tile.add_argument(
+        "-s",
+        "--scale",
+        type=int,
+        metavar="<integer>",
+        help="OSM zoom level",
+        default=18,
+    )
+    tile.add_argument(
+        "-t",
+        "--tile",
+        metavar="<scale>/<x>/<y>",
+        help="tile specification",
+    )
+    tile.add_argument(
+        "--cache",
+        help="path for temporary OSM files",
+        default="cache",
+        metavar="<path>",
+    )
 
 
 def add_render_arguments(render) -> None:
