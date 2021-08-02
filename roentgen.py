@@ -226,7 +226,7 @@ if __name__ == "__main__":
     elif options.command == "element":
         draw_element(options)
     elif options.command == "server":
-        server.ui()
+        server.ui(options)
     elif options.command == "taginfo":
         from roentgen.taginfo import write_taginfo_project_file
 

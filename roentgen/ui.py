@@ -31,9 +31,11 @@ def parse_options(args) -> argparse.Namespace:
     subparser.add_parser("taginfo")
     tile = subparser.add_parser("tile")
     element = subparser.add_parser("element")
+    server = subparser.add_parser("server")
 
     add_render_arguments(render)
     add_tile_arguments(tile)
+    add_server_arguments(server)
 
     element.add_argument("-n", "--node")
     element.add_argument("-w", "--way")
@@ -66,6 +68,16 @@ def add_tile_arguments(tile) -> None:
         metavar="<scale>/<x>/<y>",
         help="tile specification",
     )
+    tile.add_argument(
+        "--cache",
+        help="path for temporary OSM files",
+        default="cache",
+        metavar="<path>",
+    )
+
+
+def add_server_arguments(tile) -> None:
+    """Add arguments for server command."""
     tile.add_argument(
         "--cache",
         help="path for temporary OSM files",

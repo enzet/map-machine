@@ -14,6 +14,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def __init__(self, request, client_address, server):
         super().__init__(request, client_address, server)
+        self.cache: Path = Path("cache")
 
     def write(self, message):
         if isinstance(message, bytes):
@@ -35,7 +36,7 @@ class Handler(BaseHTTPRequestHandler):
             if not png_path.exists():
                 if not svg_path.exists():
                     tile = Tile(x, y, zoom)
-                    tile.draw(tile_path)
+                    tile.draw(tile_path, self.cache)
                 rasterize(svg_path, png_path)
         if zoom != 18:
             return
@@ -48,11 +49,12 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
 
-def ui():
+def ui(options):
     server: Optional[HTTPServer] = None
     try:
         port: int = 8080
         server = HTTPServer(("", port), Handler)
+        server.cache_path = Path(options.cache)
         server.serve_forever()
         logging.info(f"Server started on port {port}.")
     finally:
