@@ -7,9 +7,8 @@ import urllib
 from pathlib import Path
 from typing import Dict, Optional
 
+import logging
 import urllib3
-
-from roentgen.ui import error
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -37,7 +36,7 @@ def get_osm(
     )
 
     if not matcher:
-        error("invalid boundary box")
+        logging.fatal("Invalid boundary box.")
         return None
 
     try:
@@ -46,17 +45,17 @@ def get_osm(
         right = float(matcher.group("right"))
         top = float(matcher.group("top"))
     except ValueError:
-        error("parsing boundary box")
+        logging.fatal("Invalid boundary box.")
         return None
 
     if left >= right:
-        error("negative horizontal boundary")
+        logging.fatal("Negative horizontal boundary.")
         return None
     if bottom >= top:
-        error("negative vertical boundary")
+        logging.error("Negative vertical boundary.")
         return None
     if right - left > 0.5 or top - bottom > 0.5:
-        error("box too big")
+        logging.error("Boundary box is too big.")
         return None
 
     content = get_data(

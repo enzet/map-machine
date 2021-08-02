@@ -20,7 +20,6 @@ from roentgen.mapper import Painter
 from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader
 from roentgen.scheme import Scheme
-from roentgen.ui import error
 from roentgen.util import MinMax
 
 
@@ -101,7 +100,7 @@ class Tile:
         )
         content = get_osm(boundary_box, Path("cache"))
         if not content:
-            error("cannot download OSM data")
+            logging.error("Cannot download OSM data.")
             return None
 
         return OSMReader().parse_osm_file(cache_path / (boundary_box + ".osm"))
@@ -120,13 +119,17 @@ class Tile:
             f"https://tile.openstreetmap.org/{self.scale}/{self.x}/{self.y}.png"
         )
 
-    def draw(self, directory_name: Path, cache_path: Path):
+    def draw(self, directory_name: Path, cache_path: Path) -> None:
         """
         Draw tile to SVG file.
 
         :param directory_name: output directory to storing tiles
+        :param cache_path: directory to store temporary files
         """
         map_ = self.load_map(cache_path)
+        if map_ is None:
+            logging.fatal("No map to draw.")
+            return
 
         lat1, lon1 = self.get_coordinates()
         lat2, lon2 = Tile(self.x + 1, self.y + 1, self.scale).get_coordinates()
@@ -181,8 +184,7 @@ def ui(options) -> None:
         scale, x, y = map(int, options.tile.split("/"))
         tile = Tile(x, y, scale)
     else:
-        logging.fatal("specify either --coordinates, or --tile")
+        logging.fatal("Specify either --coordinates, or --tile.")
         sys.exit(1)
 
     tile.draw(directory, Path(options.cache))
-    print(tile.get_carto_address())

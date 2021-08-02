@@ -17,7 +17,6 @@ from svgwrite.container import Group
 from svgwrite.path import Path as SvgPath
 
 from roentgen.color import is_bright
-from roentgen.ui import error
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -241,7 +240,7 @@ class ShapeExtractor:
                 configuration, path, point, id_, name
             )
         else:
-            error(f"not standard ID {id_}")
+            logging.error(f"Not standard ID {id_}.")
 
     def get_shape(self, id_: str) -> Optional[Shape]:
         """
@@ -294,7 +293,9 @@ class ShapeSpecification:
             if "shape" in structure:
                 shape = extractor.get_shape(structure["shape"])
             else:
-                error("invalid shape specification: 'shape' key expected")
+                logging.error(
+                    "Invalid shape specification: `shape` key expected."
+                )
             if "color" in structure:
                 color = scheme.get_color(structure["color"])
             if "offset" in structure:

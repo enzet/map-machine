@@ -4,8 +4,6 @@ Command-line user interface.
 import argparse
 import sys
 
-from typing import Optional
-
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
@@ -185,15 +183,3 @@ def progress_bar(
             f"{int(length - fill_length - 1) * ' '}▏{text}"
         )
         sys.stdout.write("\033[F")
-
-
-def error(message: Optional[str] = None):
-    """
-    Print error message.
-
-    :param message: message to print.
-    """
-    if message:
-        print(f"Error: {message}.")
-    else:
-        print("Error.")

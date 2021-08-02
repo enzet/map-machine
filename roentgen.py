@@ -29,7 +29,7 @@ from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader, OverpassReader
 from roentgen.point import Point
 from roentgen.scheme import LineStyle, Scheme
-from roentgen.ui import error, parse_options
+from roentgen.ui import parse_options
 from roentgen.util import MinMax
 
 
@@ -52,7 +52,7 @@ def main(options) -> None:
     else:
         content = get_osm(options.boundary_box, cache_path)
         if not content:
-            error("cannot download OSM data")
+            logging.fatal("Cannot download OSM data.")
             sys.exit(1)
         input_file_names = [cache_path / f"{options.boundary_box}.osm"]
 
