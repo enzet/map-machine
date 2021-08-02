@@ -11,10 +11,11 @@ from typing import List, Optional, Tuple
 import numpy as np
 import svgwrite
 
+from roentgen import workspace
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
 from roentgen.icon import ShapeExtractor
-from roentgen.mapper import ICONS_FILE_NAME, Painter, TAGS_FILE_NAME
+from roentgen.mapper import Painter
 from roentgen.osm_getter import get_osm
 from roentgen.osm_reader import Map, OSMReader
 from roentgen.scheme import Scheme
@@ -97,7 +98,7 @@ class Tile:
             f"{min(lon1, lon2):.3f},{min(lat1, lat2):.3f},"
             f"{max(lon1, lon2):.3f},{max(lat1, lat2):.3f}"
         )
-        content = get_osm(boundary_box, Path("cache"))
+        content = get_osm(boundary_box, cache_path)
         if not content:
             error("cannot download OSM data")
             return None
@@ -141,9 +142,9 @@ class Tile:
             str(output_file_name), size=size
         )
         icon_extractor: ShapeExtractor = ShapeExtractor(
-            Path(ICONS_FILE_NAME), Path("icons/config.json")
+            workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
         )
-        scheme: Scheme = Scheme(Path(TAGS_FILE_NAME))
+        scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
         constructor: Constructor = Constructor(
             map_, flinger, scheme, icon_extractor
         )
@@ -167,8 +168,7 @@ def ui(options) -> None:
     """
     Simple user interface for tile generation.
     """
-    directory: Path = Path("out/tiles")
-    directory.mkdir(parents=True, exist_ok=True)
+    directory: Path = workspace.get_tile_path()
 
     tile: Tile
     if options.c and options.s:

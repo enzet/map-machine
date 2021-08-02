@@ -10,6 +10,7 @@ from typing import List
 
 import logging
 
+from roentgen import workspace
 from roentgen import (
     __doc_url__,
     __project__,
@@ -78,9 +79,7 @@ class TaginfoProjectFile:
 
 
 def write_taginfo_project_file(scheme: Scheme) -> None:
-    out_path: Path = Path("out")
-    out_path.mkdir(exist_ok=True)
-    out_file: Path = out_path / "roentgen_taginfo.json"
+    out_file: Path = workspace.get_taginfo_file_path()
     logging.info(f"Write Röntgen project file for Taginfo to {out_file}...")
     taginfo_project_file: TaginfoProjectFile = TaginfoProjectFile(
         out_file, scheme

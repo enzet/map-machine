@@ -3,6 +3,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from typing import Optional
 
+from roentgen import workspace
 from roentgen.raster import rasterize
 from roentgen.tile import Tile
 
@@ -27,13 +28,14 @@ class Handler(BaseHTTPRequestHandler):
         zoom = int(parts[2])
         x = int(parts[3])
         y = int(parts[4])
-        png_path = Path("tiles") / Path(f"tile_{zoom}_{x}_{y}.png")
+        tile_path: Path = workspace.get_tile_path()
+        png_path = tile_path / f"tile_{zoom}_{x}_{y}.png"
         if self.update_cache:
-            svg_path = Path("tiles") / Path(f"tile_{zoom}_{x}_{y}.svg")
+            svg_path = tile_path / f"tile_{zoom}_{x}_{y}.svg"
             if not png_path.exists():
                 if not svg_path.exists():
                     tile = Tile(x, y, zoom)
-                    tile.draw(Path("tiles"))
+                    tile.draw(tile_path)
                 rasterize(svg_path, png_path)
         if zoom != 18:
             return
@@ -46,7 +48,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
 
-def ui(args):
+def ui():
     server: Optional[HTTPServer] = None
     try:
         port: int = 8080

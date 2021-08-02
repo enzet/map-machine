@@ -7,6 +7,7 @@ from typing import List, Optional, Dict
 import logging
 from colour import Color
 
+from roentgen import workspace
 from roentgen.grid import IconCollection
 from roentgen.icon import ShapeExtractor
 from roentgen.osm_reader import STAGES_OF_DECAY
@@ -74,7 +75,7 @@ class MapCSSWriter:
         """
         Construct icon selectors for MapCSS 0.2 scheme.
         """
-        with Path("data/roentgen_icons_part.mapcss").open() as input_file:
+        with workspace.MAPCSS_PART_FILE_PATH.open() as input_file:
             output_file.write(input_file.read())
 
         output_file.write("\n")
@@ -107,27 +108,21 @@ def write_mapcss() -> None:
     """
     Write MapCSS 0.2 scheme.
     """
-    icon_directory_name: str = "icons"
+    directory: Path = workspace.get_mapcss_path()
+    icons_with_outline_path: Path = workspace.get_mapcss_icons_path()
 
-    out_path: Path = Path("out")
-    directory: Path = out_path / "roentgen_icons_mapcss"
-    directory.mkdir(exist_ok=True)
-    icons_with_outline_path: Path = directory / icon_directory_name
-
-    icons_with_outline_path.mkdir(parents=True, exist_ok=True)
-
-    scheme: Scheme = Scheme(Path("scheme/default.yml"))
+    scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
     extractor: ShapeExtractor = ShapeExtractor(
-        Path("icons/icons.svg"), Path("icons/config.json")
+        workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
     collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
     collection.draw_icons(
         icons_with_outline_path, color=Color("black"), outline=True
     )
     mapcss_writer: MapCSSWriter = MapCSSWriter(
-        scheme, icon_directory_name, True
+        scheme, workspace.MAPCSS_ICONS_DIRECTORY_NAME, True
     )
-    with (directory / "roentgen_icons.mapcss").open("w+") as output_file:
+    with workspace.get_mapcss_file_path().open("w+") as output_file:
         mapcss_writer.write(output_file)
 
     logging.info(f"MapCSS 0.2 scheme is written to {directory}.")

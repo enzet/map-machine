@@ -10,6 +10,7 @@ import numpy as np
 from colour import Color
 from svgwrite import Drawing
 
+from roentgen import workspace
 from roentgen.icon import Icon, Shape, ShapeExtractor, ShapeSpecification
 from roentgen.scheme import NodeMatcher, Scheme
 
@@ -198,19 +199,19 @@ def draw_icons() -> None:
     Draw all possible icon shapes combinations as grid in one SVG file and as
     individual SVG files.
     """
-    out_path: Path = Path("out")
-    icons_by_id_path: Path = out_path / "icons_by_id"
-    icons_by_name_path: Path = out_path / "icons_by_name"
+    out_path: Path = workspace.get_output_path()
+    icons_by_id_path: Path = workspace.get_icons_by_id_path()
+    icons_by_name_path: Path = workspace.get_icons_by_name_path()
 
     for path in (out_path, icons_by_id_path, icons_by_name_path):
         path.mkdir(parents=True, exist_ok=True)
 
-    scheme: Scheme = Scheme(Path("scheme/default.yml"))
+    scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
     extractor: ShapeExtractor = ShapeExtractor(
-        Path("icons/icons.svg"), Path("icons/config.json")
+        workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
     collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
-    icon_grid_path: Path = out_path / "icon_grid.svg"
+    icon_grid_path: Path = workspace.get_icon_grid_path()
     collection.draw_grid(icon_grid_path)
     logging.info(f"Icon grid is written to {icon_grid_path}.")
     collection.draw_icons(icons_by_id_path)

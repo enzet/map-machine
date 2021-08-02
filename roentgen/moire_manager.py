@@ -7,6 +7,7 @@ from abc import ABC
 from moire.moire import Tag
 from moire.default import Default, DefaultHTML, DefaultMarkdown, DefaultWiki
 
+from roentgen import workspace
 from roentgen.icon import ShapeExtractor
 from pathlib import Path
 from typing import Dict, List, Any
@@ -91,7 +92,7 @@ class TestConfiguration:
 
 
 test_configuration: TestConfiguration = TestConfiguration(
-    Path(".github/workflows/test.yml")
+    workspace.GITHUB_TEST_PATH
 )
 
 
@@ -160,7 +161,7 @@ class RoentgenHTML(RoentgenMoire, DefaultHTML):
         size: str = self.clear(args[1]) if len(args) > 1 else 16
         return (
             f'<img class="icon" style="width: {size}px; height: {size}px;" '
-            f'src="icon_set/ids/{self.clear(args[0])}.svg" />'
+            f'src="icons_by_id/{self.clear(args[0])}.svg" />'
         )
 
 
@@ -173,7 +174,7 @@ class RoentgenOSMWiki(RoentgenMoire, DefaultWiki):
 
     images = {}
     extractor = ShapeExtractor(
-        Path("icons/icons.svg"), Path("icons/config.json")
+        workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
 
     def osm(self, args: Arguments) -> str:

@@ -24,9 +24,6 @@ from roentgen.scheme import Scheme
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-ICONS_FILE_NAME: str = "icons/icons.svg"
-TAGS_FILE_NAME: str = "scheme/default.yml"
-
 AUTHOR_MODE = "user-coloring"
 CREATION_TIME_MODE = "time"
 

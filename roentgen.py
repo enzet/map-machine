@@ -12,6 +12,7 @@ import logging
 import numpy as np
 import svgwrite
 
+from roentgen import workspace
 from roentgen import server, tile
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
@@ -20,9 +21,7 @@ from roentgen.icon import ShapeExtractor
 from roentgen.mapper import (
     AUTHOR_MODE,
     CREATION_TIME_MODE,
-    ICONS_FILE_NAME,
     Painter,
-    TAGS_FILE_NAME,
     check_level_number,
     check_level_overground,
 )
@@ -57,7 +56,7 @@ def main(options) -> None:
             sys.exit(1)
         input_file_names = [cache_path / f"{options.boundary_box}.osm"]
 
-    scheme: Scheme = Scheme(Path(TAGS_FILE_NAME))
+    scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
     min_: np.array
     max_: np.array
     map_: Map
@@ -104,7 +103,7 @@ def main(options) -> None:
         options.output_file_name, size=size
     )
     icon_extractor: ShapeExtractor = ShapeExtractor(
-        Path(ICONS_FILE_NAME), Path("icons/config.json")
+        workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
 
     if options.level:
@@ -160,10 +159,6 @@ def main(options) -> None:
 def draw_element(options):
     """
     Draw single node, line, or area.
-
-    :param target: node, line, or area.
-    :param tags_description: text description of tags, pair are separated by
-        comma, key from value is separated by equals sign.
     """
     if options.node:
         target = "node"
@@ -231,7 +226,7 @@ if __name__ == "__main__":
     elif options.command == "element":
         draw_element(options)
     elif options.command == "server":
-        server.ui(sys.argv[2:])
+        server.ui()
     elif options.command == "taginfo":
         from roentgen.taginfo import write_taginfo_project_file
 
