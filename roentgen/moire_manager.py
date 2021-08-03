@@ -10,7 +10,7 @@ from moire.default import Default, DefaultHTML, DefaultMarkdown, DefaultWiki
 from roentgen import workspace
 from roentgen.icon import ShapeExtractor
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Union
 import yaml
 
 from roentgen import ui
@@ -19,6 +19,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 Arguments = List[Any]
+Code = Union[str, Tag, List]
 
 PREFIX: str = "https://wiki.openstreetmap.org/wiki/"
 
@@ -29,7 +30,7 @@ class ArgumentParser(argparse.ArgumentParser):
     """
 
     def __init__(self, *args, **kwargs):
-        self.arguments = []
+        self.arguments: List[Dict[str, Any]] = []
         super(ArgumentParser, self).__init__(*args, **kwargs)
 
     def add_argument(self, *args, **kwargs) -> None:
@@ -43,12 +44,15 @@ class ArgumentParser(argparse.ArgumentParser):
         self.arguments.append(argument)
 
     def get_moire_help(self) -> Tag:
-        """Return Moire table with stored arguments."""
+        """
+        Return Moire table with "Option" and "Description" columns filled with
+        arguments.
+        """
         table = [[["Option"], ["Description"]]]
 
         for option in self.arguments:
-            array = [[Tag("m", [x]), ", "] for x in option["arguments"]]
-            row = [[x for y in array for x in y][:-1]]
+            array: Code = [[Tag("m", [x]), ", "] for x in option["arguments"]]
+            row: Code = [[x for y in array for x in y][:-1]]
 
             if "help" in option:
                 help_value: List = [option["help"]]
@@ -57,14 +61,16 @@ class ArgumentParser(argparse.ArgumentParser):
                     and option["default"]
                     and option["default"] != "==SUPPRESS=="
                 ):
-                    help_value += [
-                        ", default value: ",
-                        Tag("m", [str(option["default"])]),
-                    ]
+                    default_value: Code = Tag("m", [str(option["default"])])
+                    if "type" in option and option["type"] in [int, float]:
+                        default_value = str(option["default"])
+                    help_value += [", default value: ", default_value]
                 row.append(help_value)
             else:
                 row.append([])
+
             table.append(row)
+
         return Tag("table", table)
 
 
