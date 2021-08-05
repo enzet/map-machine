@@ -2,10 +2,16 @@
 Command-line user interface.
 """
 import argparse
+import re
 import sys
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
+
+import logging
+from dataclasses import dataclass
+
+import numpy as np
 
 BOXES: str = " ▏▎▍▌▋▊▉"
 BOXES_LENGTH: int = len(BOXES)
@@ -68,6 +74,13 @@ def add_tile_arguments(tile) -> None:
         help="path for temporary OSM files",
         default="cache",
         metavar="<path>",
+    )
+    tile.add_argument(
+        "-b",
+        "--boundary-box",
+        help="construct the minimum amount of tiles that cover requested "
+        "boundary box",
+        metavar="<lon1>,<lat1>,<lon2>,<lat2>",
     )
 
 
@@ -183,3 +196,76 @@ def progress_bar(
             f"{int(length - fill_length - 1) * ' '}▏{text}"
         )
         sys.stdout.write("\033[F")
+
+
+@dataclass
+class BoundaryBox:
+    left: float
+    bottom: float
+    right: float
+    top: float
+
+    @classmethod
+    def from_text(cls, boundary_box: str):
+        """
+        Parse boundary box string representation.
+
+        Note, that:
+            left < right
+            bottom < top
+
+        :param boundary_box: boundary box string representation in the form of
+            <longitude 1>,<latitude 1>,<longitude 2>,<latitude 2> or simply
+            <left>,<bottom>,<right>,<top>.
+        """
+        matcher = re.match(
+            "(?P<left>[0-9.-]*),(?P<bottom>[0-9.-]*),"
+            + "(?P<right>[0-9.-]*),(?P<top>[0-9.-]*)",
+            boundary_box,
+        )
+
+        if not matcher:
+            logging.fatal("Invalid boundary box.")
+            return None
+
+        try:
+            left = float(matcher.group("left"))
+            bottom = float(matcher.group("bottom"))
+            right = float(matcher.group("right"))
+            top = float(matcher.group("top"))
+        except ValueError:
+            logging.fatal("Invalid boundary box.")
+            return None
+
+        if left >= right:
+            logging.fatal("Negative horizontal boundary.")
+            return None
+        if bottom >= top:
+            logging.error("Negative vertical boundary.")
+            return None
+        if right - left > 0.5 or top - bottom > 0.5:
+            logging.error("Boundary box is too big.")
+            return None
+
+        return cls(left, bottom, right, top)
+
+    def get_left_top(self) -> (np.array, np.array):
+        """Get left top corner of the boundary box."""
+        return self.top, self.left
+
+    def get_right_bottom(self) -> (np.array, np.array):
+        """Get right bottom corner of the boundary box."""
+        return self.bottom, self.right
+
+    def get_format(self) -> str:
+        """
+        Get text representation of the boundary box:
+        <longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>.  Coordinates are
+        rounded to three digits after comma.
+        """
+        a = (
+            f"{self.left - 0.001:.3f},{self.bottom - 0.001:.3f},"
+            f"{self.right + 0.001:.3f},{self.top + 0.001:.3f}"
+        )
+        print(self.left, a)
+        return a

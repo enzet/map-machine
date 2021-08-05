@@ -1,17 +1,17 @@
 """
 Getting OpenStreetMap data from the web.
 """
-import re
 import time
 import urllib
 from pathlib import Path
 from typing import Dict, Optional
 
-import logging
 import urllib3
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
+
+from roentgen.ui import BoundaryBox
 
 
 def get_osm(
@@ -29,40 +29,13 @@ def get_osm(
     if not to_update and result_file_name.is_file():
         return result_file_name.open().read()
 
-    matcher = re.match(
-        "(?P<left>[0-9.-]*),(?P<bottom>[0-9.-]*),"
-        + "(?P<right>[0-9.-]*),(?P<top>[0-9.-]*)",
-        boundary_box,
-    )
-
-    if not matcher:
-        logging.fatal("Invalid boundary box.")
-        return None
-
-    try:
-        left = float(matcher.group("left"))
-        bottom = float(matcher.group("bottom"))
-        right = float(matcher.group("right"))
-        top = float(matcher.group("top"))
-    except ValueError:
-        logging.fatal("Invalid boundary box.")
-        return None
-
-    if left >= right:
-        logging.fatal("Negative horizontal boundary.")
-        return None
-    if bottom >= top:
-        logging.error("Negative vertical boundary.")
-        return None
-    if right - left > 0.5 or top - bottom > 0.5:
-        logging.error("Boundary box is too big.")
-        return None
-
     content = get_data(
         "api.openstreetmap.org/api/0.6/map",
         {"bbox": boundary_box},
         is_secure=True,
     )
+    if BoundaryBox.from_text(boundary_box) is None:
+        return None
 
     result_file_name.open("w+").write(content.decode("utf-8"))
 
