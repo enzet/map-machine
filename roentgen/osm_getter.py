@@ -6,6 +6,7 @@ import urllib
 from pathlib import Path
 from typing import Dict, Optional
 
+import logging
 import urllib3
 
 __author__ = "Sergey Vartanov"
@@ -29,11 +30,13 @@ def get_osm(
     if not to_update and result_file_name.is_file():
         return result_file_name.open().read()
 
-    content = get_data(
+    content: Optional[bytes] = get_data(
         "api.openstreetmap.org/api/0.6/map",
         {"bbox": boundary_box},
         is_secure=True,
     )
+    if content is None:
+        return None
     if BoundaryBox.from_text(boundary_box) is None:
         return None
 
@@ -44,7 +47,7 @@ def get_osm(
 
 def get_data(
     address: str, parameters: Dict[str, str], is_secure: bool = False
-) -> bytes:
+) -> Optional[bytes]:
     """
     Construct Internet page URL and get its descriptor.
 
@@ -59,7 +62,13 @@ def get_data(
     print("Getting " + url + "...")
     pool_manager = urllib3.PoolManager()
     urllib3.disable_warnings()
-    result = pool_manager.request("GET", url)
+
+    try:
+        result = pool_manager.request("GET", url)
+    except urllib3.exceptions.MaxRetryError:
+        logging.fatal("Too many attempts.")
+        return None
+
     pool_manager.clear()
     time.sleep(2)
     return result.data
