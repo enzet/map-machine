@@ -257,16 +257,18 @@ class BoundaryBox:
         """Get right bottom corner of the boundary box."""
         return self.bottom, self.right
 
-    def get_format_rounded(self) -> str:
+    def round(self) -> "BoundaryBox":
         """
-        Get text representation of the boundary box:
-        <longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>.  Coordinates are
-        rounded to three digits after comma.
+        Round boundary box.
         """
-        return (
-            f"{self.left - 0.001:.3f},{self.bottom - 0.001:.3f},"
-            f"{self.right + 0.001:.3f},{self.top + 0.001:.3f}"
-        )
+        # FIXME: check negative values
+
+        self.left = int(self.left * 1000) / 1000 - 0.001
+        self.bottom = int(self.bottom * 1000) / 1000 - 0.001
+        self.right = int(self.right * 1000) / 1000 + 0.002
+        self.top = int(self.top * 1000) / 1000 + 0.002
+
+        return self
 
     def get_format(self) -> str:
         """

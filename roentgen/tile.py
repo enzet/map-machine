@@ -55,7 +55,8 @@ class Tiles:
 
         extended_boundary_box: BoundaryBox = BoundaryBox(
             lon_1, lat_1, lon_2, lat_2
-        )
+        ).round()
+
         return cls(tiles, tile_1, tile_2, scale, extended_boundary_box)
 
     def draw(self, directory: Path, cache_path: Path) -> None:
@@ -68,7 +69,7 @@ class Tiles:
         get_osm(self.boundary_box, cache_path)
 
         map_ = OSMReader().parse_osm_file(
-            cache_path / (self.boundary_box.get_format_rounded() + ".osm")
+            cache_path / (self.boundary_box.get_format() + ".osm")
         )
         for tile in self.tiles:
             file_path: Path = tile.get_file_name(directory)
@@ -86,7 +87,7 @@ class Tiles:
         :param cache_path: directory for temporary SVG file and OSM files
         """
         output_path: Path = cache_path / (
-            self.boundary_box.get_format_rounded() + ".svg"
+            self.boundary_box.get_format() + ".svg"
         )
         if not output_path.exists():
             content = get_osm(self.boundary_box, cache_path)
@@ -95,7 +96,7 @@ class Tiles:
                 return None
 
             map_: Map = OSMReader().parse_osm_file(
-                cache_path / (self.boundary_box.get_format_rounded() + ".osm")
+                cache_path / (self.boundary_box.get_format() + ".osm")
             )
             lat_2, lon_1 = self.tile_1.get_coordinates()
             lat_1, lon_2 = Tile(
@@ -129,9 +130,7 @@ class Tiles:
             with output_path.open("w+") as output_file:
                 svg.write(output_file)
 
-        png_path: Path = (
-            cache_path / f"{self.boundary_box.get_format_rounded()}.png"
-        )
+        png_path: Path = cache_path / f"{self.boundary_box.get_format()}.png"
         if not png_path.exists():
             rasterize(output_path, png_path)
 
@@ -189,14 +188,12 @@ class Tile:
             self.x + 1, self.y + 1, self.scale
         ).get_coordinates()
 
-        # FIXME: check negative values
+        lat_2 = point_1[0]
+        lon_1 = point_1[1]
+        lat_1 = point_2[0]
+        lon_2 = point_2[1]
 
-        lat_2 = int(point_1[0] * 1000) / 1000 + 0.002
-        lon_1 = int(point_1[1] * 1000) / 1000 - 0.001
-        lat_1 = int(point_2[0] * 1000) / 1000 - 0.001
-        lon_2 = int(point_2[1] * 1000) / 1000 + 0.002
-
-        return BoundaryBox(lon_1, lat_1, lon_2, lat_2)
+        return BoundaryBox(lon_1, lat_1, lon_2, lat_2).round()
 
     def load_map(self, cache_path: Path) -> Map:
         """
@@ -208,7 +205,7 @@ class Tile:
         get_osm(boundary_box, cache_path)
 
         return OSMReader().parse_osm_file(
-            cache_path / f"{boundary_box.format()}.osm"
+            cache_path / f"{boundary_box.get_format()}.osm"
         )
 
     def get_file_name(self, directory_name: Path) -> Path:

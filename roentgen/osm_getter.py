@@ -38,7 +38,7 @@ def get_osm(
 
     content: Optional[bytes] = get_data(
         "api.openstreetmap.org/api/0.6/map",
-        {"bbox": boundary_box},
+        {"bbox": boundary_box.get_format()},
         is_secure=True,
     ).decode("utf-8")
 
