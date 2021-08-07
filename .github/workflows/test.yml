@@ -41,3 +41,6 @@ jobs:
     - name: Test element generation
       run: |
         python roentgen.py element --node amenity=bench,material=wood
+    - name: Test tile generation
+      run: |
+        python roentgen.py tile --coordinates 46.09498,10.06879 --cache test/data
