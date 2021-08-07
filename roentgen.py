@@ -25,11 +25,11 @@ from roentgen.mapper import (
     check_level_number,
     check_level_overground,
 )
-from roentgen.osm_getter import get_osm
+from roentgen.osm_getter import get_osm, NetworkError
 from roentgen.osm_reader import Map, OSMReader, OverpassReader
 from roentgen.point import Point
 from roentgen.scheme import LineStyle, Scheme
-from roentgen.ui import parse_options
+from roentgen.ui import parse_options, BoundaryBox
 from roentgen.util import MinMax
 
 
@@ -40,7 +40,10 @@ def main(options) -> None:
     :param argv: command-line arguments
     """
     if options.boundary_box:
-        options.boundary_box = options.boundary_box.replace(" ", "")
+        box: List[float] = list(
+            map(float, options.boundary_box.replace(" ", "").split(","))
+        )
+        boundary_box = BoundaryBox(box[0], box[1], box[2], box[3])
 
     cache_path: Path = Path(options.cache)
     cache_path.mkdir(parents=True, exist_ok=True)
@@ -50,9 +53,10 @@ def main(options) -> None:
     if options.input_file_name:
         input_file_names = list(map(Path, options.input_file_name))
     else:
-        content = get_osm(options.boundary_box, cache_path)
-        if not content:
-            logging.fatal("Cannot download OSM data.")
+        try:
+            get_osm(boundary_box, cache_path)
+        except NetworkError as e:
+            logging.fatal(e.message)
             sys.exit(1)
         input_file_names = [cache_path / f"{options.boundary_box}.osm"]
 
