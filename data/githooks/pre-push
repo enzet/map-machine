@@ -1,21 +1,40 @@
 #!/bin/sh
 
 echo "Checking code format with Black..."
-black -l 80 --check test roentgen roentgen.py || { echo "FAIL"; exit 1; }
+if ! black -l 80 --check test roentgen roentgen.py; then
+    black -l 80 --diff test roentgen roentgen.py
+    echo "FAIL"
+    exit 1
+fi
+
+# Link with Flake8.
 
 echo "Lint with Flake8..."
-flake8 --max-line-length=80 --ignore=E203,W503 --exclude=archive,precommit.py,test/test_road.py || { echo "FAIL"; exit 1; }
+flake8 \
+    --max-line-length=80 \
+    --ignore=E203,W503 \
+    --exclude=archive,precommit.py,test/test_road.py \
+    || { echo "FAIL"; exit 1; }
+
+# Unit tests with pytest.
 
 echo "Run tests with pytest..."
 pytest -v || { echo "FAIL"; exit 1; }
 
+# Integration tests.
+
 echo "Test render"
-python3 roentgen.py render -b 37.415,55.753,37.416,55.754 --cache test/data || { echo "FAIL"; exit 1; }
+python3 roentgen.py render -b 37.415,55.753,37.416,55.754 --cache test/data \
+    || { echo "FAIL"; exit 1; }
+
 echo "Test icons"
 python3 roentgen.py icons || { echo "FAIL"; exit 1; }
+
 echo "Test MapCSS generation"
 python3 roentgen.py mapcss || { echo "FAIL"; exit 1; }
+
 echo "Test element generation"
-python3 roentgen.py element --node amenity=bench,material=wood || { echo "FAIL"; exit 1; }
+python3 roentgen.py element --node amenity=bench,material=wood \
+    || { echo "FAIL"; exit 1; }
 
 exit 0
