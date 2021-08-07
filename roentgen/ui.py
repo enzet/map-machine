@@ -261,12 +261,10 @@ class BoundaryBox:
         """
         Round boundary box.
         """
-        # FIXME: check negative values
-
-        self.left = int(self.left * 1000) / 1000 - 0.001
-        self.bottom = int(self.bottom * 1000) / 1000 - 0.001
-        self.right = int(self.right * 1000) / 1000 + 0.002
-        self.top = int(self.top * 1000) / 1000 + 0.002
+        self.left = round(self.left * 1000) / 1000 - 0.001
+        self.bottom = round(self.bottom * 1000) / 1000 - 0.001
+        self.right = round(self.right * 1000) / 1000 + 0.001
+        self.top = round(self.top * 1000) / 1000 + 0.001
 
         return self
 
