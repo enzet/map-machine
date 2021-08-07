@@ -188,12 +188,9 @@ class Tile:
             self.x + 1, self.y + 1, self.scale
         ).get_coordinates()
 
-        lat_2 = point_1[0]
-        lon_1 = point_1[1]
-        lat_1 = point_2[0]
-        lon_2 = point_2[1]
-
-        return BoundaryBox(lon_1, lat_1, lon_2, lat_2).round()
+        return BoundaryBox(
+            point_1[1], point_2[0], point_2[1], point_1[0]
+        ).round()
 
     def load_map(self, cache_path: Path) -> Map:
         """

@@ -7,7 +7,13 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
-def test_extend() -> None:
+def test_round_zero_coordinates() -> None:
+    box: BoundaryBox = BoundaryBox(0, 0, 0, 0).round()
+
+    assert box.get_format() == "-0.001,-0.001,0.001,0.001"
+
+
+def test_round_coordinates() -> None:
     box: BoundaryBox = BoundaryBox(
         10.067596435546875,
         46.094186149226466,
