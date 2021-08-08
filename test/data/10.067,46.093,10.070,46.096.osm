@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<osm version="0.6" generator="CGImap 0.8.5 (2521311 spike-06.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
- <bounds minlat="46.0930000" minlon="10.0660000" maxlat="46.0970000" maxlon="10.0700000"/>
+<osm version="0.6" generator="CGImap 0.8.5 (3047582 spike-07.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <bounds minlat="46.0930000" minlon="10.0670000" maxlat="46.0960000" maxlon="10.0700000"/>
  <node id="534246185" visible="true" version="1" changeset="2872960" timestamp="2009-10-17T13:34:50Z" user="kaitu" uid="69717" lat="46.0949830" lon="10.0687940">
   <tag k="ele" v="2743"/>
   <tag k="name" v="Cima Tresciana"/>

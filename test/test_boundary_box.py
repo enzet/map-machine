@@ -21,4 +21,4 @@ def test_round_coordinates() -> None:
         46.09513848390771,
     ).round()
 
-    assert box.get_format() == "10.066,46.093,10.070,46.097"
+    assert box.get_format() == "10.067,46.093,10.070,46.096"
