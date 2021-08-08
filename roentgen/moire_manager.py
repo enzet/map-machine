@@ -7,7 +7,7 @@ from abc import ABC
 from moire.moire import Tag
 from moire.default import Default, DefaultHTML, DefaultMarkdown, DefaultWiki
 
-from roentgen import workspace
+from roentgen.workspace import workspace
 from roentgen.icon import ShapeExtractor
 from pathlib import Path
 from typing import Dict, List, Any, Union

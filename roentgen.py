@@ -12,7 +12,7 @@ import logging
 import numpy as np
 import svgwrite
 
-from roentgen import workspace
+from roentgen.workspace import workspace
 from roentgen import server, tile
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger

@@ -10,7 +10,7 @@ from typing import List
 
 import logging
 
-from roentgen import workspace
+from roentgen.workspace import workspace
 from roentgen import (
     __doc_url__,
     __project__,

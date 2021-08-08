@@ -7,7 +7,7 @@ from typing import List, Optional, Dict
 import logging
 from colour import Color
 
-from roentgen import workspace
+from roentgen.workspace import workspace
 from roentgen.grid import IconCollection
 from roentgen.icon import ShapeExtractor
 from roentgen.osm_reader import STAGES_OF_DECAY

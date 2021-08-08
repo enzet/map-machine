@@ -12,7 +12,7 @@ from typing import List, Optional, Tuple
 import numpy as np
 import svgwrite
 
-from roentgen import workspace
+from roentgen.workspace import workspace
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
 from roentgen.icon import ShapeExtractor
