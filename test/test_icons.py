@@ -1,29 +1,16 @@
 """
 Test icon generation for nodes.
 """
-from pathlib import Path
-from typing import Dict, Set, Tuple
+from typing import Dict, Set
 
 import pytest
 
 from roentgen.grid import IconCollection
 from roentgen.icon import IconSet
-from test import SCHEME, SHAPE_EXTRACTOR
+from test import SCHEME, SHAPE_EXTRACTOR, workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
-
-
-@pytest.fixture
-def init_directories() -> Tuple[Path, Path]:
-    """Create temporary directories."""
-    temp_directory: Path = Path("temp")
-    temp_directory.mkdir(exist_ok=True)
-
-    set_directory: Path = temp_directory / "icon_set"
-    set_directory.mkdir(exist_ok=True)
-
-    return temp_directory, set_directory
 
 
 @pytest.fixture
@@ -32,16 +19,19 @@ def init_collection() -> IconCollection:
     return IconCollection.from_scheme(SCHEME, SHAPE_EXTRACTOR)
 
 
-def test_grid(init_collection, init_directories) -> None:
+def test_grid(init_collection) -> None:
     """Test grid drawing."""
-    temp_directory, _ = init_directories
-    init_collection.draw_grid(temp_directory / "grid.svg")
+    init_collection.draw_grid(workspace.output_path / "grid.svg")
 
 
-def test_icons(init_collection, init_directories) -> None:
+def test_icons_by_id(init_collection) -> None:
     """Test individual icons drawing."""
-    _, set_directory = init_directories
-    init_collection.draw_icons(set_directory)
+    init_collection.draw_icons(workspace.get_icons_by_id_path(), by_name=False)
+
+
+def test_icons_by_name(init_collection) -> None:
+    """Test drawing individual icons that have names."""
+    init_collection.draw_icons(workspace.get_icons_by_name_path(), by_name=True)
 
 
 def get_icon(tags: Dict[str, str]) -> IconSet:

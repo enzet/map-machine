@@ -5,11 +5,14 @@ from pathlib import Path
 
 from roentgen.icon import ShapeExtractor
 from roentgen.scheme import Scheme
+from roentgen.workspace import Workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-SCHEME: Scheme = Scheme(Path("scheme/default.yml"))
+workspace: Workspace = Workspace(Path("temp"))
+
+SCHEME: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
 SHAPE_EXTRACTOR: ShapeExtractor = ShapeExtractor(
-    Path("icons/icons.svg"), Path("icons/config.json")
+    workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
 )
