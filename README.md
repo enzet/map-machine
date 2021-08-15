@@ -147,7 +147,6 @@ python roentgen.py render -b 2.284,48.86,2.29,48.865
 
 | Option | Description |
 |---|---|
-| `-h`, `--help` | show this help message and exit |
 | `-i`, `--input` | input XML file name or names (if not specified, file will be downloaded using OpenStreetMap API) |
 | `-o`, `--output` | output SVG file name, default value: `out/map.svg` |
 | `-b`, `--boundary-box` | geo boundary box, use space before "-" if the first value is negative |
@@ -166,7 +165,6 @@ Command: `tile`.
 
 | Option | Description |
 |---|---|
-| `-h`, `--help` | show this help message and exit |
 | `-c`, `--coordinates` | coordinates of any location inside the tile |
 | `-s`, `--scale` | OSM zoom level, default value: 18 |
 | `-t`, `--tile` | tile specification |
@@ -195,5 +193,11 @@ MapCSS 0.2 generation
 
 Command: `mapcss`.
 
-`python roentgen.py mapcss` will create `out/roentgen_icons_mapcss` directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas: `.mapcss` file and directory with icons.
+`python roentgen.py mapcss` will create `out/roentgen_mapcss` directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas: `.mapcss` file and directory with icons.
+
+| Option | Description |
+|---|---|
+| `--icons` | add icons for nodes and areas, default value: `True` |
+| `--ways` | add style for ways and relations, default value: `True` |
+| `--lifecycle` | add icons for lifecycle tags, default value: `True` |
 

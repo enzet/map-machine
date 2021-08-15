@@ -209,4 +209,6 @@ will generate SVG file \m {out/tiles/tile_18_158471_81953.svg}.
 
 Command\: \m {mapcss}.
 
-\m {python roentgen.py mapcss} will create \m {out/roentgen_icons_mapcss} directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas\: \m {.mapcss} file and directory with icons.
+\m {python roentgen.py mapcss} will create \m {out/roentgen_mapcss} directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas\: \m {.mapcss} file and directory with icons.
+
+\options {mapcss}

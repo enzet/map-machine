@@ -51,6 +51,9 @@ class ArgumentParser(argparse.ArgumentParser):
         table = [[["Option"], ["Description"]]]
 
         for option in self.arguments:
+            if option["arguments"][0] == "-h":
+                continue
+
             array: Code = [[Tag("m", [x]), ", "] for x in option["arguments"]]
             row: Code = [[x for y in array for x in y][:-1]]
 
@@ -147,6 +150,8 @@ class RoentgenMoire(Default, ABC):
             ui.add_tile_arguments(parser)
         elif command == "element":
             ui.add_element_arguments(parser)
+        elif command == "mapcss":
+            ui.add_mapcss_arguments(parser)
         else:
             raise NotImplementedError(
                 "no separate function for parser creation"
