@@ -7,6 +7,9 @@ from roentgen.osm_reader import OSMNode, Tagged
 from roentgen.road import Lane
 from roentgen.scheme import LineStyle, RoadMatcher, Scheme
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
 
 class Figure(Tagged):
     """
@@ -182,7 +185,7 @@ def is_clockwise(polygon: List[OSMNode]) -> bool:
     :param polygon: list of OpenStreetMap nodes
     """
     count: float = 0
-    for index, node in enumerate(polygon):  # type: int, OSMNode
+    for index, node in enumerate(polygon):
         next_index: int = 0 if index == len(polygon) - 1 else index + 1
         count += (polygon[next_index].coordinates[0] - node.coordinates[0]) * (
             polygon[next_index].coordinates[1] + node.coordinates[1]
@@ -214,7 +217,7 @@ def get_path(nodes: List[OSMNode], shift: np.array, flinger: Flinger) -> str:
     """
     path: str = ""
     prev_node: Optional[OSMNode] = None
-    for node in nodes:  # type: OSMNode
+    for node in nodes:
         flung = flinger.fling(node.coordinates) + shift
         path += ("L" if prev_node else "M") + f" {flung[0]},{flung[1]} "
         prev_node = node

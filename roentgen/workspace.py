@@ -3,6 +3,9 @@ File and directory path in the project.
 """
 from pathlib import Path
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
 
 def check_and_create(directory: Path) -> Path:
     """Create directory if it doesn't exist and return it."""

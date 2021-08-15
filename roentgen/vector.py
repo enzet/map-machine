@@ -3,6 +3,9 @@ Vector utility.
 """
 import numpy as np
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
 
 def angle(vector: np.array):
     """

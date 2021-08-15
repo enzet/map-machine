@@ -3,6 +3,9 @@ import subprocess
 from pathlib import Path
 from typing import List
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
 
 def rasterize(from_: Path, to_: Path, area: str = "", dpi: float = 90) -> None:
     """

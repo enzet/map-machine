@@ -1,6 +1,7 @@
 """
 Construct Röntgen nodes and ways.
 """
+import logging
 from datetime import datetime
 from hashlib import sha256
 from typing import Any, Dict, Iterator, List, Optional, Set
@@ -17,9 +18,7 @@ from roentgen.flinger import Flinger
 from roentgen.icon import (
     DEFAULT_SMALL_SHAPE_ID, Icon, IconSet, ShapeExtractor, ShapeSpecification
 )
-from roentgen.osm_reader import (
-    Map, OSMMember, OSMNode, OSMRelation, OSMWay, Tagged
-)
+from roentgen.osm_reader import Map, OSMNode, OSMRelation, OSMWay, Tagged
 from roentgen.point import Point
 from roentgen.scheme import DEFAULT_COLOR, LineStyle, Scheme
 from roentgen.util import MinMax
@@ -48,7 +47,7 @@ def line_center(nodes: List[OSMNode], flinger: Flinger) -> np.array:
     """
     boundary: List[MinMax] = [MinMax(), MinMax()]
 
-    for node in nodes:  # type: OSMNode
+    for node in nodes:
         boundary[0].update(node.coordinates[0])
         boundary[1].update(node.coordinates[1])
     center_coordinates = np.array((boundary[0].center(), boundary[1].center()))
@@ -84,7 +83,7 @@ def glue(ways: List[OSMWay]) -> List[List[OSMNode]]:
     result: List[List[OSMNode]] = []
     to_process: Set[OSMWay] = set()
 
-    for way in ways:  # type: OSMWay
+    for way in ways:
         if way.is_cycle():
             result.append(way.nodes)
         else:
@@ -95,7 +94,7 @@ def glue(ways: List[OSMWay]) -> List[List[OSMNode]]:
         glued: Optional[OSMWay] = None
         other_way: Optional[OSMWay] = None
 
-        for other_way in to_process:  # type: OSMWay
+        for other_way in to_process:
             glued = way.try_to_glue(other_way)
             if glued:
                 break
@@ -170,7 +169,7 @@ class Constructor:
         Construct Röntgen ways.
         """
         way_number: int = 0
-        for way_id in self.map_.ways:  # type: int
+        for way_id in self.map_.ways:
             ui.progress_bar(
                 way_number,
                 len(self.map_.ways),
@@ -226,7 +225,7 @@ class Constructor:
             self.roads.append(Road(line.tags, inners, outers, road_matcher))
             return
 
-        for line_style in line_styles:  # type: LineStyle
+        for line_style in line_styles:
             self.figures.append(
                 StyledFigure(line.tags, inners, outers, line_style)
             )
@@ -308,7 +307,7 @@ class Constructor:
                 continue
             inner_ways: List[OSMWay] = []
             outer_ways: List[OSMWay] = []
-            for member in relation.members:  # type: OSMMember
+            for member in relation.members:
                 if member.type_ == "way":
                     if member.role == "inner":
                         if member.ref in self.map_.ways:
@@ -317,7 +316,7 @@ class Constructor:
                         if member.ref in self.map_.ways:
                             outer_ways.append(self.map_.ways[member.ref])
                     else:
-                        print(f'Unknown member role "{member.role}".')
+                        logging.warning(f'Unknown member role "{member.role}".')
             if outer_ways:
                 inners_path: List[List[OSMNode]] = glue(inner_ways)
                 outers_path: List[List[OSMNode]] = glue(outer_ways)
@@ -334,7 +333,7 @@ class Constructor:
             key=lambda x: -self.map_.nodes[x].coordinates[0],
         )
 
-        for node_id in sorted_node_ids:  # type: int
+        for node_id in sorted_node_ids:
             processed: Set[str] = set()
 
             node_number += 1

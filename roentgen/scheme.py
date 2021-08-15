@@ -303,7 +303,7 @@ class Scheme:
         """
         if key in self.tags_to_write or key in self.tags_to_skip:
             return True
-        for prefix in self.prefix_to_write + self.prefix_to_skip:  # type: str
+        for prefix in self.prefix_to_write + self.prefix_to_skip:
             if key[: len(prefix) + 1] == f"{prefix}:":
                 return True
         return False
@@ -319,7 +319,7 @@ class Scheme:
             return False
         if key in self.tags_to_write:
             return True
-        for prefix in self.prefix_to_write:  # type: str
+        for prefix in self.prefix_to_write:
             if key[: len(prefix) + 1] == f"{prefix}:":
                 return True
         return False

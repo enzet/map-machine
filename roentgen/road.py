@@ -11,6 +11,9 @@ from roentgen.flinger import Flinger
 from roentgen.osm_reader import OSMNode
 from roentgen.vector import Line, angle, norm, turn_by_angle
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
 
 @dataclass
 class Lane:

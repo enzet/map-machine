@@ -13,6 +13,9 @@ from roentgen.icon import ShapeExtractor
 from roentgen.osm_reader import STAGES_OF_DECAY
 from roentgen.scheme import Scheme, Matcher
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
 
 class MapCSSWriter:
     def __init__(
@@ -71,7 +74,7 @@ class MapCSSWriter:
 
         return selector
 
-    def write(self, output_file) -> None:
+    def write(self, output_file: Path) -> None:
         """
         Construct icon selectors for MapCSS 0.2 scheme.
         """

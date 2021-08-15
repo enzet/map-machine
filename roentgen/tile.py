@@ -24,6 +24,9 @@ from roentgen.scheme import Scheme
 from roentgen.util import MinMax
 from roentgen.ui import BoundaryBox
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
 
 @dataclass
 class Tiles:
@@ -267,7 +270,7 @@ class Tile:
         )
         painter.draw(constructor)
 
-        print(f"Writing output SVG {output_file_name}...")
+        logging.info(f"Writing output SVG {output_file_name}...")
         with output_file_name.open("w") as output_file:
             svg.write(output_file)
 
@@ -301,5 +304,7 @@ def ui(options) -> None:
         tiles.draw(directory, Path(options.cache))
         tiles.draw_image(Path(options.cache))
     else:
-        logging.fatal("Specify either --coordinates, or --tile.")
+        logging.fatal(
+            "Specify either --coordinates, --boundary-box, or --tile."
+        )
         sys.exit(1)

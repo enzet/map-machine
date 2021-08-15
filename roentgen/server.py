@@ -7,6 +7,9 @@ from roentgen.workspace import workspace
 from roentgen.raster import rasterize
 from roentgen.tile import Tile
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
 
 class Handler(BaseHTTPRequestHandler):
 

@@ -7,7 +7,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
-from xml.dom.minidom import Document, Element, Node, parse
+from xml.dom.minidom import Document, Element, parse
 
 import numpy as np
 import svgwrite
@@ -183,10 +183,10 @@ class ShapeExtractor:
         )
         with svg_file_name.open() as input_file:
             content: Document = parse(input_file)
-            for element in content.childNodes:  # type: Element
+            for element in content.childNodes:
                 if element.nodeName != "svg":
                     continue
-                for node in element.childNodes:  # type: Node
+                for node in element.childNodes:
                     if isinstance(node, Element):
                         self.parse(node)
 

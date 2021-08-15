@@ -17,7 +17,7 @@ from roentgen.figure import Road
 from roentgen.flinger import Flinger
 from roentgen.icon import ShapeExtractor
 from roentgen.osm_reader import Map, OSMNode
-from roentgen.point import Occupied, Point
+from roentgen.point import Occupied
 from roentgen.road import Intersection, RoadPart
 from roentgen.scheme import Scheme
 
@@ -100,7 +100,7 @@ class Painter:
         nodes = sorted(constructor.points, key=lambda x: -x.priority)
         steps: int = len(nodes)
 
-        for index, node in enumerate(nodes):  # type: int, Point
+        for index, node in enumerate(nodes):
             if node.get_tag("natural") == "tree" and (
                 "diameter_crown" in node.tags or "circumference" in node.tags
             ):
@@ -110,13 +110,13 @@ class Painter:
             )
             node.draw_main_shapes(self.svg, occupied)
 
-        for index, point in enumerate(nodes):  # type: int, Point
+        for index, point in enumerate(nodes):
             ui.progress_bar(
                 steps + index, steps * 3, step=10, text="Drawing extra icons"
             )
             point.draw_extra_shapes(self.svg, occupied)
 
-        for index, point in enumerate(nodes):  # type: int, Point
+        for index, point in enumerate(nodes):
             ui.progress_bar(
                 steps * 2 + index, steps * 3, step=10, text="Drawing texts"
             )
@@ -181,7 +181,7 @@ class Painter:
             )
             building_shade.add(path)
             for nodes in building.inners + building.outers:
-                for i in range(len(nodes) - 1):  # type: int
+                for i in range(len(nodes) - 1):
                     flung_1 = self.flinger.fling(nodes[i].coordinates)
                     flung_2 = self.flinger.fling(nodes[i + 1].coordinates)
                     command = (
@@ -260,7 +260,7 @@ class Painter:
         """
         Draw gradient sectors for directions.
         """
-        for node in constructor.points:  # type: Point
+        for node in constructor.points:
 
             angle = None
             is_revert_gradient: bool = False
