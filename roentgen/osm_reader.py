@@ -3,11 +3,11 @@ Reading OpenStreetMap data from XML file.
 """
 import json
 import re
-import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
+from xml.etree import ElementTree
 
 import numpy as np
 
@@ -65,14 +65,13 @@ class Tagged:
         return None
 
     def get_float(self, key: str) -> Optional[float]:
+        """Parse float from tag value."""
         if key in self.tags:
             return parse_float(self.tags[key])
         return None
 
     def get_length(self, key: str) -> Optional[float]:
-        """
-        Get length in meters.
-        """
+        """Get length in meters."""
         if key not in self.tags:
             return None
 
@@ -420,7 +419,7 @@ class OSMReader:
         :param file_name: input XML file
         :return: parsed map
         """
-        return self.parse_osm(ET.parse(file_name).getroot())
+        return self.parse_osm(ElementTree.parse(file_name).getroot())
 
     def parse_osm_text(self, text: str) -> Map:
         """
@@ -429,7 +428,7 @@ class OSMReader:
         :param text: XML text representation
         :return: parsed map
         """
-        return self.parse_osm(ET.fromstring(text))
+        return self.parse_osm(ElementTree.fromstring(text))
 
     def parse_osm(self, root) -> Map:
         """

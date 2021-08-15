@@ -29,13 +29,8 @@ class Lane:
     change: Optional[str] = None  # "not_left", "not_right"
     destination: Optional[str] = None  # Lane destination
 
-    def set_forward(self, is_forward: bool) -> None:
-        self.is_forward = is_forward
-
     def get_width(self, scale: float):
-        """
-        Get lane width.  We use standard 3.7 m lane.
-        """
+        """Get lane width.  We use standard 3.7 m lane."""
         if self.width is None:
             return 3.7 * scale
         return self.width * scale

@@ -1,3 +1,6 @@
+"""
+Rasterize vector graphics using Inkscape.
+"""
 import os
 import subprocess
 from pathlib import Path

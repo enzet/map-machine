@@ -145,6 +145,7 @@ class RoentgenMoire(Default, ABC):
         return test_configuration.get_command(self.clear(args[0]))
 
     def icon(self, args: Arguments) -> str:
+        """Image with Röntgen icon."""
         raise NotImplementedError("icon")
 
     def options(self, args: Arguments) -> str:

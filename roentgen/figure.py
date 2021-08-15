@@ -1,3 +1,6 @@
+"""
+Figures displayed on the map.
+"""
 from typing import Any, Dict, List, Optional
 
 import numpy as np

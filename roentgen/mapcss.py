@@ -2,7 +2,7 @@
 MapCSS scheme creation.
 """
 from pathlib import Path
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, TextIO
 
 import logging
 from colour import Color
@@ -66,6 +66,10 @@ meta {{
 
 
 class MapCSSWriter:
+    """
+    Writer that converts Röntgen scheme into MapCSS 0.2 format.
+    """
+
     def __init__(
         self,
         scheme: Scheme,
@@ -89,6 +93,15 @@ class MapCSSWriter:
         prefix: str = "",
         opacity: Optional[float] = None,
     ) -> str:
+        """
+        Add MapCSS 0.2 selector for node, way, relation, or area.
+
+        :param target: `node`, `way`, `relation`, or `area`
+        :param matcher: tag matcher of Röntgen scheme
+        :param prefix: tag prefix
+        :param opacity: icon opacity
+        :return:
+        """
         elements: Dict[str, str] = {}
 
         clean_shapes = matcher.get_clean_shapes()
@@ -126,7 +139,7 @@ class MapCSSWriter:
 
         return selector
 
-    def write(self, output_file: Path) -> None:
+    def write(self, output_file: TextIO) -> None:
         """
         Construct icon selectors for MapCSS 0.2 scheme.
         """

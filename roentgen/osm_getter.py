@@ -16,6 +16,8 @@ __email__ = "me@enzet.ru"
 
 
 class NetworkError(Exception):
+    """Failed network request."""
+
     def __init__(self, message: str):
         super().__init__()
         self.message: str = message
@@ -36,7 +38,7 @@ def get_osm(
     if not to_update and result_file_name.is_file():
         return result_file_name.open().read()
 
-    content: Optional[bytes] = get_data(
+    content: Optional[str] = get_data(
         "api.openstreetmap.org/api/0.6/map",
         {"bbox": boundary_box.get_format()},
         is_secure=True,
