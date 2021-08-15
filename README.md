@@ -171,6 +171,7 @@ Command: `tile`.
 | `-s`, `--scale` | OSM zoom level, default value: 18 |
 | `-t`, `--tile` | tile specification |
 | `--cache` | path for temporary OSM files, default value: `cache` |
+| `-b`, `--boundary-box` | construct the minimum amount of tiles that cover requested boundary box |
 
 
 ```bash
