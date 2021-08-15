@@ -13,7 +13,6 @@ import numpy as np
 import svgwrite
 
 from roentgen.workspace import workspace
-from roentgen import server, tile
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
 from roentgen.grid import draw_icons
@@ -219,18 +218,28 @@ if __name__ == "__main__":
 
     if options.command == "render":
         main(options)
+
     elif options.command == "tile":
+        from roentgen import tile
+
         tile.ui(options)
+
     elif options.command == "icons":
         draw_icons()
-    elif options.command == "mapcss":
-        from roentgen.mapcss import write_mapcss
 
-        write_mapcss()
+    elif options.command == "mapcss":
+        from roentgen import mapcss
+
+        mapcss.ui(options)
+
     elif options.command == "element":
         draw_element(options)
+
     elif options.command == "server":
+        from roentgen import server
+
         server.ui(options)
+
     elif options.command == "taginfo":
         from roentgen.taginfo import write_taginfo_project_file
 

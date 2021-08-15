@@ -31,7 +31,7 @@ def parse_options(args) -> argparse.Namespace:
 
     render = subparser.add_parser("render")
     subparser.add_parser("icons")
-    subparser.add_parser("mapcss")
+    mapcss = subparser.add_parser("mapcss")
     subparser.add_parser("taginfo")
     tile = subparser.add_parser("tile")
     element = subparser.add_parser("element")
@@ -41,6 +41,7 @@ def parse_options(args) -> argparse.Namespace:
     add_tile_arguments(tile)
     add_server_arguments(server)
     add_element_arguments(element)
+    add_mapcss_arguments(mapcss)
 
     arguments: argparse.Namespace = parser.parse_args(args[1:])
 
@@ -168,6 +169,27 @@ def add_render_arguments(render) -> None:
         "--level",
         default=None,
         help="display only this floor level",
+    )
+
+
+def add_mapcss_arguments(mapcss) -> None:
+    mapcss.add_argument(
+        "--icons",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="add icons for nodes and areas",
+    )
+    mapcss.add_argument(
+        "--ways",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="add style for ways and relations",
+    )
+    mapcss.add_argument(
+        "--lifecycle",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="add icons for lifecycle tags",
     )
 
 

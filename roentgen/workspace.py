@@ -23,7 +23,6 @@ class Workspace:
     ICONS_CONFIG_PATH: Path = Path("icons/config.json")
     GITHUB_TEST_PATH: Path = Path(".github/workflows/test.yml")
     DATA_PATH: Path = Path("data")
-    MAPCSS_PART_FILE_PATH: Path = DATA_PATH / "roentgen_icons_part.mapcss"
 
     # Generated directories and files.
 
@@ -35,7 +34,7 @@ class Workspace:
 
         self._icons_by_id_path: Path = output_path / "icons_by_id"
         self._icons_by_name_path: Path = output_path / "icons_by_name"
-        self._mapcss_path: Path = output_path / "roentgen_icons_mapcss"
+        self._mapcss_path: Path = output_path / "roentgen_mapcss"
         self._tile_path: Path = output_path / "tiles"
 
     def get_icons_by_id_path(self) -> Path:
@@ -56,7 +55,7 @@ class Workspace:
 
     def get_mapcss_file_path(self) -> Path:
         """Directory for MapCSS files."""
-        return self.get_mapcss_path() / "roentgen_icons.mapcss"
+        return self.get_mapcss_path() / "roentgen.mapcss"
 
     def get_mapcss_icons_path(self) -> Path:
         """Directory for icons used by MapCSS file."""

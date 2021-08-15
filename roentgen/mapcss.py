@@ -16,16 +16,68 @@ from roentgen.scheme import Scheme, Matcher
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+NODE_CONFIG: str = """
+node {
+    symbol-shape: circle;
+    symbol-size: 1;
+    text: auto;
+    text-color: black;
+    text-offset-y: -11;
+    text-anchor-horizontal: center;
+    font-size: 11;
+}"""
+
+WAY_CONFIG: str = """
+canvas {
+    fill-color: #FFFFFF;
+}
+way {
+    fill-opacity: 1;
+    text-color: black;
+    text-offset-y: -11;
+}
+relation {
+    fill-opacity: 1;
+    text-color: black;
+    text-offset-y: -11;
+}
+way[building] {
+    fill-color: #D8D0C8;
+    opacity: 1;
+}
+relation[building] {
+    fill-color: #D8D0C8;
+    opacity: 1;
+}"""
+
+HEADER: str = """
+/*
+Map paint style that adds icons from Röntgen icon set
+*/
+
+meta {
+    title: "Röntgen icons";
+    description: "Icons from Röntgen icon set for JOSM";
+    author: "Sergey Vartanov";
+    version: "0.1";
+    link: "https://github.com/enzet/Roentgen";
+}"""
+
 
 class MapCSSWriter:
     def __init__(
         self,
         scheme: Scheme,
         icon_directory_name: str,
-        add_icons_for_lifecycle: bool,
+        add_icons: bool = True,
+        add_ways: bool = True,
+        add_icons_for_lifecycle: bool = True,
     ):
-        self.add_icons_for_lifecycle = add_icons_for_lifecycle
-        self.icon_directory_name = icon_directory_name
+        self.add_icons: bool = add_icons
+        self.add_ways: bool = add_ways
+        self.add_icons_for_lifecycle: bool = add_icons_for_lifecycle
+        self.icon_directory_name: str = icon_directory_name
+        print(self.add_icons, self.add_ways, self.add_icons_for_lifecycle)
 
         self.point_matchers: List[Matcher] = scheme.node_matchers
         self.line_matchers: List[Matcher] = scheme.way_matchers
@@ -78,18 +130,23 @@ class MapCSSWriter:
         """
         Construct icon selectors for MapCSS 0.2 scheme.
         """
-        with workspace.MAPCSS_PART_FILE_PATH.open() as input_file:
-            output_file.write(input_file.read())
+        output_file.write(HEADER + "\n\n")
 
-        output_file.write("\n")
+        if self.add_ways:
+            output_file.write(WAY_CONFIG + "\n\n")
 
-        for line_matcher in self.line_matchers:
-            for target in ["way", "relation"]:
-                output_file.write(self.add_selector(target, line_matcher))
+        if self.add_icons:
+            output_file.write(NODE_CONFIG + "\n\n")
 
-        for matcher in self.point_matchers:
-            for target in ["node", "area"]:
-                output_file.write(self.add_selector(target, matcher))
+        if self.add_icons:
+            for matcher in self.point_matchers:
+                for target in ["node", "area"]:
+                    output_file.write(self.add_selector(target, matcher))
+
+        if self.add_ways:
+            for line_matcher in self.line_matchers:
+                for target in ["way", "relation"]:
+                    output_file.write(self.add_selector(target, line_matcher))
 
         if not self.add_icons_for_lifecycle:
             return
@@ -107,7 +164,7 @@ class MapCSSWriter:
                     )
 
 
-def write_mapcss() -> None:
+def ui(options) -> None:
     """
     Write MapCSS 0.2 scheme.
     """
@@ -123,7 +180,11 @@ def write_mapcss() -> None:
         icons_with_outline_path, color=Color("black"), outline=True
     )
     mapcss_writer: MapCSSWriter = MapCSSWriter(
-        scheme, workspace.MAPCSS_ICONS_DIRECTORY_NAME, True
+        scheme,
+        workspace.MAPCSS_ICONS_DIRECTORY_NAME,
+        options.icons,
+        options.ways,
+        options.lifecycle,
     )
     with workspace.get_mapcss_file_path().open("w+") as output_file:
         mapcss_writer.write(output_file)
