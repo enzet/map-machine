@@ -64,10 +64,19 @@ class ArgumentParser(argparse.ArgumentParser):
                     and option["default"]
                     and option["default"] != "==SUPPRESS=="
                 ):
-                    default_value: Code = Tag("m", [str(option["default"])])
-                    if "type" in option and option["type"] in [int, float]:
-                        default_value = str(option["default"])
-                    help_value += [", default value: ", default_value]
+                    if (
+                        "action" in option
+                        and option["action"] == argparse.BooleanOptionalAction
+                    ):
+                        if option["default"] is True:
+                            help_value += [", set by default"]
+                        elif option["default"] is False:
+                            help_value += [", not set by default"]
+                    else:
+                        default_value: Code = Tag("m", [str(option["default"])])
+                        if "type" in option and option["type"] in [int, float]:
+                            default_value = str(option["default"])
+                        help_value += [", default value: ", default_value]
                 row.append(help_value)
             else:
                 row.append([])
@@ -158,6 +167,10 @@ class RoentgenMoire(Default, ABC):
             )
         return self.parse(parser.get_moire_help())
 
+    def kbd(self, args: Arguments) -> str:
+        """Keyboard key."""
+        return self.m(args)
+
 
 class RoentgenHTML(RoentgenMoire, DefaultHTML):
     """
@@ -229,3 +242,7 @@ class RoentgenMarkdown(RoentgenMoire, DefaultMarkdown):
     def icon(self, args: Arguments) -> str:
         """Image with Röntgen icon."""
         return f"[{self.clear(args[0])}]"
+
+    def kbd(self, args: Arguments) -> str:
+        """Keyboard key."""
+        return f"<kbd>{self.clear(args[0])}</kbd>"

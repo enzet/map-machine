@@ -7,6 +7,7 @@ from typing import List, Optional, Dict
 import logging
 from colour import Color
 
+from roentgen import __project__, __url__
 from roentgen.workspace import workspace
 from roentgen.grid import IconCollection
 from roentgen.icon import ShapeExtractor
@@ -50,18 +51,18 @@ relation[building] {
     opacity: 1;
 }"""
 
-HEADER: str = """
+HEADER: str = f"""
 /*
 Map paint style that adds icons from Röntgen icon set
 */
 
-meta {
-    title: "Röntgen icons";
-    description: "Icons from Röntgen icon set for JOSM";
-    author: "Sergey Vartanov";
+meta {{
+    title: "{__project__}";
+    description: "Röntgen map paint style for JOSM";
+    author: "{__author__}";
     version: "0.1";
-    link: "https://github.com/enzet/Roentgen";
-}"""
+    link: "{__url__}";
+}}"""
 
 
 class MapCSSWriter:
@@ -77,7 +78,6 @@ class MapCSSWriter:
         self.add_ways: bool = add_ways
         self.add_icons_for_lifecycle: bool = add_icons_for_lifecycle
         self.icon_directory_name: str = icon_directory_name
-        print(self.add_icons, self.add_ways, self.add_icons_for_lifecycle)
 
         self.point_matchers: List[Matcher] = scheme.node_matchers
         self.line_matchers: List[Matcher] = scheme.way_matchers

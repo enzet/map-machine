@@ -195,9 +195,21 @@ Command: `mapcss`.
 
 `python roentgen.py mapcss` will create `out/roentgen_mapcss` directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas: `.mapcss` file and directory with icons.
 
+To create MapCSS with only Röntgen icons run `python roentgen.py mapcss --no-ways`.
+
 | Option | Description |
 |---|---|
-| `--icons` | add icons for nodes and areas, default value: `True` |
-| `--ways` | add style for ways and relations, default value: `True` |
-| `--lifecycle` | add icons for lifecycle tags, default value: `True` |
+| `--icons` | add icons for nodes and areas, set by default |
+| `--ways` | add style for ways and relations, set by default |
+| `--lifecycle` | add icons for lifecycle tags, set by default |
+
+### Use Röntgen as JOSM map paint style ###
+
+  * Open [JOSM](https://josm.openstreetmap.de/).
+  * Go to <kbd>Preferences</kbd> → Third tab on the left → <kbd>Map Paint Styles</kbd>.
+  * Active styles: press <kbd>+</kbd>.
+  * URL / File: set path to `out/roentgen_mapcss/roentgen.mapcss`.
+  * <kbd>Ok</kbd> → <kbd>OK</kbd>.
+
+To enable / disable Röntgen map paint style go to <kbd>View</kbd> → <kbd>Map Paint Styles</kbd> → <kbd>Röntgen</kbd>.
 

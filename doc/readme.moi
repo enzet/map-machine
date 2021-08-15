@@ -211,4 +211,17 @@ Command\: \m {mapcss}.
 
 \m {python roentgen.py mapcss} will create \m {out/roentgen_mapcss} directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas\: \m {.mapcss} file and directory with icons.
 
+To create MapCSS with only Röntgen icons run \m {python roentgen.py mapcss --no-ways}.
+
 \options {mapcss}
+
+\3 {Use Röntgen as JOSM map paint style}
+
+\list
+    {Open \ref {https://josm.openstreetmap.de/} {JOSM}.}
+    {Go to \kbd {Preferences} → Third tab on the left → \kbd {Map Paint Styles}.}
+    {Active styles: press \kbd {+}.}
+    {URL / File: set path to \m {out/roentgen_mapcss/roentgen.mapcss}.}
+    {\kbd {Ok} → \kbd {OK}.}
+
+To enable / disable Röntgen map paint style go to \kbd {View} → \kbd {Map Paint Styles} → \kbd {Röntgen}.
