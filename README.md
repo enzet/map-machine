@@ -115,7 +115,7 @@ Every way and node displayed with the random color picked for each author with `
 Installation
 ------------
 
-Requirements: Python (at least 3.8).
+Requirements: Python (at least 3.9).
 
 To install all packages, run:
 
