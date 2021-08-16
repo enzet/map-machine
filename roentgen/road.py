@@ -9,7 +9,7 @@ import svgwrite
 
 from roentgen.flinger import Flinger
 from roentgen.osm_reader import OSMNode
-from roentgen.vector import Line, angle, norm, turn_by_angle
+from roentgen.vector import Line, compute_angle, norm, turn_by_angle
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -143,7 +143,7 @@ class RoadPart:
         """
         Get an angle between line and x axis.
         """
-        return angle(self.point_2 - self.point_1)
+        return compute_angle(self.point_2 - self.point_1)
 
     def draw_normal(self, drawing: svgwrite.Drawing):
         """

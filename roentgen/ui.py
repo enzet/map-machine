@@ -173,6 +173,7 @@ def add_render_arguments(render) -> None:
 
 
 def add_mapcss_arguments(mapcss) -> None:
+    """Add arguments for mapcss command."""
     mapcss.add_argument(
         "--icons",
         action=argparse.BooleanOptionalAction,
@@ -222,6 +223,10 @@ def progress_bar(
 
 @dataclass
 class BoundaryBox:
+    """
+    Rectangle that limit space on the map.
+    """
+
     left: float
     bottom: float
     right: float

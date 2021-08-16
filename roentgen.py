@@ -4,15 +4,14 @@ Röntgen entry point.
 Author: Sergey Vartanov (me@enzet.ru).
 """
 import argparse
+import logging
 import sys
 from pathlib import Path
 from typing import List, Set
 
-import logging
 import numpy as np
 import svgwrite
 
-from roentgen.workspace import workspace
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
 from roentgen.grid import draw_icons
@@ -24,12 +23,13 @@ from roentgen.mapper import (
     check_level_number,
     check_level_overground,
 )
-from roentgen.osm_getter import get_osm, NetworkError
+from roentgen.osm_getter import NetworkError, get_osm
 from roentgen.osm_reader import Map, OSMReader, OverpassReader
 from roentgen.point import Point
 from roentgen.scheme import LineStyle, Scheme
-from roentgen.ui import parse_options, BoundaryBox
+from roentgen.ui import BoundaryBox, parse_options
 from roentgen.util import MinMax
+from roentgen.workspace import workspace
 
 
 def main(options) -> None:

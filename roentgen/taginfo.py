@@ -4,22 +4,21 @@ Creating Taginfo project file.
 See https://wiki.openstreetmap.org/wiki/Taginfo/Projects
 """
 import json
+import logging
 from datetime import datetime
 from pathlib import Path
 from typing import List
 
-import logging
-
-from roentgen.workspace import workspace
 from roentgen import (
+    __author__,
+    __description__,
     __doc_url__,
+    __email__,
     __project__,
     __url__,
-    __description__,
-    __author__,
-    __email__,
 )
 from roentgen.scheme import Scheme
+from roentgen.workspace import workspace
 
 
 class TaginfoProjectFile:

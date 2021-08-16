@@ -7,7 +7,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
-def angle(vector: np.array):
+def compute_angle(vector: np.array):
     """
     For the given vector compute an angle between it and (1, 0) vector.  The
     result is in [0, 2π].

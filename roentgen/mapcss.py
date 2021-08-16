@@ -1,18 +1,18 @@
 """
 MapCSS scheme creation.
 """
-from pathlib import Path
-from typing import List, Optional, Dict, TextIO
-
 import logging
+from pathlib import Path
+from typing import Dict, List, Optional, TextIO
+
 from colour import Color
 
 from roentgen import __project__, __url__
-from roentgen.workspace import workspace
 from roentgen.grid import IconCollection
 from roentgen.icon import ShapeExtractor
 from roentgen.osm_reader import STAGES_OF_DECAY
-from roentgen.scheme import Scheme, Matcher
+from roentgen.scheme import Matcher, Scheme
+from roentgen.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

@@ -1,12 +1,12 @@
 """
 Getting OpenStreetMap data from the web.
 """
+import logging
 import time
 import urllib
 from pathlib import Path
 from typing import Dict, Optional
 
-import logging
 import urllib3
 
 from roentgen.ui import BoundaryBox

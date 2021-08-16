@@ -3,17 +3,16 @@ Moire markup extension for Röntgen.
 """
 import argparse
 from abc import ABC
-
-from moire.moire import Tag
-from moire.default import Default, DefaultHTML, DefaultMarkdown, DefaultWiki
-
-from roentgen.workspace import workspace
-from roentgen.icon import ShapeExtractor
 from pathlib import Path
-from typing import Dict, List, Any, Union
+from typing import Any, Dict, List, Union
+
 import yaml
+from moire.default import Default, DefaultHTML, DefaultMarkdown, DefaultWiki
+from moire.moire import Tag
 
 from roentgen import ui
+from roentgen.icon import ShapeExtractor
+from roentgen.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

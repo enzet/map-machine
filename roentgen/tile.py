@@ -12,17 +12,17 @@ from typing import List, Optional, Tuple
 import numpy as np
 import svgwrite
 
-from roentgen.workspace import workspace
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
 from roentgen.icon import ShapeExtractor
 from roentgen.mapper import Painter
-from roentgen.osm_getter import get_osm, NetworkError
+from roentgen.osm_getter import NetworkError, get_osm
 from roentgen.osm_reader import Map, OSMReader
 from roentgen.raster import rasterize
 from roentgen.scheme import Scheme
-from roentgen.util import MinMax
 from roentgen.ui import BoundaryBox
+from roentgen.util import MinMax
+from roentgen.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -241,7 +241,7 @@ class Tile:
         try:
             map_: Map = self.load_map(cache_path)
         except NetworkError as e:
-            raise NetworkError(f"Map doesn't loaded. {e.message}")
+            raise NetworkError(f"Map does not loaded. {e.message}")
 
         self.draw_for_map(map_, directory_name)
 

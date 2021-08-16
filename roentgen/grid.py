@@ -1,18 +1,18 @@
 """
 Icon grid drawing.
 """
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Set
 
-import logging
 import numpy as np
 from colour import Color
 from svgwrite import Drawing
 
-from roentgen.workspace import workspace
 from roentgen.icon import Icon, Shape, ShapeExtractor, ShapeSpecification
 from roentgen.scheme import NodeMatcher, Scheme
+from roentgen.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
