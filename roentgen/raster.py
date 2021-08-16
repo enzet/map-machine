@@ -1,6 +1,7 @@
 """
 Rasterize vector graphics using Inkscape.
 """
+import logging
 import os
 import subprocess
 from pathlib import Path
@@ -25,4 +26,5 @@ def rasterize(from_: Path, to_: Path, area: str = "", dpi: float = 90) -> None:
         commands += ["--export-area", area]
     commands += [from_.absolute()]
 
+    logging.info(f"Rasterize SVG file to {to_}...")
     subprocess.run(commands)

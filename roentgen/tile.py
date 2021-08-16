@@ -78,10 +78,14 @@ class Tiles:
             file_path: Path = tile.get_file_name(directory)
             if not file_path.exists():
                 tile.draw_for_map(map_, directory)
+            else:
+                logging.info(f"File {file_path} already exists.")
 
             output_path: Path = file_path.with_suffix(".png")
             if not output_path.exists():
                 rasterize(file_path, output_path)
+            else:
+                logging.info(f"File {output_path} already exists.")
 
     def draw_image(self, cache_path: Path) -> None:
         """
@@ -130,12 +134,17 @@ class Tiles:
             )
             painter.draw(constructor)
 
+            logging.info(f"Writing output SVG {output_path}...")
             with output_path.open("w+") as output_file:
                 svg.write(output_file)
+        else:
+            logging.info(f"File {output_path} already exists.")
 
         png_path: Path = cache_path / f"{self.boundary_box.get_format()}.png"
         if not png_path.exists():
             rasterize(output_path, png_path)
+        else:
+            logging.info(f"File {png_path} already exists.")
 
 
 @dataclass
