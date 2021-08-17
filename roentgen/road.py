@@ -83,12 +83,7 @@ class RoadPart:
 
     @classmethod
     def from_nodes(
-        cls,
-        node_1: OSMNode,
-        node_2: OSMNode,
-        flinger: Flinger,
-        road,
-        scale,
+        cls, node_1: OSMNode, node_2: OSMNode, flinger: Flinger, road, scale
     ) -> "RoadPart":
         """
         Construct road part from OSM nodes.
