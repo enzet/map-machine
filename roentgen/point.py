@@ -23,7 +23,7 @@ class Occupied:
     texts, shapes).
     """
 
-    def __init__(self, width: int, height: int, overlap: float):
+    def __init__(self, width: int, height: int, overlap: float) -> None:
         self.matrix = np.full((int(width), int(height)), False, dtype=bool)
         self.width: float = width
         self.height: float = height
@@ -64,7 +64,7 @@ class Point(Tagged):
         priority: float = 0,
         is_for_node: bool = True,
         draw_outline: bool = True,
-    ):
+    ) -> None:
         super().__init__()
 
         assert point is not None

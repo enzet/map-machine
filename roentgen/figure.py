@@ -28,7 +28,7 @@ class Figure(Tagged):
         tags: Dict[str, str],
         inners: List[List[OSMNode]],
         outers: List[List[OSMNode]],
-    ):
+    ) -> None:
         super().__init__()
 
         self.tags: Dict[str, str] = tags
@@ -72,7 +72,7 @@ class Building(Figure):
         outers: List[List[OSMNode]],
         flinger: Flinger,
         scheme: Scheme,
-    ):
+    ) -> None:
         super().__init__(tags, inners, outers)
 
         style: Dict[str, Any] = {
@@ -192,7 +192,7 @@ class StyledFigure(Figure):
         inners: List[List[OSMNode]],
         outers: List[List[OSMNode]],
         line_style: LineStyle,
-    ):
+    ) -> None:
         super().__init__(tags, inners, outers)
         self.line_style = line_style
 
@@ -208,7 +208,7 @@ class Road(Figure):
         inners: List[List[OSMNode]],
         outers: List[List[OSMNode]],
         matcher: RoadMatcher,
-    ):
+    ) -> None:
         super().__init__(tags, inners, outers)
         self.matcher: RoadMatcher = matcher
 
@@ -243,7 +243,7 @@ class Tree(Tagged):
 
     def __init__(
         self, tags: dict[str, str], coordinates: np.array, point: np.array
-    ):
+    ) -> None:
         super().__init__(tags)
         self.coordinates: np.array = coordinates
         self.point: np.array = point
@@ -269,7 +269,7 @@ class DirectionSector(Tagged):
     Sector that represents direction.
     """
 
-    def __init__(self, tags: dict[str, str], point):
+    def __init__(self, tags: dict[str, str], point) -> None:
         super().__init__(tags)
         self.point = point
 
@@ -337,7 +337,7 @@ class Segment:
     Line segment.
     """
 
-    def __init__(self, point_1: np.array, point_2: np.array):
+    def __init__(self, point_1: np.array, point_2: np.array) -> None:
         self.point_1: np.array = point_1
         self.point_2: np.array = point_2
 

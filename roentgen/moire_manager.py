@@ -28,7 +28,7 @@ class ArgumentParser(argparse.ArgumentParser):
     Argument parser that stores arguments and creates help in Moire markup.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         self.arguments: list[dict[str, Any]] = []
         super(ArgumentParser, self).__init__(*args, **kwargs)
 
@@ -90,7 +90,7 @@ class TestConfiguration:
     GitHub Actions test configuration.
     """
 
-    def __init__(self, test_config: Path):
+    def __init__(self, test_config: Path) -> None:
         self.steps: dict[str, Any] = {}
 
         with test_config.open() as input_file:
@@ -177,7 +177,7 @@ class RoentgenHTML(RoentgenMoire, DefaultHTML):
     Simple HTML.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.images: dict = {}
 
     def color(self, args: Arguments) -> str:
@@ -203,7 +203,7 @@ class RoentgenOSMWiki(RoentgenMoire, DefaultWiki):
     See https://wiki.openstreetmap.org/wiki/Main_Page
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.images: dict = {}
         self.extractor: ShapeExtractor = ShapeExtractor(
             workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH

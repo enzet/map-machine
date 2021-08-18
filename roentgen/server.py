@@ -21,7 +21,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def __init__(
         self, request: bytes, client_address: tuple[str, int], server
-    ):
+    ) -> None:
         super().__init__(request, client_address, server)
         self.cache: Path = Path("cache")
         self.update_cache: bool = False

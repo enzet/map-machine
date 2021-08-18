@@ -172,7 +172,9 @@ class ShapeExtractor:
     Shape is a single path with "id" attribute that aligned to 16×16 grid.
     """
 
-    def __init__(self, svg_file_name: Path, configuration_file_name: Path):
+    def __init__(
+        self, svg_file_name: Path, configuration_file_name: Path
+    ) -> None:
         """
         :param svg_file_name: input SVG file name with icons.  File may contain
             any other irrelevant graphics.

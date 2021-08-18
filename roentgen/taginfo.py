@@ -25,7 +25,7 @@ class TaginfoProjectFile:
     JSON structure with OpenStreetMap tag usage.
     """
 
-    def __init__(self, path: Path, scheme: Scheme):
+    def __init__(self, path: Path, scheme: Scheme) -> None:
         self.path: Path = path
 
         self.structure = {

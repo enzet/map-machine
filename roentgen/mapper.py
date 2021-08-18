@@ -37,7 +37,7 @@ class Map:
         overlap: int = 12,
         mode: str = "normal",
         label_mode: str = "main",
-    ):
+    ) -> None:
         self.overlap: int = overlap
         self.mode: str = mode
         self.label_mode: str = label_mode

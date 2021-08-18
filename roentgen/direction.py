@@ -62,7 +62,7 @@ class Sector:
     Sector described by two vectors.
     """
 
-    def __init__(self, text: str, angle: Optional[float] = None):
+    def __init__(self, text: str, angle: Optional[float] = None) -> None:
         """
         :param text: sector text representation (e.g. "70-210", "N-NW")
         :param angle: angle in degrees
@@ -130,7 +130,7 @@ class DirectionSet:
     Describes direction, set of directions.
     """
 
-    def __init__(self, text: str):
+    def __init__(self, text: str) -> None:
         """
         :param text: direction tag value
         """

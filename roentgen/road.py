@@ -50,7 +50,7 @@ class RoadPart:
         point_2: np.array,
         lanes: list[Lane],
         scale: False,
-    ):
+    ) -> None:
         """
         :param point_1: start point of the road part
         :param point_2: end point of the road part
@@ -297,7 +297,7 @@ class Intersection:
     points of the road parts should be the same.
     """
 
-    def __init__(self, parts: list[RoadPart]):
+    def __init__(self, parts: list[RoadPart]) -> None:
         self.parts: list[RoadPart] = sorted(parts, key=lambda x: x.get_angle())
 
         for index in range(len(self.parts)):

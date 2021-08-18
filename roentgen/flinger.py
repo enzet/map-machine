@@ -48,7 +48,7 @@ class Flinger:
         geo_boundaries: MinMax,
         scale: float = 18,
         border: np.array = np.array((0, 0)),
-    ):
+    ) -> None:
         """
         :param geo_boundaries: minimum and maximum latitude and longitude
         :param scale: OSM zoom level

@@ -77,7 +77,7 @@ class MapCSSWriter:
         add_icons: bool = True,
         add_ways: bool = True,
         add_icons_for_lifecycle: bool = True,
-    ):
+    ) -> None:
         self.add_icons: bool = add_icons
         self.add_ways: bool = add_ways
         self.add_icons_for_lifecycle: bool = add_icons_for_lifecycle

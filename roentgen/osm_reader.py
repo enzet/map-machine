@@ -51,7 +51,7 @@ class Tagged:
     OpenStreetMap element (node, way or relation) with tags.
     """
 
-    def __init__(self, tags: dict[str, str] = None):
+    def __init__(self, tags: dict[str, str] = None) -> None:
         self.tags: dict[str, str]
         self.tags = {} if tags is None else tags
 
@@ -104,7 +104,7 @@ class OSMNode(Tagged):
     See https://wiki.openstreetmap.org/wiki/Node
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.id_: Optional[int] = None
@@ -162,7 +162,9 @@ class OSMWay(Tagged):
     See https://wiki.openstreetmap.org/wiki/Way
     """
 
-    def __init__(self, id_: int = 0, nodes: Optional[list[OSMNode]] = None):
+    def __init__(
+        self, id_: int = 0, nodes: Optional[list[OSMNode]] = None
+    ) -> None:
         super().__init__()
 
         self.id_: int = id_
@@ -243,7 +245,7 @@ class OSMRelation(Tagged):
     See https://wiki.openstreetmap.org/wiki/Relation
     """
 
-    def __init__(self, id_: int = 0):
+    def __init__(self, id_: int = 0) -> None:
         super().__init__()
 
         self.id_: int = id_
@@ -312,7 +314,7 @@ class OSMData:
     The whole OpenStreetMap information about nodes, ways, and relations.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.nodes: dict[int, OSMNode] = {}
         self.ways: dict[int, OSMWay] = {}
         self.relations: dict[int, OSMRelation] = {}
@@ -356,7 +358,7 @@ class OverpassReader:
     See https://wiki.openstreetmap.org/wiki/Overpass_API
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.osm_data = OSMData()
 
     def parse_json_file(self, file_name: Path) -> OSMData:
@@ -400,7 +402,7 @@ class OSMReader:
         parse_ways: bool = True,
         parse_relations: bool = True,
         is_full: bool = False,
-    ):
+    ) -> None:
         """
         :param parse_nodes: whether nodes should be parsed
         :param parse_ways:  whether ways should be parsed

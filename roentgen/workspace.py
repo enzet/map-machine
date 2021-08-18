@@ -32,7 +32,7 @@ class Workspace:
 
     MAPCSS_ICONS_DIRECTORY_NAME: str = "icons"
 
-    def __init__(self, output_path: Path):
+    def __init__(self, output_path: Path) -> None:
         self.output_path: Path = output_path
         check_and_create(output_path)
 

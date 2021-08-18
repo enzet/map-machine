@@ -60,7 +60,7 @@ class Drawing:
     Image.
     """
 
-    def __init__(self, file_path: Path, width: int, height: int):
+    def __init__(self, file_path: Path, width: int, height: int) -> None:
         self.file_path: Path = file_path
         self.width: int = width
         self.height: int = height
@@ -89,7 +89,7 @@ class SVGDrawing(Drawing):
     SVG image.
     """
 
-    def __init__(self, file_path: Path, width: int, height: int):
+    def __init__(self, file_path: Path, width: int, height: int) -> None:
         super().__init__(file_path, width, height)
         self.image = svgwrite.Drawing(str(file_path), (width, height))
 
@@ -131,7 +131,7 @@ class PNGDrawing(Drawing):
     PNG image.
     """
 
-    def __init__(self, file_path: Path, width: int, height: int):
+    def __init__(self, file_path: Path, width: int, height: int) -> None:
         super().__init__(file_path, width, height)
         self.surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, width, height)
         self.context = cairo.Context(self.surface)

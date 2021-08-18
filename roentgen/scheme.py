@@ -89,7 +89,7 @@ class Matcher:
     Tag matching.
     """
 
-    def __init__(self, structure: dict[str, Any]):
+    def __init__(self, structure: dict[str, Any]) -> None:
         self.tags: dict[str, str] = structure["tags"]
 
         self.exception: dict[str, str] = {}
@@ -159,7 +159,7 @@ class NodeMatcher(Matcher):
     Tag specification matcher.
     """
 
-    def __init__(self, structure: dict[str, Any]):
+    def __init__(self, structure: dict[str, Any]) -> None:
         # Dictionary with tag keys and values, value lists, or "*"
         super().__init__(structure)
 
@@ -203,7 +203,7 @@ class WayMatcher(Matcher):
     Special tag matcher for ways.
     """
 
-    def __init__(self, structure: dict[str, Any], scheme: "Scheme"):
+    def __init__(self, structure: dict[str, Any], scheme: "Scheme") -> None:
         super().__init__(structure)
         self.style: dict[str, Any] = {"fill": "none"}
         if "style" in structure:
@@ -227,7 +227,7 @@ class RoadMatcher(Matcher):
     Special tag matcher for highways.
     """
 
-    def __init__(self, structure: dict[str, Any], scheme: "Scheme"):
+    def __init__(self, structure: dict[str, Any], scheme: "Scheme") -> None:
         super().__init__(structure)
         self.border_color: Color = Color(
             scheme.get_color(structure["border_color"])
@@ -248,7 +248,7 @@ class Scheme:
     Specifies map colors and rules to draw icons for OpenStreetMap tags.
     """
 
-    def __init__(self, file_name: Path):
+    def __init__(self, file_name: Path) -> None:
         """
         :param file_name: name of the scheme file with tags, colors, and tag key
             specification

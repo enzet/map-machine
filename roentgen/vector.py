@@ -47,7 +47,7 @@ class Line:
     Infinity line: Ax + By + C = 0.
     """
 
-    def __init__(self, start: np.array, end: np.array):
+    def __init__(self, start: np.array, end: np.array) -> None:
         # if start.near(end):
         #     util.error("cannot create line by one point")
         self.a: float = start[1] - end[1]

@@ -132,7 +132,7 @@ class Constructor:
         check_level=lambda x: True,
         mode: str = "normal",
         seed: str = "",
-    ):
+    ) -> None:
         self.check_level = check_level
         self.mode: str = mode
         self.seed: str = seed
