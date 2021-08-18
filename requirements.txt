@@ -1,3 +1,4 @@
+cairo
 colour~=0.1.5
 numpy>=1.18.1
 portolan~=1.0.1
