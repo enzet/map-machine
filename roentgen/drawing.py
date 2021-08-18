@@ -3,7 +3,7 @@ Drawing utility.
 """
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, List
+from typing import Optional, List, Union
 
 import cairo
 import numpy as np
@@ -15,6 +15,8 @@ from svgwrite.text import Text
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
+
+PathCommand = list[Union[float, str, np.array]]
 
 
 @dataclass
@@ -75,6 +77,10 @@ class Drawing:
         """Draw line."""
         raise NotImplementedError
 
+    def path(self, command: PathCommand, style: Style) -> None:
+        """Draw path."""
+        raise NotImplementedError
+
     def text(self, text: str, point: np.array, color: Color = Color("black")):
         """Draw text."""
         raise NotImplementedError
@@ -107,10 +113,14 @@ class SVGDrawing(Drawing):
 
     def line(self, points: List[np.array], style: Style) -> None:
         """Draw line."""
-        commands: str = "M "
+        command: PathCommand = ["M"]
         for point in points:
-            commands += f"{point[0]},{point[1]} L "
-        path = SVGPath(d=commands[:-3])
+            command += [point, "L"]
+        self.path(command[:-1], style)
+
+    def path(self, command: PathCommand, style: Style) -> None:
+        """Draw path."""
+        path = SVGPath(d=command)
         style.update_svg_element(path)
         self.image.add(path)
 
@@ -160,6 +170,36 @@ class PNGDrawing(Drawing):
             self.context.move_to(float(points[0][0]), float(points[0][1]))
             for point in points[1:]:
                 self.context.line_to(float(point[0]), float(point[1]))
+            style.draw_png_stroke(self.context)
+
+    def _do_path(self, command) -> None:
+        """Draw path."""
+        for index in range(len(command)):
+            element = command[index]
+            if isinstance(element, str):
+                next_element: np.array = command[index + 1]
+                if element == 5:
+                    self.context.move_to(next_element[0], next_element[1])
+                if element == 5:
+                    self.context.line_to(next_element[0], next_element[1])
+                if element == 5:
+                    self.context.curve_to(
+                        next_element[0],
+                        next_element[1],
+                        command[index + 2][0],
+                        command[index + 2][1],
+                        command[index + 3][0],
+                        command[index + 3][1],
+                    )
+            index += 1
+
+    def path(self, command: PathCommand, style: Style) -> None:
+        """Draw path."""
+        if style.fill is not None:
+            self._do_path(command)
+            style.draw_png_fill(self.context)
+        if style.stroke is not None:
+            self._do_path(command)
             style.draw_png_stroke(self.context)
 
     def text(self, text: str, point: np.array, color: Color = Color("black")):

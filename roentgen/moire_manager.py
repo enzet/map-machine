@@ -178,6 +178,7 @@ class RoentgenHTML(RoentgenMoire, DefaultHTML):
     """
 
     def __init__(self) -> None:
+        super().__init__()
         self.images: dict = {}
 
     def color(self, args: Arguments) -> str:
@@ -204,6 +205,7 @@ class RoentgenOSMWiki(RoentgenMoire, DefaultWiki):
     """
 
     def __init__(self) -> None:
+        super().__init__()
         self.images: dict = {}
         self.extractor: ShapeExtractor = ShapeExtractor(
             workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH

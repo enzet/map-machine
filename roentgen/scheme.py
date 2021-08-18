@@ -333,14 +333,12 @@ class Scheme:
         extractor: ShapeExtractor,
         tags: dict[str, Any],
         processed: set[str],
-        for_: str = "node",
     ) -> tuple[IconSet, int]:
         """
         Construct icon set.
 
         :param extractor: extractor with icon specifications
         :param tags: OpenStreetMap element tags dictionary
-        :param for_: target (node, way, area or relation)
         :param processed: set of already processed tag keys
         :return (icon set, icon priority)
         """

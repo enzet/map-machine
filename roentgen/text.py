@@ -31,6 +31,7 @@ def get_address(
 
     :param tags: OSM node, way or relation tags
     :param draw_captions_mode: captions mode ("all", "main", or "no")
+    :param processed: set of processed tag keys
     """
     address: list[str] = []
 

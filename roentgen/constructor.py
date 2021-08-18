@@ -234,7 +234,7 @@ class Constructor:
                 priority: int
                 icon_set: IconSet
                 icon_set, priority = self.scheme.get_icon(
-                    self.icon_extractor, line.tags, processed, for_="line"
+                    self.icon_extractor, line.tags, processed
                 )
                 labels = self.scheme.construct_text(line.tags, "all", processed)
                 point: Point = Point(

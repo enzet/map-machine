@@ -30,6 +30,7 @@ class Lane:
     destination: Optional[str] = None  # Lane destination
 
     def set_forward(self, is_forward: bool) -> None:
+        """If true, lane is forward, otherwise it's backward."""
         self.is_forward = is_forward
 
     def get_width(self, scale: float):
@@ -339,7 +340,7 @@ class Intersection:
             part_2.update()
 
     def draw(
-        self, drawing: svgwrite.Drawing, scale: float, is_debug: bool = False
+        self, drawing: svgwrite.Drawing, is_debug: bool = False
     ) -> None:
         """
         Draw all road parts and intersection.

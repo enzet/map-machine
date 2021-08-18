@@ -1,15 +1,15 @@
 """
 Direction tag support.
 """
-from typing import Iterator, Optional, Union
+from typing import Iterator, Optional
 
 import numpy as np
 from portolan import middle
 
+from roentgen.drawing import PathCommand
+
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
-
-SVGPath = Union[float, str, np.array]
 
 SHIFT: float = -np.pi / 2
 SMALLEST_ANGLE: float = np.pi / 15
@@ -90,7 +90,7 @@ class Sector:
                 self.start = np.dot(rotation_matrix(result_angle), vector)
                 self.end = np.dot(rotation_matrix(-result_angle), vector)
 
-    def draw(self, center: np.array, radius: float) -> Optional[list[SVGPath]]:
+    def draw(self, center: np.array, radius: float) -> Optional[PathCommand]:
         """
         Construct SVG path commands for arc element.
 
@@ -139,7 +139,7 @@ class DirectionSet:
     def __str__(self) -> str:
         return ", ".join(map(str, self.sectors))
 
-    def draw(self, center: np.array, radius: float) -> Iterator[list[SVGPath]]:
+    def draw(self, center: np.array, radius: float) -> Iterator[PathCommand]:
         """
         Construct SVG "d" for arc elements.
 
