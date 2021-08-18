@@ -1,7 +1,7 @@
 """
 Direction tag support.
 """
-from typing import Iterator, List, Optional, Union
+from typing import Iterator, Optional, Union
 
 import numpy as np
 from portolan import middle
@@ -72,7 +72,7 @@ class Sector:
         self.main_direction: Optional[np.array] = None
 
         if "-" in text:
-            parts: List[str] = text.split("-")
+            parts: list[str] = text.split("-")
             self.start = parse_vector(parts[0])
             self.end = parse_vector(parts[1])
             self.main_direction = (self.start + self.end) / 2
@@ -90,7 +90,7 @@ class Sector:
                 self.start = np.dot(rotation_matrix(result_angle), vector)
                 self.end = np.dot(rotation_matrix(-result_angle), vector)
 
-    def draw(self, center: np.array, radius: float) -> Optional[List[SVGPath]]:
+    def draw(self, center: np.array, radius: float) -> Optional[list[SVGPath]]:
         """
         Construct SVG path commands for arc element.
 
@@ -139,7 +139,7 @@ class DirectionSet:
     def __str__(self) -> str:
         return ", ".join(map(str, self.sectors))
 
-    def draw(self, center: np.array, radius: float) -> Iterator[List[SVGPath]]:
+    def draw(self, center: np.array, radius: float) -> Iterator[list[SVGPath]]:
         """
         Construct SVG "d" for arc elements.
 
@@ -159,7 +159,7 @@ class DirectionSet:
         :return: true if direction is right, false if direction is left, and
             None otherwise.
         """
-        result: List[bool] = [x.is_right() for x in self.sectors]
+        result: list[bool] = [x.is_right() for x in self.sectors]
         if result == [True] * len(result):
             return True
         if result == [False] * len(result):

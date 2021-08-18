@@ -8,9 +8,10 @@ __email__ = "me@enzet.ru"
 
 
 def test_round_zero_coordinates() -> None:
-    box: BoundaryBox = BoundaryBox(0, 0, 0, 0).round()
-
-    assert box.get_format() == "-0.001,-0.001,0.001,0.001"
+    assert (
+        BoundaryBox(0, 0, 0, 0).round().get_format()
+        == "-0.001,-0.001,0.001,0.001"
+    )
 
 
 def test_round_coordinates() -> None:

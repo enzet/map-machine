@@ -5,7 +5,6 @@ import logging
 import os
 import subprocess
 from pathlib import Path
-from typing import List
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -25,7 +24,7 @@ def rasterize(from_: Path, to_: Path, area: str = "", dpi: float = 90) -> None:
             f"Inkscape and set the variable to be able to rasterize SVG files."
         )
 
-    commands: List[str] = [os.environ[INKSCAPE_BIN]]
+    commands: list[str] = [os.environ[INKSCAPE_BIN]]
     commands += ["--export-png", to_.absolute()]
     commands += ["--export-dpi", str(dpi)]
     if area:

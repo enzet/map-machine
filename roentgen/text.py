@@ -2,7 +2,7 @@
 OSM address tag processing.
 """
 from dataclasses import dataclass
-from typing import Any, Dict, List, Set
+from typing import Any
 
 from colour import Color
 
@@ -24,15 +24,15 @@ class Label:
 
 
 def get_address(
-    tags: Dict[str, Any], draw_captions_mode: str, processed: Set[str]
-) -> List[str]:
+    tags: dict[str, Any], draw_captions_mode: str, processed: set[str]
+) -> list[str]:
     """
     Construct address text list from the tags.
 
     :param tags: OSM node, way or relation tags
     :param draw_captions_mode: captions mode ("all", "main", or "no")
     """
-    address: List[str] = []
+    address: list[str] = []
 
     if draw_captions_mode == "address":
         if "addr:postcode" in tags:
@@ -80,12 +80,12 @@ def format_frequency(value: str) -> str:
     return f"{value} "
 
 
-def get_text(tags: Dict[str, Any], processed: Set[str]) -> List[Label]:
+def get_text(tags: dict[str, Any], processed: set[str]) -> list[Label]:
     """
     Get text representation of writable tags.
     """
-    texts: List[Label] = []
-    values: List[str] = []
+    texts: list[Label] = []
+    values: list[str] = []
 
     if "voltage:primary" in tags:
         values.append(tags["voltage:primary"])

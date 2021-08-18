@@ -4,7 +4,7 @@ Icon grid drawing.
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Set
+from typing import Optional
 
 import numpy as np
 from colour import Color
@@ -24,7 +24,7 @@ class IconCollection:
     Collection of icons.
     """
 
-    icons: List[Icon]
+    icons: list[Icon]
 
     @classmethod
     def from_scheme(
@@ -45,7 +45,7 @@ class IconCollection:
         :param add_unused: create icons from shapes that have no corresponding
             tags
         """
-        icons: List[Icon] = []
+        icons: list[Icon] = []
 
         def add() -> Icon:
             """
@@ -80,7 +80,7 @@ class IconCollection:
                 continue
             for icon_id in matcher.under_icon:
                 for icon_2_id in matcher.with_icon:
-                    current_set: List[str] = (
+                    current_set: list[str] = (
                         [icon_id] + [icon_2_id] + matcher.over_icon
                     )
                     add()
@@ -99,7 +99,7 @@ class IconCollection:
                         ):
                             add()
 
-        specified_ids: Set[str] = set()
+        specified_ids: set[str] = set()
 
         for icon in icons:
             specified_ids |= set(icon.get_shape_ids())
@@ -199,17 +199,18 @@ def draw_icons() -> None:
     Draw all possible icon shapes combinations as grid in one SVG file and as
     individual SVG files.
     """
-    icons_by_id_path: Path = workspace.get_icons_by_id_path()
-    icons_by_name_path: Path = workspace.get_icons_by_name_path()
-
     scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
     extractor: ShapeExtractor = ShapeExtractor(
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
     collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
+
     icon_grid_path: Path = workspace.get_icon_grid_path()
     collection.draw_grid(icon_grid_path)
     logging.info(f"Icon grid is written to {icon_grid_path}.")
+
+    icons_by_id_path: Path = workspace.get_icons_by_id_path()
+    icons_by_name_path: Path = workspace.get_icons_by_name_path()
     collection.draw_icons(icons_by_id_path)
     collection.draw_icons(icons_by_name_path, by_name=True)
     logging.info(

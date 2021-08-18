@@ -2,7 +2,7 @@
 WIP: road shape drawing.
 """
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Optional
 
 import numpy as np
 import svgwrite
@@ -48,7 +48,7 @@ class RoadPart:
         self,
         point_1: np.array,
         point_2: np.array,
-        lanes: List[Lane],
+        lanes: list[Lane],
         scale: False,
     ):
         """
@@ -58,7 +58,7 @@ class RoadPart:
         """
         self.point_1: np.array = point_1
         self.point_2: np.array = point_2
-        self.lanes: List[Lane] = lanes
+        self.lanes: list[Lane] = lanes
         if lanes:
             self.width = sum(map(lambda x: x.get_width(scale), lanes))
         else:
@@ -297,8 +297,8 @@ class Intersection:
     points of the road parts should be the same.
     """
 
-    def __init__(self, parts: List[RoadPart]):
-        self.parts: List[RoadPart] = sorted(parts, key=lambda x: x.get_angle())
+    def __init__(self, parts: list[RoadPart]):
+        self.parts: list[RoadPart] = sorted(parts, key=lambda x: x.get_angle())
 
         for index in range(len(self.parts)):
             next_index: int = 0 if index == len(self.parts) - 1 else index + 1

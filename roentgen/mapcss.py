@@ -3,7 +3,7 @@ MapCSS scheme creation.
 """
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, TextIO
+from typing import Optional, TextIO
 
 from colour import Color
 
@@ -83,8 +83,8 @@ class MapCSSWriter:
         self.add_icons_for_lifecycle: bool = add_icons_for_lifecycle
         self.icon_directory_name: str = icon_directory_name
 
-        self.point_matchers: List[Matcher] = scheme.node_matchers
-        self.line_matchers: List[Matcher] = scheme.way_matchers
+        self.point_matchers: list[Matcher] = scheme.node_matchers
+        self.line_matchers: list[Matcher] = scheme.way_matchers
 
     def add_selector(
         self,
@@ -102,7 +102,7 @@ class MapCSSWriter:
         :param opacity: icon opacity
         :return:
         """
-        elements: Dict[str, str] = {}
+        elements: dict[str, str] = {}
 
         clean_shapes = matcher.get_clean_shapes()
         if clean_shapes:

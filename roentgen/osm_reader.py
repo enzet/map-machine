@@ -6,7 +6,7 @@ import re
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Optional
 from xml.etree import ElementTree
 
 import numpy as np
@@ -23,7 +23,8 @@ KILOMETERS_PATTERN = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*km$")
 MILES_PATTERN = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*mi$")
 
 
-STAGES_OF_DECAY: List[str] = [
+# See https://wiki.openstreetmap.org/wiki/Lifecycle_prefix#Stages_of_decay
+STAGES_OF_DECAY: list[str] = [
     "disused",
     "abandoned",
     "ruins",
@@ -50,8 +51,9 @@ class Tagged:
     OpenStreetMap element (node, way or relation) with tags.
     """
 
-    def __init__(self):
-        self.tags: Dict[str, str] = {}
+    def __init__(self, tags: dict[str, str] = None):
+        self.tags: dict[str, str]
+        self.tags = {} if tags is None else tags
 
     def get_tag(self, key: str) -> Optional[str]:
         """
@@ -139,7 +141,7 @@ class OSMNode(Tagged):
                 node.tags[subattributes["k"]] = subattributes["v"]
         return node
 
-    def parse_from_structure(self, structure: Dict[str, Any]) -> "OSMNode":
+    def parse_from_structure(self, structure: dict[str, Any]) -> "OSMNode":
         """
         Parse node from Overpass-like structure.
 
@@ -160,11 +162,11 @@ class OSMWay(Tagged):
     See https://wiki.openstreetmap.org/wiki/Way
     """
 
-    def __init__(self, id_: int = 0, nodes: Optional[List[OSMNode]] = None):
+    def __init__(self, id_: int = 0, nodes: Optional[list[OSMNode]] = None):
         super().__init__()
 
         self.id_: int = id_
-        self.nodes: List[OSMNode] = [] if nodes is None else nodes
+        self.nodes: list[OSMNode] = [] if nodes is None else nodes
 
         self.visible: Optional[str] = None
         self.changeset: Optional[str] = None
@@ -194,7 +196,7 @@ class OSMWay(Tagged):
         return way
 
     def parse_from_structure(
-        self, structure: Dict[str, Any], nodes
+        self, structure: dict[str, Any], nodes
     ) -> "OSMWay":
         """
         Parse way from Overpass-like structure.
@@ -245,7 +247,7 @@ class OSMRelation(Tagged):
         super().__init__()
 
         self.id_: int = id_
-        self.members: List["OSMMember"] = []
+        self.members: list["OSMMember"] = []
         self.user: Optional[str] = None
         self.timestamp: Optional[datetime] = None
 
@@ -275,7 +277,7 @@ class OSMRelation(Tagged):
                 relation.tags[subelement.attrib["k"]] = subelement.attrib["v"]
         return relation
 
-    def parse_from_structure(self, structure: Dict[str, Any]) -> "OSMRelation":
+    def parse_from_structure(self, structure: dict[str, Any]) -> "OSMRelation":
         """
         Parse relation from Overpass-like structure.
 
@@ -305,19 +307,19 @@ class OSMMember:
     role: str = ""
 
 
-class Map:
+class OSMData:
     """
     The whole OpenStreetMap information about nodes, ways, and relations.
     """
 
     def __init__(self):
-        self.nodes: Dict[int, OSMNode] = {}
-        self.ways: Dict[int, OSMWay] = {}
-        self.relations: Dict[int, OSMRelation] = {}
+        self.nodes: dict[int, OSMNode] = {}
+        self.ways: dict[int, OSMWay] = {}
+        self.relations: dict[int, OSMRelation] = {}
 
-        self.authors: Set[str] = set()
+        self.authors: set[str] = set()
         self.time: MinMax = MinMax()
-        self.boundary_box: List[MinMax] = [MinMax(), MinMax()]
+        self.boundary_box: list[MinMax] = [MinMax(), MinMax()]
         self.view_box = None
 
     def add_node(self, node: OSMNode) -> None:
@@ -355,9 +357,9 @@ class OverpassReader:
     """
 
     def __init__(self):
-        self.map_ = Map()
+        self.osm_data = OSMData()
 
-    def parse_json_file(self, file_name: Path) -> Map:
+    def parse_json_file(self, file_name: Path) -> OSMData:
         """
         Parse JSON structure from the file and construct map.
         """
@@ -371,18 +373,18 @@ class OverpassReader:
             if element["type"] == "node":
                 node = OSMNode().parse_from_structure(element)
                 node_map[node.id_] = node
-                self.map_.add_node(node)
+                self.osm_data.add_node(node)
         for element in structure["elements"]:
             if element["type"] == "way":
                 way = OSMWay().parse_from_structure(element, node_map)
                 way_map[way.id_] = way
-                self.map_.add_way(way)
+                self.osm_data.add_way(way)
         for element in structure["elements"]:
             if element["type"] == "relation":
                 relation = OSMRelation().parse_from_structure(element)
-                self.map_.add_relation(relation)
+                self.osm_data.add_relation(relation)
 
-        return self.map_
+        return self.osm_data
 
 
 class OSMReader:
@@ -406,13 +408,13 @@ class OSMReader:
         :param is_full: whether metadata should be parsed: tags `visible`,
             `changeset`, `timestamp`, `user`, `uid`
         """
-        self.map_ = Map()
+        self.osm_data = OSMData()
         self.parse_nodes: bool = parse_nodes
         self.parse_ways: bool = parse_ways
         self.parse_relations: bool = parse_relations
         self.is_full: bool = is_full
 
-    def parse_osm_file(self, file_name: Path) -> Map:
+    def parse_osm_file(self, file_name: Path) -> OSMData:
         """
         Parse OSM XML file.
 
@@ -421,7 +423,7 @@ class OSMReader:
         """
         return self.parse_osm(ElementTree.parse(file_name).getroot())
 
-    def parse_osm_text(self, text: str) -> Map:
+    def parse_osm_text(self, text: str) -> OSMData:
         """
         Parse OSM XML data from text representation.
 
@@ -430,7 +432,7 @@ class OSMReader:
         """
         return self.parse_osm(ElementTree.fromstring(text))
 
-    def parse_osm(self, root) -> Map:
+    def parse_osm(self, root) -> OSMData:
         """
         Parse OSM XML data.
 
@@ -442,25 +444,25 @@ class OSMReader:
                 self.parse_bounds(element)
             if element.tag == "node" and self.parse_nodes:
                 node = OSMNode.from_xml_structure(element, self.is_full)
-                self.map_.add_node(node)
+                self.osm_data.add_node(node)
             if element.tag == "way" and self.parse_ways:
-                self.map_.add_way(
+                self.osm_data.add_way(
                     OSMWay.from_xml_structure(
-                        element, self.map_.nodes, self.is_full
+                        element, self.osm_data.nodes, self.is_full
                     )
                 )
             if element.tag == "relation" and self.parse_relations:
-                self.map_.add_relation(
+                self.osm_data.add_relation(
                     OSMRelation.from_xml_structure(element, self.is_full)
                 )
-        return self.map_
+        return self.osm_data
 
     def parse_bounds(self, element) -> None:
         """
         Parse view box from XML element.
         """
         attributes = element.attrib
-        self.map_.view_box = MinMax(
+        self.osm_data.view_box = MinMax(
             np.array(
                 (float(attributes["minlat"]), float(attributes["minlon"]))
             ),

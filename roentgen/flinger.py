@@ -27,10 +27,13 @@ def pseudo_mercator(coordinates: np.array) -> np.array:
     return np.array((coordinates[1], y))
 
 
-def osm_zoom_level_to_pixels_per_meter(zoom_level: float):
+def osm_zoom_level_to_pixels_per_meter(zoom_level: float) -> float:
     """
-    Convert OSM zoom level (see https://wiki.openstreetmap.org/wiki/Zoom_levels)
-    to pixels per meter on Equator.
+    Convert OSM zoom level to pixels per meter on Equator. See
+    https://wiki.openstreetmap.org/wiki/Zoom_levels
+
+    :param zoom_level: integer number usually not bigger than 20, but this
+        function allows any non-negative float value
     """
     return 2 ** zoom_level / 156415
 

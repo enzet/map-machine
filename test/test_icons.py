@@ -1,8 +1,6 @@
 """
 Test icon generation for nodes.
 """
-from typing import Dict, Set
-
 import pytest
 
 from roentgen.grid import IconCollection
@@ -34,11 +32,9 @@ def test_icons_by_name(init_collection) -> None:
     init_collection.draw_icons(workspace.get_icons_by_name_path(), by_name=True)
 
 
-def get_icon(tags: Dict[str, str]) -> IconSet:
-    """
-    Construct icon from tags.
-    """
-    processed: Set[str] = set()
+def get_icon(tags: dict[str, str]) -> IconSet:
+    """Construct icon from tags."""
+    processed: set[str] = set()
     icon, _ = SCHEME.get_icon(SHAPE_EXTRACTOR, tags, processed)
     return icon
 

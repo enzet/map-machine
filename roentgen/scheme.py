@@ -4,7 +4,7 @@ Röntgen drawing scheme.
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Optional, Tuple, Union
 
 import yaml
 from colour import Color
@@ -30,7 +30,7 @@ class LineStyle:
     SVG line style and its priority.
     """
 
-    style: Dict[str, Union[int, float, str]]
+    style: dict[str, Union[int, float, str]]
     priority: float = 0.0
 
 
@@ -48,7 +48,7 @@ class MatchingType(Enum):
 def is_matched_tag(
     matcher_tag_key: str,
     matcher_tag_value: Union[str, list],
-    tags: Dict[str, str],
+    tags: dict[str, str],
 ) -> MatchingType:
     """
     Check whether element tags contradict tag matcher.
@@ -89,10 +89,10 @@ class Matcher:
     Tag matching.
     """
 
-    def __init__(self, structure: Dict[str, Any]):
-        self.tags: Dict[str, str] = structure["tags"]
+    def __init__(self, structure: dict[str, Any]):
+        self.tags: dict[str, str] = structure["tags"]
 
-        self.exception: Dict[str, str] = {}
+        self.exception: dict[str, str] = {}
         if "exception" in structure:
             self.exception = structure["exception"]
 
@@ -100,11 +100,11 @@ class Matcher:
         if "replace_shapes" in structure:
             self.replace_shapes = structure["replace_shapes"]
 
-        self.location_restrictions: Dict[str, str] = {}
+        self.location_restrictions: dict[str, str] = {}
         if "location_restrictions" in structure:
             self.location_restrictions = structure["location_restrictions"]
 
-    def is_matched(self, tags: Dict[str, str]) -> bool:
+    def is_matched(self, tags: dict[str, str]) -> bool:
         """
         Check whether element tags matches tag matcher.
 
@@ -157,7 +157,7 @@ class NodeMatcher(Matcher):
     Tag specification matcher.
     """
 
-    def __init__(self, structure: Dict[str, Any]):
+    def __init__(self, structure: dict[str, Any]):
         # Dictionary with tag keys and values, value lists, or "*"
         super().__init__(structure)
 
@@ -200,11 +200,11 @@ class WayMatcher(Matcher):
     Special tag matcher for ways.
     """
 
-    def __init__(self, structure: Dict[str, Any], scheme: "Scheme"):
+    def __init__(self, structure: dict[str, Any], scheme: "Scheme"):
         super().__init__(structure)
-        self.style: Dict[str, Any] = {"fill": "none"}
+        self.style: dict[str, Any] = {"fill": "none"}
         if "style" in structure:
-            style: Dict[str, Any] = structure["style"]
+            style: dict[str, Any] = structure["style"]
             for key in style:
                 if str(style[key]).endswith("_color"):
                     self.style[key] = scheme.get_color(style[key]).hex.upper()
@@ -223,7 +223,7 @@ class RoadMatcher(Matcher):
     Special tag matcher for highways.
     """
 
-    def __init__(self, structure: Dict[str, Any], scheme: "Scheme"):
+    def __init__(self, structure: dict[str, Any], scheme: "Scheme"):
         super().__init__(structure)
         self.border_color: Color = Color(
             scheme.get_color(structure["border_color"])
@@ -250,33 +250,33 @@ class Scheme:
             specification
         """
         with file_name.open() as input_file:
-            content: Dict[str, Any] = yaml.load(
+            content: dict[str, Any] = yaml.load(
                 input_file.read(), Loader=yaml.FullLoader
             )
-        self.node_matchers: List[NodeMatcher] = []
+        self.node_matchers: list[NodeMatcher] = []
         for group in content["node_icons"]:
             for element in group["tags"]:
                 self.node_matchers.append(NodeMatcher(element))
 
-        self.colors: Dict[str, str] = content["colors"]
-        self.material_colors: Dict[str, str] = content["material_colors"]
+        self.colors: dict[str, str] = content["colors"]
+        self.material_colors: dict[str, str] = content["material_colors"]
 
-        self.way_matchers: List[WayMatcher] = [
+        self.way_matchers: list[WayMatcher] = [
             WayMatcher(x, self) for x in content["ways"]
         ]
-        self.road_matchers: List[RoadMatcher] = [
+        self.road_matchers: list[RoadMatcher] = [
             RoadMatcher(x, self) for x in content["roads"]
         ]
-        self.area_matchers: List[Matcher] = [
+        self.area_matchers: list[Matcher] = [
             Matcher(x) for x in content["area_tags"]
         ]
-        self.tags_to_write: List[str] = content["tags_to_write"]
-        self.prefix_to_write: List[str] = content["prefix_to_write"]
-        self.tags_to_skip: List[str] = content["tags_to_skip"]
-        self.prefix_to_skip: List[str] = content["prefix_to_skip"]
+        self.tags_to_write: list[str] = content["tags_to_write"]
+        self.prefix_to_write: list[str] = content["prefix_to_write"]
+        self.tags_to_skip: list[str] = content["tags_to_skip"]
+        self.prefix_to_skip: list[str] = content["prefix_to_skip"]
 
         # Storage for created icon sets.
-        self.cache: Dict[str, Tuple[IconSet, int]] = {}
+        self.cache: dict[str, Tuple[IconSet, int]] = {}
 
     def get_color(self, color: str) -> Color:
         """
@@ -327,8 +327,8 @@ class Scheme:
     def get_icon(
         self,
         extractor: ShapeExtractor,
-        tags: Dict[str, Any],
-        processed: Set[str],
+        tags: dict[str, Any],
+        processed: set[str],
         for_: str = "node",
     ) -> Tuple[IconSet, int]:
         """
@@ -347,7 +347,7 @@ class Scheme:
             return self.cache[tags_hash]
 
         main_icon: Optional[Icon] = None
-        extra_icons: List[Icon] = []
+        extra_icons: list[Icon] = []
         priority: int = 0
 
         index: int = 0
@@ -358,7 +358,7 @@ class Scheme:
             matched: bool = matcher.is_matched(tags)
             if not matched:
                 continue
-            matcher_tags: Set[str] = set(matcher.tags.keys())
+            matcher_tags: set[str] = set(matcher.tags.keys())
             priority = len(self.node_matchers) - index
             if not matcher.draw:
                 processed |= matcher_tags
@@ -437,7 +437,7 @@ class Scheme:
 
         return returned, priority
 
-    def get_style(self, tags: Dict[str, Any], scale):
+    def get_style(self, tags: dict[str, Any], scale):
         """
         Get line style based on tags and scale.
         """
@@ -451,7 +451,7 @@ class Scheme:
 
         return line_styles
 
-    def get_road(self, tags: Dict[str, Any]) -> Optional[RoadMatcher]:
+    def get_road(self, tags: dict[str, Any]) -> Optional[RoadMatcher]:
         for matcher in self.road_matchers:
             if not matcher.is_matched(tags):
                 continue
@@ -459,12 +459,12 @@ class Scheme:
         return None
 
     def construct_text(
-        self, tags: Dict[str, str], draw_captions: str, processed: Set[str]
-    ) -> List[Label]:
+        self, tags: dict[str, str], draw_captions: str, processed: set[str]
+    ) -> list[Label]:
         """
         Construct labels for not processed tags.
         """
-        texts: List[Label] = []
+        texts: list[Label] = []
 
         name = None
         alt_name = None
@@ -490,7 +490,7 @@ class Scheme:
                 alt_name = ""
             alt_name += "ex " + tags["old_name"]
 
-        address: List[str] = get_address(tags, draw_captions, processed)
+        address: list[str] = get_address(tags, draw_captions, processed)
 
         if name:
             texts.append(Label(name, Color("black")))
@@ -535,7 +535,7 @@ class Scheme:
                 texts.append(Label(tags[tag]))
         return texts
 
-    def is_area(self, tags: Dict[str, str]) -> bool:
+    def is_area(self, tags: dict[str, str]) -> bool:
         """
         Check whether way described by tags is area.
         """
@@ -545,7 +545,7 @@ class Scheme:
         return False
 
     def process_ignored(
-        self, tags: Dict[str, str], processed: Set[str]
+        self, tags: dict[str, str], processed: set[str]
     ) -> None:
         """
         Mark all ignored tag as processed.
@@ -553,6 +553,4 @@ class Scheme:
         :param tags: input tag dictionary
         :param processed: processed set
         """
-        for tag in tags:
-            if self.is_no_drawable(tag):
-                processed.add(tag)
+        [processed.add(tag) for tag in tags if self.is_no_drawable(tag)]

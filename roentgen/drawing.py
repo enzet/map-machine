@@ -9,9 +9,12 @@ import cairo
 import numpy as np
 import svgwrite
 from colour import Color
-from svgwrite.shapes import Rect
 from svgwrite.path import Path as SVGPath
+from svgwrite.shapes import Rect
 from svgwrite.text import Text
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 
 @dataclass

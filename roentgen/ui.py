@@ -13,50 +13,48 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from roentgen.osm_reader import STAGES_OF_DECAY
+
 BOXES: str = " ▏▎▍▌▋▊▉"
 BOXES_LENGTH: int = len(BOXES)
 
 AUTHOR_MODE: str = "author"
 TIME_MODE: str = "time"
 
+LATITUDE_MAX_DIFFERENCE: float = 0.5
+LONGITUDE_MAX_DIFFERENCE: float = 0.5
+
 
 def parse_options(args) -> argparse.Namespace:
-    """
-    Parse Röntgen command-line options.
-    """
-    parser = argparse.ArgumentParser(
+    """Parse Röntgen command-line options."""
+    parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description="Röntgen. OpenStreetMap renderer with custom icon set"
     )
     subparser = parser.add_subparsers(dest="command")
 
-    render = subparser.add_parser("render")
-    subparser.add_parser("icons")
-    mapcss = subparser.add_parser("mapcss")
-    subparser.add_parser("taginfo")
-    tile = subparser.add_parser("tile")
-    element = subparser.add_parser("element")
-    server = subparser.add_parser("server")
+    add_render_arguments(subparser.add_parser("render"))
+    add_tile_arguments(subparser.add_parser("tile"))
+    add_server_arguments(subparser.add_parser("server"))
+    add_element_arguments(subparser.add_parser("element"))
+    add_mapcss_arguments(subparser.add_parser("mapcss"))
 
-    add_render_arguments(render)
-    add_tile_arguments(tile)
-    add_server_arguments(server)
-    add_element_arguments(element)
-    add_mapcss_arguments(mapcss)
+    subparser.add_parser("icons")
+    subparser.add_parser("taginfo")
 
     arguments: argparse.Namespace = parser.parse_args(args[1:])
 
     return arguments
 
 
-def add_tile_arguments(tile) -> None:
+def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
     """Add arguments for tile command."""
-    tile.add_argument(
+    parser.add_argument(
         "-c",
         "--coordinates",
         metavar="<latitude>,<longitude>",
         help="coordinates of any location inside the tile",
     )
-    tile.add_argument(
+    parser.add_argument(
         "-s",
         "--scale",
         type=int,
@@ -64,19 +62,19 @@ def add_tile_arguments(tile) -> None:
         help="OSM zoom level",
         default=18,
     )
-    tile.add_argument(
+    parser.add_argument(
         "-t",
         "--tile",
         metavar="<scale>/<x>/<y>",
         help="tile specification",
     )
-    tile.add_argument(
+    parser.add_argument(
         "--cache",
         help="path for temporary OSM files",
         default="cache",
         metavar="<path>",
     )
-    tile.add_argument(
+    parser.add_argument(
         "-b",
         "--boundary-box",
         help="construct the minimum amount of tiles that cover requested "
@@ -85,9 +83,9 @@ def add_tile_arguments(tile) -> None:
     )
 
 
-def add_server_arguments(tile) -> None:
+def add_server_arguments(parser: argparse.ArgumentParser) -> None:
     """Add arguments for server command."""
-    tile.add_argument(
+    parser.add_argument(
         "--cache",
         help="path for temporary OSM files",
         default="cache",
@@ -95,16 +93,16 @@ def add_server_arguments(tile) -> None:
     )
 
 
-def add_element_arguments(element) -> None:
+def add_element_arguments(parser: argparse.ArgumentParser) -> None:
     """Add arguments for element command."""
-    element.add_argument("-n", "--node")
-    element.add_argument("-w", "--way")
-    element.add_argument("-r", "--relation")
+    parser.add_argument("-n", "--node")
+    parser.add_argument("-w", "--way")
+    parser.add_argument("-r", "--relation")
 
 
-def add_render_arguments(render) -> None:
+def add_render_arguments(parser: argparse.ArgumentParser) -> None:
     """Add arguments for render command."""
-    render.add_argument(
+    parser.add_argument(
         "-i",
         "--input",
         dest="input_file_name",
@@ -113,7 +111,7 @@ def add_render_arguments(render) -> None:
         help="input XML file name or names (if not specified, file will be "
         "downloaded using OpenStreetMap API)",
     )
-    render.add_argument(
+    parser.add_argument(
         "-o",
         "--output",
         dest="output_file_name",
@@ -121,14 +119,14 @@ def add_render_arguments(render) -> None:
         default="out/map.svg",
         help="output SVG file name",
     )
-    render.add_argument(
+    parser.add_argument(
         "-b",
         "--boundary-box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
         help='geo boundary box, use space before "-" if the first value is '
         "negative",
     )
-    render.add_argument(
+    parser.add_argument(
         "-s",
         "--scale",
         metavar="<float>",
@@ -136,61 +134,63 @@ def add_render_arguments(render) -> None:
         default=18,
         type=float,
     )
-    render.add_argument(
+    parser.add_argument(
         "--cache",
         help="path for temporary OSM files",
         default="cache",
         metavar="<path>",
     )
-    render.add_argument(
+    parser.add_argument(
         "--labels",
         help="label drawing mode: `no`, `main`, or `all`",
         dest="label_mode",
         default="main",
     )
-    render.add_argument(
+    parser.add_argument(
         "--overlap",
         dest="overlap",
         default=12,
         type=int,
         help="how many pixels should be left around icons and text",
     )
-    render.add_argument(
+    parser.add_argument(
         "--mode",
         default="normal",
         help="map drawing mode",
     )
-    render.add_argument(
+    parser.add_argument(
         "--seed",
         default="",
         help="seed for random",
     )
-    render.add_argument(
+    parser.add_argument(
         "--level",
         default=None,
         help="display only this floor level",
     )
 
 
-def add_mapcss_arguments(mapcss) -> None:
+def add_mapcss_arguments(parser: argparse.ArgumentParser) -> None:
     """Add arguments for mapcss command."""
-    mapcss.add_argument(
+    parser.add_argument(
         "--icons",
         action=argparse.BooleanOptionalAction,
         default=True,
         help="add icons for nodes and areas",
     )
-    mapcss.add_argument(
+    parser.add_argument(
         "--ways",
         action=argparse.BooleanOptionalAction,
         default=True,
         help="add style for ways and relations",
     )
-    mapcss.add_argument(
+    parser.add_argument(
         "--lifecycle",
         action=argparse.BooleanOptionalAction,
         default=True,
-        help="add icons for lifecycle tags",
+        help="add icons for lifecycle tags; be careful: this will increase the "
+        f"number of node and area selectors by {len(STAGES_OF_DECAY) + 1} "
+        f"times",
     )
 
 
@@ -245,6 +245,8 @@ class BoundaryBox:
             <longitude 1>,<latitude 1>,<longitude 2>,<latitude 2> or simply
             <left>,<bottom>,<right>,<top>.
         """
+        boundary_box = boundary_box.replace(" ", "")
+
         matcher = re.match(
             "(?P<left>[0-9.-]*),(?P<bottom>[0-9.-]*),"
             + "(?P<right>[0-9.-]*),(?P<top>[0-9.-]*)",
@@ -256,10 +258,10 @@ class BoundaryBox:
             return None
 
         try:
-            left = float(matcher.group("left"))
-            bottom = float(matcher.group("bottom"))
-            right = float(matcher.group("right"))
-            top = float(matcher.group("top"))
+            left: float = float(matcher.group("left"))
+            bottom: float = float(matcher.group("bottom"))
+            right: float = float(matcher.group("right"))
+            top: float = float(matcher.group("top"))
         except ValueError:
             logging.fatal("Invalid boundary box.")
             return None
@@ -270,7 +272,10 @@ class BoundaryBox:
         if bottom >= top:
             logging.error("Negative vertical boundary.")
             return None
-        if right - left > 0.5 or top - bottom > 0.5:
+        if (
+            right - left > LONGITUDE_MAX_DIFFERENCE
+            or top - bottom > LATITUDE_MAX_DIFFERENCE
+        ):
             logging.error("Boundary box is too big.")
             return None
 
@@ -285,9 +290,7 @@ class BoundaryBox:
         return self.bottom, self.right
 
     def round(self) -> "BoundaryBox":
-        """
-        Round boundary box.
-        """
+        """Round boundary box."""
         self.left = round(self.left * 1000) / 1000 - 0.001
         self.bottom = round(self.bottom * 1000) / 1000 - 0.001
         self.right = round(self.right * 1000) / 1000 + 0.001

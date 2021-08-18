@@ -10,9 +10,7 @@ __email__ = "me@enzet.ru"
 
 
 def test_mapcss() -> None:
-    """
-    Test MapCSS generation.
-    """
+    """Test MapCSS generation."""
     writer: MapCSSWriter = MapCSSWriter(SCHEME, "icons")
     matcher: NodeMatcher = NodeMatcher(
         {"tags": {"natural": "tree"}, "shapes": ["tree"]}

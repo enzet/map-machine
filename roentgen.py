@@ -18,31 +18,32 @@ from roentgen.grid import draw_icons
 from roentgen.icon import ShapeExtractor
 from roentgen.mapper import (
     AUTHOR_MODE,
-    CREATION_TIME_MODE,
-    Painter,
+    TIME_MODE,
+    Map,
     check_level_number,
     check_level_overground,
 )
 from roentgen.osm_getter import NetworkError, get_osm
-from roentgen.osm_reader import Map, OSMReader, OverpassReader
+from roentgen.osm_reader import OSMData, OSMReader, OverpassReader
 from roentgen.point import Point
 from roentgen.scheme import LineStyle, Scheme
 from roentgen.ui import BoundaryBox, parse_options
 from roentgen.util import MinMax
-from roentgen.workspace import workspace
+from roentgen.workspace import Workspace
 
 
 def main(options) -> None:
     """
     Röntgen entry point.
 
-    :param argv: command-line arguments
+    :param options: command-line arguments
     """
+    if not options.boundary_box and not options.input_file_name:
+        logging.fatal("Specify either --boundary-box, or --input.")
+        exit(1)
+
     if options.boundary_box:
-        box: List[float] = list(
-            map(float, options.boundary_box.replace(" ", "").split(","))
-        )
-        boundary_box = BoundaryBox(box[0], box[1], box[2], box[3])
+        boundary_box: BoundaryBox = BoundaryBox.from_text(options.boundary_box)
 
     cache_path: Path = Path(options.cache)
     cache_path.mkdir(parents=True, exist_ok=True)
@@ -53,28 +54,35 @@ def main(options) -> None:
         input_file_names = list(map(Path, options.input_file_name))
     else:
         try:
-            get_osm(boundary_box, cache_path)
+            cache_file_path: Path = (
+                cache_path / f"{boundary_box.get_format()}.osm"
+            )
+            get_osm(boundary_box, cache_file_path)
         except NetworkError as e:
             logging.fatal(e.message)
             sys.exit(1)
-        input_file_names = [cache_path / f"{options.boundary_box}.osm"]
+        input_file_names = [cache_file_path]
 
     scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
     min_: np.array
     max_: np.array
-    map_: Map
+    osm_data: OSMData
 
     if input_file_names[0].name.endswith(".json"):
         reader: OverpassReader = OverpassReader()
         reader.parse_json_file(input_file_names[0])
 
-        map_ = reader.map_
+        osm_data = reader.osm_data
         view_box = MinMax(
-            np.array((map_.boundary_box[0].min_, map_.boundary_box[1].min_)),
-            np.array((map_.boundary_box[0].max_, map_.boundary_box[1].max_)),
+            np.array(
+                (osm_data.boundary_box[0].min_, osm_data.boundary_box[1].min_)
+            ),
+            np.array(
+                (osm_data.boundary_box[0].max_, osm_data.boundary_box[1].max_)
+            ),
         )
     else:
-        is_full: bool = options.mode in [AUTHOR_MODE, CREATION_TIME_MODE]
+        is_full: bool = options.mode in [AUTHOR_MODE, TIME_MODE]
         osm_reader = OSMReader(is_full=is_full)
 
         for file_name in input_file_names:
@@ -84,23 +92,18 @@ def main(options) -> None:
 
             osm_reader.parse_osm_file(file_name)
 
-        map_ = osm_reader.map_
+        osm_data = osm_reader.osm_data
 
         if options.boundary_box:
-            boundary_box: List[float] = list(
-                map(float, options.boundary_box.split(","))
-            )
             view_box = MinMax(
-                np.array((boundary_box[1], boundary_box[0])),
-                np.array((boundary_box[3], boundary_box[2])),
+                np.array((boundary_box.bottom, boundary_box.left)),
+                np.array((boundary_box.top, boundary_box.right)),
             )
         else:
-            view_box = map_.view_box
+            view_box = osm_data.view_box
 
     flinger: Flinger = Flinger(view_box, options.scale)
     size: np.array = flinger.size
-
-    Path("out").mkdir(parents=True, exist_ok=True)
 
     svg: svgwrite.Drawing = svgwrite.Drawing(
         options.output_file_name, size=size
@@ -131,7 +134,7 @@ def main(options) -> None:
             return True
 
     constructor: Constructor = Constructor(
-        map_,
+        osm_data,
         flinger,
         scheme,
         icon_extractor,
@@ -141,17 +144,14 @@ def main(options) -> None:
     )
     constructor.construct()
 
-    painter: Painter = Painter(
+    painter: Map = Map(
         overlap=options.overlap,
         mode=options.mode,
         label_mode=options.label_mode,
-        map_=map_,
         flinger=flinger,
         svg=svg,
-        icon_extractor=icon_extractor,
         scheme=scheme,
     )
-
     painter.draw(constructor)
 
     print(f"Writing output SVG to {options.output_file_name}...")
@@ -164,16 +164,18 @@ def draw_element(options):
     Draw single node, line, or area.
     """
     if options.node:
-        target = "node"
+        target: str = "node"
         tags_description = options.node
     else:
         # Not implemented yet.
         sys.exit(1)
 
-    tags = dict([x.split("=") for x in tags_description.split(",")])
-    scheme: Scheme = Scheme(Path("scheme/default.yml"))
+    tags: dict[str, str] = dict(
+        [x.split("=") for x in tags_description.split(",")]
+    )
+    scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
     extractor: ShapeExtractor = ShapeExtractor(
-        Path("icons/icons.svg"), Path("icons/config.json")
+        workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
     processed: Set[str] = set()
     icon, priority = scheme.get_icon(extractor, tags, processed)
@@ -193,8 +195,8 @@ def draw_element(options):
     size: np.array = point.get_size() + border
     point.point = np.array((size[0] / 2, 16 / 2 + border[1] / 2))
 
-    Path("out").mkdir(parents=True, exist_ok=True)
-    svg = svgwrite.Drawing("out/element.svg", size.astype(float))
+    output_file_path: Path = workspace.output_path / "element.svg"
+    svg = svgwrite.Drawing(str(output_file_path), size.astype(float))
     for style in scheme.get_style(tags, 18):
         style: LineStyle
         path = svg.path(d="M 0,0 L 64,0 L 64,64 L 0,64 L 0,0 Z")
@@ -203,44 +205,47 @@ def draw_element(options):
     point.draw_main_shapes(svg)
     point.draw_extra_shapes(svg)
     point.draw_texts(svg)
-    svg.write(open("out/element.svg", "w+"))
+    with output_file_path.open("w+") as output_file:
+        svg.write(output_file)
+    logging.info(f"Element is written to {output_file_path}.")
 
 
 def init_scheme() -> Scheme:
-    return Scheme(Path("scheme/default.yml"))
+    return Scheme(workspace.DEFAULT_SCHEME_PATH)
 
 
 if __name__ == "__main__":
 
     logging.basicConfig(format="%(levelname)s %(message)s", level=logging.INFO)
+    workspace: Workspace = Workspace(Path("out"))
 
-    options: argparse.Namespace = parse_options(sys.argv)
+    arguments: argparse.Namespace = parse_options(sys.argv)
 
-    if options.command == "render":
-        main(options)
+    if arguments.command == "render":
+        main(arguments)
 
-    elif options.command == "tile":
+    elif arguments.command == "tile":
         from roentgen import tile
 
-        tile.ui(options)
+        tile.ui(arguments)
 
-    elif options.command == "icons":
+    elif arguments.command == "icons":
         draw_icons()
 
-    elif options.command == "mapcss":
+    elif arguments.command == "mapcss":
         from roentgen import mapcss
 
-        mapcss.ui(options)
+        mapcss.ui(arguments)
 
-    elif options.command == "element":
-        draw_element(options)
+    elif arguments.command == "element":
+        draw_element(arguments)
 
-    elif options.command == "server":
+    elif arguments.command == "server":
         from roentgen import server
 
-        server.ui(options)
+        server.ui(arguments)
 
-    elif options.command == "taginfo":
+    elif arguments.command == "taginfo":
         from roentgen.taginfo import write_taginfo_project_file
 
         write_taginfo_project_file(init_scheme())

@@ -37,6 +37,7 @@ def get_gradient_color(
     range_coefficient: float = (
         0 if bounds.is_empty() else (value - bounds.min_) / bounds.delta()
     )
+    # If value is out of range, set it to boundary value.
     range_coefficient = min(1.0, max(0.0, range_coefficient))
     index: int = int(range_coefficient * color_length)
     coefficient: float = (

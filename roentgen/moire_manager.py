@@ -4,7 +4,7 @@ Moire markup extension for Röntgen.
 import argparse
 from abc import ABC
 from pathlib import Path
-from typing import Any, Dict, List, Union
+from typing import Any, Union
 
 import yaml
 from moire.default import Default, DefaultHTML, DefaultMarkdown, DefaultWiki
@@ -17,8 +17,8 @@ from roentgen.workspace import workspace
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-Arguments = List[Any]
-Code = Union[str, Tag, List]
+Arguments = list[Any]
+Code = Union[str, Tag, list]
 
 PREFIX: str = "https://wiki.openstreetmap.org/wiki/"
 
@@ -29,13 +29,13 @@ class ArgumentParser(argparse.ArgumentParser):
     """
 
     def __init__(self, *args, **kwargs):
-        self.arguments: List[Dict[str, Any]] = []
+        self.arguments: list[dict[str, Any]] = []
         super(ArgumentParser, self).__init__(*args, **kwargs)
 
     def add_argument(self, *args, **kwargs) -> None:
         """Just store argument with options."""
         super(ArgumentParser, self).add_argument(*args, **kwargs)
-        argument: Dict[str, Any] = {"arguments": [x for x in args]}
+        argument: dict[str, Any] = {"arguments": [x for x in args]}
 
         for key in kwargs:
             argument[key] = kwargs[key]
@@ -57,7 +57,7 @@ class ArgumentParser(argparse.ArgumentParser):
             row: Code = [[x for y in array for x in y][:-1]]
 
             if "help" in option:
-                help_value: List = [option["help"]]
+                help_value: list = [option["help"]]
                 if (
                     "default" in option
                     and option["default"]
@@ -91,13 +91,13 @@ class TestConfiguration:
     """
 
     def __init__(self, test_config: Path):
-        self.steps: Dict[str, Any] = {}
+        self.steps: dict[str, Any] = {}
 
         with test_config.open() as input_file:
-            content: Dict[str, Any] = yaml.load(
+            content: dict[str, Any] = yaml.load(
                 input_file, Loader=yaml.FullLoader
             )
-            steps: List[Dict[str, Any]] = content["jobs"]["build"]["steps"]
+            steps: list[dict[str, Any]] = content["jobs"]["build"]["steps"]
             for step in steps:
                 if "name" not in step:
                     continue
@@ -177,7 +177,8 @@ class RoentgenHTML(RoentgenMoire, DefaultHTML):
     Simple HTML.
     """
 
-    images = {}
+    def __init__(self):
+        self.images: dict = {}
 
     def color(self, args: Arguments) -> str:
         """Simple color sample."""
@@ -202,10 +203,11 @@ class RoentgenOSMWiki(RoentgenMoire, DefaultWiki):
     See https://wiki.openstreetmap.org/wiki/Main_Page
     """
 
-    images = {}
-    extractor = ShapeExtractor(
-        workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
-    )
+    def __init__(self):
+        self.images: dict = {}
+        self.extractor: ShapeExtractor = ShapeExtractor(
+            workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
+        )
 
     def osm(self, args: Arguments) -> str:
         """OSM tag key or key–value pair of tag."""

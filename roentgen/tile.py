@@ -7,7 +7,7 @@ import logging
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import Optional, Tuple
 
 import numpy as np
 import svgwrite
@@ -15,9 +15,9 @@ import svgwrite
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
 from roentgen.icon import ShapeExtractor
-from roentgen.mapper import Painter
+from roentgen.mapper import Map
 from roentgen.osm_getter import NetworkError, get_osm
-from roentgen.osm_reader import Map, OSMReader
+from roentgen.osm_reader import OSMData, OSMReader
 from roentgen.raster import rasterize
 from roentgen.scheme import Scheme
 from roentgen.ui import BoundaryBox
@@ -34,7 +34,7 @@ class Tiles:
     Collection of tiles.
     """
 
-    tiles: List["Tile"]
+    tiles: list["Tile"]
     tile_1: "Tile"
     tile_2: "Tile"
     scale: int
@@ -43,7 +43,7 @@ class Tiles:
     @classmethod
     def from_boundary_box(cls, boundary_box: BoundaryBox, scale: int):
         """Create minimal set of tiles that cover boundary box."""
-        tiles: List["Tile"] = []
+        tiles: list["Tile"] = []
         tile_1 = Tile.from_coordinates(boundary_box.get_left_top(), scale)
         tile_2 = Tile.from_coordinates(boundary_box.get_right_bottom(), scale)
 
@@ -69,15 +69,16 @@ class Tiles:
         :param directory: directory for tiles
         :param cache_path: directory for temporary OSM files
         """
-        get_osm(self.boundary_box, cache_path)
-
-        map_ = OSMReader().parse_osm_file(
-            cache_path / (self.boundary_box.get_format() + ".osm")
+        cache_file_path: Path = (
+            cache_path / f"{self.boundary_box.get_format()}.osm"
         )
+        get_osm(self.boundary_box, cache_file_path)
+
+        osm_data: OSMData = OSMReader().parse_osm_file(cache_file_path)
         for tile in self.tiles:
             file_path: Path = tile.get_file_name(directory)
             if not file_path.exists():
-                tile.draw_for_map(map_, directory)
+                tile.draw_for_map(osm_data, directory)
             else:
                 logging.info(f"File {file_path} already exists.")
 
@@ -97,14 +98,12 @@ class Tiles:
             self.boundary_box.get_format() + ".svg"
         )
         if not output_path.exists():
-            content = get_osm(self.boundary_box, cache_path)
-            if not content:
-                logging.error("Cannot download OSM data.")
-                return None
-
-            map_: Map = OSMReader().parse_osm_file(
-                cache_path / (self.boundary_box.get_format() + ".osm")
+            cache_file_path: Path = (
+                cache_path / f"{self.boundary_box.get_format()}.osm"
             )
+            get_osm(self.boundary_box, cache_file_path)
+
+            osm_data: OSMData = OSMReader().parse_osm_file(cache_file_path)
             lat_2, lon_1 = self.tile_1.get_coordinates()
             lat_1, lon_2 = Tile(
                 self.tile_2.x + 1, self.tile_2.y + 1, self.scale
@@ -113,26 +112,20 @@ class Tiles:
             max_ = np.array((lat_2, lon_2))
 
             flinger: Flinger = Flinger(MinMax(min_, max_), self.scale)
-            icon_extractor: ShapeExtractor = ShapeExtractor(
+            extractor: ShapeExtractor = ShapeExtractor(
                 workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
             )
             scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
             constructor: Constructor = Constructor(
-                map_, flinger, scheme, icon_extractor
+                osm_data, flinger, scheme, extractor
             )
             constructor.construct()
 
             svg: svgwrite.Drawing = svgwrite.Drawing(
                 str(output_path), size=flinger.size
             )
-            painter: Painter = Painter(
-                map_=map_,
-                flinger=flinger,
-                svg=svg,
-                icon_extractor=icon_extractor,
-                scheme=scheme,
-            )
-            painter.draw(constructor)
+            map_: Map = Map(flinger=flinger, svg=svg, scheme=scheme)
+            map_.draw(constructor)
 
             logging.info(f"Writing output SVG {output_path}...")
             with output_path.open("w+") as output_file:
@@ -204,18 +197,18 @@ class Tile:
             point_1[1], point_2[0], point_2[1], point_1[0]
         ).round()
 
-    def load_map(self, cache_path: Path) -> Map:
+    def load_osm_data(self, cache_path: Path) -> OSMData:
         """
         Construct map data from extended boundary box.
 
         :param cache_path: directory to store OSM data files
         """
-        boundary_box: BoundaryBox = self.get_extended_boundary_box()
-        get_osm(boundary_box, cache_path)
-
-        return OSMReader().parse_osm_file(
-            cache_path / f"{boundary_box.get_format()}.osm"
+        cache_file_path: Path = (
+            cache_path / f"{self.get_extended_boundary_box().get_format()}.osm"
         )
+        get_osm(self.get_extended_boundary_box(), cache_file_path)
+
+        return OSMReader().parse_osm_file(cache_file_path)
 
     def get_file_name(self, directory_name: Path) -> Path:
         """
@@ -239,13 +232,13 @@ class Tile:
         :param cache_path: directory to store SVG and PNG tiles
         """
         try:
-            map_: Map = self.load_map(cache_path)
+            osm_data: OSMData = self.load_osm_data(cache_path)
         except NetworkError as e:
             raise NetworkError(f"Map does not loaded. {e.message}")
 
-        self.draw_for_map(map_, directory_name)
+        self.draw_for_map(osm_data, directory_name)
 
-    def draw_for_map(self, map_: Map, directory_name: Path) -> None:
+    def draw_for_map(self, osm_data: OSMData, directory_name: Path) -> None:
         """Draw tile using existing map."""
         lat1, lon1 = self.get_coordinates()
         lat2, lon2 = Tile(self.x + 1, self.y + 1, self.scale).get_coordinates()
@@ -266,17 +259,11 @@ class Tile:
         )
         scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
         constructor: Constructor = Constructor(
-            map_, flinger, scheme, icon_extractor
+            osm_data, flinger, scheme, icon_extractor
         )
         constructor.construct()
 
-        painter: Painter = Painter(
-            map_=map_,
-            flinger=flinger,
-            svg=svg,
-            icon_extractor=icon_extractor,
-            scheme=scheme,
-        )
+        painter: Map = Map(flinger=flinger, svg=svg, scheme=scheme)
         painter.draw(constructor)
 
         logging.info(f"Writing output SVG {output_file_name}...")
@@ -291,7 +278,7 @@ def ui(options) -> None:
     directory: Path = workspace.get_tile_path()
 
     if options.coordinates:
-        coordinates: List[float] = list(
+        coordinates: list[float] = list(
             map(float, options.coordinates.strip().split(","))
         )
         tile: Tile = Tile.from_coordinates(np.array(coordinates), options.scale)

@@ -7,7 +7,6 @@ import json
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import List
 
 from roentgen import (
     __author__,
@@ -55,7 +54,7 @@ class TaginfoProjectFile:
             ):
                 key: str = list(matcher.tags.keys())[0]
                 value: str = matcher.tags[key]
-                ids: List[str] = [
+                ids: list[str] = [
                     (x if isinstance(x, str) else x["shape"])
                     for x in matcher.shapes
                 ]

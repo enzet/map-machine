@@ -12,12 +12,15 @@ def compute_angle(vector: np.array):
     For the given vector compute an angle between it and (1, 0) vector.  The
     result is in [0, 2π].
     """
+    if vector[0] == 0:
+        if vector[1] > 0:
+            return np.pi / 2
+        return np.pi + np.pi / 2
     if vector[0] < 0:
         return np.arctan(vector[1] / vector[0]) + np.pi
     if vector[1] < 0:
         return np.arctan(vector[1] / vector[0]) + 2 * np.pi
-    else:
-        return np.arctan(vector[1] / vector[0])
+    return np.arctan(vector[1] / vector[0])
 
 
 def turn_by_angle(vector: np.array, angle: float):

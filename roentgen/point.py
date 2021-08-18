@@ -1,7 +1,7 @@
 """
 Point: node representation on the map.
 """
-from typing import Dict, List, Optional, Set
+from typing import Optional
 
 import numpy as np
 import svgwrite
@@ -56,9 +56,9 @@ class Point(Tagged):
     def __init__(
         self,
         icon_set: IconSet,
-        labels: List[Label],
-        tags: Dict[str, str],
-        processed: Set[str],
+        labels: list[Label],
+        tags: dict[str, str],
+        processed: set[str],
         point: np.array,
         coordinates: np.array,
         priority: float = 0,
@@ -70,9 +70,9 @@ class Point(Tagged):
         assert point is not None
 
         self.icon_set: IconSet = icon_set
-        self.labels: List[Label] = labels
-        self.tags: Dict[str, str] = tags
-        self.processed: Set[str] = processed
+        self.labels: list[Label] = labels
+        self.tags: dict[str, str] = tags
+        self.processed: set[str] = processed
         self.point: np.array = point
         self.coordinates: np.array = coordinates
         self.priority: float = priority
@@ -139,7 +139,7 @@ class Point(Tagged):
         icon: Icon,
         position,
         occupied,
-        tags: Optional[Dict[str, str]] = None,
+        tags: Optional[dict[str, str]] = None,
     ) -> bool:
         """
         Draw one combined icon and its outline.
@@ -176,7 +176,7 @@ class Point(Tagged):
         """
         Draw all labels.
         """
-        labels: List[Label]
+        labels: list[Label]
 
         if label_mode == "main":
             labels = self.labels[:1]

@@ -10,18 +10,14 @@ __email__ = "me@enzet.ru"
 
 
 def check_length(value: str, expected: Optional[float]) -> None:
-    """
-    Assert that constructed value is equals to an expected one.
-    """
+    """Assert that constructed value is equals to an expected one."""
     tagged = Tagged()
     tagged.tags["a"] = value
     assert tagged.get_length("a") == expected
 
 
 def test_meters() -> None:
-    """
-    Test length in meters processing.
-    """
+    """Test length in meters processing."""
     check_length("50m", 50.0)
     check_length("50.m", 50.0)
     check_length("50.05m", 50.05)
@@ -31,16 +27,12 @@ def test_meters() -> None:
 
 
 def test_kilometers() -> None:
-    """
-    Test length in meters processing.
-    """
+    """Test length in meters processing."""
     check_length("50km", 50_000.0)
     check_length("50 km", 50_000.0)
 
 
 def test_miles() -> None:
-    """
-    Test length in meters processing.
-    """
+    """Test length in meters processing."""
     check_length("1mi", 1609.344)
     check_length("50 mi", 50 * 1609.344)

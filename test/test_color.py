@@ -11,9 +11,7 @@ __email__ = "me@enzet.ru"
 
 
 def test_is_bright() -> None:
-    """
-    Test detecting color brightness.
-    """
+    """Test detecting color brightness."""
     assert is_bright(Color("white"))
     assert is_bright(Color("yellow"))
     assert not is_bright(Color("brown"))
@@ -21,9 +19,7 @@ def test_is_bright() -> None:
 
 
 def test_gradient() -> None:
-    """
-    Test color picking from gradient.
-    """
+    """Test color picking from gradient."""
     color: Color = get_gradient_color(
         0.5, MinMax(0, 1), [Color("black"), Color("white")]
     )

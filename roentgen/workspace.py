@@ -15,6 +15,10 @@ def check_and_create(directory: Path) -> Path:
 
 
 class Workspace:
+    """
+    Project file and directory paths and generated files and directories.
+    """
+
     # Project directories and files, that are the part of the repository.
 
     SCHEME_PATH: Path = Path("scheme")
