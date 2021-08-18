@@ -7,7 +7,7 @@ import logging
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Optional
 
 import numpy as np
 import svgwrite
@@ -174,7 +174,7 @@ class Tile:
         lat_deg: np.ndarray = np.degrees(lat_rad)
         return np.array((lat_deg, lon_deg))
 
-    def get_boundary_box(self) -> Tuple[np.array, np.array]:
+    def get_boundary_box(self) -> tuple[np.array, np.array]:
         """
         Get geographical boundary box of the tile: north-west and south-east
         points.
@@ -272,9 +272,7 @@ class Tile:
 
 
 def ui(options) -> None:
-    """
-    Simple user interface for tile generation.
-    """
+    """Simple user interface for tile generation."""
     directory: Path = workspace.get_tile_path()
 
     if options.coordinates:

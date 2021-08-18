@@ -72,11 +72,13 @@ class TaginfoProjectFile:
                 tags.append(tag)
 
     def write(self) -> None:
+        """Write Taginfo JSON file."""
         with self.path.open("w+") as output_file:
             json.dump(self.structure, output_file, indent=4, sort_keys=True)
 
 
 def write_taginfo_project_file(scheme: Scheme) -> None:
+    """Write Taginfo JSON file."""
     out_file: Path = workspace.get_taginfo_file_path()
     logging.info(f"Write Röntgen project file for Taginfo to {out_file}...")
     taginfo_project_file: TaginfoProjectFile = TaginfoProjectFile(

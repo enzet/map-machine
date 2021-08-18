@@ -197,7 +197,7 @@ def draw_element(options):
 
     output_file_path: Path = workspace.output_path / "element.svg"
     svg = svgwrite.Drawing(str(output_file_path), size.astype(float))
-    for style in scheme.get_style(tags, 18):
+    for style in scheme.get_style(tags):
         style: LineStyle
         path = svg.path(d="M 0,0 L 64,0 L 64,64 L 0,64 L 0,0 Z")
         path.update(style.style)

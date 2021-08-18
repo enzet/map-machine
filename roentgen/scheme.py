@@ -4,7 +4,7 @@ Röntgen drawing scheme.
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Any, Optional, Tuple, Union
+from typing import Any, Optional, Union
 
 import yaml
 from colour import Color
@@ -145,11 +145,13 @@ class Matcher:
             [get_selector(x, y, prefix) for (x, y) in self.tags.items()]
         )
 
-    def get_clean_shapes(self):
+    def get_clean_shapes(self) -> Optional[list[str]]:
+        """Get list of shape identifiers for shapes."""
         return None
 
-    def get_style(self):
-        return None
+    def get_style(self) -> dict[str, Any]:
+        """Return way SVG style."""
+        return {}
 
 
 class NodeMatcher(Matcher):
@@ -189,9 +191,10 @@ class NodeMatcher(Matcher):
         if "with_icon" in structure:
             self.with_icon = structure["with_icon"]
 
-    def get_clean_shapes(self):
+    def get_clean_shapes(self) -> Optional[list[str]]:
+        """Get list of shape identifiers for shapes."""
         if not self.shapes:
-            return
+            return None
         return [(x if isinstance(x, str) else x["shape"]) for x in self.shapes]
 
 
@@ -210,11 +213,12 @@ class WayMatcher(Matcher):
                     self.style[key] = scheme.get_color(style[key]).hex.upper()
                 else:
                     self.style[key] = style[key]
-        self.priority = 0
+        self.priority: int = 0
         if "priority" in structure:
             self.priority = structure["priority"]
 
-    def get_style(self):
+    def get_style(self) -> dict[str, Any]:
+        """Return way SVG style."""
         return self.style
 
 
@@ -276,7 +280,7 @@ class Scheme:
         self.prefix_to_skip: list[str] = content["prefix_to_skip"]
 
         # Storage for created icon sets.
-        self.cache: dict[str, Tuple[IconSet, int]] = {}
+        self.cache: dict[str, tuple[IconSet, int]] = {}
 
     def get_color(self, color: str) -> Color:
         """
@@ -330,7 +334,7 @@ class Scheme:
         tags: dict[str, Any],
         processed: set[str],
         for_: str = "node",
-    ) -> Tuple[IconSet, int]:
+    ) -> tuple[IconSet, int]:
         """
         Construct icon set.
 
@@ -437,10 +441,8 @@ class Scheme:
 
         return returned, priority
 
-    def get_style(self, tags: dict[str, Any], scale):
-        """
-        Get line style based on tags and scale.
-        """
+    def get_style(self, tags: dict[str, Any]):
+        """Get line style based on tags and scale."""
         line_styles = []
 
         for matcher in self.way_matchers:
@@ -452,6 +454,7 @@ class Scheme:
         return line_styles
 
     def get_road(self, tags: dict[str, Any]) -> Optional[RoadMatcher]:
+        """Get road matcher if tags are matched."""
         for matcher in self.road_matchers:
             if not matcher.is_matched(tags):
                 continue
@@ -461,9 +464,7 @@ class Scheme:
     def construct_text(
         self, tags: dict[str, str], draw_captions: str, processed: set[str]
     ) -> list[Label]:
-        """
-        Construct labels for not processed tags.
-        """
+        """Construct labels for not processed tags."""
         texts: list[Label] = []
 
         name = None
@@ -536,9 +537,7 @@ class Scheme:
         return texts
 
     def is_area(self, tags: dict[str, str]) -> bool:
-        """
-        Check whether way described by tags is area.
-        """
+        """Check whether way described by tags is area."""
         for matcher in self.area_matchers:
             if matcher.is_matched(tags):
                 return True

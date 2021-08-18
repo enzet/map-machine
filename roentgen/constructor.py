@@ -217,8 +217,7 @@ class Constructor:
             self.roads.append(Road(line.tags, inners, outers, road_matcher))
             return
 
-        scale: float = self.flinger.get_scale(center_coordinates)
-        line_styles: list[LineStyle] = self.scheme.get_style(line.tags, scale)
+        line_styles: list[LineStyle] = self.scheme.get_style(line.tags)
 
         for line_style in line_styles:
             self.figures.append(
@@ -318,9 +317,7 @@ class Constructor:
                 self.construct_line(relation, inners_path, outers_path)
 
     def construct_nodes(self) -> None:
-        """
-        Draw nodes.
-        """
+        """Draw nodes."""
         sorted_node_ids: Iterator[int] = sorted(
             self.osm_data.nodes.keys(),
             key=lambda x: -self.osm_data.nodes[x].coordinates[0],
@@ -334,6 +331,7 @@ class Constructor:
         ui.progress_bar(-1, len(self.osm_data.nodes), text="Constructing nodes")
 
     def construct_node(self, node: OSMNode) -> None:
+        """Draw one node."""
         tags = node.tags
         if not self.check_level(tags):
             return
@@ -360,7 +358,7 @@ class Constructor:
             )
             point: Point = Point(
                 icon_set, [], tags, processed, flung, node.coordinates,
-                priority=0, draw_outline=False
+                draw_outline=False
             )  # fmt: skip
             self.points.append(point)
             return

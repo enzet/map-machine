@@ -1,3 +1,6 @@
+"""
+Röntgen tile server for sloppy maps.
+"""
 import logging
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
@@ -16,7 +19,9 @@ class Handler(BaseHTTPRequestHandler):
     HTTP request handler that process sloppy map tile requests.
     """
 
-    def __init__(self, request, client_address, server):
+    def __init__(
+        self, request: bytes, client_address: tuple[str, int], server
+    ):
         super().__init__(request, client_address, server)
         self.cache: Path = Path("cache")
         self.update_cache: bool = False
@@ -49,7 +54,8 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
 
-def ui(options):
+def ui(options) -> None:
+    """Command-line interface for tile server."""
     server: Optional[HTTPServer] = None
     try:
         port: int = 8080
