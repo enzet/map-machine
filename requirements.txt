@@ -1,7 +1,7 @@
-cairo
 colour~=0.1.5
 numpy>=1.18.1
 portolan~=1.0.1
+pycairo
 pytest
 pyyaml>=4.2b1
 shapely
