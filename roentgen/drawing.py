@@ -16,7 +16,7 @@ from svgwrite.text import Text
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-PathCommand = list[Union[float, str, np.array]]
+PathCommands = list[Union[float, str, np.array]]
 
 
 @dataclass
@@ -77,7 +77,7 @@ class Drawing:
         """Draw line."""
         raise NotImplementedError
 
-    def path(self, command: PathCommand, style: Style) -> None:
+    def path(self, commands: PathCommands, style: Style) -> None:
         """Draw path."""
         raise NotImplementedError
 
@@ -113,14 +113,14 @@ class SVGDrawing(Drawing):
 
     def line(self, points: List[np.array], style: Style) -> None:
         """Draw line."""
-        command: PathCommand = ["M"]
+        commands: PathCommands = ["M"]
         for point in points:
-            command += [point, "L"]
-        self.path(command[:-1], style)
+            commands += [point, "L"]
+        self.path(commands[:-1], style)
 
-    def path(self, command: PathCommand, style: Style) -> None:
+    def path(self, commands: PathCommands, style: Style) -> None:
         """Draw path."""
-        path = SVGPath(d=command)
+        path = SVGPath(d=commands)
         style.update_svg_element(path)
         self.image.add(path)
 
@@ -172,34 +172,57 @@ class PNGDrawing(Drawing):
                 self.context.line_to(float(point[0]), float(point[1]))
             style.draw_png_stroke(self.context)
 
-    def _do_path(self, command) -> None:
+    def _do_path(self, commands) -> None:
         """Draw path."""
-        for index in range(len(command)):
-            element = command[index]
+        current = np.array((0, 0))
+        command: str = "M"
+        is_absolute: bool = True
+
+        index: int = 0
+        while index < len(commands):
+            element = commands[index]
+
             if isinstance(element, str):
-                next_element: np.array = command[index + 1]
-                if element == 5:
-                    self.context.move_to(next_element[0], next_element[1])
-                if element == 5:
-                    self.context.line_to(next_element[0], next_element[1])
-                if element == 5:
-                    self.context.curve_to(
-                        next_element[0],
-                        next_element[1],
-                        command[index + 2][0],
-                        command[index + 2][1],
-                        command[index + 3][0],
-                        command[index + 3][1],
-                    )
+                is_absolute: bool = element.lower() != element
+                command: str = element.lower()
+
+            elif command in "ml":
+                if is_absolute:
+                    point: np.array = commands[index]
+                else:
+                    point: np.array = current + commands[index]
+                    current = point
+                if command == "m":
+                    self.context.move_to(point[0], point[1])
+                if command == "l":
+                    self.context.line_to(point[0], point[1])
+
+            elif command == "c":
+                if is_absolute:
+                    point_1: np.array = commands[index]
+                    point_2: np.array = commands[index + 1]
+                    point_3: np.array = commands[index + 2]
+                else:
+                    point_1: np.array = current + commands[index]
+                    point_2: np.array = current + commands[index + 1]
+                    point_3: np.array = current + commands[index + 2]
+                    current = point_3
+                self.context.curve_to(
+                    point_1[0], point_1[1],
+                    point_2[0], point_2[1],
+                    point_3[0], point_3[1],
+                )  # fmt: skip
+                index += 2
+
             index += 1
 
-    def path(self, command: PathCommand, style: Style) -> None:
+    def path(self, commands: PathCommands, style: Style) -> None:
         """Draw path."""
         if style.fill is not None:
-            self._do_path(command)
+            self._do_path(commands)
             style.draw_png_fill(self.context)
         if style.stroke is not None:
-            self._do_path(command)
+            self._do_path(commands)
             style.draw_png_stroke(self.context)
 
     def text(self, text: str, point: np.array, color: Color = Color("black")):
@@ -213,3 +236,17 @@ class PNGDrawing(Drawing):
     def write(self) -> None:
         """Write image to the PNG file."""
         self.surface.write_to_png(str(self.file_path))
+
+
+def parse_path(path: str) -> PathCommands:
+    """Parse path command from text representation into list."""
+    parts: list[str] = path.split(" ")
+    result: PathCommands = []
+    for part in parts:
+        if part in "CcLlMmZz":
+            result.append(part)
+        else:
+            elements = part.split(",")
+            assert len(elements) == 2
+            result.append(np.array((float(elements[0]), float(elements[1]))))
+    return result

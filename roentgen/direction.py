@@ -6,7 +6,7 @@ from typing import Iterator, Optional
 import numpy as np
 from portolan import middle
 
-from roentgen.drawing import PathCommand
+from roentgen.drawing import PathCommands
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -90,7 +90,7 @@ class Sector:
                 self.start = np.dot(rotation_matrix(result_angle), vector)
                 self.end = np.dot(rotation_matrix(-result_angle), vector)
 
-    def draw(self, center: np.array, radius: float) -> Optional[PathCommand]:
+    def draw(self, center: np.array, radius: float) -> Optional[PathCommands]:
         """
         Construct SVG path commands for arc element.
 
@@ -139,7 +139,7 @@ class DirectionSet:
     def __str__(self) -> str:
         return ", ".join(map(str, self.sectors))
 
-    def draw(self, center: np.array, radius: float) -> Iterator[PathCommand]:
+    def draw(self, center: np.array, radius: float) -> Iterator[PathCommands]:
         """
         Construct SVG "d" for arc elements.
 

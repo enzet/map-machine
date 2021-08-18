@@ -339,9 +339,7 @@ class Intersection:
             part_1.update()
             part_2.update()
 
-    def draw(
-        self, drawing: svgwrite.Drawing, is_debug: bool = False
-    ) -> None:
+    def draw(self, drawing: svgwrite.Drawing, is_debug: bool = False) -> None:
         """
         Draw all road parts and intersection.
         """
