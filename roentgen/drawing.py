@@ -272,14 +272,21 @@ def parse_path(path: str) -> PathCommands:
     parts: list[str] = path.split(" ")
     result: PathCommands = []
     command: str = "M"
-    for part in parts:
+    index: int = 0
+    while index < len(parts):
+        part: str = parts[index]
         if part in "CcLlMmZzVvHh":
             result.append(part)
             command = part
         elif command in "VvHh":
             result.append(float(part))
         else:
-            elements = part.split(",")
-            assert len(elements) == 2
-            result.append(np.array((float(elements[0]), float(elements[1]))))
+            if "," in part:
+                elements = part.split(",")
+                result.append(np.array(list(map(float, elements))))
+            else:
+                result.append(np.array((float(part), float(parts[index + 1]))))
+                index += 1
+        index += 1
+
     return result
