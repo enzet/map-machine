@@ -16,7 +16,7 @@ from svgwrite.text import Text
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-PathCommands = list[Union[float, str, np.array]]
+PathCommands = list[Union[float, str, np.ndarray]]
 
 
 @dataclass
@@ -68,12 +68,12 @@ class Drawing:
         self.height: int = height
 
     def rectangle(
-        self, point_1: np.array, point_2: np.array, style: Style
+        self, point_1: np.ndarray, point_2: np.ndarray, style: Style
     ) -> None:
         """Draw rectangle."""
         raise NotImplementedError
 
-    def line(self, points: List[np.array], style: Style) -> None:
+    def line(self, points: List[np.ndarray], style: Style) -> None:
         """Draw line."""
         raise NotImplementedError
 
@@ -81,7 +81,7 @@ class Drawing:
         """Draw path."""
         raise NotImplementedError
 
-    def text(self, text: str, point: np.array, color: Color = Color("black")):
+    def text(self, text: str, point: np.ndarray, color: Color = Color("black")):
         """Draw text."""
         raise NotImplementedError
 
@@ -100,10 +100,10 @@ class SVGDrawing(Drawing):
         self.image = svgwrite.Drawing(str(file_path), (width, height))
 
     def rectangle(
-        self, point_1: np.array, point_2: np.array, style: Style
+        self, point_1: np.ndarray, point_2: np.ndarray, style: Style
     ) -> None:
         """Draw rectangle."""
-        size: np.array = point_2 - point_1
+        size: np.ndarray = point_2 - point_1
         rectangle: Rect = Rect(
             (float(point_1[0]), float(point_1[1])),
             (float(size[0]), float(size[1])),
@@ -111,7 +111,7 @@ class SVGDrawing(Drawing):
         style.update_svg_element(rectangle)
         self.image.add(rectangle)
 
-    def line(self, points: List[np.array], style: Style) -> None:
+    def line(self, points: List[np.ndarray], style: Style) -> None:
         """Draw line."""
         commands: PathCommands = ["M"]
         for point in points:
@@ -124,7 +124,7 @@ class SVGDrawing(Drawing):
         style.update_svg_element(path)
         self.image.add(path)
 
-    def text(self, text: str, point: np.array, color: Color = Color("black")):
+    def text(self, text: str, point: np.ndarray, color: Color = Color("black")):
         """Draw text."""
         self.image.add(
             Text(text, (float(point[0]), float(point[1])), fill=color)
@@ -147,10 +147,10 @@ class PNGDrawing(Drawing):
         self.context = cairo.Context(self.surface)
 
     def rectangle(
-        self, point_1: np.array, point_2: np.array, style: Style
+        self, point_1: np.ndarray, point_2: np.ndarray, style: Style
     ) -> None:
         """Draw rectangle."""
-        size: np.array = point_2 - point_1
+        size: np.ndarray = point_2 - point_1
 
         if style.fill is not None:
             self.context.rectangle(point_1[0], point_1[1], size[0], size[1])
@@ -159,7 +159,7 @@ class PNGDrawing(Drawing):
             self.context.rectangle(point_1[0], point_1[1], size[0], size[1])
             style.draw_png_stroke(self.context)
 
-    def line(self, points: List[np.array], style: Style) -> None:
+    def line(self, points: List[np.ndarray], style: Style) -> None:
         """Draw line."""
         if style.fill is not None:
             self.context.move_to(float(points[0][0]), float(points[0][1]))
@@ -172,9 +172,10 @@ class PNGDrawing(Drawing):
                 self.context.line_to(float(point[0]), float(point[1]))
             style.draw_png_stroke(self.context)
 
-    def _do_path(self, commands) -> None:
+    def _do_path(self, commands: PathCommands) -> None:
         """Draw path."""
-        current = np.array((0, 0))
+        current: np.ndarray = np.array((0, 0))
+        start_point: Optional[np.ndarray] = None
         command: str = "M"
         is_absolute: bool = True
 
@@ -185,34 +186,62 @@ class PNGDrawing(Drawing):
             if isinstance(element, str):
                 is_absolute: bool = element.lower() != element
                 command: str = element.lower()
+                if command == "z":
+                    self.context.line_to(start_point[0], start_point[1])
+                    current = start_point
+                    start_point = None
 
             elif command in "ml":
                 if is_absolute:
-                    point: np.array = commands[index]
+                    point: np.ndarray = commands[index]
                 else:
-                    point: np.array = current + commands[index]
-                    current = point
+                    point: np.ndarray = current + commands[index]
+                current = point
                 if command == "m":
                     self.context.move_to(point[0], point[1])
                 if command == "l":
                     self.context.line_to(point[0], point[1])
+                if start_point is None:
+                    start_point = point
 
             elif command == "c":
                 if is_absolute:
-                    point_1: np.array = commands[index]
-                    point_2: np.array = commands[index + 1]
-                    point_3: np.array = commands[index + 2]
+                    point_1: np.ndarray = commands[index]
+                    point_2: np.ndarray = commands[index + 1]
+                    point_3: np.ndarray = commands[index + 2]
                 else:
-                    point_1: np.array = current + commands[index]
-                    point_2: np.array = current + commands[index + 1]
-                    point_3: np.array = current + commands[index + 2]
-                    current = point_3
+                    point_1: np.ndarray = current + commands[index]
+                    point_2: np.ndarray = current + commands[index + 1]
+                    point_3: np.ndarray = current + commands[index + 2]
+                current = point_3
                 self.context.curve_to(
                     point_1[0], point_1[1],
                     point_2[0], point_2[1],
                     point_3[0], point_3[1],
                 )  # fmt: skip
+                if start_point is None:
+                    start_point = point_1
                 index += 2
+
+            elif command in "vh":
+                assert isinstance(commands[index], float)
+                if is_absolute:
+                    if command == "v":
+                        point = np.array((0, commands[index]))
+                    else:
+                        point = np.array((commands[index], 0))
+                else:
+                    if command == "v":
+                        point = current + np.array((0, commands[index]))
+                    else:
+                        point = current + np.array((commands[index], 0))
+                current = point
+                self.context.line_to(point[0], point[1])
+                if start_point is None:
+                    start_point = point
+
+            else:
+                raise NotImplementedError
 
             index += 1
 
@@ -225,7 +254,7 @@ class PNGDrawing(Drawing):
             self._do_path(commands)
             style.draw_png_stroke(self.context)
 
-    def text(self, text: str, point: np.array, color: Color = Color("black")):
+    def text(self, text: str, point: np.ndarray, color: Color = Color("black")):
         """Draw text."""
         self.context.set_source_rgb(
             color.get_red(), color.get_green(), color.get_blue()
@@ -242,9 +271,13 @@ def parse_path(path: str) -> PathCommands:
     """Parse path command from text representation into list."""
     parts: list[str] = path.split(" ")
     result: PathCommands = []
+    command: str = "M"
     for part in parts:
-        if part in "CcLlMmZz":
+        if part in "CcLlMmZzVvHh":
             result.append(part)
+            command = part
+        elif command in "VvHh":
+            result.append(float(part))
         else:
             elements = part.split(",")
             assert len(elements) == 2
