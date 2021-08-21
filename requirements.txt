@@ -1,6 +1,5 @@
 CairoSVG~=2.5.0
 colour~=0.1.5
-logging~=0.4.9.6
 numpy>=1.18.1
 portolan~=1.0.1
 pycairo
