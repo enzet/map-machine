@@ -6,7 +6,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from typing import Optional
 
-from roentgen.raster import rasterize
+import cairosvg
+
 from roentgen.tile import Tile
 from roentgen.workspace import workspace
 
@@ -42,7 +43,8 @@ class Handler(BaseHTTPRequestHandler):
                 if not svg_path.exists():
                     tile = Tile(x, y, zoom)
                     tile.draw(tile_path, self.cache)
-                rasterize(svg_path, png_path)
+                cairosvg.svg2png(file_obj=svg_path, write_to=str(png_path))
+                logging.info(f"SVG file is rasterized to {png_path}.")
         if zoom != 18:
             return
         if png_path.exists():

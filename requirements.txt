@@ -1,9 +1,11 @@
+CairoSVG~=2.5.0
 colour~=0.1.5
+logging~=0.4.9.6
 numpy>=1.18.1
 portolan~=1.0.1
 pycairo
-pytest
-pyyaml>=4.2b1
-shapely
+pytest~=6.2.2
+PyYAML>=4.2b1
+Shapely
 svgwrite~=1.4
 urllib3>=1.25.6

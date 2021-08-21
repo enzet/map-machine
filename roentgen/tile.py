@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
+import cairosvg
 import numpy as np
 import svgwrite
 
@@ -18,7 +19,6 @@ from roentgen.icon import ShapeExtractor
 from roentgen.mapper import Map
 from roentgen.osm_getter import NetworkError, get_osm
 from roentgen.osm_reader import OSMData, OSMReader
-from roentgen.raster import rasterize
 from roentgen.scheme import Scheme
 from roentgen.ui import BoundaryBox
 from roentgen.util import MinMax
@@ -84,7 +84,8 @@ class Tiles:
 
             output_path: Path = file_path.with_suffix(".png")
             if not output_path.exists():
-                rasterize(file_path, output_path)
+                cairosvg.svg2png(file_obj=file_path, write_to=str(output_path))
+                logging.info(f"SVG file is rasterized to {output_path}.")
             else:
                 logging.info(f"File {output_path} already exists.")
 
@@ -135,7 +136,8 @@ class Tiles:
 
         png_path: Path = cache_path / f"{self.boundary_box.get_format()}.png"
         if not png_path.exists():
-            rasterize(output_path, png_path)
+            cairosvg.svg2png(file_obj=output_path, write_to=str(png_path))
+            logging.info(f"SVG file is rasterized to {png_path}.")
         else:
             logging.info(f"File {png_path} already exists.")
 
