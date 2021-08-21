@@ -20,12 +20,13 @@ class Handler(SimpleHTTPRequestHandler):
     HTTP request handler that process sloppy map tile requests.
     """
 
+    cache: Path = Path("cache")
+    update_cache: bool = False
+
     def __init__(
         self, request: bytes, client_address: tuple[str, int], server
     ) -> None:
         super().__init__(request, client_address, server)
-        self.cache: Path = Path("cache")
-        self.update_cache: bool = False
 
     def do_GET(self) -> None:
         """Serve a GET request."""
@@ -64,8 +65,9 @@ def ui(options) -> None:
     server: Optional[HTTPServer] = None
     try:
         port: int = 8080
-        server: HTTPServer = HTTPServer(("", port), Handler)
-        server.cache_path = Path(options.cache)
+        handler = Handler
+        handler.cache = Path(options.cache)
+        server: HTTPServer = HTTPServer(("", port), handler)
         server.serve_forever()
         logging.info(f"Server started on port {port}.")
     finally:
