@@ -84,7 +84,10 @@ class Tiles:
 
             output_path: Path = file_path.with_suffix(".png")
             if not output_path.exists():
-                cairosvg.svg2png(file_obj=file_path, write_to=str(output_path))
+                with file_path.open() as input_file:
+                    cairosvg.svg2png(
+                        file_obj=input_file, write_to=str(output_path)
+                    )
                 logging.info(f"SVG file is rasterized to {output_path}.")
             else:
                 logging.info(f"File {output_path} already exists.")
@@ -136,7 +139,8 @@ class Tiles:
 
         png_path: Path = cache_path / f"{self.boundary_box.get_format()}.png"
         if not png_path.exists():
-            cairosvg.svg2png(file_obj=output_path, write_to=str(png_path))
+            with output_path.open() as input_file:
+                cairosvg.svg2png(file_obj=input_file, write_to=str(png_path))
             logging.info(f"SVG file is rasterized to {png_path}.")
         else:
             logging.info(f"File {png_path} already exists.")

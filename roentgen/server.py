@@ -2,7 +2,7 @@
 Röntgen tile server for sloppy maps.
 """
 import logging
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import SimpleHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from typing import Optional
 
@@ -15,7 +15,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
-class Handler(BaseHTTPRequestHandler):
+class Handler(SimpleHTTPRequestHandler):
     """
     HTTP request handler that process sloppy map tile requests.
     """
@@ -43,7 +43,10 @@ class Handler(BaseHTTPRequestHandler):
                 if not svg_path.exists():
                     tile = Tile(x, y, zoom)
                     tile.draw(tile_path, self.cache)
-                cairosvg.svg2png(file_obj=svg_path, write_to=str(png_path))
+                with svg_path.open() as input_file:
+                    cairosvg.svg2png(
+                        file_obj=input_file, write_to=str(png_path)
+                    )
                 logging.info(f"SVG file is rasterized to {png_path}.")
         if zoom != 18:
             return
