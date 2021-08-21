@@ -3,7 +3,7 @@ Drawing utility.
 """
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, List, Union
+from typing import List, Optional, Union
 
 import cairo
 import numpy as np

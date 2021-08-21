@@ -12,6 +12,7 @@ from typing import Optional
 import cairosvg
 import numpy as np
 import svgwrite
+from PIL import Image
 
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
@@ -35,14 +36,19 @@ class Tiles:
     """
 
     tiles: list["Tile"]
-    tile_1: "Tile"
-    tile_2: "Tile"
-    scale: int
+    tile_1: "Tile"  # Left top tile.
+    tile_2: "Tile"  # Right bottom tile.
+    scale: int  # OpenStreetMap zoom level.
     boundary_box: BoundaryBox
 
     @classmethod
     def from_boundary_box(cls, boundary_box: BoundaryBox, scale: int):
-        """Create minimal set of tiles that cover boundary box."""
+        """
+        Create minimal set of tiles that cover boundary box.
+
+        :param boundary_box: area to be covered by tiles
+        :param scale: OpenStreetMap zoom level
+        """
         tiles: list["Tile"] = []
         tile_1 = Tile.from_coordinates(boundary_box.get_left_top(), scale)
         tile_2 = Tile.from_coordinates(boundary_box.get_right_bottom(), scale)
@@ -51,20 +57,23 @@ class Tiles:
             for y in range(tile_1.y, tile_2.y + 1):
                 tiles.append(Tile(x, y, scale))
 
-        lat_2, lon_1 = tile_1.get_coordinates()
-        lat_1, lon_2 = Tile(tile_2.x + 1, tile_2.y + 1, scale).get_coordinates()
-        assert lon_2 > lon_1
-        assert lat_2 > lat_1
+        latitude_2, longitude_1 = tile_1.get_coordinates()
+        latitude_1, longitude_2 = Tile(
+            tile_2.x + 1, tile_2.y + 1, scale
+        ).get_coordinates()
+        assert longitude_2 > longitude_1
+        assert latitude_2 > latitude_1
 
         extended_boundary_box: BoundaryBox = BoundaryBox(
-            lon_1, lat_1, lon_2, lat_2
+            longitude_1, latitude_1, longitude_2, latitude_2
         ).round()
 
         return cls(tiles, tile_1, tile_2, scale, extended_boundary_box)
 
-    def draw(self, directory: Path, cache_path: Path) -> None:
+    def draw_separately(self, directory: Path, cache_path: Path) -> None:
         """
-        Draw set of tiles.
+        Draw set of tiles as SVG file separately and rasterize them into a set
+        of PNG files with cairosvg.
 
         :param directory: directory for tiles
         :param cache_path: directory for temporary OSM files
@@ -91,6 +100,35 @@ class Tiles:
                 logging.info(f"SVG file is rasterized to {output_path}.")
             else:
                 logging.info(f"File {output_path} already exists.")
+
+    def draw(self, directory: Path, cache_path: Path) -> None:
+        """
+        Draw one PNG image with all tiles and split it into a set of separate
+        PNG file with Pillow.
+
+        :param directory: directory for tiles
+        :param cache_path: directory for temporary OSM files
+        """
+        input_path: Path = cache_path / (
+            self.boundary_box.get_format() + ".png"
+        )
+        self.draw_image(cache_path)
+        width, height = 256, 256
+
+        with input_path.open("rb") as input_file:
+            image = Image.open(input_file)
+
+            for tile in self.tiles:
+                x = tile.x - self.tile_1.x
+                y = tile.y - self.tile_1.y
+                cropped = image.crop(
+                    (x * width, y * height, (x + 1) * width, (y + 1) * height)
+                )
+                print(x * width, y * height, (x + 1) * width, (y + 1) * height)
+                cropped.crop((0, 0, width, height)).save(
+                    tile.get_file_name(directory).with_suffix(".png")
+                )
+                logging.info(f"Tile 18/{tile.x}/{tile.y} is created.")
 
     def draw_image(self, cache_path: Path) -> None:
         """
@@ -159,9 +197,7 @@ class Tile:
 
     @classmethod
     def from_coordinates(cls, coordinates: np.array, scale: int):
-        """
-        Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
-        """
+        """Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames"""
         lat_rad = np.radians(coordinates[0])
         n: float = 2.0 ** scale
         x: int = int((coordinates[1] + 180.0) / 360.0 * n)
@@ -191,9 +227,7 @@ class Tile:
         )
 
     def get_extended_boundary_box(self) -> BoundaryBox:
-        """
-        Same as get_boundary_box, but with extended boundaries.
-        """
+        """Same as get_boundary_box, but with extended boundaries."""
         point_1: np.array = self.get_coordinates()
         point_2: np.array = Tile(
             self.x + 1, self.y + 1, self.scale
@@ -217,15 +251,11 @@ class Tile:
         return OSMReader().parse_osm_file(cache_file_path)
 
     def get_file_name(self, directory_name: Path) -> Path:
-        """
-        Get tile output SVG file path.
-        """
+        """Get tile output SVG file path."""
         return directory_name / f"tile_{self.scale}_{self.x}_{self.y}.svg"
 
     def get_carto_address(self) -> str:
-        """
-        Get URL of this tile from the OpenStreetMap server.
-        """
+        """Get URL of this tile from the OpenStreetMap server."""
         return (
             f"https://tile.openstreetmap.org/{self.scale}/{self.x}/{self.y}.png"
         )
@@ -302,7 +332,6 @@ def ui(options) -> None:
             sys.exit(1)
         tiles: Tiles = Tiles.from_boundary_box(boundary_box, options.scale)
         tiles.draw(directory, Path(options.cache))
-        tiles.draw_image(Path(options.cache))
     else:
         logging.fatal(
             "Specify either --coordinates, --boundary-box, or --tile."

@@ -2,7 +2,7 @@
 Röntgen tile server for sloppy maps.
 """
 import logging
-from http.server import SimpleHTTPRequestHandler, HTTPServer
+from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 from typing import Optional
 

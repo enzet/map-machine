@@ -11,7 +11,7 @@ from colour import Color
 
 from roentgen import ui
 from roentgen.color import get_gradient_color
-from roentgen.figure import Building, Road, StyledFigure, Tree, DirectionSector
+from roentgen.figure import Building, DirectionSector, Road, StyledFigure, Tree
 from roentgen.flinger import Flinger
 
 # fmt: off
@@ -21,7 +21,7 @@ from roentgen.icon import (
 from roentgen.osm_reader import OSMData, OSMNode, OSMRelation, OSMWay
 from roentgen.point import Point
 from roentgen.scheme import DEFAULT_COLOR, LineStyle, Scheme
-from roentgen.ui import TIME_MODE, AUTHOR_MODE
+from roentgen.ui import AUTHOR_MODE, TIME_MODE
 from roentgen.util import MinMax
 
 # fmt: on

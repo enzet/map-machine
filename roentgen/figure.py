@@ -8,7 +8,7 @@ from colour import Color
 from svgwrite import Drawing
 from svgwrite.path import Path
 
-from roentgen.direction import Sector, DirectionSet
+from roentgen.direction import DirectionSet, Sector
 from roentgen.flinger import Flinger
 from roentgen.osm_reader import OSMNode, Tagged
 from roentgen.road import Lane
