@@ -8,3 +8,4 @@ PyYAML>=4.2b1
 Shapely
 svgwrite~=1.4
 urllib3>=1.25.6
+Pillow~=8.0.1
