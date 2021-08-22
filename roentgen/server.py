@@ -49,8 +49,6 @@ class Handler(SimpleHTTPRequestHandler):
                         file_obj=input_file, write_to=str(png_path)
                     )
                 logging.info(f"SVG file is rasterized to {png_path}.")
-        if zoom != 18:
-            return
         if png_path.exists():
             with png_path.open("rb") as input_file:
                 self.send_response(200)

@@ -263,11 +263,9 @@ class Tiles:
         if self.tiles_exist(directory):
             return
 
-        input_path: Path = cache_path / (
-            self.boundary_box.get_format() + ".png"
-        )
         self.draw_image(cache_path)
 
+        input_path: Path = self.get_file_path(cache_path).with_suffix(".png")
         with input_path.open("rb") as input_file:
             image: Image = Image.open(input_file)
 
@@ -286,15 +284,18 @@ class Tiles:
                 )
                 logging.info(f"Tile {tile.scale}/{tile.x}/{tile.y} is created.")
 
+    def get_file_path(self, cache_path: Path) -> Path:
+        """Get path of the output SVG file."""
+        return cache_path / f"{self.boundary_box.get_format()}_{self.scale}.svg"
+
     def draw_image(self, cache_path: Path) -> None:
         """
         Draw all tiles as one picture.
 
         :param cache_path: directory for temporary SVG file and OSM files
         """
-        output_path: Path = cache_path / (
-            self.boundary_box.get_format() + ".svg"
-        )
+        output_path: Path = self.get_file_path(cache_path)
+
         if not output_path.exists():
             cache_file_path: Path = (
                 cache_path / f"{self.boundary_box.get_format()}.osm"
@@ -306,8 +307,8 @@ class Tiles:
             latitude_1, longitude_2 = Tile(
                 self.tile_2.x + 1, self.tile_2.y + 1, self.scale
             ).get_coordinates()
-            min_ = np.array((latitude_1, longitude_1))
-            max_ = np.array((latitude_2, longitude_2))
+            min_: np.ndarray = np.array((latitude_1, longitude_1))
+            max_: np.ndarray = np.array((latitude_2, longitude_2))
 
             flinger: Flinger = Flinger(MinMax(min_, max_), self.scale)
             extractor: ShapeExtractor = ShapeExtractor(
@@ -331,7 +332,7 @@ class Tiles:
         else:
             logging.debug(f"File {output_path} already exists.")
 
-        png_path: Path = cache_path / f"{self.boundary_box.get_format()}.png"
+        png_path: Path = self.get_file_path(cache_path).with_suffix(".png")
         if not png_path.exists():
             with output_path.open() as input_file:
                 cairosvg.svg2png(file_obj=input_file, write_to=str(png_path))
