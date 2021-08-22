@@ -25,7 +25,7 @@ Röntgen features\:
     {detailed icons to display subtypes like \ref {#power-tower-design} {power tower design},}
     {can display multiple icons for one entity to cover more features,}
     {use color to visualize \osm {colour} and other features like plant types,}
-    {display \ref {#levels} {privitive 3D shapes} for buildings,}
+    {display \ref {#levels} {primitive 3D shapes} for buildings,}
     {display \ref {#direction} {directions} with gradient sectors,}
     {use width to display roads.}
 
@@ -42,16 +42,16 @@ Visualization of tree leaf types (broadleaved or needleleaved) and genus or taxo
 /*
 
 \table
-	{{\osm {natural=tree}} {\icon {tree}}}
-	{{\osm {leaf_type=broadleaved}} {\icon {tree_with_leaf}}}
-	{{\osm {leaf_type=needleleaved}} {\icon {needleleaved_tree}}}
-	{{\osm {taxon=Arecaceae}} {\icon {palm}}}
-	{{\osm {genus=Betula}} {\icon {betula}}}
+    {{\osm {natural=tree}} {\icon {tree}}}
+    {{\osm {leaf_type=broadleaved}} {\icon {tree_with_leaf}}}
+    {{\osm {leaf_type=needleleaved}} {\icon {needleleaved_tree}}}
+    {{\osm {taxon=Arecaceae}} {\icon {palm}}}
+    {{\osm {genus=Betula}} {\icon {betula}}}
 
 \table
-	{{} {\color {#98AC64}}}
-	{{\osm {leaf_cycle=deciduous}} {\color {#fcaf3e}}}
-	{{\osm {leaf_cycle=evergreen}} {\color {#688C44}}}
+    {{} {\color {#98AC64}}}
+    {{\osm {leaf_cycle=deciduous}} {\color {#fcaf3e}}}
+    {{\osm {leaf_cycle=evergreen}} {\color {#688C44}}}
 
 */
 
@@ -154,7 +154,7 @@ Visualize element creation time with \m {--mode time}.
 
 \image {doc/time.png} {Creation time mode}
 
-\3 {Author mode} {autor_mode}
+\3 {Author mode} {author_mode}
 
 Every way and node displayed with the random color picked for each author with \m {--mode user-coloring}.
 
@@ -193,17 +193,35 @@ Command\: \m {tile}.
 
 \options {tile}
 
-\code {python roentgen.py tile \\
-    -c $\{LATITUDE\},$\{LONGITUDE\} \\
-    -s $\{OSM_ZOOM_LEVEL\}} {bash}
+\3 {Generate one tile} {generate-one-tile}
 
-Tile will be stored as SVG file to \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.
+Specify tile coordinates\:
+
+\code {python roentgen.py tile --tile $\{OSM_ZOOM_LEVEL\}/$\{X\}/$\{Y\}} {bash}
+
+or specify any geographical coordinates inside a tile\:
+
+\code {python roentgen.py tile \\
+    --coordinates $\{LATITUDE\},$\{LONGITUDE\} \\
+    --scale $\{OSM_ZOOM_LEVEL\}} {bash}
+
+Tile will be stored as SVG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.
 
 Example\:
 
 \code {python roentgen.py tile -c 55.7510637,37.6270761 -s 18} {bash}
 
-will generate SVG file \m {out/tiles/tile_18_158471_81953.svg}.
+will generate SVG file \m {out/tiles/tile_18_158471_81953.svg} and PNG file \m {out/tiles/tile_18_158471_81953.png}.
+
+\3 {Generate a set of tiles} {generate-a-set-of-tiles}
+
+Specify boundary box to get the minimal set of tiles that covers the area\:
+
+\code {python roentgen.py tile \\
+    --boundary-box $\{LONGITUDE_1\},$\{LATITUDE_1\},$\{LONGITUDE_2\},$\{LATITUDE_2\} \\
+    --scale $\{OSM_ZOOM_LEVEL\}} {bash}
+
+Boundary box will be extended to the boundaries of the minimal tile set that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point.  Map with new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.
 
 \2 {MapCSS 0.2 generation} {mapcss-0-2-generation}
 

@@ -28,6 +28,8 @@ from roentgen.workspace import workspace
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+TILE_WIDTH, TILE_HEIGHT = 256, 256
+
 
 @dataclass
 class Tiles:
@@ -87,9 +89,9 @@ class Tiles:
         for tile in self.tiles:
             file_path: Path = tile.get_file_name(directory)
             if not file_path.exists():
-                tile.draw_for_map(osm_data, directory)
+                tile.draw_with_osm_data(osm_data, directory)
             else:
-                logging.info(f"File {file_path} already exists.")
+                logging.debug(f"File {file_path} already exists.")
 
             output_path: Path = file_path.with_suffix(".png")
             if not output_path.exists():
@@ -99,7 +101,7 @@ class Tiles:
                     )
                 logging.info(f"SVG file is rasterized to {output_path}.")
             else:
-                logging.info(f"File {output_path} already exists.")
+                logging.debug(f"File {output_path} already exists.")
 
     def draw(self, directory: Path, cache_path: Path) -> None:
         """
@@ -113,7 +115,6 @@ class Tiles:
             self.boundary_box.get_format() + ".png"
         )
         self.draw_image(cache_path)
-        width, height = 256, 256
 
         with input_path.open("rb") as input_file:
             image = Image.open(input_file)
@@ -121,11 +122,14 @@ class Tiles:
             for tile in self.tiles:
                 x = tile.x - self.tile_1.x
                 y = tile.y - self.tile_1.y
-                cropped = image.crop(
-                    (x * width, y * height, (x + 1) * width, (y + 1) * height)
+                area = (
+                    x * TILE_WIDTH,
+                    y * TILE_HEIGHT,
+                    (x + 1) * TILE_WIDTH,
+                    (y + 1) * TILE_HEIGHT,
                 )
-                print(x * width, y * height, (x + 1) * width, (y + 1) * height)
-                cropped.crop((0, 0, width, height)).save(
+                cropped = image.crop(area)
+                cropped.crop((0, 0, TILE_WIDTH, TILE_HEIGHT)).save(
                     tile.get_file_name(directory).with_suffix(".png")
                 )
                 logging.info(f"Tile 18/{tile.x}/{tile.y} is created.")
@@ -173,7 +177,7 @@ class Tiles:
             with output_path.open("w+") as output_file:
                 svg.write(output_file)
         else:
-            logging.info(f"File {output_path} already exists.")
+            logging.debug(f"File {output_path} already exists.")
 
         png_path: Path = cache_path / f"{self.boundary_box.get_format()}.png"
         if not png_path.exists():
@@ -181,7 +185,7 @@ class Tiles:
                 cairosvg.svg2png(file_obj=input_file, write_to=str(png_path))
             logging.info(f"SVG file is rasterized to {png_path}.")
         else:
-            logging.info(f"File {png_path} already exists.")
+            logging.debug(f"File {png_path} already exists.")
 
 
 @dataclass
@@ -197,7 +201,12 @@ class Tile:
 
     @classmethod
     def from_coordinates(cls, coordinates: np.array, scale: int):
-        """Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames"""
+        """
+        Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
+
+        :param coordinates: any coordinates inside tile
+        :param scale: OpenStreetMap zoom level
+        """
         lat_rad = np.radians(coordinates[0])
         n: float = 2.0 ** scale
         x: int = int((coordinates[1] + 180.0) / 360.0 * n)
@@ -262,7 +271,7 @@ class Tile:
 
     def draw(self, directory_name: Path, cache_path: Path) -> None:
         """
-        Draw tile to SVG file.
+        Draw tile to SVG and PNG files.
 
         :param directory_name: output directory to storing tiles
         :param cache_path: directory to store SVG and PNG tiles
@@ -270,12 +279,14 @@ class Tile:
         try:
             osm_data: OSMData = self.load_osm_data(cache_path)
         except NetworkError as e:
-            raise NetworkError(f"Map does not loaded. {e.message}")
+            raise NetworkError(f"Map is not loaded. {e.message}")
 
-        self.draw_for_map(osm_data, directory_name)
+        self.draw_with_osm_data(osm_data, directory_name)
 
-    def draw_for_map(self, osm_data: OSMData, directory_name: Path) -> None:
-        """Draw tile using existing map."""
+    def draw_with_osm_data(
+        self, osm_data: OSMData, directory_name: Path
+    ) -> None:
+        """Draw SVG and PNG tile using OpenStreetMap data."""
         lat1, lon1 = self.get_coordinates()
         lat2, lon2 = Tile(self.x + 1, self.y + 1, self.scale).get_coordinates()
 
@@ -302,9 +313,14 @@ class Tile:
         painter: Map = Map(flinger=flinger, svg=svg, scheme=scheme)
         painter.draw(constructor)
 
-        logging.info(f"Writing output SVG {output_file_name}...")
         with output_file_name.open("w") as output_file:
             svg.write(output_file)
+        logging.info(f"Tile is drawn to {output_file_name}.")
+
+        output_path: Path = output_file_name.with_suffix(".png")
+        with output_file_name.open() as input_file:
+            cairosvg.svg2png(file_obj=input_file, write_to=str(output_path))
+        logging.info(f"SVG file is rasterized to {output_path}.")
 
 
 def ui(options) -> None:

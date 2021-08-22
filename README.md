@@ -28,7 +28,7 @@ Röntgen features:
   * detailed icons to display subtypes like [power tower design](#power-tower-design),
   * can display multiple icons for one entity to cover more features,
   * use color to visualize [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) and other features like plant types,
-  * display [privitive 3D shapes](#levels) for buildings,
+  * display [primitive 3D shapes](#levels) for buildings,
   * display [directions](#direction) with gradient sectors,
   * use width to display roads.
 
@@ -171,14 +171,23 @@ Command: `tile`.
 | `--cache` | path for temporary OSM files, default value: `cache` |
 | `-b`, `--boundary-box` | construct the minimum amount of tiles that cover requested boundary box |
 
+### Generate one tile ###
+
+Specify tile coordinates:
+
+```bash
+python roentgen.py tile --tile ${OSM_ZOOM_LEVEL}/${X}/${Y}
+```
+
+or specify any geographical coordinates inside a tile:
 
 ```bash
 python roentgen.py tile \
-    -c ${LATITUDE},${LONGITUDE} \
-    -s ${OSM_ZOOM_LEVEL}
+    --coordinates ${LATITUDE},${LONGITUDE} \
+    --scale ${OSM_ZOOM_LEVEL}
 ```
 
-Tile will be stored as SVG file to `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates.
+Tile will be stored as SVG file `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG file `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates.
 
 Example:
 
@@ -186,7 +195,18 @@ Example:
 python roentgen.py tile -c 55.7510637,37.6270761 -s 18
 ```
 
-will generate SVG file `out/tiles/tile_18_158471_81953.svg`.
+will generate SVG file `out/tiles/tile_18_158471_81953.svg` and PNG file `out/tiles/tile_18_158471_81953.png`.
+
+### Generate a set of tiles ###
+
+Specify boundary box to get the minimal set of tiles that covers the area:
+
+```bash
+python roentgen.py tile \
+    --boundary-box ${LONGITUDE_1},${LATITUDE_1},${LONGITUDE_2},${LATITUDE_2}
+```
+
+Boundary box will be extended to the boundaries of the minimal tile set that covers the area, then it will be extended a bit more to avoid some artifacts on the edges, and finally boundary box coordinates will be rounded to 3 digits after the decimal point. Map with new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG files `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates.
 
 MapCSS 0.2 generation
 ---------------------
@@ -201,7 +221,7 @@ To create MapCSS with only Röntgen icons run `python roentgen.py mapcss --no-wa
 |---|---|
 | `--icons` | add icons for nodes and areas, set by default |
 | `--ways` | add style for ways and relations, set by default |
-| `--lifecycle` | add icons for lifecycle tags, set by default |
+| `--lifecycle` | add icons for lifecycle tags; be careful: this will increase the number of node and area selectors by 9 times, set by default |
 
 ### Use Röntgen as JOSM map paint style ###
 
