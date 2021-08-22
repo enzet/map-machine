@@ -106,6 +106,10 @@ class Tile:
         """Get tile output SVG file path."""
         return directory_name / f"tile_{self.scale}_{self.x}_{self.y}.svg"
 
+    def exists(self, directory_name: Path) -> bool:
+        """Check whether the tile is drawn."""
+        return self.get_file_name(directory_name).with_suffix(".png").exists()
+
     def get_carto_address(self) -> str:
         """Get URL of this tile from the OpenStreetMap server."""
         return (
@@ -244,6 +248,10 @@ class Tiles:
             else:
                 logging.debug(f"File {output_path} already exists.")
 
+    def tiles_exist(self, directory_name: Path) -> bool:
+        """Check whether all tiles are drawn."""
+        return all(x.exists(directory_name) for x in self.tiles)
+
     def draw(self, directory: Path, cache_path: Path) -> None:
         """
         Draw one PNG image with all tiles and split it into a set of separate
@@ -252,6 +260,9 @@ class Tiles:
         :param directory: directory for tiles
         :param cache_path: directory for temporary OSM files
         """
+        if self.tiles_exist(directory):
+            return
+
         input_path: Path = cache_path / (
             self.boundary_box.get_format() + ".png"
         )

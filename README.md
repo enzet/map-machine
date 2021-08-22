@@ -209,6 +209,14 @@ python roentgen.py tile \
 
 Boundary box will be extended to the boundaries of the minimal tile set that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point. Map with new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG files `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates.
 
+Example:
+
+```bash
+roentgen.py tile -b 2.361,48.871,2.368,48.875
+```
+
+will generate 36 PNG tiles at scale 18 from tile 18/132791/90164 all the way to 18/132796/90169 and two cached files `cache/2.360,48.869,2.370,48.877.svg` and `cache/2.360,48.869,2.370,48.877.png`.
+
 MapCSS 0.2 generation
 ---------------------
 

@@ -159,10 +159,8 @@ def main(options) -> None:
         svg.write(output_file)
 
 
-def draw_element(options):
-    """
-    Draw single node, line, or area.
-    """
+def draw_element(options) -> None:
+    """Draw single node, line, or area."""
     if options.node:
         target: str = "node"
         tags_description = options.node
@@ -211,6 +209,7 @@ def draw_element(options):
 
 
 def init_scheme() -> Scheme:
+    """Initialize default scheme."""
     return Scheme(workspace.DEFAULT_SCHEME_PATH)
 
 

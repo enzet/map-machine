@@ -223,6 +223,12 @@ Specify boundary box to get the minimal set of tiles that covers the area\:
 
 Boundary box will be extended to the boundaries of the minimal tile set that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point.  Map with new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.
 
+Example\:
+
+\code {roentgen.py tile -b 2.361,48.871,2.368,48.875} {bash}
+
+will generate 36 PNG tiles at scale 18 from tile 18/132791/90164 all the way to 18/132796/90169 and two cached files \m {cache/2.360,48.869,2.370,48.877.svg} and  \m {cache/2.360,48.869,2.370,48.877.png}.
+
 \2 {MapCSS 0.2 generation} {mapcss-0-2-generation}
 
 Command\: \m {mapcss}.
