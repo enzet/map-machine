@@ -205,7 +205,7 @@ or specify any geographical coordinates inside a tile\:
     --coordinates $\{LATITUDE\},$\{LONGITUDE\} \\
     --scale $\{OSM_ZOOM_LEVEL\}} {bash}
 
-Tile will be stored as SVG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.
+Tile will be stored as SVG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.  \m {--scale} option will be ignored if it is used with \m {--tile} option.
 
 Example\:
 
