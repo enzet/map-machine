@@ -123,8 +123,8 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         "-b",
         "--boundary-box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
-        help='geo boundary box, use space before "-" if the first value is '
-        "negative",
+        help="geo boundary box; if first value is negative, enclose the value "
+        "with quotes and use space before `-`",
     )
     parser.add_argument(
         "-s",

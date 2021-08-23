@@ -1,3 +1,5 @@
+
+
 **Röntgen** (or **Roentgen** when ASCII is preferred) project consists of
 
   * simple Python [OpenStreetMap](http://openstreetmap.org) renderer (see [usage](#usage), [renderer documentation](#map-generation)),
@@ -9,16 +11,20 @@ Unlike standard OpenStreetMap layers, **Röntgen is a playground for experiments
 
 Röntgen is intended to be highly configurable, so it can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users, can use slow algorithms for some experimental features.
 
-Usage
------
-
-To get SVG map, just run
+Usage example
+-------------
 
 ```bash
-python roentgen.py render -b <lon1>,<lat1>,<lon2>,<lat2>
+roentgen render -b 2.284,48.860,2.290,48.865
 ```
 
-(e.g. `python roentgen.py render -b 2.284,48.86,2.29,48.865`). It will automatically download OSM data and write output map to `out/map.svg`. For more options see [Map generation](#map-generation).
+will automatically download OSM data and write output SVG map of the specified area to `out/map.svg`. See [Map generation](#map-generation).
+
+```bash
+roentgen tile -b 2.361,48.871,2.368,48.875
+```
+
+will automatically download OSM data and write output PNG tiles that cover the specified area to `out/tiles` directory. See [Tile generation](#tile-generation).
 
 Map features
 ------------
@@ -32,9 +38,9 @@ Röntgen features:
   * display [directions](#direction) with gradient sectors,
   * use width to display roads.
 
-### Simple building shapes ###
+### Isometric building shapes ###
 
-Simple shapes for walls and shade in proportion to [`building:levels`](https://wiki.openstreetmap.org/wiki/Key:building:levels), [`building:min_level`](https://wiki.openstreetmap.org/wiki/Key:building:min_level), [`height`](https://wiki.openstreetmap.org/wiki/Key:height) and [`min_height`](https://wiki.openstreetmap.org/wiki/Key:min_height) values.
+Isometric shapes for walls and shade in proportion to [`building:levels`](https://wiki.openstreetmap.org/wiki/Key:building:levels), [`building:min_level`](https://wiki.openstreetmap.org/wiki/Key:building:min_level), [`height`](https://wiki.openstreetmap.org/wiki/Key:height) and [`min_height`](https://wiki.openstreetmap.org/wiki/Key:min_height) values.
 
 ![3D buildings](doc/buildings.png)
 
@@ -71,7 +77,11 @@ There are [special symbols](https://en.wikipedia.org/wiki/List_of_Japanese_map_s
 Icon set
 --------
 
-If tag is drawable it is displayed using icon combination and colors. All icons are under [CC BY](http://creativecommons.org/licenses/by/4.0/) license. So, do whatever you want but give appropriate credit. Icon set is heavily inspired by [Maki](https://github.com/mapbox/maki), [Osmic](https://github.com/gmgeo/osmic), and [Temaki](https://github.com/ideditor/temaki) icon sets.
+The central feature of the project is Röntgen icon set. It is a set of monochrome 14 × 14 px pixel-aligned icons. Unlike the Röntgen source code, which is under MIT license, all icons are under [CC BY](http://creativecommons.org/licenses/by/4.0/) license. So, with the appropriate credit icon set can be used outside the project. Some icons can be used as emoji symbols.
+
+All icons tend to support common design style, which is heavily inspired by [Maki](https://github.com/mapbox/maki), [Osmic](https://github.com/gmgeo/osmic), and [Temaki](https://github.com/ideditor/temaki).
+
+Icons are used to visualize tags for nodes and areas. Unlike other renderers, Röntgen can use more than one icon to visualize an entity and use colors to visualize [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) value or other entity properties (like material or genus).
 
 ![Icons](doc/grid.png)
 
@@ -79,26 +89,14 @@ Feel free to request new icons via issues for whatever you want to see on the ma
 
 Generate icon grid and sets of individual icons with `python roentgen.py icons`. It will create `out/icon_grid.svg` file, and SVG files in `out/icons_by_id` directory where files are named using shape identifiers (e.g. `power_tower_portal_2_level.svg`) and in `icons_by_name` directory where files are named using shape names (e.g. `Röntgen portal two-level transmission tower.svg`). Files from the last directory are used in OpenStreetMap wiki (e.g. [`File:Röntgen_portal_two-level_transmission_tower.svg`](https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg)).
 
-### Icon combination ###
+### Shape combination ###
 
-Some icons can be combined into new icons.
+Röntgen constructs icons from the shapes extracted from the sketch SVG file. Some icons consists of just one shape, to construct other it may be necessary to combine two or more shapes.
 
 ![Bus stop icon combination](doc/bus_stop.png)
 
-Map styles
-----------
-
-### All tags style ###
-
-Options: `--show-missing-tags --overlap 0`.
-
-Display as many OpenStreetMap data tags on the map as possible.
-
-### Pretty style ###
-
-Options: `--draw-captions main --level overground`.
-
-Display only not overlapping icons and main captions.
+Wireframe view
+--------------
 
 ### Creation time mode ###
 
@@ -115,7 +113,7 @@ Every way and node displayed with the random color picked for each author with `
 Installation
 ------------
 
-Requirements: Python (at least 3.9).
+Requirements: Python 3.9.
 
 To install all packages, run:
 
@@ -126,65 +124,68 @@ pip install -r requirements.txt
 Map generation
 --------------
 
-Command: `render`.
-
-There are simple Python renderer that generates SVG map from OpenStreetMap data. You can run it using:
+Command `render` is used to generates SVG map from OpenStreetMap data. You can run it using:
 
 ```bash
-python roentgen.py render \
-    -b ${LONGITUDE_1},${LATITUDE_1},${LONGITUDE_2},${LATITUDE_2} \
-    -o ${OUTPUT_FILE_NAME} \
-    -s ${OSM_ZOOM_LEVEL}
+roentgen render \
+    -b <min longitude>,<min latitude>,<max longitude>,<max latitude> \
+    -o <output file name> \
+    -s <osm zoom level> \
+    <other arguments>
 ```
 
-Example:
+### Example ###
 
 ```bash
-python roentgen.py render -b 2.284,48.86,2.29,48.865
+roentgen render \
+    --boundary-box 2.284,48.860,2.290,48.865 \
+    --output out/esplanade_du_trocadéro.svg
 ```
+
+will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and write output SVG map of the specified area to `out/esplanade_du_trocadéro.svg`.
 
 ### Arguments ###
 
 | Option | Description |
 |---|---|
-| `-i`, `--input` | input XML file name or names (if not specified, file will be downloaded using OpenStreetMap API) |
-| `-o`, `--output` | output SVG file name, default value: `out/map.svg` |
-| `-b`, `--boundary-box` | geo boundary box, use space before "-" if the first value is negative |
-| `-s`, `--scale` | OSM zoom level (may not be integer), default value: 18 |
-| `--cache` | path for temporary OSM files, default value: `cache` |
-| `--labels` | label drawing mode: `no`, `main`, or `all`, default value: `main` |
-| `--overlap` | how many pixels should be left around icons and text, default value: 12 |
-| `--mode` | map drawing mode, default value: `normal` |
-| `--seed` | seed for random |
-| `--level` | display only this floor level |
+| <span style="white-space: nowrap;">`-i`</span>, <span style="white-space: nowrap;">`--input`</span> `<path>` | input XML file name or names (if not specified, file will be downloaded using OpenStreetMap API) |
+| <span style="white-space: nowrap;">`-o`</span>, <span style="white-space: nowrap;">`--output`</span> `<path>` | output SVG file name, default value: `out/map.svg` |
+| <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | geo boundary box; if first value is negative, enclose the value with quotes and use space before `-` |
+| <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--scale`</span> `<float>` | OSM zoom level (may not be integer), default value: 18 |
+| <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
+| <span style="white-space: nowrap;">`--labels`</span> | label drawing mode: `no`, `main`, or `all`, default value: `main` |
+| <span style="white-space: nowrap;">`--overlap`</span> | how many pixels should be left around icons and text, default value: 12 |
+| <span style="white-space: nowrap;">`--mode`</span> | map drawing mode, default value: `normal` |
+| <span style="white-space: nowrap;">`--seed`</span> | seed for random |
+| <span style="white-space: nowrap;">`--level`</span> | display only this floor level |
 
 Tile generation
 ---------------
 
-Command: `tile`.
+Command `tile` is used to generate PNG tiles for [slippy maps](https://wiki.openstreetmap.org/wiki/Slippy_Map). To use them, run [Röntgen tile server](#tile-server).
 
 | Option | Description |
 |---|---|
-| `-c`, `--coordinates` | coordinates of any location inside the tile |
-| `-s`, `--scale` | OSM zoom level, default value: 18 |
-| `-t`, `--tile` | tile specification |
-| `--cache` | path for temporary OSM files, default value: `cache` |
-| `-b`, `--boundary-box` | construct the minimum amount of tiles that cover requested boundary box |
+| <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location inside the tile |
+| <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--scale`</span> `<integer>` | OSM zoom level, default value: 18 |
+| <span style="white-space: nowrap;">`-t`</span>, <span style="white-space: nowrap;">`--tile`</span> `<scale>/<x>/<y>` | tile specification |
+| <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
+| <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | construct the minimum amount of tiles that cover requested boundary box |
 
 ### Generate one tile ###
 
 Specify tile coordinates:
 
 ```bash
-python roentgen.py tile --tile ${OSM_ZOOM_LEVEL}/${X}/${Y}
+roentgen tile --tile <OSM zoom level>/<x>/<y>
 ```
 
 or specify any geographical coordinates inside a tile:
 
 ```bash
-python roentgen.py tile \
-    --coordinates ${LATITUDE},${LONGITUDE} \
-    --scale ${OSM_ZOOM_LEVEL}
+roentgen tile \
+    --coordinates <latitude>,<longitude> \
+    --scale <OSM zoom level>
 ```
 
 Tile will be stored as SVG file `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG file `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates. `--scale` option will be ignored if it is used with `--tile` option.
@@ -192,7 +193,7 @@ Tile will be stored as SVG file `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PN
 Example:
 
 ```bash
-python roentgen.py tile -c 55.7510637,37.6270761 -s 18
+roentgen tile -c 55.7510637,37.6270761 -s 18
 ```
 
 will generate SVG file `out/tiles/tile_18_158471_81953.svg` and PNG file `out/tiles/tile_18_158471_81953.png`.
@@ -202,9 +203,9 @@ will generate SVG file `out/tiles/tile_18_158471_81953.svg` and PNG file `out/ti
 Specify boundary box to get the minimal set of tiles that covers the area:
 
 ```bash
-python roentgen.py tile \
-    --boundary-box ${LONGITUDE_1},${LATITUDE_1},${LONGITUDE_2},${LATITUDE_2} \
-    --scale ${OSM_ZOOM_LEVEL}
+roentgen tile \
+    --boundary-box <min longitude>,<min latitude>,<max longitude>,<max latitude> \
+    --scale <OSM zoom level>
 ```
 
 Boundary box will be extended to the boundaries of the minimal tile set that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point. Map with new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG files `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates.
@@ -212,33 +213,42 @@ Boundary box will be extended to the boundaries of the minimal tile set that cov
 Example:
 
 ```bash
-roentgen.py tile -b 2.361,48.871,2.368,48.875
+roentgen tile -b 2.361,48.871,2.368,48.875
 ```
 
 will generate 36 PNG tiles at scale 18 from tile 18/132791/90164 all the way to 18/132796/90169 and two cached files `cache/2.360,48.869,2.370,48.877.svg` and `cache/2.360,48.869,2.370,48.877.png`.
 
+Tile server
+-----------
+
+Command `server` is used to run tile server for slippy maps.
+
+```
+roentgen server
+```
+
+Stop server interrupting process with <kbd>Ctrl</kbd> + <kbd>C</kbd>.
+
 MapCSS 0.2 generation
 ---------------------
 
-Command: `mapcss`.
+Command `mapcss` is used to generate MapCSS scheme. `roentgen mapcss` will create `out/roentgen_mapcss` directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas: `.mapcss` file and directory with icons.
 
-`python roentgen.py mapcss` will create `out/roentgen_mapcss` directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas: `.mapcss` file and directory with icons.
-
-To create MapCSS with only Röntgen icons run `python roentgen.py mapcss --no-ways`.
+To create MapCSS with only Röntgen icons run `roentgen mapcss --no-ways`.
 
 | Option | Description |
 |---|---|
-| `--icons` | add icons for nodes and areas, set by default |
-| `--ways` | add style for ways and relations, set by default |
-| `--lifecycle` | add icons for lifecycle tags; be careful: this will increase the number of node and area selectors by 9 times, set by default |
+| <span style="white-space: nowrap;">`--icons`</span> | add icons for nodes and areas, set by default |
+| <span style="white-space: nowrap;">`--ways`</span> | add style for ways and relations, set by default |
+| <span style="white-space: nowrap;">`--lifecycle`</span> | add icons for lifecycle tags; be careful: this will increase the number of node and area selectors by 9 times, set by default |
 
 ### Use Röntgen as JOSM map paint style ###
 
+  * Run `roentgen mapcss`.
   * Open [JOSM](https://josm.openstreetmap.de/).
   * Go to <kbd>Preferences</kbd> → Third tab on the left → <kbd>Map Paint Styles</kbd>.
   * Active styles: press <kbd>+</kbd>.
   * URL / File: set path to `out/roentgen_mapcss/roentgen.mapcss`.
-  * <kbd>Ok</kbd> → <kbd>OK</kbd>.
 
 To enable / disable Röntgen map paint style go to <kbd>View</kbd> → <kbd>Map Paint Styles</kbd> → <kbd>Röntgen</kbd>.
 

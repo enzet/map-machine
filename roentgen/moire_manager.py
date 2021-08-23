@@ -29,17 +29,14 @@ def parse_text(text: str, margins: str, tag_id: str) -> Code:
     result: Code = []
     inside: bool = False
 
-    for c in text:
-        if c in margins:
-            if word:
-                if not inside:
-                    result.append(word)
-                else:
-                    result.append(Tag(tag_id, [word]))
-            word = ""
-            inside = not inside
-        else:
-            word += c
+    for character in text:
+        if character not in margins:
+            word += character
+            continue
+        if word:
+            result.append(Tag(tag_id, [word]) if inside else word)
+        word = ""
+        inside = not inside
 
     if word:
         result.append(word)
@@ -208,6 +205,10 @@ class RoentgenMoire(Default, ABC):
         """Keyboard key."""
         return self.m(args)
 
+    def no_wrap(self, args: Arguments) -> str:
+        """Do not wrap text at white spaces."""
+        return self.parse(args[0])
+
 
 class RoentgenHTML(RoentgenMoire, DefaultHTML):
     """
@@ -219,6 +220,7 @@ class RoentgenHTML(RoentgenMoire, DefaultHTML):
         self.images: dict = {}
 
     def table(self, arg: Arguments) -> str:
+        """Simple table.  First row is treated as header."""
         content: str = ""
         cell: str = "".join(
             ["<th>" + self.parse(td, inblock=True) + "</th>" for td in arg[0]]
@@ -252,7 +254,10 @@ class RoentgenHTML(RoentgenMoire, DefaultHTML):
 
     def page_icon(self, args: Arguments) -> str:
         """HTML page icon."""
-        return f'<link rel="icon" type="image/svg" href="{self.clear(args[0])}" sizes="16x16">'
+        return (
+            f'<link rel="icon" type="image/svg" href="{self.clear(args[0])}"'
+            ' sizes="16x16">'
+        )
 
     def no_wrap(self, args: Arguments) -> str:
         """Do not wrap text at white spaces."""
@@ -261,6 +266,7 @@ class RoentgenHTML(RoentgenMoire, DefaultHTML):
         )
 
     def formal(self, args: Arguments) -> str:
+        """Formal variable."""
         return f'<span class="formal">{self.parse(args[0])}</span>'
 
 
@@ -323,3 +329,7 @@ class RoentgenMarkdown(RoentgenMoire, DefaultMarkdown):
         return (
             f'<span style="white-space: nowrap;">{self.parse(args[0])}</span>'
         )
+
+    def formal(self, args: Arguments) -> str:
+        """Formal variable."""
+        return f"<{self.parse(args[0])}>"
