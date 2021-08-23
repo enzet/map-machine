@@ -23,6 +23,30 @@ Code = Union[str, Tag, list]
 PREFIX: str = "https://wiki.openstreetmap.org/wiki/"
 
 
+def parse_text(text: str, margins: str, tag_id: str) -> Code:
+    """Parse formal arguments."""
+    word: str = ""
+    result: Code = []
+    inside: bool = False
+
+    for c in text:
+        if c in margins:
+            if word:
+                if not inside:
+                    result.append(word)
+                else:
+                    result.append(Tag(tag_id, [word]))
+            word = ""
+            inside = not inside
+        else:
+            word += c
+
+    if word:
+        result.append(word)
+
+    return result
+
+
 class ArgumentParser(argparse.ArgumentParser):
     """
     Argument parser that stores arguments and creates help in Moire markup.
@@ -53,11 +77,20 @@ class ArgumentParser(argparse.ArgumentParser):
             if option["arguments"][0] == "-h":
                 continue
 
-            array: Code = [[Tag("m", [x]), ", "] for x in option["arguments"]]
-            row: Code = [[x for y in array for x in y][:-1]]
+            array: Code = [
+                [Tag("no_wrap", [Tag("m", [x])]), ", "]
+                for x in option["arguments"]
+            ]
+            cell: Code = [x for y in array for x in y][:-1]
+            if "metavar" in option:
+                cell += [
+                    " ",
+                    Tag("m", [parse_text(option["metavar"], "<>", "formal")]),
+                ]
+            row: Code = [cell]
 
             if "help" in option:
-                help_value: list = [option["help"]]
+                help_value: list = parse_text(option["help"], "`", "m")
                 if (
                     "default" in option
                     and option["default"]
@@ -135,6 +168,10 @@ class RoentgenMoire(Default, ABC):
         """Simple color sample."""
         raise NotImplementedError("color")
 
+    def page_icon(self, args: Arguments) -> str:
+        """HTML page icon."""
+        return ""
+
     def command(self, args: Arguments) -> str:
         """
         Bash command from GitHub Actions configuration.
@@ -181,6 +218,19 @@ class RoentgenHTML(RoentgenMoire, DefaultHTML):
         super().__init__()
         self.images: dict = {}
 
+    def table(self, arg: Arguments) -> str:
+        content: str = ""
+        cell: str = "".join(
+            ["<th>" + self.parse(td, inblock=True) + "</th>" for td in arg[0]]
+        )
+        content += f"<tr>{cell}</tr>"
+        for tr in arg[1:]:
+            cell: str = "".join(
+                ["<td>" + self.parse(td, inblock=True) + "</td>" for td in tr]
+            )
+            content += f"<tr>{cell}</tr>"
+        return f"<table>{content}</table>"
+
     def color(self, args: Arguments) -> str:
         """Simple color sample."""
         return (
@@ -193,8 +243,25 @@ class RoentgenHTML(RoentgenMoire, DefaultHTML):
         size: str = self.clear(args[1]) if len(args) > 1 else 16
         return (
             f'<img class="icon" style="width: {size}px; height: {size}px;" '
-            f'src="icons_by_id/{self.clear(args[0])}.svg" />'
+            f'src="out/icons_by_id/{self.clear(args[0])}.svg" />'
         )
+
+    def kbd(self, args: Arguments) -> str:
+        """Keyboard key."""
+        return f"<kbd>{self.clear(args[0])}</kbd>"
+
+    def page_icon(self, args: Arguments) -> str:
+        """HTML page icon."""
+        return f'<link rel="icon" type="image/svg" href="{self.clear(args[0])}" sizes="16x16">'
+
+    def no_wrap(self, args: Arguments) -> str:
+        """Do not wrap text at white spaces."""
+        return (
+            f'<span style="white-space: nowrap;">{self.parse(args[0])}</span>'
+        )
+
+    def formal(self, args: Arguments) -> str:
+        return f'<span class="formal">{self.parse(args[0])}</span>'
 
 
 class RoentgenOSMWiki(RoentgenMoire, DefaultWiki):
@@ -250,3 +317,9 @@ class RoentgenMarkdown(RoentgenMoire, DefaultMarkdown):
     def kbd(self, args: Arguments) -> str:
         """Keyboard key."""
         return f"<kbd>{self.clear(args[0])}</kbd>"
+
+    def no_wrap(self, args: Arguments) -> str:
+        """Do not wrap text at white spaces."""
+        return (
+            f'<span style="white-space: nowrap;">{self.parse(args[0])}</span>'
+        )
