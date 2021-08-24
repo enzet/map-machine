@@ -165,7 +165,8 @@ Requirements\: Python 3.9/* or higher*/.
 
 To install all packages, run\:
 
-\code {pip install -r requirements.txt} {bash}
+\code {pip install -r requirements.txt
+pip install .} {bash}
 
 \2 {Map generation} {map-generation}
 

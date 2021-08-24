@@ -119,6 +119,7 @@ To install all packages, run:
 
 ```bash
 pip install -r requirements.txt
+pip install .
 ```
 
 Map generation
