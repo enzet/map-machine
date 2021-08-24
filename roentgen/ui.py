@@ -181,7 +181,7 @@ def add_mapcss_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--ways",
         action=argparse.BooleanOptionalAction,
-        default=True,
+        default=False,
         help="add style for ways and relations",
     )
     parser.add_argument(

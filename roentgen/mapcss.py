@@ -100,7 +100,7 @@ class MapCSSWriter:
         :param matcher: tag matcher of Röntgen scheme
         :param prefix: tag prefix
         :param opacity: icon opacity
-        :return:
+        :return: string representation of selector
         """
         elements: dict[str, str] = {}
 
@@ -190,7 +190,10 @@ def ui(options) -> None:
     )
     collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
     collection.draw_icons(
-        icons_with_outline_path, color=Color("black"), outline=True
+        icons_with_outline_path,
+        color=Color("black"),
+        outline=True,
+        outline_opacity=0.5,
     )
     mapcss_writer: MapCSSWriter = MapCSSWriter(
         scheme,

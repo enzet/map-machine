@@ -121,6 +121,7 @@ class IconCollection:
         by_name: bool = False,
         color: Optional[Color] = None,
         outline: bool = False,
+        outline_opacity: float = 1.0,
     ):
         """
         :param output_directory: path to the directory to store individual SVG
@@ -128,6 +129,7 @@ class IconCollection:
         :param by_name: use names instead of identifiers
         :param color: fill color
         :param outline: if true, draw outline beneath the icon
+        :param outline_opacity: opacity of the outline
         """
         if by_name:
 
@@ -146,6 +148,7 @@ class IconCollection:
                 output_directory / get_file_name(icon),
                 color=color,
                 outline=outline,
+                outline_opacity=outline_opacity,
             )
 
     def draw_grid(

@@ -330,6 +330,7 @@ class ShapeSpecification:
         point: np.array,
         tags: dict[str, Any] = None,
         outline: bool = False,
+        outline_opacity: float = 1.0,
     ) -> None:
         """
         Draw icon shape into SVG file.
@@ -338,6 +339,7 @@ class ShapeSpecification:
         :param point: 2D position of the shape centre
         :param tags: tags to be displayed as hint
         :param outline: draw outline for the shape
+        :param outline_opacity: opacity of the outline
         """
         scale: np.array = np.array((1, 1))
         if self.flip_vertically:
@@ -358,6 +360,7 @@ class ShapeSpecification:
                 "stroke": color.hex,
                 "stroke-width": 2.2,
                 "stroke-linejoin": "round",
+                "opacity": outline_opacity,
             }
             path.update(style)
         if tags:
@@ -431,6 +434,7 @@ class Icon:
         file_name: Path,
         color: Optional[Color] = None,
         outline: bool = False,
+        outline_opacity: float = 1.0,
     ):
         """
         Draw icon to the SVG file.
@@ -438,13 +442,16 @@ class Icon:
         :param file_name: output SVG file name
         :param color: fill color
         :param outline: if true, draw outline beneath the icon
+        :param outline_opacity: opacity of the outline
         """
         svg: Drawing = Drawing(str(file_name), (16, 16))
 
         for shape_specification in self.shape_specifications:
             if color:
                 shape_specification.color = color
-            shape_specification.draw(svg, (8, 8), outline=outline)
+            shape_specification.draw(
+                svg, (8, 8), outline=outline, outline_opacity=outline_opacity
+            )
 
         for shape_specification in self.shape_specifications:
             if color:
