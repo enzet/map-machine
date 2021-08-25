@@ -11,6 +11,7 @@ from xml.etree import ElementTree
 
 import numpy as np
 
+from roentgen.boundary_box import BoundaryBox
 from roentgen.util import MinMax
 
 __author__ = "Sergey Vartanov"
@@ -37,9 +38,7 @@ STAGES_OF_DECAY: list[str] = [
 
 
 def parse_float(string: str) -> Optional[float]:
-    """
-    Parse string representation of a float or integer value.
-    """
+    """Parse string representation of a float or integer value."""
     try:
         return float(string)
     except (TypeError, ValueError):
@@ -108,7 +107,7 @@ class OSMNode(Tagged):
         super().__init__()
 
         self.id_: Optional[int] = None
-        self.coordinates: Optional[np.array] = None
+        self.coordinates: Optional[np.ndarray] = None
 
         self.visible: Optional[str] = None
         self.changeset: Optional[str] = None
@@ -118,10 +117,8 @@ class OSMNode(Tagged):
 
     @classmethod
     def from_xml_structure(cls, element, is_full: bool = False) -> "OSMNode":
-        """
-        Parse node from OSM XML `<node>` element.
-        """
-        node = cls()
+        """Parse node from OSM XML `<node>` element."""
+        node: "OSMNode" = cls()
         attributes = element.attrib
         node.id_ = int(attributes["id"])
         node.coordinates = np.array(
@@ -178,9 +175,7 @@ class OSMWay(Tagged):
 
     @classmethod
     def from_xml_structure(cls, element, nodes, is_full: bool) -> "OSMWay":
-        """
-        Parse way from OSM XML `<way>` element.
-        """
+        """Parse way from OSM XML `<way>` element."""
         way = cls(int(element.attrib["id"]))
         if is_full:
             way.visible = element.attrib["visible"]
@@ -215,15 +210,11 @@ class OSMWay(Tagged):
         return self
 
     def is_cycle(self) -> bool:
-        """
-        Is way a cycle way or an area boundary.
-        """
+        """Is way a cycle way or an area boundary."""
         return self.nodes[0] == self.nodes[-1]
 
     def try_to_glue(self, other: "OSMWay") -> Optional["OSMWay"]:
-        """
-        Create new combined way if ways share endpoints.
-        """
+        """Create new combined way if ways share endpoints."""
         if self.nodes[0] == other.nodes[0]:
             return OSMWay(nodes=list(reversed(other.nodes[1:])) + self.nodes)
         if self.nodes[0] == other.nodes[-1]:
@@ -255,9 +246,7 @@ class OSMRelation(Tagged):
 
     @classmethod
     def from_xml_structure(cls, element, is_full: bool) -> "OSMRelation":
-        """
-        Parse relation from OSM XML `<relation>` element.
-        """
+        """Parse relation from OSM XML `<relation>` element."""
         attributes = element.attrib
         relation = cls(int(attributes["id"]))
         if is_full:
@@ -321,33 +310,24 @@ class OSMData:
 
         self.authors: set[str] = set()
         self.time: MinMax = MinMax()
-        self.boundary_box: list[MinMax] = [MinMax(), MinMax()]
-        self.view_box = None
+        self.view_box: Optional[BoundaryBox] = None
 
     def add_node(self, node: OSMNode) -> None:
-        """
-        Add node and update map parameters.
-        """
+        """Add node and update map parameters."""
         self.nodes[node.id_] = node
         if node.user:
             self.authors.add(node.user)
         self.time.update(node.timestamp)
-        self.boundary_box[0].update(node.coordinates[0])
-        self.boundary_box[1].update(node.coordinates[1])
 
     def add_way(self, way: OSMWay) -> None:
-        """
-        Add way and update map parameters.
-        """
+        """Add way and update map parameters."""
         self.ways[way.id_] = way
         if way.user:
             self.authors.add(way.user)
         self.time.update(way.timestamp)
 
     def add_relation(self, relation: OSMRelation) -> None:
-        """
-        Add relation and update map parameters.
-        """
+        """Add relation and update map parameters."""
         self.relations[relation.id_] = relation
 
 
@@ -362,9 +342,7 @@ class OverpassReader:
         self.osm_data = OSMData()
 
     def parse_json_file(self, file_name: Path) -> OSMData:
-        """
-        Parse JSON structure from the file and construct map.
-        """
+        """Parse JSON structure from the file and construct map."""
         with file_name.open() as input_file:
             structure = json.load(input_file)
 
@@ -460,15 +438,11 @@ class OSMReader:
         return self.osm_data
 
     def parse_bounds(self, element) -> None:
-        """
-        Parse view box from XML element.
-        """
+        """Parse view box from XML element."""
         attributes = element.attrib
-        self.osm_data.view_box = MinMax(
-            np.array(
-                (float(attributes["minlat"]), float(attributes["minlon"]))
-            ),
-            np.array(
-                (float(attributes["maxlat"]), float(attributes["maxlon"]))
-            ),
+        self.osm_data.view_box = BoundaryBox(
+            float(attributes["minlon"]),
+            float(attributes["minlat"]),
+            float(attributes["maxlon"]),
+            float(attributes["maxlat"]),
         )

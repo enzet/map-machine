@@ -2,16 +2,12 @@
 Command-line user interface.
 """
 import argparse
-import re
 import sys
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-import logging
-from dataclasses import dataclass
-
-import numpy as np
+from enum import Enum
 
 from roentgen.osm_reader import STAGES_OF_DECAY
 
@@ -21,8 +17,15 @@ BOXES_LENGTH: int = len(BOXES)
 AUTHOR_MODE: str = "author"
 TIME_MODE: str = "time"
 
-LATITUDE_MAX_DIFFERENCE: float = 0.5
-LONGITUDE_MAX_DIFFERENCE: float = 0.5
+
+class BuildingMode(Enum):
+    """
+    Building drawing mode.
+    """
+
+    FLAT = "flat"
+    ISOMETRIC = "isometric"
+    ISOMETRIC_NO_PARTS = "isometric-no-parts"
 
 
 def parse_options(args) -> argparse.Namespace:
@@ -32,8 +35,14 @@ def parse_options(args) -> argparse.Namespace:
     )
     subparser = parser.add_subparsers(dest="command")
 
-    add_render_arguments(subparser.add_parser("render"))
-    add_tile_arguments(subparser.add_parser("tile"))
+    tile_parser = subparser.add_parser("tile")
+    add_tile_arguments(tile_parser)
+    add_map_arguments(tile_parser)
+
+    render_parser = subparser.add_parser("render")
+    add_render_arguments(render_parser)
+    add_map_arguments(render_parser)
+
     add_server_arguments(subparser.add_parser("server"))
     add_element_arguments(subparser.add_parser("element"))
     add_mapcss_arguments(subparser.add_parser("mapcss"))
@@ -46,13 +55,36 @@ def parse_options(args) -> argparse.Namespace:
     return arguments
 
 
-def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
-    """Add arguments for tile command."""
+def add_map_arguments(parser: argparse.ArgumentParser) -> None:
+    """Add map-specific arguments."""
     parser.add_argument(
-        "-c",
-        "--coordinates",
-        metavar="<latitude>,<longitude>",
-        help="coordinates of any location inside the tile",
+        "--buildings",
+        metavar="<mode>",
+        default="flat",
+        choices=(x.value for x in BuildingMode),
+        help="building drawing mode: "
+        + ", ".join(x.value for x in BuildingMode),
+    )
+    parser.add_argument(
+        "--mode",
+        default="normal",
+        help="map drawing mode",
+        metavar="<string>",
+    )
+    parser.add_argument(
+        "--overlap",
+        dest="overlap",
+        default=12,
+        type=int,
+        help="how many pixels should be left around icons and text",
+        metavar="<integer>",
+    )
+    parser.add_argument(
+        "--labels",
+        help="label drawing mode: `no`, `main`, or `all`",
+        dest="label_mode",
+        default="main",
+        metavar="<string>",
     )
     parser.add_argument(
         "-s",
@@ -61,6 +93,21 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         metavar="<integer>",
         help="OSM zoom level",
         default=18,
+    )
+    parser.add_argument(
+        "--level",
+        default="overground",
+        help="display only this floor level",
+    )
+
+
+def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
+    """Add arguments for tile command."""
+    parser.add_argument(
+        "-c",
+        "--coordinates",
+        metavar="<latitude>,<longitude>",
+        help="coordinates of any location inside the tile",
     )
     parser.add_argument(
         "-t",
@@ -127,46 +174,16 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         "with quotes and use space before `-`",
     )
     parser.add_argument(
-        "-s",
-        "--scale",
-        metavar="<float>",
-        help="OSM zoom level (may not be integer)",
-        default=18,
-        type=float,
-    )
-    parser.add_argument(
         "--cache",
         help="path for temporary OSM files",
         default="cache",
         metavar="<path>",
     )
     parser.add_argument(
-        "--labels",
-        help="label drawing mode: `no`, `main`, or `all`",
-        dest="label_mode",
-        default="main",
-    )
-    parser.add_argument(
-        "--overlap",
-        dest="overlap",
-        default=12,
-        type=int,
-        help="how many pixels should be left around icons and text",
-    )
-    parser.add_argument(
-        "--mode",
-        default="normal",
-        help="map drawing mode",
-    )
-    parser.add_argument(
         "--seed",
         default="",
         help="seed for random",
-    )
-    parser.add_argument(
-        "--level",
-        default=None,
-        help="display only this floor level",
+        metavar="<string>",
     )
 
 
@@ -219,91 +236,3 @@ def progress_bar(
             f"{int(length - fill_length - 1) * ' '}▏{text}"
         )
         sys.stdout.write("\033[F")
-
-
-@dataclass
-class BoundaryBox:
-    """
-    Rectangle that limit space on the map.
-    """
-
-    left: float
-    bottom: float
-    right: float
-    top: float
-
-    @classmethod
-    def from_text(cls, boundary_box: str):
-        """
-        Parse boundary box string representation.
-
-        Note, that:
-            left < right
-            bottom < top
-
-        :param boundary_box: boundary box string representation in the form of
-            <longitude 1>,<latitude 1>,<longitude 2>,<latitude 2> or simply
-            <left>,<bottom>,<right>,<top>.
-        """
-        boundary_box = boundary_box.replace(" ", "")
-
-        matcher = re.match(
-            "(?P<left>[0-9.-]*),(?P<bottom>[0-9.-]*),"
-            + "(?P<right>[0-9.-]*),(?P<top>[0-9.-]*)",
-            boundary_box,
-        )
-
-        if not matcher:
-            logging.fatal("Invalid boundary box.")
-            return None
-
-        try:
-            left: float = float(matcher.group("left"))
-            bottom: float = float(matcher.group("bottom"))
-            right: float = float(matcher.group("right"))
-            top: float = float(matcher.group("top"))
-        except ValueError:
-            logging.fatal("Invalid boundary box.")
-            return None
-
-        if left >= right:
-            logging.fatal("Negative horizontal boundary.")
-            return None
-        if bottom >= top:
-            logging.error("Negative vertical boundary.")
-            return None
-        if (
-            right - left > LONGITUDE_MAX_DIFFERENCE
-            or top - bottom > LATITUDE_MAX_DIFFERENCE
-        ):
-            logging.error("Boundary box is too big.")
-            return None
-
-        return cls(left, bottom, right, top)
-
-    def get_left_top(self) -> (np.array, np.array):
-        """Get left top corner of the boundary box."""
-        return self.top, self.left
-
-    def get_right_bottom(self) -> (np.array, np.array):
-        """Get right bottom corner of the boundary box."""
-        return self.bottom, self.right
-
-    def round(self) -> "BoundaryBox":
-        """Round boundary box."""
-        self.left = round(self.left * 1000) / 1000 - 0.001
-        self.bottom = round(self.bottom * 1000) / 1000 - 0.001
-        self.right = round(self.right * 1000) / 1000 + 0.001
-        self.top = round(self.top * 1000) / 1000 + 0.001
-
-        return self
-
-    def get_format(self) -> str:
-        """
-        Get text representation of the boundary box:
-        <longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>.  Coordinates are
-        rounded to three digits after comma.
-        """
-        return (
-            f"{self.left:.3f},{self.bottom:.3f},{self.right:.3f},{self.top:.3f}"
-        )

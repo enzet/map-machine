@@ -81,14 +81,13 @@ class RoadPart:
         self.left_outer = None
         self.right_outer = None
         self.point_a = None
+        self.point_middle = None
 
     @classmethod
     def from_nodes(
         cls, node_1: OSMNode, node_2: OSMNode, flinger: Flinger, road, scale
     ) -> "RoadPart":
-        """
-        Construct road part from OSM nodes.
-        """
+        """Construct road part from OSM nodes."""
         lanes = [Lane(road.width / road.lanes)] * road.lanes
 
         return cls(
@@ -99,9 +98,7 @@ class RoadPart:
         )
 
     def update(self) -> None:
-        """
-        Compute additional points.
-        """
+        """Compute additional points."""
         if self.left_connection is not None:
             self.right_projection = (
                 self.left_connection + self.right_vector - self.left_vector
@@ -136,15 +133,11 @@ class RoadPart:
                 self.point_a = self.point_middle
 
     def get_angle(self) -> float:
-        """
-        Get an angle between line and x axis.
-        """
+        """Get an angle between line and x axis."""
         return compute_angle(self.point_2 - self.point_1)
 
     def draw_normal(self, drawing: svgwrite.Drawing):
-        """
-        Draw some debug lines.
-        """
+        """Draw some debug lines."""
         line = drawing.path(
             ("M", self.point_1, "L", self.point_2),
             fill="none",
@@ -154,9 +147,7 @@ class RoadPart:
         drawing.add(line)
 
     def draw_debug(self, drawing: svgwrite.Drawing):
-        """
-        Draw some debug lines.
-        """
+        """Draw some debug lines."""
         line = drawing.path(
             ("M", self.point_1, "L", self.point_2),
             fill="none",
@@ -237,9 +228,7 @@ class RoadPart:
         # self.draw_entrance(drawing, True)
 
     def draw(self, drawing: svgwrite.Drawing):
-        """
-        Draw road part.
-        """
+        """Draw road part."""
         if self.left_connection is not None:
             path_commands = [
                 "M", self.point_2 + self.right_vector,
@@ -251,9 +240,7 @@ class RoadPart:
             drawing.add(drawing.path(path_commands, fill="#CCCCCC"))
 
     def draw_entrance(self, drawing: svgwrite.Drawing, is_debug: bool = False):
-        """
-        Draw intersection entrance part.
-        """
+        """Draw intersection entrance part."""
         if (
             self.left_connection is not None
             and self.right_connection is not None
@@ -277,9 +264,7 @@ class RoadPart:
                 drawing.add(drawing.path(path_commands, fill="#88FF88"))
 
     def draw_lanes(self, drawing: svgwrite.Drawing, scale: float):
-        """
-        Draw lane delimiters.
-        """
+        """Draw lane delimiters."""
         for lane in self.lanes:
             shift = self.right_vector - self.turned * lane.get_width(scale)
             path = drawing.path(
@@ -340,9 +325,7 @@ class Intersection:
             part_2.update()
 
     def draw(self, drawing: svgwrite.Drawing, is_debug: bool = False) -> None:
-        """
-        Draw all road parts and intersection.
-        """
+        """Draw all road parts and intersection."""
         inner_commands = ["M"]
         for part in self.parts:
             inner_commands += [part.left_connection, "L"]

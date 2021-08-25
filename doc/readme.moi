@@ -4,7 +4,7 @@
 \b {Röntgen} (or \b {Roentgen} when ASCII is preferred) project consists of
 
 \list
-    {simple Python \ref {http://openstreetmap.org} {OpenStreetMap} renderer (see \ref {#usage} {usage}, \ref {#map-generation} {renderer documentation}),}
+    {simple Python \ref {http://openstreetmap.org} {OpenStreetMap} renderer and tile generator (see \ref {#usage-example} {usage}, \ref {#map-generation} {renderer documentation}, \ref {#tile-generation} {tile generation}),}
     {\ref {#icon-set} {set of CC-BY 4.0 icons} that can be used outside the project.}
 
 The idea behind the Röntgen project is to \b {show all the richness of the OpenStreetMap data}\: to have a possibility to \i {display any map feature} represented by OpenStreetMap data tags by means of colors, shapes, and icons.  Röntgen is created for OpenStreetMap contributors\: to display all changes one made on the map even if they are small, and for users\: to dig down into the map and find every detail that was mapped.
@@ -93,7 +93,7 @@ The central feature of the project is Röntgen icon set.  It is a set of monochr
 
 All icons tend to support common design style, which is heavily inspired by \ref {https://github.com/mapbox/maki} {Maki}, \ref {https://github.com/gmgeo/osmic} {Osmic}, and \ref {https://github.com/ideditor/temaki} {Temaki}.
 
-Icons are used to visualize tags for nodes and areas.  Unlike other renderers, Röntgen can use more than one icon to visualize an entity and use colors to visualize \osm {colour} value or other entity properties (like material or genus).
+Icons are used to visualize tags for nodes and areas.  Unlike other renderers, Röntgen can use more than one icon to visualize an entity and use colors to visualize \osm {colour} value or other entity properties (like \osm {material} or \osm {genus}).
 
 \image {doc/grid.png} {Icons}
 
@@ -230,7 +230,7 @@ Example\:
 
 \code {roentgen tile -b 2.361,48.871,2.368,48.875} {bash}
 
-will generate 36 PNG tiles at scale 18 from tile 18/132791/90164 all the way to 18/132796/90169 and two cached files \m {cache/2.360,48.869,2.370,48.877.svg} and \m {cache/2.360,48.869,2.370,48.877.png}.
+will generate 36 PNG tiles at scale 18 from tile 18/132791/90164 all the way to 18/132796/90169 and two cached files \m {cache/2.360,48.869,2.370,48.877_18.svg} and \m {cache/2.360,48.869,2.370,48.877_18.png}.
 
 \2 {Tile server} {tile-server}
 

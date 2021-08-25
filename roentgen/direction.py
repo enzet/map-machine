@@ -17,9 +17,7 @@ DEFAULT_ANGLE: float = np.pi / 30
 
 
 def degree_to_radian(degree: float) -> float:
-    """
-    Convert value in degrees to radians.
-    """
+    """Convert value in degrees to radians."""
     return degree / 180 * np.pi
 
 

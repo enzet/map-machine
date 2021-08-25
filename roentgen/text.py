@@ -75,16 +75,12 @@ def format_voltage(value: str) -> str:
 
 
 def format_frequency(value: str) -> str:
-    """
-    Format frequency value to more human-readable form.
-    """
+    """Format frequency value to more human-readable form."""
     return f"{value} "
 
 
 def get_text(tags: dict[str, Any], processed: set[str]) -> list[Label]:
-    """
-    Get text representation of writable tags.
-    """
+    """Get text representation of writable tags."""
     texts: list[Label] = []
     values: list[str] = []
 

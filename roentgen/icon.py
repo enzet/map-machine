@@ -118,9 +118,7 @@ class Shape:
 
 
 def parse_length(text: str) -> float:
-    """
-    Parse length from SVG attribute.
-    """
+    """Parse length from SVG attribute."""
     if text.endswith("px"):
         text = text[:-2]
     return float(text)
@@ -319,9 +317,7 @@ class ShapeSpecification:
         )
 
     def is_default(self) -> bool:
-        """
-        Check whether shape is default.
-        """
+        """Check whether shape is default."""
         return self.shape.id_ == DEFAULT_SHAPE_ID
 
     def draw(
@@ -389,15 +385,11 @@ class Icon:
     shape_specifications: list[ShapeSpecification]
 
     def get_shape_ids(self) -> list[str]:
-        """
-        Get all shape identifiers in the icon.
-        """
+        """Get all shape identifiers in the icon."""
         return [x.shape.id_ for x in self.shape_specifications]
 
     def get_names(self) -> list[str]:
-        """
-        Gat all shape names in the icon.
-        """
+        """Get all shape names in the icon."""
         return [
             (x.shape.name if x.shape.name else "unknown")
             for x in self.shape_specifications
@@ -462,15 +454,11 @@ class Icon:
             svg.write(output_file)
 
     def is_default(self) -> bool:
-        """
-        Check whether first shape is default.
-        """
+        """Check whether first shape is default."""
         return self.shape_specifications[0].is_default()
 
     def recolor(self, color: Color, white: Optional[Color] = None) -> None:
-        """
-        Paint all shapes in the color.
-        """
+        """Paint all shapes in the color."""
         for shape_specification in self.shape_specifications:
             if shape_specification.color == Color("white") and white:
                 shape_specification.color = white
@@ -480,9 +468,7 @@ class Icon:
     def add_specifications(
         self, specifications: list[ShapeSpecification]
     ) -> None:
-        """
-        Add shape specifications to the icon.
-        """
+        """Add shape specifications to the icon."""
         self.shape_specifications += specifications
 
     def __eq__(self, other) -> bool:

@@ -81,7 +81,7 @@ The central feature of the project is Röntgen icon set. It is a set of monochro
 
 All icons tend to support common design style, which is heavily inspired by [Maki](https://github.com/mapbox/maki), [Osmic](https://github.com/gmgeo/osmic), and [Temaki](https://github.com/ideditor/temaki).
 
-Icons are used to visualize tags for nodes and areas. Unlike other renderers, Röntgen can use more than one icon to visualize an entity and use colors to visualize [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) value or other entity properties (like material or genus).
+Icons are used to visualize tags for nodes and areas. Unlike other renderers, Röntgen can use more than one icon to visualize an entity and use colors to visualize [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) value or other entity properties (like [`material`](https://wiki.openstreetmap.org/wiki/Key:material) or [`genus`](https://wiki.openstreetmap.org/wiki/Key:genus)).
 
 ![Icons](doc/grid.png)
 
@@ -217,7 +217,7 @@ Example:
 roentgen tile -b 2.361,48.871,2.368,48.875
 ```
 
-will generate 36 PNG tiles at scale 18 from tile 18/132791/90164 all the way to 18/132796/90169 and two cached files `cache/2.360,48.869,2.370,48.877.svg` and `cache/2.360,48.869,2.370,48.877.png`.
+will generate 36 PNG tiles at scale 18 from tile 18/132791/90164 all the way to 18/132796/90169 and two cached files `cache/2.360,48.869,2.370,48.877_18.svg` and `cache/2.360,48.869,2.370,48.877_18.png`.
 
 Tile server
 -----------

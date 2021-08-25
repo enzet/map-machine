@@ -413,12 +413,6 @@ class Scheme:
         if main_icon and color:
             main_icon.recolor(color)
 
-        # keys_left = [
-        #     x
-        #     for x in tags.keys()
-        #     if x not in processed and not self.is_no_drawable(x)
-        # ]
-
         default_shape = extractor.get_shape(DEFAULT_SHAPE_ID)
         if not main_icon:
             main_icon = Icon([ShapeSpecification(default_shape)])

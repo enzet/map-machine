@@ -30,17 +30,13 @@ class Occupied:
         self.overlap: float = overlap
 
     def check(self, point: np.array) -> bool:
-        """
-        Check whether point is already occupied by other elements.
-        """
+        """Check whether point is already occupied by other elements."""
         if 0 <= point[0] < self.width and 0 <= point[1] < self.height:
             return self.matrix[point[0], point[1]]
         return True
 
     def register(self, point) -> None:
-        """
-        Register that point is occupied by an element.
-        """
+        """Register that point is occupied by an element."""
         if 0 <= point[0] < self.width and 0 <= point[1] < self.height:
             self.matrix[point[0], point[1]] = True
             assert self.matrix[point[0], point[1]]
@@ -86,9 +82,7 @@ class Point(Tagged):
     def draw_main_shapes(
         self, svg: svgwrite.Drawing, occupied: Optional[Occupied] = None
     ) -> None:
-        """
-        Draw main shape for one node.
-        """
+        """Draw main shape for one node."""
         keys_left = [x for x in self.tags.keys() if x not in self.processed]
         if (
             self.icon_set.main_icon.is_default()
@@ -107,9 +101,7 @@ class Point(Tagged):
     def draw_extra_shapes(
         self, svg: svgwrite.Drawing, occupied: Optional[Occupied] = None
     ) -> None:
-        """
-        Draw secondary shapes.
-        """
+        """Draw secondary shapes."""
         if not self.icon_set.extra_icons or not self.main_icon_painted:
             return
 
@@ -141,9 +133,7 @@ class Point(Tagged):
         occupied,
         tags: Optional[dict[str, str]] = None,
     ) -> bool:
-        """
-        Draw one combined icon and its outline.
-        """
+        """Draw one combined icon and its outline."""
         # Down-cast floats to integers to make icons pixel-perfect.
         position = list(map(int, position))
 
@@ -173,9 +163,7 @@ class Point(Tagged):
         occupied: Optional[Occupied] = None,
         label_mode: str = "main",
     ) -> None:
-        """
-        Draw all labels.
-        """
+        """Draw all labels."""
         labels: list[Label]
 
         if label_mode == "main":

@@ -1,23 +1,16 @@
 """
 Röntgen entry point.
-
-Author: Sergey Vartanov (me@enzet.ru).
 """
 import argparse
 import logging
 import sys
 from pathlib import Path
 
-from roentgen.element import draw_element
-from roentgen.grid import draw_icons
-from roentgen.scheme import Scheme
 from roentgen.ui import parse_options
 from roentgen.workspace import Workspace
 
-
-def init_scheme(workspace: Workspace) -> Scheme:
-    """Initialize default scheme."""
-    return Scheme(workspace.DEFAULT_SCHEME_PATH)
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
 
 def main() -> None:
@@ -38,6 +31,8 @@ def main() -> None:
         tile.ui(arguments)
 
     elif arguments.command == "icons":
+        from roentgen.grid import draw_icons
+
         draw_icons()
 
     elif arguments.command == "mapcss":
@@ -46,6 +41,8 @@ def main() -> None:
         mapcss.ui(arguments)
 
     elif arguments.command == "element":
+        from roentgen.element import draw_element
+
         draw_element(arguments)
 
     elif arguments.command == "server":
@@ -54,9 +51,10 @@ def main() -> None:
         server.ui(arguments)
 
     elif arguments.command == "taginfo":
+        from roentgen.scheme import Scheme
         from roentgen.taginfo import write_taginfo_project_file
 
-        write_taginfo_project_file(init_scheme(workspace))
+        write_taginfo_project_file(Scheme(workspace.DEFAULT_SCHEME_PATH))
 
 
 if __name__ == "__main__":

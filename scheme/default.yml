@@ -689,25 +689,79 @@ node_icons:
     - tags: {man_made: mast, tower:construction: lattice_guyed}
       shapes: [lattice_guyed]
     - tags: {man_made: mast, tower:type: lighting}
-      shapes: [tube, {shape: light_left, offset: [-3, -3]}, {shape: light_right, offset: [3, -3]}]
+      shapes:
+      - tube
+      - {shape: light_left, offset: [-3, -3]}
+      - {shape: light_right, offset: [3, -3]}
     - tags: {man_made: mast, tower:type: communication}
-      shapes: [tube, {shape: wave_left, offset: [-3, -3]}, {shape: wave_right, offset: [3, -3]}]
-    - tags: {man_made: mast, tower:type: lighting, tower:construction: guyed_tube}
-      shapes: [tube_guyed, {shape: light_left, offset: [-3, -3]}, {shape: light_right, offset: [3, -3]}]
-    - tags: {man_made: mast, tower:type: communication, tower:construction: guyed_tube}
-      shapes: [tube_guyed, {shape: wave_left, offset: [-3, -3]}, {shape: wave_right, offset: [3, -3]}]
-    - tags: {man_made: mast, tower:type: lighting, tower:construction: freestanding}
-      shapes: [tube, {shape: light_left, offset: [-3, -3]}, {shape: light_right, offset: [3, -3]}]
-    - tags: {man_made: mast, tower:type: communication, tower:construction: freestanding}
-      shapes: [tube, {shape: wave_left, offset: [-3, -3]}, {shape: wave_right, offset: [3, -3]}]
-    - tags: {man_made: mast, tower:type: lighting, tower:construction: guyed_lattice}
-      shapes: [lattice_guyed, {shape: light_left, offset: [-4, -3]}, {shape: light_right, offset: [3, -3]}]
-    - tags: {man_made: mast, tower:type: communication, tower:construction: guyed_lattice}
-      shapes: [lattice_guyed, {shape: wave_left, offset: [-4, -3]}, {shape: wave_right, offset: [3, -3]}]
-    - tags: {man_made: mast, tower:type: lighting, tower:construction: lattice}
-      shapes: [lattice, {shape: light_left, offset: [-4, -3]}, {shape: light_right, offset: [3, -3]}]
-    - tags: {man_made: mast, tower:type: communication, tower:construction: lattice}
-      shapes: [lattice, {shape: wave_left, offset: [-4, -3]}, {shape: wave_right, offset: [3, -3]}]
+      shapes:
+      - tube
+      - {shape: wave_left, offset: [-3, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: lighting
+        tower:construction: guyed_tube
+      shapes:
+      - tube_guyed
+      - {shape: light_left, offset: [-3, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: communication
+        tower:construction: guyed_tube
+      shapes:
+      - tube_guyed
+      - {shape: wave_left, offset: [-3, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: lighting
+        tower:construction: freestanding
+      shapes:
+      - tube
+      - {shape: light_left, offset: [-3, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: communication
+        tower:construction: freestanding
+      shapes:
+      - tube
+      - {shape: wave_left, offset: [-3, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: lighting
+        tower:construction: guyed_lattice
+      shapes:
+      - lattice_guyed
+      - {shape: light_left, offset: [-4, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: communication
+        tower:construction: guyed_lattice
+      shapes:
+      - lattice_guyed
+      - {shape: wave_left, offset: [-4, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: lighting
+        tower:construction: lattice
+      shapes:
+      - lattice
+      - {shape: light_left, offset: [-4, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: communication
+        tower:construction: lattice
+      shapes:
+      - lattice
+      - {shape: wave_left, offset: [-4, -3]}
+      - {shape: wave_right, offset: [3, -3]}
 
     - tags: {man_made: tower, tower:construction: guyed_tube}
       shapes: [tube_guyed]
@@ -718,25 +772,79 @@ node_icons:
     - tags: {man_made: tower, tower:construction: lattice_guyed}
       shapes: [lattice_guyed]
     - tags: {man_made: tower, tower:type: lighting}
-      shapes: [tube, {shape: light_left, offset: [-3, -3]}, {shape: light_right, offset: [3, -3]}]
+      shapes:
+      - tube
+      - {shape: light_left, offset: [-3, -3]}
+      - {shape: light_right, offset: [3, -3]}
     - tags: {man_made: tower, tower:type: communication}
-      shapes: [tube, {shape: wave_left, offset: [-3, -3]}, {shape: wave_right, offset: [3, -3]}]
-    - tags: {man_made: tower, tower:type: lighting, tower:construction: guyed_tube}
-      shapes: [tube_guyed, {shape: light_left, offset: [-3, -3]}, {shape: light_right, offset: [3, -3]}]
-    - tags: {man_made: tower, tower:type: communication, tower:construction: guyed_tube}
-      shapes: [tube_guyed, {shape: wave_left, offset: [-3, -3]}, {shape: wave_right, offset: [3, -3]}]
-    - tags: {man_made: tower, tower:type: lighting, tower:construction: freestanding}
-      shapes: [tube, {shape: light_left, offset: [-3, -3]}, {shape: light_right, offset: [3, -3]}]
-    - tags: {man_made: tower, tower:type: communication, tower:construction: freestanding}
-      shapes: [tube, {shape: wave_left, offset: [-3, -3]}, {shape: wave_right, offset: [3, -3]}]
-    - tags: {man_made: tower, tower:type: lighting, tower:construction: guyed_lattice}
-      shapes: [lattice_guyed, {shape: light_left, offset: [-4, -3]}, {shape: light_right, offset: [3, -3]}]
-    - tags: {man_made: tower, tower:type: communication, tower:construction: guyed_lattice}
-      shapes: [lattice_guyed, {shape: wave_left, offset: [-4, -3]}, {shape: wave_right, offset: [3, -3]}]
-    - tags: {man_made: tower, tower:type: lighting, tower:construction: lattice}
-      shapes: [lattice, {shape: light_left, offset: [-4, -3]}, {shape: light_right, offset: [3, -3]}]
-    - tags: {man_made: tower, tower:type: communication, tower:construction: lattice}
-      shapes: [lattice, {shape: wave_left, offset: [-4, -3]}, {shape: wave_right, offset: [3, -3]}]
+      shapes:
+      - tube
+      - {shape: wave_left, offset: [-3, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: lighting
+        tower:construction: guyed_tube
+      shapes:
+      - tube_guyed
+      - {shape: light_left, offset: [-3, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: communication
+        tower:construction: guyed_tube
+      shapes:
+      - tube_guyed
+      - {shape: wave_left, offset: [-3, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: lighting
+        tower:construction: freestanding
+      shapes:
+      - tube
+      - {shape: light_left, offset: [-3, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: communication
+        tower:construction: freestanding
+      shapes:
+      - tube
+      - {shape: wave_left, offset: [-3, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: lighting
+        tower:construction: guyed_lattice
+      shapes:
+      - lattice_guyed
+      - {shape: light_left, offset: [-4, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: communication
+        tower:construction: guyed_lattice
+      shapes:
+      - lattice_guyed
+      - {shape: wave_left, offset: [-4, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: lighting
+        tower:construction: lattice
+      shapes:
+      - lattice
+      - {shape: light_left, offset: [-4, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: communication
+        tower:construction: lattice
+      shapes:
+      - lattice
+      - {shape: wave_left, offset: [-4, -3]}
+      - {shape: wave_right, offset: [3, -3]}
 
     - tags: {communication:mobile_phone: "yes"}
       add_shapes: [phone]
@@ -873,7 +981,9 @@ node_icons:
   - group: "Entrances"
     tags:
     - tags: {amenity: parking_entrance}
-      shapes: [{shape: p, offset: [-1, 0]}, {shape: arrow_right, offset: [4, 5]}]
+      shapes:
+      - {shape: p, offset: [-1, 0]}
+      - {shape: arrow_right, offset: [4, 5]}
     - tags: {amenity: parking_entrance, parking: underground}
       shapes: [{shape: p, offset: [-1, 0]}, {shape: arrow_down, offset: [4, 5]}]
     - tags: {amenity: parking_entrance, parking: multi-storey}

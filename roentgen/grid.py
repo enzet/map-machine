@@ -48,9 +48,7 @@ class IconCollection:
         icons: list[Icon] = []
 
         def add() -> Icon:
-            """
-            Construct icon and add it to the list.
-            """
+            """Construct icon and add it to the list."""
             specifications = [
                 ShapeSpecification.from_structure(x, extractor, scheme)
                 for x in current_set

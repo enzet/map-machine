@@ -109,6 +109,13 @@ class Building(Figure):
         if height:
             self.min_height = height
 
+    def draw(self, svg: Drawing, flinger: Flinger):
+        """Draw simple building shape."""
+        path: Path = Path(d=self.get_path(flinger))
+        path.update(self.line_style.style)
+        path.update({"stroke-linejoin": "round"})
+        svg.add(path)
+
     def draw_shade(self, building_shade, flinger: Flinger) -> None:
         """Draw shade casted by the building."""
         scale: float = flinger.get_scale() / 3.0

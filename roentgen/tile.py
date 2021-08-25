@@ -21,8 +21,7 @@ from roentgen.mapper import Map
 from roentgen.osm_getter import NetworkError, get_osm
 from roentgen.osm_reader import OSMData, OSMReader
 from roentgen.scheme import Scheme
-from roentgen.ui import BoundaryBox
-from roentgen.util import MinMax
+from roentgen.boundary_box import BoundaryBox
 from roentgen.workspace import workspace
 
 __author__ = "Sergey Vartanov"
@@ -116,36 +115,33 @@ class Tile:
             f"https://tile.openstreetmap.org/{self.scale}/{self.x}/{self.y}.png"
         )
 
-    def draw(self, directory_name: Path, cache_path: Path) -> None:
+    def draw(self, directory_name: Path, cache_path: Path, options) -> None:
         """
         Draw tile to SVG and PNG files.
 
         :param directory_name: output directory to storing tiles
         :param cache_path: directory to store SVG and PNG tiles
+        :param options: drawing configuration
         """
         try:
             osm_data: OSMData = self.load_osm_data(cache_path)
         except NetworkError as e:
             raise NetworkError(f"Map is not loaded. {e.message}")
 
-        self.draw_with_osm_data(osm_data, directory_name)
+        self.draw_with_osm_data(osm_data, directory_name, options)
 
     def draw_with_osm_data(
-        self, osm_data: OSMData, directory_name: Path
+        self, osm_data: OSMData, directory_name: Path, options
     ) -> None:
         """Draw SVG and PNG tile using OpenStreetMap data."""
-        latitude_1, longitude_1 = self.get_coordinates()
-        latitude_2, longitude_2 = Tile(
+        top, left = self.get_coordinates()
+        bottom, right = Tile(
             self.x + 1, self.y + 1, self.scale
         ).get_coordinates()
 
-        min_: np.array = np.array(
-            (min(latitude_1, latitude_2), min(longitude_1, longitude_2))
+        flinger: Flinger = Flinger(
+            BoundaryBox(left, bottom, right, top), self.scale
         )
-        max_: np.array = np.array(
-            (max(latitude_1, latitude_2), max(longitude_1, longitude_2))
-        )
-        flinger: Flinger = Flinger(MinMax(min_, max_), self.scale)
         size: np.array = flinger.size
 
         output_file_name: Path = self.get_file_name(directory_name)
@@ -158,11 +154,13 @@ class Tile:
         )
         scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
         constructor: Constructor = Constructor(
-            osm_data, flinger, scheme, icon_extractor
+            osm_data, flinger, scheme, icon_extractor, options
         )
         constructor.construct()
 
-        painter: Map = Map(flinger=flinger, svg=svg, scheme=scheme)
+        painter: Map = Map(
+            flinger=flinger, svg=svg, scheme=scheme, options=options
+        )
         painter.draw(constructor)
 
         with output_file_name.open("w") as output_file:
@@ -217,13 +215,16 @@ class Tiles:
 
         return cls(tiles, tile_1, tile_2, scale, extended_boundary_box)
 
-    def draw_separately(self, directory: Path, cache_path: Path) -> None:
+    def draw_separately(
+        self, directory: Path, cache_path: Path, options
+    ) -> None:
         """
         Draw set of tiles as SVG file separately and rasterize them into a set
         of PNG files with cairosvg.
 
         :param directory: directory for tiles
         :param cache_path: directory for temporary OSM files
+        :param options: drawing configuration
         """
         cache_file_path: Path = (
             cache_path / f"{self.boundary_box.get_format()}.osm"
@@ -234,7 +235,7 @@ class Tiles:
         for tile in self.tiles:
             file_path: Path = tile.get_file_name(directory)
             if not file_path.exists():
-                tile.draw_with_osm_data(osm_data, directory)
+                tile.draw_with_osm_data(osm_data, directory, options)
             else:
                 logging.debug(f"File {file_path} already exists.")
 
@@ -252,18 +253,19 @@ class Tiles:
         """Check whether all tiles are drawn."""
         return all(x.exists(directory_name) for x in self.tiles)
 
-    def draw(self, directory: Path, cache_path: Path) -> None:
+    def draw(self, directory: Path, cache_path: Path, options) -> None:
         """
         Draw one PNG image with all tiles and split it into a set of separate
         PNG file with Pillow.
 
         :param directory: directory for tiles
         :param cache_path: directory for temporary OSM files
+        :param options: drawing configuration
         """
         if self.tiles_exist(directory):
             return
 
-        self.draw_image(cache_path)
+        self.draw_image(cache_path, options)
 
         input_path: Path = self.get_file_path(cache_path).with_suffix(".png")
         with input_path.open("rb") as input_file:
@@ -288,11 +290,12 @@ class Tiles:
         """Get path of the output SVG file."""
         return cache_path / f"{self.boundary_box.get_format()}_{self.scale}.svg"
 
-    def draw_image(self, cache_path: Path) -> None:
+    def draw_image(self, cache_path: Path, options) -> None:
         """
         Draw all tiles as one picture.
 
         :param cache_path: directory for temporary SVG file and OSM files
+        :param options: drawing configuration
         """
         output_path: Path = self.get_file_path(cache_path)
 
@@ -303,27 +306,29 @@ class Tiles:
             get_osm(self.boundary_box, cache_file_path)
 
             osm_data: OSMData = OSMReader().parse_osm_file(cache_file_path)
-            latitude_2, longitude_1 = self.tile_1.get_coordinates()
-            latitude_1, longitude_2 = Tile(
+            top, left = self.tile_1.get_coordinates()
+            bottom, right = Tile(
                 self.tile_2.x + 1, self.tile_2.y + 1, self.scale
             ).get_coordinates()
-            min_: np.ndarray = np.array((latitude_1, longitude_1))
-            max_: np.ndarray = np.array((latitude_2, longitude_2))
 
-            flinger: Flinger = Flinger(MinMax(min_, max_), self.scale)
+            flinger: Flinger = Flinger(
+                BoundaryBox(left, bottom, right, top), self.scale
+            )
             extractor: ShapeExtractor = ShapeExtractor(
                 workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
             )
             scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
             constructor: Constructor = Constructor(
-                osm_data, flinger, scheme, extractor
+                osm_data, flinger, scheme, extractor, options=options
             )
             constructor.construct()
 
             svg: svgwrite.Drawing = svgwrite.Drawing(
                 str(output_path), size=flinger.size
             )
-            map_: Map = Map(flinger=flinger, svg=svg, scheme=scheme)
+            map_: Map = Map(
+                flinger=flinger, svg=svg, scheme=scheme, options=options
+            )
             map_.draw(constructor)
 
             logging.info(f"Writing output SVG {output_path}...")
@@ -351,13 +356,13 @@ def ui(options) -> None:
         )
         tile: Tile = Tile.from_coordinates(np.array(coordinates), options.scale)
         try:
-            tile.draw(directory, Path(options.cache))
+            tile.draw(directory, Path(options.cache), options)
         except NetworkError as e:
             logging.fatal(e.message)
     elif options.tile:
         scale, x, y = map(int, options.tile.split("/"))
         tile: Tile = Tile(x, y, scale)
-        tile.draw(directory, Path(options.cache))
+        tile.draw(directory, Path(options.cache), options)
     elif options.boundary_box:
         boundary_box: Optional[BoundaryBox] = BoundaryBox.from_text(
             options.boundary_box
@@ -365,7 +370,7 @@ def ui(options) -> None:
         if boundary_box is None:
             sys.exit(1)
         tiles: Tiles = Tiles.from_boundary_box(boundary_box, options.scale)
-        tiles.draw(directory, Path(options.cache))
+        tiles.draw(directory, Path(options.cache), options)
     else:
         logging.fatal(
             "Specify either --coordinates, --boundary-box, or --tile."

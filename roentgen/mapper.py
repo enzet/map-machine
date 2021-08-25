@@ -1,10 +1,10 @@
 """
 Simple OpenStreetMap renderer.
 """
+import logging
 from pathlib import Path
 from typing import Any, Iterator
 
-import logging
 import numpy as np
 import svgwrite
 from colour import Color
@@ -12,17 +12,17 @@ from svgwrite.container import Group
 from svgwrite.path import Path as SVGPath
 from svgwrite.shapes import Rect
 
-from roentgen.icon import ShapeExtractor
-from roentgen.osm_getter import NetworkError, get_osm
+from roentgen.boundary_box import BoundaryBox
 from roentgen.constructor import Constructor
 from roentgen.figure import Road
 from roentgen.flinger import Flinger
+from roentgen.icon import ShapeExtractor
+from roentgen.osm_getter import NetworkError, get_osm
 from roentgen.osm_reader import OSMData, OSMNode, OSMReader, OverpassReader
 from roentgen.point import Occupied
 from roentgen.road import Intersection, RoadPart
 from roentgen.scheme import Scheme
-from roentgen.ui import AUTHOR_MODE, BoundaryBox, TIME_MODE, progress_bar
-from roentgen.util import MinMax
+from roentgen.ui import AUTHOR_MODE, BuildingMode, TIME_MODE, progress_bar
 from roentgen.workspace import workspace
 
 __author__ = "Sergey Vartanov"
@@ -35,24 +35,15 @@ class Map:
     """
 
     def __init__(
-        self,
-        flinger: Flinger,
-        svg: svgwrite.Drawing,
-        scheme: Scheme,
-        overlap: int = 12,
-        mode: str = "normal",
-        label_mode: str = "main",
+        self, flinger: Flinger, svg: svgwrite.Drawing, scheme: Scheme, options
     ) -> None:
-        self.overlap: int = overlap
-        self.mode: str = mode
-        self.label_mode: str = label_mode
-
         self.flinger: Flinger = flinger
         self.svg: svgwrite.Drawing = svg
         self.scheme: Scheme = scheme
+        self.options = options
 
         self.background_color: Color = self.scheme.get_color("background_color")
-        if self.mode in [AUTHOR_MODE, TIME_MODE]:
+        if self.options.mode in [AUTHOR_MODE, TIME_MODE]:
             self.background_color: Color = Color("#111111")
 
     def draw(self, constructor: Constructor) -> None:
@@ -89,11 +80,11 @@ class Map:
 
         # All other points
 
-        if self.overlap == 0:
+        if self.options.overlap == 0:
             occupied = None
         else:
             occupied = Occupied(
-                self.flinger.size[0], self.flinger.size[1], self.overlap
+                self.flinger.size[0], self.flinger.size[1], self.options.overlap
             )
 
         nodes = sorted(constructor.points, key=lambda x: -x.priority)
@@ -114,17 +105,24 @@ class Map:
                 steps * 2 + index, steps * 3, step=10, text="Drawing texts"
             )
             if (
-                self.mode not in [TIME_MODE, AUTHOR_MODE]
-                and self.label_mode != "no"
+                self.options.mode not in [TIME_MODE, AUTHOR_MODE]
+                and self.options.label_mode != "no"
             ):
-                point.draw_texts(self.svg, occupied, self.label_mode)
+                point.draw_texts(self.svg, occupied, self.options.label_mode)
 
         progress_bar(-1, len(nodes), step=10, text="Drawing nodes")
 
     def draw_buildings(self, constructor: Constructor) -> None:
         """Draw buildings: shade, walls, and roof."""
-        building_shade: Group = Group(opacity=0.1)
+        building_mode: BuildingMode = BuildingMode(self.options.buildings)
+
+        if building_mode == BuildingMode.FLAT:
+            for building in constructor.buildings:
+                building.draw(self.svg, self.flinger)
+            return
+
         scale: float = self.flinger.get_scale() / 3.0
+        building_shade: Group = Group(opacity=0.1)
         for building in constructor.buildings:
             building.draw_shade(building_shade, self.flinger)
         self.svg.add(building_shade)
@@ -150,9 +148,7 @@ class Map:
     def draw_road(
         self, road: Road, color: Color, extra_width: float = 0
     ) -> None:
-        """
-        Draw road as simple SVG path.
-        """
+        """Draw road as simple SVG path."""
         self.flinger.get_scale()
         if road.width is not None:
             width = road.width
@@ -172,9 +168,7 @@ class Map:
         self.svg.add(path)
 
     def draw_roads(self, roads: Iterator[Road]) -> None:
-        """
-        Draw road as simple SVG path.
-        """
+        """Draw road as simple SVG path."""
         nodes: dict[OSMNode, set[RoadPart]] = {}
 
         for road in roads:
@@ -201,44 +195,6 @@ class Map:
                 continue
             intersection: Intersection = Intersection(list(parts))
             intersection.draw(self.svg, True)
-
-
-def check_level_number(tags: dict[str, Any], level: float):
-    """
-    Check if element described by tags is no the specified level.
-    """
-    if "level" in tags:
-        levels = map(float, tags["level"].replace(",", ".").split(";"))
-        if level not in levels:
-            return False
-    else:
-        return False
-    return True
-
-
-def check_level_overground(tags: dict[str, Any]) -> bool:
-    """
-    Check if element described by tags is overground.
-    """
-    if "level" in tags:
-        try:
-            levels = map(float, tags["level"].replace(",", ".").split(";"))
-            for level in levels:
-                if level <= 0:
-                    return False
-        except ValueError:
-            pass
-    if "layer" in tags:
-        try:
-            levels = map(float, tags["layer"].replace(",", ".").split(";"))
-            for level in levels:
-                if level <= 0:
-                    return False
-        except ValueError:
-            pass
-    if "parking" in tags and tags["parking"] == "underground":
-        return False
-    return True
 
 
 def ui(options) -> None:
@@ -276,27 +232,21 @@ def ui(options) -> None:
     min_: np.array
     max_: np.array
     osm_data: OSMData
+    view_box: BoundaryBox
 
     if input_file_names[0].name.endswith(".json"):
         reader: OverpassReader = OverpassReader()
         reader.parse_json_file(input_file_names[0])
 
         osm_data = reader.osm_data
-        view_box = MinMax(
-            np.array(
-                (osm_data.boundary_box[0].min_, osm_data.boundary_box[1].min_)
-            ),
-            np.array(
-                (osm_data.boundary_box[0].max_, osm_data.boundary_box[1].max_)
-            ),
-        )
+        view_box = boundary_box
     else:
         is_full: bool = options.mode in [AUTHOR_MODE, TIME_MODE]
         osm_reader = OSMReader(is_full=is_full)
 
         for file_name in input_file_names:
             if not file_name.is_file():
-                print(f"Fatal: no such file: {file_name}.")
+                logging.fatal(f"No such file: {file_name}.")
                 exit(1)
 
             osm_reader.parse_osm_file(file_name)
@@ -304,10 +254,7 @@ def ui(options) -> None:
         osm_data = osm_reader.osm_data
 
         if options.boundary_box:
-            view_box = MinMax(
-                np.array((boundary_box.bottom, boundary_box.left)),
-                np.array((boundary_box.top, boundary_box.right)),
-            )
+            view_box = boundary_box
         else:
             view_box = osm_data.view_box
 
@@ -321,48 +268,18 @@ def ui(options) -> None:
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
 
-    if options.level:
-        if options.level == "overground":
-            check_level = check_level_overground
-        elif options.level == "underground":
-
-            def check_level(x) -> bool:
-                """Draw underground objects."""
-                return not check_level_overground(x)
-
-        else:
-
-            def check_level(x) -> bool:
-                """Draw objects on the specified level."""
-                return not check_level_number(x, float(options.level))
-
-    else:
-
-        def check_level(_) -> bool:
-            """Draw objects on any level."""
-            return True
-
     constructor: Constructor = Constructor(
-        osm_data,
-        flinger,
-        scheme,
-        icon_extractor,
-        check_level,
-        options.mode,
-        options.seed,
+        osm_data=osm_data,
+        flinger=flinger,
+        scheme=scheme,
+        icon_extractor=icon_extractor,
+        options=options,
     )
     constructor.construct()
 
-    painter: Map = Map(
-        overlap=options.overlap,
-        mode=options.mode,
-        label_mode=options.label_mode,
-        flinger=flinger,
-        svg=svg,
-        scheme=scheme,
-    )
+    painter: Map = Map(flinger=flinger, svg=svg, scheme=scheme, options=options)
     painter.draw(constructor)
 
-    print(f"Writing output SVG to {options.output_file_name}...")
+    logging.info(f"Writing output SVG to {options.output_file_name}...")
     with open(options.output_file_name, "w") as output_file:
         svg.write(output_file)

@@ -5,7 +5,7 @@ from typing import Optional
 
 import numpy as np
 
-from roentgen.util import MinMax
+from roentgen.boundary_box import BoundaryBox
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -45,7 +45,7 @@ class Flinger:
 
     def __init__(
         self,
-        geo_boundaries: MinMax,
+        geo_boundaries: BoundaryBox,
         scale: float = 18,
         border: np.array = np.array((0, 0)),
     ) -> None:
@@ -53,14 +53,14 @@ class Flinger:
         :param geo_boundaries: minimum and maximum latitude and longitude
         :param scale: OSM zoom level
         """
-        self.geo_boundaries: MinMax = geo_boundaries
+        self.geo_boundaries: BoundaryBox = geo_boundaries
         self.border = border
         self.ratio: float = (
             osm_zoom_level_to_pixels_per_meter(scale) * EQUATOR_LENGTH / 360
         )
         self.size: np.array = border * 2 + self.ratio * (
-            pseudo_mercator(self.geo_boundaries.max_)
-            - pseudo_mercator(self.geo_boundaries.min_)
+            pseudo_mercator(self.geo_boundaries.max_())
+            - pseudo_mercator(self.geo_boundaries.min_())
         )
         self.pixels_per_meter = osm_zoom_level_to_pixels_per_meter(scale)
 
@@ -74,7 +74,7 @@ class Flinger:
         """
         result: np.array = self.border + self.ratio * (
             pseudo_mercator(coordinates)
-            - pseudo_mercator(self.geo_boundaries.min_)
+            - pseudo_mercator(self.geo_boundaries.min_())
         )
 
         # Invert y axis on coordinate plane.

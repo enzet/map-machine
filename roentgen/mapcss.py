@@ -140,9 +140,7 @@ class MapCSSWriter:
         return selector
 
     def write(self, output_file: TextIO) -> None:
-        """
-        Construct icon selectors for MapCSS 0.2 scheme.
-        """
+        """Construct icon selectors for MapCSS 0.2 scheme."""
         output_file.write(HEADER + "\n\n")
 
         if self.add_ways:
@@ -178,9 +176,7 @@ class MapCSSWriter:
 
 
 def ui(options) -> None:
-    """
-    Write MapCSS 0.2 scheme.
-    """
+    """Write MapCSS 0.2 scheme."""
     directory: Path = workspace.get_mapcss_path()
     icons_with_outline_path: Path = workspace.get_mapcss_icons_path()
 

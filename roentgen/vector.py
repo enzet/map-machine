@@ -24,9 +24,7 @@ def compute_angle(vector: np.array):
 
 
 def turn_by_angle(vector: np.array, angle: float):
-    """
-    Turn vector by an angle.
-    """
+    """Turn vector by an angle."""
     return np.array(
         (
             vector[0] * np.cos(angle) - vector[1] * np.sin(angle),
@@ -36,16 +34,12 @@ def turn_by_angle(vector: np.array, angle: float):
 
 
 def norm(vector: np.array) -> np.array:
-    """
-    Compute vector with the same direction and length 1.
-    """
+    """Compute vector with the same direction and length 1."""
     return vector / np.linalg.norm(vector)
 
 
 class Line:
-    """
-    Infinity line: Ax + By + C = 0.
-    """
+    """Infinity line: Ax + By + C = 0."""
 
     def __init__(self, start: np.array, end: np.array) -> None:
         # if start.near(end):
@@ -63,15 +57,11 @@ class Line:
         self.c -= self.a * shift.x + self.b * shift.y
 
     def is_parallel(self, other: "Line") -> bool:
-        """
-        If lines are parallel or equal.
-        """
+        """If lines are parallel or equal."""
         return np.allclose(other.a * self.b - self.a * other.b, 0)
 
     def get_intersection_point(self, other: "Line") -> np.array:
-        """
-        Get point of intersection current line with other.
-        """
+        """Get point of intersection current line with other."""
         if other.a * self.b - self.a * other.b == 0:
             return np.array((0, 0))
 

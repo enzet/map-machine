@@ -1,13 +1,14 @@
 """
 Test boundary box.
 """
-from roentgen.ui import BoundaryBox
+from roentgen.boundary_box import BoundaryBox
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
 def test_round_zero_coordinates() -> None:
+    """Test rounding for zero coordinates."""
     assert (
         BoundaryBox(0, 0, 0, 0).round().get_format()
         == "-0.001,-0.001,0.001,0.001"
@@ -15,6 +16,7 @@ def test_round_zero_coordinates() -> None:
 
 
 def test_round_coordinates() -> None:
+    """Test rounding coordinates."""
     box: BoundaryBox = BoundaryBox(
         10.067596435546875,
         46.094186149226466,

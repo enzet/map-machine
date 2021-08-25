@@ -9,7 +9,7 @@ from pathlib import Path
 
 import urllib3
 
-from roentgen.ui import BoundaryBox
+from roentgen.boundary_box import BoundaryBox
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

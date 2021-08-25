@@ -1,3 +1,6 @@
+"""
+Drawing separate map elements.
+"""
 import logging
 import sys
 from pathlib import Path
@@ -5,10 +8,10 @@ from pathlib import Path
 import numpy as np
 import svgwrite
 
-from roentgen.workspace import workspace
 from roentgen.icon import ShapeExtractor
 from roentgen.point import Point
 from roentgen.scheme import LineStyle, Scheme
+from roentgen.workspace import workspace
 
 
 def draw_element(options) -> None:

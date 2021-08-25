@@ -21,7 +21,7 @@ from roentgen.icon import (
 from roentgen.osm_reader import OSMData, OSMNode, OSMRelation, OSMWay
 from roentgen.point import Point
 from roentgen.scheme import DEFAULT_COLOR, LineStyle, Scheme
-from roentgen.ui import AUTHOR_MODE, TIME_MODE
+from roentgen.ui import AUTHOR_MODE, BuildingMode, TIME_MODE
 from roentgen.util import MinMax
 
 # fmt: on
@@ -129,17 +129,25 @@ class Constructor:
         flinger: Flinger,
         scheme: Scheme,
         icon_extractor: ShapeExtractor,
-        check_level=lambda x: True,
-        mode: str = "normal",
-        seed: str = "",
+        options,
     ) -> None:
-        self.check_level = check_level
-        self.mode: str = mode
-        self.seed: str = seed
         self.osm_data: OSMData = osm_data
         self.flinger: Flinger = flinger
         self.scheme: Scheme = scheme
         self.icon_extractor = icon_extractor
+        self.options = options
+
+        if options.level:
+            if options.level == "overground":
+                self.check_level = check_level_overground
+            elif options.level == "underground":
+                self.check_level = lambda x: not check_level_overground(x)
+            else:
+                self.check_level = lambda x: not check_level_number(
+                    x, float(options.level)
+                )
+        else:
+            self.check_level = lambda x: True
 
         self.points: list[Point] = []
         self.figures: list[StyledFigure] = []
@@ -195,10 +203,10 @@ class Constructor:
             return
 
         center_point, center_coordinates = line_center(outers[0], self.flinger)
-        if self.mode in [AUTHOR_MODE, TIME_MODE]:
+        if self.options.mode in [AUTHOR_MODE, TIME_MODE]:
             color: Color
-            if self.mode == AUTHOR_MODE:
-                color = get_user_color(line.user, self.seed)
+            if self.options.mode == AUTHOR_MODE:
+                color = get_user_color(line.user, self.options.seed)
             else:  # self.mode == TIME_MODE
                 color = get_time_color(line.timestamp, self.osm_data.time)
             self.draw_special_mode(inners, line, outers, color)
@@ -207,7 +215,11 @@ class Constructor:
         if not line.tags:
             return
 
-        if "building:part" in line.tags or "building" in line.tags:
+        building_mode: BuildingMode = BuildingMode(self.options.buildings)
+        if "building" in line.tags or (
+            building_mode == BuildingMode.ISOMETRIC
+            and "building:part" in line.tags
+        ):
             self.add_building(
                 Building(line.tags, inners, outers, self.flinger, self.scheme)
             )
@@ -276,9 +288,7 @@ class Constructor:
             self.points.append(point)
 
     def draw_special_mode(self, inners, line, outers, color) -> None:
-        """
-        Add figure for special mode: time or author.
-        """
+        """Add figure for special mode: time or author."""
         style: dict[str, Any] = {
             "fill": "none",
             "stroke": color.hex,
@@ -289,9 +299,7 @@ class Constructor:
         )
 
     def construct_relations(self) -> None:
-        """
-        Construct Röntgen ways from OSM relations.
-        """
+        """Construct Röntgen ways from OSM relations."""
         for relation_id in self.osm_data.relations:
             relation: OSMRelation = self.osm_data.relations[relation_id]
             tags = relation.tags
@@ -344,13 +352,13 @@ class Constructor:
         icon_set: IconSet
         draw_outline: bool = True
 
-        if self.mode in [TIME_MODE, AUTHOR_MODE]:
+        if self.options.mode in [TIME_MODE, AUTHOR_MODE]:
             if not tags:
                 return
             color: Color = DEFAULT_COLOR
-            if self.mode == AUTHOR_MODE:
-                color = get_user_color(node.user, self.seed)
-            if self.mode == TIME_MODE:
+            if self.options.mode == AUTHOR_MODE:
+                color = get_user_color(node.user, self.options.seed)
+            if self.options.mode == TIME_MODE:
                 color = get_time_color(node.timestamp, self.osm_data.time)
             dot = self.icon_extractor.get_shape(DEFAULT_SMALL_SHAPE_ID)
             icon_set = IconSet(
@@ -382,3 +390,37 @@ class Constructor:
             priority=priority, draw_outline=draw_outline
         )  # fmt: skip
         self.points.append(point)
+
+
+def check_level_number(tags: dict[str, Any], level: float):
+    """Check if element described by tags is no the specified level."""
+    if "level" in tags:
+        levels = map(float, tags["level"].replace(",", ".").split(";"))
+        if level not in levels:
+            return False
+    else:
+        return False
+    return True
+
+
+def check_level_overground(tags: dict[str, Any]) -> bool:
+    """Check if element described by tags is overground."""
+    if "level" in tags:
+        try:
+            levels = map(float, tags["level"].replace(",", ".").split(";"))
+            for level in levels:
+                if level <= 0:
+                    return False
+        except ValueError:
+            pass
+    if "layer" in tags:
+        try:
+            levels = map(float, tags["layer"].replace(",", ".").split(";"))
+            for level in levels:
+                if level <= 0:
+                    return False
+        except ValueError:
+            pass
+    if "parking" in tags and tags["parking"] == "underground":
+        return False
+    return True
