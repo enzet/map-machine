@@ -242,16 +242,16 @@ Stop server interrupting process with \kbd {Ctrl} + \kbd {C}.
 
 \2 {MapCSS 0.2 generation} {mapcss-0-2-generation}
 
-Command \m {mapcss} is used to generate MapCSS scheme.  \m {roentgen mapcss} will create \m {out/roentgen_mapcss} directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas\: \m {.mapcss} file and directory with icons.
+Command \m {mapcss} is used to generate MapCSS scheme.  \m {\command {Test MapCSS 0.2 generation}} will create \m {out/roentgen_mapcss} directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas\: \m {.mapcss} file and directory with icons.
 
-To create MapCSS with only Röntgen icons run \m {roentgen mapcss --no-ways}.
+To create MapCSS with Röntgen style also for ways and relations, run \m {roentgen mapcss --ways}.
 
 \options {mapcss}
 
 \3 {Use Röntgen as JOSM map paint style}
 
 \list
-    {Run \m {roentgen mapcss}.}
+    {Run \m {\command {Test MapCSS 0.2 generation}}.}
     {Open \ref {https://josm.openstreetmap.de/} {JOSM}.}
     {Go to \kbd {Preferences} → Third tab on the left → \kbd {Map Paint Styles}.}
     {Active styles: press \kbd {+}.}

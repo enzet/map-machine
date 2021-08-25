@@ -87,7 +87,7 @@ Icons are used to visualize tags for nodes and areas. Unlike other renderers, R�
 
 Feel free to request new icons via issues for whatever you want to see on the map. No matter how frequently the tag is used in OpenStreetMap since final goal is to cover all tags. However, common used tags have priority, other things being equal.
 
-Generate icon grid and sets of individual icons with `python roentgen.py icons`. It will create `out/icon_grid.svg` file, and SVG files in `out/icons_by_id` directory where files are named using shape identifiers (e.g. `power_tower_portal_2_level.svg`) and in `icons_by_name` directory where files are named using shape names (e.g. `Röntgen portal two-level transmission tower.svg`). Files from the last directory are used in OpenStreetMap wiki (e.g. [`File:Röntgen_portal_two-level_transmission_tower.svg`](https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg)).
+Generate icon grid and sets of individual icons with `roentgen icons`. It will create `out/icon_grid.svg` file, and SVG files in `out/icons_by_id` directory where files are named using shape identifiers (e.g. `power_tower_portal_2_level.svg`) and in `icons_by_name` directory where files are named using shape names (e.g. `Röntgen portal two-level transmission tower.svg`). Files from the last directory are used in OpenStreetMap wiki (e.g. [`File:Röntgen_portal_two-level_transmission_tower.svg`](https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg)).
 
 ### Shape combination ###
 
@@ -235,12 +235,12 @@ MapCSS 0.2 generation
 
 Command `mapcss` is used to generate MapCSS scheme. `roentgen mapcss` will create `out/roentgen_mapcss` directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas: `.mapcss` file and directory with icons.
 
-To create MapCSS with only Röntgen icons run `roentgen mapcss --no-ways`.
+To create MapCSS with Röntgen style also for ways and relations, run `roentgen mapcss --ways`.
 
 | Option | Description |
 |---|---|
 | <span style="white-space: nowrap;">`--icons`</span> | add icons for nodes and areas, set by default |
-| <span style="white-space: nowrap;">`--ways`</span> | add style for ways and relations, set by default |
+| <span style="white-space: nowrap;">`--ways`</span> | add style for ways and relations |
 | <span style="white-space: nowrap;">`--lifecycle`</span> | add icons for lifecycle tags; be careful: this will increase the number of node and area selectors by 9 times, set by default |
 
 ### Use Röntgen as JOSM map paint style ###
