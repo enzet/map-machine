@@ -258,3 +258,12 @@ To create MapCSS with Röntgen style also for ways and relations, run \m {roentg
     {URL / File: set path to \m {out/roentgen_mapcss/roentgen.mapcss}.}
 
 To enable / disable Röntgen map paint style go to \kbd {View} → \kbd {Map Paint Styles} → \kbd {Röntgen}.
+
+\4 {Example}
+
+\image {doc/josm.png} {JOSM example}
+
+Example of using Röntgen icons on top of Mapnik style.  Map Paint Styles\:
+\list
+    {✓ Mapnik}
+    {✓ Röntgen}

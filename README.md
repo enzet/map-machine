@@ -2,7 +2,7 @@
 
 **Röntgen** (or **Roentgen** when ASCII is preferred) project consists of
 
-  * simple Python [OpenStreetMap](http://openstreetmap.org) renderer (see [usage](#usage), [renderer documentation](#map-generation)),
+  * simple Python [OpenStreetMap](http://openstreetmap.org) renderer and tile generator (see [usage](#usage-example), [renderer documentation](#map-generation), [tile generation](#tile-generation)),
   * [set of CC-BY 4.0 icons](#icon-set) that can be used outside the project.
 
 The idea behind the Röntgen project is to **show all the richness of the OpenStreetMap data**: to have a possibility to *display any map feature* represented by OpenStreetMap data tags by means of colors, shapes, and icons. Röntgen is created for OpenStreetMap contributors: to display all changes one made on the map even if they are small, and for users: to dig down into the map and find every detail that was mapped.
@@ -152,13 +152,8 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and write output
 | <span style="white-space: nowrap;">`-i`</span>, <span style="white-space: nowrap;">`--input`</span> `<path>` | input XML file name or names (if not specified, file will be downloaded using OpenStreetMap API) |
 | <span style="white-space: nowrap;">`-o`</span>, <span style="white-space: nowrap;">`--output`</span> `<path>` | output SVG file name, default value: `out/map.svg` |
 | <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | geo boundary box; if first value is negative, enclose the value with quotes and use space before `-` |
-| <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--scale`</span> `<float>` | OSM zoom level (may not be integer), default value: 18 |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
-| <span style="white-space: nowrap;">`--labels`</span> | label drawing mode: `no`, `main`, or `all`, default value: `main` |
-| <span style="white-space: nowrap;">`--overlap`</span> | how many pixels should be left around icons and text, default value: 12 |
-| <span style="white-space: nowrap;">`--mode`</span> | map drawing mode, default value: `normal` |
-| <span style="white-space: nowrap;">`--seed`</span> | seed for random |
-| <span style="white-space: nowrap;">`--level`</span> | display only this floor level |
+| <span style="white-space: nowrap;">`--seed`</span> `<string>` | seed for random |
 
 Tile generation
 ---------------
@@ -168,7 +163,6 @@ Command `tile` is used to generate PNG tiles for [slippy maps](https://wiki.open
 | Option | Description |
 |---|---|
 | <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location inside the tile |
-| <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--scale`</span> `<integer>` | OSM zoom level, default value: 18 |
 | <span style="white-space: nowrap;">`-t`</span>, <span style="white-space: nowrap;">`--tile`</span> `<scale>/<x>/<y>` | tile specification |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
 | <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | construct the minimum amount of tiles that cover requested boundary box |
@@ -252,4 +246,13 @@ To create MapCSS with Röntgen style also for ways and relations, run `roentgen 
   * URL / File: set path to `out/roentgen_mapcss/roentgen.mapcss`.
 
 To enable / disable Röntgen map paint style go to <kbd>View</kbd> → <kbd>Map Paint Styles</kbd> → <kbd>Röntgen</kbd>.
+
+#### Example ####
+
+![JOSM example](doc/josm.png)
+
+Example of using Röntgen icons on top of Mapnik style. Map Paint Styles:
+
+  * ✓ Mapnik
+  * ✓ Röntgen
 
