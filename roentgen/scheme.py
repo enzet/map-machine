@@ -110,6 +110,9 @@ class Matcher:
 
         :param tags: element tags to match
         """
+        if self.location_restrictions:
+            return False  # FIXME: implement
+
         matched: bool = True
 
         for config_tag_key in self.tags:
