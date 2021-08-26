@@ -1489,6 +1489,14 @@ ways:
     style:
       fill: beach_color
     priority: 20
+  - tags: {natural: heath}
+    style:
+      fill: "#DDDDDD"
+    priority: 20
+  - tags: {natural: glacier}
+    style:
+      fill: "#FFFFFF"
+    priority: 20
   - tags: {natural: desert}
     style:
       fill: desert_color
@@ -1525,6 +1533,10 @@ ways:
   - tags: {natural: bare_rock}
     style:
       fill: rock_color
+  - tags: {natural: cliff}
+    style:
+      stroke-width: 1
+      stroke: "#BBBBBB"
   - tags: {natural: scree}
     style:
       fill: scree_color
@@ -1624,6 +1636,10 @@ ways:
       fill: "#440044"
       opacity: 0.1
 
+  - tags: {waterway: stream}
+    style:
+      stroke: water_color
+      stroke-width: 1.5
   - tags: {waterway: riverbank}
     style:
       fill: none # water_color
