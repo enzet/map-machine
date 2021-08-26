@@ -1,6 +1,7 @@
 """
 Röntgen tile server for slippy maps.
 """
+import argparse
 import logging
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
@@ -62,7 +63,7 @@ class _Handler(SimpleHTTPRequestHandler):
                 return
 
 
-def ui(options) -> None:
+def ui(options: argparse.Namespace) -> None:
     """Command-line interface for tile server."""
     server: Optional[HTTPServer] = None
     try:

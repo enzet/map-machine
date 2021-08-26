@@ -1,8 +1,8 @@
 """
 Drawing separate map elements.
 """
+import argparse
 import logging
-import sys
 from pathlib import Path
 
 import numpy as np
@@ -13,15 +13,18 @@ from roentgen.point import Point
 from roentgen.scheme import LineStyle, Scheme
 from roentgen.workspace import workspace
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
-def draw_element(options) -> None:
+
+def draw_element(options: argparse.Namespace) -> None:
     """Draw single node, line, or area."""
     if options.node:
         target: str = "node"
         tags_description = options.node
     else:
         # Not implemented yet.
-        sys.exit(1)
+        exit(1)
 
     tags: dict[str, str] = dict(
         [x.split("=") for x in tags_description.split(",")]

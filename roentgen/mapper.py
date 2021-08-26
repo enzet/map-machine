@@ -1,6 +1,7 @@
 """
 Simple OpenStreetMap renderer.
 """
+import argparse
 import logging
 from pathlib import Path
 from typing import Any, Iterator
@@ -17,12 +18,13 @@ from roentgen.constructor import Constructor
 from roentgen.figure import Road
 from roentgen.flinger import Flinger
 from roentgen.icon import ShapeExtractor
+from roentgen.map_configuration import LabelMode, MapConfiguration
 from roentgen.osm_getter import NetworkError, get_osm
 from roentgen.osm_reader import OSMData, OSMNode, OSMReader, OverpassReader
 from roentgen.point import Occupied
 from roentgen.road import Intersection, RoadPart
 from roentgen.scheme import Scheme
-from roentgen.ui import AUTHOR_MODE, BuildingMode, TIME_MODE, progress_bar
+from roentgen.ui import BuildingMode, progress_bar
 from roentgen.workspace import workspace
 
 __author__ = "Sergey Vartanov"
@@ -35,15 +37,19 @@ class Map:
     """
 
     def __init__(
-        self, flinger: Flinger, svg: svgwrite.Drawing, scheme: Scheme, options
+        self,
+        flinger: Flinger,
+        svg: svgwrite.Drawing,
+        scheme: Scheme,
+        configuration: MapConfiguration,
     ) -> None:
         self.flinger: Flinger = flinger
         self.svg: svgwrite.Drawing = svg
         self.scheme: Scheme = scheme
-        self.options = options
+        self.configuration = configuration
 
         self.background_color: Color = self.scheme.get_color("background_color")
-        if self.options.mode in [AUTHOR_MODE, TIME_MODE]:
+        if self.configuration.is_wireframe():
             self.background_color: Color = Color("#111111")
 
     def draw(self, constructor: Constructor) -> None:
@@ -80,11 +86,13 @@ class Map:
 
         # All other points
 
-        if self.options.overlap == 0:
+        if self.configuration.overlap == 0:
             occupied = None
         else:
             occupied = Occupied(
-                self.flinger.size[0], self.flinger.size[1], self.options.overlap
+                self.flinger.size[0],
+                self.flinger.size[1],
+                self.configuration.overlap,
             )
 
         nodes = sorted(constructor.points, key=lambda x: -x.priority)
@@ -105,18 +113,18 @@ class Map:
                 steps * 2 + index, steps * 3, step=10, text="Drawing texts"
             )
             if (
-                self.options.mode not in [TIME_MODE, AUTHOR_MODE]
-                and self.options.label_mode != "no"
+                not self.configuration.is_wireframe()
+                and self.configuration.label_mode != LabelMode.NO
             ):
-                point.draw_texts(self.svg, occupied, self.options.label_mode)
+                point.draw_texts(
+                    self.svg, occupied, self.configuration.label_mode
+                )
 
         progress_bar(-1, len(nodes), step=10, text="Drawing nodes")
 
     def draw_buildings(self, constructor: Constructor) -> None:
         """Draw buildings: shade, walls, and roof."""
-        building_mode: BuildingMode = BuildingMode(self.options.buildings)
-
-        if building_mode == BuildingMode.FLAT:
+        if self.configuration.building_mode == BuildingMode.FLAT:
             for building in constructor.buildings:
                 building.draw(self.svg, self.flinger)
             return
@@ -197,12 +205,14 @@ class Map:
             intersection.draw(self.svg, True)
 
 
-def ui(options) -> None:
+def ui(options: argparse.Namespace) -> None:
     """
     Röntgen entry point.
 
     :param options: command-line arguments
     """
+    configuration: MapConfiguration = MapConfiguration.from_options(options)
+
     if not options.boundary_box and not options.input_file_name:
         logging.fatal("Specify either --boundary-box, or --input.")
         exit(1)
@@ -241,8 +251,7 @@ def ui(options) -> None:
         osm_data = reader.osm_data
         view_box = boundary_box
     else:
-        is_full: bool = options.mode in [AUTHOR_MODE, TIME_MODE]
-        osm_reader = OSMReader(is_full=is_full)
+        osm_reader = OSMReader(is_full=configuration.is_wireframe())
 
         for file_name in input_file_names:
             if not file_name.is_file():
@@ -273,11 +282,13 @@ def ui(options) -> None:
         flinger=flinger,
         scheme=scheme,
         icon_extractor=icon_extractor,
-        options=options,
+        configuration=configuration,
     )
     constructor.construct()
 
-    painter: Map = Map(flinger=flinger, svg=svg, scheme=scheme, options=options)
+    painter: Map = Map(
+        flinger=flinger, svg=svg, scheme=scheme, configuration=configuration
+    )
     painter.draw(constructor)
 
     logging.info(f"Writing output SVG to {options.output_file_name}...")

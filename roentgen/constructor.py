@@ -13,6 +13,7 @@ from roentgen import ui
 from roentgen.color import get_gradient_color
 from roentgen.figure import Building, DirectionSector, Road, StyledFigure, Tree
 from roentgen.flinger import Flinger
+from roentgen.map_configuration import DrawingMode, MapConfiguration
 
 # fmt: off
 from roentgen.icon import (
@@ -21,9 +22,8 @@ from roentgen.icon import (
 from roentgen.osm_reader import OSMData, OSMNode, OSMRelation, OSMWay
 from roentgen.point import Point
 from roentgen.scheme import DEFAULT_COLOR, LineStyle, Scheme
-from roentgen.ui import AUTHOR_MODE, BuildingMode, TIME_MODE
+from roentgen.ui import BuildingMode
 from roentgen.util import MinMax
-
 # fmt: on
 
 __author__ = "Sergey Vartanov"
@@ -113,7 +113,7 @@ def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
     return result
 
 
-def is_cycle(nodes) -> bool:
+def is_cycle(nodes: list[OSMNode]) -> bool:
     """Is way a cycle way or an area boundary."""
     return nodes[0] == nodes[-1]
 
@@ -129,22 +129,22 @@ class Constructor:
         flinger: Flinger,
         scheme: Scheme,
         icon_extractor: ShapeExtractor,
-        options,
+        configuration: MapConfiguration,
     ) -> None:
         self.osm_data: OSMData = osm_data
         self.flinger: Flinger = flinger
         self.scheme: Scheme = scheme
         self.icon_extractor = icon_extractor
-        self.options = options
+        self.configuration = configuration
 
-        if options.level:
-            if options.level == "overground":
+        if self.configuration.level:
+            if self.configuration.level == "overground":
                 self.check_level = check_level_overground
-            elif options.level == "underground":
+            elif self.configuration.level == "underground":
                 self.check_level = lambda x: not check_level_overground(x)
             else:
                 self.check_level = lambda x: not check_level_number(
-                    x, float(options.level)
+                    x, float(self.configuration.level)
                 )
         else:
             self.check_level = lambda x: True
@@ -203,10 +203,10 @@ class Constructor:
             return
 
         center_point, center_coordinates = line_center(outers[0], self.flinger)
-        if self.options.mode in [AUTHOR_MODE, TIME_MODE]:
+        if self.configuration.is_wireframe():
             color: Color
-            if self.options.mode == AUTHOR_MODE:
-                color = get_user_color(line.user, self.options.seed)
+            if self.configuration.drawing_mode == DrawingMode.AUTHOR:
+                color = get_user_color(line.user, self.configuration.seed)
             else:  # self.mode == TIME_MODE
                 color = get_time_color(line.timestamp, self.osm_data.time)
             self.draw_special_mode(inners, line, outers, color)
@@ -215,7 +215,7 @@ class Constructor:
         if not line.tags:
             return
 
-        building_mode: BuildingMode = BuildingMode(self.options.buildings)
+        building_mode: BuildingMode = self.configuration.building_mode
         if "building" in line.tags or (
             building_mode == BuildingMode.ISOMETRIC
             and "building:part" in line.tags
@@ -352,13 +352,13 @@ class Constructor:
         icon_set: IconSet
         draw_outline: bool = True
 
-        if self.options.mode in [TIME_MODE, AUTHOR_MODE]:
+        if self.configuration.is_wireframe():
             if not tags:
                 return
             color: Color = DEFAULT_COLOR
-            if self.options.mode == AUTHOR_MODE:
-                color = get_user_color(node.user, self.options.seed)
-            if self.options.mode == TIME_MODE:
+            if self.configuration.drawing_mode == DrawingMode.AUTHOR:
+                color = get_user_color(node.user, self.configuration.seed)
+            if self.configuration.drawing_mode == DrawingMode.TIME:
                 color = get_time_color(node.timestamp, self.osm_data.time)
             dot = self.icon_extractor.get_shape(DEFAULT_SMALL_SHAPE_ID)
             icon_set = IconSet(

@@ -1,7 +1,7 @@
 """
 Figures displayed on the map.
 """
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 import numpy as np
 from colour import Color
@@ -25,15 +25,15 @@ class Figure(Tagged):
 
     def __init__(
         self,
-        tags: Dict[str, str],
-        inners: List[List[OSMNode]],
-        outers: List[List[OSMNode]],
+        tags: dict[str, str],
+        inners: list[list[OSMNode]],
+        outers: list[list[OSMNode]],
     ) -> None:
         super().__init__()
 
-        self.tags: Dict[str, str] = tags
-        self.inners: List[List[OSMNode]] = []
-        self.outers: List[List[OSMNode]] = []
+        self.tags: dict[str, str] = tags
+        self.inners: list[list[OSMNode]] = []
+        self.outers: list[list[OSMNode]] = []
 
         for inner_nodes in inners:
             self.inners.append(make_clockwise(inner_nodes))
@@ -67,15 +67,15 @@ class Building(Figure):
 
     def __init__(
         self,
-        tags: Dict[str, str],
-        inners: List[List[OSMNode]],
-        outers: List[List[OSMNode]],
+        tags: dict[str, str],
+        inners: list[list[OSMNode]],
+        outers: list[list[OSMNode]],
         flinger: Flinger,
         scheme: Scheme,
     ) -> None:
         super().__init__(tags, inners, outers)
 
-        style: Dict[str, Any] = {
+        style: dict[str, Any] = {
             "fill": scheme.get_color("building_color").hex,
             "stroke": scheme.get_color("building_border_color").hex,
         }
@@ -195,9 +195,9 @@ class StyledFigure(Figure):
 
     def __init__(
         self,
-        tags: Dict[str, str],
-        inners: List[List[OSMNode]],
-        outers: List[List[OSMNode]],
+        tags: dict[str, str],
+        inners: list[list[OSMNode]],
+        outers: list[list[OSMNode]],
         line_style: LineStyle,
     ) -> None:
         super().__init__(tags, inners, outers)
@@ -211,16 +211,16 @@ class Road(Figure):
 
     def __init__(
         self,
-        tags: Dict[str, str],
-        inners: List[List[OSMNode]],
-        outers: List[List[OSMNode]],
+        tags: dict[str, str],
+        inners: list[list[OSMNode]],
+        outers: list[list[OSMNode]],
         matcher: RoadMatcher,
     ) -> None:
         super().__init__(tags, inners, outers)
         self.matcher: RoadMatcher = matcher
 
         self.width: Optional[float] = None
-        self.lanes: List[Lane] = []
+        self.lanes: list[Lane] = []
 
         if "lanes" in tags:
             try:
@@ -359,7 +359,7 @@ class Segment:
         )  # fmt: skip
 
 
-def is_clockwise(polygon: List[OSMNode]) -> bool:
+def is_clockwise(polygon: list[OSMNode]) -> bool:
     """
     Return true if polygon nodes are in clockwise order.
 
@@ -374,7 +374,7 @@ def is_clockwise(polygon: List[OSMNode]) -> bool:
     return count >= 0
 
 
-def make_clockwise(polygon: List[OSMNode]) -> List[OSMNode]:
+def make_clockwise(polygon: list[OSMNode]) -> list[OSMNode]:
     """
     Make polygon nodes clockwise.
 
@@ -383,7 +383,7 @@ def make_clockwise(polygon: List[OSMNode]) -> List[OSMNode]:
     return polygon if is_clockwise(polygon) else list(reversed(polygon))
 
 
-def make_counter_clockwise(polygon: List[OSMNode]) -> List[OSMNode]:
+def make_counter_clockwise(polygon: list[OSMNode]) -> list[OSMNode]:
     """
     Make polygon nodes counter-clockwise.
 
@@ -392,7 +392,7 @@ def make_counter_clockwise(polygon: List[OSMNode]) -> List[OSMNode]:
     return polygon if not is_clockwise(polygon) else list(reversed(polygon))
 
 
-def get_path(nodes: List[OSMNode], shift: np.array, flinger: Flinger) -> str:
+def get_path(nodes: list[OSMNode], shift: np.array, flinger: Flinger) -> str:
     """Construct SVG path commands from nodes."""
     path: str = ""
     prev_node: Optional[OSMNode] = None

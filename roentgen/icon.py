@@ -322,7 +322,7 @@ class ShapeSpecification:
 
     def draw(
         self,
-        svg,
+        svg: Drawing,
         point: np.array,
         tags: dict[str, Any] = None,
         outline: bool = False,
@@ -372,7 +372,7 @@ class ShapeSpecification:
             and np.allclose(self.offset, other.offset)
         )
 
-    def __lt__(self, other) -> bool:
+    def __lt__(self, other: "ShapeSpecification") -> bool:
         return self.shape.id_ < other.shape.id_
 
 
@@ -471,12 +471,12 @@ class Icon:
         """Add shape specifications to the icon."""
         self.shape_specifications += specifications
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: "Icon") -> bool:
         return sorted(self.shape_specifications) == sorted(
             other.shape_specifications
         )
 
-    def __lt__(self, other) -> bool:
+    def __lt__(self, other: "Icon") -> bool:
         return "".join(
             [x.shape.id_ for x in self.shape_specifications]
         ) < "".join([x.shape.id_ for x in other.shape_specifications])

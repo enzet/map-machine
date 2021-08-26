@@ -1,6 +1,7 @@
 """
 MapCSS scheme creation.
 """
+import argparse
 import logging
 from pathlib import Path
 from typing import Optional, TextIO
@@ -175,7 +176,7 @@ class MapCSSWriter:
                     )
 
 
-def ui(options) -> None:
+def ui(options: argparse.Namespace) -> None:
     """Write MapCSS 0.2 scheme."""
     directory: Path = workspace.get_mapcss_path()
     icons_with_outline_path: Path = workspace.get_mapcss_icons_path()

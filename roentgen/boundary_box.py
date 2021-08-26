@@ -7,6 +7,9 @@ from dataclasses import dataclass
 
 import numpy as np
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
 LATITUDE_MAX_DIFFERENCE: float = 0.5
 LONGITUDE_MAX_DIFFERENCE: float = 0.5
 

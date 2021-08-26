@@ -34,6 +34,7 @@ class IconCollection:
         background_color: Color = Color("white"),
         color: Color = Color("black"),
         add_unused: bool = False,
+        add_all: bool = False,
     ) -> "IconCollection":
         """
         Collect all possible icon combinations in grid.
@@ -44,6 +45,7 @@ class IconCollection:
         :param color: icon color
         :param add_unused: create icons from shapes that have no corresponding
             tags
+        :param add_all: create icons from all possible shapes including parts
         """
         icons: list[Icon] = []
 
@@ -107,6 +109,13 @@ class IconCollection:
                 shape: Shape = extractor.get_shape(shape_id)
                 if shape.is_part:
                     continue
+                icon: Icon = Icon([ShapeSpecification(shape)])
+                icon.recolor(color)
+                icons.append(icon)
+
+        if add_all:
+            for shape_id in extractor.shapes.keys():
+                shape: Shape = extractor.get_shape(shape_id)
                 icon: Icon = Icon([ShapeSpecification(shape)])
                 icon.recolor(color)
                 icons.append(icon)
@@ -204,8 +213,9 @@ def draw_icons() -> None:
     extractor: ShapeExtractor = ShapeExtractor(
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
-    collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
-
+    collection: IconCollection = IconCollection.from_scheme(
+        scheme, extractor, add_all=True
+    )
     icon_grid_path: Path = workspace.get_icon_grid_path()
     collection.draw_grid(icon_grid_path)
     logging.info(f"Icon grid is written to {icon_grid_path}.")

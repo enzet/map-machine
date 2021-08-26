@@ -36,7 +36,7 @@ Röntgen features\:
 
 \3 {Isometric building shapes} {levels}
 
-Isometric shapes for walls and shade in proportion to \osm {building:levels}, \osm {building:min_level}, \osm {height} and \osm {min_height} values.
+With \m {--buildings isometric} or \m {--buildings isometric-no-parts} (not set by default), buildings are drawn using isometric shapes for walls and shade in proportion to \osm {building:levels}, \osm {building:min_level}, \osm {height} and \osm {min_height} values.
 
 \image {doc/buildings.png} {3D buildings}
 
@@ -265,5 +265,5 @@ To enable / disable Röntgen map paint style go to \kbd {View} → \kbd {Map Pai
 
 Example of using Röntgen icons on top of Mapnik style.  Map Paint Styles\:
 \list
-    {✓ Mapnik}
+    {✓ Mapnik (true)}
     {✓ Röntgen}

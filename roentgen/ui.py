@@ -4,28 +4,14 @@ Command-line user interface.
 import argparse
 import sys
 
+from roentgen.map_configuration import BuildingMode, DrawingMode, LabelMode
+from roentgen.osm_reader import STAGES_OF_DECAY
+
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-from enum import Enum
-
-from roentgen.osm_reader import STAGES_OF_DECAY
-
 BOXES: str = " ▏▎▍▌▋▊▉"
 BOXES_LENGTH: int = len(BOXES)
-
-AUTHOR_MODE: str = "author"
-TIME_MODE: str = "time"
-
-
-class BuildingMode(Enum):
-    """
-    Building drawing mode.
-    """
-
-    FLAT = "flat"
-    ISOMETRIC = "isometric"
-    ISOMETRIC_NO_PARTS = "isometric-no-parts"
 
 
 def parse_options(args) -> argparse.Namespace:
@@ -68,8 +54,9 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--mode",
         default="normal",
-        help="map drawing mode",
         metavar="<string>",
+        choices=(x.value for x in DrawingMode),
+        help="map drawing mode: " + ", ".join(x.value for x in DrawingMode),
     )
     parser.add_argument(
         "--overlap",
@@ -81,10 +68,11 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument(
         "--labels",
-        help="label drawing mode: `no`, `main`, or `all`",
         dest="label_mode",
         default="main",
         metavar="<string>",
+        choices=(x.value for x in LabelMode),
+        help="label drawing mode: " + ", ".join(x.value for x in LabelMode),
     )
     parser.add_argument(
         "-s",
@@ -98,6 +86,12 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         "--level",
         default="overground",
         help="display only this floor level",
+    )
+    parser.add_argument(
+        "--seed",
+        default="",
+        help="seed for random",
+        metavar="<string>",
     )
 
 
@@ -179,12 +173,6 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         default="cache",
         metavar="<path>",
     )
-    parser.add_argument(
-        "--seed",
-        default="",
-        help="seed for random",
-        metavar="<string>",
-    )
 
 
 def add_mapcss_arguments(parser: argparse.ArgumentParser) -> None:
@@ -225,14 +213,13 @@ def progress_bar(
     :param text: short description
     """
     if number == -1:
-        print(f"100 % {length * '█'}▏{text}")
+        sys.stdout.write(f"100 % {length * '█'}▏{text}\n")
     elif number % step == 0:
         ratio: float = number / total
         parts: int = int(ratio * length * BOXES_LENGTH)
         fill_length: int = int(parts / BOXES_LENGTH)
         box: str = BOXES[int(parts - fill_length * BOXES_LENGTH)]
-        print(
+        sys.stdout.write(
             f"{str(int(int(ratio * 1000) / 10)):>3} % {fill_length * '█'}{box}"
-            f"{int(length - fill_length - 1) * ' '}▏{text}"
+            f"{int(length - fill_length - 1) * ' '}▏{text}\n\033[F"
         )
-        sys.stdout.write("\033[F")

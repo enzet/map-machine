@@ -3,7 +3,7 @@ Drawing utility.
 """
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import Optional, Union
 
 import cairo
 import numpy as np
@@ -73,7 +73,7 @@ class Drawing:
         """Draw rectangle."""
         raise NotImplementedError
 
-    def line(self, points: List[np.ndarray], style: Style) -> None:
+    def line(self, points: list[np.ndarray], style: Style) -> None:
         """Draw line."""
         raise NotImplementedError
 
@@ -111,7 +111,7 @@ class SVGDrawing(Drawing):
         style.update_svg_element(rectangle)
         self.image.add(rectangle)
 
-    def line(self, points: List[np.ndarray], style: Style) -> None:
+    def line(self, points: list[np.ndarray], style: Style) -> None:
         """Draw line."""
         commands: PathCommands = ["M"]
         for point in points:
@@ -159,7 +159,7 @@ class PNGDrawing(Drawing):
             self.context.rectangle(point_1[0], point_1[1], size[0], size[1])
             style.draw_png_stroke(self.context)
 
-    def line(self, points: List[np.ndarray], style: Style) -> None:
+    def line(self, points: list[np.ndarray], style: Style) -> None:
         """Draw line."""
         if style.fill is not None:
             self.context.move_to(float(points[0][0]), float(points[0][1]))

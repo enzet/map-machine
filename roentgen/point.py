@@ -8,6 +8,7 @@ import svgwrite
 from colour import Color
 
 from roentgen.icon import Icon, IconSet
+from roentgen.map_configuration import LabelMode
 from roentgen.osm_reader import Tagged
 from roentgen.text import Label
 
@@ -161,14 +162,14 @@ class Point(Tagged):
         self,
         svg: svgwrite.Drawing,
         occupied: Optional[Occupied] = None,
-        label_mode: str = "main",
+        label_mode: LabelMode = LabelMode.MAIN,
     ) -> None:
         """Draw all labels."""
         labels: list[Label]
 
-        if label_mode == "main":
+        if label_mode == LabelMode.MAIN:
             labels = self.labels[:1]
-        elif label_mode == "all":
+        elif label_mode == LabelMode.ALL:
             labels = self.labels
         else:
             return

@@ -3,6 +3,7 @@ Tile generation.
 
 See https://wiki.openstreetmap.org/wiki/Tiles
 """
+import argparse
 import logging
 import sys
 from dataclasses import dataclass
@@ -18,6 +19,7 @@ from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
 from roentgen.icon import ShapeExtractor
 from roentgen.mapper import Map
+from roentgen.map_configuration import MapConfiguration
 from roentgen.osm_getter import NetworkError, get_osm
 from roentgen.osm_reader import OSMData, OSMReader
 from roentgen.scheme import Scheme
@@ -115,23 +117,31 @@ class Tile:
             f"https://tile.openstreetmap.org/{self.scale}/{self.x}/{self.y}.png"
         )
 
-    def draw(self, directory_name: Path, cache_path: Path, options) -> None:
+    def draw(
+        self,
+        directory_name: Path,
+        cache_path: Path,
+        configuration: MapConfiguration,
+    ) -> None:
         """
         Draw tile to SVG and PNG files.
 
         :param directory_name: output directory to storing tiles
         :param cache_path: directory to store SVG and PNG tiles
-        :param options: drawing configuration
+        :param configuration: drawing configuration
         """
         try:
             osm_data: OSMData = self.load_osm_data(cache_path)
         except NetworkError as e:
             raise NetworkError(f"Map is not loaded. {e.message}")
 
-        self.draw_with_osm_data(osm_data, directory_name, options)
+        self.draw_with_osm_data(osm_data, directory_name, configuration)
 
     def draw_with_osm_data(
-        self, osm_data: OSMData, directory_name: Path, options
+        self,
+        osm_data: OSMData,
+        directory_name: Path,
+        configuration: MapConfiguration,
     ) -> None:
         """Draw SVG and PNG tile using OpenStreetMap data."""
         top, left = self.get_coordinates()
@@ -154,12 +164,12 @@ class Tile:
         )
         scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
         constructor: Constructor = Constructor(
-            osm_data, flinger, scheme, icon_extractor, options
+            osm_data, flinger, scheme, icon_extractor, configuration
         )
         constructor.construct()
 
         painter: Map = Map(
-            flinger=flinger, svg=svg, scheme=scheme, options=options
+            flinger=flinger, svg=svg, scheme=scheme, configuration=configuration
         )
         painter.draw(constructor)
 
@@ -216,7 +226,7 @@ class Tiles:
         return cls(tiles, tile_1, tile_2, scale, extended_boundary_box)
 
     def draw_separately(
-        self, directory: Path, cache_path: Path, options
+        self, directory: Path, cache_path: Path, configuration: MapConfiguration
     ) -> None:
         """
         Draw set of tiles as SVG file separately and rasterize them into a set
@@ -224,7 +234,7 @@ class Tiles:
 
         :param directory: directory for tiles
         :param cache_path: directory for temporary OSM files
-        :param options: drawing configuration
+        :param configuration: drawing configuration
         """
         cache_file_path: Path = (
             cache_path / f"{self.boundary_box.get_format()}.osm"
@@ -235,7 +245,7 @@ class Tiles:
         for tile in self.tiles:
             file_path: Path = tile.get_file_name(directory)
             if not file_path.exists():
-                tile.draw_with_osm_data(osm_data, directory, options)
+                tile.draw_with_osm_data(osm_data, directory, configuration)
             else:
                 logging.debug(f"File {file_path} already exists.")
 
@@ -253,19 +263,21 @@ class Tiles:
         """Check whether all tiles are drawn."""
         return all(x.exists(directory_name) for x in self.tiles)
 
-    def draw(self, directory: Path, cache_path: Path, options) -> None:
+    def draw(
+        self, directory: Path, cache_path: Path, configuration: MapConfiguration
+    ) -> None:
         """
         Draw one PNG image with all tiles and split it into a set of separate
         PNG file with Pillow.
 
         :param directory: directory for tiles
         :param cache_path: directory for temporary OSM files
-        :param options: drawing configuration
+        :param configuration: drawing configuration
         """
         if self.tiles_exist(directory):
             return
 
-        self.draw_image(cache_path, options)
+        self.draw_image(cache_path, configuration)
 
         input_path: Path = self.get_file_path(cache_path).with_suffix(".png")
         with input_path.open("rb") as input_file:
@@ -290,12 +302,14 @@ class Tiles:
         """Get path of the output SVG file."""
         return cache_path / f"{self.boundary_box.get_format()}_{self.scale}.svg"
 
-    def draw_image(self, cache_path: Path, options) -> None:
+    def draw_image(
+        self, cache_path: Path, configuration: MapConfiguration
+    ) -> None:
         """
         Draw all tiles as one picture.
 
         :param cache_path: directory for temporary SVG file and OSM files
-        :param options: drawing configuration
+        :param configuration: drawing configuration
         """
         output_path: Path = self.get_file_path(cache_path)
 
@@ -319,16 +333,14 @@ class Tiles:
             )
             scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
             constructor: Constructor = Constructor(
-                osm_data, flinger, scheme, extractor, options=options
+                osm_data, flinger, scheme, extractor, configuration
             )
             constructor.construct()
 
             svg: svgwrite.Drawing = svgwrite.Drawing(
                 str(output_path), size=flinger.size
             )
-            map_: Map = Map(
-                flinger=flinger, svg=svg, scheme=scheme, options=options
-            )
+            map_: Map = Map(flinger, svg, scheme, configuration)
             map_.draw(constructor)
 
             logging.info(f"Writing output SVG {output_path}...")
@@ -346,9 +358,10 @@ class Tiles:
             logging.debug(f"File {png_path} already exists.")
 
 
-def ui(options) -> None:
+def ui(options: argparse.Namespace) -> None:
     """Simple user interface for tile generation."""
     directory: Path = workspace.get_tile_path()
+    configuration: MapConfiguration = MapConfiguration.from_options(options)
 
     if options.coordinates:
         coordinates: list[float] = list(
@@ -356,13 +369,13 @@ def ui(options) -> None:
         )
         tile: Tile = Tile.from_coordinates(np.array(coordinates), options.scale)
         try:
-            tile.draw(directory, Path(options.cache), options)
+            tile.draw(directory, Path(options.cache), configuration)
         except NetworkError as e:
             logging.fatal(e.message)
     elif options.tile:
         scale, x, y = map(int, options.tile.split("/"))
         tile: Tile = Tile(x, y, scale)
-        tile.draw(directory, Path(options.cache), options)
+        tile.draw(directory, Path(options.cache), configuration)
     elif options.boundary_box:
         boundary_box: Optional[BoundaryBox] = BoundaryBox.from_text(
             options.boundary_box
@@ -370,7 +383,7 @@ def ui(options) -> None:
         if boundary_box is None:
             sys.exit(1)
         tiles: Tiles = Tiles.from_boundary_box(boundary_box, options.scale)
-        tiles.draw(directory, Path(options.cache), options)
+        tiles.draw(directory, Path(options.cache), configuration)
     else:
         logging.fatal(
             "Specify either --coordinates, --boundary-box, or --tile."
