@@ -205,6 +205,71 @@ node_icons:
       shapes: [cliff]
     - tags: {natural: peak}
       shapes: [triangle_small]
+
+    - tags:
+        natural: volcano
+      shapes: [stratovolcano, {shape: smoke, offset: [0, -3]}]
+
+    - tags: {natural: volcano, volcano:type: stratovolcano}
+      shapes: [stratovolcano, {shape: smoke, offset: [0, -3]}]
+    - tags: {natural: volcano, volcano:type: shield}
+      shapes: [shield_volcano, {shape: smoke, offset: [0, -1]}]
+    - tags: {natural: volcano, volcano:type: scoria}
+      shapes: [volcanic_cone, {shape: smoke, offset: [0, -2]}]
+
+    - tags: {natural: volcano, volcano:status: active}
+      shapes: [stratovolcano, {shape: smoke, offset: [0, -3]}]
+    - tags: {natural: volcano, volcano:status: dormant}
+      shapes: [stratovolcano, {shape: smoke_2, offset: [1, -3]}]
+    - tags: {natural: volcano, volcano:status: extinct}
+      shapes: [stratovolcano]
+
+    - tags:
+        natural: volcano
+        volcano:type: stratovolcano
+        volcano:status: active
+      shapes: [stratovolcano, {shape: smoke, offset: [0, -3]}]
+    - tags:
+        natural: volcano
+        volcano:type: shield
+        volcano:status: active
+      shapes: [shield_volcano, {shape: smoke, offset: [0, -1]}]
+    - tags:
+        natural: volcano
+        volcano:type: scoria
+        volcano:status: active
+      shapes: [volcanic_cone, {shape: smoke, offset: [0, -2]}]
+    - tags:
+        natural: volcano
+        volcano:type: stratovolcano
+        volcano:status: dormant
+      shapes: [stratovolcano, {shape: smoke_2, offset: [1, -3]}]
+    - tags:
+        natural: volcano
+        volcano:type: shield
+        volcano:status: dormant
+      shapes: [shield_volcano, {shape: smoke_2, offset: [1, -1]}]
+    - tags:
+        natural: volcano
+        volcano:type: scoria
+        volcano:status: dormant
+      shapes: [volcanic_cone, {shape: smoke_2, offset: [1, -2]}]
+    - tags:
+        natural: volcano
+        volcano:type: stratovolcano
+        volcano:status: extinct
+      shapes: [stratovolcano]
+    - tags:
+        natural: volcano
+        volcano:type: shield
+        volcano:status: extinct
+      shapes: [shield_volcano]
+    - tags:
+        natural: volcano
+        volcano:type: scoria
+        volcano:status: extinct
+      shapes: [volcanic_cone]
+
     - tags: {historic: castle}
       location_restrictions: {include: jp}
       shapes: [japan_castle]

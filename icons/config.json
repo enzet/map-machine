@@ -347,6 +347,7 @@
   "guidepost": {
     "directed": "right"
   },
+  "guys": {},
   "h": {
     "emoji": "H",
     "name": "H letter"
@@ -657,6 +658,9 @@
   "shelter": {
     "name": "shelter"
   },
+  "shield_volcano": {
+    "name": "shield volcano"
+  },
   "shop_convenience": {},
   "shower": {
     "name": "shower"
@@ -695,6 +699,9 @@
       "🛑",
       "⛔️"
     ]
+  },
+  "stratovolcano": {
+    "name": "stratovolcano"
   },
   "street_cabinet": {},
   "street_lamp": {},
@@ -822,6 +829,9 @@
   },
   "vending_tickets": {},
   "ventilation": {},
+  "volcanic_cone": {
+    "name": "volcanic cone"
+  },
   "wall_bars": {
     "name": "wall bars"
   },
