@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6">
+ <bounds minlat="49.9990000" minlon="39.9990000" maxlat="50.0020000" maxlon="40.0020000"/>
+ <node id="1" visible="true" version="1" changeset="8271527" timestamp="2000-01-01T00:00:00Z" user="Temp" uid="1" lat="50.0000000" lon="40.0000000">
+  <tag k="name" v="Point"/>
+ </node>
+</osm>

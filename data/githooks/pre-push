@@ -39,7 +39,7 @@ python3 roentgen.py element --node amenity=bench,material=wood \
     || { echo "FAIL"; exit 1; }
 
 echo "Test tile generation"
-python3 roentgen.py tile --coordinates 46.09498,10.06879 --cache test/data \
+python3 roentgen.py tile --coordinates 50.000,40.000 --cache test/data \
     || { echo "FAIL"; exit 1; }
 
 exit 0

@@ -44,4 +44,4 @@ jobs:
         roentgen element --node amenity=bench,material=wood
     - name: Test tile generation
       run: |
-        roentgen tile --coordinates 46.09498,10.06879 --cache test/data
+        roentgen tile --coordinates 50.000,40.000 --cache test/data
