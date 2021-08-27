@@ -32,7 +32,7 @@ jobs:
         black -l 80 --check roentgen test roentgen.py
     - name: Test render
       run: |
-        roentgen render -b 37.415,55.753,37.416,55.754 --cache test/data
+        roentgen render -b 10.000,20.000,10.001,20.001 --cache test/data
     - name: Test icon generation
       run: |
         roentgen icons

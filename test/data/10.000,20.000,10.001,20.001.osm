@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6">
+ <bounds minlat="20.0000000" minlon="10.0000000" maxlat="20.0010000" maxlon="10.0010000"/>
+ <node id="1" visible="true" version="1" changeset="1" timestamp="2000-01-01T00:00:00Z" user="Temp" uid="1" lat="20.0005000" lon="10.0005000">
+  <tag k="natural" v="tree"/>
+ </node>
+</osm>

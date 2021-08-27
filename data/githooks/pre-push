@@ -12,7 +12,7 @@ fi
 echo "Lint with Flake8..."
 flake8 \
     --max-line-length=80 \
-    --ignore=E203,W503 \
+    --ignore=E203,W503,ANN002,ANN003,ANN101,ANN102 \
     --exclude=archive,precommit.py,test/test_road.py \
     || { echo "FAIL"; exit 1; }
 
@@ -24,8 +24,9 @@ pytest -v || { echo "FAIL"; exit 1; }
 # Integration tests.
 
 echo "Test render"
-python3 roentgen.py render -b 37.415,55.753,37.416,55.754 --cache test/data \
+python3 roentgen.py render -b 10.000,20.000,10.001,20.001 --cache test/data \
     || { echo "FAIL"; exit 1; }
+grep "natural: tree" out/map.svg || { echo "FAIL"; exit 1; }
 
 echo "Test icons"
 python3 roentgen.py icons || { echo "FAIL"; exit 1; }
