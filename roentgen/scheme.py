@@ -115,11 +115,10 @@ class Matcher:
         if "location_restrictions" in structure:
             self.location_restrictions = structure["location_restrictions"]
 
-    def check_zoom_level(self, zoom_level: int):
+    def check_zoom_level(self, zoom_level: int) -> bool:
         """Check whether zoom level is matching."""
         return (
-            self.start_zoom_level is None
-            or zoom_level >= self.start_zoom_level
+            self.start_zoom_level is None or zoom_level >= self.start_zoom_level
         )
 
     def is_matched(self, tags: dict[str, str]) -> bool:
