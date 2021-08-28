@@ -187,10 +187,12 @@ class RoentgenMoire(Default, ABC):
         command: str = self.clear(args[0])
         if command == "render":
             ui.add_render_arguments(parser)
+            ui.add_map_arguments(parser)
         elif command == "server":
             ui.add_server_arguments(parser)
         elif command == "tile":
             ui.add_tile_arguments(parser)
+            ui.add_map_arguments(parser)
         elif command == "element":
             ui.add_element_arguments(parser)
         elif command == "mapcss":

@@ -40,7 +40,7 @@ Röntgen features:
 
 ### Isometric building shapes ###
 
-Isometric shapes for walls and shade in proportion to [`building:levels`](https://wiki.openstreetmap.org/wiki/Key:building:levels), [`building:min_level`](https://wiki.openstreetmap.org/wiki/Key:building:min_level), [`height`](https://wiki.openstreetmap.org/wiki/Key:height) and [`min_height`](https://wiki.openstreetmap.org/wiki/Key:min_height) values.
+With `--buildings isometric` or `--buildings isometric-no-parts` (not set by default), buildings are drawn using isometric shapes for walls and shade in proportion to [`building:levels`](https://wiki.openstreetmap.org/wiki/Key:building:levels), [`building:min_level`](https://wiki.openstreetmap.org/wiki/Key:building:min_level), [`height`](https://wiki.openstreetmap.org/wiki/Key:height) and [`min_height`](https://wiki.openstreetmap.org/wiki/Key:min_height) values.
 
 ![3D buildings](doc/buildings.png)
 
@@ -153,6 +153,12 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and write output
 | <span style="white-space: nowrap;">`-o`</span>, <span style="white-space: nowrap;">`--output`</span> `<path>` | output SVG file name, default value: `out/map.svg` |
 | <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | geo boundary box; if first value is negative, enclose the value with quotes and use space before `-` |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
+| <span style="white-space: nowrap;">`--buildings`</span> `<mode>` | building drawing mode: flat, isometric, isometric-no-parts, default value: `flat` |
+| <span style="white-space: nowrap;">`--mode`</span> `<string>` | map drawing mode: normal, author, time, default value: `normal` |
+| <span style="white-space: nowrap;">`--overlap`</span> `<integer>` | how many pixels should be left around icons and text, default value: 12 |
+| <span style="white-space: nowrap;">`--labels`</span> `<string>` | label drawing mode: no, main, all, default value: `main` |
+| <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--scale`</span> `<integer>` | OSM zoom level, default value: 18 |
+| <span style="white-space: nowrap;">`--level`</span> | display only this floor level, default value: `overground` |
 | <span style="white-space: nowrap;">`--seed`</span> `<string>` | seed for random |
 
 Tile generation
@@ -166,6 +172,13 @@ Command `tile` is used to generate PNG tiles for [slippy maps](https://wiki.open
 | <span style="white-space: nowrap;">`-t`</span>, <span style="white-space: nowrap;">`--tile`</span> `<scale>/<x>/<y>` | tile specification |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
 | <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | construct the minimum amount of tiles that cover requested boundary box |
+| <span style="white-space: nowrap;">`--buildings`</span> `<mode>` | building drawing mode: flat, isometric, isometric-no-parts, default value: `flat` |
+| <span style="white-space: nowrap;">`--mode`</span> `<string>` | map drawing mode: normal, author, time, default value: `normal` |
+| <span style="white-space: nowrap;">`--overlap`</span> `<integer>` | how many pixels should be left around icons and text, default value: 12 |
+| <span style="white-space: nowrap;">`--labels`</span> `<string>` | label drawing mode: no, main, all, default value: `main` |
+| <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--scale`</span> `<integer>` | OSM zoom level, default value: 18 |
+| <span style="white-space: nowrap;">`--level`</span> | display only this floor level, default value: `overground` |
+| <span style="white-space: nowrap;">`--seed`</span> `<string>` | seed for random |
 
 ### Generate one tile ###
 
@@ -253,6 +266,6 @@ To enable / disable Röntgen map paint style go to <kbd>View</kbd> → <kbd>Map 
 
 Example of using Röntgen icons on top of Mapnik style. Map Paint Styles:
 
-  * ✓ Mapnik
+  * ✓ Mapnik (true)
   * ✓ Röntgen
 
