@@ -1,5 +1,14 @@
 #!/bin/sh
 
+echo "Looking for changes..."
+files=`git status --porcelain | wc -l`
+if [ ${files} == 0 ] ; then
+    echo "OK"
+else
+    echo "FAIL"
+    exit 1
+fi
+
 echo "Checking code format with Black..."
 if ! black -l 80 --check test roentgen roentgen.py; then
     black -l 80 --diff test roentgen roentgen.py
@@ -13,7 +22,7 @@ echo "Lint with Flake8..."
 flake8 \
     --max-line-length=80 \
     --ignore=E203,W503,ANN002,ANN003,ANN101,ANN102 \
-    --exclude=archive,precommit.py,test/test_road.py \
+    --exclude=work,precommit.py,test/test_road.py \
     || { echo "FAIL"; exit 1; }
 
 # Unit tests with pytest.

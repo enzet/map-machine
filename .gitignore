@@ -15,5 +15,9 @@ cache/
 # Temporary files
 
 *.swp
-
 *.egg-info
+
+# Work files
+
+work
+precommit.py

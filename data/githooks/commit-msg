@@ -1,0 +1,134 @@
+#!/usr/local/bin/python3
+"""
+Commit message checking.
+"""
+import sys
+from typing import List, Optional
+
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
+SHORT_MESSAGE_MAX_LENGTH: int = 50
+MESSAGE_MAX_LENGTH: int = 72
+
+
+def error(message: str):
+    """Print error message and return exit code 1."""
+    print(f"Error: {message}")
+    sys.exit(1)
+
+
+def check_file(file_name: str) -> Optional[str]:
+    """
+    Exit program with exit code 1 if commit message does not conform the rules.
+
+    :param file_name: commit message file name
+    """
+    with open(file_name) as input_file:
+        parts: List[str] = list(map(lambda x: x[:-1], input_file.readlines()))
+    return check_commit_message(parts)
+
+
+def check_commit_message(parts: List[str]) -> Optional[str]:
+
+    short_message: str = parts[0]
+
+    if short_message[0] != short_message[0].upper():
+        return (
+            short_message + "\n^"
+            + "\nCommit message short description should start with uppercase "
+            + "letter."
+        )
+
+    if len(short_message) > SHORT_MESSAGE_MAX_LENGTH:
+        return (
+            short_message
+            + "\n"
+            + " " * SHORT_MESSAGE_MAX_LENGTH
+            + "^" * (len(short_message) - SHORT_MESSAGE_MAX_LENGTH)
+            + "\nCommit message short description should not be longer than "
+            + f"{SHORT_MESSAGE_MAX_LENGTH} symbols."
+        )
+
+    if len(parts) > 1:
+        if parts[1]:
+            return (
+                "Commit message should have new line after short description."
+            )
+        for part in parts[2:]:
+            if len(part.strip()) > 0 and part.strip()[0] == "#":
+                continue
+            if len(part) > MESSAGE_MAX_LENGTH:
+                return (
+                    part
+                    + "\n"
+                    + " " * MESSAGE_MAX_LENGTH
+                    + "^" * (len(part) - MESSAGE_MAX_LENGTH)
+                    + "\nCommit message description should not be longer than "
+                    + f"{MESSAGE_MAX_LENGTH} symbols."
+                )
+
+    if not short_message.endswith("."):
+        return (
+            short_message
+            + "\n"
+            + " " * (len(short_message) - 1)
+            + "^"
+            + '\nCommit message should end with ".".'
+        )
+
+    def up(text: str):
+        return text[0].upper() + text[1:]
+
+    verbs_1 = ["add", "fix", "check", "refactor"]
+    verbs_2 = [
+        "change",
+        "remove",
+        "create",
+        "update",
+        "rename",
+        "move",
+        "swap",
+        "treat",
+        "suppress",
+    ]
+
+    verbs = {"got": "get"}
+    for verb in verbs_1:
+        verbs[verb + "ed"] = verb
+    for verb in verbs_2:
+        verbs[verb + "d"] = verb
+
+    for verb in verbs:
+        if short_message.startswith(f"{verb} ") or short_message.startswith(
+            f"{up(verb)} "
+        ):
+            return (
+                f'Commit message should start with the verb in infinitive '
+                f'form. Please, use "{up(verbs[verb])} ..." instead of '
+                f'"{up(verb)} ...".'
+            )
+
+
+def check(commit_message):
+    print("\033[33m" + commit_message + "\033[0m")
+    print(check_commit_message(commit_message.split("\n")))
+
+
+def test():
+    check("start with lowercase letter.")
+    check("Added foo.")
+    check("Created foo.")
+    check("Doesn't end with dot")
+    check("Tooooooooooooooooooooooooooooooooooooooooooooo long")
+
+
+if __name__ == "__main__":
+    if sys.argv[1] == "__test__":
+        test()
+    else:
+        print("Checking commit message...")
+        message = check_file(sys.argv[1])
+        if message is not None:
+            print(message)
+            sys.exit(1)
