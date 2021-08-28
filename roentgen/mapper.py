@@ -4,7 +4,7 @@ Simple OpenStreetMap renderer.
 import argparse
 import logging
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any, Iterator, Optional
 
 import numpy as np
 import svgwrite
@@ -15,13 +15,13 @@ from svgwrite.shapes import Rect
 
 from roentgen.boundary_box import BoundaryBox
 from roentgen.constructor import Constructor
-from roentgen.figure import Road
+from roentgen.figure import Road, StyledFigure
 from roentgen.flinger import Flinger
 from roentgen.icon import ShapeExtractor
 from roentgen.map_configuration import LabelMode, MapConfiguration
 from roentgen.osm_getter import NetworkError, get_osm
 from roentgen.osm_reader import OSMData, OSMNode, OSMReader, OverpassReader
-from roentgen.point import Occupied
+from roentgen.point import Occupied, Point
 from roentgen.road import Intersection, RoadPart
 from roentgen.scheme import Scheme
 from roentgen.ui import BuildingMode, progress_bar
@@ -57,13 +57,15 @@ class Map:
         self.svg.add(
             Rect((0, 0), self.flinger.size, fill=self.background_color)
         )
-        ways = sorted(constructor.figures, key=lambda x: x.line_style.priority)
+        ways: list[StyledFigure] = sorted(
+            constructor.figures, key=lambda x: x.line_style.priority
+        )
         ways_length: int = len(ways)
         for index, way in enumerate(ways):
             progress_bar(index, ways_length, step=10, text="Drawing ways")
             path_commands: str = way.get_path(self.flinger)
             if path_commands:
-                path = SVGPath(d=path_commands)
+                path: SVGPath = SVGPath(d=path_commands)
                 path.update(way.line_style.style)
                 self.svg.add(path)
         progress_bar(-1, 0, text="Drawing ways")
@@ -86,6 +88,7 @@ class Map:
 
         # All other points
 
+        occupied: Optional[Occupied]
         if self.configuration.overlap == 0:
             occupied = None
         else:
@@ -95,7 +98,9 @@ class Map:
                 self.configuration.overlap,
             )
 
-        nodes = sorted(constructor.points, key=lambda x: -x.priority)
+        nodes: list[Point] = sorted(
+            constructor.points, key=lambda x: -x.priority
+        )
         steps: int = len(nodes)
 
         for index, node in enumerate(nodes):
@@ -158,13 +163,14 @@ class Map:
     ) -> None:
         """Draw road as simple SVG path."""
         self.flinger.get_scale()
+        width: float
         if road.width is not None:
             width = road.width
         else:
             width = road.matcher.default_width
-        scale = self.flinger.get_scale(road.outers[0][0].coordinates)
+        scale: float = self.flinger.get_scale(road.outers[0][0].coordinates)
         path_commands: str = road.get_path(self.flinger)
-        path = SVGPath(d=path_commands)
+        path: SVGPath = SVGPath(d=path_commands)
         style: dict[str, Any] = {
             "fill": "none",
             "stroke": color.hex,
@@ -183,8 +189,8 @@ class Map:
             for index in range(len(road.outers[0]) - 1):
                 node_1: OSMNode = road.outers[0][index]
                 node_2: OSMNode = road.outers[0][index + 1]
-                point_1: np.array = self.flinger.fling(node_1.coordinates)
-                point_2: np.array = self.flinger.fling(node_2.coordinates)
+                point_1: np.ndarray = self.flinger.fling(node_1.coordinates)
+                point_2: np.ndarray = self.flinger.fling(node_2.coordinates)
                 scale: float = self.flinger.get_scale(node_1.coordinates)
                 part_1: RoadPart = RoadPart(point_1, point_2, road.lanes, scale)
                 part_2: RoadPart = RoadPart(point_2, point_1, road.lanes, scale)
@@ -198,7 +204,7 @@ class Map:
                 nodes[node_2].add(part_2)
 
         for node in nodes:
-            parts = nodes[node]
+            parts: set[RoadPart] = nodes[node]
             if len(parts) < 4:
                 continue
             intersection: Intersection = Intersection(list(parts))
@@ -239,8 +245,8 @@ def ui(options: argparse.Namespace) -> None:
         input_file_names = [cache_file_path]
 
     scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
-    min_: np.array
-    max_: np.array
+    min_: np.ndarray
+    max_: np.ndarray
     osm_data: OSMData
     view_box: BoundaryBox
 
@@ -268,7 +274,7 @@ def ui(options: argparse.Namespace) -> None:
             view_box = osm_data.view_box
 
     flinger: Flinger = Flinger(view_box, options.scale)
-    size: np.array = flinger.size
+    size: np.ndarray = flinger.size
 
     svg: svgwrite.Drawing = svgwrite.Drawing(
         options.output_file_name, size=size
@@ -281,7 +287,7 @@ def ui(options: argparse.Namespace) -> None:
         osm_data=osm_data,
         flinger=flinger,
         scheme=scheme,
-        icon_extractor=icon_extractor,
+        extractor=icon_extractor,
         configuration=configuration,
     )
     constructor.construct()

@@ -1,14 +1,16 @@
 """
 Figures displayed on the map.
 """
-from typing import Any, Optional
+from typing import Any, Iterator, Optional
 
 import numpy as np
 from colour import Color
 from svgwrite import Drawing
+from svgwrite.container import Group
 from svgwrite.path import Path
 
 from roentgen.direction import DirectionSet, Sector
+from roentgen.drawing import PathCommands
 from roentgen.flinger import Flinger
 from roentgen.osm_reader import OSMNode, Tagged
 from roentgen.road import Lane
@@ -41,7 +43,7 @@ class Figure(Tagged):
             self.outers.append(make_counter_clockwise(outer_nodes))
 
     def get_path(
-        self, flinger: Flinger, shift: np.array = np.array((0, 0))
+        self, flinger: Flinger, shift: np.ndarray = np.array((0, 0))
     ) -> str:
         """
         Get SVG path commands.
@@ -79,13 +81,13 @@ class Building(Figure):
             "fill": scheme.get_color("building_color").hex,
             "stroke": scheme.get_color("building_border_color").hex,
         }
-        self.line_style = LineStyle(style)
-        self.parts = []
+        self.line_style: LineStyle = LineStyle(style)
+        self.parts: list[Segment] = []
 
         for nodes in self.inners + self.outers:
             for i in range(len(nodes) - 1):
-                flung_1: np.array = flinger.fling(nodes[i].coordinates)
-                flung_2: np.array = flinger.fling(nodes[i + 1].coordinates)
+                flung_1: np.ndarray = flinger.fling(nodes[i].coordinates)
+                flung_2: np.ndarray = flinger.fling(nodes[i + 1].coordinates)
                 self.parts.append(Segment(flung_1, flung_2))
 
         self.parts = sorted(self.parts)
@@ -109,20 +111,20 @@ class Building(Figure):
         if height:
             self.min_height = height
 
-    def draw(self, svg: Drawing, flinger: Flinger):
+    def draw(self, svg: Drawing, flinger: Flinger) -> None:
         """Draw simple building shape."""
         path: Path = Path(d=self.get_path(flinger))
         path.update(self.line_style.style)
         path.update({"stroke-linejoin": "round"})
         svg.add(path)
 
-    def draw_shade(self, building_shade, flinger: Flinger) -> None:
+    def draw_shade(self, building_shade: Group, flinger: Flinger) -> None:
         """Draw shade casted by the building."""
         scale: float = flinger.get_scale() / 3.0
-        shift_1 = np.array((scale * self.min_height, 0))
-        shift_2 = np.array((scale * self.height, 0))
+        shift_1: np.ndarray = np.array((scale * self.min_height, 0))
+        shift_2: np.ndarray = np.array((scale * self.height, 0))
         commands: str = self.get_path(flinger, shift_1)
-        path = Path(
+        path: Path = Path(
             d=commands, fill="#000000", stroke="#000000", stroke_width=1
         )
         building_shade.add(path)
@@ -130,7 +132,7 @@ class Building(Figure):
             for i in range(len(nodes) - 1):
                 flung_1 = flinger.fling(nodes[i].coordinates)
                 flung_2 = flinger.fling(nodes[i + 1].coordinates)
-                command = (
+                command: PathCommands = [
                     "M",
                     np.add(flung_1, shift_1),
                     "L",
@@ -138,8 +140,8 @@ class Building(Figure):
                     np.add(flung_2, shift_2),
                     np.add(flung_1, shift_2),
                     "Z",
-                )
-                path = Path(
+                ]
+                path: Path = Path(
                     command, fill="#000000", stroke="#000000", stroke_width=1
                 )
                 building_shade.add(path)
@@ -148,9 +150,10 @@ class Building(Figure):
         self, svg: Drawing, height: float, previous_height: float, scale: float
     ) -> None:
         """Draw building walls."""
-        shift_1 = [0, -previous_height * scale]
-        shift_2 = [0, -height * scale]
+        shift_1: np.ndarray = np.array((0, -previous_height * scale))
+        shift_2: np.ndarray = np.array((0, -height * scale))
         for segment in self.parts:
+            fill: Color
             if height == 2:
                 fill = Color("#AAAAAA")
             elif height == 4:
@@ -169,7 +172,7 @@ class Building(Figure):
                 segment.point_1 + shift_1,
                 "Z",
             )
-            path = svg.path(
+            path: Path = svg.path(
                 d=command,
                 fill=fill.hex,
                 stroke=fill.hex,
@@ -178,7 +181,7 @@ class Building(Figure):
             )
             svg.add(path)
 
-    def draw_roof(self, svg: Drawing, flinger: Flinger, scale: float):
+    def draw_roof(self, svg: Drawing, flinger: Flinger, scale: float) -> None:
         """Draw building roof."""
         path: Path = Path(
             d=self.get_path(flinger, np.array([0, -self.height * scale]))
@@ -201,7 +204,7 @@ class StyledFigure(Figure):
         line_style: LineStyle,
     ) -> None:
         super().__init__(tags, inners, outers)
-        self.line_style = line_style
+        self.line_style: LineStyle = line_style
 
 
 class Road(Figure):
@@ -229,6 +232,7 @@ class Road(Figure):
             except ValueError:
                 pass
 
+        number: int
         if "lanes:forward" in tags:
             number = int(tags["lanes:forward"])
             [x.set_forward(True) for x in self.lanes[-number:]]
@@ -249,13 +253,13 @@ class Tree(Tagged):
     """
 
     def __init__(
-        self, tags: dict[str, str], coordinates: np.array, point: np.array
+        self, tags: dict[str, str], coordinates: np.ndarray, point: np.ndarray
     ) -> None:
         super().__init__(tags)
-        self.coordinates: np.array = coordinates
-        self.point: np.array = point
+        self.coordinates: np.ndarray = coordinates
+        self.point: np.ndarray = point
 
-    def draw(self, svg: Drawing, flinger: Flinger, scheme: Scheme):
+    def draw(self, svg: Drawing, flinger: Flinger, scheme: Scheme) -> None:
         """Draw crown and trunk."""
         scale: float = flinger.get_scale(self.coordinates)
         radius: float
@@ -276,14 +280,17 @@ class DirectionSector(Tagged):
     Sector that represents direction.
     """
 
-    def __init__(self, tags: dict[str, str], point) -> None:
+    def __init__(self, tags: dict[str, str], point: np.ndarray) -> None:
         super().__init__(tags)
-        self.point = point
+        self.point: np.ndarray = point
 
-    def draw(self, svg: Drawing, scheme: Scheme):
+    def draw(self, svg: Drawing, scheme: Scheme) -> None:
         """Draw gradient sector."""
-        angle = None
+        angle: Optional[float] = None
         is_revert_gradient: bool = False
+        direction: str
+        direction_radius: float
+        direction_color: Color
 
         if self.get_tag("man_made") == "surveillance":
             direction = self.get_tag("camera:direction")
@@ -291,24 +298,25 @@ class DirectionSector(Tagged):
                 angle = float(self.get_tag("camera:angle"))
             if "angle" in self.tags:
                 angle = float(self.get_tag("angle"))
-            direction_radius: float = 25
-            direction_color: Color = scheme.get_color("direction_camera_color")
+            direction_radius = 25
+            direction_color = scheme.get_color("direction_camera_color")
         elif self.get_tag("traffic_sign") == "stop":
             direction = self.get_tag("direction")
-            direction_radius: float = 25
-            direction_color: Color = Color("red")
+            direction_radius = 25
+            direction_color = Color("red")
         else:
             direction = self.get_tag("direction")
-            direction_radius: float = 50
-            direction_color: Color = scheme.get_color("direction_view_color")
+            direction_radius = 50
+            direction_color = scheme.get_color("direction_view_color")
             is_revert_gradient = True
 
         if not direction:
             return
 
-        point = (self.point.astype(int)).astype(float)
+        point: np.ndarray = (self.point.astype(int)).astype(float)
 
-        if angle:
+        paths: Iterator[PathCommands]
+        if angle is not None:
             paths = [Sector(direction, angle).draw(point, direction_radius)]
         else:
             paths = DirectionSet(direction).draw(point, direction_radius)
@@ -344,12 +352,12 @@ class Segment:
     Line segment.
     """
 
-    def __init__(self, point_1: np.array, point_2: np.array) -> None:
-        self.point_1: np.array = point_1
-        self.point_2: np.array = point_2
+    def __init__(self, point_1: np.ndarray, point_2: np.ndarray) -> None:
+        self.point_1: np.ndarray = point_1
+        self.point_2: np.ndarray = point_2
 
-        difference: np.array = point_2 - point_1
-        vector: np.array = difference / np.linalg.norm(difference)
+        difference: np.ndarray = point_2 - point_1
+        vector: np.ndarray = difference / np.linalg.norm(difference)
         self.angle: float = np.arccos(np.dot(vector, np.array((0, 1)))) / np.pi
 
     def __lt__(self, other: "Segment") -> bool:
@@ -392,12 +400,12 @@ def make_counter_clockwise(polygon: list[OSMNode]) -> list[OSMNode]:
     return polygon if not is_clockwise(polygon) else list(reversed(polygon))
 
 
-def get_path(nodes: list[OSMNode], shift: np.array, flinger: Flinger) -> str:
+def get_path(nodes: list[OSMNode], shift: np.ndarray, flinger: Flinger) -> str:
     """Construct SVG path commands from nodes."""
     path: str = ""
     prev_node: Optional[OSMNode] = None
     for node in nodes:
-        flung = flinger.fling(node.coordinates) + shift
+        flung: np.ndarray = flinger.fling(node.coordinates) + shift
         path += ("L" if prev_node else "M") + f" {flung[0]},{flung[1]} "
         prev_node = node
     if nodes[0] == nodes[-1]:

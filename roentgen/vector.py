@@ -7,7 +7,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
-def compute_angle(vector: np.array):
+def compute_angle(vector: np.ndarray) -> float:
     """
     For the given vector compute an angle between it and (1, 0) vector.  The
     result is in [0, 2π].
@@ -23,7 +23,7 @@ def compute_angle(vector: np.array):
     return np.arctan(vector[1] / vector[0])
 
 
-def turn_by_angle(vector: np.array, angle: float):
+def turn_by_angle(vector: np.ndarray, angle: float) -> np.ndarray:
     """Turn vector by an angle."""
     return np.array(
         (
@@ -33,7 +33,7 @@ def turn_by_angle(vector: np.array, angle: float):
     )
 
 
-def norm(vector: np.array) -> np.array:
+def norm(vector: np.ndarray) -> np.ndarray:
     """Compute vector with the same direction and length 1."""
     return vector / np.linalg.norm(vector)
 
@@ -41,26 +41,26 @@ def norm(vector: np.array) -> np.array:
 class Line:
     """Infinity line: Ax + By + C = 0."""
 
-    def __init__(self, start: np.array, end: np.array) -> None:
+    def __init__(self, start: np.ndarray, end: np.ndarray) -> None:
         # if start.near(end):
         #     util.error("cannot create line by one point")
         self.a: float = start[1] - end[1]
         self.b: float = end[0] - start[0]
         self.c: float = start[0] * end[1] - end[0] * start[1]
 
-    def parallel_shift(self, shift: np.array):
+    def parallel_shift(self, shift: np.ndarray) -> None:
         """
         Shift current vector according with shift.
 
         :param shift: shift vector
         """
-        self.c -= self.a * shift.x + self.b * shift.y
+        self.c -= self.a * shift[0] + self.b * shift[1]
 
     def is_parallel(self, other: "Line") -> bool:
         """If lines are parallel or equal."""
         return np.allclose(other.a * self.b - self.a * other.b, 0)
 
-    def get_intersection_point(self, other: "Line") -> np.array:
+    def get_intersection_point(self, other: "Line") -> np.ndarray:
         """Get point of intersection current line with other."""
         if other.a * self.b - self.a * other.b == 0:
             return np.array((0, 0))

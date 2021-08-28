@@ -26,7 +26,10 @@ class _Handler(SimpleHTTPRequestHandler):
     options = None
 
     def __init__(
-        self, request: bytes, client_address: tuple[str, int], server
+        self,
+        request: bytes,
+        client_address: tuple[str, int],
+        server: HTTPServer,
     ) -> None:
         super().__init__(request, client_address, server)
 

@@ -9,6 +9,8 @@ import cairo
 import numpy as np
 import svgwrite
 from colour import Color
+from cairo import Context, ImageSurface
+from svgwrite.base import BaseElement
 from svgwrite.path import Path as SVGPath
 from svgwrite.shapes import Rect
 from svgwrite.text import Text
@@ -29,7 +31,7 @@ class Style:
     stroke: Optional[Color] = None
     width: float = 1
 
-    def update_svg_element(self, element) -> None:
+    def update_svg_element(self, element: BaseElement) -> None:
         """Set style for SVG element."""
         if self.fill is not None:
             element.update({"fill": self.fill})
@@ -38,14 +40,14 @@ class Style:
         if self.stroke is not None:
             element.update({"stroke": self.stroke, "stroke-width": self.width})
 
-    def draw_png_fill(self, context) -> None:
+    def draw_png_fill(self, context: Context) -> None:
         """Set style for context and draw fill."""
         context.set_source_rgba(
             self.fill.get_red(), self.fill.get_green(), self.fill.get_blue(), 1
         )
         context.fill()
 
-    def draw_png_stroke(self, context) -> None:
+    def draw_png_stroke(self, context: Context) -> None:
         """Set style for context and draw stroke."""
         context.set_source_rgba(
             self.stroke.get_red(),
@@ -81,7 +83,9 @@ class Drawing:
         """Draw path."""
         raise NotImplementedError
 
-    def text(self, text: str, point: np.ndarray, color: Color = Color("black")):
+    def text(
+        self, text: str, point: np.ndarray, color: Color = Color("black")
+    ) -> None:
         """Draw text."""
         raise NotImplementedError
 
@@ -97,7 +101,9 @@ class SVGDrawing(Drawing):
 
     def __init__(self, file_path: Path, width: int, height: int) -> None:
         super().__init__(file_path, width, height)
-        self.image = svgwrite.Drawing(str(file_path), (width, height))
+        self.image: svgwrite.Drawing = svgwrite.Drawing(
+            str(file_path), (width, height)
+        )
 
     def rectangle(
         self, point_1: np.ndarray, point_2: np.ndarray, style: Style
@@ -120,11 +126,13 @@ class SVGDrawing(Drawing):
 
     def path(self, commands: PathCommands, style: Style) -> None:
         """Draw path."""
-        path = SVGPath(d=commands)
+        path: SVGPath = SVGPath(d=commands)
         style.update_svg_element(path)
         self.image.add(path)
 
-    def text(self, text: str, point: np.ndarray, color: Color = Color("black")):
+    def text(
+        self, text: str, point: np.ndarray, color: Color = Color("black")
+    ) -> None:
         """Draw text."""
         self.image.add(
             Text(text, (float(point[0]), float(point[1])), fill=color)
@@ -143,8 +151,10 @@ class PNGDrawing(Drawing):
 
     def __init__(self, file_path: Path, width: int, height: int) -> None:
         super().__init__(file_path, width, height)
-        self.surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, width, height)
-        self.context = cairo.Context(self.surface)
+        self.surface: ImageSurface = ImageSurface(
+            cairo.FORMAT_ARGB32, width, height
+        )
+        self.context: Context = Context(self.surface)
 
     def rectangle(
         self, point_1: np.ndarray, point_2: np.ndarray, style: Style
@@ -181,7 +191,7 @@ class PNGDrawing(Drawing):
 
         index: int = 0
         while index < len(commands):
-            element = commands[index]
+            element: Union[float, str, np.ndarray] = commands[index]
 
             if isinstance(element, str):
                 is_absolute: bool = element.lower() != element
@@ -192,10 +202,11 @@ class PNGDrawing(Drawing):
                     start_point = None
 
             elif command in "ml":
+                point: np.ndarray
                 if is_absolute:
-                    point: np.ndarray = commands[index]
+                    point = commands[index]
                 else:
-                    point: np.ndarray = current + commands[index]
+                    point = current + commands[index]
                 current = point
                 if command == "m":
                     self.context.move_to(point[0], point[1])
@@ -225,6 +236,7 @@ class PNGDrawing(Drawing):
 
             elif command in "vh":
                 assert isinstance(commands[index], float)
+                point: np.ndarray
                 if is_absolute:
                     if command == "v":
                         point = np.array((0, commands[index]))
@@ -254,7 +266,9 @@ class PNGDrawing(Drawing):
             self._do_path(commands)
             style.draw_png_stroke(self.context)
 
-    def text(self, text: str, point: np.ndarray, color: Color = Color("black")):
+    def text(
+        self, text: str, point: np.ndarray, color: Color = Color("black")
+    ) -> None:
         """Draw text."""
         self.context.set_source_rgb(
             color.get_red(), color.get_green(), color.get_blue()
@@ -282,7 +296,7 @@ def parse_path(path: str) -> PathCommands:
             result.append(float(part))
         else:
             if "," in part:
-                elements = part.split(",")
+                elements: list[str] = part.split(",")
                 result.append(np.array(list(map(float, elements))))
             else:
                 result.append(np.array((float(part), float(parts[index + 1]))))

@@ -116,7 +116,7 @@ class MapCSSWriter:
             if opacity is not None:
                 elements["icon-opacity"] = f"{opacity:.2f}"
 
-        style = matcher.get_style()
+        style: dict[str, str] = matcher.get_style()
         if style:
             if "fill" in style:
                 elements["fill-color"] = style["fill"]

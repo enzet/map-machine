@@ -17,17 +17,17 @@ def init_collection() -> IconCollection:
     return IconCollection.from_scheme(SCHEME, SHAPE_EXTRACTOR)
 
 
-def test_grid(init_collection) -> None:
+def test_grid(init_collection: IconCollection) -> None:
     """Test grid drawing."""
     init_collection.draw_grid(workspace.output_path / "grid.svg")
 
 
-def test_icons_by_id(init_collection) -> None:
+def test_icons_by_id(init_collection: IconCollection) -> None:
     """Test individual icons drawing."""
     init_collection.draw_icons(workspace.get_icons_by_id_path(), by_name=False)
 
 
-def test_icons_by_name(init_collection) -> None:
+def test_icons_by_name(init_collection: IconCollection) -> None:
     """Test drawing individual icons that have names."""
     init_collection.draw_icons(workspace.get_icons_by_name_path(), by_name=True)
 

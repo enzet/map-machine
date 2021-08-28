@@ -8,6 +8,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 from xml.etree import ElementTree
+from xml.etree.ElementTree import Element
 
 import numpy as np
 
@@ -51,8 +52,7 @@ class Tagged:
     """
 
     def __init__(self, tags: dict[str, str] = None) -> None:
-        self.tags: dict[str, str]
-        self.tags = {} if tags is None else tags
+        self.tags: dict[str, str] = {} if tags is None else tags
 
     def get_tag(self, key: str) -> Optional[str]:
         """
@@ -87,7 +87,7 @@ class Tagged:
             (KILOMETERS_PATTERN, 1000.0),
             (MILES_PATTERN, 1609.344),
         ]:
-            matcher = pattern.match(value)
+            matcher: re.Match = pattern.match(value)
             if matcher:
                 float_value: float = parse_float(matcher.group("value"))
                 if float_value is not None:
@@ -116,7 +116,9 @@ class OSMNode(Tagged):
         self.uid: Optional[str] = None
 
     @classmethod
-    def from_xml_structure(cls, element, is_full: bool = False) -> "OSMNode":
+    def from_xml_structure(
+        cls, element: Element, is_full: bool = False
+    ) -> "OSMNode":
         """Parse node from OSM XML `<node>` element."""
         node: "OSMNode" = cls()
         attributes = element.attrib
@@ -174,7 +176,9 @@ class OSMWay(Tagged):
         self.uid: Optional[str] = None
 
     @classmethod
-    def from_xml_structure(cls, element, nodes, is_full: bool) -> "OSMWay":
+    def from_xml_structure(
+        cls, element: Element, nodes: dict[int, OSMNode], is_full: bool
+    ) -> "OSMWay":
         """Parse way from OSM XML `<way>` element."""
         way = cls(int(element.attrib["id"]))
         if is_full:
@@ -193,7 +197,7 @@ class OSMWay(Tagged):
         return way
 
     def parse_from_structure(
-        self, structure: dict[str, Any], nodes
+        self, structure: dict[str, Any], nodes: dict[int, OSMNode]
     ) -> "OSMWay":
         """
         Parse way from Overpass-like structure.
@@ -245,7 +249,9 @@ class OSMRelation(Tagged):
         self.timestamp: Optional[datetime] = None
 
     @classmethod
-    def from_xml_structure(cls, element, is_full: bool) -> "OSMRelation":
+    def from_xml_structure(
+        cls, element: Element, is_full: bool
+    ) -> "OSMRelation":
         """Parse relation from OSM XML `<relation>` element."""
         attributes = element.attrib
         relation = cls(int(attributes["id"]))
@@ -412,11 +418,11 @@ class OSMReader:
         """
         return self.parse_osm(ElementTree.fromstring(text))
 
-    def parse_osm(self, root) -> OSMData:
+    def parse_osm(self, root: Element) -> OSMData:
         """
         Parse OSM XML data.
 
-        :param root: root of XML data
+        :param root: top element of XML data
         :return: parsed map
         """
         for element in root:
@@ -437,7 +443,7 @@ class OSMReader:
                 )
         return self.osm_data
 
-    def parse_bounds(self, element) -> None:
+    def parse_bounds(self, element: Element) -> None:
         """Parse view box from XML element."""
         attributes = element.attrib
         self.osm_data.view_box = BoundaryBox(

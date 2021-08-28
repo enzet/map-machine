@@ -1,11 +1,13 @@
 """
 Röntgen drawing scheme.
 """
+import logging
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 from typing import Any, Optional, Union
 
+import numpy as np
 import yaml
 from colour import Color
 
@@ -15,6 +17,7 @@ from roentgen.icon import (
     DEFAULT_SHAPE_ID,
     Icon,
     IconSet,
+    Shape,
     ShapeExtractor,
     ShapeSpecification,
 )
@@ -22,6 +25,8 @@ from roentgen.text import Label, get_address, get_text
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
+
+IconDescription = list[Union[str, dict[str, str]]]
 
 
 @dataclass
@@ -170,27 +175,27 @@ class NodeMatcher(Matcher):
         if "draw" in structure:
             self.draw = structure["draw"]
 
-        self.shapes = None
+        self.shapes: Optional[IconDescription] = None
         if "shapes" in structure:
             self.shapes = structure["shapes"]
 
-        self.over_icon = None
+        self.over_icon: Optional[IconDescription] = None
         if "over_icon" in structure:
             self.over_icon = structure["over_icon"]
 
-        self.add_shapes = None
+        self.add_shapes: Optional[IconDescription] = None
         if "add_shapes" in structure:
             self.add_shapes = structure["add_shapes"]
 
-        self.set_main_color = None
+        self.set_main_color: Optional[str] = None
         if "set_main_color" in structure:
             self.set_main_color = structure["set_main_color"]
 
-        self.under_icon = None
+        self.under_icon: Optional[IconDescription] = None
         if "under_icon" in structure:
             self.under_icon = structure["under_icon"]
 
-        self.with_icon = None
+        self.with_icon: Optional[IconDescription] = None
         if "with_icon" in structure:
             self.with_icon = structure["with_icon"]
 
@@ -369,23 +374,21 @@ class Scheme:
                 processed |= matcher_tags
             if matcher.shapes:
                 specifications = [
-                    ShapeSpecification.from_structure(x, extractor, self)
+                    self.get_shape_specification(x, extractor)
                     for x in matcher.shapes
                 ]
                 main_icon = Icon(specifications)
                 processed |= matcher_tags
             if matcher.over_icon and main_icon:
                 specifications = [
-                    ShapeSpecification.from_structure(x, extractor, self)
+                    self.get_shape_specification(x, extractor)
                     for x in matcher.over_icon
                 ]
                 main_icon.add_specifications(specifications)
                 processed |= matcher_tags
             if matcher.add_shapes:
                 specifications = [
-                    ShapeSpecification.from_structure(
-                        x, extractor, self, Color("#888888")
-                    )
+                    self.get_shape_specification(x, extractor, Color("#888888"))
                     for x in matcher.add_shapes
                 ]
                 extra_icons += [Icon(specifications)]
@@ -436,7 +439,7 @@ class Scheme:
 
         return returned, priority
 
-    def get_style(self, tags: dict[str, Any]):
+    def get_style(self, tags: dict[str, Any]) -> list[LineStyle]:
         """Get line style based on tags and scale."""
         line_styles = []
 
@@ -548,3 +551,50 @@ class Scheme:
         :param processed: processed set
         """
         [processed.add(tag) for tag in tags if self.is_no_drawable(tag)]
+
+    def get_shape_specification(
+        self,
+        structure: Union[str, dict[str, Any]],
+        extractor: ShapeExtractor,
+        color: Color = DEFAULT_COLOR,
+    ) -> ShapeSpecification:
+        """
+        Parse shape specification from structure, that is just shape string
+        identifier or dictionary with keys: shape (required), color (optional),
+        and offset (optional).
+        """
+        shape: Shape = extractor.get_shape(DEFAULT_SHAPE_ID)
+        color: Color = color
+        offset: np.ndarray = np.array((0, 0))
+        flip_horizontally: bool = False
+        flip_vertically: bool = False
+        use_outline: bool = True
+
+        if isinstance(structure, str):
+            shape = extractor.get_shape(structure)
+        elif isinstance(structure, dict):
+            if "shape" in structure:
+                shape = extractor.get_shape(structure["shape"])
+            else:
+                logging.error(
+                    "Invalid shape specification: `shape` key expected."
+                )
+            if "color" in structure:
+                color = self.get_color(structure["color"])
+            if "offset" in structure:
+                offset = np.array(structure["offset"])
+            if "flip_horizontally" in structure:
+                flip_horizontally = structure["flip_horizontally"]
+            if "flip_vertically" in structure:
+                flip_vertically = structure["flip_vertically"]
+            if "outline" in structure:
+                use_outline = structure["outline"]
+
+        return ShapeSpecification(
+            shape,
+            color,
+            offset,
+            flip_horizontally,
+            flip_vertically,
+            use_outline,
+        )

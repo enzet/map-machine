@@ -7,14 +7,15 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Optional
-from xml.dom.minidom import Document, Element, parse
+from xml.etree import ElementTree
+from xml.etree.ElementTree import Element
 
 import numpy as np
 import svgwrite
 from colour import Color
 from svgwrite import Drawing
 from svgwrite.container import Group
-from svgwrite.path import Path as SvgPath
+from svgwrite.path import Path as SVGPath
 
 from roentgen.color import is_bright
 
@@ -25,10 +26,11 @@ DEFAULT_COLOR: Color = Color("#444444")
 DEFAULT_SHAPE_ID: str = "default"
 DEFAULT_SMALL_SHAPE_ID: str = "default_small"
 
-STANDARD_INKSCAPE_ID_MATCHER = re.compile(
-    "^((circle|defs|ellipse|metadata|path|rect|use)[\\d-]+|base)$"
+STANDARD_INKSCAPE_ID_MATCHER: re.Pattern = re.compile(
+    "^((circle|defs|ellipse|grid|guide|marker|metadata|path|rect|use)"
+    "[\\d-]+|base)$"
 )
-PATH_MATCHER = re.compile("[Mm] ([0-9.e-]*)[, ]([0-9.e-]*)")
+PATH_MATCHER: re.Pattern = re.compile("[Mm] ([0-9.e-]*)[, ]([0-9.e-]*)")
 
 GRID_STEP: int = 16
 
@@ -40,7 +42,7 @@ class Shape:
     """
 
     path: str  # SVG icon path
-    offset: np.array  # vector that should be used to shift the path
+    offset: np.ndarray  # vector that should be used to shift the path
     id_: str  # shape identifier
     name: Optional[str] = None  # icon description
     is_right_directed: Optional[bool] = None
@@ -52,7 +54,7 @@ class Shape:
         cls,
         structure: dict[str, Any],
         path: str,
-        offset: np.array,
+        offset: np.ndarray,
         id_: str,
         name: Optional[str] = None,
     ) -> "Shape":
@@ -65,7 +67,7 @@ class Shape:
         :param id_: shape unique identifier
         :param name: shape text description
         """
-        shape = cls(path, offset, id_, name)
+        shape: "Shape" = cls(path, offset, id_, name)
 
         if "directed" in structure:
             if structure["directed"] == "right":
@@ -91,10 +93,10 @@ class Shape:
 
     def get_path(
         self,
-        point: np.array,
-        offset: np.array = np.array((0, 0)),
-        scale: np.array = np.array((1, 1)),
-    ) -> SvgPath:
+        point: np.ndarray,
+        offset: np.ndarray = np.array((0, 0)),
+        scale: np.ndarray = np.array((1, 1)),
+    ) -> SVGPath:
         """
         Draw icon into SVG file.
 
@@ -103,7 +105,7 @@ class Shape:
         :param scale: scale resulting image
         """
         transformations: list[str] = []
-        shift: np.array = point + offset
+        shift: np.ndarray = point + offset
 
         transformations.append(f"translate({shift[0]},{shift[1]})")
 
@@ -124,7 +126,7 @@ def parse_length(text: str) -> float:
     return float(text)
 
 
-def verify_sketch_element(element, id_: str) -> bool:
+def verify_sketch_element(element: Element, id_: str) -> bool:
     """
     Verify sketch SVG element from icon file.
 
@@ -132,11 +134,11 @@ def verify_sketch_element(element, id_: str) -> bool:
     :param id_: element `id` attribute
     :return: True iff SVG element has right style
     """
-    if not element.getAttribute("style"):
+    if "style" not in element.attrib or not element.attrib["style"]:
         return True
 
-    style: dict = dict(
-        [x.split(":") for x in element.getAttribute("style").split(";")]
+    style: dict[str, str] = dict(
+        [x.split(":") for x in element.attrib["style"].split(";")]
     )
     if (
         style["fill"] == "none"
@@ -181,14 +183,8 @@ class ShapeExtractor:
         self.configuration: dict[str, Any] = json.load(
             configuration_file_name.open()
         )
-        with svg_file_name.open() as input_file:
-            content: Document = parse(input_file)
-            for element in content.childNodes:
-                if element.nodeName != "svg":
-                    continue
-                for node in element.childNodes:
-                    if isinstance(node, Element):
-                        self.parse(node)
+        root: Element = ElementTree.parse(svg_file_name).getroot()
+        self.parse(root)
 
     def parse(self, node: Element) -> None:
         """
@@ -196,41 +192,40 @@ class ShapeExtractor:
 
         :param node: XML node that contains icon
         """
-        if node.nodeName == "g":
-            for sub_node in node.childNodes:
-                if isinstance(sub_node, Element):
-                    self.parse(sub_node)
+        if node.tag.endswith("}g") or node.tag.endswith("}svg"):
+            for sub_node in node:
+                self.parse(sub_node)
             return
 
-        if not node.hasAttribute("id") or not node.getAttribute("id"):
+        if "id" not in node.attrib or not node.attrib["id"]:
             return
 
-        id_: str = node.getAttribute("id")
+        id_: str = node.attrib["id"]
         if STANDARD_INKSCAPE_ID_MATCHER.match(id_) is not None:
             if not verify_sketch_element(node, id_):
                 logging.warning(f"Not verified SVG element `{id_}`.")
             return
 
-        if node.hasAttribute("d"):
-            path: str = node.getAttribute("d")
+        if "d" in node.attrib and node.attrib["d"]:
+            path: str = node.attrib["d"]
             matcher = PATH_MATCHER.match(path)
             if not matcher:
                 return
 
             name: Optional[str] = None
 
-            def get_offset(value: str):
+            def get_offset(value: str) -> float:
                 """Get negated icon offset from the origin."""
                 return (
                     -int(float(value) / GRID_STEP) * GRID_STEP - GRID_STEP / 2
                 )
 
-            point: np.array = np.array(
+            point: np.ndarray = np.array(
                 (get_offset(matcher.group(1)), get_offset(matcher.group(2)))
             )
-            for child_node in node.childNodes:
+            for child_node in node:
                 if isinstance(child_node, Element):
-                    name = child_node.childNodes[0].nodeValue
+                    name = child_node.text
                     break
 
             configuration: dict[str, Any] = (
@@ -242,7 +237,7 @@ class ShapeExtractor:
         else:
             logging.error(f"Not standard ID {id_}.")
 
-    def get_shape(self, id_: str) -> Optional[Shape]:
+    def get_shape(self, id_: str) -> Shape:
         """
         Get shape or None if there is no shape with such identifier.
 
@@ -262,59 +257,10 @@ class ShapeSpecification:
 
     shape: Shape
     color: Color = DEFAULT_COLOR
-    offset: np.array = np.array((0, 0))
+    offset: np.ndarray = np.array((0, 0))
     flip_horizontally: bool = False
     flip_vertically: bool = False
     use_outline: bool = True
-
-    @classmethod
-    def from_structure(
-        cls,
-        structure: Any,
-        extractor: ShapeExtractor,
-        scheme,
-        color: Color = DEFAULT_COLOR,
-    ) -> "ShapeSpecification":
-        """
-        Parse shape specification from structure, that is just shape string
-        identifier or dictionary with keys: shape (required), color (optional),
-        and offset (optional).
-        """
-        shape: Shape = extractor.get_shape(DEFAULT_SHAPE_ID)
-        color: Color = color
-        offset: np.array = np.array((0, 0))
-        flip_horizontally: bool = False
-        flip_vertically: bool = False
-        use_outline: bool = True
-
-        if isinstance(structure, str):
-            shape = extractor.get_shape(structure)
-        elif isinstance(structure, dict):
-            if "shape" in structure:
-                shape = extractor.get_shape(structure["shape"])
-            else:
-                logging.error(
-                    "Invalid shape specification: `shape` key expected."
-                )
-            if "color" in structure:
-                color = scheme.get_color(structure["color"])
-            if "offset" in structure:
-                offset = np.array(structure["offset"])
-            if "flip_horizontally" in structure:
-                flip_horizontally = structure["flip_horizontally"]
-            if "flip_vertically" in structure:
-                flip_vertically = structure["flip_vertically"]
-            if "outline" in structure:
-                use_outline = structure["outline"]
-
-        return cls(
-            shape,
-            color,
-            offset,
-            flip_horizontally,
-            flip_vertically,
-            use_outline,
-        )
 
     def is_default(self) -> bool:
         """Check whether shape is default."""
@@ -323,7 +269,7 @@ class ShapeSpecification:
     def draw(
         self,
         svg: Drawing,
-        point: np.array,
+        point: np.ndarray,
         tags: dict[str, Any] = None,
         outline: bool = False,
         outline_opacity: float = 1.0,
@@ -337,14 +283,14 @@ class ShapeSpecification:
         :param outline: draw outline for the shape
         :param outline_opacity: opacity of the outline
         """
-        scale: np.array = np.array((1, 1))
+        scale: np.ndarray = np.array((1, 1))
         if self.flip_vertically:
             scale = np.array((1, -1))
         if self.flip_horizontally:
             scale = np.array((-1, 1))
 
-        point = np.array(list(map(int, point)))
-        path = self.shape.get_path(point, self.offset, scale)
+        point: np.ndarray = np.array(list(map(int, point)))
+        path: SVGPath = self.shape.get_path(point, self.offset, scale)
         path.update({"fill": self.color.hex})
 
         if outline and self.use_outline:
@@ -398,7 +344,7 @@ class Icon:
     def draw(
         self,
         svg: svgwrite.Drawing,
-        point: np.array,
+        point: np.ndarray,
         tags: dict[str, Any] = None,
         outline: bool = False,
     ) -> None:
@@ -427,7 +373,7 @@ class Icon:
         color: Optional[Color] = None,
         outline: bool = False,
         outline_opacity: float = 1.0,
-    ):
+    ) -> None:
         """
         Draw icon to the SVG file.
 
@@ -442,13 +388,16 @@ class Icon:
             if color:
                 shape_specification.color = color
             shape_specification.draw(
-                svg, (8, 8), outline=outline, outline_opacity=outline_opacity
+                svg,
+                np.array((8, 8)),
+                outline=outline,
+                outline_opacity=outline_opacity,
             )
 
         for shape_specification in self.shape_specifications:
             if color:
                 shape_specification.color = color
-            shape_specification.draw(svg, (8, 8))
+            shape_specification.draw(svg, np.array((8, 8)))
 
         with file_name.open("w") as output_file:
             svg.write(output_file)

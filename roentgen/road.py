@@ -6,9 +6,8 @@ from typing import Optional
 
 import numpy as np
 import svgwrite
+from svgwrite.path import Path
 
-from roentgen.flinger import Flinger
-from roentgen.osm_reader import OSMNode
 from roentgen.vector import Line, compute_angle, norm, turn_by_angle
 
 __author__ = "Sergey Vartanov"
@@ -33,7 +32,7 @@ class Lane:
         """If true, lane is forward, otherwise it's backward."""
         self.is_forward = is_forward
 
-    def get_width(self, scale: float):
+    def get_width(self, scale: float) -> float:
         """Get lane width.  We use standard 3.7 m lane."""
         if self.width is None:
             return 3.7 * scale
@@ -47,18 +46,18 @@ class RoadPart:
 
     def __init__(
         self,
-        point_1: np.array,
-        point_2: np.array,
+        point_1: np.ndarray,
+        point_2: np.ndarray,
         lanes: list[Lane],
-        scale: False,
+        scale: float,
     ) -> None:
         """
         :param point_1: start point of the road part
         :param point_2: end point of the road part
         :param lanes: lane specification
         """
-        self.point_1: np.array = point_1
-        self.point_2: np.array = point_2
+        self.point_1: np.ndarray = point_1
+        self.point_2: np.ndarray = point_2
         self.lanes: list[Lane] = lanes
         if lanes:
             self.width = sum(map(lambda x: x.get_width(scale), lanes))
@@ -67,35 +66,21 @@ class RoadPart:
         self.left_offset: float = self.width / 2
         self.right_offset: float = self.width / 2
 
-        self.turned: np.array = norm(
+        self.turned: np.ndarray = norm(
             turn_by_angle(self.point_2 - self.point_1, np.pi / 2)
         )
-        self.right_vector: np.array = self.turned * self.right_offset
-        self.left_vector: np.array = -self.turned * self.left_offset
+        self.right_vector: np.ndarray = self.turned * self.right_offset
+        self.left_vector: np.ndarray = -self.turned * self.left_offset
 
-        self.right_connection: np.array = None
-        self.left_connection: np.array = None
-        self.right_projection: np.array = None
-        self.left_projection: np.array = None
+        self.right_connection: Optional[np.ndarray] = None
+        self.left_connection: Optional[np.ndarray] = None
+        self.right_projection: Optional[np.ndarray] = None
+        self.left_projection: Optional[np.ndarray] = None
 
-        self.left_outer = None
-        self.right_outer = None
-        self.point_a = None
-        self.point_middle = None
-
-    @classmethod
-    def from_nodes(
-        cls, node_1: OSMNode, node_2: OSMNode, flinger: Flinger, road, scale
-    ) -> "RoadPart":
-        """Construct road part from OSM nodes."""
-        lanes = [Lane(road.width / road.lanes)] * road.lanes
-
-        return cls(
-            flinger.fling(node_1.coordinates),
-            flinger.fling(node_2.coordinates),
-            lanes,
-            scale,
-        )
+        self.left_outer: Optional[np.ndarray] = None
+        self.right_outer: Optional[np.ndarray] = None
+        self.point_a: Optional[np.ndarray] = None
+        self.point_middle: Optional[np.ndarray] = None
 
     def update(self) -> None:
         """Compute additional points."""
@@ -136,9 +121,9 @@ class RoadPart:
         """Get an angle between line and x axis."""
         return compute_angle(self.point_2 - self.point_1)
 
-    def draw_normal(self, drawing: svgwrite.Drawing):
+    def draw_normal(self, drawing: svgwrite.Drawing) -> None:
         """Draw some debug lines."""
-        line = drawing.path(
+        line: Path = drawing.path(
             ("M", self.point_1, "L", self.point_2),
             fill="none",
             stroke="#8888FF",
@@ -146,15 +131,15 @@ class RoadPart:
         )
         drawing.add(line)
 
-    def draw_debug(self, drawing: svgwrite.Drawing):
+    def draw_debug(self, drawing: svgwrite.Drawing) -> None:
         """Draw some debug lines."""
-        line = drawing.path(
+        line: Path = drawing.path(
             ("M", self.point_1, "L", self.point_2),
             fill="none",
             stroke="#000000",
         )
         drawing.add(line)
-        line = drawing.path(
+        line: Path = drawing.path(
             (
                 "M", self.point_1 + self.right_vector,
                 "L", self.point_2 + self.right_vector,
@@ -227,7 +212,7 @@ class RoadPart:
 
         # self.draw_entrance(drawing, True)
 
-    def draw(self, drawing: svgwrite.Drawing):
+    def draw(self, drawing: svgwrite.Drawing) -> None:
         """Draw road part."""
         if self.left_connection is not None:
             path_commands = [
@@ -239,7 +224,9 @@ class RoadPart:
             ]  # fmt: skip
             drawing.add(drawing.path(path_commands, fill="#CCCCCC"))
 
-    def draw_entrance(self, drawing: svgwrite.Drawing, is_debug: bool = False):
+    def draw_entrance(
+        self, drawing: svgwrite.Drawing, is_debug: bool = False
+    ) -> None:
         """Draw intersection entrance part."""
         if (
             self.left_connection is not None
@@ -263,7 +250,7 @@ class RoadPart:
             else:
                 drawing.add(drawing.path(path_commands, fill="#88FF88"))
 
-    def draw_lanes(self, drawing: svgwrite.Drawing, scale: float):
+    def draw_lanes(self, drawing: svgwrite.Drawing, scale: float) -> None:
         """Draw lane delimiters."""
         for lane in self.lanes:
             shift = self.right_vector - self.turned * lane.get_width(scale)
@@ -298,7 +285,7 @@ class Intersection:
                 part_2.point_1 + part_2.left_vector,
                 part_2.point_2 + part_2.left_vector,
             )
-            intersection: np.array = line_1.get_intersection_point(line_2)
+            intersection: np.ndarray = line_1.get_intersection_point(line_2)
             # if np.linalg.norm(intersection - part_1.point_2) < 300:
             part_1.right_connection = intersection
             part_2.left_connection = intersection

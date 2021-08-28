@@ -24,19 +24,19 @@ class Occupied:
     texts, shapes).
     """
 
-    def __init__(self, width: int, height: int, overlap: float) -> None:
+    def __init__(self, width: int, height: int, overlap: int) -> None:
         self.matrix = np.full((int(width), int(height)), False, dtype=bool)
         self.width: float = width
         self.height: float = height
-        self.overlap: float = overlap
+        self.overlap: int = overlap
 
-    def check(self, point: np.array) -> bool:
+    def check(self, point: np.ndarray) -> bool:
         """Check whether point is already occupied by other elements."""
         if 0 <= point[0] < self.width and 0 <= point[1] < self.height:
             return self.matrix[point[0], point[1]]
         return True
 
-    def register(self, point) -> None:
+    def register(self, point: np.ndarray) -> None:
         """Register that point is occupied by an element."""
         if 0 <= point[0] < self.width and 0 <= point[1] < self.height:
             self.matrix[point[0], point[1]] = True
@@ -56,8 +56,7 @@ class Point(Tagged):
         labels: list[Label],
         tags: dict[str, str],
         processed: set[str],
-        point: np.array,
-        coordinates: np.array,
+        point: np.ndarray,
         priority: float = 0,
         is_for_node: bool = True,
         draw_outline: bool = True,
@@ -70,8 +69,7 @@ class Point(Tagged):
         self.labels: list[Label] = labels
         self.tags: dict[str, str] = tags
         self.processed: set[str] = processed
-        self.point: np.array = point
-        self.coordinates: np.array = coordinates
+        self.point: np.ndarray = point
         self.priority: float = priority
         self.layer: float = 0
         self.is_for_node: bool = is_for_node
@@ -110,9 +108,10 @@ class Point(Tagged):
         if occupied:
             left: float = -(len(self.icon_set.extra_icons) - 1) * 8
             for _ in self.icon_set.extra_icons:
-                if occupied.check(
+                point: np.ndarray = np.array(
                     (int(self.point[0] + left), int(self.point[1] + self.y))
-                ):
+                )
+                if occupied.check(point):
                     is_place_for_extra = False
                     break
                 left += 16
@@ -120,7 +119,7 @@ class Point(Tagged):
         if is_place_for_extra:
             left: float = -(len(self.icon_set.extra_icons) - 1) * 8
             for icon in self.icon_set.extra_icons:
-                point: np.array = self.point + np.array((left, self.y))
+                point: np.ndarray = self.point + np.array((left, self.y))
                 self.draw_point_shape(svg, icon, point, occupied=occupied)
                 left += 16
             if self.icon_set.extra_icons:
@@ -130,13 +129,13 @@ class Point(Tagged):
         self,
         svg: svgwrite.Drawing,
         icon: Icon,
-        position,
-        occupied,
+        position: np.ndarray,
+        occupied: Occupied,
         tags: Optional[dict[str, str]] = None,
     ) -> bool:
         """Draw one combined icon and its outline."""
         # Down-cast floats to integers to make icons pixel-perfect.
-        position = list(map(int, position))
+        position: np.ndarray = np.array((int(position[0]), int(position[1])))
 
         if occupied and occupied.check(position):
             return False
@@ -188,11 +187,11 @@ class Point(Tagged):
         self,
         svg: svgwrite.Drawing,
         text: str,
-        point,
+        point: np.ndarray,
         occupied: Optional[Occupied],
         fill: Color,
         size: float = 10.0,
-        out_fill=Color("white"),
+        out_fill: Color = Color("white"),
         out_opacity: float = 0.5,
         out_fill_2: Optional[Color] = None,
         out_opacity_2: float = 1.0,
@@ -207,12 +206,15 @@ class Point(Tagged):
          #------#
           ######
         """
-        length = len(text) * 6
+        length: int = len(text) * 6  # FIXME
 
         if occupied:
             is_occupied: bool = False
             for i in range(-int(length / 2), int(length / 2)):
-                if occupied.check((int(point[0] + i), int(point[1] - 4))):
+                text_position: np.ndarray = np.array(
+                    (int(point[0] + i), int(point[1] - 4))
+                )
+                if occupied.check(text_position):
                     is_occupied = True
                     break
 
@@ -249,7 +251,7 @@ class Point(Tagged):
 
         self.y += 11
 
-    def get_size(self) -> np.array:
+    def get_size(self) -> np.ndarray:
         """
         Get width and height of the point visual representation if there is
         space for all elements.

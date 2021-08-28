@@ -4,11 +4,12 @@ Icon grid drawing.
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import numpy as np
 from colour import Color
 from svgwrite import Drawing
+from svgwrite.shapes import Rect
 
 from roentgen.icon import Icon, Shape, ShapeExtractor, ShapeSpecification
 from roentgen.scheme import NodeMatcher, Scheme
@@ -51,8 +52,8 @@ class IconCollection:
 
         def add() -> Icon:
             """Construct icon and add it to the list."""
-            specifications = [
-                ShapeSpecification.from_structure(x, extractor, scheme)
+            specifications: list[ShapeSpecification] = [
+                scheme.get_shape_specification(x, extractor)
                 for x in current_set
             ]
             constructed_icon: Icon = Icon(specifications)
@@ -61,6 +62,8 @@ class IconCollection:
                 icons.append(constructed_icon)
 
             return constructed_icon
+
+        current_set: list[Union[str, dict[str, str]]]
 
         for matcher in scheme.node_matchers:
             matcher: NodeMatcher
@@ -129,7 +132,7 @@ class IconCollection:
         color: Optional[Color] = None,
         outline: bool = False,
         outline_opacity: float = 1.0,
-    ):
+    ) -> None:
         """
         :param output_directory: path to the directory to store individual SVG
             files for icons
@@ -140,13 +143,13 @@ class IconCollection:
         """
         if by_name:
 
-            def get_file_name(x) -> str:
+            def get_file_name(x: Icon) -> str:
                 """Generate human-readable file name."""
                 return f"Röntgen {' + '.join(x.get_names())}.svg"
 
         else:
 
-            def get_file_name(x) -> str:
+            def get_file_name(x: Icon) -> str:
                 """Generate file name with unique identifier."""
                 return f"{'___'.join(x.get_shape_ids())}.svg"
 
@@ -164,7 +167,7 @@ class IconCollection:
         columns: int = 16,
         step: float = 24,
         background_color: Color = Color("white"),
-    ):
+    ) -> None:
         """
         Draw icons in the form of table.
 
@@ -173,7 +176,7 @@ class IconCollection:
         :param step: horizontal and vertical distance between icons in grid
         :param background_color: background color
         """
-        point: np.array = np.array((step / 2, step / 2))
+        point: np.ndarray = np.array((step / 2, step / 2))
         width: float = step * columns
 
         height: int = int(int(len(self.icons) / (width / step) + 1) * step)
@@ -182,7 +185,7 @@ class IconCollection:
 
         for icon in self.icons:
             icon: Icon
-            rectangle = svg.rect(
+            rectangle: Rect = svg.rect(
                 point - np.array((10, 10)), (20, 20), fill=background_color.hex
             )
             svg.add(rectangle)

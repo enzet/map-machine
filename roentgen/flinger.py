@@ -13,7 +13,7 @@ __email__ = "me@enzet.ru"
 EQUATOR_LENGTH: float = 40_075_017  # meters
 
 
-def pseudo_mercator(coordinates: np.array) -> np.array:
+def pseudo_mercator(coordinates: np.ndarray) -> np.ndarray:
     """
     Use spherical pseudo-Mercator projection to convert geo coordinates into
     plane.
@@ -47,32 +47,33 @@ class Flinger:
         self,
         geo_boundaries: BoundaryBox,
         scale: float = 18,
-        border: np.array = np.array((0, 0)),
+        border: np.ndarray = np.array((0, 0)),
     ) -> None:
         """
         :param geo_boundaries: minimum and maximum latitude and longitude
         :param scale: OSM zoom level
+        :param border: size of padding in pixels
         """
         self.geo_boundaries: BoundaryBox = geo_boundaries
-        self.border = border
+        self.border: np.ndarray = border
         self.ratio: float = (
             osm_zoom_level_to_pixels_per_meter(scale) * EQUATOR_LENGTH / 360
         )
-        self.size: np.array = border * 2 + self.ratio * (
+        self.size: np.ndarray = border * 2 + self.ratio * (
             pseudo_mercator(self.geo_boundaries.max_())
             - pseudo_mercator(self.geo_boundaries.min_())
         )
-        self.pixels_per_meter = osm_zoom_level_to_pixels_per_meter(scale)
+        self.pixels_per_meter: float = osm_zoom_level_to_pixels_per_meter(scale)
 
-        self.size: np.array = self.size.astype(int).astype(float)
+        self.size: np.ndarray = self.size.astype(int).astype(float)
 
-    def fling(self, coordinates: np.array) -> np.array:
+    def fling(self, coordinates: np.ndarray) -> np.ndarray:
         """
         Convert geo coordinates into SVG position points.
 
         :param coordinates: vector to fling
         """
-        result: np.array = self.border + self.ratio * (
+        result: np.ndarray = self.border + self.ratio * (
             pseudo_mercator(coordinates)
             - pseudo_mercator(self.geo_boundaries.min_())
         )
@@ -82,7 +83,7 @@ class Flinger:
 
         return result
 
-    def get_scale(self, coordinates: Optional[np.array] = None) -> float:
+    def get_scale(self, coordinates: Optional[np.ndarray] = None) -> float:
         """
         Return pixels per meter ratio for the given geo coordinates.
 

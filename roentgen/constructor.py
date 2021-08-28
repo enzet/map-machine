@@ -17,11 +17,13 @@ from roentgen.map_configuration import DrawingMode, MapConfiguration
 
 # fmt: off
 from roentgen.icon import (
-    DEFAULT_SMALL_SHAPE_ID, Icon, IconSet, ShapeExtractor, ShapeSpecification
+    DEFAULT_SMALL_SHAPE_ID, Icon, IconSet, Shape, ShapeExtractor,
+    ShapeSpecification
 )
 from roentgen.osm_reader import OSMData, OSMNode, OSMRelation, OSMWay
 from roentgen.point import Point
-from roentgen.scheme import DEFAULT_COLOR, LineStyle, Scheme
+from roentgen.scheme import DEFAULT_COLOR, LineStyle, RoadMatcher, Scheme
+from roentgen.text import Label
 from roentgen.ui import BuildingMode
 from roentgen.util import MinMax
 # fmt: on
@@ -40,7 +42,9 @@ TIME_COLOR_SCALE: list[Color] = [
 ]
 
 
-def line_center(nodes: list[OSMNode], flinger: Flinger) -> np.array:
+def line_center(
+    nodes: list[OSMNode], flinger: Flinger
+) -> (np.ndarray, np.ndarray):
     """
     Get geometric center of nodes set.
 
@@ -52,8 +56,9 @@ def line_center(nodes: list[OSMNode], flinger: Flinger) -> np.array:
     for node in nodes:
         boundary[0].update(node.coordinates[0])
         boundary[1].update(node.coordinates[1])
-    center_coordinates = np.array((boundary[0].center(), boundary[1].center()))
-
+    center_coordinates: np.ndarray = np.array(
+        (boundary[0].center(), boundary[1].center())
+    )
     return flinger.fling(center_coordinates), center_coordinates
 
 
@@ -97,7 +102,7 @@ def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
         other_way: Optional[OSMWay] = None
 
         for other_way in to_process:
-            glued = way.try_to_glue(other_way)
+            glued: Optional[OSMWay] = way.try_to_glue(other_way)
             if glued:
                 break
 
@@ -128,14 +133,14 @@ class Constructor:
         osm_data: OSMData,
         flinger: Flinger,
         scheme: Scheme,
-        icon_extractor: ShapeExtractor,
+        extractor: ShapeExtractor,
         configuration: MapConfiguration,
     ) -> None:
         self.osm_data: OSMData = osm_data
         self.flinger: Flinger = flinger
         self.scheme: Scheme = scheme
-        self.icon_extractor = icon_extractor
-        self.configuration = configuration
+        self.extractor: ShapeExtractor = extractor
+        self.configuration: MapConfiguration = configuration
 
         if self.configuration.level:
             if self.configuration.level == "overground":
@@ -209,7 +214,7 @@ class Constructor:
                 color = get_user_color(line.user, self.configuration.seed)
             else:  # self.mode == TIME_MODE
                 color = get_time_color(line.timestamp, self.osm_data.time)
-            self.draw_special_mode(inners, line, outers, color)
+            self.draw_special_mode(line, inners, outers, color)
             return
 
         if not line.tags:
@@ -224,7 +229,7 @@ class Constructor:
                 Building(line.tags, inners, outers, self.flinger, self.scheme)
             )
 
-        road_matcher = self.scheme.get_road(line.tags)
+        road_matcher: RoadMatcher = self.scheme.get_road(line.tags)
         if road_matcher:
             self.roads.append(Road(line.tags, inners, outers, road_matcher))
             return
@@ -246,16 +251,17 @@ class Constructor:
                 priority: int
                 icon_set: IconSet
                 icon_set, priority = self.scheme.get_icon(
-                    self.icon_extractor, line.tags, processed
+                    self.extractor, line.tags, processed
                 )
-                labels = self.scheme.construct_text(line.tags, "all", processed)
+                labels: list[Label] = self.scheme.construct_text(
+                    line.tags, "all", processed
+                )
                 point: Point = Point(
                     icon_set,
                     labels,
                     line.tags,
                     processed,
                     center_point,
-                    center_coordinates,
                     is_for_node=False,
                     priority=priority,
                 )  # fmt: skip
@@ -278,16 +284,24 @@ class Constructor:
             priority: int
             icon_set: IconSet
             icon_set, priority = self.scheme.get_icon(
-                self.icon_extractor, line.tags, processed
+                self.extractor, line.tags, processed
             )
-            labels = self.scheme.construct_text(line.tags, "all", processed)
+            labels: list[Label] = self.scheme.construct_text(
+                line.tags, "all", processed
+            )
             point: Point = Point(
                 icon_set, labels, line.tags, processed, center_point,
-                center_coordinates, is_for_node=False, priority=priority,
+                is_for_node=False, priority=priority,
             )  # fmt: skip
             self.points.append(point)
 
-    def draw_special_mode(self, inners, line, outers, color) -> None:
+    def draw_special_mode(
+        self,
+        line: Union[OSMWay, OSMRelation],
+        inners: list[list[OSMNode]],
+        outers: list[list[OSMNode]],
+        color: Color,
+    ) -> None:
         """Add figure for special mode: time or author."""
         style: dict[str, Any] = {
             "fill": "none",
@@ -302,7 +316,7 @@ class Constructor:
         """Construct Röntgen ways from OSM relations."""
         for relation_id in self.osm_data.relations:
             relation: OSMRelation = self.osm_data.relations[relation_id]
-            tags = relation.tags
+            tags: dict[str, str] = relation.tags
             if not self.check_level(tags):
                 continue
             if "type" not in tags or tags["type"] != "multipolygon":
@@ -340,13 +354,13 @@ class Constructor:
 
     def construct_node(self, node: OSMNode) -> None:
         """Draw one node."""
-        tags = node.tags
+        tags: dict[str, str] = node.tags
         if not self.check_level(tags):
             return
 
         processed: set[str] = set()
 
-        flung = self.flinger.fling(node.coordinates)
+        flung: np.ndarray = self.flinger.fling(node.coordinates)
 
         priority: int
         icon_set: IconSet
@@ -360,21 +374,20 @@ class Constructor:
                 color = get_user_color(node.user, self.configuration.seed)
             if self.configuration.drawing_mode == DrawingMode.TIME:
                 color = get_time_color(node.timestamp, self.osm_data.time)
-            dot = self.icon_extractor.get_shape(DEFAULT_SMALL_SHAPE_ID)
-            icon_set = IconSet(
+            dot: Shape = self.extractor.get_shape(DEFAULT_SMALL_SHAPE_ID)
+            icon_set: IconSet = IconSet(
                 Icon([ShapeSpecification(dot, color)]), [], set()
             )
             point: Point = Point(
-                icon_set, [], tags, processed, flung, node.coordinates,
-                draw_outline=False
-            )  # fmt: skip
+                icon_set, [], tags, processed, flung, draw_outline=False
+            )
             self.points.append(point)
             return
 
         icon_set, priority = self.scheme.get_icon(
-            self.icon_extractor, tags, processed
+            self.extractor, tags, processed
         )
-        labels = self.scheme.construct_text(tags, "all", processed)
+        labels: list[Label] = self.scheme.construct_text(tags, "all", processed)
         self.scheme.process_ignored(tags, processed)
 
         if node.get_tag("natural") == "tree" and (
@@ -386,16 +399,16 @@ class Constructor:
         if "direction" in node.tags or "camera:direction" in node.tags:
             self.direction_sectors.append(DirectionSector(tags, flung))
         point: Point = Point(
-            icon_set, labels, tags, processed, flung, node.coordinates,
+            icon_set, labels, tags, processed, flung,
             priority=priority, draw_outline=draw_outline
         )  # fmt: skip
         self.points.append(point)
 
 
-def check_level_number(tags: dict[str, Any], level: float):
+def check_level_number(tags: dict[str, Any], level: float) -> bool:
     """Check if element described by tags is no the specified level."""
     if "level" in tags:
-        levels = map(float, tags["level"].replace(",", ".").split(";"))
+        levels: map = map(float, tags["level"].replace(",", ".").split(";"))
         if level not in levels:
             return False
     else:
@@ -407,7 +420,7 @@ def check_level_overground(tags: dict[str, Any]) -> bool:
     """Check if element described by tags is overground."""
     if "level" in tags:
         try:
-            levels = map(float, tags["level"].replace(",", ".").split(";"))
+            levels: map = map(float, tags["level"].replace(",", ".").split(";"))
             for level in levels:
                 if level <= 0:
                     return False
@@ -415,7 +428,7 @@ def check_level_overground(tags: dict[str, Any]) -> bool:
             pass
     if "layer" in tags:
         try:
-            levels = map(float, tags["layer"].replace(",", ".").split(";"))
+            levels: map = map(float, tags["layer"].replace(",", ".").split(";"))
             for level in levels:
                 if level <= 0:
                     return False

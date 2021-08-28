@@ -8,7 +8,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
-def construct_labels(tags) -> list[Label]:
+def construct_labels(tags: dict[str, str]) -> list[Label]:
     """Construct labels from OSM node tags."""
     processed: set[str] = set()
     return SCHEME.construct_text(tags, "all", processed)

@@ -68,7 +68,7 @@ class ArgumentParser(argparse.ArgumentParser):
         Return Moire table with "Option" and "Description" columns filled with
         arguments.
         """
-        table = [[["Option"], ["Description"]]]
+        table: Code = [[["Option"], ["Description"]]]
 
         for option in self.arguments:
             if option["arguments"][0] == "-h":

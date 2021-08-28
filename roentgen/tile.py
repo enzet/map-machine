@@ -44,7 +44,7 @@ class Tile:
     scale: int
 
     @classmethod
-    def from_coordinates(cls, coordinates: np.array, scale: int):
+    def from_coordinates(cls, coordinates: np.ndarray, scale: int) -> "Tile":
         """
         Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
 
@@ -57,7 +57,7 @@ class Tile:
         y: int = int((1.0 - np.arcsinh(np.tan(lat_rad)) / np.pi) / 2.0 * n)
         return cls(x, y, scale)
 
-    def get_coordinates(self) -> np.array:
+    def get_coordinates(self) -> np.ndarray:
         """
         Return geo coordinates of the north-west corner of the tile.
 
@@ -69,7 +69,7 @@ class Tile:
         lat_deg: np.ndarray = np.degrees(lat_rad)
         return np.array((lat_deg, lon_deg))
 
-    def get_boundary_box(self) -> tuple[np.array, np.array]:
+    def get_boundary_box(self) -> tuple[np.ndarray, np.ndarray]:
         """
         Get geographical boundary box of the tile: north-west and south-east
         points.
@@ -81,8 +81,8 @@ class Tile:
 
     def get_extended_boundary_box(self) -> BoundaryBox:
         """Same as get_boundary_box, but with extended boundaries."""
-        point_1: np.array = self.get_coordinates()
-        point_2: np.array = Tile(
+        point_1: np.ndarray = self.get_coordinates()
+        point_2: np.ndarray = Tile(
             self.x + 1, self.y + 1, self.scale
         ).get_coordinates()
 
@@ -152,7 +152,7 @@ class Tile:
         flinger: Flinger = Flinger(
             BoundaryBox(left, bottom, right, top), self.scale
         )
-        size: np.array = flinger.size
+        size: np.ndarray = flinger.size
 
         output_file_name: Path = self.get_file_name(directory_name)
 
@@ -196,7 +196,9 @@ class Tiles:
     boundary_box: BoundaryBox
 
     @classmethod
-    def from_boundary_box(cls, boundary_box: BoundaryBox, scale: int):
+    def from_boundary_box(
+        cls, boundary_box: BoundaryBox, scale: int
+    ) -> "Tiles":
         """
         Create minimal set of tiles that cover boundary box.
 

@@ -4,6 +4,7 @@ Rectangle that limit space on the map.
 import logging
 import re
 from dataclasses import dataclass
+from typing import Optional
 
 import numpy as np
 
@@ -26,7 +27,7 @@ class BoundaryBox:
     top: float  # Maximum latitude.
 
     @classmethod
-    def from_text(cls, boundary_box: str):
+    def from_text(cls, boundary_box: str) -> "BoundaryBox":
         """
         Parse boundary box string representation.
 
@@ -41,7 +42,7 @@ class BoundaryBox:
         """
         boundary_box = boundary_box.replace(" ", "")
 
-        matcher = re.match(
+        matcher: Optional[re.Match] = re.match(
             "(?P<left>[0-9.-]*),(?P<bottom>[0-9.-]*),"
             + "(?P<right>[0-9.-]*),(?P<top>[0-9.-]*)",
             boundary_box,
