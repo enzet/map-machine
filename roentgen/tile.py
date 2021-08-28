@@ -274,7 +274,7 @@ class Tiles:
         directory: Path,
         cache_path: Path,
         configuration: MapConfiguration,
-        osm_data: OSMData
+        osm_data: OSMData,
     ) -> None:
         """
         Draw one PNG image with all tiles and split it into a set of separate
@@ -329,7 +329,7 @@ class Tiles:
         self,
         cache_path: Path,
         configuration: MapConfiguration,
-        osm_data: OSMData
+        osm_data: OSMData,
     ) -> None:
         """Draw all tiles using OSM data."""
         output_path: Path = self.get_file_path(cache_path)
