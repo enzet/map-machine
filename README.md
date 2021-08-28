@@ -229,6 +229,35 @@ roentgen server
 
 Stop server interrupting process with <kbd>Ctrl</kbd> + <kbd>C</kbd>.
 
+### Example ###
+
+Create a minimal amount of tiles that cover specified boundary box for zoom levels 16, 17, 18, and 19:
+
+```bash
+roentgen tile -b 2.364,48.854,2.367,48.857 -s 16-19
+```
+
+Run tile server on 127.0.0.1:8080:
+
+```bash
+roentgen server
+```
+
+Use JavaScript code for [Leaflet](https://leafletjs.com/):
+
+```js
+zxy', {
+    maxZoom: 19,
+    attribution: 'Map data &copy; ' +
+        '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ' +
+        'contributors, imagery &copy; ' +
+        '<a href="https:/github.com/enzet/Roentgen">Röntgen</a>',
+    id: 'roentgen',
+    tileSize: 256,
+    zoomOffset: 0
+}).addTo(map);
+```
+
 Map options
 -----------
 
