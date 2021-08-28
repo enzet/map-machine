@@ -8,8 +8,8 @@ from typing import Optional, Union
 import cairo
 import numpy as np
 import svgwrite
-from colour import Color
 from cairo import Context, ImageSurface
+from colour import Color
 from svgwrite.base import BaseElement
 from svgwrite.path import Path as SVGPath
 from svgwrite.shapes import Rect

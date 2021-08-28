@@ -97,7 +97,8 @@ node_icons:
     - tags: {building: "yes"}
       draw: false
 
-  - group: "Transport hubs"
+  - group: "Huge transport hubs"
+    start_zoom_level: 10
     tags:
     - tags: {amenity: ferry_terminal}
       shapes: [anchor]
@@ -111,6 +112,10 @@ node_icons:
       shapes: [h]
     - tags: {aeroway: spaceport}
       shapes: [rocket_on_launch_pad]
+
+  - group: "Normal transport hubs"
+    start_zoom_level: 11
+    tags:
     - tags: {aeroway: launchpad}
       shapes: [rocket_flying]
     - tags: {aeroway: landingpad}
@@ -157,6 +162,7 @@ node_icons:
       shapes: [taxi]
 
   - group: "Big territory"
+    start_zoom_level: 12
     tags:
     - tags: {leisure: fishing}
       shapes: [fishing_angle]
@@ -198,6 +204,7 @@ node_icons:
       shapes: [{shape: pear, color: orchard_border_color}]
 
   - group: "Bigger objects"
+    start_zoom_level: 13
     tags:
     - tags: {waterway: waterfall}
       shapes: [{shape: waterfall, color: water_border_color}]
@@ -281,6 +288,7 @@ node_icons:
       shapes: [slide_and_water]
 
   - group: "Important big objects"
+    start_zoom_level: 14
     tags:
     - tags: {amenity: pharmacy}
       shapes: [medicine_bottle]
@@ -349,6 +357,7 @@ node_icons:
       location_restrictions: {include: jp}
 
   - group: "Normal big objects"
+    start_zoom_level: 15
     tags:
     - tags: {shop: supermarket}
       shapes: [supermarket_cart]
@@ -529,6 +538,7 @@ node_icons:
       shapes: [table]
 
   - group: "Big objects not for all"
+    start_zoom_level: 15
     tags:
     - tags: {building: apartments}
       shapes: [apartments]
@@ -551,6 +561,7 @@ node_icons:
       shapes: [telephone]
 
   - group: "Not important big objects"
+    start_zoom_level: 15
     tags:
     - tags: {man_made: communications_tower}
       location_restrictions: {include: jp}
@@ -571,6 +582,7 @@ node_icons:
       shapes: [garages]
 
   - group: "Emergency"
+    start_zoom_level: 15
     tags:
     - tags: {emergency: defibrillator}
       shapes: [{shape: defibrillator, color: emergency_color}]
@@ -584,6 +596,7 @@ node_icons:
       shapes: [{shape: sos_phone, color: emergency_color}]
 
   - group: "Transport-important middle objects"
+    start_zoom_level: 16
     tags:
     - tags: {ford: "yes"}
       shapes: [ford]
@@ -625,6 +638,7 @@ node_icons:
       shapes: [bump]
 
   - group: "Important middle objects"
+    start_zoom_level: 16
     tags:
     - tags: {tourism: attraction, attraction: amusement_ride}
       shapes: [amusement_ride]
@@ -634,6 +648,7 @@ node_icons:
       shapes: [shelter]
 
   - group: "Normal middle objects"
+    start_zoom_level: 17
     tags:
     - tags: {shop: kiosk}
       shapes: [kiosk]
@@ -653,6 +668,7 @@ node_icons:
       shapes: [pipeline]
 
   - group: "Not important middle objects"
+    start_zoom_level: 17
     tags:
     - tags: {building: ventilation_shaft}
       shapes: [ventilation]
@@ -915,6 +931,7 @@ node_icons:
       add_shapes: [phone]
 
   - group: "Important small objects"
+    start_zoom_level: 17
     tags:
     - tags: {historic: cannon}
       shapes: [cannon]
@@ -999,6 +1016,7 @@ node_icons:
       shapes: {christmas_tree}
 
   - group: "Normal small objects"
+    start_zoom_level: 18
     tags:
     - tags: {amenity: binoculars}
       shapes: [binoculars_on_pole]
@@ -1044,6 +1062,7 @@ node_icons:
       shapes: [golf_pin]
 
   - group: "Entrances"
+    start_zoom_level: 18
     tags:
     - tags: {amenity: parking_entrance}
       shapes:
@@ -1073,6 +1092,7 @@ node_icons:
       shapes: [no_door]
 
   - group: "Not important small objects"
+    start_zoom_level: 18
     tags:
     - tags: {amenity: bench}
       shapes: [bench]
@@ -1228,6 +1248,7 @@ node_icons:
       shapes: [bollard]
 
   - group: "Indoor"
+    start_zoom_level: 18
     tags:
     - tags: {door: "yes"}
       shapes: [entrance]

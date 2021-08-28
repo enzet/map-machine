@@ -9,6 +9,7 @@ from colour import Color
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+DEFAULT_FONT_SIZE: float = 10.0
 DEFAULT_COLOR: Color = Color("#444444")
 
 
@@ -20,7 +21,7 @@ class Label:
 
     text: str
     fill: Color = DEFAULT_COLOR
-    size: float = 10.0
+    size: float = DEFAULT_FONT_SIZE
 
 
 def get_address(

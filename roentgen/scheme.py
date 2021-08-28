@@ -94,12 +94,18 @@ class Matcher:
     Tag matching.
     """
 
-    def __init__(self, structure: dict[str, Any]) -> None:
+    def __init__(
+        self, structure: dict[str, Any], group: Optional[dict[str, Any]] = None
+    ) -> None:
         self.tags: dict[str, str] = structure["tags"]
 
         self.exception: dict[str, str] = {}
         if "exception" in structure:
             self.exception = structure["exception"]
+
+        self.start_zoom_level: Optional[int] = None
+        if group is not None and "start_zoom_level" in group:
+            self.start_zoom_level = group["start_zoom_level"]
 
         self.replace_shapes: bool = True
         if "replace_shapes" in structure:
@@ -108,6 +114,13 @@ class Matcher:
         self.location_restrictions: dict[str, str] = {}
         if "location_restrictions" in structure:
             self.location_restrictions = structure["location_restrictions"]
+
+    def check_zoom_level(self, zoom_level: int):
+        """Check whether zoom level is matching."""
+        return (
+            self.start_zoom_level is None
+            or zoom_level >= self.start_zoom_level
+        )
 
     def is_matched(self, tags: dict[str, str]) -> bool:
         """
@@ -118,8 +131,6 @@ class Matcher:
         if self.location_restrictions:
             return False  # FIXME: implement
 
-        matched: bool = True
-
         for config_tag_key in self.tags:
             config_tag_key: str
             tag_matcher = self.tags[config_tag_key]
@@ -127,8 +138,7 @@ class Matcher:
                 is_matched_tag(config_tag_key, tag_matcher, tags)
                 == MatchingType.NOT_MATCHED
             ):
-                matched = False
-                break
+                return False
 
         if self.exception:
             for config_tag_key in self.exception:
@@ -138,10 +148,9 @@ class Matcher:
                     is_matched_tag(config_tag_key, tag_matcher, tags)
                     != MatchingType.NOT_MATCHED
                 ):
-                    matched = False
-                    break
+                    return False
 
-        return matched
+        return True
 
     def get_mapcss_selector(self, prefix: str = "") -> str:
         """
@@ -167,9 +176,11 @@ class NodeMatcher(Matcher):
     Tag specification matcher.
     """
 
-    def __init__(self, structure: dict[str, Any]) -> None:
+    def __init__(
+        self, structure: dict[str, Any], group: dict[str, Any]
+    ) -> None:
         # Dictionary with tag keys and values, value lists, or "*"
-        super().__init__(structure)
+        super().__init__(structure, group)
 
         self.draw: bool = True
         if "draw" in structure:
@@ -268,7 +279,7 @@ class Scheme:
         self.node_matchers: list[NodeMatcher] = []
         for group in content["node_icons"]:
             for element in group["tags"]:
-                self.node_matchers.append(NodeMatcher(element))
+                self.node_matchers.append(NodeMatcher(element, group))
 
         self.colors: dict[str, str] = content["colors"]
         self.material_colors: dict[str, str] = content["material_colors"]
@@ -341,13 +352,15 @@ class Scheme:
         extractor: ShapeExtractor,
         tags: dict[str, Any],
         processed: set[str],
-    ) -> tuple[IconSet, int]:
+        zoom_level: int,
+    ) -> tuple[Optional[IconSet], int]:
         """
         Construct icon set.
 
         :param extractor: extractor with icon specifications
         :param tags: OpenStreetMap element tags dictionary
         :param processed: set of already processed tag keys
+        :param zoom_level: zoom level in current context
         :return (icon set, icon priority)
         """
         tags_hash: str = (
@@ -365,9 +378,10 @@ class Scheme:
         for matcher in self.node_matchers:
             if not matcher.replace_shapes and main_icon:
                 continue
-            matched: bool = matcher.is_matched(tags)
-            if not matched:
+            if not matcher.is_matched(tags):
                 continue
+            if not matcher.check_zoom_level(zoom_level):
+                return None, 0
             matcher_tags: set[str] = set(matcher.tags.keys())
             priority = len(self.node_matchers) - index
             if not matcher.draw:

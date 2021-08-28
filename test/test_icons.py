@@ -24,7 +24,7 @@ def test_grid(init_collection: IconCollection) -> None:
 
 def test_icons_by_id(init_collection: IconCollection) -> None:
     """Test individual icons drawing."""
-    init_collection.draw_icons(workspace.get_icons_by_id_path(), by_name=False)
+    init_collection.draw_icons(workspace.get_icons_by_id_path())
 
 
 def test_icons_by_name(init_collection: IconCollection) -> None:
@@ -35,7 +35,7 @@ def test_icons_by_name(init_collection: IconCollection) -> None:
 def get_icon(tags: dict[str, str]) -> IconSet:
     """Construct icon from tags."""
     processed: set[str] = set()
-    icon, _ = SCHEME.get_icon(SHAPE_EXTRACTOR, tags, processed)
+    icon, _ = SCHEME.get_icon(SHAPE_EXTRACTOR, tags, processed, 18)
     return icon
 
 

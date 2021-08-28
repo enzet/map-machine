@@ -19,6 +19,9 @@ from roentgen.scheme import LineStyle, RoadMatcher, Scheme
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+BUILDING_HEIGHT_SCALE: float = 2.5
+BUILDING_MINIMAL_HEIGHT: float = 8.0
+
 
 class Figure(Tagged):
     """
@@ -34,13 +37,10 @@ class Figure(Tagged):
         super().__init__()
 
         self.tags: dict[str, str] = tags
-        self.inners: list[list[OSMNode]] = []
-        self.outers: list[list[OSMNode]] = []
-
-        for inner_nodes in inners:
-            self.inners.append(make_clockwise(inner_nodes))
-        for outer_nodes in outers:
-            self.outers.append(make_counter_clockwise(outer_nodes))
+        self.inners: list[list[OSMNode]] = list(map(make_clockwise, inners))
+        self.outers: list[list[OSMNode]] = list(
+            map(make_counter_clockwise, outers)
+        )
 
     def get_path(
         self, flinger: Flinger, shift: np.ndarray = np.array((0, 0))
@@ -92,16 +92,16 @@ class Building(Figure):
 
         self.parts = sorted(self.parts)
 
-        self.height: float = 8.0
+        self.height: float = BUILDING_MINIMAL_HEIGHT
         self.min_height: float = 0.0
 
         levels: Optional[str] = self.get_float("building:levels")
         if levels:
-            self.height = float(levels) * 2.5
+            self.height = float(levels) * BUILDING_HEIGHT_SCALE
 
         levels: Optional[str] = self.get_float("building:min_level")
         if levels:
-            self.min_height = float(levels) * 2.5
+            self.min_height = float(levels) * BUILDING_HEIGHT_SCALE
 
         height: Optional[float] = self.get_length("height")
         if height:

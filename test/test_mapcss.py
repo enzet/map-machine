@@ -13,7 +13,7 @@ def test_mapcss() -> None:
     """Test MapCSS generation."""
     writer: MapCSSWriter = MapCSSWriter(SCHEME, "icons")
     matcher: NodeMatcher = NodeMatcher(
-        {"tags": {"natural": "tree"}, "shapes": ["tree"]}
+        {"tags": {"natural": "tree"}, "shapes": ["tree"]}, {}
     )
     selector = writer.add_selector("node", matcher)
     assert (

@@ -251,21 +251,25 @@ class Constructor:
                 priority: int
                 icon_set: IconSet
                 icon_set, priority = self.scheme.get_icon(
-                    self.extractor, line.tags, processed
-                )
-                labels: list[Label] = self.scheme.construct_text(
-                    line.tags, "all", processed
-                )
-                point: Point = Point(
-                    icon_set,
-                    labels,
+                    self.extractor,
                     line.tags,
                     processed,
-                    center_point,
-                    is_for_node=False,
-                    priority=priority,
-                )  # fmt: skip
-                self.points.append(point)
+                    self.configuration.zoom_level,
+                )
+                if icon_set is not None:
+                    labels: list[Label] = self.scheme.construct_text(
+                        line.tags, "all", processed
+                    )
+                    point: Point = Point(
+                        icon_set,
+                        labels,
+                        line.tags,
+                        processed,
+                        center_point,
+                        is_for_node=False,
+                        priority=priority,
+                    )
+                    self.points.append(point)
 
         if not line_styles:
             if DEBUG:
@@ -284,16 +288,25 @@ class Constructor:
             priority: int
             icon_set: IconSet
             icon_set, priority = self.scheme.get_icon(
-                self.extractor, line.tags, processed
+                self.extractor,
+                line.tags,
+                processed,
+                self.configuration.zoom_level,
             )
-            labels: list[Label] = self.scheme.construct_text(
-                line.tags, "all", processed
-            )
-            point: Point = Point(
-                icon_set, labels, line.tags, processed, center_point,
-                is_for_node=False, priority=priority,
-            )  # fmt: skip
-            self.points.append(point)
+            if icon_set is not None:
+                labels: list[Label] = self.scheme.construct_text(
+                    line.tags, "all", processed
+                )
+                point: Point = Point(
+                    icon_set,
+                    labels,
+                    line.tags,
+                    processed,
+                    center_point,
+                    is_for_node=False,
+                    priority=priority,
+                )
+                self.points.append(point)
 
     def draw_special_mode(
         self,
@@ -385,8 +398,10 @@ class Constructor:
             return
 
         icon_set, priority = self.scheme.get_icon(
-            self.extractor, tags, processed
+            self.extractor, tags, processed, self.configuration.zoom_level
         )
+        if icon_set is None:
+            return
         labels: list[Label] = self.scheme.construct_text(tags, "all", processed)
         self.scheme.process_ignored(tags, processed)
 

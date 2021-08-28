@@ -48,6 +48,7 @@ class MapConfiguration:
     drawing_mode: DrawingMode = DrawingMode.NORMAL
     building_mode: BuildingMode = BuildingMode.FLAT
     label_mode: LabelMode = LabelMode.MAIN
+    zoom_level: int = 18
     overlap: int = 12
     level: str = "overground"
     seed: str = ""
@@ -59,6 +60,7 @@ class MapConfiguration:
             DrawingMode(options.mode),
             BuildingMode(options.buildings),
             LabelMode(options.label_mode),
+            options.zoom,
             options.overlap,
             options.level,
             options.seed,

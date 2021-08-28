@@ -15,15 +15,15 @@ import numpy as np
 import svgwrite
 from PIL import Image
 
+from roentgen.boundary_box import BoundaryBox
 from roentgen.constructor import Constructor
 from roentgen.flinger import Flinger
 from roentgen.icon import ShapeExtractor
-from roentgen.mapper import Map
 from roentgen.map_configuration import MapConfiguration
+from roentgen.mapper import Map
 from roentgen.osm_getter import NetworkError, get_osm
 from roentgen.osm_reader import OSMData, OSMReader
 from roentgen.scheme import Scheme
-from roentgen.boundary_box import BoundaryBox
 from roentgen.workspace import workspace
 
 __author__ = "Sergey Vartanov"
@@ -398,8 +398,6 @@ def parse_zoom_level(zoom_level_specification: str) -> list[int]:
     def parse(zoom_level: str) -> int:
         """Parse zoom level."""
         parsed_zoom_level: int = int(zoom_level)
-        if parsed_zoom_level <= 0:
-            raise ScaleConfigurationException("Non positive zoom level.")
         if parsed_zoom_level > 20:
             raise ScaleConfigurationException("Scale is too big.")
         return parsed_zoom_level
