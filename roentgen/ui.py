@@ -75,14 +75,6 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         help="label drawing mode: " + ", ".join(x.value for x in LabelMode),
     )
     parser.add_argument(
-        "-s",
-        "--scale",
-        type=int,
-        metavar="<integer>",
-        help="OSM zoom level",
-        default=18,
-    )
-    parser.add_argument(
         "--level",
         default="overground",
         help="display only this floor level",
@@ -121,6 +113,14 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         help="construct the minimum amount of tiles that cover requested "
         "boundary box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
+    )
+    parser.add_argument(
+        "-s",
+        "--scales",
+        type=str,
+        metavar="<integer>",
+        help="OSM zoom level",
+        default="18",
     )
 
 
@@ -172,6 +172,14 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         help="path for temporary OSM files",
         default="cache",
         metavar="<path>",
+    )
+    parser.add_argument(
+        "-s",
+        "--scale",
+        type=int,
+        metavar="<integer>",
+        help="OSM zoom level",
+        default=18,
     )
 
 

@@ -51,7 +51,7 @@ class Tile:
         :param coordinates: any coordinates inside tile
         :param scale: OpenStreetMap zoom level
         """
-        lat_rad = np.radians(coordinates[0])
+        lat_rad: np.ndarray = np.radians(coordinates[0])
         n: float = 2.0 ** scale
         x: int = int((coordinates[1] + 180.0) / 360.0 * n)
         y: int = int((1.0 - np.arcsinh(np.tan(lat_rad)) / np.pi) / 2.0 * n)
@@ -200,7 +200,7 @@ class Tiles:
         cls, boundary_box: BoundaryBox, scale: int
     ) -> "Tiles":
         """
-        Create minimal set of tiles that cover boundary box.
+        Create minimal set of tiles that covers boundary box.
 
         :param boundary_box: area to be covered by tiles
         :param scale: OpenStreetMap zoom level
@@ -227,6 +227,15 @@ class Tiles:
 
         return cls(tiles, tile_1, tile_2, scale, extended_boundary_box)
 
+    def load_osm_data(self, cache_path: Path) -> OSMData:
+        """Load OpenStreetMap data."""
+        cache_file_path: Path = (
+            cache_path / f"{self.boundary_box.get_format()}.osm"
+        )
+        get_osm(self.boundary_box, cache_file_path)
+
+        return OSMReader().parse_osm_file(cache_file_path)
+
     def draw_separately(
         self, directory: Path, cache_path: Path, configuration: MapConfiguration
     ) -> None:
@@ -238,12 +247,7 @@ class Tiles:
         :param cache_path: directory for temporary OSM files
         :param configuration: drawing configuration
         """
-        cache_file_path: Path = (
-            cache_path / f"{self.boundary_box.get_format()}.osm"
-        )
-        get_osm(self.boundary_box, cache_file_path)
-
-        osm_data: OSMData = OSMReader().parse_osm_file(cache_file_path)
+        osm_data: OSMData = self.load_osm_data(cache_path)
         for tile in self.tiles:
             file_path: Path = tile.get_file_name(directory)
             if not file_path.exists():
@@ -266,7 +270,11 @@ class Tiles:
         return all(x.exists(directory_name) for x in self.tiles)
 
     def draw(
-        self, directory: Path, cache_path: Path, configuration: MapConfiguration
+        self,
+        directory: Path,
+        cache_path: Path,
+        configuration: MapConfiguration,
+        osm_data: OSMData
     ) -> None:
         """
         Draw one PNG image with all tiles and split it into a set of separate
@@ -275,11 +283,12 @@ class Tiles:
         :param directory: directory for tiles
         :param cache_path: directory for temporary OSM files
         :param configuration: drawing configuration
+        :param osm_data: OpenStreetMap data
         """
         if self.tiles_exist(directory):
             return
 
-        self.draw_image(cache_path, configuration)
+        self.draw_image_from_osm_data(cache_path, configuration, osm_data)
 
         input_path: Path = self.get_file_path(cache_path).with_suffix(".png")
         with input_path.open("rb") as input_file:
@@ -313,15 +322,19 @@ class Tiles:
         :param cache_path: directory for temporary SVG file and OSM files
         :param configuration: drawing configuration
         """
+        osm_data: OSMData = self.load_osm_data(cache_path)
+        self.draw_image_from_osm_data(cache_path, configuration, osm_data)
+
+    def draw_image_from_osm_data(
+        self,
+        cache_path: Path,
+        configuration: MapConfiguration,
+        osm_data: OSMData
+    ) -> None:
+        """Draw all tiles using OSM data."""
         output_path: Path = self.get_file_path(cache_path)
 
         if not output_path.exists():
-            cache_file_path: Path = (
-                cache_path / f"{self.boundary_box.get_format()}.osm"
-            )
-            get_osm(self.boundary_box, cache_file_path)
-
-            osm_data: OSMData = OSMReader().parse_osm_file(cache_file_path)
             top, left = self.tile_1.get_coordinates()
             bottom, right = Tile(
                 self.tile_2.x + 1, self.tile_2.y + 1, self.scale
@@ -360,20 +373,66 @@ class Tiles:
             logging.debug(f"File {png_path} already exists.")
 
 
+class ScaleConfigurationException(Exception):
+    """Wrong configuration format."""
+
+
+def parse_scale(scale_specification: str) -> list[int]:
+    """Parse scale specification."""
+    parts: list[str]
+    if "," in scale_specification:
+        parts = scale_specification.split(",")
+    else:
+        parts = [scale_specification]
+
+    def parse(scale: str) -> int:
+        """Parse scale."""
+        parsed_scale: int = int(scale)
+        if parsed_scale <= 0:
+            raise ScaleConfigurationException("Non positive scale.")
+        if parsed_scale > 20:
+            raise ScaleConfigurationException("Scale is too big.")
+        return parsed_scale
+
+    result: list[int] = []
+    for part in parts:
+        if "-" in part:
+            from_, to = part.split("-")
+            from_scale: int = parse(from_)
+            to_scale: int = parse(to)
+            if from_scale > to_scale:
+                raise ScaleConfigurationException("Wrong range.")
+            result += range(from_scale, to_scale + 1)
+        else:
+            result.append(parse(part))
+
+    return result
+
+
 def ui(options: argparse.Namespace) -> None:
     """Simple user interface for tile generation."""
     directory: Path = workspace.get_tile_path()
     configuration: MapConfiguration = MapConfiguration.from_options(options)
 
+    scales: list[int] = parse_scale(options.scales)
+    min_scale: int = min(scales)
+
     if options.coordinates:
         coordinates: list[float] = list(
             map(float, options.coordinates.strip().split(","))
         )
-        tile: Tile = Tile.from_coordinates(np.array(coordinates), options.scale)
+        min_tile: Tile = Tile.from_coordinates(np.array(coordinates), min_scale)
         try:
-            tile.draw(directory, Path(options.cache), configuration)
+            osm_data: OSMData = min_tile.load_osm_data(Path(options.cache))
         except NetworkError as e:
-            logging.fatal(e.message)
+            raise NetworkError(f"Map is not loaded. {e.message}")
+
+        for scale in scales:
+            tile: Tile = Tile.from_coordinates(np.array(coordinates), scale)
+            try:
+                tile.draw_with_osm_data(osm_data, directory, configuration)
+            except NetworkError as e:
+                logging.fatal(e.message)
     elif options.tile:
         scale, x, y = map(int, options.tile.split("/"))
         tile: Tile = Tile(x, y, scale)
@@ -384,8 +443,16 @@ def ui(options: argparse.Namespace) -> None:
         )
         if boundary_box is None:
             sys.exit(1)
-        tiles: Tiles = Tiles.from_boundary_box(boundary_box, options.scale)
-        tiles.draw(directory, Path(options.cache), configuration)
+        min_tiles: Tiles = Tiles.from_boundary_box(boundary_box, min_scale)
+        extended_boundary_box: BoundaryBox = min_tiles.boundary_box
+        try:
+            osm_data: OSMData = min_tiles.load_osm_data(Path(options.cache))
+        except NetworkError as e:
+            raise NetworkError(f"Map is not loaded. {e.message}")
+
+        for scale in scales:
+            tiles: Tiles = Tiles.from_boundary_box(extended_boundary_box, scale)
+            tiles.draw(directory, Path(options.cache), configuration, osm_data)
     else:
         logging.fatal(
             "Specify either --coordinates, --boundary-box, or --tile."
