@@ -15,3 +15,5 @@ cache/
 # Temporary files
 
 *.swp
+
+*.egg-info

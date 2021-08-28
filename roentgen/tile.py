@@ -48,7 +48,7 @@ class Tile:
         """
         Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
 
-        :param coordinates: any coordinates inside tile
+        :param coordinates: any coordinates inside tile, (latitude, longitude)
         :param scale: OpenStreetMap zoom level
         """
         lat_rad: np.ndarray = np.radians(coordinates[0])
@@ -444,14 +444,13 @@ def ui(options: argparse.Namespace) -> None:
         if boundary_box is None:
             sys.exit(1)
         min_tiles: Tiles = Tiles.from_boundary_box(boundary_box, min_scale)
-        extended_boundary_box: BoundaryBox = min_tiles.boundary_box
         try:
             osm_data: OSMData = min_tiles.load_osm_data(Path(options.cache))
         except NetworkError as e:
             raise NetworkError(f"Map is not loaded. {e.message}")
 
         for scale in scales:
-            tiles: Tiles = Tiles.from_boundary_box(extended_boundary_box, scale)
+            tiles: Tiles = Tiles.from_boundary_box(boundary_box, scale)
             tiles.draw(directory, Path(options.cache), configuration, osm_data)
     else:
         logging.fatal(
