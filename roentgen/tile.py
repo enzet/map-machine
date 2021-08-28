@@ -420,7 +420,6 @@ def parse_zoom_level(zoom_level_specification: str) -> list[int]:
 def ui(options: argparse.Namespace) -> None:
     """Simple user interface for tile generation."""
     directory: Path = workspace.get_tile_path()
-    configuration: MapConfiguration = MapConfiguration.from_options(options)
 
     zoom_levels: list[int] = parse_zoom_level(options.zoom)
     min_zoom_level: int = min(zoom_levels)
@@ -442,12 +441,18 @@ def ui(options: argparse.Namespace) -> None:
                 np.array(coordinates), zoom_level
             )
             try:
+                configuration: MapConfiguration = MapConfiguration.from_options(
+                    options, zoom_level
+                )
                 tile.draw_with_osm_data(osm_data, directory, configuration)
             except NetworkError as e:
                 logging.fatal(e.message)
     elif options.tile:
         zoom_level, x, y = map(int, options.tile.split("/"))
         tile: Tile = Tile(x, y, zoom_level)
+        configuration: MapConfiguration = MapConfiguration.from_options(
+            options, zoom_level
+        )
         tile.draw(directory, Path(options.cache), configuration)
     elif options.boundary_box:
         boundary_box: Optional[BoundaryBox] = BoundaryBox.from_text(
@@ -463,6 +468,9 @@ def ui(options: argparse.Namespace) -> None:
 
         for zoom_level in zoom_levels:
             tiles: Tiles = Tiles.from_boundary_box(boundary_box, zoom_level)
+            configuration: MapConfiguration = MapConfiguration.from_options(
+                options, zoom_level
+            )
             tiles.draw(directory, Path(options.cache), configuration, osm_data)
     else:
         logging.fatal(

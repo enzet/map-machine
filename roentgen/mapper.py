@@ -217,8 +217,9 @@ def ui(options: argparse.Namespace) -> None:
 
     :param options: command-line arguments
     """
-    configuration: MapConfiguration = MapConfiguration.from_options(options)
-
+    configuration: MapConfiguration = MapConfiguration.from_options(
+        options, int(options.zoom)
+    )
     if not options.boundary_box and not options.input_file_name:
         logging.fatal("Specify either --boundary-box, or --input.")
         exit(1)

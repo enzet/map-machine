@@ -54,13 +54,15 @@ class MapConfiguration:
     seed: str = ""
 
     @classmethod
-    def from_options(cls, options: argparse.Namespace) -> "MapConfiguration":
+    def from_options(
+        cls, options: argparse.Namespace, zoom_level: int
+    ) -> "MapConfiguration":
         """Initialize from command-line options."""
         return cls(
             DrawingMode(options.mode),
             BuildingMode(options.buildings),
             LabelMode(options.label_mode),
-            options.zoom,
+            zoom_level,
             options.overlap,
             options.level,
             options.seed,
