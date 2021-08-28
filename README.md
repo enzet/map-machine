@@ -131,7 +131,7 @@ Command `render` is used to generates SVG map from OpenStreetMap data. You can r
 roentgen render \
     -b <min longitude>,<min latitude>,<max longitude>,<max latitude> \
     -o <output file name> \
-    -s <osm zoom level> \
+    -z <OSM zoom level> \
     <other arguments>
 ```
 
@@ -153,7 +153,7 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and write output
 | <span style="white-space: nowrap;">`-o`</span>, <span style="white-space: nowrap;">`--output`</span> `<path>` | output SVG file name, default value: `out/map.svg` |
 | <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | geo boundary box; if first value is negative, enclose the value with quotes and use space before `-` |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
-| <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--scale`</span> `<integer>` | OSM zoom level, default value: 18 |
+| <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<integer>` | OSM zoom level, default value: 18 |
 
 + see [map configuration options](#map-options)
 
@@ -165,10 +165,10 @@ Command `tile` is used to generate PNG tiles for [slippy maps](https://wiki.open
 | Option | Description |
 |---|---|
 | <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location inside the tile |
-| <span style="white-space: nowrap;">`-t`</span>, <span style="white-space: nowrap;">`--tile`</span> `<scale>/<x>/<y>` | tile specification |
+| <span style="white-space: nowrap;">`-t`</span>, <span style="white-space: nowrap;">`--tile`</span> `<zoom level>/<x>/<y>` | tile specification |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
 | <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | construct the minimum amount of tiles that cover requested boundary box |
-| <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--scales`</span> `<integer>` | OSM zoom levels; can be list of numbers or ranges, e.g. `16-18`, `16,17,18`, or `16,18-20`, default value: `18` |
+| <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<integer>` | OSM zoom levels; can be list of numbers or ranges, e.g. `16-18`, `16,17,18`, or `16,18-20`, default value: `18` |
 
 + see [map configuration options](#map-options)
 
@@ -185,15 +185,15 @@ or specify any geographical coordinates inside a tile:
 ```bash
 roentgen tile \
     --coordinates <latitude>,<longitude> \
-    --scales <OSM zoom levels>
+    --zoom <OSM zoom levels>
 ```
 
-Tile will be stored as SVG file `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG file `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates. `--scales` option will be ignored if it is used with `--tile` option.
+Tile will be stored as SVG file `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG file `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates. `--zoom` option will be ignored if it is used with `--tile` option.
 
 Example:
 
 ```bash
-roentgen tile -c 55.7510637,37.6270761 -s 18
+roentgen tile -c 55.7510637,37.6270761 -z 18
 ```
 
 will generate SVG file `out/tiles/tile_18_158471_81953.svg` and PNG file `out/tiles/tile_18_158471_81953.png`.
@@ -205,7 +205,7 @@ Specify boundary box to get the minimal set of tiles that covers the area:
 ```bash
 roentgen tile \
     --boundary-box <min longitude>,<min latitude>,<max longitude>,<max latitude> \
-    --scales <OSM zoom levels>
+    --zoom <OSM zoom levels>
 ```
 
 Boundary box will be extended to the boundaries of the minimal tile set that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point. Map with new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG files `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates.
@@ -216,7 +216,7 @@ Example:
 roentgen tile -b 2.361,48.871,2.368,48.875
 ```
 
-will generate 36 PNG tiles at scale 18 from tile 18/132791/90164 all the way to 18/132796/90169 and two cached files `cache/2.360,48.869,2.370,48.877_18.svg` and `cache/2.360,48.869,2.370,48.877_18.png`.
+will generate 36 PNG tiles at zoom level 18 from tile 18/132791/90164 all the way to 18/132796/90169 and two cached files `cache/2.360,48.869,2.370,48.877_18.svg` and `cache/2.360,48.869,2.370,48.877_18.png`.
 
 Tile server
 -----------
@@ -234,7 +234,7 @@ Stop server interrupting process with <kbd>Ctrl</kbd> + <kbd>C</kbd>.
 Create a minimal amount of tiles that cover specified boundary box for zoom levels 16, 17, 18, and 19:
 
 ```bash
-roentgen tile -b 2.364,48.854,2.367,48.857 -s 16-19
+roentgen tile -b 2.364,48.854,2.367,48.857 -z 16-19
 ```
 
 Run tile server on 127.0.0.1:8080:

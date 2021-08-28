@@ -41,21 +41,23 @@ class Tile:
 
     x: int
     y: int
-    scale: int
+    zoom_level: int
 
     @classmethod
-    def from_coordinates(cls, coordinates: np.ndarray, scale: int) -> "Tile":
+    def from_coordinates(
+        cls, coordinates: np.ndarray, zoom_level: int
+    ) -> "Tile":
         """
         Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
 
         :param coordinates: any coordinates inside tile, (latitude, longitude)
-        :param scale: OpenStreetMap zoom level
+        :param zoom_level: zoom level in OpenStreetMap terminology
         """
         lat_rad: np.ndarray = np.radians(coordinates[0])
-        n: float = 2.0 ** scale
+        n: float = 2.0 ** zoom_level
         x: int = int((coordinates[1] + 180.0) / 360.0 * n)
         y: int = int((1.0 - np.arcsinh(np.tan(lat_rad)) / np.pi) / 2.0 * n)
-        return cls(x, y, scale)
+        return cls(x, y, zoom_level)
 
     def get_coordinates(self) -> np.ndarray:
         """
@@ -63,7 +65,7 @@ class Tile:
 
         Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
         """
-        n: float = 2.0 ** self.scale
+        n: float = 2.0 ** self.zoom_level
         lon_deg: float = self.x / n * 360.0 - 180.0
         lat_rad: float = np.arctan(np.sinh(np.pi * (1 - 2 * self.y / n)))
         lat_deg: np.ndarray = np.degrees(lat_rad)
@@ -76,14 +78,14 @@ class Tile:
         """
         return (
             self.get_coordinates(),
-            Tile(self.x + 1, self.y + 1, self.scale).get_coordinates(),
+            Tile(self.x + 1, self.y + 1, self.zoom_level).get_coordinates(),
         )
 
     def get_extended_boundary_box(self) -> BoundaryBox:
         """Same as get_boundary_box, but with extended boundaries."""
         point_1: np.ndarray = self.get_coordinates()
         point_2: np.ndarray = Tile(
-            self.x + 1, self.y + 1, self.scale
+            self.x + 1, self.y + 1, self.zoom_level
         ).get_coordinates()
 
         return BoundaryBox(
@@ -105,7 +107,7 @@ class Tile:
 
     def get_file_name(self, directory_name: Path) -> Path:
         """Get tile output SVG file path."""
-        return directory_name / f"tile_{self.scale}_{self.x}_{self.y}.svg"
+        return directory_name / f"tile_{self.zoom_level}_{self.x}_{self.y}.svg"
 
     def exists(self, directory_name: Path) -> bool:
         """Check whether the tile is drawn."""
@@ -114,7 +116,8 @@ class Tile:
     def get_carto_address(self) -> str:
         """Get URL of this tile from the OpenStreetMap server."""
         return (
-            f"https://tile.openstreetmap.org/{self.scale}/{self.x}/{self.y}.png"
+            f"https://tile.openstreetmap.org/"
+            f"{self.zoom_level}/{self.x}/{self.y}.png"
         )
 
     def draw(
@@ -146,11 +149,11 @@ class Tile:
         """Draw SVG and PNG tile using OpenStreetMap data."""
         top, left = self.get_coordinates()
         bottom, right = Tile(
-            self.x + 1, self.y + 1, self.scale
+            self.x + 1, self.y + 1, self.zoom_level
         ).get_coordinates()
 
         flinger: Flinger = Flinger(
-            BoundaryBox(left, bottom, right, top), self.scale
+            BoundaryBox(left, bottom, right, top), self.zoom_level
         )
         size: np.ndarray = flinger.size
 
@@ -192,31 +195,33 @@ class Tiles:
     tiles: list[Tile]
     tile_1: Tile  # Left top tile.
     tile_2: Tile  # Right bottom tile.
-    scale: int  # OpenStreetMap zoom level.
+    zoom_level: int  # OpenStreetMap zoom level.
     boundary_box: BoundaryBox
 
     @classmethod
     def from_boundary_box(
-        cls, boundary_box: BoundaryBox, scale: int
+        cls, boundary_box: BoundaryBox, zoom_level: int
     ) -> "Tiles":
         """
         Create minimal set of tiles that covers boundary box.
 
         :param boundary_box: area to be covered by tiles
-        :param scale: OpenStreetMap zoom level
+        :param zoom_level: zoom level in OpenStreetMap terminology
         """
         tiles: list[Tile] = []
-        tile_1: Tile = Tile.from_coordinates(boundary_box.get_left_top(), scale)
+        tile_1: Tile = Tile.from_coordinates(
+            boundary_box.get_left_top(), zoom_level
+        )
         tile_2: Tile = Tile.from_coordinates(
-            boundary_box.get_right_bottom(), scale
+            boundary_box.get_right_bottom(), zoom_level
         )
         for x in range(tile_1.x, tile_2.x + 1):
             for y in range(tile_1.y, tile_2.y + 1):
-                tiles.append(Tile(x, y, scale))
+                tiles.append(Tile(x, y, zoom_level))
 
         latitude_2, longitude_1 = tile_1.get_coordinates()
         latitude_1, longitude_2 = Tile(
-            tile_2.x + 1, tile_2.y + 1, scale
+            tile_2.x + 1, tile_2.y + 1, zoom_level
         ).get_coordinates()
         assert longitude_2 > longitude_1
         assert latitude_2 > latitude_1
@@ -225,7 +230,7 @@ class Tiles:
             longitude_1, latitude_1, longitude_2, latitude_2
         ).round()
 
-        return cls(tiles, tile_1, tile_2, scale, extended_boundary_box)
+        return cls(tiles, tile_1, tile_2, zoom_level, extended_boundary_box)
 
     def load_osm_data(self, cache_path: Path) -> OSMData:
         """Load OpenStreetMap data."""
@@ -307,11 +312,16 @@ class Tiles:
                 cropped.crop((0, 0, TILE_WIDTH, TILE_HEIGHT)).save(
                     tile.get_file_name(directory).with_suffix(".png")
                 )
-                logging.info(f"Tile {tile.scale}/{tile.x}/{tile.y} is created.")
+                logging.info(
+                    f"Tile {tile.zoom_level}/{tile.x}/{tile.y} is created."
+                )
 
     def get_file_path(self, cache_path: Path) -> Path:
         """Get path of the output SVG file."""
-        return cache_path / f"{self.boundary_box.get_format()}_{self.scale}.svg"
+        return (
+            cache_path
+            / f"{self.boundary_box.get_format()}_{self.zoom_level}.svg"
+        )
 
     def draw_image(
         self, cache_path: Path, configuration: MapConfiguration
@@ -337,11 +347,11 @@ class Tiles:
         if not output_path.exists():
             top, left = self.tile_1.get_coordinates()
             bottom, right = Tile(
-                self.tile_2.x + 1, self.tile_2.y + 1, self.scale
+                self.tile_2.x + 1, self.tile_2.y + 1, self.zoom_level
             ).get_coordinates()
 
             flinger: Flinger = Flinger(
-                BoundaryBox(left, bottom, right, top), self.scale
+                BoundaryBox(left, bottom, right, top), self.zoom_level
             )
             extractor: ShapeExtractor = ShapeExtractor(
                 workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
@@ -377,32 +387,32 @@ class ScaleConfigurationException(Exception):
     """Wrong configuration format."""
 
 
-def parse_scale(scale_specification: str) -> list[int]:
-    """Parse scale specification."""
+def parse_zoom_level(zoom_level_specification: str) -> list[int]:
+    """Parse zoom level specification."""
     parts: list[str]
-    if "," in scale_specification:
-        parts = scale_specification.split(",")
+    if "," in zoom_level_specification:
+        parts = zoom_level_specification.split(",")
     else:
-        parts = [scale_specification]
+        parts = [zoom_level_specification]
 
-    def parse(scale: str) -> int:
-        """Parse scale."""
-        parsed_scale: int = int(scale)
-        if parsed_scale <= 0:
-            raise ScaleConfigurationException("Non positive scale.")
-        if parsed_scale > 20:
+    def parse(zoom_level: str) -> int:
+        """Parse zoom level."""
+        parsed_zoom_level: int = int(zoom_level)
+        if parsed_zoom_level <= 0:
+            raise ScaleConfigurationException("Non positive zoom level.")
+        if parsed_zoom_level > 20:
             raise ScaleConfigurationException("Scale is too big.")
-        return parsed_scale
+        return parsed_zoom_level
 
     result: list[int] = []
     for part in parts:
         if "-" in part:
             from_, to = part.split("-")
-            from_scale: int = parse(from_)
-            to_scale: int = parse(to)
-            if from_scale > to_scale:
+            from_zoom_level: int = parse(from_)
+            to_zoom_level: int = parse(to)
+            if from_zoom_level > to_zoom_level:
                 raise ScaleConfigurationException("Wrong range.")
-            result += range(from_scale, to_scale + 1)
+            result += range(from_zoom_level, to_zoom_level + 1)
         else:
             result.append(parse(part))
 
@@ -414,28 +424,32 @@ def ui(options: argparse.Namespace) -> None:
     directory: Path = workspace.get_tile_path()
     configuration: MapConfiguration = MapConfiguration.from_options(options)
 
-    scales: list[int] = parse_scale(options.scales)
-    min_scale: int = min(scales)
+    zoom_levels: list[int] = parse_zoom_level(options.zoom)
+    min_zoom_level: int = min(zoom_levels)
 
     if options.coordinates:
         coordinates: list[float] = list(
             map(float, options.coordinates.strip().split(","))
         )
-        min_tile: Tile = Tile.from_coordinates(np.array(coordinates), min_scale)
+        min_tile: Tile = Tile.from_coordinates(
+            np.array(coordinates), min_zoom_level
+        )
         try:
             osm_data: OSMData = min_tile.load_osm_data(Path(options.cache))
         except NetworkError as e:
             raise NetworkError(f"Map is not loaded. {e.message}")
 
-        for scale in scales:
-            tile: Tile = Tile.from_coordinates(np.array(coordinates), scale)
+        for zoom_level in zoom_levels:
+            tile: Tile = Tile.from_coordinates(
+                np.array(coordinates), zoom_level
+            )
             try:
                 tile.draw_with_osm_data(osm_data, directory, configuration)
             except NetworkError as e:
                 logging.fatal(e.message)
     elif options.tile:
-        scale, x, y = map(int, options.tile.split("/"))
-        tile: Tile = Tile(x, y, scale)
+        zoom_level, x, y = map(int, options.tile.split("/"))
+        tile: Tile = Tile(x, y, zoom_level)
         tile.draw(directory, Path(options.cache), configuration)
     elif options.boundary_box:
         boundary_box: Optional[BoundaryBox] = BoundaryBox.from_text(
@@ -443,14 +457,14 @@ def ui(options: argparse.Namespace) -> None:
         )
         if boundary_box is None:
             sys.exit(1)
-        min_tiles: Tiles = Tiles.from_boundary_box(boundary_box, min_scale)
+        min_tiles: Tiles = Tiles.from_boundary_box(boundary_box, min_zoom_level)
         try:
             osm_data: OSMData = min_tiles.load_osm_data(Path(options.cache))
         except NetworkError as e:
             raise NetworkError(f"Map is not loaded. {e.message}")
 
-        for scale in scales:
-            tiles: Tiles = Tiles.from_boundary_box(boundary_box, scale)
+        for zoom_level in zoom_levels:
+            tiles: Tiles = Tiles.from_boundary_box(boundary_box, zoom_level)
             tiles.draw(directory, Path(options.cache), configuration, osm_data)
     else:
         logging.fatal(

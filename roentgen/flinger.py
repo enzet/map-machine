@@ -46,25 +46,28 @@ class Flinger:
     def __init__(
         self,
         geo_boundaries: BoundaryBox,
-        scale: float = 18,
+        zoom_level: float = 18,
         border: np.ndarray = np.array((0, 0)),
     ) -> None:
         """
         :param geo_boundaries: minimum and maximum latitude and longitude
-        :param scale: OSM zoom level
+        :param zoom_level: zoom level in OpenStreetMap terminology
         :param border: size of padding in pixels
         """
         self.geo_boundaries: BoundaryBox = geo_boundaries
         self.border: np.ndarray = border
         self.ratio: float = (
-            osm_zoom_level_to_pixels_per_meter(scale) * EQUATOR_LENGTH / 360
+            osm_zoom_level_to_pixels_per_meter(zoom_level)
+            * EQUATOR_LENGTH
+            / 360
         )
         self.size: np.ndarray = border * 2 + self.ratio * (
             pseudo_mercator(self.geo_boundaries.max_())
             - pseudo_mercator(self.geo_boundaries.min_())
         )
-        self.pixels_per_meter: float = osm_zoom_level_to_pixels_per_meter(scale)
-
+        self.pixels_per_meter: float = osm_zoom_level_to_pixels_per_meter(
+            zoom_level
+        )
         self.size: np.ndarray = self.size.astype(int).astype(float)
 
     def fling(self, coordinates: np.ndarray) -> np.ndarray:

@@ -39,17 +39,17 @@ class _Handler(SimpleHTTPRequestHandler):
         if not (len(parts) == 5 and not parts[0] and parts[1] == "tiles"):
             return
 
-        scale: int = int(parts[2])
+        zoom_level: int = int(parts[2])
         x: int = int(parts[3])
         y: int = int(parts[4])
         tile_path: Path = workspace.get_tile_path()
-        png_path: Path = tile_path / f"tile_{scale}_{x}_{y}.png"
+        png_path: Path = tile_path / f"tile_{zoom_level}_{x}_{y}.png"
 
         if self.update_cache:
             svg_path: Path = png_path.with_suffix(".svg")
             if not png_path.exists():
                 if not svg_path.exists():
-                    tile = Tile(x, y, scale)
+                    tile = Tile(x, y, zoom_level)
                     tile.draw(tile_path, self.cache, self.options)
                 with svg_path.open() as input_file:
                     cairosvg.svg2png(

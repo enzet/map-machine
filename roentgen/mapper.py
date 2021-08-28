@@ -273,7 +273,7 @@ def ui(options: argparse.Namespace) -> None:
         else:
             view_box = osm_data.view_box
 
-    flinger: Flinger = Flinger(view_box, options.scale)
+    flinger: Flinger = Flinger(view_box, options.zoom)
     size: np.ndarray = flinger.size
 
     svg: svgwrite.Drawing = svgwrite.Drawing(

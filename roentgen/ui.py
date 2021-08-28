@@ -98,7 +98,7 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "-t",
         "--tile",
-        metavar="<scale>/<x>/<y>",
+        metavar="<zoom level>/<x>/<y>",
         help="tile specification",
     )
     parser.add_argument(
@@ -115,8 +115,8 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
     )
     parser.add_argument(
-        "-s",
-        "--scales",
+        "-z",
+        "--zoom",
         type=str,
         metavar="<integer>",
         help="OSM zoom levels; can be list of numbers or ranges, e.g. `16-18`, "
@@ -175,8 +175,8 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         metavar="<path>",
     )
     parser.add_argument(
-        "-s",
-        "--scale",
+        "-z",
+        "--zoom",
         type=int,
         metavar="<integer>",
         help="OSM zoom level",
