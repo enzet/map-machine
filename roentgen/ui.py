@@ -119,7 +119,8 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         "--scales",
         type=str,
         metavar="<integer>",
-        help="OSM zoom level",
+        help="OSM zoom levels; can be list of numbers or ranges, e.g. `16-18`, "
+        "`16,17,18`, or `16,18-20`",
         default="18",
     )
 

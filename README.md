@@ -153,13 +153,9 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and write output
 | <span style="white-space: nowrap;">`-o`</span>, <span style="white-space: nowrap;">`--output`</span> `<path>` | output SVG file name, default value: `out/map.svg` |
 | <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | geo boundary box; if first value is negative, enclose the value with quotes and use space before `-` |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
-| <span style="white-space: nowrap;">`--buildings`</span> `<mode>` | building drawing mode: flat, isometric, isometric-no-parts, default value: `flat` |
-| <span style="white-space: nowrap;">`--mode`</span> `<string>` | map drawing mode: normal, author, time, default value: `normal` |
-| <span style="white-space: nowrap;">`--overlap`</span> `<integer>` | how many pixels should be left around icons and text, default value: 12 |
-| <span style="white-space: nowrap;">`--labels`</span> `<string>` | label drawing mode: no, main, all, default value: `main` |
 | <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--scale`</span> `<integer>` | OSM zoom level, default value: 18 |
-| <span style="white-space: nowrap;">`--level`</span> | display only this floor level, default value: `overground` |
-| <span style="white-space: nowrap;">`--seed`</span> `<string>` | seed for random |
+
++ see [map configuration options](#map-options)
 
 Tile generation
 ---------------
@@ -172,13 +168,9 @@ Command `tile` is used to generate PNG tiles for [slippy maps](https://wiki.open
 | <span style="white-space: nowrap;">`-t`</span>, <span style="white-space: nowrap;">`--tile`</span> `<scale>/<x>/<y>` | tile specification |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
 | <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | construct the minimum amount of tiles that cover requested boundary box |
-| <span style="white-space: nowrap;">`--buildings`</span> `<mode>` | building drawing mode: flat, isometric, isometric-no-parts, default value: `flat` |
-| <span style="white-space: nowrap;">`--mode`</span> `<string>` | map drawing mode: normal, author, time, default value: `normal` |
-| <span style="white-space: nowrap;">`--overlap`</span> `<integer>` | how many pixels should be left around icons and text, default value: 12 |
-| <span style="white-space: nowrap;">`--labels`</span> `<string>` | label drawing mode: no, main, all, default value: `main` |
-| <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--scale`</span> `<integer>` | OSM zoom level, default value: 18 |
-| <span style="white-space: nowrap;">`--level`</span> | display only this floor level, default value: `overground` |
-| <span style="white-space: nowrap;">`--seed`</span> `<string>` | seed for random |
+| <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--scales`</span> `<integer>` | OSM zoom levels; can be list of numbers or ranges, e.g. `16-18`, `16,17,18`, or `16,18-20`, default value: `18` |
+
++ see [map configuration options](#map-options)
 
 ### Generate one tile ###
 
@@ -193,10 +185,10 @@ or specify any geographical coordinates inside a tile:
 ```bash
 roentgen tile \
     --coordinates <latitude>,<longitude> \
-    --scale <OSM zoom level>
+    --scales <OSM zoom levels>
 ```
 
-Tile will be stored as SVG file `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG file `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates. `--scale` option will be ignored if it is used with `--tile` option.
+Tile will be stored as SVG file `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG file `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates. `--scales` option will be ignored if it is used with `--tile` option.
 
 Example:
 
@@ -213,7 +205,7 @@ Specify boundary box to get the minimal set of tiles that covers the area:
 ```bash
 roentgen tile \
     --boundary-box <min longitude>,<min latitude>,<max longitude>,<max latitude> \
-    --scale <OSM zoom level>
+    --scales <OSM zoom levels>
 ```
 
 Boundary box will be extended to the boundaries of the minimal tile set that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point. Map with new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG files `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates.
@@ -236,6 +228,20 @@ roentgen server
 ```
 
 Stop server interrupting process with <kbd>Ctrl</kbd> + <kbd>C</kbd>.
+
+Map options
+-----------
+
+Map configuration options used by `render` and `tile` commands:
+
+| Option | Description |
+|---|---|
+| <span style="white-space: nowrap;">`--buildings`</span> `<mode>` | building drawing mode: flat, isometric, isometric-no-parts, default value: `flat` |
+| <span style="white-space: nowrap;">`--mode`</span> `<string>` | map drawing mode: normal, author, time, default value: `normal` |
+| <span style="white-space: nowrap;">`--overlap`</span> `<integer>` | how many pixels should be left around icons and text, default value: 12 |
+| <span style="white-space: nowrap;">`--labels`</span> `<string>` | label drawing mode: no, main, all, default value: `main` |
+| <span style="white-space: nowrap;">`--level`</span> | display only this floor level, default value: `overground` |
+| <span style="white-space: nowrap;">`--seed`</span> `<string>` | seed for random |
 
 MapCSS 0.2 generation
 ---------------------
@@ -264,7 +270,7 @@ To enable / disable Röntgen map paint style go to <kbd>View</kbd> → <kbd>Map 
 
 ![JOSM example](doc/josm.png)
 
-Example of using Röntgen icons on top of Mapnik style. Map Paint Styles:
+Example of using Röntgen icons on top of Mapnik style in JOSM. Map Paint Styles look like:
 
   * ✓ Mapnik (true)
   * ✓ Röntgen
