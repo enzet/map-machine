@@ -30,6 +30,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 TILE_WIDTH, TILE_HEIGHT = 256, 256
+EXTEND_TO_BIGGER_TILE: bool = False
 
 
 @dataclass
@@ -184,6 +185,17 @@ class Tile:
         with output_file_name.open() as input_file:
             cairosvg.svg2png(file_obj=input_file, write_to=str(output_path))
         logging.info(f"SVG file is rasterized to {output_path}.")
+
+    def subdivide(self, zoom_level: int) -> list["Tile"]:
+        """Get subtiles of the tile."""
+        assert zoom_level >= self.zoom_level
+
+        tiles: list["Tile"] = []
+        n: int = 2 ** (zoom_level - self.zoom_level)
+        for i in range(n):
+            for j in range(n):
+                tiles.append(Tile(n * self.x + i, n * self.y + j, zoom_level))
+        return tiles
 
 
 @dataclass
@@ -382,6 +394,13 @@ class Tiles:
         else:
             logging.debug(f"File {png_path} already exists.")
 
+    def subdivide(self, zoom_level: int) -> "Tiles":
+        """Get subtiles from tiles."""
+        tiles: list[Tile] = []
+        for tile in self.tiles:
+            tiles += tile.subdivide(zoom_level)
+        return Tiles(tiles, tiles[0], tiles[-1], zoom_level, self.boundary_box)
+
 
 class ScaleConfigurationException(Exception):
     """Wrong configuration format."""
@@ -467,7 +486,10 @@ def ui(options: argparse.Namespace) -> None:
             raise NetworkError(f"Map is not loaded. {e.message}")
 
         for zoom_level in zoom_levels:
-            tiles: Tiles = Tiles.from_boundary_box(boundary_box, zoom_level)
+            if EXTEND_TO_BIGGER_TILE:
+                tiles: Tiles = min_tiles.subdivide(zoom_level)
+            else:
+                tiles: Tiles = Tiles.from_boundary_box(boundary_box, zoom_level)
             configuration: MapConfiguration = MapConfiguration.from_options(
                 options, zoom_level
             )
