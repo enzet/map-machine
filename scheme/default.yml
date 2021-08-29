@@ -932,6 +932,12 @@ node_icons:
     - tags: {communication:mobile_phone: "yes"}
       add_shapes: [phone]
 
+  - group: "Moon small objects"
+    start_zoom_level: 0
+    tags:
+    - tags: {man_made: lunokhod}
+      shapes: [lunokhod]
+
   - group: "Important small objects"
     start_zoom_level: 17
     tags:

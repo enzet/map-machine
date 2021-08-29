@@ -437,6 +437,9 @@
     "name": "low horizontal bars"
   },
   "lowered_kerb": {},
+  "lunokhod": {
+    "name": "lunokhod"
+  },
   "maglev": {},
   "main_entrance": {},
   "manhole_drain": {
