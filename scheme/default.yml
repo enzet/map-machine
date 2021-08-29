@@ -669,8 +669,8 @@ node_icons:
     - tags: {pipeline: substation}
       shapes: [pipeline]
 
-  - group: "Not important middle objects"
-    start_zoom_level: 17
+  - group: "Towers, poles, masts"
+    start_zoom_level: 15
     tags:
     - tags: {building: ventilation_shaft}
       shapes: [ventilation]
@@ -1603,8 +1603,16 @@ ways:
       stroke-linecap: round
       stroke-linejoin: round
   - tags: {natural: water}
+    exception: {intermittent: "yes"}
     style:
       fill: water_color
+      # stroke: water_border_color
+      # stroke-width: 1
+    priority: 21
+  - tags: {natural: water, intermittent: "yes"}
+    style:
+      fill: water_color
+      opacity: 0.5
       # stroke: water_border_color
       # stroke-width: 1
     priority: 21

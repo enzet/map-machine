@@ -140,12 +140,8 @@ class Point(Tagged):
         if occupied and occupied.check(position):
             return False
 
-        # Draw outlines.
-
         if self.draw_outline:
             icon.draw(svg, position, outline=True)
-
-        # Draw icons.
 
         icon.draw(svg, position, tags=tags)
 
@@ -153,7 +149,9 @@ class Point(Tagged):
             overlap: int = occupied.overlap
             for i in range(-overlap, overlap):
                 for j in range(-overlap, overlap):
-                    occupied.register((position[0] + i, position[1] + j))
+                    occupied.register(
+                        np.array((position[0] + i, position[1] + j))
+                    )
 
         return True
 
@@ -223,7 +221,9 @@ class Point(Tagged):
 
             for i in range(-int(length / 2), int(length / 2)):
                 for j in range(-12, 5):
-                    occupied.register((int(point[0] + i), int(point[1] + j)))
+                    occupied.register(
+                        np.array((int(point[0] + i), int(point[1] + j)))
+                    )
                     if is_debug:
                         svg.add(svg.rect((point[0] + i, point[1] + j), (1, 1)))
 
