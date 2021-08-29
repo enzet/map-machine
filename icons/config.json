@@ -394,8 +394,14 @@
   "japan_post": {
     "name": "Japanese map symbol for post office"
   },
+  "japan_shinto_shrine": {
+    "name": "Japanese map symbol for shinto shrine"
+  },
   "japan_tv_tower": {
     "name": "Japanese map symbol for TV tower"
+  },
+  "japan_well": {
+    "name": "Japanese map symbol for oil or gas well"
   },
   "jewish": {
     "emoji": "✡️"

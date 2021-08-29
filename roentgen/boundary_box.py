@@ -27,7 +27,7 @@ class BoundaryBox:
     top: float  # Maximum latitude.
 
     @classmethod
-    def from_text(cls, boundary_box: str) -> "BoundaryBox":
+    def from_text(cls, boundary_box: str) -> Optional["BoundaryBox"]:
         """
         Parse boundary box string representation.
 

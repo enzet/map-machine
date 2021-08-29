@@ -45,10 +45,10 @@ class MapConfiguration:
     Map drawing configuration.
     """
 
-    drawing_mode: DrawingMode = DrawingMode.NORMAL
-    building_mode: BuildingMode = BuildingMode.FLAT
-    label_mode: LabelMode = LabelMode.MAIN
-    zoom_level: int = 18
+    drawing_mode: str = DrawingMode.NORMAL
+    building_mode: str = BuildingMode.FLAT
+    label_mode: str = LabelMode.MAIN
+    zoom_level: float = 18.0
     overlap: int = 12
     level: str = "overground"
     seed: str = ""

@@ -265,6 +265,12 @@ L.tileLayer('http://127.0.0.1:8080/tiles/{z}/{x}/{y}', {
 }).addTo(map);
 ```
 
+HTML code:
+
+```html
+<div id="mapid" style="width: 1000px; height: 600px;"></div>
+```
+
 Map options
 -----------
 

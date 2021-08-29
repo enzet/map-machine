@@ -1020,6 +1020,8 @@ node_icons:
     tags:
     - tags: {amenity: binoculars}
       shapes: [binoculars_on_pole]
+    - tags: {amenity: parking_space}
+      shapes: [p_small]
     - tags: {amenity: post_box}
       shapes: [envelope]
     - tags: {amenity: recycling}
@@ -1712,6 +1714,10 @@ ways:
     style:
       fill: parking_color
       opacity: 0.5
+  - tags: {amenity: parking_space}
+    style:
+      stroke: "#000000"
+      opacity: 0.2
 
   - tags: {aeroway: landingpad}
     style:
