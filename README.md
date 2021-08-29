@@ -251,7 +251,9 @@ roentgen server
 Use JavaScript code for [Leaflet](https://leafletjs.com/):
 
 ```js
-zxy', {
+var map = L.map('mapid').setView([48.8555, 2.3655], 18);
+
+L.tileLayer('http://127.0.0.1:8080/tiles/{z}/{x}/{y}', {
     maxZoom: 19,
     attribution: 'Map data &copy; ' +
         '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ' +
