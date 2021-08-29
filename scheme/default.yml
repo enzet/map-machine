@@ -477,6 +477,8 @@ node_icons:
       shapes: [{shape: dog, color: sell_color}]
     - tags: {shop: photo}
       shapes: [{shape: photo_camera, color: sell_color}]
+    - tags: {shop: shoes}
+      shapes: [{shape: shoe, color: sell_color}]
     - tags: {shop: sports}
       shapes: [{shape: dumbbell, color: sell_color}]
     - tags: {shop: milk}

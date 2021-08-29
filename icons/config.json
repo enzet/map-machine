@@ -486,6 +486,9 @@
     "emoji": "P",
     "name": "letter P"
   },
+  "p_small": {
+    "name": "small letter P"
+  },
   "pac_man": {
     "name": "Pac-Man"
   },
@@ -666,6 +669,9 @@
   },
   "shield_volcano": {
     "name": "shield volcano"
+  },
+  "shoe": {
+    "name": "shoe"
   },
   "shop_convenience": {},
   "shower": {
