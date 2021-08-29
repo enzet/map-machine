@@ -70,12 +70,11 @@ def ui(options: argparse.Namespace) -> None:
     """Command-line interface for tile server."""
     server: Optional[HTTPServer] = None
     try:
-        port: int = 8080
         handler = _Handler
         handler.cache = Path(options.cache)
         handler.options = options
-        server: HTTPServer = HTTPServer(("", port), handler)
-        logging.info(f"Server started on port {port}.")
+        server: HTTPServer = HTTPServer(("", options.port), handler)
+        logging.info(f"Server started on port {options.port}.")
         server.serve_forever()
     finally:
         if server:

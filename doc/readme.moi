@@ -190,7 +190,7 @@ will download OSM data to \m {cache/2.284,48.860,2.290,48.865.osm} and write out
 
 \options {render}
 
-+ see \ref {#map-options} {map configuration options}
+plus \ref {#map-options} {map configuration options}
 
 \2 {Tile generation} {tile-generation}
 
@@ -198,7 +198,7 @@ Command \m {tile} is used to generate PNG tiles for \ref {https://wiki.openstree
 
 \options {tile}
 
-+ see \ref {#map-options} {map configuration options}
+plus \ref {#map-options} {map configuration options}
 
 \3 {Generate one tile} {generate-one-tile}
 
@@ -243,6 +243,8 @@ Command \m {server} is used to run tile server for slippy maps.
 \code {roentgen server}
 
 Stop server interrupting process with \kbd {Ctrl} + \kbd {C}.
+
+\options {server}
 
 \3 {Example} {example}
 

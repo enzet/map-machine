@@ -133,6 +133,13 @@ def add_server_arguments(parser: argparse.ArgumentParser) -> None:
         default="cache",
         metavar="<path>",
     )
+    parser.add_argument(
+        "--port",
+        help="port number",
+        default=8080,
+        type=int,
+        metavar="<integer>",
+    )
 
 
 def add_element_arguments(parser: argparse.ArgumentParser) -> None:

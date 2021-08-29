@@ -155,7 +155,7 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and write output
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
 | <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<integer>` | OSM zoom level, default value: 18 |
 
-+ see [map configuration options](#map-options)
+plus [map configuration options](#map-options)
 
 Tile generation
 ---------------
@@ -170,7 +170,7 @@ Command `tile` is used to generate PNG tiles for [slippy maps](https://wiki.open
 | <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | construct the minimum amount of tiles that cover requested boundary box |
 | <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<integer>` | OSM zoom levels; can be list of numbers or ranges, e.g. `16-18`, `16,17,18`, or `16,18-20`, default value: `18` |
 
-+ see [map configuration options](#map-options)
+plus [map configuration options](#map-options)
 
 ### Generate one tile ###
 
@@ -228,6 +228,11 @@ roentgen server
 ```
 
 Stop server interrupting process with <kbd>Ctrl</kbd> + <kbd>C</kbd>.
+
+| Option | Description |
+|---|---|
+| <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
+| <span style="white-space: nowrap;">`--port`</span> `<integer>` | port number, default value: 8080 |
 
 ### Example ###
 
