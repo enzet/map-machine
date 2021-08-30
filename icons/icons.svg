@@ -148,9 +148,9 @@
      showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="553.82243"
-     inkscape:cx="707.79846"
-     inkscape:zoom="11.313708"
+     inkscape:cy="552.05466"
+     inkscape:cx="725.47613"
+     inkscape:zoom="1"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -22687,6 +22687,60 @@
        inkscape:label="#path7779">
       <title
          id="title7781">rocket third stage</title>
+    </path>
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect7783"
+       width="4"
+       height="8"
+       x="726"
+       y="36"
+       rx="1"
+       ry="1" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect7785"
+       width="6"
+       height="2"
+       x="725"
+       y="39"
+       rx="0"
+       ry="0" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect7787"
+       width="1"
+       height="4"
+       x="732"
+       y="38" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect7789"
+       width="1"
+       height="4"
+       x="734"
+       y="38" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect7791"
+       width="1"
+       height="4"
+       x="723"
+       y="38" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect7793"
+       width="1"
+       height="4"
+       x="721"
+       y="38" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 727 52 C 726.446 52 726 52.446 726 53 L 726 55 L 725 55 L 725 57 L 726 57 L 726 59 C 726 59.554 726.446 60 727 60 L 729 60 C 729.554 60 730 59.554 730 59 L 730 57 L 731 57 L 731 55 L 730 55 L 730 53 C 730 52.446 729.554 52 729 52 L 727 52 z M 721 54 L 721 58 L 722 58 L 722 54 L 721 54 z M 723 54 L 723 58 L 724 58 L 724 54 L 723 54 z M 732 54 L 732 58 L 733 58 L 733 54 L 732 54 z M 734 54 L 734 58 L 735 58 L 735 54 L 734 54 z "
+       id="orbiter"
+       inkscape:label="#rect7795">
+      <title
+         id="title7808">orbiter</title>
     </path>
   </g>
 </svg>

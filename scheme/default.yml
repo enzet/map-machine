@@ -943,7 +943,7 @@ node_icons:
     - tags: {man_made: probe}
       shapes: [probe]
     - tags: {man_made: orbiter}
-      shapes: [probe]
+      shapes: [orbiter]
     - tags: {man_made: descent_stage}
       shapes: [descent_stage]
     - tags: {man_made: third_stage}
