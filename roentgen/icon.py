@@ -329,6 +329,7 @@ class Icon:
     """
 
     shape_specifications: list[ShapeSpecification]
+    opacity: float = 1.0
 
     def get_shape_ids(self) -> list[str]:
         """Get all shape identifiers in the icon."""
@@ -356,16 +357,19 @@ class Icon:
         :param tags: tags to be displayed as hint
         :param outline: draw outline for the icon
         """
-        bright: bool = is_bright(self.shape_specifications[0].color)
-        opacity: float = 0.7 if bright else 0.5
+        target = Group(opacity=self.opacity) if self.opacity != 1.0 else svg
         if outline:
+            bright: bool = is_bright(self.shape_specifications[0].color)
+            opacity: float = 0.7 if bright else 0.5
             outline_group: Group = Group(opacity=opacity)
             for shape_specification in self.shape_specifications:
                 shape_specification.draw(outline_group, point, tags, True)
-            svg.add(outline_group)
+            target.add(outline_group)
         else:
             for shape_specification in self.shape_specifications:
-                shape_specification.draw(svg, point, tags)
+                shape_specification.draw(target, point, tags)
+        if self.opacity != 1.0:
+            svg.add(target)
 
     def draw_to_file(
         self,

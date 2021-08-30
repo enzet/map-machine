@@ -14,7 +14,7 @@ BOXES: str = " ▏▎▍▌▋▊▉"
 BOXES_LENGTH: int = len(BOXES)
 
 
-def parse_options(args: argparse.Namespace) -> argparse.Namespace:
+def parse_options(args: list[str]) -> argparse.Namespace:
     """Parse Röntgen command-line options."""
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description="Röntgen. OpenStreetMap renderer with custom icon set"

@@ -949,30 +949,42 @@ node_icons:
       shapes: [lander]
 
     - tags: {man_made: rover, condition: landed}
-      shapes: [{shape: lunokhod, opacity: 0.8}]
+      shapes: [lunokhod]
+      set_opacity: 0.8
     - tags: {man_made: probe, condition: landed}
-      shapes: [{shape: probe, opacity: 0.8}]
+      shapes: [probe]
+      set_opacity: 0.8
     - tags: {man_made: orbiter, condition: landed}
-      shapes: [{shape: orbiter, opacity: 0.8}]
+      shapes: [orbiter]
+      set_opacity: 0.8
     - tags: {man_made: descent_stage, condition: landed}
-      shapes: [{shape: descent_stage, opacity: 0.8}]
+      shapes: [descent_stage]
+      set_opacity: 0.8
     - tags: {man_made: third_stage, condition: landed}
-      shapes: [{shape: third_stage, opacity: 0.8}]
+      shapes: [third_stage]
+      set_opacity: 0.8
     - tags: {man_made: lander, condition: landed}
-      shapes: [{shape: lander, opacity: 0.8}]
+      shapes: [lander]
+      set_opacity: 0.8
 
     - tags: {man_made: rover, condition: crashed}
-      shapes: [{shape: lunokhod, opacity: 0.5}]
+      shapes: [lunokhod]
+      set_opacity: 0.5
     - tags: {man_made: probe, condition: crashed}
-      shapes: [{shape: probe, opacity: 0.5}]
+      shapes: [probe]
+      set_opacity: 0.5
     - tags: {man_made: orbiter, condition: crashed}
-      shapes: [{shape: orbiter, opacity: 0.5}]
+      shapes: [orbiter]
+      set_opacity: 0.5
     - tags: {man_made: descent_stage, condition: crashed}
-      shapes: [{shape: descent_stage, opacity: 0.5}]
+      shapes: [descent_stage]
+      set_opacity: 0.5
     - tags: {man_made: third_stage, condition: crashed}
-      shapes: [{shape: third_stage, opacity: 0.5}]
+      shapes: [third_stage]
+      set_opacity: 0.5
     - tags: {man_made: lander, condition: crashed}
-      shapes: [{shape: lander, opacity: 0.5}]
+      shapes: [lander]
+      set_opacity: 0.5
 
   - group: "Important small objects"
     start_zoom_level: 17

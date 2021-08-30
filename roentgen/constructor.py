@@ -220,7 +220,7 @@ class Constructor:
         if not line.tags:
             return
 
-        building_mode: BuildingMode = self.configuration.building_mode
+        building_mode: str = self.configuration.building_mode
         if "building" in line.tags or (
             building_mode == BuildingMode.ISOMETRIC
             and "building:part" in line.tags

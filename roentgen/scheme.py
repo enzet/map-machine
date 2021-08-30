@@ -201,6 +201,10 @@ class NodeMatcher(Matcher):
         if "set_main_color" in structure:
             self.set_main_color = structure["set_main_color"]
 
+        self.set_opacity: Optional[float] = None
+        if "set_opacity" in structure:
+            self.set_opacity = structure["set_opacity"]
+
         self.under_icon: Optional[IconDescription] = None
         if "under_icon" in structure:
             self.under_icon = structure["under_icon"]
@@ -408,6 +412,8 @@ class Scheme:
                 processed |= matcher_tags
             if matcher.set_main_color and main_icon:
                 main_icon.recolor(self.get_color(matcher.set_main_color))
+            if matcher.set_opacity and main_icon:
+                main_icon.opacity = matcher.set_opacity
 
             index += 1
 
