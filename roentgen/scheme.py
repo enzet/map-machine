@@ -115,7 +115,7 @@ class Matcher:
         if "location_restrictions" in structure:
             self.location_restrictions = structure["location_restrictions"]
 
-    def check_zoom_level(self, zoom_level: int) -> bool:
+    def check_zoom_level(self, zoom_level: float) -> bool:
         """Check whether zoom level is matching."""
         return (
             self.start_zoom_level is None or zoom_level >= self.start_zoom_level
@@ -351,7 +351,7 @@ class Scheme:
         extractor: ShapeExtractor,
         tags: dict[str, Any],
         processed: set[str],
-        zoom_level: int,
+        zoom_level: float,
     ) -> tuple[Optional[IconSet], int]:
         """
         Construct icon set.

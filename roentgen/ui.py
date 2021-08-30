@@ -123,6 +123,14 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         "`16,17,18`, or `16,18-20`",
         default="18",
     )
+    parser.add_argument(
+        "-i",
+        "--input",
+        dest="input_file_name",
+        metavar="<path>",
+        help="input XML file name (if not specified, file will be "
+        "downloaded using OpenStreetMap API)",
+    )
 
 
 def add_server_arguments(parser: argparse.ArgumentParser) -> None:

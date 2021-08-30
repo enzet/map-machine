@@ -494,8 +494,19 @@ def ui(options: argparse.Namespace) -> None:
                 options, zoom_level
             )
             tiles.draw(directory, Path(options.cache), configuration, osm_data)
+    elif options.input_file_name:
+        osm_reader = OSMReader()
+        osm_reader.parse_osm_file(Path(options.input_file_name))
+        osm_data = osm_reader.osm_data
+        boundary_box = osm_data.view_box
+        for zoom_level in zoom_levels:
+            configuration: MapConfiguration = MapConfiguration.from_options(
+                options, zoom_level
+            )
+            tiles: Tiles = Tiles.from_boundary_box(boundary_box, zoom_level)
+            tiles.draw(directory, Path(options.cache), configuration, osm_data)
     else:
         logging.fatal(
-            "Specify either --coordinates, --boundary-box, or --tile."
+            "Specify either --coordinates, --boundary-box, --tile, or --input."
         )
         sys.exit(1)
