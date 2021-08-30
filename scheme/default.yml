@@ -937,9 +937,6 @@ node_icons:
     tags:
     - tags: {man_made: rover}
       shapes: [lunokhod]
-    - tags: {man_made: rover, condition: crashed}
-      shapes: [{shape: lunokhod, color: "#FF0000"}]
-
     - tags: {man_made: probe}
       shapes: [probe]
     - tags: {man_made: orbiter}
@@ -948,17 +945,34 @@ node_icons:
       shapes: [descent_stage]
     - tags: {man_made: third_stage}
       shapes: [third_stage]
-
     - tags: {man_made: lander}
       shapes: [lander]
-    - tags: {man_made: lander, condition: crashed}
-      shapes: [{shape: lander, color: "#FF0000"}]
+
+    - tags: {man_made: rover, condition: landed}
+      shapes: [{shape: lunokhod, opacity: 0.8}]
+    - tags: {man_made: probe, condition: landed}
+      shapes: [{shape: probe, opacity: 0.8}]
+    - tags: {man_made: orbiter, condition: landed}
+      shapes: [{shape: orbiter, opacity: 0.8}]
+    - tags: {man_made: descent_stage, condition: landed}
+      shapes: [{shape: descent_stage, opacity: 0.8}]
+    - tags: {man_made: third_stage, condition: landed}
+      shapes: [{shape: third_stage, opacity: 0.8}]
     - tags: {man_made: lander, condition: landed}
-      shapes: [{shape: lander, color: "#888888"}]
-    - tags: {man_made: lander, condition: crashed_post_mission}
-      shapes: [{shape: lander, color: "#FF0000"}]
-    - tags: {man_made: lander, condition: intentionally_crashed}
-      shapes: [{shape: lander, color: "#FF0000"}]
+      shapes: [{shape: lander, opacity: 0.8}]
+
+    - tags: {man_made: rover, condition: crashed}
+      shapes: [{shape: lunokhod, opacity: 0.5}]
+    - tags: {man_made: probe, condition: crashed}
+      shapes: [{shape: probe, opacity: 0.5}]
+    - tags: {man_made: orbiter, condition: crashed}
+      shapes: [{shape: orbiter, opacity: 0.5}]
+    - tags: {man_made: descent_stage, condition: crashed}
+      shapes: [{shape: descent_stage, opacity: 0.5}]
+    - tags: {man_made: third_stage, condition: crashed}
+      shapes: [{shape: third_stage, opacity: 0.5}]
+    - tags: {man_made: lander, condition: crashed}
+      shapes: [{shape: lander, opacity: 0.5}]
 
   - group: "Important small objects"
     start_zoom_level: 17
