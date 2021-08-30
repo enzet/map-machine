@@ -935,8 +935,30 @@ node_icons:
   - group: "Moon small objects"
     start_zoom_level: 0
     tags:
-    - tags: {man_made: lunokhod}
+    - tags: {man_made: rover}
       shapes: [lunokhod]
+    - tags: {man_made: rover, condition: crashed}
+      shapes: [{shape: lunokhod, color: "#FF0000"}]
+
+    - tags: {man_made: probe}
+      shapes: [probe]
+    - tags: {man_made: orbiter}
+      shapes: [probe]
+    - tags: {man_made: probe, condition: intentionally_crashed}
+      shapes: [{shape: probe, color: "#FF0000"}]
+
+    - tags: {man_made: lander}
+      shapes: [lander]
+    - tags: {man_made: descent_stage}
+      shapes: [lander]
+    - tags: {man_made: lander, condition: crashed}
+      shapes: [{shape: lander, color: "#FF0000"}]
+    - tags: {man_made: lander, condition: landed}
+      shapes: [{shape: lander, color: "#888888"}]
+    - tags: {man_made: lander, condition: crashed_post_mission}
+      shapes: [{shape: lander, color: "#FF0000"}]
+    - tags: {man_made: lander, condition: intentionally_crashed}
+      shapes: [{shape: lander, color: "#FF0000"}]
 
   - group: "Important small objects"
     start_zoom_level: 17
