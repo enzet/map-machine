@@ -950,7 +950,7 @@ node_icons:
     - tags: {man_made: lander}
       shapes: [lander]
     - tags: {man_made: descent_stage}
-      shapes: [lander]
+      shapes: [descent_stage]
     - tags: {man_made: lander, condition: crashed}
       shapes: [{shape: lander, color: "#FF0000"}]
     - tags: {man_made: lander, condition: landed}

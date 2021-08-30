@@ -128,7 +128,7 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         "--input",
         dest="input_file_name",
         metavar="<path>",
-        help="input XML file name (if not specified, file will be "
+        help="input OSM XML file name (if not specified, file will be "
         "downloaded using OpenStreetMap API)",
     )
 

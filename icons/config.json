@@ -215,6 +215,9 @@
   "default": {},
   "default_small": {},
   "defibrillator": {},
+  "descent_stage": {
+    "name": "descent stage"
+  },
   "dharmachakra": {},
   "diamond": {
     "emoji": "💎"
@@ -631,6 +634,9 @@
     "name": "y-frame transmission tower"
   },
   "prison": {},
+  "probe": {
+    "name": "probe"
+  },
   "rape": {},
   "rape_2": {},
   "rectangle_vertical_rounded": {
