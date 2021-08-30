@@ -767,6 +767,9 @@
     "name": "radio telescope"
   },
   "theatre": {},
+  "third_stage": {
+    "name": "rocket third stage"
+  },
   "ticket": {
     "emoji": [
       "🎫",

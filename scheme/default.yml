@@ -944,13 +944,13 @@ node_icons:
       shapes: [probe]
     - tags: {man_made: orbiter}
       shapes: [probe]
-    - tags: {man_made: probe, condition: intentionally_crashed}
-      shapes: [{shape: probe, color: "#FF0000"}]
+    - tags: {man_made: descent_stage}
+      shapes: [descent_stage]
+    - tags: {man_made: third_stage}
+      shapes: [third_stage]
 
     - tags: {man_made: lander}
       shapes: [lander]
-    - tags: {man_made: descent_stage}
-      shapes: [descent_stage]
     - tags: {man_made: lander, condition: crashed}
       shapes: [{shape: lander, color: "#FF0000"}]
     - tags: {man_made: lander, condition: landed}
