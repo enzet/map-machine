@@ -21,5 +21,5 @@ def test_pseudo_mercator() -> None:
 def test_osm_zoom_level_to_pixels_per_meter() -> None:
     """Test scale computation."""
     assert np.allclose(
-        osm_zoom_level_to_pixels_per_meter(18), 1.6759517949045808
+        osm_zoom_level_to_pixels_per_meter(18), 1.6745810488364858
     )
