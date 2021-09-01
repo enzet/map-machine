@@ -264,12 +264,24 @@ class Crater(Tagged):
         scale: float = flinger.get_scale(self.coordinates)
         assert "diameter" in self.tags
         radius: float = float(self.tags["diameter"]) / 2.0
+        radial_gradient = svg.radialGradient(
+            center=self.point + np.array((0, radius * scale / 7)),
+            r=radius * scale,
+            gradientUnits="userSpaceOnUse",
+        )
+        color: Color = Color("#000000")
+        gradient = svg.defs.add(radial_gradient)
+        (
+            gradient
+            .add_stop_color(0, color.hex, opacity=0)
+            .add_stop_color(0.7, color.hex, opacity=0)
+            .add_stop_color(1, color.hex, opacity=1)
+        )  # fmt: skip
         circle = svg.circle(
             self.point,
             radius * scale,
-            fill="none",
-            stroke="#000000",
-            opacity=0.3,
+            fill=gradient.get_paint_server(),
+            opacity=0.2,
         )
         svg.add(circle)
 
