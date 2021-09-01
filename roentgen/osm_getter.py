@@ -3,7 +3,6 @@ Getting OpenStreetMap data from the web.
 """
 import logging
 import time
-import urllib
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -38,38 +37,31 @@ def get_osm(
         with cache_file_path.open() as output_file:
             return output_file.read()
 
-    content: str = get_data(
-        "api.openstreetmap.org/api/0.6/map",
+    content: bytes = get_data(
+        "https://api.openstreetmap.org/api/0.6/map",
         {"bbox": boundary_box.get_format()},
-        is_secure=True,
-    ).decode("utf-8")
+    )
 
-    with cache_file_path.open("w+") as output_file:
+    with cache_file_path.open("bw+") as output_file:
         output_file.write(content)
 
-    return content
+    return content.decode("utf-8")
 
 
-def get_data(
-    address: str, parameters: dict[str, str], is_secure: bool = False
-) -> bytes:
+def get_data(address: str, parameters: dict[str, str]) -> bytes:
     """
     Construct Internet page URL and get its descriptor.
 
-    :param address: first part of URL without "http://"
+    :param address: URL without parameters
     :param parameters: URL parameters
-    :param is_secure: https or http
     :return: connection descriptor
     """
-    url: str = f"http{('s' if is_secure else '')}://{address}"
-    if len(parameters) > 0:
-        url += f"?{urllib.parse.urlencode(parameters)}"
-    logging.info(f"Getting {url}...")
+    logging.info(f"Getting {address}...")
     pool_manager: urllib3.PoolManager = urllib3.PoolManager()
     urllib3.disable_warnings()
 
     try:
-        result = pool_manager.request("GET", url)
+        result = pool_manager.request("GET", address, parameters)
     except urllib3.exceptions.MaxRetryError:
         raise NetworkError("Cannot download data: too many attempts.")
 
