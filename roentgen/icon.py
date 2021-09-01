@@ -357,19 +357,18 @@ class Icon:
         :param tags: tags to be displayed as hint
         :param outline: draw outline for the icon
         """
-        target = Group(opacity=self.opacity) if self.opacity != 1.0 else svg
         if outline:
             bright: bool = is_bright(self.shape_specifications[0].color)
             opacity: float = 0.7 if bright else 0.5
             outline_group: Group = Group(opacity=opacity)
             for shape_specification in self.shape_specifications:
                 shape_specification.draw(outline_group, point, tags, True)
-            target.add(outline_group)
+            svg.add(outline_group)
         else:
+            group: Group = Group(opacity=self.opacity)
             for shape_specification in self.shape_specifications:
-                shape_specification.draw(target, point, tags)
-        if self.opacity != 1.0:
-            svg.add(target)
+                shape_specification.draw(group, point, tags)
+            svg.add(group)
 
     def draw_to_file(
         self,

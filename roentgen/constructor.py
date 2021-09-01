@@ -11,7 +11,14 @@ from colour import Color
 
 from roentgen import ui
 from roentgen.color import get_gradient_color
-from roentgen.figure import Building, DirectionSector, Road, StyledFigure, Tree
+from roentgen.figure import (
+    Building,
+    Crater,
+    DirectionSector,
+    Road,
+    StyledFigure,
+    Tree,
+)
 from roentgen.flinger import Flinger
 from roentgen.map_configuration import DrawingMode, MapConfiguration
 
@@ -159,6 +166,7 @@ class Constructor:
         self.buildings: list[Building] = []
         self.roads: list[Road] = []
         self.trees: list[Tree] = []
+        self.craters: list[Crater] = []
         self.direction_sectors: list[DirectionSector] = []
 
         self.heights: set[float] = {2, 4}
@@ -409,6 +417,10 @@ class Constructor:
             "diameter_crown" in node.tags or "circumference" in node.tags
         ):
             self.trees.append(Tree(tags, node.coordinates, flung))
+            return
+
+        if node.get_tag("natural") == "crater" and "diameter" in node.tags:
+            self.craters.append(Crater(tags, node.coordinates, flung))
             return
 
         if "direction" in node.tags or "camera:direction" in node.tags:

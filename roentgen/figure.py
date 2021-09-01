@@ -247,6 +247,33 @@ class Road(Figure):
                 pass
 
 
+class Crater(Tagged):
+    """
+    Volcano or impact crater on the map.
+    """
+
+    def __init__(
+        self, tags: dict[str, str], coordinates: np.ndarray, point: np.ndarray
+    ) -> None:
+        super().__init__(tags)
+        self.coordinates: np.ndarray = coordinates
+        self.point: np.ndarray = point
+
+    def draw(self, svg: Drawing, flinger: Flinger) -> None:
+        """Draw crater ridge."""
+        scale: float = flinger.get_scale(self.coordinates)
+        assert "diameter" in self.tags
+        radius: float = float(self.tags["diameter"]) / 2.0
+        circle = svg.circle(
+            self.point,
+            radius * scale,
+            fill="none",
+            stroke="#000000",
+            opacity=0.3,
+        )
+        svg.add(circle)
+
+
 class Tree(Tagged):
     """
     Tree on the map.

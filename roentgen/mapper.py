@@ -80,6 +80,8 @@ class Map:
 
         for tree in constructor.trees:
             tree.draw(self.svg, self.flinger, self.scheme)
+        for tree in constructor.craters:
+            tree.draw(self.svg, self.flinger)
 
         for direction_sector in constructor.direction_sectors:
             direction_sector.draw(self.svg, self.scheme)
