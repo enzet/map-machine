@@ -14,6 +14,7 @@ import numpy as np
 import svgwrite
 from colour import Color
 from svgwrite import Drawing
+from svgwrite.base import BaseElement
 from svgwrite.container import Group
 from svgwrite.path import Path as SVGPath
 
@@ -268,7 +269,7 @@ class ShapeSpecification:
 
     def draw(
         self,
-        svg: Drawing,
+        svg: BaseElement,
         point: np.ndarray,
         tags: dict[str, Any] = None,
         outline: bool = False,

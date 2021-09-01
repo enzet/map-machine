@@ -61,13 +61,12 @@ class Point(Tagged):
         is_for_node: bool = True,
         draw_outline: bool = True,
     ) -> None:
-        super().__init__()
+        super().__init__(tags)
 
         assert point is not None
 
         self.icon_set: IconSet = icon_set
         self.labels: list[Label] = labels
-        self.tags: dict[str, str] = tags
         self.processed: set[str] = processed
         self.point: np.ndarray = point
         self.priority: float = priority

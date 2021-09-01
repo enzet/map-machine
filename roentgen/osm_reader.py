@@ -1,9 +1,9 @@
 """
-Reading OpenStreetMap data from XML file.
+Parse OSM XML file.
 """
 import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
@@ -46,13 +46,13 @@ def parse_float(string: str) -> Optional[float]:
         return None
 
 
+@dataclass
 class Tagged:
     """
-    OpenStreetMap element (node, way or relation) with tags.
+    Something with tags (string to string mapping).
     """
 
-    def __init__(self, tags: dict[str, str] = None) -> None:
-        self.tags: dict[str, str] = {} if tags is None else tags
+    tags: dict[str, str]
 
     def get_tag(self, key: str) -> Optional[str]:
         """
@@ -96,6 +96,7 @@ class Tagged:
         return None
 
 
+@dataclass
 class OSMNode(Tagged):
     """
     OpenStreetMap node.
@@ -103,57 +104,49 @@ class OSMNode(Tagged):
     See https://wiki.openstreetmap.org/wiki/Node
     """
 
-    def __init__(self) -> None:
-        super().__init__()
-
-        self.id_: Optional[int] = None
-        self.coordinates: Optional[np.ndarray] = None
-
-        self.visible: Optional[str] = None
-        self.changeset: Optional[str] = None
-        self.timestamp: Optional[datetime] = None
-        self.user: Optional[str] = None
-        self.uid: Optional[str] = None
+    id_: int
+    coordinates: np.ndarray
+    visible: Optional[str] = None
+    changeset: Optional[str] = None
+    timestamp: Optional[datetime] = None
+    user: Optional[str] = None
+    uid: Optional[str] = None
 
     @classmethod
-    def from_xml_structure(
-        cls, element: Element, is_full: bool = False
-    ) -> "OSMNode":
+    def from_xml_structure(cls, element: Element) -> "OSMNode":
         """Parse node from OSM XML `<node>` element."""
-        node: "OSMNode" = cls()
         attributes = element.attrib
-        node.id_ = int(attributes["id"])
-        node.coordinates = np.array(
-            (float(attributes["lat"]), float(attributes["lon"]))
+        tags: dict[str, str] = dict(
+            [(x.attrib["k"], x.attrib["v"]) for x in element if x.tag == "tag"]
         )
-        if is_full:
-            node.visible = attributes["visible"]
-            node.changeset = attributes["changeset"]
-            node.timestamp = datetime.strptime(
-                attributes["timestamp"], OSM_TIME_PATTERN
-            )
-            node.user = attributes["user"]
-            node.uid = attributes["uid"]
-        for subelement in element:
-            if subelement.tag == "tag":
-                subattributes = subelement.attrib
-                node.tags[subattributes["k"]] = subattributes["v"]
-        return node
+        return cls(
+            tags,
+            int(attributes["id"]),
+            np.array((float(attributes["lat"]), float(attributes["lon"]))),
+            attributes["visible"] if "visible" in attributes else None,
+            attributes["changeset"] if "changeset" in attributes else None,
+            datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
+            if "timestamp" in attributes
+            else None,
+            attributes["user"] if "user" in attributes else None,
+            attributes["uid"] if "uid" in attributes else None,
+        )
 
-    def parse_from_structure(self, structure: dict[str, Any]) -> "OSMNode":
+    @classmethod
+    def parse_from_structure(cls, structure: dict[str, Any]) -> "OSMNode":
         """
         Parse node from Overpass-like structure.
 
         :param structure: input structure
         """
-        self.id_ = structure["id"]
-        self.coordinates = np.array((structure["lat"], structure["lon"]))
-        if "tags" in structure:
-            self.tags = structure["tags"]
+        return cls(
+            structure["id"],
+            structure["tags"] if "tags" in structure else {},
+            coordinates=np.array((structure["lat"], structure["lon"])),
+        )
 
-        return self
 
-
+@dataclass
 class OSMWay(Tagged):
     """
     OpenStreetMap way.
@@ -161,43 +154,39 @@ class OSMWay(Tagged):
     See https://wiki.openstreetmap.org/wiki/Way
     """
 
-    def __init__(
-        self, id_: int = 0, nodes: Optional[list[OSMNode]] = None
-    ) -> None:
-        super().__init__()
-
-        self.id_: int = id_
-        self.nodes: list[OSMNode] = [] if nodes is None else nodes
-
-        self.visible: Optional[str] = None
-        self.changeset: Optional[str] = None
-        self.user: Optional[str] = None
-        self.timestamp: Optional[datetime] = None
-        self.uid: Optional[str] = None
+    id_: int
+    nodes: Optional[list[OSMNode]] = field(default_factory=list)
+    visible: Optional[str] = None
+    changeset: Optional[str] = None
+    timestamp: Optional[datetime] = None
+    user: Optional[str] = None
+    uid: Optional[str] = None
 
     @classmethod
     def from_xml_structure(
-        cls, element: Element, nodes: dict[int, OSMNode], is_full: bool
+        cls, element: Element, nodes: dict[int, OSMNode]
     ) -> "OSMWay":
         """Parse way from OSM XML `<way>` element."""
-        way = cls(int(element.attrib["id"]))
-        if is_full:
-            way.visible = element.attrib["visible"]
-            way.changeset = element.attrib["changeset"]
-            way.timestamp = datetime.strptime(
-                element.attrib["timestamp"], OSM_TIME_PATTERN
-            )
-            way.user = element.attrib["user"]
-            way.uid = element.attrib["uid"]
-        for subelement in element:
-            if subelement.tag == "nd":
-                way.nodes.append(nodes[int(subelement.attrib["ref"])])
-            if subelement.tag == "tag":
-                way.tags[subelement.attrib["k"]] = subelement.attrib["v"]
-        return way
+        attributes = element.attrib
+        tags: dict[str, str] = dict(
+            [(x.attrib["k"], x.attrib["v"]) for x in element if x.tag == "tag"]
+        )
+        return cls(
+            tags,
+            int(element.attrib["id"]),
+            [nodes[int(x.attrib["ref"])] for x in element if x.tag == "nd"],
+            attributes["visible"] if "visible" in attributes else None,
+            attributes["changeset"] if "changeset" in attributes else None,
+            datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
+            if "timestamp" in attributes
+            else None,
+            attributes["user"] if "user" in attributes else None,
+            attributes["uid"] if "uid" in attributes else None,
+        )
 
+    @classmethod
     def parse_from_structure(
-        self, structure: dict[str, Any], nodes: dict[int, OSMNode]
+        cls, structure: dict[str, Any], nodes: dict[int, OSMNode]
     ) -> "OSMWay":
         """
         Parse way from Overpass-like structure.
@@ -205,92 +194,18 @@ class OSMWay(Tagged):
         :param structure: input structure
         :param nodes: node structure
         """
-        self.id_ = structure["id"]
-        for node_id in structure["nodes"]:
-            self.nodes.append(nodes[node_id])
-        if "tags" in structure:
-            self.tags = structure["tags"]
-
-        return self
+        return cls(
+            structure["tags"],
+            structure["id"],
+            [nodes[x] for x in structure["nodes"]],
+        )
 
     def is_cycle(self) -> bool:
         """Is way a cycle way or an area boundary."""
         return self.nodes[0] == self.nodes[-1]
 
-    def try_to_glue(self, other: "OSMWay") -> Optional["OSMWay"]:
-        """Create new combined way if ways share endpoints."""
-        if self.nodes[0] == other.nodes[0]:
-            return OSMWay(nodes=list(reversed(other.nodes[1:])) + self.nodes)
-        if self.nodes[0] == other.nodes[-1]:
-            return OSMWay(nodes=other.nodes[:-1] + self.nodes)
-        if self.nodes[-1] == other.nodes[-1]:
-            return OSMWay(nodes=self.nodes + list(reversed(other.nodes[:-1])))
-        if self.nodes[-1] == other.nodes[0]:
-            return OSMWay(nodes=self.nodes + other.nodes[1:])
-        return None
-
     def __repr__(self) -> str:
         return f"Way <{self.id_}> {self.nodes}"
-
-
-class OSMRelation(Tagged):
-    """
-    OpenStreetMap relation.
-
-    See https://wiki.openstreetmap.org/wiki/Relation
-    """
-
-    def __init__(self, id_: int = 0) -> None:
-        super().__init__()
-
-        self.id_: int = id_
-        self.members: list["OSMMember"] = []
-        self.user: Optional[str] = None
-        self.timestamp: Optional[datetime] = None
-
-    @classmethod
-    def from_xml_structure(
-        cls, element: Element, is_full: bool
-    ) -> "OSMRelation":
-        """Parse relation from OSM XML `<relation>` element."""
-        attributes = element.attrib
-        relation = cls(int(attributes["id"]))
-        if is_full:
-            relation.user = attributes["user"]
-            relation.timestamp = datetime.strptime(
-                attributes["timestamp"], OSM_TIME_PATTERN
-            )
-        for subelement in element:
-            if subelement.tag == "member":
-                subattributes = subelement.attrib
-                relation.members.append(
-                    OSMMember(
-                        subattributes["type"],
-                        int(subattributes["ref"]),
-                        subattributes["role"],
-                    )
-                )
-            if subelement.tag == "tag":
-                relation.tags[subelement.attrib["k"]] = subelement.attrib["v"]
-        return relation
-
-    def parse_from_structure(self, structure: dict[str, Any]) -> "OSMRelation":
-        """
-        Parse relation from Overpass-like structure.
-
-        :param structure: input structure
-        """
-        self.id_ = structure["id"]
-        for member in structure["members"]:
-            mem = OSMMember()
-            mem.type_ = member["type"]
-            mem.role = member["role"]
-            mem.ref = member["ref"]
-            self.members.append(mem)
-        if "tags" in structure:
-            self.tags = structure["tags"]
-
-        return self
 
 
 @dataclass
@@ -299,9 +214,81 @@ class OSMMember:
     Member of OpenStreetMap relation.
     """
 
-    type_: str = ""
-    ref: int = 0
-    role: str = ""
+    type_: str
+    ref: int
+    role: str
+
+
+@dataclass
+class OSMRelation(Tagged):
+    """
+    OpenStreetMap relation.
+
+    See https://wiki.openstreetmap.org/wiki/Relation
+    """
+
+    id_: int
+    members: Optional[list[OSMMember]]
+    visible: Optional[str] = None
+    changeset: Optional[str] = None
+    timestamp: Optional[datetime] = None
+    user: Optional[str] = None
+    uid: Optional[str] = None
+
+    @classmethod
+    def from_xml_structure(cls, element: Element) -> "OSMRelation":
+        """Parse relation from OSM XML `<relation>` element."""
+        attributes = element.attrib
+        members: list[OSMMember] = []
+        tags: dict[str, str] = {}
+        for subelement in element:
+            if subelement.tag == "member":
+                subattributes = subelement.attrib
+                members.append(
+                    OSMMember(
+                        subattributes["type"],
+                        int(subattributes["ref"]),
+                        subattributes["role"],
+                    )
+                )
+            if subelement.tag == "tag":
+                tags[subelement.attrib["k"]] = subelement.attrib["v"]
+        return cls(
+            tags,
+            int(attributes["id"]),
+            members,
+            attributes["visible"] if "visible" in attributes else None,
+            attributes["changeset"] if "changeset" in attributes else None,
+            datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
+            if "timestamp" in attributes
+            else None,
+            attributes["user"] if "user" in attributes else None,
+            attributes["uid"] if "uid" in attributes else None,
+        )
+
+    @classmethod
+    def parse_from_structure(cls, structure: dict[str, Any]) -> "OSMRelation":
+        """
+        Parse relation from Overpass-like structure.
+
+        :param structure: input structure
+        """
+        return cls(
+            structure["tags"],
+            structure["id"],
+            [
+                OSMMember(x["type"], x["role"], x["ref"])
+                for x in structure["members"]
+            ],
+        )
+
+
+class NotWellFormedOSMDataException(Exception):
+    """
+    OSM data structure is not well-formed.
+    """
+
+    pass
 
 
 class OSMData:
@@ -320,6 +307,10 @@ class OSMData:
 
     def add_node(self, node: OSMNode) -> None:
         """Add node and update map parameters."""
+        if node.id_ in self.nodes:
+            raise NotWellFormedOSMDataException(
+                f"Node with duplicate id {node.id_}."
+            )
         self.nodes[node.id_] = node
         if node.user:
             self.authors.add(node.user)
@@ -327,6 +318,10 @@ class OSMData:
 
     def add_way(self, way: OSMWay) -> None:
         """Add way and update map parameters."""
+        if way.id_ in self.ways:
+            raise NotWellFormedOSMDataException(
+                f"Way with duplicate id {way.id_}."
+            )
         self.ways[way.id_] = way
         if way.user:
             self.authors.add(way.user)
@@ -334,6 +329,10 @@ class OSMData:
 
     def add_relation(self, relation: OSMRelation) -> None:
         """Add relation and update map parameters."""
+        if relation.id_ in self.relations:
+            raise NotWellFormedOSMDataException(
+                f"Relation with duplicate id {relation.id_}."
+            )
         self.relations[relation.id_] = relation
 
 
@@ -357,17 +356,17 @@ class OverpassReader:
 
         for element in structure["elements"]:
             if element["type"] == "node":
-                node = OSMNode().parse_from_structure(element)
+                node = OSMNode.parse_from_structure(element)
                 node_map[node.id_] = node
                 self.osm_data.add_node(node)
         for element in structure["elements"]:
             if element["type"] == "way":
-                way = OSMWay().parse_from_structure(element, node_map)
+                way = OSMWay.parse_from_structure(element, node_map)
                 way_map[way.id_] = way
                 self.osm_data.add_way(way)
         for element in structure["elements"]:
             if element["type"] == "relation":
-                relation = OSMRelation().parse_from_structure(element)
+                relation = OSMRelation.parse_from_structure(element)
                 self.osm_data.add_relation(relation)
 
         return self.osm_data
@@ -385,20 +384,16 @@ class OSMReader:
         parse_nodes: bool = True,
         parse_ways: bool = True,
         parse_relations: bool = True,
-        is_full: bool = False,
     ) -> None:
         """
         :param parse_nodes: whether nodes should be parsed
         :param parse_ways:  whether ways should be parsed
         :param parse_relations: whether relations should be parsed
-        :param is_full: whether metadata should be parsed: tags `visible`,
-            `changeset`, `timestamp`, `user`, `uid`
         """
         self.osm_data = OSMData()
         self.parse_nodes: bool = parse_nodes
         self.parse_ways: bool = parse_ways
         self.parse_relations: bool = parse_relations
-        self.is_full: bool = is_full
 
     def parse_osm_file(self, file_name: Path) -> OSMData:
         """
@@ -429,17 +424,15 @@ class OSMReader:
             if element.tag == "bounds":
                 self.parse_bounds(element)
             if element.tag == "node" and self.parse_nodes:
-                node = OSMNode.from_xml_structure(element, self.is_full)
+                node = OSMNode.from_xml_structure(element)
                 self.osm_data.add_node(node)
             if element.tag == "way" and self.parse_ways:
                 self.osm_data.add_way(
-                    OSMWay.from_xml_structure(
-                        element, self.osm_data.nodes, self.is_full
-                    )
+                    OSMWay.from_xml_structure(element, self.osm_data.nodes)
                 )
             if element.tag == "relation" and self.parse_relations:
                 self.osm_data.add_relation(
-                    OSMRelation.from_xml_structure(element, self.is_full)
+                    OSMRelation.from_xml_structure(element)
                 )
         return self.osm_data
 

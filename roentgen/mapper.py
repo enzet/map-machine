@@ -260,7 +260,7 @@ def ui(options: argparse.Namespace) -> None:
         osm_data = reader.osm_data
         view_box = boundary_box
     else:
-        osm_reader = OSMReader(is_full=configuration.is_wireframe())
+        osm_reader = OSMReader()
 
         for file_name in input_file_names:
             if not file_name.is_file():
@@ -276,7 +276,7 @@ def ui(options: argparse.Namespace) -> None:
         else:
             view_box = osm_data.view_box
 
-    flinger: Flinger = Flinger(view_box, options.zoom)
+    flinger: Flinger = Flinger(view_box, options.zoom, options.equator_length)
     size: np.ndarray = flinger.size
 
     svg: svgwrite.Drawing = svgwrite.Drawing(

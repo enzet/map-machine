@@ -11,8 +11,7 @@ __email__ = "me@enzet.ru"
 
 def check_length(value: str, expected: Optional[float]) -> None:
     """Assert that constructed value is equals to an expected one."""
-    tagged = Tagged()
-    tagged.tags["a"] = value
+    tagged = Tagged({"a": value})
     assert tagged.get_length("a") == expected
 
 

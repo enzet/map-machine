@@ -95,32 +95,32 @@ def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
     :param ways: ways to glue
     """
     result: list[list[OSMNode]] = []
-    to_process: set[OSMWay] = set()
+    to_process: set[list[OSMNode]] = set()
 
     for way in ways:
         if way.is_cycle():
             result.append(way.nodes)
         else:
-            to_process.add(way)
+            to_process.add(way.nodes)
 
     while to_process:
-        way: OSMWay = to_process.pop()
-        glued: Optional[OSMWay] = None
-        other_way: Optional[OSMWay] = None
+        nodes: list[OSMNode] = to_process.pop()
+        glued: Optional[list[OSMNode]] = None
+        other_nodes: Optional[list[OSMNode]] = None
 
-        for other_way in to_process:
-            glued: Optional[OSMWay] = way.try_to_glue(other_way)
-            if glued:
+        for other_nodes in to_process:
+            glued = try_to_glue(nodes, other_nodes)
+            if glued is not None:
                 break
 
-        if glued:
-            to_process.remove(other_way)
-            if glued.is_cycle():
-                result.append(glued.nodes)
+        if glued is not None:
+            to_process.remove(other_nodes)
+            if is_cycle(glued):
+                result.append(glued)
             else:
                 to_process.add(glued)
         else:
-            result.append(way.nodes)
+            result.append(nodes)
 
     return result
 
@@ -128,6 +128,21 @@ def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
 def is_cycle(nodes: list[OSMNode]) -> bool:
     """Is way a cycle way or an area boundary."""
     return nodes[0] == nodes[-1]
+
+
+def try_to_glue(
+    nodes: list[OSMNode], other: list[OSMNode]
+) -> Optional[list[OSMNode]]:
+    """Create new combined way if ways share endpoints."""
+    if nodes[0] == other[0]:
+        return list(reversed(other[1:])) + nodes
+    if nodes[0] == other[-1]:
+        return other[:-1] + nodes
+    if nodes[-1] == other[-1]:
+        return nodes + list(reversed(other[:-1]))
+    if nodes[-1] == other[0]:
+        return nodes + other[1:]
+    return None
 
 
 class Constructor:
