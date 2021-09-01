@@ -10,8 +10,6 @@ from roentgen.boundary_box import BoundaryBox
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-EQUATOR_LENGTH: float = 40_075_017  # meters
-
 
 def pseudo_mercator(coordinates: np.ndarray) -> np.ndarray:
     """
@@ -27,15 +25,19 @@ def pseudo_mercator(coordinates: np.ndarray) -> np.ndarray:
     return np.array((coordinates[1], y))
 
 
-def osm_zoom_level_to_pixels_per_meter(zoom_level: float) -> float:
+def osm_zoom_level_to_pixels_per_meter(
+    zoom_level: float, equator_length: float = 40_075_017.0
+) -> float:
     """
     Convert OSM zoom level to pixels per meter on Equator. See
     https://wiki.openstreetmap.org/wiki/Zoom_levels
 
     :param zoom_level: integer number usually not bigger than 20, but this
         function allows any non-negative float value
+    :param equator_length: celestial body equator length in meters, default
+        value is set for Earth
     """
-    return 2 ** zoom_level / EQUATOR_LENGTH * 256
+    return 2 ** zoom_level / equator_length * 256
 
 
 class Flinger:
@@ -48,17 +50,20 @@ class Flinger:
         geo_boundaries: BoundaryBox,
         zoom_level: float = 18,
         border: np.ndarray = np.array((0, 0)),
+        equator_length: float = 40_075_017.0,
     ) -> None:
         """
         :param geo_boundaries: minimum and maximum latitude and longitude
         :param zoom_level: zoom level in OpenStreetMap terminology
         :param border: size of padding in pixels
+        :param equator_length: celestial body equator length in meters, default
+            value is set for Earth
         """
         self.geo_boundaries: BoundaryBox = geo_boundaries
         self.border: np.ndarray = border
         self.ratio: float = (
             osm_zoom_level_to_pixels_per_meter(zoom_level)
-            * EQUATOR_LENGTH
+            * equator_length
             / 360
         )
         self.size: np.ndarray = border * 2 + self.ratio * (
