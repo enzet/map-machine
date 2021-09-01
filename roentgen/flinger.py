@@ -49,29 +49,22 @@ class Flinger:
         self,
         geo_boundaries: BoundaryBox,
         zoom_level: float = 18,
-        border: np.ndarray = np.array((0, 0)),
         equator_length: float = 40_075_017.0,
     ) -> None:
         """
         :param geo_boundaries: minimum and maximum latitude and longitude
         :param zoom_level: zoom level in OpenStreetMap terminology
-        :param border: size of padding in pixels
         :param equator_length: celestial body equator length in meters, default
             value is set for Earth
         """
         self.geo_boundaries: BoundaryBox = geo_boundaries
-        self.border: np.ndarray = border
-        self.ratio: float = (
-            osm_zoom_level_to_pixels_per_meter(zoom_level)
-            * equator_length
-            / 360
-        )
-        self.size: np.ndarray = border * 2 + self.ratio * (
+        self.ratio: float = 2 ** zoom_level * 256 / 360
+        self.size: np.ndarray = self.ratio * (
             pseudo_mercator(self.geo_boundaries.max_())
             - pseudo_mercator(self.geo_boundaries.min_())
         )
         self.pixels_per_meter: float = osm_zoom_level_to_pixels_per_meter(
-            zoom_level
+            zoom_level, equator_length
         )
         self.size: np.ndarray = self.size.astype(int).astype(float)
 
@@ -81,7 +74,7 @@ class Flinger:
 
         :param coordinates: vector to fling
         """
-        result: np.ndarray = self.border + self.ratio * (
+        result: np.ndarray = self.ratio * (
             pseudo_mercator(coordinates)
             - pseudo_mercator(self.geo_boundaries.min_())
         )
