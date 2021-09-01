@@ -35,7 +35,7 @@ def osm_zoom_level_to_pixels_per_meter(zoom_level: float) -> float:
     :param zoom_level: integer number usually not bigger than 20, but this
         function allows any non-negative float value
     """
-    return 2 ** zoom_level / 156415
+    return 2 ** zoom_level / EQUATOR_LENGTH * 256
 
 
 class Flinger:
