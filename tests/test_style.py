@@ -1,7 +1,7 @@
 """
 Test style constructing for ways and areas.
 """
-from test import SCHEME
+from tests import SCHEME
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

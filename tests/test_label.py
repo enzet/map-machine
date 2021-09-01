@@ -2,7 +2,7 @@
 Test label generation for nodes.
 """
 from roentgen.text import Label
-from test import SCHEME
+from tests import SCHEME
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

@@ -5,7 +5,7 @@ import pytest
 
 from roentgen.grid import IconCollection
 from roentgen.icon import IconSet
-from test import SCHEME, SHAPE_EXTRACTOR, workspace
+from tests import SCHEME, SHAPE_EXTRACTOR, workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
