@@ -387,7 +387,9 @@ class Tiles:
             ).get_coordinates()
 
             flinger: Flinger = Flinger(
-                BoundaryBox(left, bottom, right, top), self.zoom_level
+                BoundaryBox(left, bottom, right, top),
+                self.zoom_level,
+                self.equator_length,
             )
             extractor: ShapeExtractor = ShapeExtractor(
                 workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH

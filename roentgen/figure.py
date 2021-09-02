@@ -273,8 +273,8 @@ class Crater(Tagged):
         gradient = svg.defs.add(radial_gradient)
         (
             gradient
-            .add_stop_color(0, color.hex, opacity=0)
-            .add_stop_color(0.7, color.hex, opacity=0)
+            .add_stop_color(0, color.hex, opacity=0.2)
+            .add_stop_color(0.7, color.hex, opacity=0.2)
             .add_stop_color(1, color.hex, opacity=1)
         )  # fmt: skip
         circle = svg.circle(
