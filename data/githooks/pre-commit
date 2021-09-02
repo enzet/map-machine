@@ -1,8 +1,8 @@
 #!/bin/sh
 
 echo "Checking code format with Black..."
-if ! black -l 80 --check tests roentgen roentgen.py; then
-    black -l 80 --diff tests roentgen roentgen.py
+if ! black -l 80 --check tests roentgen; then
+    black -l 80 --diff tests roentgen
     echo "FAIL"
     exit 1
 fi

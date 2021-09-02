@@ -1,10 +1,11 @@
 # Generated files
 
-out/
+dist/
 doc/*.html
 doc/*.svg
 doc/*.wiki
 missed_tags.yml
+out/
 
 # Cache
 

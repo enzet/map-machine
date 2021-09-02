@@ -21,18 +21,18 @@ jobs:
         pip install black flake8 pytest
         pip install -r requirements.txt
         pip install .
-    - name: Test with pytest
+    - name: Check code style with Black
       run: |
-        pytest -v
+        black -l 80 --check roentgen tests
     - name: Lint with Flake8
       run: |
         flake8 --max-line-length=80 --ignore=E203,W503
-    - name: Check code style with Black
+    - name: Test with pytest
       run: |
-        black -l 80 --check roentgen test roentgen.py
+        pytest -v
     - name: Test render
       run: |
-        roentgen render -b 10.000,20.000,10.001,20.001 --cache test/data
+        roentgen render -b 10.000,20.000,10.001,20.001 --cache tests/data
     - name: Test icon generation
       run: |
         roentgen icons
@@ -44,4 +44,4 @@ jobs:
         roentgen element --node amenity=bench,material=wood
     - name: Test tile generation
       run: |
-        roentgen tile --coordinates 50.000,40.000 --cache test/data
+        roentgen tile --coordinates 50.000,40.000 --cache tests/data
