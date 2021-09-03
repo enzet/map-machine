@@ -34,9 +34,8 @@ class Figure(Tagged):
         inners: list[list[OSMNode]],
         outers: list[list[OSMNode]],
     ) -> None:
-        super().__init__()
+        super().__init__(tags)
 
-        self.tags: dict[str, str] = tags
         self.inners: list[list[OSMNode]] = list(map(make_clockwise, inners))
         self.outers: list[list[OSMNode]] = list(
             map(make_counter_clockwise, outers)

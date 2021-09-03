@@ -6,6 +6,8 @@ from pathlib import Path
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+HERE: Path = Path(__file__).parent
+
 
 def check_and_create(directory: Path) -> Path:
     """Create directory if it doesn't exist and return it."""
@@ -21,12 +23,11 @@ class Workspace:
 
     # Project directories and files, that are the part of the repository.
 
-    SCHEME_PATH: Path = Path("scheme")
+    SCHEME_PATH: Path = HERE / Path("scheme")
     DEFAULT_SCHEME_PATH: Path = SCHEME_PATH / "default.yml"
-    ICONS_PATH: Path = Path("icons/icons.svg")
-    ICONS_CONFIG_PATH: Path = Path("icons/config.json")
+    ICONS_PATH: Path = HERE / Path("icons/icons.svg")
+    ICONS_CONFIG_PATH: Path = HERE / Path("icons/config.json")
     GITHUB_TEST_PATH: Path = Path(".github/workflows/test.yml")
-    DATA_PATH: Path = Path("data")
 
     # Generated directories and files.
 

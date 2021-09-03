@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name="roentgen-map",
-    version="0.1.1",
+    version="0.1.2",
     packages=["roentgen"],
     url="https://github.com/enzet/Roentgen",
     project_urls={
@@ -25,6 +25,14 @@ setup(
     "map features as possible.",
     entry_points={
         "console_scripts": ["roentgen=roentgen.main:main"],
+    },
+    package_data={
+        "roentgen": [
+            "icons/icons.svg",
+            "icons/config.json",
+            "icons/LICENSE",
+            "scheme/default.yml",
+        ],
     },
     python_requires=">=3.9",
     install_requires=[

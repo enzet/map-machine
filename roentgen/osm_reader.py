@@ -145,6 +145,9 @@ class OSMNode(Tagged):
             coordinates=np.array((structure["lat"], structure["lon"])),
         )
 
+    def __hash__(self) -> int:
+        return self.id_
+
 
 @dataclass
 class OSMWay(Tagged):

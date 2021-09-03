@@ -95,21 +95,21 @@ def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
     :param ways: ways to glue
     """
     result: list[list[OSMNode]] = []
-    to_process: set[list[OSMNode]] = set()
+    to_process: set[tuple[OSMNode]] = set()
 
     for way in ways:
         if way.is_cycle():
             result.append(way.nodes)
         else:
-            to_process.add(way.nodes)
+            to_process.add(tuple(way.nodes))
 
     while to_process:
-        nodes: list[OSMNode] = to_process.pop()
+        nodes: list[OSMNode] = list(to_process.pop())
         glued: Optional[list[OSMNode]] = None
-        other_nodes: Optional[list[OSMNode]] = None
+        other_nodes: Optional[tuple[OSMNode]] = None
 
         for other_nodes in to_process:
-            glued = try_to_glue(nodes, other_nodes)
+            glued = try_to_glue(nodes, list(other_nodes))
             if glued is not None:
                 break
 
@@ -118,7 +118,7 @@ def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
             if is_cycle(glued):
                 result.append(glued)
             else:
-                to_process.add(glued)
+                to_process.add(tuple(glued))
         else:
             result.append(nodes)
 
