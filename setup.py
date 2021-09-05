@@ -1,15 +1,28 @@
 """
 Röntgen project dynamic metadata.
 """
+from pathlib import Path
+
 from setuptools import setup
+from roentgen import (
+    __author__,
+    __description__,
+    __doc_url__,
+    __email__,
+    __url__,
+    __version__,
+)
+
+with Path("README.md").open() as input_file:
+    long_description: str = input_file.read()
 
 setup(
     name="roentgen-map",
-    version="0.1.2",
+    version=__version__,
     packages=["roentgen"],
-    url="https://github.com/enzet/Roentgen",
+    url=__url__,
     project_urls={
-        "Bug Tracker": "https://github.com/enzet/Roentgen/issues",
+        "Bug Tracker": f"{__url__}/issues",
     },
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -17,12 +30,14 @@ setup(
         "Operating System :: OS Independent",
     ],
     license="MIT",
-    author="Sergey Vartanov",
-    author_email="me@enzet.ru",
-    description="Python renderer for OpenStreetMap with custom icon set",
+    author=__author__,
+    author_email=__email__,
+    description=__description__,
     long_description="Röntgen is a Python OpenStreetMap renderer and tile "
     "generator with a custom set of CC-BY 4.0 icons aimed to display as many "
-    "map features as possible.",
+    "map features as possible.\n\n"
+    f"See [full documentation]({__doc_url__}).",
+    long_description_content_type="text/markdown",
     entry_points={
         "console_scripts": ["roentgen=roentgen.main:main"],
     },

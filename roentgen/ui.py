@@ -4,6 +4,7 @@ Command-line user interface.
 import argparse
 import sys
 
+from roentgen import __version__
 from roentgen.map_configuration import BuildingMode, DrawingMode, LabelMode
 from roentgen.osm_reader import STAGES_OF_DECAY
 
@@ -19,22 +20,36 @@ def parse_options(args: list[str]) -> argparse.Namespace:
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description="Röntgen. OpenStreetMap renderer with custom icon set"
     )
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version="Röntgen " + __version__,
+    )
     subparser = parser.add_subparsers(dest="command")
 
-    tile_parser = subparser.add_parser("tile")
-    add_tile_arguments(tile_parser)
-    add_map_arguments(tile_parser)
-
-    render_parser = subparser.add_parser("render")
+    render_parser = subparser.add_parser("render", help="draw SVG map")
     add_render_arguments(render_parser)
     add_map_arguments(render_parser)
 
-    add_server_arguments(subparser.add_parser("server"))
-    add_element_arguments(subparser.add_parser("element"))
-    add_mapcss_arguments(subparser.add_parser("mapcss"))
+    tile_parser = subparser.add_parser(
+        "tile", help="generate PNG tiles for slippy maps"
+    )
+    add_tile_arguments(tile_parser)
+    add_map_arguments(tile_parser)
 
-    subparser.add_parser("icons")
-    subparser.add_parser("taginfo")
+    add_server_arguments(subparser.add_parser("server", help="run tile server"))
+    add_element_arguments(
+        subparser.add_parser(
+            "element", help="draw OSM element: node, way, relation"
+        )
+    )
+    add_mapcss_arguments(
+        subparser.add_parser("mapcss", help="write MapCSS file")
+    )
+
+    subparser.add_parser("icons", help="draw icons")
+    subparser.add_parser("taginfo", help="write Taginfo JSON file")
 
     arguments: argparse.Namespace = parser.parse_args(args[1:])
 

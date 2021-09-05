@@ -20,7 +20,10 @@ def main() -> None:
 
     arguments: argparse.Namespace = parse_options(sys.argv)
 
-    if arguments.command == "render":
+    if not arguments.command:
+        print("No command provided. See --help.")
+
+    elif arguments.command == "render":
         from roentgen import mapper
 
         mapper.ui(arguments)
