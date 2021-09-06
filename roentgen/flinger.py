@@ -26,7 +26,7 @@ def pseudo_mercator(coordinates: np.ndarray) -> np.ndarray:
 
 
 def osm_zoom_level_to_pixels_per_meter(
-    zoom_level: float, equator_length: float = 40_075_017.0
+    zoom_level: float, equator_length: float
 ) -> float:
     """
     Convert OSM zoom level to pixels per meter on Equator. See
@@ -34,8 +34,7 @@ def osm_zoom_level_to_pixels_per_meter(
 
     :param zoom_level: integer number usually not bigger than 20, but this
         function allows any non-negative float value
-    :param equator_length: celestial body equator length in meters, default
-        value is set for Earth
+    :param equator_length: celestial body equator length in meters
     """
     return 2 ** zoom_level / equator_length * 256
 
@@ -48,14 +47,13 @@ class Flinger:
     def __init__(
         self,
         geo_boundaries: BoundaryBox,
-        zoom_level: float = 18,
-        equator_length: float = 40_075_017.0,
+        zoom_level: float,
+        equator_length: float,
     ) -> None:
         """
         :param geo_boundaries: minimum and maximum latitude and longitude
         :param zoom_level: zoom level in OpenStreetMap terminology
-        :param equator_length: celestial body equator length in meters, default
-            value is set for Earth
+        :param equator_length: celestial body equator length in meters
         """
         self.geo_boundaries: BoundaryBox = geo_boundaries
         self.ratio: float = 2 ** zoom_level * 256 / 360

@@ -43,24 +43,22 @@ class Tile:
     x: int
     y: int
     zoom_level: int
-    equator_length: float
 
     @classmethod
     def from_coordinates(
-        cls, coordinates: np.ndarray, zoom_level: int, equator_length: float
+        cls, coordinates: np.ndarray, zoom_level: int
     ) -> "Tile":
         """
         Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
 
         :param coordinates: any coordinates inside tile, (latitude, longitude)
         :param zoom_level: zoom level in OpenStreetMap terminology
-        :param equator_length: celestial body equator length in meters
         """
         lat_rad: np.ndarray = np.radians(coordinates[0])
         n: float = 2.0 ** zoom_level
         x: int = int((coordinates[1] + 180.0) / 360.0 * n)
         y: int = int((1.0 - np.arcsinh(np.tan(lat_rad)) / np.pi) / 2.0 * n)
-        return cls(x, y, zoom_level, equator_length)
+        return cls(x, y, zoom_level)
 
     def get_coordinates(self) -> np.ndarray:
         """
@@ -81,16 +79,14 @@ class Tile:
         """
         return (
             self.get_coordinates(),
-            Tile(
-                self.x + 1, self.y + 1, self.zoom_level, self.equator_length
-            ).get_coordinates(),
+            Tile(self.x + 1, self.y + 1, self.zoom_level).get_coordinates(),
         )
 
     def get_extended_boundary_box(self) -> BoundaryBox:
         """Same as get_boundary_box, but with extended boundaries."""
         point_1: np.ndarray = self.get_coordinates()
         point_2: np.ndarray = Tile(
-            self.x + 1, self.y + 1, self.zoom_level, self.equator_length
+            self.x + 1, self.y + 1, self.zoom_level
         ).get_coordinates()
 
         return BoundaryBox(
@@ -154,13 +150,13 @@ class Tile:
         """Draw SVG and PNG tile using OpenStreetMap data."""
         top, left = self.get_coordinates()
         bottom, right = Tile(
-            self.x + 1, self.y + 1, self.zoom_level, self.equator_length
+            self.x + 1, self.y + 1, self.zoom_level
         ).get_coordinates()
 
         flinger: Flinger = Flinger(
             BoundaryBox(left, bottom, right, top),
             self.zoom_level,
-            self.equator_length,
+            osm_data.equator_length,
         )
         size: np.ndarray = flinger.size
 
@@ -204,7 +200,6 @@ class Tile:
                     n * self.x + i,
                     n * self.y + j,
                     zoom_level,
-                    self.equator_length,
                 )
                 tiles.append(tile)
         return tiles
@@ -221,33 +216,31 @@ class Tiles:
     tile_2: Tile  # Right bottom tile.
     zoom_level: int  # OpenStreetMap zoom level.
     boundary_box: BoundaryBox
-    equator_length: float
 
     @classmethod
     def from_boundary_box(
-        cls, boundary_box: BoundaryBox, zoom_level: int, equator_length: float
+        cls, boundary_box: BoundaryBox, zoom_level: int
     ) -> "Tiles":
         """
         Create minimal set of tiles that covers boundary box.
 
         :param boundary_box: area to be covered by tiles
         :param zoom_level: zoom level in OpenStreetMap terminology
-        :param equator_length: celestial body equator length in meters
         """
         tiles: list[Tile] = []
         tile_1: Tile = Tile.from_coordinates(
-            boundary_box.get_left_top(), zoom_level, equator_length
+            boundary_box.get_left_top(), zoom_level
         )
         tile_2: Tile = Tile.from_coordinates(
-            boundary_box.get_right_bottom(), zoom_level, equator_length
+            boundary_box.get_right_bottom(), zoom_level
         )
         for x in range(tile_1.x, tile_2.x + 1):
             for y in range(tile_1.y, tile_2.y + 1):
-                tiles.append(Tile(x, y, zoom_level, equator_length))
+                tiles.append(Tile(x, y, zoom_level))
 
         latitude_2, longitude_1 = tile_1.get_coordinates()
         latitude_1, longitude_2 = Tile(
-            tile_2.x + 1, tile_2.y + 1, zoom_level, equator_length
+            tile_2.x + 1, tile_2.y + 1, zoom_level
         ).get_coordinates()
         assert longitude_2 > longitude_1
         assert latitude_2 > latitude_1
@@ -256,14 +249,7 @@ class Tiles:
             longitude_1, latitude_1, longitude_2, latitude_2
         ).round()
 
-        return cls(
-            tiles,
-            tile_1,
-            tile_2,
-            zoom_level,
-            extended_boundary_box,
-            equator_length,
-        )
+        return cls(tiles, tile_1, tile_2, zoom_level, extended_boundary_box)
 
     def load_osm_data(self, cache_path: Path) -> OSMData:
         """Load OpenStreetMap data."""
@@ -383,13 +369,12 @@ class Tiles:
                 self.tile_2.x + 1,
                 self.tile_2.y + 1,
                 self.zoom_level,
-                self.equator_length,
             ).get_coordinates()
 
             flinger: Flinger = Flinger(
                 BoundaryBox(left, bottom, right, top),
                 self.zoom_level,
-                self.equator_length,
+                osm_data.equator_length,
             )
             extractor: ShapeExtractor = ShapeExtractor(
                 workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
@@ -431,7 +416,6 @@ class Tiles:
             tiles[-1],
             zoom_level,
             self.boundary_box,
-            self.equator_length,
         )
 
 
@@ -473,16 +457,27 @@ def ui(options: argparse.Namespace) -> None:
     """Simple user interface for tile generation."""
     directory: Path = workspace.get_tile_path()
 
-    equator_length: float = options.equator_length
     zoom_levels: list[int] = parse_zoom_level(options.zoom)
     min_zoom_level: int = min(zoom_levels)
 
-    if options.coordinates:
+    if options.input_file_name:
+        osm_reader: OSMReader = OSMReader()
+        osm_reader.parse_osm_file(Path(options.input_file_name))
+        osm_data: OSMData = osm_reader.osm_data
+        for zoom_level in zoom_levels:
+            configuration: MapConfiguration = MapConfiguration.from_options(
+                options, zoom_level
+            )
+            tiles: Tiles = Tiles.from_boundary_box(
+                osm_data.view_box, zoom_level
+            )
+            tiles.draw(directory, Path(options.cache), configuration, osm_data)
+    elif options.coordinates:
         coordinates: list[float] = list(
             map(float, options.coordinates.strip().split(","))
         )
         min_tile: Tile = Tile.from_coordinates(
-            np.array(coordinates), min_zoom_level, equator_length
+            np.array(coordinates), min_zoom_level
         )
         try:
             osm_data: OSMData = min_tile.load_osm_data(Path(options.cache))
@@ -491,7 +486,7 @@ def ui(options: argparse.Namespace) -> None:
 
         for zoom_level in zoom_levels:
             tile: Tile = Tile.from_coordinates(
-                np.array(coordinates), zoom_level, equator_length
+                np.array(coordinates), zoom_level
             )
             try:
                 configuration: MapConfiguration = MapConfiguration.from_options(
@@ -502,7 +497,7 @@ def ui(options: argparse.Namespace) -> None:
                 logging.fatal(e.message)
     elif options.tile:
         zoom_level, x, y = map(int, options.tile.split("/"))
-        tile: Tile = Tile(x, y, zoom_level, equator_length)
+        tile: Tile = Tile(x, y, zoom_level)
         configuration: MapConfiguration = MapConfiguration.from_options(
             options, zoom_level
         )
@@ -513,9 +508,7 @@ def ui(options: argparse.Namespace) -> None:
         )
         if boundary_box is None:
             sys.exit(1)
-        min_tiles: Tiles = Tiles.from_boundary_box(
-            boundary_box, min_zoom_level, equator_length
-        )
+        min_tiles: Tiles = Tiles.from_boundary_box(boundary_box, min_zoom_level)
         try:
             osm_data: OSMData = min_tiles.load_osm_data(Path(options.cache))
         except NetworkError as e:
@@ -525,24 +518,9 @@ def ui(options: argparse.Namespace) -> None:
             if EXTEND_TO_BIGGER_TILE:
                 tiles: Tiles = min_tiles.subdivide(zoom_level)
             else:
-                tiles: Tiles = Tiles.from_boundary_box(
-                    boundary_box, zoom_level, equator_length
-                )
+                tiles: Tiles = Tiles.from_boundary_box(boundary_box, zoom_level)
             configuration: MapConfiguration = MapConfiguration.from_options(
                 options, zoom_level
-            )
-            tiles.draw(directory, Path(options.cache), configuration, osm_data)
-    elif options.input_file_name:
-        osm_reader = OSMReader()
-        osm_reader.parse_osm_file(Path(options.input_file_name))
-        osm_data = osm_reader.osm_data
-        boundary_box = osm_data.view_box
-        for zoom_level in zoom_levels:
-            configuration: MapConfiguration = MapConfiguration.from_options(
-                options, zoom_level
-            )
-            tiles: Tiles = Tiles.from_boundary_box(
-                boundary_box, zoom_level, equator_length
             )
             tiles.draw(directory, Path(options.cache), configuration, osm_data)
     else:

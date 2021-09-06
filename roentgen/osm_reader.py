@@ -307,6 +307,7 @@ class OSMData:
         self.authors: set[str] = set()
         self.time: MinMax = MinMax()
         self.view_box: Optional[BoundaryBox] = None
+        self.equator_length: float = 40_075_017.0
 
     def add_node(self, node: OSMNode) -> None:
         """Add node and update map parameters."""
@@ -426,14 +427,16 @@ class OSMReader:
         for element in root:
             if element.tag == "bounds":
                 self.parse_bounds(element)
-            if element.tag == "node" and self.parse_nodes:
+            elif element.tag == "object":
+                self.parse_object(element)
+            elif element.tag == "node" and self.parse_nodes:
                 node = OSMNode.from_xml_structure(element)
                 self.osm_data.add_node(node)
-            if element.tag == "way" and self.parse_ways:
+            elif element.tag == "way" and self.parse_ways:
                 self.osm_data.add_way(
                     OSMWay.from_xml_structure(element, self.osm_data.nodes)
                 )
-            if element.tag == "relation" and self.parse_relations:
+            elif element.tag == "relation" and self.parse_relations:
                 self.osm_data.add_relation(
                     OSMRelation.from_xml_structure(element)
                 )
@@ -448,3 +451,7 @@ class OSMReader:
             float(attributes["maxlon"]),
             float(attributes["maxlat"]),
         )
+
+    def parse_object(self, element: Element) -> None:
+        """Parse astronomical object properties from XML element."""
+        self.osm_data.equator_length = float(element.get("equator"))

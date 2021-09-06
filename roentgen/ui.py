@@ -100,13 +100,6 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         help="seed for random",
         metavar="<string>",
     )
-    parser.add_argument(
-        "--equator-length",
-        default=40_075_017.0,
-        help="equator length",
-        type=float,
-        metavar="<float>",
-    )
 
 
 def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
