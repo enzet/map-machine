@@ -8,7 +8,7 @@ from pathlib import Path
 
 import urllib3
 
-from roentgen.boundary_box import BoundaryBox
+from map_machine.boundary_box import BoundaryBox
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

@@ -1,11 +1,11 @@
 """
-Tests for Röntgen project.
+Tests for Map Machine project.
 """
 from pathlib import Path
 
-from roentgen.icon import ShapeExtractor
-from roentgen.scheme import Scheme
-from roentgen.workspace import Workspace
+from map_machine.icon import ShapeExtractor
+from map_machine.scheme import Scheme
+from map_machine.workspace import Workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

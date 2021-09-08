@@ -3,8 +3,8 @@ Test icon generation for nodes.
 """
 import pytest
 
-from roentgen.grid import IconCollection
-from roentgen.icon import IconSet
+from map_machine.grid import IconCollection
+from map_machine.icon import IconSet
 from tests import SCHEME, SHAPE_EXTRACTOR, workspace
 
 __author__ = "Sergey Vartanov"

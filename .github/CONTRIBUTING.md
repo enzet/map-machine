@@ -1,7 +1,7 @@
 Contributing
 ============
 
-Thank you for your interest in the Röntgen project. Since the primary goal of the project is to cover as many tags as possible, the project is crucially depend on contributions as OpenStreetMap itself.
+Thank you for your interest in the Map Machine project. Since the primary goal of the project is to cover as many tags as possible, the project is crucially depend on contributions as OpenStreetMap itself.
 
 Suggest a tag to support
 ------------------------

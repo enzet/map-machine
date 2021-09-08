@@ -3,8 +3,8 @@ Test color functions.
 """
 from colour import Color
 
-from roentgen.color import get_gradient_color, is_bright
-from roentgen.util import MinMax
+from map_machine.color import get_gradient_color, is_bright
+from map_machine.util import MinMax
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

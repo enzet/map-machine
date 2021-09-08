@@ -8,12 +8,12 @@ from typing import Optional, TextIO
 
 from colour import Color
 
-from roentgen import __project__, __url__
-from roentgen.grid import IconCollection
-from roentgen.icon import ShapeExtractor
-from roentgen.osm_reader import STAGES_OF_DECAY
-from roentgen.scheme import Matcher, Scheme
-from roentgen.workspace import workspace
+from map_machine import __project__, __url__
+from map_machine.grid import IconCollection
+from map_machine.icon import ShapeExtractor
+from map_machine.osm_reader import STAGES_OF_DECAY
+from map_machine.scheme import Matcher, Scheme
+from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -59,7 +59,7 @@ Map paint style that adds icons from Röntgen icon set
 
 meta {{
     title: "{__project__}";
-    description: "Röntgen map paint style for JOSM";
+    description: "Map Machine map paint style for JOSM";
     author: "{__author__}";
     version: "0.1";
     link: "{__url__}";
@@ -68,7 +68,7 @@ meta {{
 
 class MapCSSWriter:
     """
-    Writer that converts Röntgen scheme into MapCSS 0.2 format.
+    Writer that converts Map Machine scheme into MapCSS 0.2 format.
     """
 
     def __init__(
@@ -98,7 +98,7 @@ class MapCSSWriter:
         Add MapCSS 0.2 selector for node, way, relation, or area.
 
         :param target: `node`, `way`, `relation`, or `area`
-        :param matcher: tag matcher of Röntgen scheme
+        :param matcher: tag matcher of Map Machine scheme
         :param prefix: tag prefix
         :param opacity: icon opacity
         :return: string representation of selector

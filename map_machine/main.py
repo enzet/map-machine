@@ -1,20 +1,20 @@
 """
-Röntgen entry point.
+Map Machine entry point.
 """
 import argparse
 import logging
 import sys
 from pathlib import Path
 
-from roentgen.ui import parse_options
-from roentgen.workspace import Workspace
+from map_machine.ui import parse_options
+from map_machine.workspace import Workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
 def main() -> None:
-    """Röntgen command-line entry point."""
+    """Map Machine command-line entry point."""
     logging.basicConfig(format="%(levelname)s %(message)s", level=logging.INFO)
     workspace: Workspace = Workspace(Path("out"))
 
@@ -24,38 +24,38 @@ def main() -> None:
         print("No command provided. See --help.")
 
     elif arguments.command == "render":
-        from roentgen import mapper
+        from map_machine import mapper
 
         mapper.ui(arguments)
 
     elif arguments.command == "tile":
-        from roentgen import tile
+        from map_machine import tile
 
         tile.ui(arguments)
 
     elif arguments.command == "icons":
-        from roentgen.grid import draw_icons
+        from map_machine.grid import draw_icons
 
         draw_icons()
 
     elif arguments.command == "mapcss":
-        from roentgen import mapcss
+        from map_machine import mapcss
 
         mapcss.ui(arguments)
 
     elif arguments.command == "element":
-        from roentgen.element import draw_element
+        from map_machine.element import draw_element
 
         draw_element(arguments)
 
     elif arguments.command == "server":
-        from roentgen import server
+        from map_machine import server
 
         server.ui(arguments)
 
     elif arguments.command == "taginfo":
-        from roentgen.scheme import Scheme
-        from roentgen.taginfo import write_taginfo_project_file
+        from map_machine.scheme import Scheme
+        from map_machine.taginfo import write_taginfo_project_file
 
         write_taginfo_project_file(Scheme(workspace.DEFAULT_SCHEME_PATH))
 

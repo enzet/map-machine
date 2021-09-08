@@ -3,7 +3,7 @@ Tests for length tag parsing.
 """
 from typing import Optional
 
-from roentgen.osm_reader import Tagged
+from map_machine.osm_reader import Tagged
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

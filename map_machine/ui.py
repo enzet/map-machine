@@ -4,9 +4,9 @@ Command-line user interface.
 import argparse
 import sys
 
-from roentgen import __version__
-from roentgen.map_configuration import BuildingMode, DrawingMode, LabelMode
-from roentgen.osm_reader import STAGES_OF_DECAY
+from map_machine import __version__
+from map_machine.map_configuration import BuildingMode, DrawingMode, LabelMode
+from map_machine.osm_reader import STAGES_OF_DECAY
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -16,15 +16,15 @@ BOXES_LENGTH: int = len(BOXES)
 
 
 def parse_options(args: list[str]) -> argparse.Namespace:
-    """Parse Röntgen command-line options."""
+    """Parse Map Machine command-line options."""
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
-        description="Röntgen. OpenStreetMap renderer with custom icon set"
+        description="Map Machine. OpenStreetMap renderer with custom icon set"
     )
     parser.add_argument(
         "-v",
         "--version",
         action="version",
-        version="Röntgen " + __version__,
+        version="Map Machine " + __version__,
     )
     subparser = parser.add_subparsers(dest="command")
 

@@ -7,10 +7,10 @@ import numpy as np
 import svgwrite
 from colour import Color
 
-from roentgen.icon import Icon, IconSet
-from roentgen.map_configuration import LabelMode
-from roentgen.osm_reader import Tagged
-from roentgen.text import Label
+from map_machine.icon import Icon, IconSet
+from map_machine.map_configuration import LabelMode
+from map_machine.osm_reader import Tagged
+from map_machine.text import Label
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

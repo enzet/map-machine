@@ -10,8 +10,8 @@ else
 fi
 
 echo "Checking code format with Black..."
-if ! black -l 80 --check tests roentgen; then
-    black -l 80 --diff tests roentgen
+if ! black -l 80 --check tests map_machine; then
+    black -l 80 --diff tests map_machine
     echo "FAIL"
     exit 1
 fi
@@ -33,22 +33,22 @@ pytest -v || { echo "FAIL"; exit 1; }
 # Integration tests.
 
 echo "Test render"
-python3 roentgen render -b 10.000,20.000,10.001,20.001 --cache tests/data \
+map-machine render -b 10.000,20.000,10.001,20.001 --cache tests/data \
     || { echo "FAIL"; exit 1; }
 grep "natural: tree" out/map.svg || { echo "FAIL"; exit 1; }
 
 echo "Test icons"
-python3 roentgen icons || { echo "FAIL"; exit 1; }
+map-machine icons || { echo "FAIL"; exit 1; }
 
 echo "Test MapCSS generation"
-python3 roentgen mapcss || { echo "FAIL"; exit 1; }
+map-machine mapcss || { echo "FAIL"; exit 1; }
 
 echo "Test element generation"
-python3 roentgen element --node amenity=bench,material=wood \
+map-machine element --node amenity=bench,material=wood \
     || { echo "FAIL"; exit 1; }
 
 echo "Test tile generation"
-python3 roentgen tile --coordinates 50.000,40.000 --cache tests/data \
+map-machine tile --coordinates 50.000,40.000 --cache tests/data \
     || { echo "FAIL"; exit 1; }
 
 exit 0

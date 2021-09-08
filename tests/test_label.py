@@ -1,7 +1,7 @@
 """
 Test label generation for nodes.
 """
-from roentgen.text import Label
+from map_machine.text import Label
 from tests import SCHEME
 
 __author__ = "Sergey Vartanov"

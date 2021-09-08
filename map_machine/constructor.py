@@ -1,5 +1,5 @@
 """
-Construct Röntgen nodes and ways.
+Construct Map Machine nodes and ways.
 """
 import logging
 from datetime import datetime
@@ -9,9 +9,9 @@ from typing import Any, Iterator, Optional, Union
 import numpy as np
 from colour import Color
 
-from roentgen import ui
-from roentgen.color import get_gradient_color
-from roentgen.figure import (
+from map_machine import ui
+from map_machine.color import get_gradient_color
+from map_machine.figure import (
     Building,
     Crater,
     DirectionSector,
@@ -19,20 +19,20 @@ from roentgen.figure import (
     StyledFigure,
     Tree,
 )
-from roentgen.flinger import Flinger
-from roentgen.map_configuration import DrawingMode, MapConfiguration
+from map_machine.flinger import Flinger
+from map_machine.map_configuration import DrawingMode, MapConfiguration
 
 # fmt: off
-from roentgen.icon import (
+from map_machine.icon import (
     DEFAULT_SMALL_SHAPE_ID, Icon, IconSet, Shape, ShapeExtractor,
     ShapeSpecification
 )
-from roentgen.osm_reader import OSMData, OSMNode, OSMRelation, OSMWay
-from roentgen.point import Point
-from roentgen.scheme import DEFAULT_COLOR, LineStyle, RoadMatcher, Scheme
-from roentgen.text import Label
-from roentgen.ui import BuildingMode
-from roentgen.util import MinMax
+from map_machine.osm_reader import OSMData, OSMNode, OSMRelation, OSMWay
+from map_machine.point import Point
+from map_machine.scheme import DEFAULT_COLOR, LineStyle, RoadMatcher, Scheme
+from map_machine.text import Label
+from map_machine.ui import BuildingMode
+from map_machine.util import MinMax
 # fmt: on
 
 __author__ = "Sergey Vartanov"
@@ -147,7 +147,7 @@ def try_to_glue(
 
 class Constructor:
     """
-    Röntgen node and way constructor.
+    Map Machine node and way constructor.
     """
 
     def __init__(
@@ -199,7 +199,7 @@ class Constructor:
         self.construct_nodes()
 
     def construct_ways(self) -> None:
-        """Construct Röntgen ways."""
+        """Construct Map Machine ways."""
         for index, way_id in enumerate(self.osm_data.ways):
             ui.progress_bar(
                 index,
@@ -349,7 +349,7 @@ class Constructor:
         )
 
     def construct_relations(self) -> None:
-        """Construct Röntgen ways from OSM relations."""
+        """Construct Map Machine ways from OSM relations."""
         for relation_id in self.osm_data.relations:
             relation: OSMRelation = self.osm_data.relations[relation_id]
             tags: dict[str, str] = relation.tags

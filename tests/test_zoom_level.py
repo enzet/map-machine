@@ -1,7 +1,7 @@
 """
 Test zoom level specification parsing.
 """
-from roentgen.tile import ScaleConfigurationException, parse_zoom_level
+from map_machine.tile import ScaleConfigurationException, parse_zoom_level
 
 
 def test_zoom_level_1() -> None:

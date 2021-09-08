@@ -1,5 +1,5 @@
 """
-Moire markup extension for Röntgen.
+Moire markup extension for Map Machine.
 """
 import argparse
 from abc import ABC
@@ -10,9 +10,9 @@ import yaml
 from moire.default import Default, DefaultHTML, DefaultMarkdown, DefaultWiki
 from moire.moire import Tag
 
-from roentgen import ui
-from roentgen.icon import ShapeExtractor
-from roentgen.workspace import workspace
+from map_machine import ui
+from map_machine.icon import ShapeExtractor
+from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -143,9 +143,9 @@ test_configuration: TestConfiguration = TestConfiguration(
 )
 
 
-class RoentgenMoire(Default, ABC):
+class MapMachineMoire(Default, ABC):
     """
-    Moire extension stub for Röntgen.
+    Moire extension stub for Map Machine.
     """
 
     def osm(self, args: Arguments) -> str:
@@ -212,7 +212,7 @@ class RoentgenMoire(Default, ABC):
         return self.parse(args[0])
 
 
-class RoentgenHTML(RoentgenMoire, DefaultHTML):
+class MapMachineHTML(MapMachineMoire, DefaultHTML):
     """
     Simple HTML.
     """
@@ -272,7 +272,7 @@ class RoentgenHTML(RoentgenMoire, DefaultHTML):
         return f'<span class="formal">{self.parse(args[0])}</span>'
 
 
-class RoentgenOSMWiki(RoentgenMoire, DefaultWiki):
+class MapMachineOSMWiki(MapMachineMoire, DefaultWiki):
     """
     OpenStreetMap wiki.
 
@@ -307,7 +307,7 @@ class RoentgenOSMWiki(RoentgenMoire, DefaultWiki):
         return f"[[File:Röntgen {name}.svg|{size}px]]"
 
 
-class RoentgenMarkdown(RoentgenMoire, DefaultMarkdown):
+class MapMachineMarkdown(MapMachineMoire, DefaultMarkdown):
     """
     GitHub flavored markdown.
     """
@@ -335,3 +335,9 @@ class RoentgenMarkdown(RoentgenMoire, DefaultMarkdown):
     def formal(self, args: Arguments) -> str:
         """Formal variable."""
         return f"<{self.parse(args[0])}>"
+
+
+if __name__ == "__main__":
+    with Path("doc/readme.moi").open() as input_file:
+        with Path("README.md").open("w+") as output_file:
+            output_file.write(MapMachineMarkdown().convert(input_file.read()))

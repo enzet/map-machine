@@ -13,19 +13,19 @@ from svgwrite.container import Group
 from svgwrite.path import Path as SVGPath
 from svgwrite.shapes import Rect
 
-from roentgen.boundary_box import BoundaryBox
-from roentgen.constructor import Constructor
-from roentgen.figure import Road, StyledFigure
-from roentgen.flinger import Flinger
-from roentgen.icon import ShapeExtractor
-from roentgen.map_configuration import LabelMode, MapConfiguration
-from roentgen.osm_getter import NetworkError, get_osm
-from roentgen.osm_reader import OSMData, OSMNode, OSMReader, OverpassReader
-from roentgen.point import Occupied, Point
-from roentgen.road import Intersection, RoadPart
-from roentgen.scheme import Scheme
-from roentgen.ui import BuildingMode, progress_bar
-from roentgen.workspace import workspace
+from map_machine.boundary_box import BoundaryBox
+from map_machine.constructor import Constructor
+from map_machine.figure import Road, StyledFigure
+from map_machine.flinger import Flinger
+from map_machine.icon import ShapeExtractor
+from map_machine.map_configuration import LabelMode, MapConfiguration
+from map_machine.osm_getter import NetworkError, get_osm
+from map_machine.osm_reader import OSMData, OSMNode, OSMReader, OverpassReader
+from map_machine.point import Occupied, Point
+from map_machine.road import Intersection, RoadPart
+from map_machine.scheme import Scheme
+from map_machine.ui import BuildingMode, progress_bar
+from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -215,7 +215,7 @@ class Map:
 
 def ui(options: argparse.Namespace) -> None:
     """
-    Röntgen entry point.
+    Map Machine entry point.
 
     :param options: command-line arguments
     """

@@ -1,7 +1,7 @@
 """
 Test text generation.
 """
-from roentgen.text import format_voltage
+from map_machine.text import format_voltage
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

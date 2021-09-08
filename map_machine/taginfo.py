@@ -8,7 +8,7 @@ import logging
 from datetime import datetime
 from pathlib import Path
 
-from roentgen import (
+from map_machine import (
     __author__,
     __description__,
     __doc_url__,
@@ -16,8 +16,8 @@ from roentgen import (
     __project__,
     __url__,
 )
-from roentgen.scheme import Scheme
-from roentgen.workspace import workspace
+from map_machine.scheme import Scheme
+from map_machine.workspace import workspace
 
 
 class TaginfoProjectFile:
@@ -37,7 +37,7 @@ class TaginfoProjectFile:
                 "description": __description__,
                 "project_url": __url__,
                 "doc_url": __doc_url__,
-                "icon_url": "http://enzet.ru/roentgen/image/logo.png",
+                "icon_url": "http://enzet.ru/map-machine/image/logo.png",
                 "contact_name": __author__,
                 "contact_email": __email__,
             },
@@ -66,7 +66,7 @@ class TaginfoProjectFile:
                     "value": value,
                     "object_types": ["node", "area"],
                     "description": "Rendered",
-                    "icon_url": "http://enzet.ru/roentgen/"
+                    "icon_url": "http://enzet.ru/map-machine/"
                     f"roentgen_icons_mapcss/{icon_id}.svg",
                 }
                 tags.append(tag)
@@ -80,7 +80,7 @@ class TaginfoProjectFile:
 def write_taginfo_project_file(scheme: Scheme) -> None:
     """Write Taginfo JSON file."""
     out_file: Path = workspace.get_taginfo_file_path()
-    logging.info(f"Write Röntgen project file for Taginfo to {out_file}...")
+    logging.info(f"Write Map Machine project file for Taginfo to {out_file}...")
     taginfo_project_file: TaginfoProjectFile = TaginfoProjectFile(
         out_file, scheme
     )

@@ -11,9 +11,9 @@ from colour import Color
 from svgwrite import Drawing
 from svgwrite.shapes import Rect
 
-from roentgen.icon import Icon, Shape, ShapeExtractor, ShapeSpecification
-from roentgen.scheme import NodeMatcher, Scheme
-from roentgen.workspace import workspace
+from map_machine.icon import Icon, Shape, ShapeExtractor, ShapeSpecification
+from map_machine.scheme import NodeMatcher, Scheme
+from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

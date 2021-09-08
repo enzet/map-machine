@@ -3,7 +3,13 @@ Test OSM XML parsing.
 """
 import numpy as np
 
-from roentgen.osm_reader import OSMNode, OSMReader, OSMRelation, OSMWay, OSMData
+from map_machine.osm_reader import (
+    OSMNode,
+    OSMReader,
+    OSMRelation,
+    OSMWay,
+    OSMData,
+)
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

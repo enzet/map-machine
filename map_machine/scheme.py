@@ -1,5 +1,5 @@
 """
-Röntgen drawing scheme.
+Map Machine drawing scheme.
 """
 import logging
 from dataclasses import dataclass
@@ -11,8 +11,8 @@ import numpy as np
 import yaml
 from colour import Color
 
-from roentgen.direction import DirectionSet
-from roentgen.icon import (
+from map_machine.direction import DirectionSet
+from map_machine.icon import (
     DEFAULT_COLOR,
     DEFAULT_SHAPE_ID,
     Icon,
@@ -21,7 +21,7 @@ from roentgen.icon import (
     ShapeExtractor,
     ShapeSpecification,
 )
-from roentgen.text import Label, get_address, get_text
+from map_machine.text import Label, get_address, get_text
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

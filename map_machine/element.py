@@ -9,11 +9,11 @@ import numpy as np
 import svgwrite
 from svgwrite.path import Path as SVGPath
 
-from roentgen.icon import ShapeExtractor
-from roentgen.point import Point
-from roentgen.scheme import LineStyle, Scheme
-from roentgen.text import Label
-from roentgen.workspace import workspace
+from map_machine.icon import ShapeExtractor
+from map_machine.point import Point
+from map_machine.scheme import LineStyle, Scheme
+from map_machine.text import Label
+from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

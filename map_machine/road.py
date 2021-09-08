@@ -8,7 +8,7 @@ import numpy as np
 import svgwrite
 from svgwrite.path import Path
 
-from roentgen.vector import Line, compute_angle, norm, turn_by_angle
+from map_machine.vector import Line, compute_angle, norm, turn_by_angle
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

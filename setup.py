@@ -1,10 +1,10 @@
 """
-Röntgen project dynamic metadata.
+Map Machine project dynamic metadata.
 """
 from pathlib import Path
 
 from setuptools import setup
-from roentgen import (
+from map_machine import (
     __author__,
     __description__,
     __doc_url__,
@@ -17,9 +17,9 @@ with Path("README.md").open() as input_file:
     long_description: str = input_file.read()
 
 setup(
-    name="roentgen-map",
+    name="map-machine",
     version=__version__,
-    packages=["roentgen"],
+    packages=["map_machine"],
     url=__url__,
     project_urls={
         "Bug Tracker": f"{__url__}/issues",
@@ -33,16 +33,16 @@ setup(
     author=__author__,
     author_email=__email__,
     description=__description__,
-    long_description="Röntgen is a Python OpenStreetMap renderer and tile "
+    long_description="Map Machine is a Python OpenStreetMap renderer and tile "
     "generator with a custom set of CC-BY 4.0 icons aimed to display as many "
     "map features as possible.\n\n"
     f"See [full documentation]({__doc_url__}).",
     long_description_content_type="text/markdown",
     entry_points={
-        "console_scripts": ["roentgen=roentgen.main:main"],
+        "console_scripts": ["map-machine=map_machine.main:main"],
     },
     package_data={
-        "roentgen": [
+        "map_machine": [
             "icons/icons.svg",
             "icons/config.json",
             "icons/LICENSE",

@@ -9,12 +9,12 @@ from svgwrite import Drawing
 from svgwrite.container import Group
 from svgwrite.path import Path
 
-from roentgen.direction import DirectionSet, Sector
-from roentgen.drawing import PathCommands
-from roentgen.flinger import Flinger
-from roentgen.osm_reader import OSMNode, Tagged
-from roentgen.road import Lane
-from roentgen.scheme import LineStyle, RoadMatcher, Scheme
+from map_machine.direction import DirectionSet, Sector
+from map_machine.drawing import PathCommands
+from map_machine.flinger import Flinger
+from map_machine.osm_reader import OSMNode, Tagged
+from map_machine.road import Lane
+from map_machine.scheme import LineStyle, RoadMatcher, Scheme
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

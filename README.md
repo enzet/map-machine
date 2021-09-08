@@ -1,27 +1,27 @@
 
 
-**Röntgen** (or **Roentgen** when ASCII is preferred) project consists of
+**Map Machine** project consists of
 
   * simple Python [OpenStreetMap](http://openstreetmap.org) renderer and tile generator (see [usage](#usage-example), [renderer documentation](#map-generation), [tile generation](#tile-generation)),
-  * [set of CC-BY 4.0 icons](#icon-set) that can be used outside the project.
+  * [Röntgen icon set](#icon-set): unique CC-BY 4.0 icons.
 
-The idea behind the Röntgen project is to **show all the richness of the OpenStreetMap data**: to have a possibility to *display any map feature* represented by OpenStreetMap data tags by means of colors, shapes, and icons. Röntgen is created for OpenStreetMap contributors: to display all changes one made on the map even if they are small, and for users: to dig down into the map and find every detail that was mapped.
+The idea behind the Map Machine project is to **show all the richness of the OpenStreetMap data**: to have a possibility to *display any map feature* represented by OpenStreetMap data tags by means of colors, shapes, and icons. Map Machine is created for OpenStreetMap contributors: to display all changes one made on the map even if they are small, and for users: to dig down into the map and find every detail that was mapped.
 
-Unlike standard OpenStreetMap layers, **Röntgen is a playground for experiments** where one can easily try to support proposed tags, tags with little or even single usage, deprecated tags.
+Unlike standard OpenStreetMap layers, **Map Machine is a playground for experiments** where one can easily try to support proposed tags, tags with little or even single usage, deprecated tags.
 
-Röntgen is intended to be highly configurable, so it can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users, can use slow algorithms for some experimental features.
+Map Machine is intended to be highly configurable, so it can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users, can use slow algorithms for some experimental features.
 
 Usage example
 -------------
 
 ```bash
-roentgen render -b 2.284,48.860,2.290,48.865
+map-machine render -b 2.284,48.860,2.290,48.865
 ```
 
 will automatically download OSM data and write output SVG map of the specified area to `out/map.svg`. See [Map generation](#map-generation).
 
 ```bash
-roentgen tile -b 2.361,48.871,2.368,48.875
+map-machine tile -b 2.361,48.871,2.368,48.875
 ```
 
 will automatically download OSM data and write output PNG tiles that cover the specified area to `out/tiles` directory. See [Tile generation](#tile-generation).
@@ -29,7 +29,7 @@ will automatically download OSM data and write output PNG tiles that cover the s
 Map features
 ------------
 
-Röntgen features:
+Map Machine features:
 
   * detailed icons to display subtypes like [power tower design](#power-tower-design),
   * can display multiple icons for one entity to cover more features,
@@ -77,21 +77,21 @@ There are [special symbols](https://en.wikipedia.org/wiki/List_of_Japanese_map_s
 Icon set
 --------
 
-The central feature of the project is Röntgen icon set. It is a set of monochrome 14 × 14 px pixel-aligned icons. Unlike the Röntgen source code, which is under MIT license, all icons are under [CC BY](http://creativecommons.org/licenses/by/4.0/) license. So, with the appropriate credit icon set can be used outside the project. Some icons can be used as emoji symbols.
+The central feature of the project is Röntgen icon set. It is a set of monochrome 14 × 14 px pixel-aligned icons. Unlike the Map Machine source code, which is under MIT license, all icons are under [CC BY](http://creativecommons.org/licenses/by/4.0/) license. So, with the appropriate credit icon set can be used outside the project. Some icons can be used as emoji symbols.
 
 All icons tend to support common design style, which is heavily inspired by [Maki](https://github.com/mapbox/maki), [Osmic](https://github.com/gmgeo/osmic), and [Temaki](https://github.com/ideditor/temaki).
 
-Icons are used to visualize tags for nodes and areas. Unlike other renderers, Röntgen can use more than one icon to visualize an entity and use colors to visualize [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) value or other entity properties (like [`material`](https://wiki.openstreetmap.org/wiki/Key:material) or [`genus`](https://wiki.openstreetmap.org/wiki/Key:genus)).
+Icons are used to visualize tags for nodes and areas. Unlike other renderers, Map Machine can use more than one icon to visualize an entity and use colors to visualize [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) value or other entity properties (like [`material`](https://wiki.openstreetmap.org/wiki/Key:material) or [`genus`](https://wiki.openstreetmap.org/wiki/Key:genus)).
 
 ![Icons](doc/grid.png)
 
 Feel free to request new icons via issues for whatever you want to see on the map. No matter how frequently the tag is used in OpenStreetMap since final goal is to cover all tags. However, common used tags have priority, other things being equal.
 
-Generate icon grid and sets of individual icons with `roentgen icons`. It will create `out/icon_grid.svg` file, and SVG files in `out/icons_by_id` directory where files are named using shape identifiers (e.g. `power_tower_portal_2_level.svg`) and in `icons_by_name` directory where files are named using shape names (e.g. `Röntgen portal two-level transmission tower.svg`). Files from the last directory are used in OpenStreetMap wiki (e.g. [`File:Röntgen_portal_two-level_transmission_tower.svg`](https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg)).
+Generate icon grid and sets of individual icons with `map-machine icons`. It will create `out/icon_grid.svg` file, and SVG files in `out/icons_by_id` directory where files are named using shape identifiers (e.g. `power_tower_portal_2_level.svg`) and in `icons_by_name` directory where files are named using shape names (e.g. `Röntgen portal two-level transmission tower.svg`). Files from the last directory are used in OpenStreetMap wiki (e.g. [`File:Röntgen_portal_two-level_transmission_tower.svg`](https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg)).
 
 ### Shape combination ###
 
-Röntgen constructs icons from the shapes extracted from the sketch SVG file. Some icons consists of just one shape, to construct other it may be necessary to combine two or more shapes.
+Map Machine constructs icons from the shapes extracted from the sketch SVG file. Some icons consists of just one shape, to construct other it may be necessary to combine two or more shapes.
 
 ![Bus stop icon combination](doc/bus_stop.png)
 
@@ -128,7 +128,7 @@ Map generation
 Command `render` is used to generates SVG map from OpenStreetMap data. You can run it using:
 
 ```bash
-roentgen render \
+map-machine render \
     -b <min longitude>,<min latitude>,<max longitude>,<max latitude> \
     -o <output file name> \
     -z <OSM zoom level> \
@@ -138,7 +138,7 @@ roentgen render \
 ### Example ###
 
 ```bash
-roentgen render \
+map-machine render \
     --boundary-box 2.284,48.860,2.290,48.865 \
     --output out/esplanade_du_trocadéro.svg
 ```
@@ -160,7 +160,7 @@ plus [map configuration options](#map-options)
 Tile generation
 ---------------
 
-Command `tile` is used to generate PNG tiles for [slippy maps](https://wiki.openstreetmap.org/wiki/Slippy_Map). To use them, run [Röntgen tile server](#tile-server).
+Command `tile` is used to generate PNG tiles for [slippy maps](https://wiki.openstreetmap.org/wiki/Slippy_Map). To use them, run [Map Machine tile server](#tile-server).
 
 | Option | Description |
 |---|---|
@@ -169,6 +169,7 @@ Command `tile` is used to generate PNG tiles for [slippy maps](https://wiki.open
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
 | <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | construct the minimum amount of tiles that cover requested boundary box |
 | <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<integer>` | OSM zoom levels; can be list of numbers or ranges, e.g. `16-18`, `16,17,18`, or `16,18-20`, default value: `18` |
+| <span style="white-space: nowrap;">`-i`</span>, <span style="white-space: nowrap;">`--input`</span> `<path>` | input OSM XML file name (if not specified, file will be downloaded using OpenStreetMap API) |
 
 plus [map configuration options](#map-options)
 
@@ -177,13 +178,13 @@ plus [map configuration options](#map-options)
 Specify tile coordinates:
 
 ```bash
-roentgen tile --tile <OSM zoom level>/<x>/<y>
+map-machine tile --tile <OSM zoom level>/<x>/<y>
 ```
 
 or specify any geographical coordinates inside a tile:
 
 ```bash
-roentgen tile \
+map-machine tile \
     --coordinates <latitude>,<longitude> \
     --zoom <OSM zoom levels>
 ```
@@ -193,7 +194,7 @@ Tile will be stored as SVG file `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PN
 Example:
 
 ```bash
-roentgen tile -c 55.7510637,37.6270761 -z 18
+map-machine tile -c 55.7510637,37.6270761 -z 18
 ```
 
 will generate SVG file `out/tiles/tile_18_158471_81953.svg` and PNG file `out/tiles/tile_18_158471_81953.png`.
@@ -203,7 +204,7 @@ will generate SVG file `out/tiles/tile_18_158471_81953.svg` and PNG file `out/ti
 Specify boundary box to get the minimal set of tiles that covers the area:
 
 ```bash
-roentgen tile \
+map-machine tile \
     --boundary-box <min longitude>,<min latitude>,<max longitude>,<max latitude> \
     --zoom <OSM zoom levels>
 ```
@@ -213,7 +214,7 @@ Boundary box will be extended to the boundaries of the minimal tile set that cov
 Example:
 
 ```bash
-roentgen tile -b 2.361,48.871,2.368,48.875
+map-machine tile -b 2.361,48.871,2.368,48.875
 ```
 
 will generate 36 PNG tiles at zoom level 18 from tile 18/132791/90164 all the way to 18/132796/90169 and two cached files `cache/2.360,48.869,2.370,48.877_18.svg` and `cache/2.360,48.869,2.370,48.877_18.png`.
@@ -224,7 +225,7 @@ Tile server
 Command `server` is used to run tile server for slippy maps.
 
 ```
-roentgen server
+map-machine server
 ```
 
 Stop server interrupting process with <kbd>Ctrl</kbd> + <kbd>C</kbd>.
@@ -239,13 +240,13 @@ Stop server interrupting process with <kbd>Ctrl</kbd> + <kbd>C</kbd>.
 Create a minimal amount of tiles that cover specified boundary box for zoom levels 16, 17, 18, and 19:
 
 ```bash
-roentgen tile -b 2.364,48.854,2.367,48.857 -z 16-19
+map-machine tile -b 2.364,48.854,2.367,48.857 -z 16-19
 ```
 
 Run tile server on 127.0.0.1:8080:
 
 ```bash
-roentgen server
+map-machine server
 ```
 
 Use JavaScript code for [Leaflet](https://leafletjs.com/):
@@ -258,8 +259,8 @@ L.tileLayer('http://127.0.0.1:8080/tiles/{z}/{x}/{y}', {
     attribution: 'Map data &copy; ' +
         '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ' +
         'contributors, imagery &copy; ' +
-        '<a href="https:/github.com/enzet/Roentgen">Röntgen</a>',
-    id: 'roentgen',
+        '<a href="https:/github.com/enzet/map-machine">Map Machine</a>',
+    id: 'map_machine',
     tileSize: 256,
     zoomOffset: 0
 }).addTo(map);
@@ -288,9 +289,9 @@ Map configuration options used by `render` and `tile` commands:
 MapCSS 0.2 generation
 ---------------------
 
-Command `mapcss` is used to generate MapCSS scheme. `roentgen mapcss` will create `out/roentgen_mapcss` directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas: `.mapcss` file and directory with icons.
+Command `mapcss` is used to generate MapCSS scheme. `map-machine mapcss` will create `out/map_machine_mapcss` directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas: `.mapcss` file and directory with icons.
 
-To create MapCSS with Röntgen style also for ways and relations, run `roentgen mapcss --ways`.
+To create MapCSS with Map Machine style also for ways and relations, run `map-machine mapcss --ways`.
 
 | Option | Description |
 |---|---|
@@ -298,15 +299,15 @@ To create MapCSS with Röntgen style also for ways and relations, run `roentgen 
 | <span style="white-space: nowrap;">`--ways`</span> | add style for ways and relations |
 | <span style="white-space: nowrap;">`--lifecycle`</span> | add icons for lifecycle tags; be careful: this will increase the number of node and area selectors by 9 times, set by default |
 
-### Use Röntgen as JOSM map paint style ###
+### Use Map Machine as JOSM map paint style ###
 
-  * Run `roentgen mapcss`.
+  * Run `map-machine mapcss`.
   * Open [JOSM](https://josm.openstreetmap.de/).
   * Go to <kbd>Preferences</kbd> → Third tab on the left → <kbd>Map Paint Styles</kbd>.
   * Active styles: press <kbd>+</kbd>.
-  * URL / File: set path to `out/roentgen_mapcss/roentgen.mapcss`.
+  * URL / File: set path to `out/map_machine_mapcss/map_machine.mapcss`.
 
-To enable / disable Röntgen map paint style go to <kbd>View</kbd> → <kbd>Map Paint Styles</kbd> → <kbd>Röntgen</kbd>.
+To enable / disable Map Machine map paint style go to <kbd>View</kbd> → <kbd>Map Paint Styles</kbd> → <kbd>Map Machine</kbd>.
 
 #### Example ####
 
@@ -315,5 +316,5 @@ To enable / disable Röntgen map paint style go to <kbd>View</kbd> → <kbd>Map 
 Example of using Röntgen icons on top of Mapnik style in JOSM. Map Paint Styles look like:
 
   * ✓ Mapnik (true)
-  * ✓ Röntgen
+  * ✓ Map Machine
 

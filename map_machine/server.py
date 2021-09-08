@@ -1,5 +1,5 @@
 """
-Röntgen tile server for slippy maps.
+Map Machine tile server for slippy maps.
 """
 import argparse
 import logging
@@ -9,8 +9,8 @@ from typing import Optional
 
 import cairosvg
 
-from roentgen.tile import Tile
-from roentgen.workspace import workspace
+from map_machine.tile import Tile
+from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

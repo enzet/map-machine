@@ -3,7 +3,7 @@ Test direction processing.
 """
 import numpy as np
 
-from roentgen.direction import DirectionSet, parse_vector
+from map_machine.direction import DirectionSet, parse_vector
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

@@ -18,7 +18,7 @@ from svgwrite.base import BaseElement
 from svgwrite.container import Group
 from svgwrite.path import Path as SVGPath
 
-from roentgen.color import is_bright
+from map_machine.color import is_bright
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

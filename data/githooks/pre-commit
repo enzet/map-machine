@@ -1,8 +1,8 @@
 #!/bin/sh
 
 echo "Checking code format with Black..."
-if ! black -l 80 --check tests roentgen; then
-    black -l 80 --diff tests roentgen
+if ! black -l 80 --check tests map_machine; then
+    black -l 80 --diff tests map_machine
     echo "FAIL"
     exit 1
 fi

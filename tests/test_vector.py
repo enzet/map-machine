@@ -3,7 +3,7 @@ Test vector operations.
 """
 import numpy as np
 
-from roentgen.vector import compute_angle, turn_by_angle
+from map_machine.vector import compute_angle, turn_by_angle
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

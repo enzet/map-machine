@@ -6,7 +6,7 @@ from typing import Iterator, Optional
 import numpy as np
 from portolan import middle
 
-from roentgen.drawing import PathCommands
+from map_machine.drawing import PathCommands
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

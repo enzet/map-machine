@@ -12,8 +12,8 @@ from xml.etree.ElementTree import Element
 
 import numpy as np
 
-from roentgen.boundary_box import BoundaryBox
-from roentgen.util import MinMax
+from map_machine.boundary_box import BoundaryBox
+from map_machine.util import MinMax
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
