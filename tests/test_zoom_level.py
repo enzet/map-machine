@@ -3,6 +3,9 @@ Test zoom level specification parsing.
 """
 from map_machine.tile import ScaleConfigurationException, parse_zoom_level
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
 
 def test_zoom_level_1() -> None:
     """Test one zoom level."""

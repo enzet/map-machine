@@ -21,7 +21,7 @@ def main() -> None:
     arguments: argparse.Namespace = parse_options(sys.argv)
 
     if not arguments.command:
-        print("No command provided. See --help.")
+        logging.fatal("No command provided. See --help.")
 
     elif arguments.command == "render":
         from map_machine import mapper

@@ -4,11 +4,11 @@ Test OSM XML parsing.
 import numpy as np
 
 from map_machine.osm_reader import (
+    OSMData,
     OSMNode,
     OSMReader,
     OSMRelation,
     OSMWay,
-    OSMData,
 )
 
 __author__ = "Sergey Vartanov"

@@ -20,20 +20,21 @@ from map_machine.figure import (
     Tree,
 )
 from map_machine.flinger import Flinger
-from map_machine.map_configuration import DrawingMode, MapConfiguration
-
-# fmt: off
 from map_machine.icon import (
-    DEFAULT_SMALL_SHAPE_ID, Icon, IconSet, Shape, ShapeExtractor,
-    ShapeSpecification
+    DEFAULT_SMALL_SHAPE_ID,
+    Icon,
+    IconSet,
+    Shape,
+    ShapeExtractor,
+    ShapeSpecification,
 )
+from map_machine.map_configuration import DrawingMode, MapConfiguration
 from map_machine.osm_reader import OSMData, OSMNode, OSMRelation, OSMWay
 from map_machine.point import Point
 from map_machine.scheme import DEFAULT_COLOR, LineStyle, RoadMatcher, Scheme
 from map_machine.text import Label
 from map_machine.ui import BuildingMode
 from map_machine.util import MinMax
-# fmt: on
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
