@@ -1,10 +1,14 @@
 """
 Test command line commands.
 """
+from pathlib import Path
 from subprocess import PIPE, Popen
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
+
+from xml.etree import ElementTree
+from xml.etree.ElementTree import Element
 
 
 def error_run(arguments: list[str], message: bytes) -> None:
@@ -21,3 +25,31 @@ def run(arguments: list[str], message: bytes) -> None:
     _, error = p.communicate()
     assert p.returncode == 0
     assert error == message
+
+
+def test_wrong_render_arguments() -> None:
+    """Test `render` command with wrong arguments."""
+    error_run(
+        ["render", "-z", "17"],
+        b"CRITICAL Specify either --boundary-box, or --input.\n",
+    )
+
+
+def test_render() -> None:
+    """Test `render` command."""
+    run(
+        [
+            "render",
+            "-b",
+            "10.000,20.000,10.001,20.001",
+            "--cache",
+            "tests/data",
+        ],
+        b"INFO Writing output SVG to out/map.svg...\n",
+    )
+    with Path("out/map.svg").open() as output_file:
+        root: Element = ElementTree.parse(output_file).getroot()
+
+    assert len(root) == 4
+    assert root.get("width") == "186.0"
+    assert root.get("height") == "198.0"
