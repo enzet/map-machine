@@ -1505,6 +1505,12 @@ ways:
       stroke-width: 1
       opacity: 0.3
     priority: 80
+  - tags: {man_made: pipeline}
+    style: {stroke: "#888888", stroke-width: 1, stroke-dasharray: "12,1.5"}
+    priority: 80
+  - tags: {man_made: pipeline}
+    style: {stroke: "#888888", stroke-width: 3, stroke-dasharray: "1,10,1,1.5"}
+    priority: 80
 
   - tags: {highway: track}
     style:
