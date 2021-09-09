@@ -9,46 +9,11 @@ else
     exit 1
 fi
 
-echo "Checking code format with Black..."
-if ! black -l 80 --check tests map_machine; then
-    black -l 80 --diff tests map_machine
-    echo "FAIL"
-    exit 1
-fi
-
-# Link with Flake8.
-
-echo "Lint with Flake8..."
-flake8 \
-    --max-line-length=80 \
-    --ignore=E203,W503,ANN002,ANN003,ANN101,ANN102 \
-    --exclude=work,precommit.py,tests/test_road.py \
-    || { echo "FAIL"; exit 1; }
+data/githooks/pre-commit || { echo "FAIL"; exit 1; }
 
 # Unit tests with pytest.
 
 echo "Run tests with pytest..."
 pytest -v || { echo "FAIL"; exit 1; }
-
-# Integration tests.
-
-echo "Test render"
-map-machine render -b 10.000,20.000,10.001,20.001 --cache tests/data \
-    || { echo "FAIL"; exit 1; }
-grep "natural: tree" out/map.svg || { echo "FAIL"; exit 1; }
-
-echo "Test icons"
-map-machine icons || { echo "FAIL"; exit 1; }
-
-echo "Test MapCSS generation"
-map-machine mapcss || { echo "FAIL"; exit 1; }
-
-echo "Test element generation"
-map-machine element --node amenity=bench,material=wood \
-    || { echo "FAIL"; exit 1; }
-
-echo "Test tile generation"
-map-machine tile --coordinates 50.000,40.000 --cache tests/data \
-    || { echo "FAIL"; exit 1; }
 
 exit 0
