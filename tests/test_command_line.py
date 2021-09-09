@@ -63,6 +63,12 @@ def test_icons() -> None:
         b"INFO Icons are written to out/icons_by_name and out/icons_by_id.\n",
     )
 
+    assert (Path("out") / "icon_grid.svg").is_file()
+    assert (Path("out") / "icons_by_name").is_dir()
+    assert (Path("out") / "icons_by_id").is_dir()
+    assert (Path("out") / "icons_by_name" / "Röntgen apple.svg").is_file()
+    assert (Path("out") / "icons_by_id" / "apple.svg").is_file()
+
 
 def test_mapcss() -> None:
     """Test `mapcss` command."""
@@ -70,6 +76,13 @@ def test_mapcss() -> None:
         ["mapcss"],
         b"INFO MapCSS 0.2 scheme is written to out/map_machine_mapcss.\n",
     )
+
+    assert (Path("out") / "map_machine_mapcss").is_dir()
+    assert (Path("out") / "map_machine_mapcss" / "icons").is_dir()
+    assert (
+        Path("out") / "map_machine_mapcss" / "icons" / "apple.svg"
+    ).is_file()
+    assert (Path("out") / "map_machine_mapcss" / "map_machine.mapcss").is_file()
 
 
 def test_element() -> None:
@@ -79,6 +92,8 @@ def test_element() -> None:
         b"INFO Element is written to out/element.svg.\n",
     )
 
+    assert (Path("out") / "element.svg").is_file()
+
 
 def test_tile() -> None:
     """Test `tile` command."""
@@ -87,3 +102,6 @@ def test_tile() -> None:
         b"INFO Tile is drawn to out/tiles/tile_18_160199_88904.svg.\n"
         b"INFO SVG file is rasterized to out/tiles/tile_18_160199_88904.png.\n",
     )
+
+    assert (Path("out") / "tiles" / "tile_18_160199_88904.svg").is_file()
+    assert (Path("out") / "tiles" / "tile_18_160199_88904.png").is_file()
