@@ -53,3 +53,20 @@ def test_render() -> None:
     assert len(root) == 4
     assert root.get("width") == "186.0"
     assert root.get("height") == "198.0"
+
+
+def test_icons() -> None:
+    """Test `icons` command."""
+    run(
+        ["icons"],
+        b"INFO Icon grid is written to out/icon_grid.svg.\n"
+        b"INFO Icons are written to out/icons_by_name and out/icons_by_id.\n",
+    )
+
+
+def test_mapcss() -> None:
+    """Test `mapcss` command."""
+    run(
+        ["mapcss"],
+        b"INFO MapCSS 0.2 scheme is written to out/map_machine_mapcss.\n",
+    )
