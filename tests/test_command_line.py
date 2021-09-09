@@ -70,3 +70,20 @@ def test_mapcss() -> None:
         ["mapcss"],
         b"INFO MapCSS 0.2 scheme is written to out/map_machine_mapcss.\n",
     )
+
+
+def test_element() -> None:
+    """Test `element` command."""
+    run(
+        ["element", "--node", "amenity=bench,material=wood"],
+        b"INFO Element is written to out/element.svg.\n",
+    )
+
+
+def test_tile() -> None:
+    """Test `tile` command."""
+    run(
+        ["tile", "--coordinates", "50.000,40.000", "--cache", "tests/data"],
+        b"INFO Tile is drawn to out/tiles/tile_18_160199_88904.svg.\n"
+        b"INFO SVG file is rasterized to out/tiles/tile_18_160199_88904.png.\n",
+    )
