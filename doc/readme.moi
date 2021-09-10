@@ -99,7 +99,7 @@ Icons are used to visualize tags for nodes and areas.  Unlike other renderers, M
 
 Feel free to request new icons via issues for whatever you want to see on the map.  No matter how frequently the tag is used in OpenStreetMap since final goal is to cover all tags.  However, common used tags have priority, other things being equal.
 
-Generate icon grid and sets of individual icons with \m {\command {Test icon generation}}.  It will create \m {out/icon_grid.svg} file, and SVG files in \m {out/icons_by_id} directory where files are named using shape identifiers (e.g. \m {power_tower_portal_2_level.svg}) and in \m {icons_by_name} directory where files are named using shape names (e.g. \m {Röntgen portal two-level transmission tower.svg}).  Files from the last directory are used in OpenStreetMap wiki (e.g. \ref {https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg} {\m {File:Röntgen_portal_two-level_transmission_tower.svg}}).
+Generate icon grid and sets of individual icons with \m {\command {icons}}.  It will create \m {out/icon_grid.svg} file, and SVG files in \m {out/icons_by_id} directory where files are named using shape identifiers (e.g. \m {power_tower_portal_2_level.svg}) and in \m {icons_by_name} directory where files are named using shape names (e.g. \m {Röntgen portal two-level transmission tower.svg}).  Files from the last directory are used in OpenStreetMap wiki (e.g. \ref {https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg} {\m {File:Röntgen_portal_two-level_transmission_tower.svg}}).
 
 \3 {Shape combination} {shape_combination}
 
@@ -283,7 +283,7 @@ Map configuration options used by \m {render} and \m {tile} commands:
 
 \2 {MapCSS 0.2 generation} {mapcss-0-2-generation}
 
-Command \m {mapcss} is used to generate MapCSS scheme.  \m {\command {Test MapCSS 0.2 generation}} will create \m {out/map_machine_mapcss} directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas\: \m {.mapcss} file and directory with icons.
+Command \m {mapcss} is used to generate MapCSS scheme.  \m {\command {mapcss}} will create \m {out/map_machine_mapcss} directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas\: \m {.mapcss} file and directory with icons.
 
 To create MapCSS with Map Machine style also for ways and relations, run \m {map-machine mapcss --ways}.
 
@@ -292,7 +292,7 @@ To create MapCSS with Map Machine style also for ways and relations, run \m {map
 \3 {Use Map Machine as JOSM map paint style}
 
 \list
-    {Run \m {\command {Test MapCSS 0.2 generation}}.}
+    {Run \m {\command {mapcss}}.}
     {Open \ref {https://josm.openstreetmap.de/} {JOSM}.}
     {Go to \kbd {Preferences} → Third tab on the left → \kbd {Map Paint Styles}.}
     {Active styles: press \kbd {+}.}

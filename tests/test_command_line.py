@@ -10,6 +10,8 @@ __email__ = "me@enzet.ru"
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
+from map_machine.ui import COMMANDS
+
 
 def error_run(arguments: list[str], message: bytes) -> None:
     """Run command that should fail and check error message."""
@@ -38,13 +40,7 @@ def test_wrong_render_arguments() -> None:
 def test_render() -> None:
     """Test `render` command."""
     run(
-        [
-            "render",
-            "-b",
-            "10.000,20.000,10.001,20.001",
-            "--cache",
-            "tests/data",
-        ],
+        COMMANDS["render"] + ["--cache", "tests/data"],
         b"INFO Writing output SVG to out/map.svg...\n",
     )
     with Path("out/map.svg").open() as output_file:
@@ -58,7 +54,7 @@ def test_render() -> None:
 def test_icons() -> None:
     """Test `icons` command."""
     run(
-        ["icons"],
+        COMMANDS["icons"],
         b"INFO Icon grid is written to out/icon_grid.svg.\n"
         b"INFO Icons are written to out/icons_by_name and out/icons_by_id.\n",
     )
@@ -73,7 +69,7 @@ def test_icons() -> None:
 def test_mapcss() -> None:
     """Test `mapcss` command."""
     run(
-        ["mapcss"],
+        COMMANDS["mapcss"],
         b"INFO MapCSS 0.2 scheme is written to out/map_machine_mapcss.\n",
     )
 
@@ -87,10 +83,7 @@ def test_mapcss() -> None:
 
 def test_element() -> None:
     """Test `element` command."""
-    run(
-        ["element", "--node", "amenity=bench,material=wood"],
-        b"INFO Element is written to out/element.svg.\n",
-    )
+    run(COMMANDS["element"], b"INFO Element is written to out/element.svg.\n")
 
     assert (Path("out") / "element.svg").is_file()
 
@@ -98,7 +91,7 @@ def test_element() -> None:
 def test_tile() -> None:
     """Test `tile` command."""
     run(
-        ["tile", "--coordinates", "50.000,40.000", "--cache", "tests/data"],
+        COMMANDS["tile"] + ["--cache", "tests/data"],
         b"INFO Tile is drawn to out/tiles/tile_18_160199_88904.svg.\n"
         b"INFO SVG file is rasterized to out/tiles/tile_18_160199_88904.png.\n",
     )

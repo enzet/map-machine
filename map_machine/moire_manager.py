@@ -6,12 +6,12 @@ from abc import ABC
 from pathlib import Path
 from typing import Any, Union
 
-import yaml
 from moire.default import Default, DefaultHTML, DefaultMarkdown, DefaultWiki
 from moire.moire import Tag
 
 from map_machine import ui
 from map_machine.icon import ShapeExtractor
+from map_machine.ui import COMMANDS
 from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
@@ -115,34 +115,6 @@ class ArgumentParser(argparse.ArgumentParser):
         return Tag("table", table)
 
 
-class TestConfiguration:
-    """
-    GitHub Actions test configuration.
-    """
-
-    def __init__(self, test_config: Path) -> None:
-        self.steps: dict[str, Any] = {}
-
-        with test_config.open() as input_file:
-            content: dict[str, Any] = yaml.load(
-                input_file, Loader=yaml.FullLoader
-            )
-            steps: list[dict[str, Any]] = content["jobs"]["build"]["steps"]
-            for step in steps:
-                if "name" not in step:
-                    continue
-                self.steps[step["name"]] = step
-
-    def get_command(self, name: str) -> str:
-        """Get shell script commands for the test."""
-        return self.steps[name]["run"].strip()
-
-
-test_configuration: TestConfiguration = TestConfiguration(
-    workspace.GITHUB_TEST_PATH
-)
-
-
 class MapMachineMoire(Default, ABC):
     """
     Moire extension stub for Map Machine.
@@ -170,12 +142,8 @@ class MapMachineMoire(Default, ABC):
         return ""
 
     def command(self, args: Arguments) -> str:
-        """
-        Bash command from GitHub Actions configuration.
-
-        See .github/workflows/test.yml
-        """
-        return test_configuration.get_command(self.clear(args[0]))
+        """Bash command from integration tests."""
+        return "map-machine " + " ".join(COMMANDS[self.clear(args[0])])
 
     def icon(self, args: Arguments) -> str:
         """Image with Röntgen icon."""
@@ -225,12 +193,12 @@ class MapMachineHTML(MapMachineMoire, DefaultHTML):
         """Simple table.  First row is treated as header."""
         content: str = ""
         cell: str = "".join(
-            ["<th>" + self.parse(td, inblock=True) + "</th>" for td in arg[0]]
+            ["<th>" + self.parse(td, in_block=True) + "</th>" for td in arg[0]]
         )
         content += f"<tr>{cell}</tr>"
         for tr in arg[1:]:
             cell: str = "".join(
-                ["<td>" + self.parse(td, inblock=True) + "</td>" for td in tr]
+                ["<td>" + self.parse(td, in_block=True) + "</td>" for td in tr]
             )
             content += f"<tr>{cell}</tr>"
         return f"<table>{content}</table>"

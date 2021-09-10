@@ -14,6 +14,14 @@ __email__ = "me@enzet.ru"
 BOXES: str = " ▏▎▍▌▋▊▉"
 BOXES_LENGTH: int = len(BOXES)
 
+COMMANDS: dict[str, list[str]] = {
+    "render": ["render", "-b", "10.000,20.000,10.001,20.001"],
+    "icons": ["icons"],
+    "mapcss": ["mapcss"],
+    "element": ["element", "--node", "amenity=bench,material=wood"],
+    "tile": ["tile", "--coordinates", "50.000,40.000"],
+}
+
 
 def parse_options(args: list[str]) -> argparse.Namespace:
     """Parse Map Machine command-line options."""
