@@ -1807,12 +1807,12 @@ ways:
       stroke-width: 1.5
   - tags: {waterway: riverbank}
     style:
-      fill: none # water_color
+      fill: water_color
       stroke: water_border_color
       stroke-width: 1
   - tags: {waterway: ditch}
     style:
-      fill: none # water_color
+      fill: water_color
       stroke: water_color
       stroke-width: 2
 

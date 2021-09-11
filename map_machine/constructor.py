@@ -292,6 +292,7 @@ class Constructor:
                         center_point,
                         is_for_node=False,
                         priority=priority,
+                        add_tooltips=self.configuration.show_tooltips,
                     )
                     self.points.append(point)
 
@@ -329,6 +330,7 @@ class Constructor:
                     center_point,
                     is_for_node=False,
                     priority=priority,
+                    add_tooltips=self.configuration.show_tooltips,
                 )
                 self.points.append(point)
 
@@ -416,7 +418,13 @@ class Constructor:
                 Icon([ShapeSpecification(dot, color)]), [], set()
             )
             point: Point = Point(
-                icon_set, [], tags, processed, flung, draw_outline=False
+                icon_set,
+                [],
+                tags,
+                processed,
+                flung,
+                draw_outline=False,
+                add_tooltips=self.configuration.show_tooltips,
             )
             self.points.append(point)
             return
@@ -442,9 +450,15 @@ class Constructor:
         if "direction" in node.tags or "camera:direction" in node.tags:
             self.direction_sectors.append(DirectionSector(tags, flung))
         point: Point = Point(
-            icon_set, labels, tags, processed, flung,
-            priority=priority, draw_outline=draw_outline
-        )  # fmt: skip
+            icon_set,
+            labels,
+            tags,
+            processed,
+            flung,
+            priority=priority,
+            draw_outline=draw_outline,
+            add_tooltips=self.configuration.show_tooltips,
+        )
         self.points.append(point)
 
 

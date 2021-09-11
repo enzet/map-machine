@@ -16,6 +16,12 @@ BOXES_LENGTH: int = len(BOXES)
 
 COMMANDS: dict[str, list[str]] = {
     "render": ["render", "-b", "10.000,20.000,10.001,20.001"],
+    "render_with_tooltips": [
+        "render",
+        "-b",
+        "10.000,20.000,10.001,20.001",
+        "--show-tooltips",
+    ],
     "icons": ["icons"],
     "mapcss": ["mapcss"],
     "element": ["element", "--node", "amenity=bench,material=wood"],
@@ -107,6 +113,12 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         default="",
         help="seed for random",
         metavar="<string>",
+    )
+    parser.add_argument(
+        "--show-tooltips",
+        help="add tooltips with tags for icons in SVG files",
+        action=argparse.BooleanOptionalAction,
+        default=False,
     )
 
 

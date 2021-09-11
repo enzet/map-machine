@@ -280,7 +280,8 @@ class ShapeSpecification:
 
         :param svg: output SVG file
         :param point: 2D position of the shape centre
-        :param tags: tags to be displayed as hint
+        :param tags: tags to be displayed as a tooltip, if tooltip should not be
+            displayed, this argument should be None
         :param outline: draw outline for the shape
         :param outline_opacity: opacity of the outline
         """
@@ -355,7 +356,7 @@ class Icon:
 
         :param svg: output SVG file
         :param point: 2D position of the icon centre
-        :param tags: tags to be displayed as hint
+        :param tags: tags to be displayed as a tooltip
         :param outline: draw outline for the icon
         """
         if outline:

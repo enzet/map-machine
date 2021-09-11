@@ -46,7 +46,28 @@ def test_render() -> None:
     with Path("out/map.svg").open() as output_file:
         root: Element = ElementTree.parse(output_file).getroot()
 
+    # 4 expected elements: `defs`, `rect` (background), `g` (outline),
+    # `g` (icon).
     assert len(root) == 4
+    assert len(root[3][0]) == 0
+    assert root.get("width") == "186.0"
+    assert root.get("height") == "198.0"
+
+
+def test_render_with_tooltips() -> None:
+    """Test `render` command."""
+    run(
+        COMMANDS["render_with_tooltips"] + ["--cache", "tests/data"],
+        b"INFO Writing output SVG to out/map.svg...\n",
+    )
+    with Path("out/map.svg").open() as output_file:
+        root: Element = ElementTree.parse(output_file).getroot()
+
+    # 4 expected elements: `defs`, `rect` (background), `g` (outline),
+    # `g` (icon).
+    assert len(root) == 4
+    assert len(root[3][0]) == 1
+    assert root[3][0][0].text == "natural: tree"
     assert root.get("width") == "186.0"
     assert root.get("height") == "198.0"
 

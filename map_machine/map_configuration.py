@@ -52,6 +52,7 @@ class MapConfiguration:
     overlap: int = 12
     level: str = "overground"
     seed: str = ""
+    show_tooltips: bool = False
 
     @classmethod
     def from_options(
@@ -66,6 +67,7 @@ class MapConfiguration:
             options.overlap,
             options.level,
             options.seed,
+            options.show_tooltips,
         )
 
     def is_wireframe(self) -> bool:

@@ -60,6 +60,7 @@ class Point(Tagged):
         priority: float = 0,
         is_for_node: bool = True,
         draw_outline: bool = True,
+        add_tooltips: bool = False,
     ) -> None:
         super().__init__(tags)
 
@@ -73,6 +74,7 @@ class Point(Tagged):
         self.layer: float = 0
         self.is_for_node: bool = is_for_node
         self.draw_outline: bool = draw_outline
+        self.add_tooltips: bool = add_tooltips
 
         self.y = 0
         self.main_icon_painted: bool = False
@@ -89,9 +91,12 @@ class Point(Tagged):
         ):
             return
 
-        position = self.point + np.array((0, self.y))
+        position: np.ndarray = self.point + np.array((0, self.y))
+        tags: Optional[dict[str, str]] = (
+            self.tags if self.add_tooltips else None
+        )
         self.main_icon_painted: bool = self.draw_point_shape(
-            svg, self.icon_set.main_icon, position, occupied, tags=self.tags
+            svg, self.icon_set.main_icon, position, occupied, tags=tags
         )
         if self.main_icon_painted:
             self.y += 16
