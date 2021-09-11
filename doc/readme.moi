@@ -155,7 +155,7 @@ Visualize element creation time with \m {--mode time}.
 
 \3 {Author mode} {author_mode}
 
-Every way and node displayed with the random color picked for each author with \m {--mode user-coloring}.
+Every way and node displayed with the random color picked for each author with \m {--mode author}.
 
 \image {doc/user.png} {Author mode}
 

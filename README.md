@@ -106,7 +106,7 @@ Visualize element creation time with `--mode time`.
 
 ### Author mode ###
 
-Every way and node displayed with the random color picked for each author with `--mode user-coloring`.
+Every way and node displayed with the random color picked for each author with `--mode author`.
 
 ![Author mode](doc/user.png)
 
@@ -285,6 +285,7 @@ Map configuration options used by `render` and `tile` commands:
 | <span style="white-space: nowrap;">`--labels`</span> `<string>` | label drawing mode: no, main, all, default value: `main` |
 | <span style="white-space: nowrap;">`--level`</span> | display only this floor level, default value: `overground` |
 | <span style="white-space: nowrap;">`--seed`</span> `<string>` | seed for random |
+| <span style="white-space: nowrap;">`--show-tooltips`</span> | add tooltips with tags for icons in SVG files |
 
 MapCSS 0.2 generation
 ---------------------
