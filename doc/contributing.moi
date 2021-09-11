@@ -14,11 +14,9 @@ Please, create an issue with \m {icon} label.
 
 Please, create an issue with \m {bug} and \m {generator} labels.
 
-/*
 \2 {Fix a typo in documentation} {}
 
-This action is not that easy as it supposed to be.  We use \ref {http://github.com/enzet/Moire} {Moire} markup and converter to automatically generate documentation for GitHub, website, and \ref {http://wiki.openstreetmap.org/} {OpenStreetMap wiki}.  That's why editing Markdown files is not allowed.  To fix a typo, open corresponding Moire file in \m {doc} directory (e.g. \m {doc/readme.moi} for \m {README.md}), modify it, and run \m {map-machine doc} script.
-*/
+This action is not that easy as it supposed to be.  We use \ref {http://github.com/enzet/Moire} {Moire} markup and converter to automatically generate documentation for GitHub, website, and \ref {http://wiki.openstreetmap.org/} {OpenStreetMap wiki}.  That's why editing Markdown files is not allowed.  To fix a typo, open corresponding Moire file in \m {doc} directory (e.g. \m {doc/readme.moi} for \m {README.md}), modify it, and run \m {python map_machine/moire_manager.py}.
 
 \2 {Modify the code} {}
 

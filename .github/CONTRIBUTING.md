@@ -13,6 +13,11 @@ Report a bug
 
 Please, create an issue with `bug` and `generator` labels.
 
+Fix a typo in documentation
+---------------------------
+
+This action is not that easy as it supposed to be. We use [Moire](http://github.com/enzet/Moire) markup and converter to automatically generate documentation for GitHub, website, and [OpenStreetMap wiki](http://wiki.openstreetmap.org/). That's why editing Markdown files is not allowed. To fix a typo, open corresponding Moire file in `doc` directory (e.g. `doc/readme.moi` for `README.md`), modify it, and run `python map_machine/moire_manager.py`.
+
 Modify the code
 ---------------
 

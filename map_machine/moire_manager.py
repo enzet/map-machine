@@ -305,7 +305,13 @@ class MapMachineMarkdown(MapMachineMoire, DefaultMarkdown):
         return f"<{self.parse(args[0])}>"
 
 
-if __name__ == "__main__":
-    with Path("doc/readme.moi").open() as input_file:
-        with Path("README.md").open("w+") as output_file:
+def convert(input_path: Path, output_path: Path) -> None:
+    """Convert Moire file to Markdown."""
+    with input_path.open() as input_file:
+        with output_path.open("w+") as output_file:
             output_file.write(MapMachineMarkdown().convert(input_file.read()))
+
+
+if __name__ == "__main__":
+    convert(Path("doc/readme.moi"), Path("README.md"))
+    convert(Path("doc/contributing.moi"), Path(".github/CONTRIBUTING.md"))
