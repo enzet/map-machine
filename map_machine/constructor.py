@@ -165,17 +165,16 @@ class Constructor:
         self.extractor: ShapeExtractor = extractor
         self.configuration: MapConfiguration = configuration
 
-        if self.configuration.level:
-            if self.configuration.level == "overground":
-                self.check_level = check_level_overground
-            elif self.configuration.level == "underground":
-                self.check_level = lambda x: not check_level_overground(x)
-            else:
-                self.check_level = lambda x: not check_level_number(
-                    x, float(self.configuration.level)
-                )
-        else:
+        if self.configuration.level == "all":
             self.check_level = lambda x: True
+        elif self.configuration.level == "overground":
+            self.check_level = check_level_overground
+        elif self.configuration.level == "underground":
+            self.check_level = lambda x: not check_level_overground(x)
+        else:
+            self.check_level = lambda x: not check_level_number(
+                x, float(self.configuration.level)
+            )
 
         self.points: list[Point] = []
         self.figures: list[StyledFigure] = []
