@@ -1463,6 +1463,9 @@ roads:
     priority: 21
 
 ways:
+  - tags: {man_made: bridge}
+    style: {fill: "#AAAAAA"}
+    priority: 22
   - tags: {indoor: area}
     style:
       stroke: indoor_border_color
