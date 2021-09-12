@@ -1008,6 +1008,8 @@ node_icons:
   - group: "Important small objects"
     start_zoom_level: 17
     tags:
+    - tags: {highway: elevator}
+      shapes: [elevator]
     - tags: {historic: cannon}
       shapes: [cannon]
     - tags: {historic: olympic_flame}
