@@ -293,6 +293,10 @@ node_icons:
   - group: "Important big objects"
     start_zoom_level: 14
     tags:
+    - tags: {building: townhall}
+      shapes: [townhall]
+    - tags: {amenity: townhall}
+      shapes: [townhall]
     - tags: {amenity: pharmacy}
       shapes: [medicine_bottle]
     - tags: {amenity: embassy}
