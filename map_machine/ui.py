@@ -120,6 +120,12 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         action=argparse.BooleanOptionalAction,
         default=False,
     )
+    parser.add_argument(
+        "--country",
+        help="two-letter code (ISO 3166-1 alpha-2) of country, that should be "
+        "used for location restrictions",
+        default="world",
+    )
 
 
 def add_tile_arguments(parser: argparse.ArgumentParser) -> None:

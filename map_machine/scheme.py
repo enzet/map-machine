@@ -97,7 +97,6 @@ def match_location(restrictions: dict[str, str], country: str) -> bool:
     if (
         "include" in restrictions
         and restrictions["include"] != "world"
-        and country != "world"
         and country not in restrictions["include"]
     ):
         return False
