@@ -334,6 +334,8 @@ node_icons:
     - tags: {amenity: car_wash}
       shapes: [car_wash]
       # Place of worship
+    - tags: {building: shrine, religion: shinto}
+      shapes: [japan_shinto_shrine]
     - tags: {religion: christian}
       shapes: [cross]
     - tags: {amenity: place_of_worship, religion: christian}
