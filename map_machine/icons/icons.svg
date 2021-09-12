@@ -148,9 +148,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="449.50894"
-     inkscape:cx="67.376427"
-     inkscape:zoom="5.6568542"
+     inkscape:cy="459.70489"
+     inkscape:cx="759.84486"
+     inkscape:zoom="11.313708"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -23181,6 +23181,47 @@
        inkscape:label="#rect10887">
       <title
          id="title10924">city gate</title>
+    </path>
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.10000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect10928"
+       width="5.9000001"
+       height="2"
+       x="627.91058"
+       y="-442.94174"
+       rx="0.5"
+       ry="0.5"
+       inkscape:transform-center-x="1.4142021"
+       transform="matrix(0.70710678,0.70710678,-0.70710678,0.70710678,0,0)"
+       inkscape:transform-center-y="-1.4142062" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect10930"
+       width="2"
+       height="5.8999968"
+       x="759"
+       y="134.05"
+       rx="0.5"
+       ry="0.5" />
+    <rect
+       inkscape:transform-center-x="-1.4142422"
+       ry="0.5"
+       rx="0.5"
+       y="631.8606"
+       x="-446.89175"
+       height="2"
+       width="5.9000001"
+       id="rect10932"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.10000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       transform="matrix(-0.70710678,0.70710678,0.70710678,0.70710678,0,0)"
+       inkscape:transform-center-y="-1.4142062" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 757.20703 147 C 757.07922 147 756.95145 147.04855 756.85352 147.14648 L 756.14648 147.85352 C 755.95062 148.04938 755.95062 148.36468 756.14648 148.56055 L 759 151.41406 L 759 155.44922 C 759 155.72622 759.223 155.94922 759.5 155.94922 L 760.5 155.94922 C 760.777 155.94922 761 155.72622 761 155.44922 L 761 151.41406 L 763.85352 148.56055 C 764.04938 148.36468 764.04938 148.04938 763.85352 147.85352 L 763.14648 147.14648 C 762.95062 146.95062 762.63532 146.95062 762.43945 147.14648 L 760 149.58594 L 757.56055 147.14648 C 757.46261 147.04855 757.33484 147 757.20703 147 z "
+       id="y"
+       inkscape:label="#rect10934">
+      <title
+         id="title10941">letter_y</title>
     </path>
   </g>
 </svg>

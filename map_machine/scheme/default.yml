@@ -1091,6 +1091,8 @@ node_icons:
   - group: "Normal small objects"
     start_zoom_level: 18
     tags:
+    - tags: {railway: switch}
+      shapes: [y]
     - tags: {amenity: binoculars}
       shapes: [binoculars_on_pole]
     - tags: {amenity: parking_space}
