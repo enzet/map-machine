@@ -41,7 +41,7 @@ def draw_element(options: argparse.Namespace) -> None:
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
     processed: set[str] = set()
-    icon, priority = scheme.get_icon(extractor, tags, processed, 18)
+    icon, priority = scheme.get_icon(extractor, tags, processed)
     is_for_node: bool = target == "node"
     labels: list[Label] = scheme.construct_text(tags, "all", processed)
     point: Point = Point(

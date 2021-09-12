@@ -281,7 +281,7 @@ node_icons:
       shapes: [volcanic_cone]
 
     - tags: {historic: castle}
-      location_restrictions: {include: jp}
+      location_restrictions: {include: [jp]}
       shapes: [japan_castle]
     - tags: {shop: mall}
       shapes: [bag]
@@ -316,10 +316,10 @@ node_icons:
     - tags: {amenity: clinic}
       shapes: [greek_cross]
     - tags: {amenity: post_office}
-      location_restrictions: {include: world, exclude: jp}
+      location_restrictions: {include: world, exclude: [jp]}
       shapes: [envelope]
     - tags: {amenity: post_office}
-      location_restrictions: {include: jp}
+      location_restrictions: {include: [jp]}
       shapes: [japan_post]
     - tags: {shop: car_repair}
       shapes: [car_repair]
@@ -363,7 +363,7 @@ node_icons:
     - tags: {historic: "*"}
       shapes: [japan_historic]
       replace_shapes: no
-      location_restrictions: {include: jp}
+      location_restrictions: {include: [jp]}
 
   - group: "Normal big objects"
     start_zoom_level: 15
@@ -562,7 +562,7 @@ node_icons:
     - tags: {building: office}
       shapes: [briefcase]
     - tags: {amenity: school}
-      location_restrictions: {include: jp}
+      location_restrictions: {include: [jp]}
       shapes: [japan_elementary_school]
     - tags: {office: company}
       shapes: [briefcase]
@@ -577,7 +577,7 @@ node_icons:
     start_zoom_level: 15
     tags:
     - tags: {man_made: communications_tower}
-      location_restrictions: {include: jp}
+      location_restrictions: {include: [jp]}
       shapes: [japan_tv_tower]
     - tags: {man_made: tower}
       shapes: [tower]

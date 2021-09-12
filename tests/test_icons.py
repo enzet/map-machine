@@ -35,7 +35,7 @@ def test_icons_by_name(init_collection: IconCollection) -> None:
 def get_icon(tags: dict[str, str]) -> IconSet:
     """Construct icon from tags."""
     processed: set[str] = set()
-    icon, _ = SCHEME.get_icon(SHAPE_EXTRACTOR, tags, processed, 18)
+    icon, _ = SCHEME.get_icon(SHAPE_EXTRACTOR, tags, processed)
     return icon
 
 

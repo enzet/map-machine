@@ -53,6 +53,7 @@ class MapConfiguration:
     level: str = "overground"
     seed: str = ""
     show_tooltips: bool = False
+    country: str = "world"
 
     @classmethod
     def from_options(

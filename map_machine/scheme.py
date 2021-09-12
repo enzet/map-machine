@@ -21,6 +21,7 @@ from map_machine.icon import (
     ShapeExtractor,
     ShapeSpecification,
 )
+from map_machine.map_configuration import MapConfiguration
 from map_machine.text import Label, get_address, get_text
 
 __author__ = "Sergey Vartanov"
@@ -89,6 +90,20 @@ def get_selector(key: str, value: str, prefix: str = "") -> str:
     return f'[{key}="{value}"]'
 
 
+def match_location(restrictions: dict[str, str], country: str) -> bool:
+    """Check whether country is matched by location restrictions."""
+    if "exclude" in restrictions and country in restrictions["exclude"]:
+        return False
+    if (
+        "include" in restrictions
+        and restrictions["include"] != "world"
+        and country != "world"
+        and country not in restrictions["include"]
+    ):
+        return False
+    return True
+
+
 class Matcher:
     """
     Tag matching.
@@ -121,14 +136,25 @@ class Matcher:
             self.start_zoom_level is None or zoom_level >= self.start_zoom_level
         )
 
-    def is_matched(self, tags: dict[str, str]) -> bool:
+    def is_matched(
+        self,
+        tags: dict[str, str],
+        configuration: Optional[MapConfiguration] = None,
+    ) -> bool:
         """
         Check whether element tags matches tag matcher.
 
-        :param tags: element tags to match
+        :param tags: element tags to be matched
+        :param configuration: current map configuration to be matched
         """
-        if self.location_restrictions:
-            return False  # FIXME: implement
+        if (
+            configuration is not None
+            and self.location_restrictions
+            and not match_location(
+                self.location_restrictions, configuration.country
+            )
+        ):
+            return False
 
         for config_tag_key in self.tags:
             config_tag_key: str
@@ -355,7 +381,7 @@ class Scheme:
         extractor: ShapeExtractor,
         tags: dict[str, Any],
         processed: set[str],
-        zoom_level: float,
+        configuration: MapConfiguration = MapConfiguration(),
     ) -> tuple[Optional[IconSet], int]:
         """
         Construct icon set.
@@ -363,7 +389,7 @@ class Scheme:
         :param extractor: extractor with icon specifications
         :param tags: OpenStreetMap element tags dictionary
         :param processed: set of already processed tag keys
-        :param zoom_level: zoom level in current context
+        :param configuration: current map configuration to be matched
         :return (icon set, icon priority)
         """
         tags_hash: str = (
@@ -381,9 +407,9 @@ class Scheme:
         for matcher in self.node_matchers:
             if not matcher.replace_shapes and main_icon:
                 continue
-            if not matcher.is_matched(tags):
+            if not matcher.is_matched(tags, configuration):
                 continue
-            if not matcher.check_zoom_level(zoom_level):
+            if not matcher.check_zoom_level(configuration.zoom_level):
                 return None, 0
             matcher_tags: set[str] = set(matcher.tags.keys())
             priority = len(self.node_matchers) - index

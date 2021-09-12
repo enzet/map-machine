@@ -278,7 +278,7 @@ class Constructor:
                     self.extractor,
                     line.tags,
                     processed,
-                    self.configuration.zoom_level,
+                    self.configuration,
                 )
                 if icon_set is not None:
                     labels: list[Label] = self.scheme.construct_text(
@@ -316,7 +316,7 @@ class Constructor:
                 self.extractor,
                 line.tags,
                 processed,
-                self.configuration.zoom_level,
+                self.configuration,
             )
             if icon_set is not None:
                 labels: list[Label] = self.scheme.construct_text(
@@ -430,7 +430,7 @@ class Constructor:
             return
 
         icon_set, priority = self.scheme.get_icon(
-            self.extractor, tags, processed, self.configuration.zoom_level
+            self.extractor, tags, processed, self.configuration
         )
         if icon_set is None:
             return
