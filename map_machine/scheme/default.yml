@@ -1029,6 +1029,8 @@ node_icons:
     - tags: {tomb: "*"}
       exception: {tomb: mausoleum}
       shapes: [tomb]
+    - tags: {barrier: toll_booth}
+      shapes: [toll_booth]
     - tags: {barrier: lift_gate}
       shapes: [lift_gate]
     - tags: {barrier: turnstile}
