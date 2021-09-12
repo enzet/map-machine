@@ -297,6 +297,8 @@ node_icons:
       shapes: [townhall]
     - tags: {amenity: townhall}
       shapes: [townhall]
+    - tags: {historic: city_gate}
+      shapes: [city_gate]
     - tags: {amenity: pharmacy}
       shapes: [medicine_bottle]
     - tags: {amenity: embassy}
