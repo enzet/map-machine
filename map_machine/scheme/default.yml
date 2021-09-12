@@ -560,6 +560,8 @@ node_icons:
       shapes: [japan_elementary_school]
     - tags: {office: company}
       shapes: [briefcase]
+    - tags: {office: government}
+      shapes: [government]
     - tags: {office: it}
       shapes: [glider]
     - tags: {office: telecommunication}
