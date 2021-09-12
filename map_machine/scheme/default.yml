@@ -293,6 +293,9 @@ node_icons:
   - group: "Important big objects"
     start_zoom_level: 14
     tags:
+    - tags: {amenity: fire_station}
+      location_restrictions: {include: [jp]}
+      shapes: [{shape: japan_fire_station, color: emergency_color}]
     - tags: {building: townhall}
       shapes: [townhall]
     - tags: {amenity: townhall}

@@ -148,8 +148,8 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="421.22467"
-     inkscape:cx="81.518562"
+     inkscape:cy="449.50894"
+     inkscape:cx="67.376427"
      inkscape:zoom="5.6568542"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -20481,7 +20481,10 @@
        style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        d="M 82 147 C 82 149.14199 83.144982 151.12432 85 152.19531 C 85.627593 152.55766 86.306524 152.78713 87 152.9043 L 87 153 L 87 157 L 87 158 L 89 158 L 89 157 L 89 153 L 89 152.9043 C 89.693476 152.78713 90.372407 152.55766 91 152.19531 C 92.855018 151.12432 94 149.14199 94 147 L 92 147 C 92 148.43067 91.238993 149.74951 90 150.46484 C 88.761007 151.18018 87.238993 151.18018 86 150.46484 C 84.761007 149.74951 84 148.43067 84 147 L 82 147 z "
        id="japan_fire_station"
-       inkscape:label="#path7784" />
+       inkscape:label="#path7784">
+      <title
+         id="title10926">Japanese map symbol for fire station</title>
+    </path>
     <path
        style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        d="M 101.17578 146.59766 L 99.597656 147.82422 L 100.21094 148.61328 L 103.23438 152.5 L 100.21094 156.38672 L 99.597656 157.17578 L 101.17578 158.40234 L 101.78906 157.61328 L 104.5 154.12695 L 107.21094 157.61328 L 107.82422 158.40234 L 109.40234 157.17578 L 108.78906 156.38672 L 105.76562 152.5 L 108.78906 148.61328 L 109.40234 147.82422 L 107.82422 146.59766 L 107.21094 147.38672 L 104.5 150.87305 L 101.78906 147.38672 L 101.17578 146.59766 z "
