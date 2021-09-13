@@ -257,43 +257,60 @@ class Constructor:
             self.roads.append(Road(line.tags, inners, outers, road_matcher))
             return
 
+        processed: set[str] = set()
+
+        recolor: Optional[Color] = None
+
+        if line.tags.get("railway") == "subway":
+            for color_tag_key in ["color", "colour"]:
+                if color_tag_key in line.tags:
+                    recolor = self.scheme.get_color(line.tags[color_tag_key])
+                    processed.add(color_tag_key)
+
         line_styles: list[LineStyle] = self.scheme.get_style(line.tags)
 
         for line_style in line_styles:
+            if recolor is not None:
+                new_style: dict[str, Union[float, int, str]] = dict(
+                    line_style.style
+                )
+                new_style["stroke"] = recolor.hex
+                line_style = LineStyle(new_style, line_style.priority)
+
             self.figures.append(
                 StyledFigure(line.tags, inners, outers, line_style)
             )
-            if (
+            if not (
                 line.get_tag("area") == "yes"
                 or is_cycle(outers[0])
                 and line.get_tag("area") != "no"
                 and self.scheme.is_area(line.tags)
             ):
-                processed: set[str] = set()
+                continue
 
-                priority: int
-                icon_set: IconSet
-                icon_set, priority = self.scheme.get_icon(
-                    self.extractor,
+            priority: int
+            icon_set: IconSet
+            icon_set, priority = self.scheme.get_icon(
+                self.extractor,
+                line.tags,
+                processed,
+                self.configuration,
+            )
+            if icon_set is not None:
+                labels: list[Label] = self.scheme.construct_text(
+                    line.tags, "all", processed
+                )
+                point: Point = Point(
+                    icon_set,
+                    labels,
                     line.tags,
                     processed,
-                    self.configuration,
+                    center_point,
+                    is_for_node=False,
+                    priority=priority,
+                    add_tooltips=self.configuration.show_tooltips,
                 )
-                if icon_set is not None:
-                    labels: list[Label] = self.scheme.construct_text(
-                        line.tags, "all", processed
-                    )
-                    point: Point = Point(
-                        icon_set,
-                        labels,
-                        line.tags,
-                        processed,
-                        center_point,
-                        is_for_node=False,
-                        priority=priority,
-                        add_tooltips=self.configuration.show_tooltips,
-                    )
-                    self.points.append(point)
+                self.points.append(point)
 
         if not line_styles:
             if DEBUG:

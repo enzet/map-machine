@@ -1843,8 +1843,9 @@ ways:
 
   - tags: {railway: subway}
     style:
-      stroke-width: 10
-      stroke: "#DDDDDD"
+      stroke-width: 3.5
+      opacity: 0.7
+      stroke: "#AAAAAA"
     priority: 41
   - tags: {railway: rail}
     style:
