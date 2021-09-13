@@ -222,6 +222,7 @@ def draw_icons() -> None:
     icon_grid_path: Path = workspace.get_icon_grid_path()
     collection.draw_grid(icon_grid_path)
     logging.info(f"Icon grid is written to {icon_grid_path}.")
+    return
 
     icons_by_id_path: Path = workspace.get_icons_by_id_path()
     icons_by_name_path: Path = workspace.get_icons_by_name_path()
