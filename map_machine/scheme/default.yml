@@ -19,6 +19,16 @@ colors:
   barley_dark_color: "#908F62"
   sunflower_dark_color: "#DEAC4A"
 
+  # motorway_border_color: "#CC8800"
+  motorway_border_color: "#FFFFFF"
+  motorway_color: "#FFAA33"
+  primary_border_color: "#AA8800"
+  primary_color: "#FFDD66"
+  secondary_border_color: "#BB9911"
+  secondary_color: "#FFEE77"
+  tertiary_border_color: "#CCAA22"
+  tertiary_color: "#FFFF88"
+
   allotments_color: "#D0E0D0"
   beach_color: "#F0E0C0"
   boundary_color: "#880088"
@@ -53,18 +63,12 @@ colors:
   platform_color: "#CCCCCC"
   playground_border_color: "#663300"
   playground_color: "#884400"
-  primary_border_color: "#AA8800"
-  primary_color: "#FFDD66"
   ridge_color: "#000000"
   road_border_color: "#CCCCCC"
   rock_color: "#DDDDDD"
   route_color: "#FFFFFF"
   sand_color: "#E8E0C0"
-  secondary_border_color: "#BB9911"
-  secondary_color: "#FFEE77"
   scree_color: "#CCCCCC"
-  tertiary_border_color: "#CCAA22"
-  tertiary_color: "#FFFF88"
   track_color: "#A88A64"
   trunk_color: "#97612b"
   tree_color: "#98AC64"
@@ -1414,8 +1418,8 @@ node_icons:
 roads:
   - tags: {highway: motorway}
     default_width: 15
-    border_color: road_border_color
-    color: "#FFFFFF"
+    border_color: motorway_border_color
+    color: motorway_color
   - tags: {highway: trunk}
     default_width: 13
     border_color: road_border_color
@@ -1427,7 +1431,8 @@ roads:
     priority: 41.9
   - tags: {highway: motorway_link}
     default_width: 9
-    border_color: road_border_color
+    border_color: motorway_border_color
+    color: motorway_color
     priority: 41
   - tags: {highway: secondary}
     default_width: 9
