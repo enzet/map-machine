@@ -70,13 +70,18 @@ class Map:
                 self.svg.add(path)
         progress_bar(-1, 0, text="Drawing ways")
 
-        roads: Iterator[Road] = sorted(
-            constructor.roads, key=lambda x: x.matcher.priority
-        )
-        for road in roads:
-            road.draw(self.svg, self.flinger, road.matcher.border_color, 2)
-        for road in roads:
-            road.draw(self.svg, self.flinger, road.matcher.color)
+        layered_roads: dict[float, list[Road]] = {}
+        for road in constructor.roads:
+            if road.layer not in layered_roads:
+                layered_roads[road.layer] = []
+            layered_roads[road.layer].append(road)
+
+        for layer in sorted(layered_roads.keys()):
+            roads = layered_roads[layer]
+            for road in roads:
+                road.draw(self.svg, self.flinger, road.matcher.border_color, 2)
+            for road in roads:
+                road.draw(self.svg, self.flinger, road.matcher.color)
 
         for tree in constructor.trees:
             tree.draw(self.svg, self.flinger, self.scheme)

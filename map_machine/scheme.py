@@ -287,6 +287,12 @@ class RoadMatcher(Matcher):
         if "priority" in structure:
             self.priority = structure["priority"]
 
+    def get_priority(self, tags: dict[str, str]) -> float:
+        layer: float = 0
+        if "layer" in tags:
+            layer = float(tags.get("layer"))
+        return 1000 * layer + self.priority
+
 
 class Scheme:
     """

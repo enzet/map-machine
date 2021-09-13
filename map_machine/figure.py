@@ -245,6 +245,10 @@ class Road(Figure):
             except ValueError:
                 pass
 
+        self.layer: float = 0
+        if "layer" in tags:
+            self.layer = float(tags["layer"])
+
     def draw(
         self,
         svg: Drawing,
@@ -259,15 +263,18 @@ class Road(Figure):
             width = self.width
         else:
             width = self.matcher.default_width
-        if extra_width and self.tags.get("bridge") == "yes":
-            color = Color("#666666")
+        cap: str = "round"
+        if extra_width:
+            cap = "butt"
+            if self.tags.get("bridge") == "yes":
+                color = Color("#666666")
         scale: float = flinger.get_scale(self.outers[0][0].coordinates)
         path_commands: str = self.get_path(flinger)
         path: Path = Path(d=path_commands)
         style: dict[str, Any] = {
             "fill": "none",
             "stroke": color.hex,
-            "stroke-linecap": "round",
+            "stroke-linecap": cap,
             "stroke-linejoin": "round",
             "stroke-width": scale * width + extra_width,
         }
