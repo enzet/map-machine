@@ -630,7 +630,9 @@ node_icons:
     - tags: {amenity: charging_station}
       shapes: [charging_station]
     - tags: {amenity: bicycle_repair_station}
-      shapes: [bicycle_repair]
+      shapes:
+      - {shape: bicycle, offset: [0, 2]}
+      - {shape: wrench, offset: [1, -5]}
     - tags: {amenity: bicycle_rental}
       shapes: [{shape: bicycle, offset: [0, 2]}, {shape: key, offset: [1, -4]}]
     - tags: {amenity: fuel}
@@ -1048,7 +1050,9 @@ node_icons:
     - tags: {amenity: atm}
       shapes: [atm]
     - tags: {amenity: bicycle_parking}
-      shapes: [bicycle_p]
+      shapes:
+      - {shape: bicycle, offset: [0, 2]}
+      - {shape: p_small, offset: [-6, -3]}
     - tags: {amenity: telephone}
       shapes: [telephone]
     - tags: {information: "*"}
@@ -1375,7 +1379,9 @@ node_icons:
     - tags: {bicycle: "yes"}
       add_shapes: [bicycle]
     - tags: {bicycle: "no"}
-      add_shapes: [no_bicycle]
+      shapes:
+      - {shape: bicycle, offset: [0, 2]}
+      - {shape: x_small, offset: [-5, -4]}
     - tags: {internet_access: wlan, "internet_access:fee": "no"}
       add_shapes: [free_wlan]
     - tags: {internet_access: wlan}
