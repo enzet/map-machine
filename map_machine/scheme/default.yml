@@ -322,7 +322,7 @@ node_icons:
     - tags: {tourism: hostel}
       shapes: [two_beds]
     - tags: {tourism: motel}
-      shapes: [car_and_bed]
+      shapes: [{shape: car, offset: [0, 4]}, {shape: bed, offset: [0, -2]}]
     - tags: {amenity: clinic}
       shapes: [greek_cross]
     - tags: {amenity: post_office}
