@@ -245,6 +245,35 @@ class Road(Figure):
             except ValueError:
                 pass
 
+    def draw(
+        self,
+        svg: Drawing,
+        flinger: Flinger,
+        color: Color,
+        extra_width: float = 0,
+    ) -> None:
+        """Draw road as simple SVG path."""
+        flinger.get_scale()
+        width: float
+        if self.width is not None:
+            width = self.width
+        else:
+            width = self.matcher.default_width
+        if extra_width and self.tags.get("bridge") == "yes":
+            color = Color("#666666")
+        scale: float = flinger.get_scale(self.outers[0][0].coordinates)
+        path_commands: str = self.get_path(flinger)
+        path: Path = Path(d=path_commands)
+        style: dict[str, Any] = {
+            "fill": "none",
+            "stroke": color.hex,
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": scale * width + extra_width,
+        }
+        path.update(style)
+        svg.add(path)
+
 
 class Crater(Tagged):
     """

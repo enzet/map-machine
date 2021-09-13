@@ -291,10 +291,7 @@ class Constructor:
             priority: int
             icon_set: IconSet
             icon_set, priority = self.scheme.get_icon(
-                self.extractor,
-                line.tags,
-                processed,
-                self.configuration,
+                self.extractor, line.tags, processed, self.configuration
             )
             if icon_set is not None:
                 labels: list[Label] = self.scheme.construct_text(

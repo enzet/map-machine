@@ -4,7 +4,7 @@ Simple OpenStreetMap renderer.
 import argparse
 import logging
 from pathlib import Path
-from typing import Any, Iterator, Optional
+from typing import Iterator, Optional
 
 import numpy as np
 import svgwrite
@@ -74,9 +74,9 @@ class Map:
             constructor.roads, key=lambda x: x.matcher.priority
         )
         for road in roads:
-            self.draw_road(road, road.matcher.border_color, 2)
+            road.draw(self.svg, self.flinger, road.matcher.border_color, 2)
         for road in roads:
-            self.draw_road(road, road.matcher.color)
+            road.draw(self.svg, self.flinger, road.matcher.color)
 
         for tree in constructor.trees:
             tree.draw(self.svg, self.flinger, self.scheme)
@@ -159,29 +159,6 @@ class Map:
             previous_height = height
 
         progress_bar(-1, count, step=1, text="Drawing buildings")
-
-    def draw_road(
-        self, road: Road, color: Color, extra_width: float = 0
-    ) -> None:
-        """Draw road as simple SVG path."""
-        self.flinger.get_scale()
-        width: float
-        if road.width is not None:
-            width = road.width
-        else:
-            width = road.matcher.default_width
-        scale: float = self.flinger.get_scale(road.outers[0][0].coordinates)
-        path_commands: str = road.get_path(self.flinger)
-        path: SVGPath = SVGPath(d=path_commands)
-        style: dict[str, Any] = {
-            "fill": "none",
-            "stroke": color.hex,
-            "stroke-linecap": "round",
-            "stroke-linejoin": "round",
-            "stroke-width": scale * width + extra_width,
-        }
-        path.update(style)
-        self.svg.add(path)
 
     def draw_roads(self, roads: Iterator[Road]) -> None:
         """Draw road as simple SVG path."""
