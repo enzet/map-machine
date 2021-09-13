@@ -496,14 +496,8 @@ def check_level_overground(tags: dict[str, Any]) -> bool:
                     return False
         except ValueError:
             pass
-    if "layer" in tags:
-        try:
-            levels: map = map(float, tags["layer"].replace(",", ".").split(";"))
-            for level in levels:
-                if level <= 0:
-                    return False
-        except ValueError:
-            pass
-    if "parking" in tags and tags["parking"] == "underground":
-        return False
-    return True
+
+    return (
+        tags.get("location") != "underground"
+        and tags.get("parking") != "underground"
+    )
