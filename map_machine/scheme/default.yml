@@ -335,6 +335,8 @@ node_icons:
       shapes: [{shape: car, offset: [0, 3]}, {shape: wrench, offset: [0, -4]}]
     - tags: {amenity: car_rental}
       shapes: [{shape: car, offset: [0, 3]}, {shape: key, offset: [1, -3]}]
+    - tags: {amenity: car_sharing}
+      shapes: [{shape: car, offset: [0, 3]}, {shape: sharing, offset: [0, -4]}]
     - tags: {amenity: car_wash}
       shapes: [car_wash]
       # Place of worship
