@@ -172,7 +172,7 @@ class Constructor:
         elif self.configuration.level == "underground":
             self.check_level = lambda x: not check_level_overground(x)
         else:
-            self.check_level = lambda x: not check_level_number(
+            self.check_level = lambda x: check_level_number(
                 x, float(self.configuration.level)
             )
 
