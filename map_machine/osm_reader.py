@@ -305,6 +305,7 @@ class OSMData:
         self.relations: dict[int, OSMRelation] = {}
 
         self.authors: set[str] = set()
+        self.levels: set[float] = set()
         self.time: MinMax = MinMax()
         self.view_box: Optional[BoundaryBox] = None
         self.equator_length: float = 40_075_017.0
@@ -318,6 +319,8 @@ class OSMData:
         self.nodes[node.id_] = node
         if node.user:
             self.authors.add(node.user)
+        if node.tags.get("level"):
+            self.levels.add(float(node.tags.get("level")))
         self.time.update(node.timestamp)
 
     def add_way(self, way: OSMWay) -> None:
@@ -329,6 +332,8 @@ class OSMData:
         self.ways[way.id_] = way
         if way.user:
             self.authors.add(way.user)
+        if way.tags.get("level"):
+            self.levels.union(map(float, way.tags["level"].split(";")))
         self.time.update(way.timestamp)
 
     def add_relation(self, relation: OSMRelation) -> None:
