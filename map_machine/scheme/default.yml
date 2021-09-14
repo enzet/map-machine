@@ -1383,7 +1383,9 @@ node_icons:
       - {shape: bicycle, offset: [0, 2]}
       - {shape: x_small, offset: [-5, -4]}
     - tags: {internet_access: wlan, "internet_access:fee": "no"}
-      add_shapes: [free_wlan]
+      add_shapes:
+      - {shape: wlan, offset: [0, -3]}
+      - {shape: free, offset: [0, 5]}
     - tags: {internet_access: wlan}
       exception: {"internet_access:fee": "*"}
       add_shapes: [wlan]

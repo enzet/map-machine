@@ -65,10 +65,6 @@
     "emoji": "🚲",
     "name": "bicycle"
   },
-  "bicycle_p": {
-    "name": "bicycle with letter P in top left corner"
-  },
-  "bicycle_repair": {},
   "bicycle_share": {
     "name": "bicycle with share sign"
   },
@@ -142,12 +138,7 @@
   "car": {
     "name": "car"
   },
-  "car_and_bed": {},
   "car_on_ferry": {},
-  "car_repair": {},
-  "car_sharing": {
-    "name": "car with sharing sign"
-  },
   "car_wash": {
     "name": "car_wash"
   },
@@ -156,9 +147,6 @@
   },
   "card_and_dice": {
     "name": "card and dice"
-  },
-  "cars": {
-    "name": "car"
   },
   "cave": {},
   "cctv": {
@@ -180,6 +168,9 @@
     "name": "circle 9 px"
   },
   "circle_empty": {},
+  "city_gate": {
+    "name": "city gate"
+  },
   "city_limit_sign": {},
   "cliff": {},
   "clock": {
@@ -201,6 +192,9 @@
     "name": "comb and scissors"
   },
   "contrclockwise": {},
+  "crater": {
+    "name": "crater"
+  },
   "credit_card": {
     "emoji": "💳",
     "name": "payment card"
@@ -273,6 +267,9 @@
   "electricity": {
     "emoji": "⚡"
   },
+  "elevator": {
+    "name": "elevator"
+  },
   "entrance": {
     "name": "door"
   },
@@ -328,7 +325,6 @@
   "frame": {
     "name": "picture frame"
   },
-  "free_wlan": {},
   "fuel_station": {
     "emoji": "⛽️"
   },
@@ -341,6 +337,7 @@
   "golf_club_and_ball": {},
   "golf_pin": {},
   "golf_tee": {},
+  "government": {},
   "grapes": {},
   "grapes_2": {},
   "grapes_3": {},
@@ -384,7 +381,9 @@
     "name": "Japanese map symbol for court house or building"
   },
   "japan_elementary_school": {},
-  "japan_fire_station": {},
+  "japan_fire_station": {
+    "name": "Japanese map symbol for fire station"
+  },
   "japan_forest_service": {
     "name": "Japanese map symbol for forest service office"
   },
@@ -472,9 +471,6 @@
   "needleleaved_tree": {
     "emoji": "🌲",
     "name": "needleleaved tree"
-  },
-  "no_bicycle": {
-    "name": "bicycle with cross in top left corner"
   },
   "no_door": {},
   "no_foot": {},
@@ -779,6 +775,9 @@
       "🎟"
     ]
   },
+  "toll_booth": {
+    "name": "toll booth"
+  },
   "tomb": {
     "emoji": "🪦"
   },
@@ -795,6 +794,9 @@
   },
   "tower_defensive": {
     "name": "defensive tower"
+  },
+  "townhall": {
+    "name": "townhall"
   },
   "toy_horse": {},
   "traffic_cushion": {},
@@ -898,5 +900,8 @@
   },
   "x": {
     "emoji": "❌"
+  },
+  "y": {
+    "name": "letter Y"
   }
 }
