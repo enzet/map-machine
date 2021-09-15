@@ -2,6 +2,7 @@
 Parse OSM XML file.
 """
 import json
+import logging
 import re
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -20,9 +21,9 @@ __email__ = "me@enzet.ru"
 
 OSM_TIME_PATTERN: str = "%Y-%m-%dT%H:%M:%SZ"
 
-METERS_PATTERN = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*m$")
-KILOMETERS_PATTERN = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*km$")
-MILES_PATTERN = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*mi$")
+METERS_PATTERN: re.Pattern = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*m$")
+KILOMETERS_PATTERN: re.Pattern = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*km$")
+MILES_PATTERN: re.Pattern = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*mi$")
 
 
 # See https://wiki.openstreetmap.org/wiki/Lifecycle_prefix#Stages_of_decay
@@ -44,6 +45,16 @@ def parse_float(string: str) -> Optional[float]:
         return float(string)
     except (TypeError, ValueError):
         return None
+
+
+def parse_levels(string: str) -> list[float]:
+    """Parse string representation of level sequence value."""
+    # TODO: add `-` parsing
+    try:
+        return list(map(float, string.replace(",", ".").split(";")))
+    except ValueError:
+        logging.warning(f"Cannot parse level description from `{string}`.")
+        return []
 
 
 @dataclass
@@ -320,7 +331,7 @@ class OSMData:
         if node.user:
             self.authors.add(node.user)
         if node.tags.get("level"):
-            self.levels.add(float(node.tags.get("level")))
+            self.levels.union(parse_levels(node.tags["level"]))
         self.time.update(node.timestamp)
 
     def add_way(self, way: OSMWay) -> None:
@@ -333,7 +344,7 @@ class OSMData:
         if way.user:
             self.authors.add(way.user)
         if way.tags.get("level"):
-            self.levels.union(map(float, way.tags["level"].split(";")))
+            self.levels.union(parse_levels(way.tags["level"]))
         self.time.update(way.timestamp)
 
     def add_relation(self, relation: OSMRelation) -> None:

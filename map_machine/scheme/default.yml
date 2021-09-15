@@ -19,8 +19,7 @@ colors:
   barley_dark_color: "#908F62"
   sunflower_dark_color: "#DEAC4A"
 
-  # motorway_border_color: "#CC8800"
-  motorway_border_color: "#FFFFFF"
+  motorway_border_color: "#CC8800"
   motorway_color: "#FFAA33"
   primary_border_color: "#AA8800"
   primary_color: "#FFDD66"
@@ -1449,7 +1448,17 @@ roads:
     border_color: secondary_border_color
     priority: 41.8
     color: secondary_color
+  - tags: {highway: secondary_link}
+    default_width: 9
+    border_color: secondary_border_color
+    priority: 41.8
+    color: secondary_color
   - tags: {highway: tertiary}
+    default_width: 7
+    border_color: tertiary_border_color
+    priority: 41.7
+    color: tertiary_color
+  - tags: {highway: tertiary_link}
     default_width: 7
     border_color: tertiary_border_color
     priority: 41.7

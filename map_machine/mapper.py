@@ -77,11 +77,17 @@ class Map:
             layered_roads[road.layer].append(road)
 
         for layer in sorted(layered_roads.keys()):
-            roads = layered_roads[layer]
+            roads = sorted(
+                layered_roads[layer], key=lambda x: x.matcher.priority
+            )
             for road in roads:
                 road.draw(self.svg, self.flinger, road.matcher.border_color, 2)
             for road in roads:
                 road.draw(self.svg, self.flinger, road.matcher.color)
+            for road in roads:
+                road.draw_lanes(
+                    self.svg, self.flinger, road.matcher.border_color
+                )
 
         for tree in constructor.trees:
             tree.draw(self.svg, self.flinger, self.scheme)

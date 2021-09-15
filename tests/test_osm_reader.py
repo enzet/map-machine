@@ -9,6 +9,7 @@ from map_machine.osm_reader import (
     OSMReader,
     OSMRelation,
     OSMWay,
+    parse_levels,
 )
 
 __author__ = "Sergey Vartanov"
@@ -104,3 +105,19 @@ def test_relation() -> None:
     assert len(relation.members) == 1
     assert relation.members[0].type_ == "way"
     assert relation.members[0].ref == 2
+
+
+def test_parse_levels() -> None:
+    """Test level parsing."""
+    assert parse_levels("1") == [1]
+    assert parse_levels("-1") == [-1]
+    assert parse_levels("1.5") == [1.5]
+    assert parse_levels("1,5") == [1.5]
+
+
+def test_parse_levels_list() -> None:
+    """Test list of levels parsing."""
+    assert parse_levels("0;1") == [0, 1]
+    assert parse_levels("0;2") == [0, 2]
+    assert parse_levels("0;2.5") == [0, 2.5]
+    assert parse_levels("0;2,5") == [0, 2.5]

@@ -5,6 +5,7 @@ from typing import Any, Iterator, Optional
 
 import numpy as np
 from colour import Color
+from shapely.geometry import LineString
 from svgwrite import Drawing
 from svgwrite.container import Group
 from svgwrite.path import Path
@@ -42,23 +43,37 @@ class Figure(Tagged):
         )
 
     def get_path(
-        self, flinger: Flinger, shift: np.ndarray = np.array((0, 0))
+        self, flinger: Flinger, offset: np.ndarray = np.array((0, 0))
     ) -> str:
         """
         Get SVG path commands.
 
         :param flinger: converter for geo coordinates
-        :param shift: shift vector
+        :param offset: offset vector
         """
         path: str = ""
 
         for outer_nodes in self.outers:
-            path += f"{get_path(outer_nodes, shift, flinger)} "
+            path += f"{get_path(outer_nodes, offset, flinger)} "
 
         for inner_nodes in self.inners:
-            path += f"{get_path(inner_nodes, shift, flinger)} "
+            path += f"{get_path(inner_nodes, offset, flinger)} "
 
         return path
+
+    def get_outer_path(
+        self, flinger: Flinger, parallel_offset: float = 0
+    ) -> str:
+        """Get path of the first outer node list."""
+        points: list[tuple[float, float]] = [
+            tuple(flinger.fling(x.coordinates)) for x in self.outers[0]
+        ]
+        offset = LineString(points).parallel_offset(parallel_offset)
+
+        path: str = ""
+        for index, point in enumerate(offset.coords):
+            path += ("L" if index else "M") + f" {point[0]},{point[1]} "
+        return path[:-1]
 
 
 class Building(Figure):
@@ -280,6 +295,25 @@ class Road(Figure):
         }
         path.update(style)
         svg.add(path)
+
+    def draw_lanes(self, svg: Drawing, flinger: Flinger, color: Color) -> None:
+        scale: float = flinger.get_scale(self.outers[0][0].coordinates)
+        if len(self.lanes) < 2:
+            return
+        for index in range(1, len(self.lanes)):
+            shift = scale * (
+                -self.width / 2 + index * self.width / len(self.lanes)
+            )
+            path: Path = Path(d=self.get_outer_path(flinger, shift))
+            style: dict[str, Any] = {
+                "fill": "none",
+                "stroke": color.hex,
+                "stroke-linejoin": "round",
+                "stroke-width": 1,
+                "opacity": 0.5,
+            }
+            path.update(style)
+            svg.add(path)
 
 
 class Crater(Tagged):

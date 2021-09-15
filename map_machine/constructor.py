@@ -29,7 +29,13 @@ from map_machine.icon import (
     ShapeSpecification,
 )
 from map_machine.map_configuration import DrawingMode, MapConfiguration
-from map_machine.osm_reader import OSMData, OSMNode, OSMRelation, OSMWay
+from map_machine.osm_reader import (
+    OSMData,
+    OSMNode,
+    OSMRelation,
+    OSMWay,
+    parse_levels,
+)
 from map_machine.point import Point
 from map_machine.scheme import DEFAULT_COLOR, LineStyle, RoadMatcher, Scheme
 from map_machine.text import Label
@@ -478,8 +484,7 @@ class Constructor:
 def check_level_number(tags: dict[str, Any], level: float) -> bool:
     """Check if element described by tags is no the specified level."""
     if "level" in tags:
-        levels: map = map(float, tags["level"].replace(",", ".").split(";"))
-        if level not in levels:
+        if level not in parse_levels(tags["level"]):
             return False
     else:
         return False
