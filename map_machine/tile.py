@@ -22,7 +22,7 @@ from map_machine.icon import ShapeExtractor
 from map_machine.map_configuration import MapConfiguration
 from map_machine.mapper import Map
 from map_machine.osm_getter import NetworkError, get_osm
-from map_machine.osm_reader import OSMData, OSMReader
+from map_machine.osm_reader import OSMData
 from map_machine.scheme import Scheme
 from map_machine.workspace import workspace
 
@@ -104,7 +104,10 @@ class Tile:
         )
         get_osm(self.get_extended_boundary_box(), cache_file_path)
 
-        return OSMReader().parse_osm_file(cache_file_path)
+        osm_data: OSMData = OSMData()
+        osm_data.parse_osm_file(cache_file_path)
+
+        return osm_data
 
     def get_file_name(self, directory_name: Path) -> Path:
         """Get tile output SVG file path."""
@@ -258,7 +261,10 @@ class Tiles:
         )
         get_osm(self.boundary_box, cache_file_path)
 
-        return OSMReader().parse_osm_file(cache_file_path)
+        osm_data: OSMData = OSMData()
+        osm_data.parse_osm_file(cache_file_path)
+
+        return osm_data
 
     def draw_separately(
         self, directory: Path, cache_path: Path, configuration: MapConfiguration
@@ -461,9 +467,8 @@ def ui(options: argparse.Namespace) -> None:
     min_zoom_level: int = min(zoom_levels)
 
     if options.input_file_name:
-        osm_reader: OSMReader = OSMReader()
-        osm_reader.parse_osm_file(Path(options.input_file_name))
-        osm_data: OSMData = osm_reader.osm_data
+        osm_data: OSMData = OSMData()
+        osm_data.parse_osm_file(Path(options.input_file_name))
         for zoom_level in zoom_levels:
             configuration: MapConfiguration = MapConfiguration.from_options(
                 options, zoom_level

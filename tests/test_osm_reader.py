@@ -6,7 +6,6 @@ import numpy as np
 from map_machine.osm_reader import (
     OSMData,
     OSMNode,
-    OSMReader,
     OSMRelation,
     OSMWay,
     parse_levels,
@@ -18,8 +17,8 @@ __email__ = "me@enzet.ru"
 
 def test_node() -> None:
     """Test OSM node parsing from XML."""
-    reader: OSMReader = OSMReader()
-    osm_data: OSMData = reader.parse_osm_text(
+    osm_data: OSMData = OSMData()
+    osm_data.parse_osm_text(
         """<?xml version="1.0"?>
 <osm>
   <node id="42" lon="5" lat="10" />
@@ -33,8 +32,8 @@ def test_node() -> None:
 
 def test_node_with_tag() -> None:
     """Test OSM node parsing from XML."""
-    reader = OSMReader()
-    osm_data: OSMData = reader.parse_osm_text(
+    osm_data: OSMData = OSMData()
+    osm_data.parse_osm_text(
         """<?xml version="1.0"?>
 <osm>
   <node id="42" lon="5" lat="10">
@@ -51,8 +50,8 @@ def test_node_with_tag() -> None:
 
 def test_way() -> None:
     """Test OSM way parsing from XML."""
-    reader: OSMReader = OSMReader()
-    osm_data: OSMData = reader.parse_osm_text(
+    osm_data: OSMData = OSMData()
+    osm_data.parse_osm_text(
         """<?xml version="1.0"?>
 <osm>
   <way id="42" />
@@ -65,8 +64,8 @@ def test_way() -> None:
 
 def test_nodes() -> None:
     """Test OSM node parsing from XML."""
-    reader = OSMReader()
-    osm_data: OSMData = reader.parse_osm_text(
+    osm_data: OSMData = OSMData()
+    osm_data.parse_osm_text(
         """<?xml version="1.0"?>
 <osm>
   <node id="1" lon="5" lat="10" />
@@ -84,8 +83,8 @@ def test_nodes() -> None:
 
 def test_relation() -> None:
     """Test OSM node parsing from XML."""
-    reader: OSMReader = OSMReader()
-    osm_data: OSMData = reader.parse_osm_text(
+    osm_data: OSMData = OSMData()
+    osm_data.parse_osm_text(
         """<?xml version="1.0"?>
 <osm>
   <node id="1" lon="5" lat="10" />

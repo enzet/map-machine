@@ -221,7 +221,7 @@ def ui(arguments: argparse.Namespace) -> None:
     else:
         if arguments.boundary_box:
             boundary_box = BoundaryBox.from_text(arguments.boundary_box)
-        else:
+        elif arguments.coordinates and arguments.size:
             coordinates: np.ndarray = np.array(
                 list(map(float, arguments.coordinates.split(",")))
             )
@@ -231,6 +231,12 @@ def ui(arguments: argparse.Namespace) -> None:
             boundary_box = BoundaryBox.from_coordinates(
                 coordinates, configuration.zoom_level, width, height
             )
+        else:
+            logging.fatal(
+                "Specify either --input, or --boundary-box, or --coordinates "
+                "and --size."
+            )
+            exit(1)
 
         try:
             cache_file_path: Path = (

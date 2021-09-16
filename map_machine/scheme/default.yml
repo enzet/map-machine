@@ -1429,6 +1429,7 @@ roads:
     default_width: 15
     border_color: motorway_border_color
     color: motorway_color
+    priority: 41.8
   - tags: {highway: trunk}
     default_width: 13
     border_color: road_border_color
@@ -1437,31 +1438,31 @@ roads:
     default_width: 11
     border_color: primary_border_color
     color: primary_color
-    priority: 41.9
+    priority: 41.7
   - tags: {highway: motorway_link}
     default_width: 9
     border_color: motorway_border_color
     color: motorway_color
-    priority: 41
+    priority: 41.8
   - tags: {highway: secondary}
     default_width: 9
     border_color: secondary_border_color
-    priority: 41.8
+    priority: 41.6
     color: secondary_color
   - tags: {highway: secondary_link}
     default_width: 9
     border_color: secondary_border_color
-    priority: 41.8
+    priority: 41.6
     color: secondary_color
   - tags: {highway: tertiary}
     default_width: 7
     border_color: tertiary_border_color
-    priority: 41.7
+    priority: 41.5
     color: tertiary_color
   - tags: {highway: tertiary_link}
     default_width: 7
     border_color: tertiary_border_color
-    priority: 41.7
+    priority: 41.5
     color: tertiary_color
   - tags: {highway: unclassified}
     default_width: 5
