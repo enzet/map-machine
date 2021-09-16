@@ -6,7 +6,7 @@ import logging
 import sys
 from pathlib import Path
 
-from map_machine.ui import parse_options
+from map_machine.ui import parse_arguments
 from map_machine.workspace import Workspace
 
 __author__ = "Sergey Vartanov"
@@ -18,7 +18,7 @@ def main() -> None:
     logging.basicConfig(format="%(levelname)s %(message)s", level=logging.INFO)
     workspace: Workspace = Workspace(Path("out"))
 
-    arguments: argparse.Namespace = parse_options(sys.argv)
+    arguments: argparse.Namespace = parse_arguments(sys.argv)
 
     if not arguments.command:
         logging.fatal("No command provided. See --help.")

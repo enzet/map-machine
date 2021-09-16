@@ -76,6 +76,45 @@ class BoundaryBox:
 
         return cls(left, bottom, right, top)
 
+    @classmethod
+    def from_coordinates(
+        cls,
+        coordinates: np.ndarray,
+        zoom_level: float,
+        width: float,
+        height: float,
+    ) -> "BoundaryBox":
+        """
+        Compute boundary box from central coordinates, zoom level and resulting
+        image size.
+
+        :param coordinates: boundary box central coordinates
+        :param zoom_level: resulting image zoom level
+        :param width: resulting image width
+        :param height: resulting image height
+        """
+        lat_rad: np.ndarray = np.radians(coordinates[0])
+        n: float = 2.0 ** (zoom_level + 8.0)
+
+        x: int = int((coordinates[1] + 180.0) / 360.0 * n)
+        left: float = (x - width / 2) / n * 360.0 - 180.0
+        right: float = (x + width / 2) / n * 360.0 - 180.0
+
+        y: int = (1.0 - np.arcsinh(np.tan(lat_rad)) / np.pi) / 2.0 * n
+        bottom_radians = np.arctan(
+            np.sinh((1.0 - (y + height / 2) * 2.0 / n) * np.pi)
+        )
+        top_radians = np.arctan(
+            np.sinh((1.0 - (y - height / 2) * 2.0 / n) * np.pi)
+        )
+
+        return cls(
+            left,
+            float(np.degrees(bottom_radians)),
+            right,
+            float(np.degrees(top_radians)),
+        )
+
     def min_(self) -> np.ndarray:
         """Get minimum coordinates."""
         return np.array((self.bottom, self.left))
@@ -113,6 +152,16 @@ class BoundaryBox:
         <longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>.  Coordinates are
         rounded to three digits after comma.
         """
-        return (
-            f"{self.left:.3f},{self.bottom:.3f},{self.right:.3f},{self.top:.3f}"
-        )
+        left: float = np.floor(self.left * 1000) / 1000
+        bottom: float = np.floor(self.bottom * 1000) / 1000
+        right: float = np.ceil(self.right * 1000) / 1000
+        top: float = np.ceil(self.top * 1000) / 1000
+
+        return f"{left:.3f},{bottom:.3f},{right:.3f},{top:.3f}"
+
+    def combine(self, other: "BoundaryBox") -> None:
+        """Combine with another boundary box."""
+        self.left = min(self.left, other.left)
+        self.right = min(self.right, other.right)
+        self.bottom = min(self.bottom, other.bottom)
+        self.top = min(self.top, other.top)

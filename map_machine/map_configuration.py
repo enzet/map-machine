@@ -54,6 +54,7 @@ class MapConfiguration:
     seed: str = ""
     show_tooltips: bool = False
     country: str = "world"
+    ignore_level_matching: bool = False
 
     @classmethod
     def from_options(

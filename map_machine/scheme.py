@@ -414,7 +414,10 @@ class Scheme:
                 continue
             if not matcher.is_matched(tags, configuration):
                 continue
-            if not matcher.check_zoom_level(configuration.zoom_level):
+            if (
+                not configuration.ignore_level_matching
+                and not matcher.check_zoom_level(configuration.zoom_level)
+            ):
                 return None, 0
             matcher_tags: set[str] = set(matcher.tags.keys())
             priority = len(self.node_matchers) - index

@@ -29,8 +29,8 @@ COMMANDS: dict[str, list[str]] = {
 }
 
 
-def parse_options(args: list[str]) -> argparse.Namespace:
-    """Parse Map Machine command-line options."""
+def parse_arguments(args: list[str]) -> argparse.Namespace:
+    """Parse Map Machine command-line arguments."""
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description="Map Machine. OpenStreetMap renderer with custom icon set"
     )
@@ -203,7 +203,7 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "-i",
         "--input",
-        dest="input_file_name",
+        dest="input_file_names",
         metavar="<path>",
         nargs="*",
         help="input XML file name or names (if not specified, file will be "
@@ -237,6 +237,18 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         metavar="<integer>",
         help="OSM zoom level",
         default=18,
+    )
+    parser.add_argument(
+        "-c",
+        "--coordinates",
+        metavar="<latitude>,<longitude>",
+        help="coordinates of any location inside the tile",
+    )
+    parser.add_argument(
+        "-s",
+        "--size",
+        metavar="<width>,<height>",
+        help="resulted image size",
     )
 
 

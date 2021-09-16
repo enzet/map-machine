@@ -406,7 +406,7 @@ class DirectionSector(Tagged):
                 angle = float(self.get_tag("camera:angle"))
             if "angle" in self.tags:
                 angle = float(self.get_tag("angle"))
-            direction_radius = 25
+            direction_radius = 50
             direction_color = scheme.get_color("direction_camera_color")
         elif self.get_tag("traffic_sign") == "stop":
             direction = self.get_tag("direction")

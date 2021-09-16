@@ -355,119 +355,97 @@ class OSMData:
             )
         self.relations[relation.id_] = relation
 
+    def parse_overpass(self, file_name: Path) -> None:
+        """
+        Parse JSON structure extracted from Overpass API.
 
-class OverpassReader:
-    """
-    Reader for JSON structure extracted from Overpass API.
-
-    See https://wiki.openstreetmap.org/wiki/Overpass_API
-    """
-
-    def __init__(self) -> None:
-        self.osm_data = OSMData()
-
-    def parse_json_file(self, file_name: Path) -> OSMData:
-        """Parse JSON structure from the file and construct map."""
+        See https://wiki.openstreetmap.org/wiki/Overpass_API
+        """
         with file_name.open() as input_file:
             structure = json.load(input_file)
 
-        node_map = {}
-        way_map = {}
+        node_map: dict[int, OSMNode] = {}
+        way_map: dict[int, OSMWay] = {}
 
         for element in structure["elements"]:
             if element["type"] == "node":
                 node = OSMNode.parse_from_structure(element)
                 node_map[node.id_] = node
-                self.osm_data.add_node(node)
+                self.add_node(node)
+
         for element in structure["elements"]:
             if element["type"] == "way":
                 way = OSMWay.parse_from_structure(element, node_map)
                 way_map[way.id_] = way
-                self.osm_data.add_way(way)
+                self.add_way(way)
+
         for element in structure["elements"]:
             if element["type"] == "relation":
                 relation = OSMRelation.parse_from_structure(element)
-                self.osm_data.add_relation(relation)
+                self.add_relation(relation)
 
-        return self.osm_data
-
-
-class OSMReader:
-    """
-    OpenStreetMap XML file parser.
-
-    See https://wiki.openstreetmap.org/wiki/OSM_XML
-    """
-
-    def __init__(
-        self,
-        parse_nodes: bool = True,
-        parse_ways: bool = True,
-        parse_relations: bool = True,
-    ) -> None:
-        """
-        :param parse_nodes: whether nodes should be parsed
-        :param parse_ways:  whether ways should be parsed
-        :param parse_relations: whether relations should be parsed
-        """
-        self.osm_data = OSMData()
-        self.parse_nodes: bool = parse_nodes
-        self.parse_ways: bool = parse_ways
-        self.parse_relations: bool = parse_relations
-
-    def parse_osm_file(self, file_name: Path) -> OSMData:
+    def parse_osm_file(self, file_name: Path) -> None:
         """
         Parse OSM XML file.
+
+        See https://wiki.openstreetmap.org/wiki/OSM_XML
 
         :param file_name: input XML file
         :return: parsed map
         """
-        return self.parse_osm(ElementTree.parse(file_name).getroot())
+        self.parse_osm(ElementTree.parse(file_name).getroot())
 
-    def parse_osm_text(self, text: str) -> OSMData:
+    def parse_osm_text(self, text: str) -> None:
         """
         Parse OSM XML data from text representation.
 
         :param text: XML text representation
         :return: parsed map
         """
-        return self.parse_osm(ElementTree.fromstring(text))
+        self.parse_osm(ElementTree.fromstring(text))
 
-    def parse_osm(self, root: Element) -> OSMData:
+    def parse_osm(
+        self,
+        root: Element,
+        parse_nodes: bool = True,
+        parse_ways: bool = True,
+        parse_relations: bool = True,
+    ) -> None:
         """
         Parse OSM XML data.
 
         :param root: top element of XML data
-        :return: parsed map
+        :param parse_nodes: whether nodes should be parsed
+        :param parse_ways:  whether ways should be parsed
+        :param parse_relations: whether relations should be parsed
         """
         for element in root:
             if element.tag == "bounds":
                 self.parse_bounds(element)
             elif element.tag == "object":
                 self.parse_object(element)
-            elif element.tag == "node" and self.parse_nodes:
+            elif element.tag == "node" and parse_nodes:
                 node = OSMNode.from_xml_structure(element)
-                self.osm_data.add_node(node)
-            elif element.tag == "way" and self.parse_ways:
-                self.osm_data.add_way(
-                    OSMWay.from_xml_structure(element, self.osm_data.nodes)
-                )
-            elif element.tag == "relation" and self.parse_relations:
-                self.osm_data.add_relation(
-                    OSMRelation.from_xml_structure(element)
-                )
-        return self.osm_data
+                self.add_node(node)
+            elif element.tag == "way" and parse_ways:
+                self.add_way(OSMWay.from_xml_structure(element, self.nodes))
+            elif element.tag == "relation" and parse_relations:
+                self.add_relation(OSMRelation.from_xml_structure(element))
 
     def parse_bounds(self, element: Element) -> None:
         """Parse view box from XML element."""
         attributes = element.attrib
-        self.osm_data.view_box = BoundaryBox(
+        boundary_box: BoundaryBox = BoundaryBox(
             float(attributes["minlon"]),
             float(attributes["minlat"]),
             float(attributes["maxlon"]),
             float(attributes["maxlat"]),
         )
+        if self.view_box:
+            self.view_box.combine(boundary_box)
+        else:
+            self.view_box = boundary_box
 
     def parse_object(self, element: Element) -> None:
         """Parse astronomical object properties from XML element."""
-        self.osm_data.equator_length = float(element.get("equator"))
+        self.equator_length = float(element.get("equator"))
