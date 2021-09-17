@@ -25,15 +25,6 @@ will automatically download OSM data and write output PNG tiles that cover the s
 
 \2 {Map features} {features}
 
-Map Machine features\:
-\list
-    {detailed icons to display subtypes like \ref {#power-tower-design} {power tower design},}
-    {can display multiple icons for one entity to cover more features,}
-    {use color to visualize \osm {colour} and other features like plant types,}
-    {display \ref {#levels} {primitive 3D shapes} for buildings,}
-    {display \ref {#direction} {directions} with gradient sectors,}
-    {use width to display roads.}
-
 \3 {Isometric building shapes} {levels}
 
 With \m {--buildings isometric} or \m {--buildings isometric-no-parts} (not set by default), buildings are drawn using isometric shapes for walls and shade in proportion to \osm {building:levels}, \osm {building:min_level}, \osm {height} and \osm {min_height} values.
@@ -76,12 +67,22 @@ Visualize \osm {direction} tag for \osm {tourism=viewpoint} and \osm {camera:dir
 
 \image {doc/surveillance.png} {Surveillance}
 
+\image {doc/viewpoints.png} {Viewpoints}
+
 \3 {Power tower design} {power-tower-design}
 
 Visualize \osm {design} values used with \osm {power=tower} tag.
 
 \image {doc/power_tower_design.png} {Power tower design}
 \image {doc/power.png} {Power tower design}
+
+\3 {Colors} {colors}
+
+Map icons have dark grey color by default, special purple color for shop nodes, and \osm {colour} tag value if present.  Map Machine also takes into account \osm {building:colour}, \osm {roof:colour} and other \m {*:colour} tags.  We also use \osm {colour} tag value to paint subway lines.
+
+E.g. \osm {building:colour} visualization\:
+
+\image {doc/colors.png} {Building colors}
 
 \3 {Emergency} {emergency}
 
@@ -163,7 +164,7 @@ Visualize element creation time with \m {--mode time}.
 
 Every way and node displayed with the random color picked for each author with \m {--mode author}.
 
-\image {doc/user.png} {Author mode}
+\image {doc/author.png} {Author mode}
 
 \2 {Installation} {installation}
 

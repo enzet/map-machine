@@ -29,15 +29,6 @@ will automatically download OSM data and write output PNG tiles that cover the s
 Map features
 ------------
 
-Map Machine features:
-
-  * detailed icons to display subtypes like [power tower design](#power-tower-design),
-  * can display multiple icons for one entity to cover more features,
-  * use color to visualize [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) and other features like plant types,
-  * display [primitive 3D shapes](#levels) for buildings,
-  * display [directions](#direction) with gradient sectors,
-  * use width to display roads.
-
 ### Isometric building shapes ###
 
 With `--buildings isometric` or `--buildings isometric-no-parts` (not set by default), buildings are drawn using isometric shapes for walls and shade in proportion to [`building:levels`](https://wiki.openstreetmap.org/wiki/Key:building:levels), [`building:min_level`](https://wiki.openstreetmap.org/wiki/Key:building:min_level), [`height`](https://wiki.openstreetmap.org/wiki/Key:height) and [`min_height`](https://wiki.openstreetmap.org/wiki/Key:min_height) values.
@@ -62,6 +53,8 @@ Visualize [`direction`](https://wiki.openstreetmap.org/wiki/Key:direction) tag f
 
 ![Surveillance](doc/surveillance.png)
 
+![Viewpoints](doc/viewpoints.png)
+
 ### Power tower design ###
 
 Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used with [`power`](https://wiki.openstreetmap.org/wiki/Key:power)=[`tower`](https://wiki.openstreetmap.org/wiki/Tag:power=tower) tag.
@@ -69,6 +62,14 @@ Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used
 ![Power tower design](doc/power_tower_design.png)
 
 ![Power tower design](doc/power.png)
+
+### Colors ###
+
+Map icons have dark grey color by default, special purple color for shop nodes, and [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) tag value if present. Map Machine also takes into account [`building:colour`](https://wiki.openstreetmap.org/wiki/Key:building:colour), [`roof:colour`](https://wiki.openstreetmap.org/wiki/Key:roof:colour) and other `*:colour` tags. We also use [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) tag value to paint subway lines.
+
+E.g. [`building:colour`](https://wiki.openstreetmap.org/wiki/Key:building:colour) visualization:
+
+![Building colors](doc/colors.png)
 
 ### Emergency ###
 
@@ -114,7 +115,7 @@ Visualize element creation time with `--mode time`.
 
 Every way and node displayed with the random color picked for each author with `--mode author`.
 
-![Author mode](doc/user.png)
+![Author mode](doc/author.png)
 
 Installation
 ------------
