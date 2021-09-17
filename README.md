@@ -65,7 +65,7 @@ Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used
 
 ### Colors ###
 
-Map icons have dark grey color by default, special purple color for shop nodes, and [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) tag value if present. Map Machine also takes into account [`building:colour`](https://wiki.openstreetmap.org/wiki/Key:building:colour), [`roof:colour`](https://wiki.openstreetmap.org/wiki/Key:roof:colour) and other `*:colour` tags. We also use [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) tag value to paint subway lines.
+Map icons have [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) tag value if it is present, otherwise icons displayed with dark grey color by default, purple color for shop nodes, red color for emergency features, and special colors for natural features. Map Machine also takes into account [`building:colour`](https://wiki.openstreetmap.org/wiki/Key:building:colour), [`roof:colour`](https://wiki.openstreetmap.org/wiki/Key:roof:colour) and other `*:colour` tags. We also use [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) tag value to paint subway lines.
 
 E.g. [`building:colour`](https://wiki.openstreetmap.org/wiki/Key:building:colour) visualization:
 

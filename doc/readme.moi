@@ -78,7 +78,7 @@ Visualize \osm {design} values used with \osm {power=tower} tag.
 
 \3 {Colors} {colors}
 
-Map icons have dark grey color by default, special purple color for shop nodes, and \osm {colour} tag value if present.  Map Machine also takes into account \osm {building:colour}, \osm {roof:colour} and other \m {*:colour} tags.  We also use \osm {colour} tag value to paint subway lines.
+Map icons have \osm {colour} tag value if it is present, otherwise icons displayed with dark grey color by default, purple color for shop nodes, red color for emergency features, and special colors for natural features.  Map Machine also takes into account \osm {building:colour}, \osm {roof:colour} and other \m {*:colour} tags.  We also use \osm {colour} tag value to paint subway lines.
 
 E.g. \osm {building:colour} visualization\:
 
