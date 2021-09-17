@@ -44,6 +44,12 @@ With `--buildings isometric` or `--buildings isometric-no-parts` (not set by def
 
 ![3D buildings](doc/buildings.png)
 
+### Road lanes ###
+
+To determine road width Map Machine uses the [`width`](https://wiki.openstreetmap.org/wiki/Key:width) tag value or estimates it based on the [`lanes`](https://wiki.openstreetmap.org/wiki/Key:lanes) value.
+
+![Road lanes](doc/lanes.png)
+
 ### Trees ###
 
 Visualization of tree leaf types (broadleaved or needleleaved) and genus or taxon by means of icon shapes and leaf cycles (deciduous or evergreen) by means of color.
@@ -154,6 +160,8 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and write output
 | <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | geo boundary box; if first value is negative, enclose the value with quotes and use space before `-` |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
 | <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<integer>` | OSM zoom level, default value: 18 |
+| <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location inside the tile |
+| <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--size`</span> `<width>,<height>` | resulted image size |
 
 plus [map configuration options](#map-options)
 
@@ -286,6 +294,7 @@ Map configuration options used by `render` and `tile` commands:
 | <span style="white-space: nowrap;">`--level`</span> | display only this floor level, default value: `overground` |
 | <span style="white-space: nowrap;">`--seed`</span> `<string>` | seed for random |
 | <span style="white-space: nowrap;">`--show-tooltips`</span> | add tooltips with tags for icons in SVG files |
+| <span style="white-space: nowrap;">`--country`</span> | two-letter code (ISO 3166-1 alpha-2) of country, that should be used for location restrictions, default value: `world` |
 
 MapCSS 0.2 generation
 ---------------------

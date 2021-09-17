@@ -40,6 +40,12 @@ With \m {--buildings isometric} or \m {--buildings isometric-no-parts} (not set 
 
 \image {doc/buildings.png} {3D buildings}
 
+\3 {Road lanes} {road-lanes}
+
+To determine road width Map Machine uses the \osm {width} tag value or estimates it based on the \osm {lanes} value.
+
+\image {doc/lanes.png} {Road lanes}
+
 \3 {Trees} {trees}
 
 Visualization of tree leaf types (broadleaved or needleleaved) and genus or taxon by means of icon shapes and leaf cycles (deciduous or evergreen) by means of color.
