@@ -496,6 +496,9 @@ class Roads:
 
     def draw(self, svg: Drawing, flinger: Flinger) -> None:
         """Draw whole road system."""
+        if not self.roads:
+            return
+
         scale: float = flinger.get_scale(self.roads[0].nodes[0].coordinates)
         layered_roads: dict[float, list[Road]] = {}
         for road in self.roads:
