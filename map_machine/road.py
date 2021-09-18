@@ -465,7 +465,7 @@ def get_curve_points(
     :param center: road intersection point
     :param road_end: end point of the road segment
     """
-    width: float = road.width / 2.0 * scale + 0.5
+    width: float = road.width / 2.0 * scale
 
     direction: np.ndarray = (road_end - center) / np.linalg.norm(
         road_end - center
@@ -520,13 +520,13 @@ class Connector:
 
     def draw_border(self, svg: Drawing) -> None:
         """Draw connection outline."""
-        for curve in self.curve_1, self.curve_2:
-            path = svg.path(
-                d=["M"] + curve,
-                fill="none",
-                stroke=self.road_1.matcher.border_color.hex,
-            )
-            svg.add(path)
+        path = svg.path(
+            d=["M"] + self.curve_1 + ["L"] + self.curve_2 + ["Z"],
+            fill="none",
+            stroke=self.road_1.matcher.border_color.hex,
+            stroke_width=2,
+        )
+        svg.add(path)
 
 
 class Roads:
