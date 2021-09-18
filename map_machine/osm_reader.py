@@ -291,7 +291,7 @@ class OSMRelation(Tagged):
             structure["tags"],
             structure["id"],
             [
-                OSMMember(x["type"], x["role"], x["ref"])
+                OSMMember(x["type"], x["ref"], x["role"])
                 for x in structure["members"]
             ],
         )
