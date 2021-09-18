@@ -524,6 +524,10 @@ class Roads:
                     continue
                 connected: list[tuple[Road, int]] = self.connections[id_]
                 road_1, index_1 = connected[0]
+
+                if road_1.layer != layer:
+                    continue
+
                 road_2, index_2 = connected[1]
                 node: OSMNode = road_1.nodes[index_1]
                 point = flinger.fling(node.coordinates)
