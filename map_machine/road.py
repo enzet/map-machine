@@ -476,6 +476,59 @@ def get_curve_points(
     return [road_end + left, center + left, center + right, road_end + right]
 
 
+class Connector:
+    """
+    Two roads connection.
+    """
+
+    def __init__(
+        self,
+        road_1: Road,
+        index_1: int,
+        road_2: Road,
+        index_2: int,
+        flinger: Flinger,
+        scale: float,
+    ) -> None:
+        self.road_1: Road = road_1
+        self.road_2: Road = road_2
+
+        self.index_1: int = index_1
+        self.index_2: int = index_2
+
+        node: OSMNode = road_1.nodes[index_1]
+        point: np.ndarray = flinger.fling(node.coordinates)
+
+        c1: list[np.ndarray] = get_curve_points(
+            road_1, scale, point, road_1.line.points[index_1]
+        )
+        c2: list[np.ndarray] = get_curve_points(
+            road_2, scale, point, road_2.line.points[index_2]
+        )
+        self.curve_1: PathCommands = [c1[0], "C", c1[1], c2[2], c2[3]]
+        self.curve_2: PathCommands = [c2[0], "C", c2[1], c1[2], c1[3]]
+
+        self.layer: float = min(road_1.layer, road_2.layer)
+
+    def draw(self, svg: Drawing) -> None:
+        """Draw connection fill."""
+        path = svg.path(
+            d=["M"] + self.curve_1 + ["L"] + self.curve_2 + ["Z"],
+            fill=self.road_1.matcher.color.hex,
+        )
+        svg.add(path)
+
+    def draw_border(self, svg: Drawing) -> None:
+        """Draw connection outline."""
+        for curve in self.curve_1, self.curve_2:
+            path = svg.path(
+                d=["M"] + curve,
+                fill="none",
+                stroke=self.road_1.matcher.border_color.hex,
+            )
+            svg.add(path)
+
+
 class Roads:
     """
     Whole road structure.
@@ -501,6 +554,8 @@ class Roads:
 
         scale: float = flinger.get_scale(self.roads[0].nodes[0].coordinates)
         layered_roads: dict[float, list[Road]] = {}
+        layered_connectors: dict[float, list[Connector]] = {}
+
         for road in self.roads:
             if road.layer not in layered_roads:
                 layered_roads[road.layer] = []
@@ -511,49 +566,39 @@ class Roads:
                     continue
                 road.line.shorten(index)
 
+        for id_ in self.connections:
+            if len(self.connections[id_]) != 2:
+                continue
+            connected: list[tuple[Road, int]] = self.connections[id_]
+            road_1, index_1 = connected[0]
+            road_2, index_2 = connected[1]
+            connector: Connector = Connector(
+                road_1, index_1, road_2, index_2, flinger, scale
+            )
+
+            if connector.layer not in layered_connectors:
+                layered_connectors[connector.layer] = []
+            layered_connectors[connector.layer].append(connector)
+
         for layer in sorted(layered_roads.keys()):
-            roads = sorted(
+            roads: list[Road] = sorted(
                 layered_roads[layer], key=lambda x: x.matcher.priority
             )
+            connectors: list[Connector]
+            if layer in layered_connectors:
+                connectors = layered_connectors[layer]
+            else:
+                connectors = []
+
             for road in roads:
                 road.draw(svg, flinger, road.matcher.border_color, 2)
+            for connector in connectors:
+                connector.draw_border(svg)
+
             for road in roads:
                 road.draw(svg, flinger, road.matcher.color)
-            for id_ in self.connections:
-                if len(self.connections[id_]) != 2:
-                    continue
-                connected: list[tuple[Road, int]] = self.connections[id_]
-                road_1, index_1 = connected[0]
-
-                if road_1.layer != layer:
-                    continue
-
-                road_2, index_2 = connected[1]
-                node: OSMNode = road_1.nodes[index_1]
-                point = flinger.fling(node.coordinates)
-
-                c1: PathCommands = get_curve_points(
-                    road_1, scale, point, road_1.line.points[index_1]
-                )
-                c2: PathCommands = get_curve_points(
-                    road_2, scale, point, road_2.line.points[index_2]
-                )
-                curve_1 = [c1[0], "C", c1[1], c2[2], c2[3]]
-                curve_2 = [c2[0], "C", c2[1], c1[2], c1[3]]
-
-                path = svg.path(
-                    d=["M"] + curve_1 + ["L"] + curve_2 + ["Z"],
-                    fill=road_1.matcher.color.hex,
-                )
-                svg.add(path)
-
-                for curve in curve_1, curve_2:
-                    path = svg.path(
-                        d=["M"] + curve,
-                        fill="none",
-                        stroke=road_1.matcher.border_color.hex,
-                    )
-                    svg.add(path)
+            for connector in connectors:
+                connector.draw(svg)
 
             for road in roads:
                 road.draw_lanes(svg, flinger, road.matcher.border_color)
