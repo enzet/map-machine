@@ -6,6 +6,8 @@ import numpy as np
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+from shapely.geometry import LineString
+
 
 def compute_angle(vector: np.ndarray) -> float:
     """
@@ -36,6 +38,37 @@ def turn_by_angle(vector: np.ndarray, angle: float) -> np.ndarray:
 def norm(vector: np.ndarray) -> np.ndarray:
     """Compute vector with the same direction and length 1."""
     return vector / np.linalg.norm(vector)
+
+
+class Polyline:
+    """
+    List of connected points.
+    """
+
+    def __init__(self, points: list[np.ndarray]) -> None:
+        self.points: list[np.ndarray] = points
+
+    def get_path(self, parallel_offset: float = 0) -> str:
+        """Construct SVG path commands."""
+        points: list[np.ndarray]
+        try:
+            points = (
+                LineString(self.points).parallel_offset(parallel_offset).coords
+                if parallel_offset
+                else self.points
+            )
+        except ValueError:
+            points = self.points
+        path: str = "M " + " L ".join(f"{x[0]},{x[1]}" for x in points)
+        return path + (" Z" if np.allclose(points[0], points[-1]) else "")
+
+    def shorten(self, index: int) -> None:
+        """Make shorten part specified with index."""
+        index_2: int = 1 if index == 0 else -2
+        diff: np.ndarray = self.points[index_2] - self.points[index]
+        self.points[index] = (
+            self.points[index] + diff / np.linalg.norm(diff) * 5
+        )
 
 
 class Line:

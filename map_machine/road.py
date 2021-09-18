@@ -2,13 +2,26 @@
 WIP: road shape drawing.
 """
 from dataclasses import dataclass
-from typing import Optional
+from typing import Any, Optional
 
 import numpy as np
 import svgwrite
+from colour import Color
+from svgwrite import Drawing
 from svgwrite.path import Path
 
-from map_machine.vector import Line, compute_angle, norm, turn_by_angle
+from map_machine.drawing import PathCommands
+from map_machine.flinger import Flinger
+from map_machine.osm_reader import OSMNode, Tagged
+from map_machine.scheme import RoadMatcher
+
+from map_machine.vector import (
+    Line,
+    Polyline,
+    compute_angle,
+    norm,
+    turn_by_angle,
+)
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -345,3 +358,195 @@ class Intersection:
             # for part in self.parts:
             #     part.draw_lanes(drawing, scale)
             drawing.add(drawing.path(inner_commands, fill="#FF8888"))
+
+
+class Road(Tagged):
+    """
+    Road or track on the map.
+    """
+
+    def __init__(
+        self,
+        tags: dict[str, str],
+        nodes: list[OSMNode],
+        matcher: RoadMatcher,
+        flinger: Flinger,
+    ) -> None:
+        super().__init__(tags)
+        self.nodes: list[OSMNode] = nodes
+        self.matcher: RoadMatcher = matcher
+
+        self.line: Polyline = Polyline(
+            [flinger.fling(x.coordinates) for x in self.nodes]
+        )
+        self.width: Optional[float] = 5
+        self.lanes: list[Lane] = []
+
+        if "lanes" in tags:
+            try:
+                self.width = int(tags["lanes"]) * 3.7
+                self.lanes = [Lane()] * int(tags["lanes"])
+            except ValueError:
+                pass
+
+        number: int
+        if "lanes:forward" in tags:
+            number = int(tags["lanes:forward"])
+            [x.set_forward(True) for x in self.lanes[-number:]]
+        if "lanes:backward" in tags:
+            number = int(tags["lanes:backward"])
+            [x.set_forward(False) for x in self.lanes[:number]]
+
+        if "width" in tags:
+            try:
+                self.width = float(tags["width"])
+            except ValueError:
+                pass
+
+        self.layer: float = 0
+        if "layer" in tags:
+            self.layer = float(tags["layer"])
+
+    def draw(
+        self,
+        svg: Drawing,
+        flinger: Flinger,
+        color: Color,
+        extra_width: float = 0,
+    ) -> None:
+        """Draw road as simple SVG path."""
+        width: float
+        if self.width is not None:
+            width = self.width
+        else:
+            width = self.matcher.default_width
+        if extra_width and self.tags.get("bridge") == "yes":
+            color = Color("#666666")
+        scale: float = flinger.get_scale(self.nodes[0].coordinates)
+        path_commands: str = self.line.get_path()
+        path: Path = Path(d=path_commands)
+        style: dict[str, Any] = {
+            "fill": "none",
+            "stroke": color.hex,
+            "stroke-linecap": "butt",
+            "stroke-linejoin": "round",
+            "stroke-width": scale * width + extra_width,
+        }
+        path.update(style)
+        svg.add(path)
+
+    def draw_lanes(self, svg: Drawing, flinger: Flinger, color: Color) -> None:
+        """Draw lane separators."""
+        scale: float = flinger.get_scale(self.nodes[0].coordinates)
+        if len(self.lanes) < 2:
+            return
+        for index in range(1, len(self.lanes)):
+            parallel_offset: float = scale * (
+                -self.width / 2 + index * self.width / len(self.lanes)
+            )
+            path: Path = Path(d=self.line.get_path(parallel_offset))
+            style: dict[str, Any] = {
+                "fill": "none",
+                "stroke": color.hex,
+                "stroke-linejoin": "round",
+                "stroke-width": 1,
+                "opacity": 0.5,
+            }
+            path.update(style)
+            svg.add(path)
+
+
+def get_curve_points(
+    road: Road, scale: float, center: np.ndarray, road_end: np.ndarray
+) -> list[np.ndarray]:
+    """
+    :param road: road segment
+    :param scale: current zoom scale
+    :param center: road intersection point
+    :param road_end: end point of the road segment
+    """
+    width: float = road.width / 2.0 * scale + 0.5
+
+    direction: np.ndarray = (road_end - center) / np.linalg.norm(
+        road_end - center
+    )
+    left: np.ndarray = turn_by_angle(direction, np.pi / 2.0) * width
+    right: np.ndarray = turn_by_angle(direction, -np.pi / 2.0) * width
+
+    return [road_end + left, center + left, center + right, road_end + right]
+
+
+class Roads:
+    """
+    Whole road structure.
+    """
+
+    def __init__(self) -> None:
+        self.roads: list[Road] = []
+        self.connections: dict[int, list[tuple[Road, int]]] = {}
+
+    def append(self, road: Road) -> None:
+        """Add road and update connections."""
+        self.roads.append(road)
+        for index in road.nodes[0].id_, road.nodes[-1].id_:
+            if index not in self.connections:
+                self.connections[index] = []
+        self.connections[road.nodes[0].id_].append((road, 0))
+        self.connections[road.nodes[-1].id_].append((road, -1))
+
+    def draw(self, svg: Drawing, flinger: Flinger) -> None:
+        """Draw whole road system."""
+        scale: float = flinger.get_scale(self.roads[0].nodes[0].coordinates)
+        layered_roads: dict[float, list[Road]] = {}
+        for road in self.roads:
+            if road.layer not in layered_roads:
+                layered_roads[road.layer] = []
+            layered_roads[road.layer].append(road)
+            for index in 0, -1:
+                id_: int = road.nodes[index].id_
+                if len(self.connections[id_]) != 2:
+                    continue
+                road.line.shorten(index)
+
+        for layer in sorted(layered_roads.keys()):
+            roads = sorted(
+                layered_roads[layer], key=lambda x: x.matcher.priority
+            )
+            for road in roads:
+                road.draw(svg, flinger, road.matcher.border_color, 2)
+            for road in roads:
+                road.draw(svg, flinger, road.matcher.color)
+            for id_ in self.connections:
+                if len(self.connections[id_]) != 2:
+                    continue
+                connected: list[tuple[Road, int]] = self.connections[id_]
+                road_1, index_1 = connected[0]
+                road_2, index_2 = connected[1]
+                node: OSMNode = road_1.nodes[index_1]
+                point = flinger.fling(node.coordinates)
+
+                c1: PathCommands = get_curve_points(
+                    road_1, scale, point, road_1.line.points[index_1]
+                )
+                c2: PathCommands = get_curve_points(
+                    road_2, scale, point, road_2.line.points[index_2]
+                )
+                curve_1 = [c1[0], "C", c1[1], c2[2], c2[3]]
+                curve_2 = [c2[0], "C", c2[1], c1[2], c1[3]]
+
+                path = svg.path(
+                    d=["M"] + curve_1 + ["L"] + curve_2 + ["Z"],
+                    fill=road_1.matcher.color.hex,
+                )
+                svg.add(path)
+
+                for curve in curve_1, curve_2:
+                    path = svg.path(
+                        d=["M"] + curve,
+                        fill="none",
+                        stroke=road_1.matcher.border_color.hex,
+                    )
+                    svg.add(path)
+
+            for road in roads:
+                road.draw_lanes(svg, flinger, road.matcher.border_color)

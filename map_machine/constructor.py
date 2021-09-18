@@ -15,10 +15,10 @@ from map_machine.figure import (
     Building,
     Crater,
     DirectionSector,
-    Road,
     StyledFigure,
     Tree,
 )
+from map_machine.road import Road, Roads
 from map_machine.flinger import Flinger
 from map_machine.icon import (
     DEFAULT_SMALL_SHAPE_ID,
@@ -185,7 +185,7 @@ class Constructor:
         self.points: list[Point] = []
         self.figures: list[StyledFigure] = []
         self.buildings: list[Building] = []
-        self.roads: list[Road] = []
+        self.roads: Roads = Roads()
         self.trees: list[Tree] = []
         self.craters: list[Crater] = []
         self.direction_sectors: list[DirectionSector] = []
@@ -260,7 +260,9 @@ class Constructor:
 
         road_matcher: RoadMatcher = self.scheme.get_road(line.tags)
         if road_matcher:
-            self.roads.append(Road(line.tags, inners, outers, road_matcher))
+            self.roads.append(
+                Road(line.tags, outers[0], road_matcher, self.flinger)
+            )
             return
 
         processed: set[str] = set()

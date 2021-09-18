@@ -151,8 +151,8 @@ class OSMNode(Tagged):
         :param structure: input structure
         """
         return cls(
-            structure["id"],
             structure["tags"] if "tags" in structure else {},
+            structure["id"],
             coordinates=np.array((structure["lat"], structure["lon"])),
         )
 
@@ -209,7 +209,7 @@ class OSMWay(Tagged):
         :param nodes: node structure
         """
         return cls(
-            structure["tags"],
+            structure["tags"] if "tags" in structure else {},
             structure["id"],
             [nodes[x] for x in structure["nodes"]],
         )

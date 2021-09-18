@@ -15,14 +15,14 @@ from svgwrite.shapes import Rect
 
 from map_machine.boundary_box import BoundaryBox
 from map_machine.constructor import Constructor
-from map_machine.figure import Road, StyledFigure
+from map_machine.figure import StyledFigure
 from map_machine.flinger import Flinger
 from map_machine.icon import ShapeExtractor
 from map_machine.map_configuration import LabelMode, MapConfiguration
 from map_machine.osm_getter import NetworkError, get_osm
 from map_machine.osm_reader import OSMData, OSMNode
 from map_machine.point import Occupied, Point
-from map_machine.road import Intersection, RoadPart
+from map_machine.road import Intersection, Road, RoadPart
 from map_machine.scheme import Scheme
 from map_machine.ui import BuildingMode, progress_bar
 from map_machine.workspace import workspace
@@ -70,24 +70,7 @@ class Map:
                 self.svg.add(path)
         progress_bar(-1, 0, text="Drawing ways")
 
-        layered_roads: dict[float, list[Road]] = {}
-        for road in constructor.roads:
-            if road.layer not in layered_roads:
-                layered_roads[road.layer] = []
-            layered_roads[road.layer].append(road)
-
-        for layer in sorted(layered_roads.keys()):
-            roads = sorted(
-                layered_roads[layer], key=lambda x: x.matcher.priority
-            )
-            for road in roads:
-                road.draw(self.svg, self.flinger, road.matcher.border_color, 2)
-            for road in roads:
-                road.draw(self.svg, self.flinger, road.matcher.color)
-            for road in roads:
-                road.draw_lanes(
-                    self.svg, self.flinger, road.matcher.border_color
-                )
+        constructor.roads.draw(self.svg, self.flinger)
 
         for tree in constructor.trees:
             tree.draw(self.svg, self.flinger, self.scheme)
@@ -218,6 +201,8 @@ def ui(arguments: argparse.Namespace) -> None:
 
     if arguments.input_file_names:
         input_file_names = list(map(Path, arguments.input_file_names))
+        if arguments.boundary_box:
+            boundary_box = BoundaryBox.from_text(arguments.boundary_box)
     else:
         if arguments.boundary_box:
             boundary_box = BoundaryBox.from_text(arguments.boundary_box)

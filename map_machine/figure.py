@@ -5,7 +5,6 @@ from typing import Any, Iterator, Optional
 
 import numpy as np
 from colour import Color
-from shapely.geometry import LineString
 from svgwrite import Drawing
 from svgwrite.container import Group
 from svgwrite.path import Path
@@ -14,11 +13,12 @@ from map_machine.direction import DirectionSet, Sector
 from map_machine.drawing import PathCommands
 from map_machine.flinger import Flinger
 from map_machine.osm_reader import OSMNode, Tagged
-from map_machine.road import Lane
-from map_machine.scheme import LineStyle, RoadMatcher, Scheme
+from map_machine.scheme import LineStyle, Scheme
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
+
+from map_machine.vector import Polyline
 
 BUILDING_HEIGHT_SCALE: float = 2.5
 BUILDING_MINIMAL_HEIGHT: float = 8.0
@@ -60,20 +60,6 @@ class Figure(Tagged):
             path += f"{get_path(inner_nodes, offset, flinger)} "
 
         return path
-
-    def get_outer_path(
-        self, flinger: Flinger, parallel_offset: float = 0
-    ) -> str:
-        """Get path of the first outer node list."""
-        points: list[tuple[float, float]] = [
-            tuple(flinger.fling(x.coordinates)) for x in self.outers[0]
-        ]
-        offset = LineString(points).parallel_offset(parallel_offset)
-
-        path: str = ""
-        for index, point in enumerate(offset.coords):
-            path += ("L" if index else "M") + f" {point[0]},{point[1]} "
-        return path[:-1]
 
 
 class Building(Figure):
@@ -219,101 +205,6 @@ class StyledFigure(Figure):
     ) -> None:
         super().__init__(tags, inners, outers)
         self.line_style: LineStyle = line_style
-
-
-class Road(Figure):
-    """
-    Road or track on the map.
-    """
-
-    def __init__(
-        self,
-        tags: dict[str, str],
-        inners: list[list[OSMNode]],
-        outers: list[list[OSMNode]],
-        matcher: RoadMatcher,
-    ) -> None:
-        super().__init__(tags, inners, outers)
-        self.matcher: RoadMatcher = matcher
-
-        self.width: Optional[float] = None
-        self.lanes: list[Lane] = []
-
-        if "lanes" in tags:
-            try:
-                self.width = int(tags["lanes"]) * 3.7
-                self.lanes = [Lane()] * int(tags["lanes"])
-            except ValueError:
-                pass
-
-        number: int
-        if "lanes:forward" in tags:
-            number = int(tags["lanes:forward"])
-            [x.set_forward(True) for x in self.lanes[-number:]]
-        if "lanes:backward" in tags:
-            number = int(tags["lanes:backward"])
-            [x.set_forward(False) for x in self.lanes[:number]]
-
-        if "width" in tags:
-            try:
-                self.width = float(tags["width"])
-            except ValueError:
-                pass
-
-        self.layer: float = 0
-        if "layer" in tags:
-            self.layer = float(tags["layer"])
-
-    def draw(
-        self,
-        svg: Drawing,
-        flinger: Flinger,
-        color: Color,
-        extra_width: float = 0,
-    ) -> None:
-        """Draw road as simple SVG path."""
-        flinger.get_scale()
-        width: float
-        if self.width is not None:
-            width = self.width
-        else:
-            width = self.matcher.default_width
-        cap: str = "round"
-        if extra_width:
-            cap = "butt"
-            if self.tags.get("bridge") == "yes":
-                color = Color("#666666")
-        scale: float = flinger.get_scale(self.outers[0][0].coordinates)
-        path_commands: str = self.get_path(flinger)
-        path: Path = Path(d=path_commands)
-        style: dict[str, Any] = {
-            "fill": "none",
-            "stroke": color.hex,
-            "stroke-linecap": cap,
-            "stroke-linejoin": "round",
-            "stroke-width": scale * width + extra_width,
-        }
-        path.update(style)
-        svg.add(path)
-
-    def draw_lanes(self, svg: Drawing, flinger: Flinger, color: Color) -> None:
-        scale: float = flinger.get_scale(self.outers[0][0].coordinates)
-        if len(self.lanes) < 2:
-            return
-        for index in range(1, len(self.lanes)):
-            shift = scale * (
-                -self.width / 2 + index * self.width / len(self.lanes)
-            )
-            path: Path = Path(d=self.get_outer_path(flinger, shift))
-            style: dict[str, Any] = {
-                "fill": "none",
-                "stroke": color.hex,
-                "stroke-linejoin": "round",
-                "stroke-width": 1,
-                "opacity": 0.5,
-            }
-            path.update(style)
-            svg.add(path)
 
 
 class Crater(Tagged):
@@ -510,14 +401,6 @@ def make_counter_clockwise(polygon: list[OSMNode]) -> list[OSMNode]:
 
 def get_path(nodes: list[OSMNode], shift: np.ndarray, flinger: Flinger) -> str:
     """Construct SVG path commands from nodes."""
-    path: str = ""
-    prev_node: Optional[OSMNode] = None
-    for node in nodes:
-        flung: np.ndarray = flinger.fling(node.coordinates) + shift
-        path += ("L" if prev_node else "M") + f" {flung[0]},{flung[1]} "
-        prev_node = node
-    if nodes[0] == nodes[-1]:
-        path += "Z"
-    else:
-        path = path[:-1]
-    return path
+    return Polyline(
+        [flinger.fling(x.coordinates) + shift for x in nodes]
+    ).get_path()
