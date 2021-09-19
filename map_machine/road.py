@@ -487,7 +487,7 @@ class Connector:
         index_1: int,
         road_2: Road,
         index_2: int,
-        flinger: Flinger,
+        _flinger: Flinger,
         scale: float,
     ) -> None:
         self.road_1: Road = road_1
@@ -497,6 +497,7 @@ class Connector:
         self.index_2: int = index_2
 
         self.layer: float = min(road_1.layer, road_2.layer)
+        self.scale: float = scale
 
     def draw(self, svg: Drawing) -> None:
         """Draw connection fill."""
@@ -529,7 +530,7 @@ class SimpleConnector(Connector):
         """Draw connection fill."""
         circle = svg.circle(
             self.point,
-            self.road_1.width + 1,
+            self.road_1.width * self.scale / 2,
             fill=self.road_1.matcher.color.hex,
         )
         svg.add(circle)
@@ -538,7 +539,7 @@ class SimpleConnector(Connector):
         """Draw connection outline."""
         circle = svg.circle(
             self.point,
-            self.road_1.width + 2,
+            self.road_1.width * self.scale / 2 + 1,
             fill=self.road_1.matcher.border_color.hex,
         )
         svg.add(circle)
