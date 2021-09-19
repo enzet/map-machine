@@ -496,6 +496,10 @@ class Connector:
         self.index_1: int = index_1
         self.index_2: int = index_2
 
+        length: float = abs(road_2.width - road_1.width) * scale
+        road_1.line.shorten(index_1, length)
+        road_2.line.shorten(index_2, length)
+
         node: OSMNode = road_1.nodes[index_1]
         point: np.ndarray = flinger.fling(node.coordinates)
 
@@ -560,11 +564,6 @@ class Roads:
             if road.layer not in layered_roads:
                 layered_roads[road.layer] = []
             layered_roads[road.layer].append(road)
-            for index in 0, -1:
-                id_: int = road.nodes[index].id_
-                if len(self.connections[id_]) != 2:
-                    continue
-                road.line.shorten(index)
 
         for id_ in self.connections:
             if len(self.connections[id_]) != 2:
@@ -572,6 +571,8 @@ class Roads:
             connected: list[tuple[Road, int]] = self.connections[id_]
             road_1, index_1 = connected[0]
             road_2, index_2 = connected[1]
+            if road_1.width == road_2.width:
+                continue
             connector: Connector = Connector(
                 road_1, index_1, road_2, index_2, flinger, scale
             )

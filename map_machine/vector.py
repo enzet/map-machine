@@ -62,12 +62,12 @@ class Polyline:
         path: str = "M " + " L ".join(f"{x[0]},{x[1]}" for x in points)
         return path + (" Z" if np.allclose(points[0], points[-1]) else "")
 
-    def shorten(self, index: int) -> None:
+    def shorten(self, index: int, length: float) -> None:
         """Make shorten part specified with index."""
         index_2: int = 1 if index == 0 else -2
         diff: np.ndarray = self.points[index_2] - self.points[index]
         self.points[index] = (
-            self.points[index] + diff / np.linalg.norm(diff) * 5
+            self.points[index] + diff / np.linalg.norm(diff) * length
         )
 
 
