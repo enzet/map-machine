@@ -496,6 +496,70 @@ class Connector:
         self.index_1: int = index_1
         self.index_2: int = index_2
 
+        self.layer: float = min(road_1.layer, road_2.layer)
+
+    def draw(self, svg: Drawing) -> None:
+        """Draw connection fill."""
+        raise NotImplementedError
+
+    def draw_border(self, svg: Drawing) -> None:
+        """Draw connection outline."""
+        raise NotImplementedError
+
+
+class SimpleConnector(Connector):
+    """
+    Simple connection between roads that don't change width.
+    """
+
+    def __init__(
+        self,
+        road_1: Road,
+        index_1: int,
+        road_2: Road,
+        index_2: int,
+        flinger: Flinger,
+        scale: float,
+    ) -> None:
+        super().__init__(road_1, index_1, road_2, index_2, flinger, scale)
+        node: OSMNode = road_1.nodes[index_1]
+        self.point: np.ndarray = flinger.fling(node.coordinates)
+
+    def draw(self, svg: Drawing) -> None:
+        """Draw connection fill."""
+        circle = svg.circle(
+            self.point,
+            self.road_1.width + 1,
+            fill=self.road_1.matcher.color.hex,
+        )
+        svg.add(circle)
+
+    def draw_border(self, svg: Drawing) -> None:
+        """Draw connection outline."""
+        circle = svg.circle(
+            self.point,
+            self.road_1.width + 2,
+            fill=self.road_1.matcher.border_color.hex,
+        )
+        svg.add(circle)
+
+
+class ComplexConnector(Connector):
+    """
+    Connection between roads that change width.
+    """
+
+    def __init__(
+        self,
+        road_1: Road,
+        index_1: int,
+        road_2: Road,
+        index_2: int,
+        flinger: Flinger,
+        scale: float,
+    ) -> None:
+        super().__init__(road_1, index_1, road_2, index_2, flinger, scale)
+
         length: float = abs(road_2.width - road_1.width) * scale
         road_1.line.shorten(index_1, length)
         road_2.line.shorten(index_2, length)
@@ -511,8 +575,6 @@ class Connector:
         )
         self.curve_1: PathCommands = [c1[0], "C", c1[1], c2[2], c2[3]]
         self.curve_2: PathCommands = [c2[0], "C", c2[1], c1[2], c1[3]]
-
-        self.layer: float = min(road_1.layer, road_2.layer)
 
     def draw(self, svg: Drawing) -> None:
         """Draw connection fill."""
@@ -571,11 +633,15 @@ class Roads:
             connected: list[tuple[Road, int]] = self.connections[id_]
             road_1, index_1 = connected[0]
             road_2, index_2 = connected[1]
+            connector: Connector
             if road_1.width == road_2.width:
-                continue
-            connector: Connector = Connector(
-                road_1, index_1, road_2, index_2, flinger, scale
-            )
+                connector = SimpleConnector(
+                    road_1, index_1, road_2, index_2, flinger, scale
+                )
+            else:
+                connector = ComplexConnector(
+                    road_1, index_1, road_2, index_2, flinger, scale
+                )
 
             if connector.layer not in layered_connectors:
                 layered_connectors[connector.layer] = []
