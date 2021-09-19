@@ -579,6 +579,18 @@ class ComplexConnector(Connector):
 
     def draw(self, svg: Drawing) -> None:
         """Draw connection fill."""
+        circle = svg.circle(
+            self.road_1.line.points[self.index_1],
+            self.road_1.width * self.scale / 2,
+            fill=self.road_1.matcher.color.hex,
+        )
+        svg.add(circle)
+        circle = svg.circle(
+            self.road_2.line.points[self.index_2],
+            self.road_2.width * self.scale / 2,
+            fill=self.road_2.matcher.color.hex,
+        )
+        svg.add(circle)
         path = svg.path(
             d=["M"] + self.curve_1 + ["L"] + self.curve_2 + ["Z"],
             fill=self.road_1.matcher.color.hex,
