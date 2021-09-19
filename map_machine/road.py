@@ -390,6 +390,14 @@ class Road(Tagged):
             except ValueError:
                 pass
 
+        if "width:lanes" in tags:
+            widths: list[float] = list(
+                map(float, tags["width:lanes"].split("|"))
+            )
+            if len(widths) == len(self.lanes):
+                for index, lane in enumerate(self.lanes):
+                    lane.width = widths[index]
+
         number: int
         if "lanes:forward" in tags:
             number = int(tags["lanes:forward"])
