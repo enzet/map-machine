@@ -379,7 +379,7 @@ class Road(Tagged):
         self.line: Polyline = Polyline(
             [flinger.fling(x.coordinates) for x in self.nodes]
         )
-        self.width: Optional[float] = 5
+        self.width: Optional[float] = matcher.default_width
         self.lanes: list[Lane] = []
 
         if "lanes" in tags:
