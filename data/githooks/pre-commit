@@ -2,7 +2,7 @@
 
 echo "Checking code format with Black..."
 if ! black -l 80 --check tests map_machine; then
-    black -l 80 --diff tests map_machine
+    black -l 80 --diff --color tests map_machine
     echo "FAIL"
     exit 1
 fi

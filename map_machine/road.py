@@ -9,6 +9,7 @@ import svgwrite
 from colour import Color
 from svgwrite import Drawing
 from svgwrite.path import Path
+from svgwrite.shapes import Circle
 
 from map_machine.drawing import PathCommands
 from map_machine.flinger import Flinger
@@ -568,30 +569,35 @@ class ComplexConnector(Connector):
         node: OSMNode = road_1.nodes[index_1]
         point: np.ndarray = flinger.fling(node.coordinates)
 
-        c1: list[np.ndarray] = get_curve_points(
+        points_1: list[np.ndarray] = get_curve_points(
             road_1, scale, point, road_1.line.points[index_1]
         )
-        c2: list[np.ndarray] = get_curve_points(
+        points_2: list[np.ndarray] = get_curve_points(
             road_2, scale, point, road_2.line.points[index_2]
         )
-        self.curve_1: PathCommands = [c1[0], "C", c1[1], c2[2], c2[3]]
-        self.curve_2: PathCommands = [c2[0], "C", c2[1], c1[2], c1[3]]
+        # fmt: off
+        self.curve_1: PathCommands = [
+            points_1[0], "C", points_1[1], points_2[2], points_2[3]
+        ]
+        self.curve_2: PathCommands = [
+            points_2[0], "C", points_2[1], points_1[2], points_1[3]
+        ]
+        # fmt: on
 
     def draw(self, svg: Drawing) -> None:
         """Draw connection fill."""
-        circle = svg.circle(
-            self.road_1.line.points[self.index_1],
-            self.road_1.width * self.scale / 2,
-            fill=self.road_1.matcher.color.hex,
-        )
-        svg.add(circle)
-        circle = svg.circle(
-            self.road_2.line.points[self.index_2],
-            self.road_2.width * self.scale / 2,
-            fill=self.road_2.matcher.color.hex,
-        )
-        svg.add(circle)
-        path = svg.path(
+        for road, index in [
+            (self.road_1, self.index_1),
+            (self.road_2, self.index_2),
+        ]:
+            circle: Circle = svg.circle(
+                road.line.points[index],
+                road.width * self.scale / 2,
+                fill=road.matcher.color.hex,
+            )
+            svg.add(circle)
+
+        path: Path = svg.path(
             d=["M"] + self.curve_1 + ["L"] + self.curve_2 + ["Z"],
             fill=self.road_1.matcher.color.hex,
         )
@@ -599,7 +605,7 @@ class ComplexConnector(Connector):
 
     def draw_border(self, svg: Drawing) -> None:
         """Draw connection outline."""
-        path = svg.path(
+        path: Path = svg.path(
             d=["M"] + self.curve_1 + ["L"] + self.curve_2 + ["Z"],
             fill="none",
             stroke=self.road_1.matcher.border_color.hex,
