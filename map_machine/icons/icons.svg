@@ -132,7 +132,7 @@
   <sodipodi:namedview
      inkscape:document-rotation="0"
      inkscape:snap-center="true"
-     inkscape:snap-global="false"
+     inkscape:snap-global="true"
      inkscape:snap-smooth-nodes="true"
      inkscape:snap-intersection-paths="true"
      inkscape:object-nodes="true"
@@ -148,9 +148,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="37.997132"
-     inkscape:cx="33.804996"
-     inkscape:zoom="22.627417"
+     inkscape:cy="551.9616"
+     inkscape:cx="28.804996"
+     inkscape:zoom="16"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -561,6 +561,14 @@
      inkscape:label="main"
      id="layer1"
      style="display:inline">
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 34.5 50 C 34.223 50 34 50.223 34 50.5 L 34 60.5 C 34 60.777 34.223 61 34.5 61 L 44.5 61 C 44.777 61 45 60.777 45 60.5 L 45 50.5 C 45 50.223 44.777 50 44.5 50 L 34.5 50 z M 38.5 52 L 40.449219 52 C 40.726219 52 40.949219 52.223 40.949219 52.5 L 40.949219 54 L 42.449219 54 C 42.726219 54 42.949219 54.223 42.949219 54.5 L 42.949219 56.449219 C 42.949219 56.726219 42.726219 56.949219 42.449219 56.949219 L 40.949219 56.949219 L 40.949219 58.449219 C 40.949219 58.726219 40.726219 58.949219 40.449219 58.949219 L 38.5 58.949219 C 38.223 58.949219 38 58.726219 38 58.449219 L 38 56.949219 L 36.5 56.949219 C 36.223 56.949219 36 56.726219 36 56.449219 L 36 54.5 C 36 54.223 36.223 54 36.5 54 L 38 54 L 38 52.5 C 38 52.223 38.223 52 38.5 52 z "
+       id="greek_cross_in_box"
+       inkscape:label="#rect11796">
+      <title
+         id="title11800">inverted Greek cross in box</title>
+    </path>
     <rect
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect10971"
@@ -22468,5 +22476,32 @@
        id="free"
        inkscape:label="#path11747"
        inkscape:connector-curvature="0" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect11784"
+       width="2.95"
+       height="6.9499998"
+       x="38"
+       y="36"
+       ry="0.5"
+       rx="0.5" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.10000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect11786"
+       width="6.9499998"
+       height="2.95"
+       x="36"
+       y="38"
+       ry="0.5"
+       rx="0.5" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect11790"
+       width="11"
+       height="11"
+       x="34"
+       y="34"
+       rx="0.5"
+       ry="0.5" />
   </g>
 </svg>

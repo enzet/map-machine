@@ -342,7 +342,10 @@
   "grapes_2": {},
   "grapes_3": {},
   "greek_cross": {
-    "name": "greek cross"
+    "name": "Greek cross"
+  },
+  "greek_cross_in_box": {
+    "name": "inverted Greek cross in box"
   },
   "guidepost": {
     "directed": "right"

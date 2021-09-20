@@ -322,8 +322,12 @@ node_icons:
       shapes: [two_beds]
     - tags: {tourism: motel}
       shapes: [{shape: car, offset: [0, 4]}, {shape: bed, offset: [0, -2]}]
-    - tags: {amenity: clinic}
+    - tags: {amenity: hospital}
       shapes: [greek_cross]
+    - tags: {amenity: clinic}
+      shapes: [greek_cross_in_box]
+    - tags: {amenity: doctors}
+      shapes: [greek_cross_in_box]
     - tags: {amenity: post_office}
       location_restrictions: {include: world, exclude: [jp]}
       shapes: [envelope]
