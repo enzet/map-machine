@@ -342,7 +342,7 @@
   "grapes_2": {},
   "grapes_3": {},
   "greek_cross": {
-    "name": "Greek cross"
+    "name": "greek cross"
   },
   "greek_cross_in_box": {
     "name": "inverted Greek cross in box"
@@ -783,6 +783,9 @@
   },
   "tomb": {
     "emoji": "🪦"
+  },
+  "tooth": {
+    "name": "tooth"
   },
   "torch": {
     "name": "torch"

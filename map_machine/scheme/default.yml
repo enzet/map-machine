@@ -328,6 +328,8 @@ node_icons:
       shapes: [greek_cross_in_box]
     - tags: {amenity: doctors}
       shapes: [greek_cross_in_box]
+    - tags: {amenity: dentist}
+      shapes: [tooth]
     - tags: {amenity: post_office}
       location_restrictions: {include: world, exclude: [jp]}
       shapes: [envelope]

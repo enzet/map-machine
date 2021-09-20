@@ -145,12 +145,12 @@
      inkscape:object-paths="true"
      inkscape:guide-bbox="true"
      showguides="false"
-     showgrid="true"
+     showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="551.9616"
-     inkscape:cx="28.804996"
-     inkscape:zoom="16"
+     inkscape:cy="552.67543"
+     inkscape:cx="57.554996"
+     inkscape:zoom="22.627417"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -22503,5 +22503,21 @@
        y="34"
        rx="0.5"
        ry="0.5" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 53.5 52 C 52.6874 52 52 52.228135 52 53 C 52 54.5 52 55 52.5 56 C 52.5 58 53 58.5 53.5 59.5 C 53.947214 60.394427 54.5 60.5 54.5 59.5 C 54.506998 59.309882 54.5 56 56 56 C 57.5 56 57.493002 59.309882 57.5 59.5 C 57.5 60.5 58.052786 60.394427 58.5 59.5 C 59 58.5 59.5 58 59.5 56 C 60 55 60 54.5 60 53 C 60 52.228135 59.3126 52 58.5 52 C 57.5 52 56.970847 52.5 56 52.5 C 55.029153 52.5 54.5 52 53.5 52 z "
+       id="tooth"
+       inkscape:label="#dent">
+      <title
+         id="title11819">tooth</title>
+    </path>
+    <path
+       id="path11821"
+       d="m 53.5,36 c -0.8126,0 -1.5,0.228135 -1.5,1 0,1.5 0,2 0.5,3 0,2 0.5,2.5 1,3.5 0.447214,0.894427 1,1 1,0 0.007,-0.190118 0,-3.5 1.5,-3.5 1.5,0 1.493002,3.309882 1.5,3.5 0,1 0.552786,0.894427 1,0 0.5,-1 1,-1.5 1,-3.5 0.5,-1 0.5,-1.5 0.5,-3 0,-0.771865 -0.6874,-1 -1.5,-1 -1,0 -1.529153,0.5 -2.5,0.5 -0.970847,0 -1.5,-0.5 -2.5,-0.5 z"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       inkscape:connector-curvature="0">
+      <title
+         id="title11823">dent</title>
+    </path>
   </g>
 </svg>
