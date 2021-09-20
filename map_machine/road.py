@@ -720,10 +720,10 @@ class Roads:
             for connector in connectors:
                 connector.draw_border(svg)
 
-            for road in roads:
-                road.draw(svg, flinger, road.matcher.color)
             for connector in connectors:
                 connector.draw(svg)
+            for road in roads:
+                road.draw(svg, flinger, road.matcher.color)
 
             for road in roads:
                 road.draw_lanes(svg, flinger, road.matcher.border_color)
