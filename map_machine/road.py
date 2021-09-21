@@ -431,6 +431,9 @@ class Road(Tagged):
             width = self.matcher.default_width
         if extra_width and self.tags.get("bridge") == "yes":
             color = Color("#666666")
+        if extra_width and self.tags.get("embankment") == "yes":
+            color = Color("#666666")
+            width += 4
         scale: float = flinger.get_scale(self.nodes[0].coordinates)
         path_commands: str = self.line.get_path()
         path: Path = Path(d=path_commands)
@@ -441,6 +444,8 @@ class Road(Tagged):
             "stroke-linejoin": "round",
             "stroke-width": scale * width + extra_width,
         }
+        if extra_width and self.tags.get("embankment") == "yes":
+            style["stroke-dasharray"] = "1,3"
         path.update(style)
         svg.add(path)
 

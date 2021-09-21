@@ -257,9 +257,7 @@ def ui(arguments: argparse.Namespace) -> None:
     )
     size: np.ndarray = flinger.size
 
-    svg: svgwrite.Drawing = svgwrite.Drawing(
-        arguments.output_file_name, size=size
-    )
+    svg: svgwrite.Drawing = svgwrite.Drawing(arguments.output_file_name, size)
     icon_extractor: ShapeExtractor = ShapeExtractor(
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
