@@ -5,7 +5,7 @@ import logging
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 import numpy as np
 import yaml
@@ -27,7 +27,7 @@ from map_machine.text import Label, get_address, get_text
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-IconDescription = list[Union[str, dict[str, str]]]
+IconDescription = List[Union[str, Dict[str, str]]]
 
 
 @dataclass
@@ -36,7 +36,7 @@ class LineStyle:
     SVG line style and its priority.
     """
 
-    style: dict[str, Union[int, float, str]]
+    style: Dict[str, Union[int, float, str]]
     priority: float = 0.0
 
 
@@ -54,7 +54,7 @@ class MatchingType(Enum):
 def is_matched_tag(
     matcher_tag_key: str,
     matcher_tag_value: Union[str, list],
-    tags: dict[str, str],
+    tags: Dict[str, str],
 ) -> MatchingType:
     """
     Check whether element tags contradict tag matcher.
@@ -90,7 +90,7 @@ def get_selector(key: str, value: str, prefix: str = "") -> str:
     return f'[{key}="{value}"]'
 
 
-def match_location(restrictions: dict[str, str], country: str) -> bool:
+def match_location(restrictions: Dict[str, str], country: str) -> bool:
     """Check whether country is matched by location restrictions."""
     if "exclude" in restrictions and country in restrictions["exclude"]:
         return False
@@ -109,11 +109,11 @@ class Matcher:
     """
 
     def __init__(
-        self, structure: dict[str, Any], group: Optional[dict[str, Any]] = None
+        self, structure: Dict[str, Any], group: Optional[Dict[str, Any]] = None
     ) -> None:
-        self.tags: dict[str, str] = structure["tags"]
+        self.tags: Dict[str, str] = structure["tags"]
 
-        self.exception: dict[str, str] = {}
+        self.exception: Dict[str, str] = {}
         if "exception" in structure:
             self.exception = structure["exception"]
 
@@ -125,7 +125,7 @@ class Matcher:
         if "replace_shapes" in structure:
             self.replace_shapes = structure["replace_shapes"]
 
-        self.location_restrictions: dict[str, str] = {}
+        self.location_restrictions: Dict[str, str] = {}
         if "location_restrictions" in structure:
             self.location_restrictions = structure["location_restrictions"]
 
@@ -137,7 +137,7 @@ class Matcher:
 
     def is_matched(
         self,
-        tags: dict[str, str],
+        tags: Dict[str, str],
         configuration: Optional[MapConfiguration] = None,
     ) -> bool:
         """
@@ -186,11 +186,11 @@ class Matcher:
             [get_selector(x, y, prefix) for (x, y) in self.tags.items()]
         )
 
-    def get_clean_shapes(self) -> Optional[list[str]]:
+    def get_clean_shapes(self) -> Optional[List[str]]:
         """Get list of shape identifiers for shapes."""
         return None
 
-    def get_style(self) -> dict[str, Any]:
+    def get_style(self) -> Dict[str, Any]:
         """Return way SVG style."""
         return {}
 
@@ -201,7 +201,7 @@ class NodeMatcher(Matcher):
     """
 
     def __init__(
-        self, structure: dict[str, Any], group: dict[str, Any]
+        self, structure: Dict[str, Any], group: Dict[str, Any]
     ) -> None:
         # Dictionary with tag keys and values, value lists, or "*"
         super().__init__(structure, group)
@@ -238,7 +238,7 @@ class NodeMatcher(Matcher):
         if "with_icon" in structure:
             self.with_icon = structure["with_icon"]
 
-    def get_clean_shapes(self) -> Optional[list[str]]:
+    def get_clean_shapes(self) -> Optional[List[str]]:
         """Get list of shape identifiers for shapes."""
         if not self.shapes:
             return None
@@ -250,11 +250,11 @@ class WayMatcher(Matcher):
     Special tag matcher for ways.
     """
 
-    def __init__(self, structure: dict[str, Any], scheme: "Scheme") -> None:
+    def __init__(self, structure: Dict[str, Any], scheme: "Scheme") -> None:
         super().__init__(structure)
-        self.style: dict[str, Any] = {"fill": "none"}
+        self.style: Dict[str, Any] = {"fill": "none"}
         if "style" in structure:
-            style: dict[str, Any] = structure["style"]
+            style: Dict[str, Any] = structure["style"]
             for key in style:
                 if str(style[key]).endswith("_color"):
                     self.style[key] = scheme.get_color(style[key]).hex.upper()
@@ -264,7 +264,7 @@ class WayMatcher(Matcher):
         if "priority" in structure:
             self.priority = structure["priority"]
 
-    def get_style(self) -> dict[str, Any]:
+    def get_style(self) -> Dict[str, Any]:
         """Return way SVG style."""
         return self.style
 
@@ -274,7 +274,7 @@ class RoadMatcher(Matcher):
     Special tag matcher for highways.
     """
 
-    def __init__(self, structure: dict[str, Any], scheme: "Scheme") -> None:
+    def __init__(self, structure: Dict[str, Any], scheme: "Scheme") -> None:
         super().__init__(structure)
         self.border_color: Color = Color(
             scheme.get_color(structure["border_color"])
@@ -287,7 +287,7 @@ class RoadMatcher(Matcher):
         if "priority" in structure:
             self.priority = structure["priority"]
 
-    def get_priority(self, tags: dict[str, str]) -> float:
+    def get_priority(self, tags: Dict[str, str]) -> float:
         layer: float = 0
         if "layer" in tags:
             layer = float(tags.get("layer"))
@@ -307,33 +307,33 @@ class Scheme:
             specification
         """
         with file_name.open() as input_file:
-            content: dict[str, Any] = yaml.load(
+            content: Dict[str, Any] = yaml.load(
                 input_file.read(), Loader=yaml.FullLoader
             )
-        self.node_matchers: list[NodeMatcher] = []
+        self.node_matchers: List[NodeMatcher] = []
         for group in content["node_icons"]:
             for element in group["tags"]:
                 self.node_matchers.append(NodeMatcher(element, group))
 
-        self.colors: dict[str, str] = content["colors"]
-        self.material_colors: dict[str, str] = content["material_colors"]
+        self.colors: Dict[str, str] = content["colors"]
+        self.material_colors: Dict[str, str] = content["material_colors"]
 
-        self.way_matchers: list[WayMatcher] = [
+        self.way_matchers: List[WayMatcher] = [
             WayMatcher(x, self) for x in content["ways"]
         ]
-        self.road_matchers: list[RoadMatcher] = [
+        self.road_matchers: List[RoadMatcher] = [
             RoadMatcher(x, self) for x in content["roads"]
         ]
-        self.area_matchers: list[Matcher] = [
+        self.area_matchers: List[Matcher] = [
             Matcher(x) for x in content["area_tags"]
         ]
-        self.tags_to_write: list[str] = content["tags_to_write"]
-        self.prefix_to_write: list[str] = content["prefix_to_write"]
-        self.tags_to_skip: list[str] = content["tags_to_skip"]
-        self.prefix_to_skip: list[str] = content["prefix_to_skip"]
+        self.tags_to_write: List[str] = content["tags_to_write"]
+        self.prefix_to_write: List[str] = content["prefix_to_write"]
+        self.tags_to_skip: List[str] = content["tags_to_skip"]
+        self.prefix_to_skip: List[str] = content["prefix_to_skip"]
 
         # Storage for created icon sets.
-        self.cache: dict[str, tuple[IconSet, int]] = {}
+        self.cache: Dict[str, Tuple[IconSet, int]] = {}
 
     def get_color(self, color: str) -> Color:
         """
@@ -384,10 +384,10 @@ class Scheme:
     def get_icon(
         self,
         extractor: ShapeExtractor,
-        tags: dict[str, Any],
-        processed: set[str],
+        tags: Dict[str, Any],
+        processed: Set[str],
         configuration: MapConfiguration = MapConfiguration(),
-    ) -> tuple[Optional[IconSet], int]:
+    ) -> Tuple[Optional[IconSet], int]:
         """
         Construct icon set.
 
@@ -404,7 +404,7 @@ class Scheme:
             return self.cache[tags_hash]
 
         main_icon: Optional[Icon] = None
-        extra_icons: list[Icon] = []
+        extra_icons: List[Icon] = []
         priority: int = 0
 
         index: int = 0
@@ -419,7 +419,7 @@ class Scheme:
                 and not matcher.check_zoom_level(configuration.zoom_level)
             ):
                 return None, 0
-            matcher_tags: set[str] = set(matcher.tags.keys())
+            matcher_tags: Set[str] = set(matcher.tags.keys())
             priority = len(self.node_matchers) - index
             if not matcher.draw:
                 processed |= matcher_tags
@@ -492,7 +492,7 @@ class Scheme:
 
         return returned, priority
 
-    def get_style(self, tags: dict[str, Any]) -> list[LineStyle]:
+    def get_style(self, tags: Dict[str, Any]) -> List[LineStyle]:
         """Get line style based on tags and scale."""
         line_styles = []
 
@@ -504,7 +504,7 @@ class Scheme:
 
         return line_styles
 
-    def get_road(self, tags: dict[str, Any]) -> Optional[RoadMatcher]:
+    def get_road(self, tags: Dict[str, Any]) -> Optional[RoadMatcher]:
         """Get road matcher if tags are matched."""
         for matcher in self.road_matchers:
             if not matcher.is_matched(tags):
@@ -513,10 +513,10 @@ class Scheme:
         return None
 
     def construct_text(
-        self, tags: dict[str, str], draw_captions: str, processed: set[str]
-    ) -> list[Label]:
+        self, tags: Dict[str, str], draw_captions: str, processed: Set[str]
+    ) -> List[Label]:
         """Construct labels for not processed tags."""
-        texts: list[Label] = []
+        texts: List[Label] = []
 
         name = None
         alt_name = None
@@ -542,7 +542,7 @@ class Scheme:
                 alt_name = ""
             alt_name += "ex " + tags["old_name"]
 
-        address: list[str] = get_address(tags, draw_captions, processed)
+        address: List[str] = get_address(tags, draw_captions, processed)
 
         if name:
             texts.append(Label(name, Color("black")))
@@ -587,7 +587,7 @@ class Scheme:
                 texts.append(Label(tags[tag]))
         return texts
 
-    def is_area(self, tags: dict[str, str]) -> bool:
+    def is_area(self, tags: Dict[str, str]) -> bool:
         """Check whether way described by tags is area."""
         for matcher in self.area_matchers:
             if matcher.is_matched(tags):
@@ -595,7 +595,7 @@ class Scheme:
         return False
 
     def process_ignored(
-        self, tags: dict[str, str], processed: set[str]
+        self, tags: Dict[str, str], processed: Set[str]
     ) -> None:
         """
         Mark all ignored tag as processed.
@@ -607,7 +607,7 @@ class Scheme:
 
     def get_shape_specification(
         self,
-        structure: Union[str, dict[str, Any]],
+        structure: Union[str, Dict[str, Any]],
         extractor: ShapeExtractor,
         color: Color = DEFAULT_COLOR,
     ) -> ShapeSpecification:

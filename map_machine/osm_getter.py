@@ -5,6 +5,7 @@ import logging
 import time
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Dict
 
 import urllib3
 
@@ -48,7 +49,7 @@ def get_osm(
     return content.decode("utf-8")
 
 
-def get_data(address: str, parameters: dict[str, str]) -> bytes:
+def get_data(address: str, parameters: Dict[str, str]) -> bytes:
     """
     Construct Internet page URL and get its descriptor.
 

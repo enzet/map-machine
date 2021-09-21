@@ -3,7 +3,7 @@ Drawing utility.
 """
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Union
+from typing import List, Optional, Union
 
 import cairo
 import numpy as np
@@ -18,7 +18,7 @@ from svgwrite.text import Text
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-PathCommands = list[Union[float, str, np.ndarray]]
+PathCommands = List[Union[float, str, np.ndarray]]
 
 
 @dataclass
@@ -75,7 +75,7 @@ class Drawing:
         """Draw rectangle."""
         raise NotImplementedError
 
-    def line(self, points: list[np.ndarray], style: Style) -> None:
+    def line(self, points: List[np.ndarray], style: Style) -> None:
         """Draw line."""
         raise NotImplementedError
 
@@ -117,7 +117,7 @@ class SVGDrawing(Drawing):
         style.update_svg_element(rectangle)
         self.image.add(rectangle)
 
-    def line(self, points: list[np.ndarray], style: Style) -> None:
+    def line(self, points: List[np.ndarray], style: Style) -> None:
         """Draw line."""
         commands: PathCommands = ["M"]
         for point in points:
@@ -169,7 +169,7 @@ class PNGDrawing(Drawing):
             self.context.rectangle(point_1[0], point_1[1], size[0], size[1])
             style.draw_png_stroke(self.context)
 
-    def line(self, points: list[np.ndarray], style: Style) -> None:
+    def line(self, points: List[np.ndarray], style: Style) -> None:
         """Draw line."""
         if style.fill is not None:
             self.context.move_to(float(points[0][0]), float(points[0][1]))
@@ -283,7 +283,7 @@ class PNGDrawing(Drawing):
 
 def parse_path(path: str) -> PathCommands:
     """Parse path command from text representation into list."""
-    parts: list[str] = path.split(" ")
+    parts: List[str] = path.split(" ")
     result: PathCommands = []
     command: str = "M"
     index: int = 0
@@ -296,7 +296,7 @@ def parse_path(path: str) -> PathCommands:
             result.append(float(part))
         else:
             if "," in part:
-                elements: list[str] = part.split(",")
+                elements: List[str] = part.split(",")
                 result.append(np.array(list(map(float, elements))))
             else:
                 result.append(np.array((float(part), float(parts[index + 1]))))

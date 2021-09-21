@@ -1,6 +1,8 @@
 """
 Vector utility.
 """
+from typing import List
+
 import numpy as np
 
 __author__ = "Sergey Vartanov"
@@ -45,12 +47,12 @@ class Polyline:
     List of connected points.
     """
 
-    def __init__(self, points: list[np.ndarray]) -> None:
-        self.points: list[np.ndarray] = points
+    def __init__(self, points: List[np.ndarray]) -> None:
+        self.points: List[np.ndarray] = points
 
     def get_path(self, parallel_offset: float = 0) -> str:
         """Construct SVG path commands."""
-        points: list[np.ndarray]
+        points: List[np.ndarray]
         try:
             points = (
                 LineString(self.points).parallel_offset(parallel_offset).coords

@@ -120,7 +120,7 @@ Every way and node displayed with the random color picked for each author with `
 Installation
 ------------
 
-Requirements: Python 3.9.
+Requirements: Python 3.8.
 
 To install all packages, run:
 

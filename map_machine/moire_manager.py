@@ -4,7 +4,7 @@ Moire markup extension for Map Machine.
 import argparse
 from abc import ABC
 from pathlib import Path
-from typing import Any, Union
+from typing import Any, Dict, List, Union
 
 from moire.default import Default, DefaultHTML, DefaultMarkdown, DefaultWiki
 from moire.moire import Tag
@@ -17,7 +17,7 @@ from map_machine.workspace import workspace
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-Arguments = list[Any]
+Arguments = List[Any]
 Code = Union[str, Tag, list]
 
 PREFIX: str = "https://wiki.openstreetmap.org/wiki/"
@@ -50,13 +50,13 @@ class ArgumentParser(argparse.ArgumentParser):
     """
 
     def __init__(self, *args, **kwargs) -> None:
-        self.arguments: list[dict[str, Any]] = []
+        self.arguments: List[Dict[str, Any]] = []
         super(ArgumentParser, self).__init__(*args, **kwargs)
 
     def add_argument(self, *args, **kwargs) -> None:
         """Just store argument with options."""
         super(ArgumentParser, self).add_argument(*args, **kwargs)
-        argument: dict[str, Any] = {"arguments": [x for x in args]}
+        argument: Dict[str, Any] = {"arguments": [x for x in args]}
 
         for key in kwargs:
             argument[key] = kwargs[key]

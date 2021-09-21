@@ -8,7 +8,7 @@ import logging
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional, Tuple
 
 import cairosvg
 import numpy as np
@@ -72,7 +72,7 @@ class Tile:
         lat_deg: np.ndarray = np.degrees(lat_rad)
         return np.array((lat_deg, lon_deg))
 
-    def get_boundary_box(self) -> tuple[np.ndarray, np.ndarray]:
+    def get_boundary_box(self) -> Tuple[np.ndarray, np.ndarray]:
         """
         Get geographical boundary box of the tile: north-west and south-east
         points.
@@ -191,11 +191,11 @@ class Tile:
             cairosvg.svg2png(file_obj=input_file, write_to=str(output_path))
         logging.info(f"SVG file is rasterized to {output_path}.")
 
-    def subdivide(self, zoom_level: int) -> list["Tile"]:
+    def subdivide(self, zoom_level: int) -> List["Tile"]:
         """Get subtiles of the tile."""
         assert zoom_level >= self.zoom_level
 
-        tiles: list["Tile"] = []
+        tiles: List["Tile"] = []
         n: int = 2 ** (zoom_level - self.zoom_level)
         for i in range(n):
             for j in range(n):
@@ -214,7 +214,7 @@ class Tiles:
     Collection of tiles.
     """
 
-    tiles: list[Tile]
+    tiles: List[Tile]
     tile_1: Tile  # Left top tile.
     tile_2: Tile  # Right bottom tile.
     zoom_level: int  # OpenStreetMap zoom level.
@@ -230,7 +230,7 @@ class Tiles:
         :param boundary_box: area to be covered by tiles
         :param zoom_level: zoom level in OpenStreetMap terminology
         """
-        tiles: list[Tile] = []
+        tiles: List[Tile] = []
         tile_1: Tile = Tile.from_coordinates(
             boundary_box.get_left_top(), zoom_level
         )
@@ -327,7 +327,7 @@ class Tiles:
             for tile in self.tiles:
                 x: int = tile.x - self.tile_1.x
                 y: int = tile.y - self.tile_1.y
-                area: tuple[int, int, int, int] = (
+                area: Tuple[int, int, int, int] = (
                     x * TILE_WIDTH,
                     y * TILE_HEIGHT,
                     (x + 1) * TILE_WIDTH,
@@ -413,7 +413,7 @@ class Tiles:
 
     def subdivide(self, zoom_level: int) -> "Tiles":
         """Get subtiles from tiles."""
-        tiles: list[Tile] = []
+        tiles: List[Tile] = []
         for tile in self.tiles:
             tiles += tile.subdivide(zoom_level)
         return Tiles(
@@ -429,9 +429,9 @@ class ScaleConfigurationException(Exception):
     """Wrong configuration format."""
 
 
-def parse_zoom_level(zoom_level_specification: str) -> list[int]:
+def parse_zoom_level(zoom_level_specification: str) -> List[int]:
     """Parse zoom level specification."""
-    parts: list[str]
+    parts: List[str]
     if "," in zoom_level_specification:
         parts = zoom_level_specification.split(",")
     else:
@@ -444,7 +444,7 @@ def parse_zoom_level(zoom_level_specification: str) -> list[int]:
             raise ScaleConfigurationException("Scale is too big.")
         return parsed_zoom_level
 
-    result: list[int] = []
+    result: List[int] = []
     for part in parts:
         if "-" in part:
             from_, to = part.split("-")
@@ -463,7 +463,7 @@ def ui(options: argparse.Namespace) -> None:
     """Simple user interface for tile generation."""
     directory: Path = workspace.get_tile_path()
 
-    zoom_levels: list[int] = parse_zoom_level(options.zoom)
+    zoom_levels: List[int] = parse_zoom_level(options.zoom)
     min_zoom_level: int = min(zoom_levels)
 
     if options.input_file_name:
@@ -478,7 +478,7 @@ def ui(options: argparse.Namespace) -> None:
             )
             tiles.draw(directory, Path(options.cache), configuration, osm_data)
     elif options.coordinates:
-        coordinates: list[float] = list(
+        coordinates: List[float] = list(
             map(float, options.coordinates.strip().split(","))
         )
         min_tile: Tile = Tile.from_coordinates(

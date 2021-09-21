@@ -1,7 +1,7 @@
 """
 Direction tag support.
 """
-from typing import Iterator, Optional
+from typing import Iterator, List, Optional
 
 import numpy as np
 from portolan import middle
@@ -65,7 +65,7 @@ class Sector:
         self.main_direction: Optional[np.ndarray] = None
 
         if "-" in text:
-            parts: list[str] = text.split("-")
+            parts: List[str] = text.split("-")
             self.start = parse_vector(parts[0])
             self.end = parse_vector(parts[1])
             self.main_direction = (self.start + self.end) / 2
@@ -152,7 +152,7 @@ class DirectionSet:
         :return: true if direction is right, false if direction is left, and
             None otherwise.
         """
-        result: list[bool] = [x.is_right() for x in self.sectors]
+        result: List[bool] = [x.is_right() for x in self.sectors]
         if result == [True] * len(result):
             return True
         if result == [False] * len(result):

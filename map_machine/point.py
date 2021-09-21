@@ -1,7 +1,7 @@
 """
 Point: node representation on the map.
 """
-from typing import Optional
+from typing import Dict, List, Optional, Set
 
 import numpy as np
 import svgwrite
@@ -53,9 +53,9 @@ class Point(Tagged):
     def __init__(
         self,
         icon_set: IconSet,
-        labels: list[Label],
-        tags: dict[str, str],
-        processed: set[str],
+        labels: List[Label],
+        tags: Dict[str, str],
+        processed: Set[str],
         point: np.ndarray,
         priority: float = 0,
         is_for_node: bool = True,
@@ -67,8 +67,8 @@ class Point(Tagged):
         assert point is not None
 
         self.icon_set: IconSet = icon_set
-        self.labels: list[Label] = labels
-        self.processed: set[str] = processed
+        self.labels: List[Label] = labels
+        self.processed: Set[str] = processed
         self.point: np.ndarray = point
         self.priority: float = priority
         self.layer: float = 0
@@ -92,7 +92,7 @@ class Point(Tagged):
             return
 
         position: np.ndarray = self.point + np.array((0, self.y))
-        tags: Optional[dict[str, str]] = (
+        tags: Optional[Dict[str, str]] = (
             self.tags if self.add_tooltips else None
         )
         self.main_icon_painted: bool = self.draw_point_shape(
@@ -135,7 +135,7 @@ class Point(Tagged):
         icon: Icon,
         position: np.ndarray,
         occupied: Occupied,
-        tags: Optional[dict[str, str]] = None,
+        tags: Optional[Dict[str, str]] = None,
     ) -> bool:
         """Draw one combined icon and its outline."""
         # Down-cast floats to integers to make icons pixel-perfect.
@@ -166,7 +166,7 @@ class Point(Tagged):
         label_mode: str = LabelMode.MAIN,
     ) -> None:
         """Draw all labels."""
-        labels: list[Label]
+        labels: List[Label]
 
         if label_mode == LabelMode.MAIN:
             labels = self.labels[:1]

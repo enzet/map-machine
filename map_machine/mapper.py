@@ -4,7 +4,7 @@ Simple OpenStreetMap renderer.
 import argparse
 import logging
 from pathlib import Path
-from typing import Iterator, Optional
+from typing import Dict, Iterator, List, Optional, Set
 
 import numpy as np
 import svgwrite
@@ -57,7 +57,7 @@ class Map:
         self.svg.add(
             Rect((0, 0), self.flinger.size, fill=self.background_color)
         )
-        ways: list[StyledFigure] = sorted(
+        ways: List[StyledFigure] = sorted(
             constructor.figures, key=lambda x: x.line_style.priority
         )
         ways_length: int = len(ways)
@@ -94,7 +94,7 @@ class Map:
                 self.configuration.overlap,
             )
 
-        nodes: list[Point] = sorted(
+        nodes: List[Point] = sorted(
             constructor.points, key=lambda x: -x.priority
         )
         steps: int = len(nodes)
@@ -156,7 +156,7 @@ class Map:
 
     def draw_roads(self, roads: Iterator[Road]) -> None:
         """Draw road as simple SVG path."""
-        nodes: dict[OSMNode, set[RoadPart]] = {}
+        nodes: Dict[OSMNode, Set[RoadPart]] = {}
 
         for road in roads:
             for index in range(len(road.outers[0]) - 1):
@@ -177,7 +177,7 @@ class Map:
                 nodes[node_2].add(part_2)
 
         for node in nodes:
-            parts: set[RoadPart] = nodes[node]
+            parts: Set[RoadPart] = nodes[node]
             if len(parts) < 4:
                 continue
             intersection: Intersection = Intersection(list(parts))
@@ -197,7 +197,7 @@ def ui(arguments: argparse.Namespace) -> None:
     cache_path.mkdir(parents=True, exist_ok=True)
 
     boundary_box: Optional[BoundaryBox] = None
-    input_file_names: list[Path] = []
+    input_file_names: List[Path] = []
 
     if arguments.input_file_names:
         input_file_names = list(map(Path, arguments.input_file_names))

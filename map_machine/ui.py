@@ -3,6 +3,7 @@ Command-line user interface.
 """
 import argparse
 import sys
+from typing import Dict, List
 
 from map_machine import __version__
 from map_machine.map_configuration import BuildingMode, DrawingMode, LabelMode
@@ -14,7 +15,7 @@ __email__ = "me@enzet.ru"
 BOXES: str = " ▏▎▍▌▋▊▉"
 BOXES_LENGTH: int = len(BOXES)
 
-COMMANDS: dict[str, list[str]] = {
+COMMANDS: Dict[str, List[str]] = {
     "render": ["render", "-b", "10.000,20.000,10.001,20.001"],
     "render_with_tooltips": [
         "render",
@@ -29,7 +30,7 @@ COMMANDS: dict[str, list[str]] = {
 }
 
 
-def parse_arguments(args: list[str]) -> argparse.Namespace:
+def parse_arguments(args: List[str]) -> argparse.Namespace:
     """Parse Map Machine command-line arguments."""
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description="Map Machine. OpenStreetMap renderer with custom icon set"
@@ -117,8 +118,14 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--show-tooltips",
         help="add tooltips with tags for icons in SVG files",
-        action=argparse.BooleanOptionalAction,
+        action="store_true",
         default=False,
+    )
+    parser.add_argument(
+        "--no-show-tooltips",
+        dest="show_tooltips",
+        help="don't add tooltips with tags for icons in SVG files",
+        action="store_false",
     )
     parser.add_argument(
         "--country",
@@ -256,23 +263,41 @@ def add_mapcss_arguments(parser: argparse.ArgumentParser) -> None:
     """Add arguments for mapcss command."""
     parser.add_argument(
         "--icons",
-        action=argparse.BooleanOptionalAction,
+        action="store_true",
         default=True,
         help="add icons for nodes and areas",
     )
     parser.add_argument(
+        "--no-icons",
+        dest="icons",
+        action="store_false",
+        help="don't add icons for nodes and areas",
+    )
+    parser.add_argument(
         "--ways",
-        action=argparse.BooleanOptionalAction,
+        action="store_true",
         default=False,
         help="add style for ways and relations",
     )
     parser.add_argument(
+        "--no-ways",
+        dest="ways",
+        action="store_false",
+        help="don't add style for ways and relations",
+    )
+    parser.add_argument(
         "--lifecycle",
-        action=argparse.BooleanOptionalAction,
+        action="store_true",
         default=True,
         help="add icons for lifecycle tags; be careful: this will increase the "
         f"number of node and area selectors by {len(STAGES_OF_DECAY) + 1} "
         f"times",
+    )
+    parser.add_argument(
+        "--no-lifecycle",
+        dest="lifecycle",
+        action="store_false",
+        help="don't add icons for lifecycle tags",
     )
 
 

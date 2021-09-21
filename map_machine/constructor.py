@@ -4,7 +4,7 @@ Construct Map Machine nodes and ways.
 import logging
 from datetime import datetime
 from hashlib import sha256
-from typing import Any, Iterator, Optional, Union
+from typing import Any, Dict, Iterator, List, Optional, Set, Tuple, Union
 
 import numpy as np
 from colour import Color
@@ -46,7 +46,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 DEBUG: bool = False
-TIME_COLOR_SCALE: list[Color] = [
+TIME_COLOR_SCALE: List[Color] = [
     Color("#581845"),
     Color("#900C3F"),
     Color("#C70039"),
@@ -57,7 +57,7 @@ TIME_COLOR_SCALE: list[Color] = [
 
 
 def line_center(
-    nodes: list[OSMNode], flinger: Flinger
+    nodes: List[OSMNode], flinger: Flinger
 ) -> (np.ndarray, np.ndarray):
     """
     Get geometric center of nodes set.
@@ -65,7 +65,7 @@ def line_center(
     :param nodes: node list
     :param flinger: flinger that remap geo positions
     """
-    boundary: list[MinMax] = [MinMax(), MinMax()]
+    boundary: List[MinMax] = [MinMax(), MinMax()]
 
     for node in nodes:
         boundary[0].update(node.coordinates[0])
@@ -95,14 +95,14 @@ def get_time_color(time: Optional[datetime], boundaries: MinMax) -> Color:
     return get_gradient_color(time, boundaries, TIME_COLOR_SCALE)
 
 
-def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
+def glue(ways: List[OSMWay]) -> List[List[OSMNode]]:
     """
     Try to glue ways that share nodes.
 
     :param ways: ways to glue
     """
-    result: list[list[OSMNode]] = []
-    to_process: set[tuple[OSMNode]] = set()
+    result: List[List[OSMNode]] = []
+    to_process: Set[Tuple[OSMNode]] = set()
 
     for way in ways:
         if way.is_cycle():
@@ -111,9 +111,9 @@ def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
             to_process.add(tuple(way.nodes))
 
     while to_process:
-        nodes: list[OSMNode] = list(to_process.pop())
-        glued: Optional[list[OSMNode]] = None
-        other_nodes: Optional[tuple[OSMNode]] = None
+        nodes: List[OSMNode] = list(to_process.pop())
+        glued: Optional[List[OSMNode]] = None
+        other_nodes: Optional[Tuple[OSMNode]] = None
 
         for other_nodes in to_process:
             glued = try_to_glue(nodes, list(other_nodes))
@@ -132,14 +132,14 @@ def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
     return result
 
 
-def is_cycle(nodes: list[OSMNode]) -> bool:
+def is_cycle(nodes: List[OSMNode]) -> bool:
     """Is way a cycle way or an area boundary."""
     return nodes[0] == nodes[-1]
 
 
 def try_to_glue(
-    nodes: list[OSMNode], other: list[OSMNode]
-) -> Optional[list[OSMNode]]:
+    nodes: List[OSMNode], other: List[OSMNode]
+) -> Optional[List[OSMNode]]:
     """Create new combined way if ways share endpoints."""
     if nodes[0] == other[0]:
         return list(reversed(other[1:])) + nodes
@@ -182,15 +182,15 @@ class Constructor:
                 x, float(self.configuration.level)
             )
 
-        self.points: list[Point] = []
-        self.figures: list[StyledFigure] = []
-        self.buildings: list[Building] = []
+        self.points: List[Point] = []
+        self.figures: List[StyledFigure] = []
+        self.buildings: List[Building] = []
         self.roads: Roads = Roads()
-        self.trees: list[Tree] = []
-        self.craters: list[Crater] = []
-        self.direction_sectors: list[DirectionSector] = []
+        self.trees: List[Tree] = []
+        self.craters: List[Crater] = []
+        self.direction_sectors: List[DirectionSector] = []
 
-        self.heights: set[float] = {2, 4}
+        self.heights: Set[float] = {2, 4}
 
     def add_building(self, building: Building) -> None:
         """Add building and update levels."""
@@ -221,8 +221,8 @@ class Constructor:
     def construct_line(
         self,
         line: Union[OSMWay, OSMRelation],
-        inners: list[list[OSMNode]],
-        outers: list[list[OSMNode]],
+        inners: List[List[OSMNode]],
+        outers: List[List[OSMNode]],
     ) -> None:
         """
         Way or relation construction.
@@ -265,7 +265,7 @@ class Constructor:
             )
             return
 
-        processed: set[str] = set()
+        processed: Set[str] = set()
 
         recolor: Optional[Color] = None
 
@@ -275,11 +275,11 @@ class Constructor:
                     recolor = self.scheme.get_color(line.tags[color_tag_key])
                     processed.add(color_tag_key)
 
-        line_styles: list[LineStyle] = self.scheme.get_style(line.tags)
+        line_styles: List[LineStyle] = self.scheme.get_style(line.tags)
 
         for line_style in line_styles:
             if recolor is not None:
-                new_style: dict[str, Union[float, int, str]] = dict(
+                new_style: Dict[str, Union[float, int, str]] = dict(
                     line_style.style
                 )
                 new_style["stroke"] = recolor.hex
@@ -302,7 +302,7 @@ class Constructor:
                 self.extractor, line.tags, processed, self.configuration
             )
             if icon_set is not None:
-                labels: list[Label] = self.scheme.construct_text(
+                labels: List[Label] = self.scheme.construct_text(
                     line.tags, "all", processed
                 )
                 point: Point = Point(
@@ -319,7 +319,7 @@ class Constructor:
 
         if not line_styles:
             if DEBUG:
-                style: dict[str, Any] = {
+                style: Dict[str, Any] = {
                     "fill": "none",
                     "stroke": Color("red").hex,
                     "stroke-width": 1,
@@ -329,7 +329,7 @@ class Constructor:
                 )
                 self.figures.append(figure)
 
-            processed: set[str] = set()
+            processed: Set[str] = set()
 
             priority: int
             icon_set: IconSet
@@ -340,7 +340,7 @@ class Constructor:
                 self.configuration,
             )
             if icon_set is not None:
-                labels: list[Label] = self.scheme.construct_text(
+                labels: List[Label] = self.scheme.construct_text(
                     line.tags, "all", processed
                 )
                 point: Point = Point(
@@ -358,12 +358,12 @@ class Constructor:
     def draw_special_mode(
         self,
         line: Union[OSMWay, OSMRelation],
-        inners: list[list[OSMNode]],
-        outers: list[list[OSMNode]],
+        inners: List[List[OSMNode]],
+        outers: List[List[OSMNode]],
         color: Color,
     ) -> None:
         """Add figure for special mode: time or author."""
-        style: dict[str, Any] = {
+        style: Dict[str, Any] = {
             "fill": "none",
             "stroke": color.hex,
             "stroke-width": 1,
@@ -376,13 +376,13 @@ class Constructor:
         """Construct Map Machine ways from OSM relations."""
         for relation_id in self.osm_data.relations:
             relation: OSMRelation = self.osm_data.relations[relation_id]
-            tags: dict[str, str] = relation.tags
+            tags: Dict[str, str] = relation.tags
             if not self.check_level(tags):
                 continue
             if "type" not in tags or tags["type"] != "multipolygon":
                 continue
-            inner_ways: list[OSMWay] = []
-            outer_ways: list[OSMWay] = []
+            inner_ways: List[OSMWay] = []
+            outer_ways: List[OSMWay] = []
             for member in relation.members:
                 if member.type_ == "way":
                     if member.role == "inner":
@@ -394,8 +394,8 @@ class Constructor:
                     else:
                         logging.warning(f'Unknown member role "{member.role}".')
             if outer_ways:
-                inners_path: list[list[OSMNode]] = glue(inner_ways)
-                outers_path: list[list[OSMNode]] = glue(outer_ways)
+                inners_path: List[List[OSMNode]] = glue(inner_ways)
+                outers_path: List[List[OSMNode]] = glue(outer_ways)
                 self.construct_line(relation, inners_path, outers_path)
 
     def construct_nodes(self) -> None:
@@ -414,11 +414,11 @@ class Constructor:
 
     def construct_node(self, node: OSMNode) -> None:
         """Draw one node."""
-        tags: dict[str, str] = node.tags
+        tags: Dict[str, str] = node.tags
         if not self.check_level(tags):
             return
 
-        processed: set[str] = set()
+        processed: Set[str] = set()
 
         flung: np.ndarray = self.flinger.fling(node.coordinates)
 
@@ -455,7 +455,7 @@ class Constructor:
         )
         if icon_set is None:
             return
-        labels: list[Label] = self.scheme.construct_text(tags, "all", processed)
+        labels: List[Label] = self.scheme.construct_text(tags, "all", processed)
         self.scheme.process_ignored(tags, processed)
 
         if node.get_tag("natural") == "tree" and (
@@ -483,7 +483,7 @@ class Constructor:
         self.points.append(point)
 
 
-def check_level_number(tags: dict[str, Any], level: float) -> bool:
+def check_level_number(tags: Dict[str, Any], level: float) -> bool:
     """Check if element described by tags is no the specified level."""
     if "level" in tags:
         if level not in parse_levels(tags["level"]):
@@ -493,7 +493,7 @@ def check_level_number(tags: dict[str, Any], level: float) -> bool:
     return True
 
 
-def check_level_overground(tags: dict[str, Any]) -> bool:
+def check_level_overground(tags: Dict[str, Any]) -> bool:
     """Check if element described by tags is overground."""
     if "level" in tags:
         try:

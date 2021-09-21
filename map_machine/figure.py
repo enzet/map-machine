@@ -1,7 +1,7 @@
 """
 Figures displayed on the map.
 """
-from typing import Any, Iterator, Optional
+from typing import Any, Dict, Iterator, List, Optional
 
 import numpy as np
 from colour import Color
@@ -31,14 +31,14 @@ class Figure(Tagged):
 
     def __init__(
         self,
-        tags: dict[str, str],
-        inners: list[list[OSMNode]],
-        outers: list[list[OSMNode]],
+        tags: Dict[str, str],
+        inners: List[List[OSMNode]],
+        outers: List[List[OSMNode]],
     ) -> None:
         super().__init__(tags)
 
-        self.inners: list[list[OSMNode]] = list(map(make_clockwise, inners))
-        self.outers: list[list[OSMNode]] = list(
+        self.inners: List[List[OSMNode]] = list(map(make_clockwise, inners))
+        self.outers: List[List[OSMNode]] = list(
             map(make_counter_clockwise, outers)
         )
 
@@ -69,20 +69,20 @@ class Building(Figure):
 
     def __init__(
         self,
-        tags: dict[str, str],
-        inners: list[list[OSMNode]],
-        outers: list[list[OSMNode]],
+        tags: Dict[str, str],
+        inners: List[List[OSMNode]],
+        outers: List[List[OSMNode]],
         flinger: Flinger,
         scheme: Scheme,
     ) -> None:
         super().__init__(tags, inners, outers)
 
-        style: dict[str, Any] = {
+        style: Dict[str, Any] = {
             "fill": scheme.get_color("building_color").hex,
             "stroke": scheme.get_color("building_border_color").hex,
         }
         self.line_style: LineStyle = LineStyle(style)
-        self.parts: list[Segment] = []
+        self.parts: List[Segment] = []
 
         for nodes in self.inners + self.outers:
             for i in range(len(nodes) - 1):
@@ -198,9 +198,9 @@ class StyledFigure(Figure):
 
     def __init__(
         self,
-        tags: dict[str, str],
-        inners: list[list[OSMNode]],
-        outers: list[list[OSMNode]],
+        tags: Dict[str, str],
+        inners: List[List[OSMNode]],
+        outers: List[List[OSMNode]],
         line_style: LineStyle,
     ) -> None:
         super().__init__(tags, inners, outers)
@@ -213,7 +213,7 @@ class Crater(Tagged):
     """
 
     def __init__(
-        self, tags: dict[str, str], coordinates: np.ndarray, point: np.ndarray
+        self, tags: Dict[str, str], coordinates: np.ndarray, point: np.ndarray
     ) -> None:
         super().__init__(tags)
         self.coordinates: np.ndarray = coordinates
@@ -252,7 +252,7 @@ class Tree(Tagged):
     """
 
     def __init__(
-        self, tags: dict[str, str], coordinates: np.ndarray, point: np.ndarray
+        self, tags: Dict[str, str], coordinates: np.ndarray, point: np.ndarray
     ) -> None:
         super().__init__(tags)
         self.coordinates: np.ndarray = coordinates
@@ -279,7 +279,7 @@ class DirectionSector(Tagged):
     Sector that represents direction.
     """
 
-    def __init__(self, tags: dict[str, str], point: np.ndarray) -> None:
+    def __init__(self, tags: Dict[str, str], point: np.ndarray) -> None:
         super().__init__(tags)
         self.point: np.ndarray = point
 
@@ -366,7 +366,7 @@ class Segment:
         )  # fmt: skip
 
 
-def is_clockwise(polygon: list[OSMNode]) -> bool:
+def is_clockwise(polygon: List[OSMNode]) -> bool:
     """
     Return true if polygon nodes are in clockwise order.
 
@@ -381,7 +381,7 @@ def is_clockwise(polygon: list[OSMNode]) -> bool:
     return count >= 0
 
 
-def make_clockwise(polygon: list[OSMNode]) -> list[OSMNode]:
+def make_clockwise(polygon: List[OSMNode]) -> List[OSMNode]:
     """
     Make polygon nodes clockwise.
 
@@ -390,7 +390,7 @@ def make_clockwise(polygon: list[OSMNode]) -> list[OSMNode]:
     return polygon if is_clockwise(polygon) else list(reversed(polygon))
 
 
-def make_counter_clockwise(polygon: list[OSMNode]) -> list[OSMNode]:
+def make_counter_clockwise(polygon: List[OSMNode]) -> List[OSMNode]:
     """
     Make polygon nodes counter-clockwise.
 
@@ -399,7 +399,7 @@ def make_counter_clockwise(polygon: list[OSMNode]) -> list[OSMNode]:
     return polygon if not is_clockwise(polygon) else list(reversed(polygon))
 
 
-def get_path(nodes: list[OSMNode], shift: np.ndarray, flinger: Flinger) -> str:
+def get_path(nodes: List[OSMNode], shift: np.ndarray, flinger: Flinger) -> str:
     """Construct SVG path commands from nodes."""
     return Polyline(
         [flinger.fling(x.coordinates) + shift for x in nodes]

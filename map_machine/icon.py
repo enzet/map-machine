@@ -6,7 +6,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Dict, List, Optional, Set
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
@@ -47,13 +47,13 @@ class Shape:
     id_: str  # shape identifier
     name: Optional[str] = None  # icon description
     is_right_directed: Optional[bool] = None
-    emojis: set[str] = field(default_factory=set)
+    emojis: Set[str] = field(default_factory=set)
     is_part: bool = False
 
     @classmethod
     def from_structure(
         cls,
-        structure: dict[str, Any],
+        structure: Dict[str, Any],
         path: str,
         offset: np.ndarray,
         id_: str,
@@ -105,7 +105,7 @@ class Shape:
         :param offset: additional offset
         :param scale: scale resulting image
         """
-        transformations: list[str] = []
+        transformations: List[str] = []
         shift: np.ndarray = point + offset
 
         transformations.append(f"translate({shift[0]},{shift[1]})")
@@ -138,7 +138,7 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
     if "style" not in element.attrib or not element.attrib["style"]:
         return True
 
-    style: dict[str, str] = dict(
+    style: Dict[str, str] = dict(
         [x.split(":") for x in element.attrib["style"].split(";")]
     )
     if (
@@ -180,8 +180,8 @@ class ShapeExtractor:
         :param svg_file_name: input SVG file name with icons.  File may contain
             any other irrelevant graphics.
         """
-        self.shapes: dict[str, Shape] = {}
-        self.configuration: dict[str, Any] = json.load(
+        self.shapes: Dict[str, Shape] = {}
+        self.configuration: Dict[str, Any] = json.load(
             configuration_file_name.open()
         )
         root: Element = ElementTree.parse(svg_file_name).getroot()
@@ -229,7 +229,7 @@ class ShapeExtractor:
                     name = child_node.text
                     break
 
-            configuration: dict[str, Any] = (
+            configuration: Dict[str, Any] = (
                 self.configuration[id_] if id_ in self.configuration else {}
             )
             self.shapes[id_] = Shape.from_structure(
@@ -271,7 +271,7 @@ class ShapeSpecification:
         self,
         svg: BaseElement,
         point: np.ndarray,
-        tags: dict[str, Any] = None,
+        tags: Dict[str, Any] = None,
         outline: bool = False,
         outline_opacity: float = 1.0,
     ) -> None:
@@ -299,7 +299,7 @@ class ShapeSpecification:
             bright: bool = is_bright(self.color)
             color: Color = Color("black") if bright else Color("white")
 
-            style: dict[str, Any] = {
+            style: Dict[str, Any] = {
                 "fill": color.hex,
                 "stroke": color.hex,
                 "stroke-width": 2.2,
@@ -330,14 +330,14 @@ class Icon:
     Icon that consists of (probably) multiple shapes.
     """
 
-    shape_specifications: list[ShapeSpecification]
+    shape_specifications: List[ShapeSpecification]
     opacity: float = 1.0
 
-    def get_shape_ids(self) -> list[str]:
+    def get_shape_ids(self) -> List[str]:
         """Get all shape identifiers in the icon."""
         return [x.shape.id_ for x in self.shape_specifications]
 
-    def get_names(self) -> list[str]:
+    def get_names(self) -> List[str]:
         """Get all shape names in the icon."""
         return [
             (x.shape.name if x.shape.name else "unknown")
@@ -348,7 +348,7 @@ class Icon:
         self,
         svg: svgwrite.Drawing,
         point: np.ndarray,
-        tags: dict[str, Any] = None,
+        tags: Dict[str, Any] = None,
         outline: bool = False,
     ) -> None:
         """
@@ -420,7 +420,7 @@ class Icon:
                 shape_specification.color = color
 
     def add_specifications(
-        self, specifications: list[ShapeSpecification]
+        self, specifications: List[ShapeSpecification]
     ) -> None:
         """Add shape specifications to the icon."""
         self.shape_specifications += specifications
@@ -443,8 +443,8 @@ class IconSet:
     """
 
     main_icon: Icon
-    extra_icons: list[Icon]
+    extra_icons: List[Icon]
 
     # Tag keys that were processed to create icon set (other tag keys should be
     # displayed by text or ignored)
-    processed: set[str]
+    processed: Set[str]

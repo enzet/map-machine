@@ -5,7 +5,7 @@ import argparse
 import logging
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional, Tuple
 
 import cairosvg
 
@@ -28,14 +28,14 @@ class _Handler(SimpleHTTPRequestHandler):
     def __init__(
         self,
         request: bytes,
-        client_address: tuple[str, int],
+        client_address: Tuple[str, int],
         server: HTTPServer,
     ) -> None:
         super().__init__(request, client_address, server)
 
     def do_GET(self) -> None:
         """Serve a GET request."""
-        parts: list[str] = self.path.split("/")
+        parts: List[str] = self.path.split("/")
         if not (len(parts) == 5 and not parts[0] and parts[1] == "tiles"):
             return
 

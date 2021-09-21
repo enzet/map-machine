@@ -7,7 +7,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Dict, List, Optional, Set
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
@@ -27,7 +27,7 @@ MILES_PATTERN: re.Pattern = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*mi$")
 
 
 # See https://wiki.openstreetmap.org/wiki/Lifecycle_prefix#Stages_of_decay
-STAGES_OF_DECAY: list[str] = [
+STAGES_OF_DECAY: List[str] = [
     "disused",
     "abandoned",
     "ruins",
@@ -47,7 +47,7 @@ def parse_float(string: str) -> Optional[float]:
         return None
 
 
-def parse_levels(string: str) -> list[float]:
+def parse_levels(string: str) -> List[float]:
     """Parse string representation of level sequence value."""
     # TODO: add `-` parsing
     try:
@@ -63,7 +63,7 @@ class Tagged:
     Something with tags (string to string mapping).
     """
 
-    tags: dict[str, str]
+    tags: Dict[str, str]
 
     def get_tag(self, key: str) -> Optional[str]:
         """
@@ -127,7 +127,7 @@ class OSMNode(Tagged):
     def from_xml_structure(cls, element: Element) -> "OSMNode":
         """Parse node from OSM XML `<node>` element."""
         attributes = element.attrib
-        tags: dict[str, str] = dict(
+        tags: Dict[str, str] = dict(
             [(x.attrib["k"], x.attrib["v"]) for x in element if x.tag == "tag"]
         )
         return cls(
@@ -144,7 +144,7 @@ class OSMNode(Tagged):
         )
 
     @classmethod
-    def parse_from_structure(cls, structure: dict[str, Any]) -> "OSMNode":
+    def parse_from_structure(cls, structure: Dict[str, Any]) -> "OSMNode":
         """
         Parse node from Overpass-like structure.
 
@@ -169,7 +169,7 @@ class OSMWay(Tagged):
     """
 
     id_: int
-    nodes: Optional[list[OSMNode]] = field(default_factory=list)
+    nodes: Optional[List[OSMNode]] = field(default_factory=list)
     visible: Optional[str] = None
     changeset: Optional[str] = None
     timestamp: Optional[datetime] = None
@@ -178,11 +178,11 @@ class OSMWay(Tagged):
 
     @classmethod
     def from_xml_structure(
-        cls, element: Element, nodes: dict[int, OSMNode]
+        cls, element: Element, nodes: Dict[int, OSMNode]
     ) -> "OSMWay":
         """Parse way from OSM XML `<way>` element."""
         attributes = element.attrib
-        tags: dict[str, str] = dict(
+        tags: Dict[str, str] = dict(
             [(x.attrib["k"], x.attrib["v"]) for x in element if x.tag == "tag"]
         )
         return cls(
@@ -200,7 +200,7 @@ class OSMWay(Tagged):
 
     @classmethod
     def parse_from_structure(
-        cls, structure: dict[str, Any], nodes: dict[int, OSMNode]
+        cls, structure: Dict[str, Any], nodes: Dict[int, OSMNode]
     ) -> "OSMWay":
         """
         Parse way from Overpass-like structure.
@@ -242,7 +242,7 @@ class OSMRelation(Tagged):
     """
 
     id_: int
-    members: Optional[list[OSMMember]]
+    members: Optional[List[OSMMember]]
     visible: Optional[str] = None
     changeset: Optional[str] = None
     timestamp: Optional[datetime] = None
@@ -253,8 +253,8 @@ class OSMRelation(Tagged):
     def from_xml_structure(cls, element: Element) -> "OSMRelation":
         """Parse relation from OSM XML `<relation>` element."""
         attributes = element.attrib
-        members: list[OSMMember] = []
-        tags: dict[str, str] = {}
+        members: List[OSMMember] = []
+        tags: Dict[str, str] = {}
         for subelement in element:
             if subelement.tag == "member":
                 subattributes = subelement.attrib
@@ -281,7 +281,7 @@ class OSMRelation(Tagged):
         )
 
     @classmethod
-    def parse_from_structure(cls, structure: dict[str, Any]) -> "OSMRelation":
+    def parse_from_structure(cls, structure: Dict[str, Any]) -> "OSMRelation":
         """
         Parse relation from Overpass-like structure.
 
@@ -311,12 +311,12 @@ class OSMData:
     """
 
     def __init__(self) -> None:
-        self.nodes: dict[int, OSMNode] = {}
-        self.ways: dict[int, OSMWay] = {}
-        self.relations: dict[int, OSMRelation] = {}
+        self.nodes: Dict[int, OSMNode] = {}
+        self.ways: Dict[int, OSMWay] = {}
+        self.relations: Dict[int, OSMRelation] = {}
 
-        self.authors: set[str] = set()
-        self.levels: set[float] = set()
+        self.authors: Set[str] = set()
+        self.levels: Set[float] = set()
         self.time: MinMax = MinMax()
         self.view_box: Optional[BoundaryBox] = None
         self.equator_length: float = 40_075_017.0
@@ -364,8 +364,8 @@ class OSMData:
         with file_name.open() as input_file:
             structure = json.load(input_file)
 
-        node_map: dict[int, OSMNode] = {}
-        way_map: dict[int, OSMWay] = {}
+        node_map: Dict[int, OSMNode] = {}
+        way_map: Dict[int, OSMWay] = {}
 
         for element in structure["elements"]:
             if element["type"] == "node":

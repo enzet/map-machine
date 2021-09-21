@@ -2,7 +2,7 @@
 WIP: road shape drawing.
 """
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 import svgwrite
@@ -62,7 +62,7 @@ class RoadPart:
         self,
         point_1: np.ndarray,
         point_2: np.ndarray,
-        lanes: list[Lane],
+        lanes: List[Lane],
         scale: float,
     ) -> None:
         """
@@ -72,7 +72,7 @@ class RoadPart:
         """
         self.point_1: np.ndarray = point_1
         self.point_2: np.ndarray = point_2
-        self.lanes: list[Lane] = lanes
+        self.lanes: List[Lane] = lanes
         if lanes:
             self.width = sum(map(lambda x: x.get_width(scale), lanes))
         else:
@@ -284,8 +284,8 @@ class Intersection:
     points of the road parts should be the same.
     """
 
-    def __init__(self, parts: list[RoadPart]) -> None:
-        self.parts: list[RoadPart] = sorted(parts, key=lambda x: x.get_angle())
+    def __init__(self, parts: List[RoadPart]) -> None:
+        self.parts: List[RoadPart] = sorted(parts, key=lambda x: x.get_angle())
 
         for index in range(len(self.parts)):
             next_index: int = 0 if index == len(self.parts) - 1 else index + 1
@@ -368,20 +368,20 @@ class Road(Tagged):
 
     def __init__(
         self,
-        tags: dict[str, str],
-        nodes: list[OSMNode],
+        tags: Dict[str, str],
+        nodes: List[OSMNode],
         matcher: RoadMatcher,
         flinger: Flinger,
     ) -> None:
         super().__init__(tags)
-        self.nodes: list[OSMNode] = nodes
+        self.nodes: List[OSMNode] = nodes
         self.matcher: RoadMatcher = matcher
 
         self.line: Polyline = Polyline(
             [flinger.fling(x.coordinates) for x in self.nodes]
         )
         self.width: Optional[float] = matcher.default_width
-        self.lanes: list[Lane] = []
+        self.lanes: List[Lane] = []
 
         if "lanes" in tags:
             try:
@@ -391,7 +391,7 @@ class Road(Tagged):
                 pass
 
         if "width:lanes" in tags:
-            widths: list[float] = list(
+            widths: List[float] = list(
                 map(float, tags["width:lanes"].split("|"))
             )
             if len(widths) == len(self.lanes):
@@ -434,7 +434,7 @@ class Road(Tagged):
         scale: float = flinger.get_scale(self.nodes[0].coordinates)
         path_commands: str = self.line.get_path()
         path: Path = Path(d=path_commands)
-        style: dict[str, Any] = {
+        style: Dict[str, Any] = {
             "fill": "none",
             "stroke": color.hex,
             "stroke-linecap": "butt",
@@ -454,7 +454,7 @@ class Road(Tagged):
                 -self.width / 2 + index * self.width / len(self.lanes)
             )
             path: Path = Path(d=self.line.get_path(parallel_offset))
-            style: dict[str, Any] = {
+            style: Dict[str, Any] = {
                 "fill": "none",
                 "stroke": color.hex,
                 "stroke-linejoin": "round",
@@ -467,7 +467,7 @@ class Road(Tagged):
 
 def get_curve_points(
     road: Road, scale: float, center: np.ndarray, road_end: np.ndarray
-) -> list[np.ndarray]:
+) -> List[np.ndarray]:
     """
     :param road: road segment
     :param scale: current zoom scale
@@ -492,11 +492,11 @@ class Connector:
 
     def __init__(
         self,
-        connections: list[tuple[Road, int]],
+        connections: List[Tuple[Road, int]],
         flinger: Flinger,
         scale: float,
     ) -> None:
-        self.connections: list[tuple[Road, int]] = connections
+        self.connections: List[Tuple[Road, int]] = connections
         self.road_1: Road = connections[0][0]
         self.index_1: int = connections[0][1]
 
@@ -520,7 +520,7 @@ class SimpleConnector(Connector):
 
     def __init__(
         self,
-        connections: list[tuple[Road, int]],
+        connections: List[Tuple[Road, int]],
         flinger: Flinger,
         scale: float,
     ) -> None:
@@ -558,7 +558,7 @@ class ComplexConnector(Connector):
 
     def __init__(
         self,
-        connections: list[tuple[Road, int]],
+        connections: List[Tuple[Road, int]],
         flinger: Flinger,
         scale: float,
     ) -> None:
@@ -574,10 +574,10 @@ class ComplexConnector(Connector):
         node: OSMNode = self.road_1.nodes[self.index_1]
         point: np.ndarray = flinger.fling(node.coordinates)
 
-        points_1: list[np.ndarray] = get_curve_points(
+        points_1: List[np.ndarray] = get_curve_points(
             self.road_1, scale, point, self.road_1.line.points[self.index_1]
         )
-        points_2: list[np.ndarray] = get_curve_points(
+        points_2: List[np.ndarray] = get_curve_points(
             self.road_2, scale, point, self.road_2.line.points[self.index_2]
         )
         # fmt: off
@@ -626,7 +626,7 @@ class SimpleIntersection(Connector):
 
     def __init__(
         self,
-        connections: list[tuple[Road, int]],
+        connections: List[Tuple[Road, int]],
         flinger: Flinger,
         scale: float,
     ) -> None:
@@ -661,8 +661,8 @@ class Roads:
     """
 
     def __init__(self) -> None:
-        self.roads: list[Road] = []
-        self.connections: dict[int, list[tuple[Road, int]]] = {}
+        self.roads: List[Road] = []
+        self.connections: Dict[int, List[Tuple[Road, int]]] = {}
 
     def append(self, road: Road) -> None:
         """Add road and update connections."""
@@ -679,8 +679,8 @@ class Roads:
             return
 
         scale: float = flinger.get_scale(self.roads[0].nodes[0].coordinates)
-        layered_roads: dict[float, list[Road]] = {}
-        layered_connectors: dict[float, list[Connector]] = {}
+        layered_roads: Dict[float, List[Road]] = {}
+        layered_connectors: Dict[float, List[Connector]] = {}
 
         for road in self.roads:
             if road.layer not in layered_roads:
@@ -688,7 +688,7 @@ class Roads:
             layered_roads[road.layer].append(road)
 
         for id_ in self.connections:
-            connected: list[tuple[Road, int]] = self.connections[id_]
+            connected: List[Tuple[Road, int]] = self.connections[id_]
             connector: Connector
 
             if len(self.connections[id_]) == 2:
@@ -706,10 +706,10 @@ class Roads:
             layered_connectors[connector.layer].append(connector)
 
         for layer in sorted(layered_roads.keys()):
-            roads: list[Road] = sorted(
+            roads: List[Road] = sorted(
                 layered_roads[layer], key=lambda x: x.matcher.priority
             )
-            connectors: list[Connector]
+            connectors: List[Connector]
             if layer in layered_connectors:
                 connectors = layered_connectors[layer]
             else:

@@ -4,6 +4,7 @@ Drawing separate map elements.
 import argparse
 import logging
 from pathlib import Path
+from typing import Dict, List, Set
 
 import numpy as np
 import svgwrite
@@ -33,17 +34,17 @@ def draw_element(options: argparse.Namespace) -> None:
         target = "area"
         tags_description = options.area
 
-    tags: dict[str, str] = dict(
+    tags: Dict[str, str] = dict(
         [x.split("=") for x in tags_description.split(",")]
     )
     scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
     extractor: ShapeExtractor = ShapeExtractor(
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
-    processed: set[str] = set()
+    processed: Set[str] = set()
     icon, priority = scheme.get_icon(extractor, tags, processed)
     is_for_node: bool = target == "node"
-    labels: list[Label] = scheme.construct_text(tags, "all", processed)
+    labels: List[Label] = scheme.construct_text(tags, "all", processed)
     point: Point = Point(
         icon,
         labels,

@@ -4,7 +4,7 @@ MapCSS scheme creation.
 import argparse
 import logging
 from pathlib import Path
-from typing import Optional, TextIO
+from typing import Dict, List, Optional, TextIO
 
 from colour import Color
 
@@ -84,8 +84,8 @@ class MapCSSWriter:
         self.add_icons_for_lifecycle: bool = add_icons_for_lifecycle
         self.icon_directory_name: str = icon_directory_name
 
-        self.point_matchers: list[Matcher] = scheme.node_matchers
-        self.line_matchers: list[Matcher] = scheme.way_matchers
+        self.point_matchers: List[Matcher] = scheme.node_matchers
+        self.line_matchers: List[Matcher] = scheme.way_matchers
 
     def add_selector(
         self,
@@ -103,7 +103,7 @@ class MapCSSWriter:
         :param opacity: icon opacity
         :return: string representation of selector
         """
-        elements: dict[str, str] = {}
+        elements: Dict[str, str] = {}
 
         clean_shapes = matcher.get_clean_shapes()
         if clean_shapes:
@@ -116,7 +116,7 @@ class MapCSSWriter:
             if opacity is not None:
                 elements["icon-opacity"] = f"{opacity:.2f}"
 
-        style: dict[str, str] = matcher.get_style()
+        style: Dict[str, str] = matcher.get_style()
         if style:
             if "fill" in style:
                 elements["fill-color"] = style["fill"]

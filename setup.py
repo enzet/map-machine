@@ -49,7 +49,7 @@ setup(
             "scheme/default.yml",
         ],
     },
-    python_requires=">=3.9",
+    python_requires=">=3.8",
     install_requires=[
         "CairoSVG>=2.5.0",
         "colour>=0.1.5",

@@ -168,7 +168,7 @@ Every way and node displayed with the random color picked for each author with \
 
 \2 {Installation} {installation}
 
-Requirements\: Python 3.9/* or higher*/.
+Requirements\: Python 3.8/* or higher*/.
 
 To install all packages, run\:
 

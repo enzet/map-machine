@@ -1,7 +1,7 @@
 """
 Color utility.
 """
-from typing import Any
+from typing import Any, List
 
 from colour import Color
 
@@ -22,7 +22,7 @@ def is_bright(color: Color) -> bool:
 
 
 def get_gradient_color(
-    value: Any, bounds: MinMax, colors: list[Color]
+    value: Any, bounds: MinMax, colors: List[Color]
 ) -> Color:
     """
     Get color from the color scale for the value.
@@ -32,7 +32,7 @@ def get_gradient_color(
     :param colors: color scale
     """
     color_length: int = len(colors) - 1
-    scale: list[Color] = colors + [Color("black")]
+    scale: List[Color] = colors + [Color("black")]
 
     range_coefficient: float = (
         0 if bounds.is_empty() else (value - bounds.min_) / bounds.delta()

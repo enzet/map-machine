@@ -7,13 +7,15 @@ from subprocess import PIPE, Popen
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+from typing import List
+
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
 from map_machine.ui import COMMANDS
 
 
-def error_run(arguments: list[str], message: bytes) -> None:
+def error_run(arguments: List[str], message: bytes) -> None:
     """Run command that should fail and check error message."""
     p = Popen(["map-machine"] + arguments, stderr=PIPE)
     _, error = p.communicate()
@@ -21,7 +23,7 @@ def error_run(arguments: list[str], message: bytes) -> None:
     assert error == message
 
 
-def run(arguments: list[str], message: bytes) -> None:
+def run(arguments: List[str], message: bytes) -> None:
     """Run command that should fail and check error message."""
     p = Popen(["map-machine"] + arguments, stderr=PIPE)
     _, error = p.communicate()

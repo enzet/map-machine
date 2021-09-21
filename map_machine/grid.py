@@ -4,7 +4,7 @@ Icon grid drawing.
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Union
+from typing import Dict, List, Optional, Set, Union
 
 import numpy as np
 from colour import Color
@@ -25,7 +25,7 @@ class IconCollection:
     Collection of icons.
     """
 
-    icons: list[Icon]
+    icons: List[Icon]
 
     @classmethod
     def from_scheme(
@@ -48,11 +48,11 @@ class IconCollection:
             tags
         :param add_all: create icons from all possible shapes including parts
         """
-        icons: list[Icon] = []
+        icons: List[Icon] = []
 
         def add() -> Icon:
             """Construct icon and add it to the list."""
-            specifications: list[ShapeSpecification] = [
+            specifications: List[ShapeSpecification] = [
                 scheme.get_shape_specification(x, extractor)
                 for x in current_set
             ]
@@ -63,7 +63,7 @@ class IconCollection:
 
             return constructed_icon
 
-        current_set: list[Union[str, dict[str, str]]]
+        current_set: List[Union[str, Dict[str, str]]]
 
         for matcher in scheme.node_matchers:
             matcher: NodeMatcher
@@ -83,7 +83,7 @@ class IconCollection:
                 continue
             for icon_id in matcher.under_icon:
                 for icon_2_id in matcher.with_icon:
-                    current_set: list[str] = (
+                    current_set: List[str] = (
                         [icon_id] + [icon_2_id] + matcher.over_icon
                     )
                     add()
@@ -102,7 +102,7 @@ class IconCollection:
                         ):
                             add()
 
-        specified_ids: set[str] = set()
+        specified_ids: Set[str] = set()
 
         for icon in icons:
             specified_ids |= set(icon.get_shape_ids())
