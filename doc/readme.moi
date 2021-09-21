@@ -170,7 +170,9 @@ Every way and node displayed with the random color picked for each author with \
 
 Requirements\: Python 3.8/* or higher*/.
 
-To install all packages, run\:
+\list
+    {Install \ref {https://www.cairographics.org/download/} {cairo 2D graphic library},}
+    {install Python packages\:}
 
 \code {pip install -r requirements.txt
 pip install .} {bash}

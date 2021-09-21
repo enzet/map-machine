@@ -13,5 +13,5 @@ echo "Lint with Flake8..."
 flake8 \
     --max-line-length=80 \
     --ignore=E203,W503,ANN002,ANN003,ANN101,ANN102 \
-    --exclude=work,precommit.py,tests/test_road.py,python3.8 \
+    --exclude=work,python3.8 \
     || { echo "FAIL"; exit 1; }

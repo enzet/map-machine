@@ -122,7 +122,9 @@ Installation
 
 Requirements: Python 3.8.
 
-To install all packages, run:
+  * Install [cairo 2D graphic library](https://www.cairographics.org/download/),
+  * install Python packages:
+
 
 ```bash
 pip install -r requirements.txt
