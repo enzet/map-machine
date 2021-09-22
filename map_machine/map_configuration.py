@@ -71,6 +71,7 @@ class MapConfiguration:
             options.seed,
             options.show_tooltips,
             options.country,
+            options.ignore_level_matching,
         )
 
     def is_wireframe(self) -> bool:

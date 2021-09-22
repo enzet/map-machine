@@ -126,6 +126,12 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         "used for location restrictions",
         default="world",
     )
+    parser.add_argument(
+        "--ignore-level-matching",
+        help="draw all map features ignoring the current level",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+    )
 
 
 def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
