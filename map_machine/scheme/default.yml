@@ -1249,6 +1249,56 @@ node_icons:
     - tags: {kerb: lowered}
       shapes: [lowered_kerb]
 
+    - tags: {railway: buffer_stop}
+      shapes: [buffer_stop]
+    - tags: {traffic_sign: city_limit}
+      shapes: [city_limit_sign]
+    - tags: {traffic_sign: maxspeed, maxspeed: "30"}
+      shapes: [
+        circle_11,
+        {shape: digit_3, offset: [-2, 0], color: "#FFFFFF"},
+        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+      ]
+    - tags: {traffic_sign: maxspeed, maxspeed: "40"}
+      shapes: [
+        circle_11,
+        {shape: digit_4, offset: [-2, 0], color: "#FFFFFF"},
+        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+      ]
+    - tags: {traffic_sign: maxspeed, maxspeed: "50"}
+      shapes: [
+        circle_11,
+        {shape: digit_5, offset: [-2, 0], color: "#FFFFFF"},
+        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+      ]
+    - tags: {traffic_sign: maxspeed, maxspeed: "60"}
+      shapes: [
+        circle_11,
+        {shape: digit_6, offset: [-2, 0], color: "#FFFFFF"},
+        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+      ]
+    - tags: {traffic_sign: maxspeed, maxspeed: "40_mph"}
+      shapes: [
+        speed_limit_mph,
+        {shape: digit_4, offset: [-2, 2]},
+        {shape: digit_0, offset: [2, 2]},
+      ]
+    - tags: {traffic_sign: stop}
+      shapes: [stop]
+    - tags: {highway: give_way}
+      shapes: [triangle_down_hollow]
+    - tags: {noexit: "yes"}
+      shapes: [noexit]
+    - tags: {barrier: block}
+      shapes: [block]
+    - tags: {barrier: rock}
+      shapes: [stone]
+    - tags: {barrier: bollard}
+      shapes: [bollard]
+
+  - group: "Trees"
+    start_zoom_level: 18
+    tags:
     - tags: {natural: tree}
       shapes: [{shape: tree, color: tree_color}]
     - tags: {leaf_type: broadleaved}
@@ -1297,53 +1347,6 @@ node_icons:
     - tags: {natural: tree, genus: Pyrus}
       shapes: [{shape: tree, color: tree_color}]
       add_shapes: [{shape: pear, color: tree_color}]
-
-    - tags: {railway: buffer_stop}
-      shapes: [buffer_stop]
-    - tags: {traffic_sign: city_limit}
-      shapes: [city_limit_sign]
-    - tags: {traffic_sign: maxspeed, maxspeed: "30"}
-      shapes: [
-        circle_11,
-        {shape: digit_3, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-      ]
-    - tags: {traffic_sign: maxspeed, maxspeed: "40"}
-      shapes: [
-        circle_11,
-        {shape: digit_4, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-      ]
-    - tags: {traffic_sign: maxspeed, maxspeed: "50"}
-      shapes: [
-        circle_11,
-        {shape: digit_5, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-      ]
-    - tags: {traffic_sign: maxspeed, maxspeed: "60"}
-      shapes: [
-        circle_11,
-        {shape: digit_6, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-      ]
-    - tags: {traffic_sign: maxspeed, maxspeed: "40_mph"}
-      shapes: [
-        speed_limit_mph,
-        {shape: digit_4, offset: [-2, 2]},
-        {shape: digit_0, offset: [2, 2]},
-      ]
-    - tags: {traffic_sign: stop}
-      shapes: [stop]
-    - tags: {highway: give_way}
-      shapes: [triangle_down_hollow]
-    - tags: {noexit: "yes"}
-      shapes: [noexit]
-    - tags: {barrier: block}
-      shapes: [block]
-    - tags: {barrier: rock}
-      shapes: [stone]
-    - tags: {barrier: bollard}
-      shapes: [bollard]
 
   - group: "Indoor"
     start_zoom_level: 18
