@@ -1174,11 +1174,17 @@ node_icons:
       shapes: [gate]
     - tags: {barrier: gate}
       shapes: [gate]
+    - tags: {entrance: garage}
+      shapes: [garage_door]
     - tags: {entrance: main}
       shapes: [main_entrance]
     - tags: {barrier: entrance}
       shapes: [entrance]
+    - tags: {barrier: door}
+      shapes: [entrance]
     - tags: {entrance: "yes"}
+      shapes: [entrance]
+    - tags: {entrance: shop}
       shapes: [entrance]
     - tags: {entrance: exit}
       shapes: [exit]

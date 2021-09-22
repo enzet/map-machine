@@ -148,9 +148,9 @@
      showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="552.67543"
-     inkscape:cx="57.554996"
-     inkscape:zoom="22.627417"
+     inkscape:cy="216.79971"
+     inkscape:cx="234.33169"
+     inkscape:zoom="5.6568542"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -14723,9 +14723,13 @@
     <path
        style="opacity:1;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="m 227,404 c -0.554,0 -1,0.446 -1,1 l 0,8 1,0 0,-8 10,0 0,8 1,0 0,-8 c 0,-0.554 -0.446,-1 -1,-1 z m 1,2 0,2 8,0 0,-2 z m 0,3 0,2 8,0 0,-2 z"
-       id="rect6430"
+       id="garage_door"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ssccccccssscccccccccc" />
+       sodipodi:nodetypes="ssccccccssscccccccccc"
+       inkscape:label="#rect6430">
+      <title
+         id="title11825">garage door</title>
+    </path>
     <path
        style="opacity:0.2;fill:none;stroke:#000000;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 247,166 -2.5,2 -1.5,0 0,1 10,0 0,-1 -1,0 -2,-2 z"

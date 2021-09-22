@@ -464,7 +464,7 @@ class Scheme:
                 color = self.get_color(tags[tag_key])
                 processed.add(tag_key)
 
-        for color_tag_key in ["color", "colour"]:
+        for color_tag_key in ["colour", "color", "building:colour"]:
             if color_tag_key in tags:
                 color = self.get_color(tags[color_tag_key])
                 processed.add(color_tag_key)
