@@ -58,7 +58,7 @@ class MapConfiguration:
 
     @classmethod
     def from_options(
-        cls, options: argparse.Namespace, zoom_level: int
+        cls, options: argparse.Namespace, zoom_level: float
     ) -> "MapConfiguration":
         """Initialize from command-line options."""
         return cls(

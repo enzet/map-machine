@@ -191,7 +191,7 @@ def ui(arguments: argparse.Namespace) -> None:
     :param arguments: command-line arguments
     """
     configuration: MapConfiguration = MapConfiguration.from_options(
-        arguments, int(arguments.zoom)
+        arguments, float(arguments.zoom)
     )
     cache_path: Path = Path(arguments.cache)
     cache_path.mkdir(parents=True, exist_ok=True)

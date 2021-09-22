@@ -159,7 +159,7 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         "-z",
         "--zoom",
         type=str,
-        metavar="<integer>",
+        metavar="<range>",
         help="OSM zoom levels; can be list of numbers or ranges, e.g. `16-18`, "
         "`16,17,18`, or `16,18-20`",
         default="18",
@@ -233,8 +233,8 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "-z",
         "--zoom",
-        type=int,
-        metavar="<integer>",
+        type=float,
+        metavar="<float>",
         help="OSM zoom level",
         default=18,
     )
