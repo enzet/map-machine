@@ -499,7 +499,7 @@ def check_level_overground(tags: dict[str, Any]) -> bool:
         try:
             levels: map = map(float, tags["level"].replace(",", ".").split(";"))
             for level in levels:
-                if level <= 0:
+                if level < 0:
                     return False
         except ValueError:
             pass
