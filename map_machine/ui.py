@@ -20,7 +20,7 @@ COMMANDS: dict[str, list[str]] = {
         "render",
         "-b",
         "10.000,20.000,10.001,20.001",
-        "--show-tooltips",
+        "--tooltips",
     ],
     "icons": ["icons"],
     "mapcss": ["mapcss"],
@@ -115,7 +115,7 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         metavar="<string>",
     )
     parser.add_argument(
-        "--show-tooltips",
+        "--tooltips",
         help="add tooltips with tags for icons in SVG files",
         action=argparse.BooleanOptionalAction,
         default=False,
@@ -131,6 +131,12 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         help="draw all map features ignoring the current level",
         action=argparse.BooleanOptionalAction,
         default=False,
+    )
+    parser.add_argument(
+        "--roofs",
+        help="draw building roofs",
+        action=argparse.BooleanOptionalAction,
+        default=True,
     )
 
 

@@ -34,6 +34,7 @@ class BuildingMode(Enum):
     Building drawing mode.
     """
 
+    NO: str = "no"
     FLAT: str = "flat"
     ISOMETRIC: str = "isometric"
     ISOMETRIC_NO_PARTS: str = "isometric-no-parts"
@@ -55,6 +56,7 @@ class MapConfiguration:
     show_tooltips: bool = False
     country: str = "world"
     ignore_level_matching: bool = False
+    draw_roofs: bool = True
 
     @classmethod
     def from_options(
@@ -72,6 +74,7 @@ class MapConfiguration:
             options.show_tooltips,
             options.country,
             options.ignore_level_matching,
+            options.draw_roofs,
         )
 
     def is_wireframe(self) -> bool:

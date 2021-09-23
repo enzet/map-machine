@@ -125,6 +125,8 @@ class Map:
 
     def draw_buildings(self, constructor: Constructor) -> None:
         """Draw buildings: shade, walls, and roof."""
+        if self.configuration.building_mode == BuildingMode.NO:
+            return
         if self.configuration.building_mode == BuildingMode.FLAT:
             for building in constructor.buildings:
                 building.draw(self.svg, self.flinger)
@@ -146,9 +148,10 @@ class Map:
                     continue
                 building.draw_walls(self.svg, height, previous_height, scale)
 
-            for building in constructor.buildings:
-                if building.height == height:
-                    building.draw_roof(self.svg, self.flinger, scale)
+            if self.configuration.draw_roofs:
+                for building in constructor.buildings:
+                    if building.height == height:
+                        building.draw_roof(self.svg, self.flinger, scale)
 
             previous_height = height
 
