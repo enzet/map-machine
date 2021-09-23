@@ -71,10 +71,10 @@ class MapConfiguration:
             options.overlap,
             options.level,
             options.seed,
-            options.show_tooltips,
+            options.tooltips,
             options.country,
             options.ignore_level_matching,
-            options.draw_roofs,
+            options.roofs,
         )
 
     def is_wireframe(self) -> bool:
