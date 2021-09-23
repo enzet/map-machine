@@ -407,9 +407,7 @@ class Scheme:
         extra_icons: list[Icon] = []
         priority: int = 0
 
-        index: int = 0
-
-        for matcher in self.node_matchers:
+        for index, matcher in enumerate(self.node_matchers):
             if not matcher.replace_shapes and main_icon:
                 continue
             if not matcher.is_matched(tags, configuration):
@@ -448,8 +446,6 @@ class Scheme:
                 main_icon.recolor(self.get_color(matcher.set_main_color))
             if matcher.set_opacity and main_icon:
                 main_icon.opacity = matcher.set_opacity
-
-            index += 1
 
         color: Optional[Color] = None
 
