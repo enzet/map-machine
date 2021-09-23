@@ -1102,8 +1102,16 @@ node_icons:
       shapes: [picture]
     - tags: {tourism: artwork, artwork_type: statue}
       shapes: [statue]
+    - tags: {exhibit: artwork, artwork_type: statue}
+      shapes: [statue_exhibit]
     - tags: {tourism: artwork, artwork_type: sculpture}
       shapes: [statue]
+    - tags: {exhibit: artwork, artwork_type: sculpture}
+      shapes: [statue_exhibit]
+    - tags: {exhibit: artwork, artwork_type: painting}
+      shapes: [picture]
+    - tags: {exhibit: artwork, artwork_type: stained_glass}
+      shapes: [stained_glass]
     - tags: {tourism: attraction}
       shapes: [photo_camera]
     - tags: {xmas:feature: tree}
@@ -1359,6 +1367,8 @@ node_icons:
     tags:
     - tags: {door: "yes"}
       shapes: [entrance]
+    - tags: {indoor: pillar}
+      shapes: [pillar]
 
   - group: "Add and over"
     tags:
