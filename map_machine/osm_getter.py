@@ -34,7 +34,7 @@ def get_osm(
     :param to_update: update cache files
     """
     if not to_update and cache_file_path.is_file():
-        with cache_file_path.open() as output_file:
+        with cache_file_path.open(encoding="utf-8") as output_file:
             return output_file.read()
 
     content: bytes = get_data(
