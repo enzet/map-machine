@@ -21,7 +21,7 @@ COMMANDS: Dict[str, List[str]] = {
         "render",
         "-b",
         "10.000,20.000,10.001,20.001",
-        "--show-tooltips",
+        "--tooltips",
     ],
     "icons": ["icons"],
     "mapcss": ["mapcss"],
@@ -116,14 +116,14 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         metavar="<string>",
     )
     parser.add_argument(
-        "--show-tooltips",
+        "--tooltips",
         help="add tooltips with tags for icons in SVG files",
         action="store_true",
         default=False,
     )
     parser.add_argument(
-        "--no-show-tooltips",
-        dest="show_tooltips",
+        "--no-tooltips",
+        dest="tooltips",
         help="don't add tooltips with tags for icons in SVG files",
         action="store_false",
     )
@@ -132,6 +132,30 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         help="two-letter code (ISO 3166-1 alpha-2) of country, that should be "
         "used for location restrictions",
         default="world",
+    )
+    parser.add_argument(
+        "--ignore-level-matching",
+        help="draw all map features ignoring the current level",
+        action="store_true",
+        default=False,
+    )
+    parser.add_argument(
+        "--no-ignore-level-matching",
+        dest="ignore_level_matching",
+        help="draw all map features taking into account the current level",
+        action="store_false",
+    )
+    parser.add_argument(
+        "--roofs",
+        help="draw building roofs",
+        action="store_true",
+        default=True,
+    )
+    parser.add_argument(
+        "--no-roofs",
+        dest="roofs",
+        help="don't draw building roofs",
+        action="store_false",
     )
 
 
@@ -166,7 +190,7 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         "-z",
         "--zoom",
         type=str,
-        metavar="<integer>",
+        metavar="<range>",
         help="OSM zoom levels; can be list of numbers or ranges, e.g. `16-18`, "
         "`16,17,18`, or `16,18-20`",
         default="18",
@@ -240,8 +264,8 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "-z",
         "--zoom",
-        type=int,
-        metavar="<integer>",
+        type=float,
+        metavar="<float>",
         help="OSM zoom level",
         default=18,
     )

@@ -407,9 +407,7 @@ class Scheme:
         extra_icons: List[Icon] = []
         priority: int = 0
 
-        index: int = 0
-
-        for matcher in self.node_matchers:
+        for index, matcher in enumerate(self.node_matchers):
             if not matcher.replace_shapes and main_icon:
                 continue
             if not matcher.is_matched(tags, configuration):
@@ -449,8 +447,6 @@ class Scheme:
             if matcher.set_opacity and main_icon:
                 main_icon.opacity = matcher.set_opacity
 
-            index += 1
-
         color: Optional[Color] = None
 
         if "material" in tags:
@@ -464,7 +460,7 @@ class Scheme:
                 color = self.get_color(tags[tag_key])
                 processed.add(tag_key)
 
-        for color_tag_key in ["color", "colour"]:
+        for color_tag_key in ["colour", "color", "building:colour"]:
             if color_tag_key in tags:
                 color = self.get_color(tags[color_tag_key])
                 processed.add(color_tag_key)

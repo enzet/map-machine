@@ -1102,8 +1102,16 @@ node_icons:
       shapes: [picture]
     - tags: {tourism: artwork, artwork_type: statue}
       shapes: [statue]
+    - tags: {exhibit: artwork, artwork_type: statue}
+      shapes: [statue_exhibit]
     - tags: {tourism: artwork, artwork_type: sculpture}
       shapes: [statue]
+    - tags: {exhibit: artwork, artwork_type: sculpture}
+      shapes: [statue_exhibit]
+    - tags: {exhibit: artwork, artwork_type: painting}
+      shapes: [picture]
+    - tags: {exhibit: artwork, artwork_type: stained_glass}
+      shapes: [stained_glass]
     - tags: {tourism: attraction}
       shapes: [photo_camera]
     - tags: {xmas:feature: tree}
@@ -1174,11 +1182,17 @@ node_icons:
       shapes: [gate]
     - tags: {barrier: gate}
       shapes: [gate]
+    - tags: {entrance: garage}
+      shapes: [garage_door]
     - tags: {entrance: main}
       shapes: [main_entrance]
     - tags: {barrier: entrance}
       shapes: [entrance]
+    - tags: {barrier: door}
+      shapes: [entrance]
     - tags: {entrance: "yes"}
+      shapes: [entrance]
+    - tags: {entrance: shop}
       shapes: [entrance]
     - tags: {entrance: exit}
       shapes: [exit]
@@ -1249,6 +1263,56 @@ node_icons:
     - tags: {kerb: lowered}
       shapes: [lowered_kerb]
 
+    - tags: {railway: buffer_stop}
+      shapes: [buffer_stop]
+    - tags: {traffic_sign: city_limit}
+      shapes: [city_limit_sign]
+    - tags: {traffic_sign: maxspeed, maxspeed: "30"}
+      shapes: [
+        circle_11,
+        {shape: digit_3, offset: [-2, 0], color: "#FFFFFF"},
+        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+      ]
+    - tags: {traffic_sign: maxspeed, maxspeed: "40"}
+      shapes: [
+        circle_11,
+        {shape: digit_4, offset: [-2, 0], color: "#FFFFFF"},
+        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+      ]
+    - tags: {traffic_sign: maxspeed, maxspeed: "50"}
+      shapes: [
+        circle_11,
+        {shape: digit_5, offset: [-2, 0], color: "#FFFFFF"},
+        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+      ]
+    - tags: {traffic_sign: maxspeed, maxspeed: "60"}
+      shapes: [
+        circle_11,
+        {shape: digit_6, offset: [-2, 0], color: "#FFFFFF"},
+        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+      ]
+    - tags: {traffic_sign: maxspeed, maxspeed: "40_mph"}
+      shapes: [
+        speed_limit_mph,
+        {shape: digit_4, offset: [-2, 2]},
+        {shape: digit_0, offset: [2, 2]},
+      ]
+    - tags: {traffic_sign: stop}
+      shapes: [stop]
+    - tags: {highway: give_way}
+      shapes: [triangle_down_hollow]
+    - tags: {noexit: "yes"}
+      shapes: [noexit]
+    - tags: {barrier: block}
+      shapes: [block]
+    - tags: {barrier: rock}
+      shapes: [stone]
+    - tags: {barrier: bollard}
+      shapes: [bollard]
+
+  - group: "Trees"
+    start_zoom_level: 18
+    tags:
     - tags: {natural: tree}
       shapes: [{shape: tree, color: tree_color}]
     - tags: {leaf_type: broadleaved}
@@ -1298,58 +1362,13 @@ node_icons:
       shapes: [{shape: tree, color: tree_color}]
       add_shapes: [{shape: pear, color: tree_color}]
 
-    - tags: {railway: buffer_stop}
-      shapes: [buffer_stop]
-    - tags: {traffic_sign: city_limit}
-      shapes: [city_limit_sign]
-    - tags: {traffic_sign: maxspeed, maxspeed: "30"}
-      shapes: [
-        circle_11,
-        {shape: digit_3, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-      ]
-    - tags: {traffic_sign: maxspeed, maxspeed: "40"}
-      shapes: [
-        circle_11,
-        {shape: digit_4, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-      ]
-    - tags: {traffic_sign: maxspeed, maxspeed: "50"}
-      shapes: [
-        circle_11,
-        {shape: digit_5, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-      ]
-    - tags: {traffic_sign: maxspeed, maxspeed: "60"}
-      shapes: [
-        circle_11,
-        {shape: digit_6, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-      ]
-    - tags: {traffic_sign: maxspeed, maxspeed: "40_mph"}
-      shapes: [
-        speed_limit_mph,
-        {shape: digit_4, offset: [-2, 2]},
-        {shape: digit_0, offset: [2, 2]},
-      ]
-    - tags: {traffic_sign: stop}
-      shapes: [stop]
-    - tags: {highway: give_way}
-      shapes: [triangle_down_hollow]
-    - tags: {noexit: "yes"}
-      shapes: [noexit]
-    - tags: {barrier: block}
-      shapes: [block]
-    - tags: {barrier: rock}
-      shapes: [stone]
-    - tags: {barrier: bollard}
-      shapes: [bollard]
-
   - group: "Indoor"
     start_zoom_level: 18
     tags:
     - tags: {door: "yes"}
       shapes: [entrance]
+    - tags: {indoor: pillar}
+      shapes: [pillar]
 
   - group: "Add and over"
     tags:

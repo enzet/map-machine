@@ -34,6 +34,7 @@ class BuildingMode(Enum):
     Building drawing mode.
     """
 
+    NO: str = "no"
     FLAT: str = "flat"
     ISOMETRIC: str = "isometric"
     ISOMETRIC_NO_PARTS: str = "isometric-no-parts"
@@ -55,10 +56,11 @@ class MapConfiguration:
     show_tooltips: bool = False
     country: str = "world"
     ignore_level_matching: bool = False
+    draw_roofs: bool = True
 
     @classmethod
     def from_options(
-        cls, options: argparse.Namespace, zoom_level: int
+        cls, options: argparse.Namespace, zoom_level: float
     ) -> "MapConfiguration":
         """Initialize from command-line options."""
         return cls(
@@ -69,8 +71,10 @@ class MapConfiguration:
             options.overlap,
             options.level,
             options.seed,
-            options.show_tooltips,
+            options.tooltips,
             options.country,
+            options.ignore_level_matching,
+            options.roofs,
         )
 
     def is_wireframe(self) -> bool:
