@@ -11,6 +11,7 @@ from map_machine import (
     __email__,
     __url__,
     __version__,
+    REQUIREMENTS,
 )
 
 with Path("README.md").open() as input_file:
@@ -50,16 +51,5 @@ setup(
         ],
     },
     python_requires=">=3.9",
-    install_requires=[
-        "CairoSVG>=2.5.0",
-        "colour>=0.1.5",
-        "numpy>=1.18.1",
-        "Pillow>=8.2.0",
-        "portolan>=1.0.1",
-        "pycairo",
-        "pytest>=6.2.2",
-        "PyYAML>=4.2b1",
-        "svgwrite>=1.4",
-        "urllib3>=1.25.6",
-    ],
+    install_requires=REQUIREMENTS,
 )

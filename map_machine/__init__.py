@@ -12,3 +12,18 @@ __doc_url__ = f"{__url__}/blob/main/README.md"
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 __version__ = "0.1.3"
+
+REQUIREMENTS: list[str] = [
+    "CairoSVG>=2.5.0",
+    "colour>=0.1.5",
+    "numpy>=1.18.1",
+    "Pillow>=8.2.0",
+    "portolan>=1.0.1",
+    "pycairo",
+    "pytest>=6.2.2",
+    "PyYAML>=4.2b1",
+    "setuptools>=51.0.0",
+    "Shapely>=1.7.1",
+    "svgwrite>=1.4",
+    "urllib3>=1.25.6",
+]
