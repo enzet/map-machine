@@ -15,6 +15,9 @@ __email__ = "me@enzet.ru"
 
 def main() -> None:
     """Map Machine command-line entry point."""
+    sys.stdin.reconfigure(encoding="utf-8")
+    sys.stdout.reconfigure(encoding="utf-8")
+
     logging.basicConfig(format="%(levelname)s %(message)s", level=logging.INFO)
     workspace: Workspace = Workspace(Path("out"))
 
