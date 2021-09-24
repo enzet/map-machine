@@ -182,7 +182,7 @@ class ShapeExtractor:
         """
         self.shapes: Dict[str, Shape] = {}
         self.configuration: Dict[str, Any] = json.load(
-            configuration_file_name.open()
+            configuration_file_name.open(encoding="utf-8")
         )
         root: Element = ElementTree.parse(svg_file_name).getroot()
         self.parse(root)
