@@ -73,7 +73,7 @@ class TaginfoProjectFile:
 
     def write(self) -> None:
         """Write Taginfo JSON file."""
-        with self.path.open("w+") as output_file:
+        with self.path.open("w+", encoding="utf-8") as output_file:
             json.dump(self.structure, output_file, indent=4, sort_keys=True)
 
 

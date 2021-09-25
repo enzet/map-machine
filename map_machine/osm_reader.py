@@ -361,7 +361,7 @@ class OSMData:
 
         See https://wiki.openstreetmap.org/wiki/Overpass_API
         """
-        with file_name.open() as input_file:
+        with file_name.open(encoding="utf-8") as input_file:
             structure = json.load(input_file)
 
         node_map: dict[int, OSMNode] = {}

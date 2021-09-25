@@ -307,8 +307,8 @@ class MapMachineMarkdown(MapMachineMoire, DefaultMarkdown):
 
 def convert(input_path: Path, output_path: Path) -> None:
     """Convert Moire file to Markdown."""
-    with input_path.open() as input_file:
-        with output_path.open("w+") as output_file:
+    with input_path.open(encoding="utf-8") as input_file:
+        with output_path.open("w+", encoding="utf-8") as output_file:
             output_file.write(MapMachineMarkdown().convert(input_file.read()))
 
 

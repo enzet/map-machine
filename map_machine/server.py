@@ -51,7 +51,7 @@ class _Handler(SimpleHTTPRequestHandler):
             if not png_path.exists():
                 if not svg_path.exists():
                     tile.draw(tile_path, self.cache, self.options)
-                with svg_path.open() as input_file:
+                with svg_path.open(encoding="utf-8") as input_file:
                     cairosvg.svg2png(
                         file_obj=input_file, write_to=str(png_path)
                     )

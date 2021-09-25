@@ -182,12 +182,12 @@ class Tile:
         )
         painter.draw(constructor)
 
-        with output_file_name.open("w") as output_file:
+        with output_file_name.open("w", encoding="utf-8") as output_file:
             svg.write(output_file)
         logging.info(f"Tile is drawn to {output_file_name}.")
 
         output_path: Path = output_file_name.with_suffix(".png")
-        with output_file_name.open() as input_file:
+        with output_file_name.open(encoding="utf-8") as input_file:
             cairosvg.svg2png(file_obj=input_file, write_to=str(output_path))
         logging.info(f"SVG file is rasterized to {output_path}.")
 
@@ -287,7 +287,7 @@ class Tiles:
 
             output_path: Path = file_path.with_suffix(".png")
             if not output_path.exists():
-                with file_path.open() as input_file:
+                with file_path.open(encoding="utf-8") as input_file:
                     cairosvg.svg2png(
                         file_obj=input_file, write_to=str(output_path)
                     )
@@ -398,14 +398,14 @@ class Tiles:
             map_.draw(constructor)
 
             logging.info(f"Writing output SVG {output_path}...")
-            with output_path.open("w+") as output_file:
+            with output_path.open("w+", encoding="utf-8") as output_file:
                 svg.write(output_file)
         else:
             logging.debug(f"File {output_path} already exists.")
 
         png_path: Path = self.get_file_path(cache_path).with_suffix(".png")
         if not png_path.exists():
-            with output_path.open() as input_file:
+            with output_path.open(encoding="utf-8") as input_file:
                 cairosvg.svg2png(file_obj=input_file, write_to=str(png_path))
             logging.info(f"SVG file is rasterized to {png_path}.")
         else:

@@ -199,7 +199,9 @@ def ui(options: argparse.Namespace) -> None:
         options.ways,
         options.lifecycle,
     )
-    with workspace.get_mapcss_file_path().open("w+") as output_file:
+    with workspace.get_mapcss_file_path().open(
+        "w+", encoding="utf-8"
+    ) as output_file:
         mapcss_writer.write(output_file)
 
     logging.info(f"MapCSS 0.2 scheme is written to {directory}.")

@@ -69,6 +69,6 @@ def draw_element(options: argparse.Namespace) -> None:
     point.draw_main_shapes(svg)
     point.draw_extra_shapes(svg)
     point.draw_texts(svg)
-    with output_file_path.open("w+") as output_file:
+    with output_file_path.open("w+", encoding="utf-8") as output_file:
         svg.write(output_file)
     logging.info(f"Element is written to {output_file_path}.")
