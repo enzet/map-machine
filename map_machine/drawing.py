@@ -140,7 +140,7 @@ class SVGDrawing(Drawing):
 
     def write(self) -> None:
         """Write image to the SVG file."""
-        with self.file_path.open("w+") as output_file:
+        with self.file_path.open("w+", encoding="utf-8") as output_file:
             self.image.write(output_file)
 
 

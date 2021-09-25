@@ -306,7 +306,7 @@ class Scheme:
         :param file_name: name of the scheme file with tags, colors, and tag key
             specification
         """
-        with file_name.open() as input_file:
+        with file_name.open(encoding="utf-8") as input_file:
             content: Dict[str, Any] = yaml.load(
                 input_file.read(), Loader=yaml.FullLoader
             )

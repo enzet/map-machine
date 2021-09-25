@@ -280,5 +280,5 @@ def ui(arguments: argparse.Namespace) -> None:
     painter.draw(constructor)
 
     logging.info(f"Writing output SVG to {arguments.output_file_name}...")
-    with open(arguments.output_file_name, "w") as output_file:
+    with open(arguments.output_file_name, "w", encoding="utf-8") as output_file:
         svg.write(output_file)

@@ -338,6 +338,9 @@ def progress_bar(
         subsequently)
     :param text: short description
     """
+    if number == 0:
+        sys.stdout.write(text + "...\n")
+    return
     if number == -1:
         sys.stdout.write(f"100 % {length * '█'}▏{text}\n")
     elif number % step == 0:

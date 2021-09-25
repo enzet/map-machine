@@ -404,7 +404,7 @@ class Icon:
                 shape_specification.color = color
             shape_specification.draw(svg, np.array((8, 8)))
 
-        with file_name.open("w") as output_file:
+        with file_name.open("w", encoding="utf-8") as output_file:
             svg.write(output_file)
 
     def is_default(self) -> bool:

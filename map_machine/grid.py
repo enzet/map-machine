@@ -196,7 +196,7 @@ class IconCollection:
                 point += np.array((0, step))
                 height += step
 
-        with file_name.open("w") as output_file:
+        with file_name.open("w", encoding="utf-8") as output_file:
             svg.write(output_file)
 
     def __len__(self) -> int:
