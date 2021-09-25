@@ -50,6 +50,6 @@ jobs:
     - name: Lint with Flake8
       run: |
         flake8 --max-line-length=80 --ignore=E203,W503
-    - name: Test with pytest
+    - name: Test render
       run: |
-        pytest -v
+        map-machine render -b 10.000,20.000,10.001,20.001 --cache tests/data
