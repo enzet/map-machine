@@ -1,6 +1,8 @@
 """
 Test icon generation for nodes.
 """
+from typing import Optional
+
 import pytest
 from colour import Color
 
@@ -49,17 +51,39 @@ def test_no_icons() -> None:
     assert icon.main_icon.is_default()
 
 
+def check_icon_set(
+    icon: IconSet,
+    main_specification: list[tuple[str, Optional[str]]],
+    extra_specification: list[list[tuple[str, Optional[str]]]],
+) -> None:
+    """Check icon set using simple specification."""
+    if not main_specification:
+        assert icon.main_icon.is_default()
+    else:
+        assert not icon.main_icon.is_default()
+        assert len(main_specification) == len(
+            icon.main_icon.shape_specifications
+        )
+        for i, s in enumerate(main_specification):
+            assert icon.main_icon.shape_specifications[i].shape.id_ == s[0]
+            assert icon.main_icon.shape_specifications[i].color == Color(s[1])
+
+    assert len(extra_specification) == len(icon.extra_icons)
+    for i, x in enumerate(extra_specification):
+        extra_icon = icon.extra_icons[i]
+        assert len(x) == len(extra_icon.shape_specifications)
+        for j, s in enumerate(x):
+            assert extra_icon.shape_specifications[j].shape.id_ == s[0]
+            assert extra_icon.shape_specifications[j].color == Color(s[1])
+
+
 def test_icon() -> None:
     """
     Tags that should be visualized with single main icon and without extra
     icons.
     """
     icon: IconSet = get_icon({"natural": "tree"})
-    assert not icon.main_icon.is_default()
-    assert len(icon.main_icon.shape_specifications) == 1
-    assert icon.main_icon.shape_specifications[0].shape.id_ == "tree"
-    assert icon.main_icon.shape_specifications[0].color == Color("#98AC64")
-    assert not icon.extra_icons
+    check_icon_set(icon, [("tree", "#98AC64")], [])
 
 
 def test_icon_1_extra() -> None:
@@ -67,8 +91,9 @@ def test_icon_1_extra() -> None:
     Tags that should be visualized with single main icon and single extra icon.
     """
     icon = get_icon({"barrier": "gate", "access": "private"})
-    assert not icon.main_icon.is_default()
-    assert len(icon.extra_icons) == 1
+    check_icon_set(
+        icon, [("gate", "#444444")], [[("lock_with_keyhole", "#888888")]]
+    )
 
 
 def test_icon_2_extra() -> None:
@@ -76,8 +101,14 @@ def test_icon_2_extra() -> None:
     Tags that should be visualized with single main icon and two extra icons.
     """
     icon = get_icon({"barrier": "gate", "access": "private", "bicycle": "yes"})
-    assert not icon.main_icon.is_default()
-    assert len(icon.extra_icons) == 2
+    check_icon_set(
+        icon,
+        [("gate", "#444444")],
+        [
+            [("bicycle", "#888888")],
+            [("lock_with_keyhole", "#888888")],
+        ],
+    )
 
 
 def test_no_icon_1_extra() -> None:
