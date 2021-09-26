@@ -328,6 +328,9 @@
   "fuel_station": {
     "emoji": "⛽️"
   },
+  "garage_door": {
+    "name": "garage door"
+  },
   "garages": {},
   "gate": {},
   "gift": {
@@ -525,6 +528,7 @@
     "emoji": "📷"
   },
   "picture": {},
+  "pillar": {},
   "pipeline": {},
   "plane": {
     "emoji": "✈️",
@@ -707,12 +711,16 @@
   "speed_limit_mph": {
     "name": "speed limit box for mph"
   },
+  "stained_glass": {
+    "name": "stained glass"
+  },
   "staircase": {
     "name": "door with stairs"
   },
   "statue": {
     "name": "statue"
   },
+  "statue_exhibit": {},
   "steak_and_fork": {
     "name": "steak and fork"
   },

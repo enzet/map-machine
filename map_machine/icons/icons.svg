@@ -148,9 +148,9 @@
      showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="235.94153"
-     inkscape:cx="444.51606"
-     inkscape:zoom="16"
+     inkscape:cy="561.52211"
+     inkscape:cx="71.535086"
+     inkscape:zoom="8"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -862,7 +862,7 @@
     <path
        inkscape:label="#path11333"
        id="microphone"
-       d="m 88,51 c -0.554,0 -1,0.446 -1,1 v 4 c 0,0.554 0.446,1 1,1 h 1 c 0.554,0 1,-0.446 1,-1 v -4 c 0,-0.554 -0.446,-1 -1,-1 z m -2.5,2.5 C 85.223,53.5 85,53.723 85,54 v 2 A 3,3 0 0 0 85.87891,58.12109 3,3 0 0 0 88,59 v 2 c 0,0.277 0.223,0.5 0.5,0.5 0.277,0 0.5,-0.223 0.5,-0.5 V 59 A 3,3 0 0 0 91.12109,58.12109 3,3 0 0 0 92,56 v -2 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 -0.277,0 -0.5,0.223 -0.5,0.5 v 2 A 2,2 0 0 1 90.41406,57.41406 2,2 0 0 1 89,58 H 88 A 2,2 0 0 1 86.58594,57.41406 2,2 0 0 1 86,56 v -2 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 z"
+       d="m 104,51 c -0.554,0 -1,0.446 -1,1 l 0,4 c 0,0.554 0.446,1 1,1 l 1,0 c 0.554,0 1,-0.446 1,-1 l 0,-4 c 0,-0.554 -0.446,-1 -1,-1 z m -2.5,2.5 c -0.277,0 -0.5,0.223 -0.5,0.5 l 0,2 a 3,3 0 0 0 0.87891,2.12109 A 3,3 0 0 0 104,59 l 0,2 c 0,0.277 0.223,0.5 0.5,0.5 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-2 A 3,3 0 0 0 107.12109,58.12109 3,3 0 0 0 108,56 l 0,-2 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 -0.277,0 -0.5,0.223 -0.5,0.5 l 0,2 A 2,2 0 0 1 106.41406,57.41406 2,2 0 0 1 105,58 l -1,0 A 2,2 0 0 1 102.58594,57.41406 2,2 0 0 1 102,56 l 0,-2 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 z"
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        inkscape:connector-curvature="0">
       <title
@@ -872,23 +872,23 @@
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path11295"
        sodipodi:type="arc"
-       sodipodi:cx="88"
+       sodipodi:cx="104"
        sodipodi:cy="40"
        sodipodi:rx="3"
        sodipodi:ry="3"
        sodipodi:start="1.5707963"
        sodipodi:end="3.1415927"
-       d="M 88,43 A 3,3 0 0 1 85.87868,42.12132 3,3 0 0 1 85,40 h 3 z"
+       d="M 104,43 A 3,3 0 0 1 101.87868,42.12132 3,3 0 0 1 101,40 l 3,0 z"
        sodipodi:arc-type="slice" />
     <path
        transform="scale(-1,1)"
-       d="M -89,43 A 3,3 0 0 1 -91.12132,42.12132 3,3 0 0 1 -92,40 h 3 z"
+       d="M -105,43 A 3,3 0 0 1 -107.12132,42.12132 3,3 0 0 1 -108,40 l 3,0 z"
        sodipodi:end="3.1415927"
        sodipodi:start="1.5707963"
        sodipodi:ry="3"
        sodipodi:rx="3"
        sodipodi:cy="40"
-       sodipodi:cx="-89"
+       sodipodi:cx="-105"
        sodipodi:type="arc"
        id="path11299"
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
@@ -962,7 +962,7 @@
        sodipodi:nodetypes="ccc"
        inkscape:connector-curvature="0"
        id="path5628"
-       d="m 67,37.5 5,4 5,-4"
+       d="m 83,37.5 5,4 5,-4"
        style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
        inkscape:connector-curvature="0"
@@ -1302,7 +1302,7 @@
        rx="1"
        ry="1"
        y="35"
-       x="87"
+       x="103"
        height="6"
        width="3"
        id="rect3149"
@@ -5967,7 +5967,7 @@
        rx="0.5"
        ry="0.5"
        y="37"
-       x="67"
+       x="83"
        height="8"
        width="10"
        id="rect5088"
@@ -6592,7 +6592,7 @@
     <path
        inkscape:label="#rect5632"
        id="envelope"
-       d="m 67.5,53 c -0.09,0 -0.16936,0.0309 -0.24219,0.0723 a 0.50005,0.50005 0 0 1 0.0547,0.0371 l 4.6875,3.75 4.6875,-3.75 a 0.50024408,0.50024408 0 0 1 0.0547,-0.0391 C 76.66958,53.02932 76.58965,53 76.5,53 Z M 67,54.14062 V 60.5 c 0,0.277 0.223,0.5 0.5,0.5 h 9 c 0.277,0 0.5,-0.223 0.5,-0.5 v -6.35938 l -4.6875,3.75 a 0.50005,0.50005 0 0 1 -0.625,0 z"
+       d="m 83.5,53 c -0.09,0 -0.16936,0.0309 -0.24219,0.0723 a 0.50005,0.50005 0 0 1 0.0547,0.0371 l 4.6875,3.75 4.6875,-3.75 a 0.50024408,0.50024408 0 0 1 0.0547,-0.0391 C 92.66958,53.02932 92.58965,53 92.5,53 Z M 83,54.14062 83,60.5 c 0,0.277 0.223,0.5 0.5,0.5 l 9,0 c 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-6.35938 -4.6875,3.75 a 0.50005,0.50005 0 0 1 -0.625,0 z"
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        inkscape:connector-curvature="0">
       <title
@@ -7300,13 +7300,13 @@
        d="m 195,41 2,-1 v 7 h 6 v -7 l 2,1 1.5,-3 -4,-2 h -5 l -4,2 z"
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
-       d="M 88,42 A 2,2 0 0 1 86.585786,41.414214 2,2 0 0 1 86,40 h 2 z"
+       d="M 104,42 A 2,2 0 0 1 102.58579,41.414214 2,2 0 0 1 102,40 l 2,0 z"
        sodipodi:end="3.1415927"
        sodipodi:start="1.5707963"
        sodipodi:ry="2"
        sodipodi:rx="2"
        sodipodi:cy="40"
-       sodipodi:cx="88"
+       sodipodi:cx="104"
        sodipodi:type="arc"
        id="path11293"
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
@@ -7316,19 +7316,19 @@
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path11297"
        sodipodi:type="arc"
-       sodipodi:cx="-89"
+       sodipodi:cx="-105"
        sodipodi:cy="40"
        sodipodi:rx="2"
        sodipodi:ry="2"
        sodipodi:start="1.5707963"
        sodipodi:end="3.1415927"
-       d="M -89,42 A 2,2 0 0 1 -90.414214,41.414214 2,2 0 0 1 -91,40 h 2 z"
+       d="M -105,42 A 2,2 0 0 1 -106.41421,41.414214 2,2 0 0 1 -107,40 l 2,0 z"
        sodipodi:arc-type="slice" />
     <rect
        rx="0.5"
        ry="0.5"
        y="37.5"
-       x="85"
+       x="101"
        height="3"
        width="1"
        id="rect11301"
@@ -7338,25 +7338,25 @@
        id="rect11303"
        width="1"
        height="3"
-       x="91"
+       x="107"
        y="37.5"
        ry="0.5"
        rx="0.5" />
     <rect
-       transform="rotate(90)"
+       transform="matrix(0,1,-1,0,0,0)"
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect11305"
        width="1"
        height="2"
        x="42"
-       y="-89.5"
+       y="-105.5"
        ry="0.5"
        rx="0.5" />
     <rect
        rx="0.5"
        ry="0.5"
        y="42.5"
-       x="88"
+       x="104"
        height="3"
        width="1"
        id="rect11307"
@@ -22742,6 +22742,15 @@
        inkscape:label="#path11935">
       <title
          id="title11958">stained glass</title>
+    </path>
+    <path
+       inkscape:connector-curvature="0"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 69,35 c -1.5,0 -2,0.228135 -2,1 0,1.5 0,3 1,4 0,2 0.5,3.5 1,4.5 0.447214,0.894427 1,1 1,0 0.007,-0.190118 0.5,-4.5 2,-4.5 1.5,0 1.993002,4.309882 2,4.5 0,1 0.552786,0.894427 1,0 0.5,-1 1,-2.5 1,-4.5 1,-1 1,-2.5 1,-4 0,-0.771865 -0.5,-1 -2,-1 -1.5,0 -1.5,0.5 -3,0.5 -1.5,0 -1.5,-0.5 -3,-0.5 z"
+       id="path11960"
+       sodipodi:nodetypes="sscscscscssss">
+      <title
+         id="title11962">dent</title>
     </path>
   </g>
 </svg>
