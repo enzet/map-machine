@@ -42,6 +42,18 @@ def get_osm(
         {"bbox": boundary_box.get_format()},
     )
 
+    if not content.startswith(b"<"):
+        if content == (
+            b"You requested too many nodes (limit is 50000). Either request a "
+            b"smaller area, or use planet.osm"
+        ):
+            raise NetworkError(
+                "Cannot download data: too many nodes (limit is 50000). Try "
+                "to request smaller area."
+            )
+        else:
+            raise NetworkError("Cannot download data.")
+
     with cache_file_path.open("bw+") as output_file:
         output_file.write(content)
 
