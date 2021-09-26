@@ -132,3 +132,19 @@ def test_no_icon_2_extra() -> None:
             [("lock_with_keyhole", "#888888")],
         ],
     )
+
+
+def test_icon_regex() -> None:
+    """
+    Tags that should be visualized with default main icon and single extra icon.
+    """
+    icon = get_icon({"traffic_sign": "maxspeed", "maxspeed": "42"})
+    check_icon_set(
+        icon,
+        [
+            ("circle_11", "#444444"),
+            ("digit_4", "#FFFFFF"),
+            ("digit_2", "#FFFFFF"),
+        ],
+        [],
+    )
