@@ -116,8 +116,7 @@ def test_no_icon_1_extra() -> None:
     Tags that should be visualized with default main icon and single extra icon.
     """
     icon = get_icon({"access": "private"})
-    assert icon.main_icon.is_default()
-    assert len(icon.extra_icons) == 1
+    check_icon_set(icon, [], [[("lock_with_keyhole", "#888888")]])
 
 
 def test_no_icon_2_extra() -> None:
@@ -125,5 +124,11 @@ def test_no_icon_2_extra() -> None:
     Tags that should be visualized with default main icon and two extra icons.
     """
     icon = get_icon({"access": "private", "bicycle": "yes"})
-    assert icon.main_icon.is_default()
-    assert len(icon.extra_icons) == 2
+    check_icon_set(
+        icon,
+        [],
+        [
+            [("bicycle", "#888888")],
+            [("lock_with_keyhole", "#888888")],
+        ],
+    )
