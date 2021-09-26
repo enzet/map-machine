@@ -416,7 +416,7 @@ class OSMData:
 
         :param root: top element of XML data
         :param parse_nodes: whether nodes should be parsed
-        :param parse_ways:  whether ways should be parsed
+        :param parse_ways: whether ways should be parsed
         :param parse_relations: whether relations should be parsed
         """
         for element in root:
