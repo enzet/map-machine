@@ -50,12 +50,13 @@ class IconCollection:
         """
         icons: list[Icon] = []
 
-        def add() -> Icon:
+        def add() -> Optional[Icon]:
             """Construct icon and add it to the list."""
-            specifications: list[ShapeSpecification] = [
-                scheme.get_shape_specification(x, extractor)
-                for x in current_set
-            ]
+            specifications: list[ShapeSpecification] = []
+            for shape_specification in current_set:
+                if "#" in shape_specification["shape"]:
+                    return None
+                scheme.get_shape_specification(shape_specification, extractor)
             constructed_icon: Icon = Icon(specifications)
             constructed_icon.recolor(color, white=background_color)
             if constructed_icon not in icons:

@@ -2,6 +2,7 @@
 Map Machine drawing scheme.
 """
 import logging
+import re
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
@@ -49,13 +50,14 @@ class MatchingType(Enum):
     MATCHED_BY_SET = 1
     MATCHED_BY_WILDCARD = 2
     MATCHED = 3
+    MATCHED_BY_REGEX = 4
 
 
 def is_matched_tag(
     matcher_tag_key: str,
     matcher_tag_value: Union[str, list],
     tags: dict[str, str],
-) -> MatchingType:
+) -> tuple[MatchingType, list[str]]:
     """
     Check whether element tags contradict tag matcher.
 
@@ -63,20 +65,20 @@ def is_matched_tag(
     :param matcher_tag_value: tag value, tag value list, or "*"
     :param tags: element tags to check
     """
-    if matcher_tag_key in tags:
-        if matcher_tag_value == "*":
-            return MatchingType.MATCHED_BY_WILDCARD
-        if (
-            isinstance(matcher_tag_value, str)
-            and tags[matcher_tag_key] == matcher_tag_value
-        ):
-            return MatchingType.MATCHED
-        if (
-            isinstance(matcher_tag_value, list)
-            and tags[matcher_tag_key] in matcher_tag_value
-        ):
-            return MatchingType.MATCHED_BY_SET
-    return MatchingType.NOT_MATCHED
+    if matcher_tag_key not in tags:
+        return MatchingType.NOT_MATCHED, []
+
+    if matcher_tag_value == "*":
+        return MatchingType.MATCHED_BY_WILDCARD, []
+    if tags[matcher_tag_key] == matcher_tag_value:
+        return MatchingType.MATCHED, []
+    matcher: Optional[re.Match] = re.match(
+        matcher_tag_value, tags[matcher_tag_key]
+    )
+    if matcher:
+        return MatchingType.MATCHED_BY_REGEX, list(matcher.groups())
+
+    return MatchingType.NOT_MATCHED, []
 
 
 def get_selector(key: str, value: str, prefix: str = "") -> str:
@@ -139,13 +141,15 @@ class Matcher:
         self,
         tags: dict[str, str],
         configuration: Optional[MapConfiguration] = None,
-    ) -> bool:
+    ) -> tuple[bool, dict[str, str]]:
         """
         Check whether element tags matches tag matcher.
 
         :param tags: element tags to be matched
         :param configuration: current map configuration to be matched
         """
+        groups: dict[str, str] = {}
+
         if (
             configuration is not None
             and self.location_restrictions
@@ -153,28 +157,29 @@ class Matcher:
                 self.location_restrictions, configuration.country
             )
         ):
-            return False
+            return False, {}
 
         for config_tag_key in self.tags:
             config_tag_key: str
-            tag_matcher = self.tags[config_tag_key]
-            if (
-                is_matched_tag(config_tag_key, tag_matcher, tags)
-                == MatchingType.NOT_MATCHED
-            ):
-                return False
+            is_matched, matched_groups = is_matched_tag(
+                config_tag_key, self.tags[config_tag_key], tags
+            )
+            if is_matched == MatchingType.NOT_MATCHED:
+                return False, {}
+            elif matched_groups:
+                for index, element in enumerate(matched_groups):
+                    groups[f"#{config_tag_key}{index}"] = element
 
         if self.exception:
             for config_tag_key in self.exception:
                 config_tag_key: str
-                tag_matcher = self.exception[config_tag_key]
-                if (
-                    is_matched_tag(config_tag_key, tag_matcher, tags)
-                    != MatchingType.NOT_MATCHED
-                ):
-                    return False
+                is_matched, matched_groups = is_matched_tag(
+                    config_tag_key, self.exception[config_tag_key], tags
+                )
+                if is_matched != MatchingType.NOT_MATCHED:
+                    return False, {}
 
-        return True
+        return True, groups
 
     def get_mapcss_selector(self, prefix: str = "") -> str:
         """
@@ -195,6 +200,19 @@ class Matcher:
         return {}
 
 
+def get_shape_specifications(
+    structure: list[Union[str, dict[str, Any]]]
+) -> list[dict]:
+    """Parse shape specification from scheme."""
+    shapes: list[dict] = []
+    for shape_specification in structure:
+        if isinstance(shape_specification, str):
+            shapes.append({"shape": shape_specification})
+        else:
+            shapes.append(shape_specification)
+    return shapes
+
+
 class NodeMatcher(Matcher):
     """
     Tag specification matcher.
@@ -212,15 +230,15 @@ class NodeMatcher(Matcher):
 
         self.shapes: Optional[IconDescription] = None
         if "shapes" in structure:
-            self.shapes = structure["shapes"]
+            self.shapes = get_shape_specifications(structure["shapes"])
 
         self.over_icon: Optional[IconDescription] = None
         if "over_icon" in structure:
-            self.over_icon = structure["over_icon"]
+            self.over_icon = get_shape_specifications(structure["over_icon"])
 
         self.add_shapes: Optional[IconDescription] = None
         if "add_shapes" in structure:
-            self.add_shapes = structure["add_shapes"]
+            self.add_shapes = get_shape_specifications(structure["add_shapes"])
 
         self.set_main_color: Optional[str] = None
         if "set_main_color" in structure:
@@ -232,17 +250,17 @@ class NodeMatcher(Matcher):
 
         self.under_icon: Optional[IconDescription] = None
         if "under_icon" in structure:
-            self.under_icon = structure["under_icon"]
+            self.under_icon = get_shape_specifications(structure["under_icon"])
 
         self.with_icon: Optional[IconDescription] = None
         if "with_icon" in structure:
-            self.with_icon = structure["with_icon"]
+            self.with_icon = get_shape_specifications(structure["with_icon"])
 
     def get_clean_shapes(self) -> Optional[list[str]]:
         """Get list of shape identifiers for shapes."""
         if not self.shapes:
             return None
-        return [(x if isinstance(x, str) else x["shape"]) for x in self.shapes]
+        return [x["shape"] for x in self.shapes]
 
 
 class WayMatcher(Matcher):
@@ -288,6 +306,7 @@ class RoadMatcher(Matcher):
             self.priority = structure["priority"]
 
     def get_priority(self, tags: dict[str, str]) -> float:
+        """Get priority for drawing order."""
         layer: float = 0
         if "layer" in tags:
             layer = float(tags.get("layer"))
@@ -349,6 +368,7 @@ class Scheme:
         try:
             return Color(color)
         except (ValueError, AttributeError):
+            logging.debug(f"Unknown color `{color}`.")
             return DEFAULT_COLOR
 
     def is_no_drawable(self, key: str) -> bool:
@@ -410,7 +430,8 @@ class Scheme:
         for index, matcher in enumerate(self.node_matchers):
             if not matcher.replace_shapes and main_icon:
                 continue
-            if not matcher.is_matched(tags, configuration):
+            matching, groups = matcher.is_matched(tags, configuration)
+            if not matching:
                 continue
             if (
                 not configuration.ignore_level_matching
@@ -423,7 +444,7 @@ class Scheme:
                 processed |= matcher_tags
             if matcher.shapes:
                 specifications = [
-                    self.get_shape_specification(x, extractor)
+                    self.get_shape_specification(x, extractor, groups)
                     for x in matcher.shapes
                 ]
                 main_icon = Icon(specifications)
@@ -437,7 +458,9 @@ class Scheme:
                 processed |= matcher_tags
             if matcher.add_shapes:
                 specifications = [
-                    self.get_shape_specification(x, extractor, Color("#888888"))
+                    self.get_shape_specification(
+                        x, extractor, color=Color("#888888")
+                    )
                     for x in matcher.add_shapes
                 ]
                 extra_icons += [Icon(specifications)]
@@ -493,7 +516,8 @@ class Scheme:
         line_styles = []
 
         for matcher in self.way_matchers:
-            if not matcher.is_matched(tags):
+            matching, _ = matcher.is_matched(tags)
+            if not matching:
                 continue
 
             line_styles.append(LineStyle(matcher.style, matcher.priority))
@@ -503,7 +527,8 @@ class Scheme:
     def get_road(self, tags: dict[str, Any]) -> Optional[RoadMatcher]:
         """Get road matcher if tags are matched."""
         for matcher in self.road_matchers:
-            if not matcher.is_matched(tags):
+            matching, _ = matcher.is_matched(tags)
+            if not matching:
                 continue
             return matcher
         return None
@@ -586,7 +611,8 @@ class Scheme:
     def is_area(self, tags: dict[str, str]) -> bool:
         """Check whether way described by tags is area."""
         for matcher in self.area_matchers:
-            if matcher.is_matched(tags):
+            matching, _ = matcher.is_matched(tags)
+            if matching:
                 return True
         return False
 
@@ -605,6 +631,7 @@ class Scheme:
         self,
         structure: Union[str, dict[str, Any]],
         extractor: ShapeExtractor,
+        groups: dict[str, str] = None,
         color: Color = DEFAULT_COLOR,
     ) -> ShapeSpecification:
         """
@@ -619,25 +646,25 @@ class Scheme:
         flip_vertically: bool = False
         use_outline: bool = True
 
-        if isinstance(structure, str):
-            shape = extractor.get_shape(structure)
-        elif isinstance(structure, dict):
-            if "shape" in structure:
-                shape = extractor.get_shape(structure["shape"])
-            else:
-                logging.error(
-                    "Invalid shape specification: `shape` key expected."
-                )
-            if "color" in structure:
-                color = self.get_color(structure["color"])
-            if "offset" in structure:
-                offset = np.array(structure["offset"])
-            if "flip_horizontally" in structure:
-                flip_horizontally = structure["flip_horizontally"]
-            if "flip_vertically" in structure:
-                flip_vertically = structure["flip_vertically"]
-            if "outline" in structure:
-                use_outline = structure["outline"]
+        structure: dict[str, Any]
+        if "shape" in structure:
+            shape_id: str = structure["shape"]
+            if groups:
+                for key in groups:
+                    shape_id = shape_id.replace(key, groups[key])
+            shape = extractor.get_shape(shape_id)
+        else:
+            logging.error("Invalid shape specification: `shape` key expected.")
+        if "color" in structure:
+            color = self.get_color(structure["color"])
+        if "offset" in structure:
+            offset = np.array(structure["offset"])
+        if "flip_horizontally" in structure:
+            flip_horizontally = structure["flip_horizontally"]
+        if "flip_vertically" in structure:
+            flip_vertically = structure["flip_vertically"]
+        if "outline" in structure:
+            use_outline = structure["outline"]
 
         return ShapeSpecification(
             shape,

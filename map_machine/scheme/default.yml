@@ -1267,29 +1267,11 @@ node_icons:
       shapes: [buffer_stop]
     - tags: {traffic_sign: city_limit}
       shapes: [city_limit_sign]
-    - tags: {traffic_sign: maxspeed, maxspeed: "30"}
+    - tags: {traffic_sign: maxspeed, maxspeed: "(\\d)(\\d)"}
       shapes: [
         circle_11,
-        {shape: digit_3, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-      ]
-    - tags: {traffic_sign: maxspeed, maxspeed: "40"}
-      shapes: [
-        circle_11,
-        {shape: digit_4, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-      ]
-    - tags: {traffic_sign: maxspeed, maxspeed: "50"}
-      shapes: [
-        circle_11,
-        {shape: digit_5, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-      ]
-    - tags: {traffic_sign: maxspeed, maxspeed: "60"}
-      shapes: [
-        circle_11,
-        {shape: digit_6, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+        {shape: digit_#maxspeed0, offset: [-2, 0], color: "#FFFFFF"},
+        {shape: digit_#maxspeed1, offset: [2, 0], color: "#FFFFFF"},
       ]
     - tags: {traffic_sign: maxspeed, maxspeed: "40_mph"}
       shapes: [

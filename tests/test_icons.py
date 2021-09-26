@@ -2,6 +2,7 @@
 Test icon generation for nodes.
 """
 import pytest
+from colour import Color
 
 from map_machine.grid import IconCollection
 from map_machine.icon import IconSet
@@ -53,8 +54,11 @@ def test_icon() -> None:
     Tags that should be visualized with single main icon and without extra
     icons.
     """
-    icon = get_icon({"natural": "tree"})
+    icon: IconSet = get_icon({"natural": "tree"})
     assert not icon.main_icon.is_default()
+    assert len(icon.main_icon.shape_specifications) == 1
+    assert icon.main_icon.shape_specifications[0].shape.id_ == "tree"
+    assert icon.main_icon.shape_specifications[0].color == Color("#98AC64")
     assert not icon.extra_icons
 
 
