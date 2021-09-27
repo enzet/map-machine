@@ -10,7 +10,7 @@ __email__ = "me@enzet.ru"
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
-from map_machine.ui import COMMANDS
+from map_machine.ui import COMMAND_LINES
 
 
 def error_run(arguments: list[str], message: bytes) -> None:
@@ -41,7 +41,7 @@ def test_wrong_render_arguments() -> None:
 def test_render() -> None:
     """Test `render` command."""
     run(
-        COMMANDS["render"] + ["--cache", "tests/data"],
+        COMMAND_LINES["render"] + ["--cache", "tests/data"],
         b"INFO Writing output SVG to out/map.svg...\n",
     )
     with Path("out/map.svg").open() as output_file:
@@ -58,7 +58,7 @@ def test_render() -> None:
 def test_render_with_tooltips() -> None:
     """Test `render` command."""
     run(
-        COMMANDS["render_with_tooltips"] + ["--cache", "tests/data"],
+        COMMAND_LINES["render_with_tooltips"] + ["--cache", "tests/data"],
         b"INFO Writing output SVG to out/map.svg...\n",
     )
     with Path("out/map.svg").open() as output_file:
@@ -76,7 +76,7 @@ def test_render_with_tooltips() -> None:
 def test_icons() -> None:
     """Test `icons` command."""
     run(
-        COMMANDS["icons"],
+        COMMAND_LINES["icons"],
         b"INFO Icon grid is written to out/icon_grid.svg.\n"
         b"INFO Icons are written to out/icons_by_name and out/icons_by_id.\n",
     )
@@ -91,7 +91,7 @@ def test_icons() -> None:
 def test_mapcss() -> None:
     """Test `mapcss` command."""
     run(
-        COMMANDS["mapcss"],
+        COMMAND_LINES["mapcss"],
         b"INFO MapCSS 0.2 scheme is written to out/map_machine_mapcss.\n",
     )
 
@@ -105,15 +105,17 @@ def test_mapcss() -> None:
 
 def test_element() -> None:
     """Test `element` command."""
-    run(COMMANDS["element"], b"INFO Element is written to out/element.svg.\n")
-
+    run(
+        COMMAND_LINES["element"],
+        b"INFO Element is written to out/element.svg.\n",
+    )
     assert (Path("out") / "element.svg").is_file()
 
 
 def test_tile() -> None:
     """Test `tile` command."""
     run(
-        COMMANDS["tile"] + ["--cache", "tests/data"],
+        COMMAND_LINES["tile"] + ["--cache", "tests/data"],
         b"INFO Tile is drawn to out/tiles/tile_18_160199_88904.svg.\n"
         b"INFO SVG file is rasterized to out/tiles/tile_18_160199_88904.png.\n",
     )

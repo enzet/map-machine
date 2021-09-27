@@ -14,7 +14,7 @@ __email__ = "me@enzet.ru"
 BOXES: str = " ▏▎▍▌▋▊▉"
 BOXES_LENGTH: int = len(BOXES)
 
-COMMANDS: dict[str, list[str]] = {
+COMMAND_LINES: dict[str, list[str]] = {
     "render": ["render", "-b", "10.000,20.000,10.001,20.001"],
     "render_with_tooltips": [
         "render",
@@ -27,6 +27,15 @@ COMMANDS: dict[str, list[str]] = {
     "element": ["element", "--node", "amenity=bench,material=wood"],
     "tile": ["tile", "--coordinates", "50.000,40.000"],
 }
+COMMANDS: list[str] = [
+    "render",
+    "server",
+    "tile",
+    "element",
+    "mapcss",
+    "icons",
+    "taginfo",
+]
 
 
 def parse_arguments(args: list[str]) -> argparse.Namespace:
@@ -163,7 +172,7 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "-b",
         "--boundary-box",
-        help="construct the minimum amount of tiles that cover requested "
+        help="construct the minimum amount of tiles that cover the requested "
         "boundary box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
     )
@@ -181,7 +190,7 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         "--input",
         dest="input_file_name",
         metavar="<path>",
-        help="input OSM XML file name (if not specified, file will be "
+        help="input OSM XML file name (if not specified, the file will be "
         "downloaded using OpenStreetMap API)",
     )
 
@@ -233,8 +242,8 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         "-b",
         "--boundary-box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
-        help="geo boundary box; if first value is negative, enclose the value "
-        "with quotes and use space before `-`",
+        help="geo boundary box; if the first value is negative, enclose the "
+        "value with quotes and use space before `-`",
     )
     parser.add_argument(
         "--cache",

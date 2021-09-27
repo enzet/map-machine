@@ -11,7 +11,7 @@ from moire.moire import Tag
 
 from map_machine import ui
 from map_machine.icon import ShapeExtractor
-from map_machine.ui import COMMANDS
+from map_machine.ui import COMMAND_LINES
 from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
@@ -143,7 +143,7 @@ class MapMachineMoire(Default, ABC):
 
     def command(self, args: Arguments) -> str:
         """Bash command from integration tests."""
-        return "map-machine " + " ".join(COMMANDS[self.clear(args[0])])
+        return "map-machine " + " ".join(COMMAND_LINES[self.clear(args[0])])
 
     def icon(self, args: Arguments) -> str:
         """Image with Röntgen icon."""
