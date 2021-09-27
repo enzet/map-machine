@@ -219,8 +219,7 @@ node_icons:
       exception: {diameter: "*"}
       shapes: [crater]
 
-    - tags:
-        natural: volcano
+    - tags: {natural: volcano}
       shapes: [stratovolcano, {shape: smoke, offset: [0, -3]}]
 
     - tags: {natural: volcano, volcano:type: stratovolcano}
@@ -595,23 +594,23 @@ node_icons:
   - group: "Not important big objects"
     start_zoom_level: 15
     tags:
+    - tags: {building: garage}
+      shapes: [garages]
+    - tags: {building: garages}
+      shapes: [garages]
+    - tags: {landuse: garages}
+      shapes: [garages]
     - tags: {man_made: communications_tower}
       location_restrictions: {include: [jp]}
       shapes: [japan_tv_tower]
-    - tags: {man_made: tower}
-      shapes: [tower]
     - tags: {man_made: telescope}
       shapes: [telescope_radio]
     - tags: {man_made: telescope, telescope:type: radio}
       shapes: [telescope_radio]
     - tags: {man_made: telescope, telescope:type: gamma}
       shapes: [telescope_gamma]
-    - tags: {building: garages}
-      shapes: [garages]
-    - tags: {landuse: garages}
-      shapes: [garages]
-    - tags: {building: garage}
-      shapes: [garages]
+    - tags: {man_made: tower}
+      shapes: [tower]
 
   - group: "Emergency"
     start_zoom_level: 15
@@ -1296,7 +1295,7 @@ node_icons:
     start_zoom_level: 18
     tags:
     - tags: {natural: tree}
-      shapes: [{shape: tree, color: tree_color}]
+      shapes: [{shape: tree, color: tree_color, outline: no}]
     - tags: {leaf_type: broadleaved}
       shapes: [{shape: tree_with_leaf, color: tree_color}]
     - tags: {leaf_type: needleleaved}
