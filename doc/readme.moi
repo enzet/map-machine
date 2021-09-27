@@ -21,29 +21,43 @@ will automatically download OSM data and write output SVG map of the specified a
 
 \code {map-machine tile -b 2.361,48.871,2.368,48.875} {bash}
 
-will automatically download OSM data and write output PNG tiles that cover the specified area to \m {out/tiles} directory.  See \ref {#tile-generation} {Tile generation}.
+will automatically download OSM data and write output PNG tiles that cover the specified area to the \m {out/tiles} directory.  See \ref {#tile-generation} {Tile generation}.
+
+\2 {Röntgen icon set} {icon-set}
+
+The central feature of the project is Röntgen icon set.  It is a set of monochrome 14 × 14 px pixel-aligned icons.  Unlike the Map Machine source code, which is under MIT license, all icons are under \ref {http://creativecommons.org/licenses/by/4.0/} {CC BY} license.  So, with the appropriate credit icon set can be used outside the project.  Some icons can be used as emoji symbols.
+
+All icons tend to support a common design style, which is heavily inspired by \ref {https://github.com/mapbox/maki} {Maki}, \ref {https://github.com/gmgeo/osmic} {Osmic}, and \ref {https://github.com/ideditor/temaki} {Temaki}.
+
+Icons are used to visualize tags for nodes and areas.  Unlike other renderers, Map Machine can use more than one icon to visualize an entity and use colors to visualize \osm {colour} value or other entity properties (like \osm {material} or \osm {genus}).
+
+\image {doc/grid.png} {Icons}
+
+Feel free to request new icons via issues for whatever you want to see on the map.  No matter how frequently the tag is used in OpenStreetMap since the final goal is to cover all tags.  However, commonly used tags have priority, other things being equal.
+
+Generate icon grid and sets of individual icons with \m {\command {icons}}.  It will create \m {out/icon_grid.svg} file, and SVG files in \m {out/icons_by_id} directory where files are named using shape identifiers (e.g. \m {power_tower_portal_2_level.svg}) and in \m {icons_by_name} directory where files are named using shape names (e.g. \m {Röntgen portal two-level transmission tower.svg}).  Files from the last directory are used in OpenStreetMap wiki (e.g. \ref {https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg} {\m {File:Röntgen_portal_two-level_transmission_tower.svg}}).
 
 \2 {Map features} {features}
 
 \3 {Isometric building shapes} {levels}
 
-With \m {--buildings isometric} or \m {--buildings isometric-no-parts} (not set by default), buildings are drawn using isometric shapes for walls and shade in proportion to \osm {building:levels}, \osm {building:min_level}, \osm {height} and \osm {min_height} values.
+With \m {--buildings isometric} or \m {--buildings isometric-no-parts} (not set by default), buildings are drawn using isometric shapes for walls and shade in proportion to \osm {building:levels}, \osm {building:min_level}, \osm {height}, and \osm {min_height} values.
 
 \image {doc/buildings.png} {3D buildings}
 
 \3 {Road lanes} {road-lanes}
 
-To determine road width Map Machine uses the \osm {width} tag value or estimates it based on the \osm {lanes} value.
+To determine road width Map Machine uses the \osm {width} tag value or estimates it based on the \osm {lanes} value. If lane value is specified, it also draws lane separators.  This map style is highly inspired by Christoph Hormann's post \ref {http://blog.imagico.de/navigating-the-maze-part-2/} {Navigating the Maze}.
 
 \image {doc/lanes.png} {Road lanes}
 
 \3 {Trees} {trees}
 
-Visualization of tree leaf types (broadleaved or needleleaved) and genus or taxon by means of icon shapes and leaf cycles (deciduous or evergreen) by means of color.
+Visualization of tree leaf types (broadleaved or needle-leaved) and genus or taxon by means of icon shapes and leaf cycles (deciduous or evergreen) by means of color.
 
 /*
 
-Visualization of tree \icon {tree} leaf types (broadleaved \icon {tree_with_leaf} or needleleaved \icon {needleleaved_tree}) and genus or taxon by means of icon shapes and leaf cycles (unknown \color {#98AC64}, deciduous \color {#fcaf3e} or evergreen \color {#688C44}) by means of color. If diameter, circumference, and/or diameter_crown are specified, we draw crown and trunk as circles. We also have special icons for some genus and taxons\: birch (\i {Betula}) \icon {betula}, palm (\i {Arecaceae}) \icon {palm}, maple (\i {Acer}) \icon {tree}\icon {leaf_maple}.
+Visualization of tree \icon {tree} leaf types (broadleaved \icon {tree_with_leaf} or needle-leaved \icon {needleleaved_tree}) and genus or taxon by means of icon shapes and leaf cycles (unknown \color {#98AC64}, deciduous \color {#fcaf3e} or evergreen \color {#688C44}) by means of color. If diameter, circumference, and/or diameter_crown are specified, we draw crown and trunk as circles. We also have special icons for some genus and taxons\: birch (\i {Betula}) \icon {betula}, palm (\i {Arecaceae}) \icon {palm}, maple (\i {Acer}) \icon {tree}\icon {leaf_maple}.
 
 \table
     {{\osm {natural=tree}} {\icon {tree}}}
@@ -74,11 +88,12 @@ Visualize \osm {direction} tag for \osm {tourism=viewpoint} and \osm {camera:dir
 Visualize \osm {design} values used with \osm {power=tower} tag.
 
 \image {doc/power_tower_design.png} {Power tower design}
+
 \image {doc/power.png} {Power tower design}
 
 \3 {Colors} {colors}
 
-Map icons have \osm {colour} tag value if it is present, otherwise icons displayed with dark grey color by default, purple color for shop nodes, red color for emergency features, and special colors for natural features.  Map Machine also takes into account \osm {building:colour}, \osm {roof:colour} and other \m {*:colour} tags, and uses \osm {colour} tag value to paint subway lines.
+Map icons have \osm {colour} tag value if it is present, otherwise, icons are displayed with dark grey color by default, purple color for shop nodes, red color for emergency features, and special colors for natural features.  Map Machine also takes into account \osm {building:colour}, \osm {roof:colour} and other \m {*:colour} tags, and uses \osm {colour} tag value to paint subway lines.
 
 \image {doc/colors.png} {Building colors}
 
@@ -92,23 +107,9 @@ There are \ref {https://en.wikipedia.org/wiki/List_of_Japanese_map_symbols} {spe
 
 \image {doc/japanese.png} {Japanese map symbols}
 
-\2 {Icon set} {icon-set}
-
-The central feature of the project is Röntgen icon set.  It is a set of monochrome 14 × 14 px pixel-aligned icons.  Unlike the Map Machine source code, which is under MIT license, all icons are under \ref {http://creativecommons.org/licenses/by/4.0/} {CC BY} license.  So, with the appropriate credit icon set can be used outside the project.  Some icons can be used as emoji symbols.
-
-All icons tend to support common design style, which is heavily inspired by \ref {https://github.com/mapbox/maki} {Maki}, \ref {https://github.com/gmgeo/osmic} {Osmic}, and \ref {https://github.com/ideditor/temaki} {Temaki}.
-
-Icons are used to visualize tags for nodes and areas.  Unlike other renderers, Map Machine can use more than one icon to visualize an entity and use colors to visualize \osm {colour} value or other entity properties (like \osm {material} or \osm {genus}).
-
-\image {doc/grid.png} {Icons}
-
-Feel free to request new icons via issues for whatever you want to see on the map.  No matter how frequently the tag is used in OpenStreetMap since final goal is to cover all tags.  However, common used tags have priority, other things being equal.
-
-Generate icon grid and sets of individual icons with \m {\command {icons}}.  It will create \m {out/icon_grid.svg} file, and SVG files in \m {out/icons_by_id} directory where files are named using shape identifiers (e.g. \m {power_tower_portal_2_level.svg}) and in \m {icons_by_name} directory where files are named using shape names (e.g. \m {Röntgen portal two-level transmission tower.svg}).  Files from the last directory are used in OpenStreetMap wiki (e.g. \ref {https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg} {\m {File:Röntgen_portal_two-level_transmission_tower.svg}}).
-
 \3 {Shape combination} {shape_combination}
 
-Map Machine constructs icons from the shapes extracted from the sketch SVG file.  Some icons consists of just one shape, to construct other it may be necessary to combine two or more shapes.
+Map Machine constructs icons from the shapes extracted from the sketch SVG file.  Some icons consist of just one shape, to construct others it may be necessary to combine two or more shapes.
 
 \image {doc/bus_stop.png} {Bus stop icon combination}
 
@@ -191,7 +192,7 @@ Command \m {render} is used to generates SVG map from OpenStreetMap data.  You c
     --boundary-box 2.284,48.860,2.290,48.865 \\
     --output out/esplanade_du_trocadéro.svg} {bash}
 
-will download OSM data to \m {cache/2.284,48.860,2.290,48.865.osm} and write output SVG map of the specified area to \m {out/esplanade_du_trocadéro.svg}.
+will download OSM data to \m {cache/2.284,48.860,2.290,48.865.osm} and write an output SVG map of the specified area to \m {out/esplanade_du_trocadéro.svg}.
 
 \3 {Arguments} {arguments}
 
@@ -235,7 +236,7 @@ Specify boundary box to get the minimal set of tiles that covers the area\:
     --boundary-box \formal {min longitude},\formal {min latitude},\formal {max longitude},\formal {max latitude} \\
     --zoom \formal {OSM zoom levels}} {bash}
 
-Boundary box will be extended to the boundaries of the minimal tile set that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point.  Map with new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.
+The boundary box will be extended to the boundaries of the minimal tileset that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point.  Map with new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.
 
 Example\:
 
@@ -249,7 +250,7 @@ Command \m {server} is used to run tile server for slippy maps.
 
 \code {map-machine server}
 
-Stop server interrupting process with \kbd {Ctrl} + \kbd {C}.
+Stop server interrupting the process with \kbd {Ctrl} + \kbd {C}.
 
 \options {server}
 
@@ -305,13 +306,13 @@ To create MapCSS with Map Machine style also for ways and relations, run \m {map
     {Active styles: press \kbd {+}.}
     {URL / File: set path to \m {out/map_machine_mapcss/map_machine.mapcss}.}
 
-To enable / disable Map Machine map paint style go to \kbd {View} → \kbd {Map Paint Styles} → \kbd {Map Machine}.
+To enable/disable Map Machine map paint style go to \kbd {View} → \kbd {Map Paint Styles} → \kbd {Map Machine}.
 
 \4 {Example}
 
 \image {doc/josm.png} {JOSM example}
 
-Example of using Röntgen icons on top of Mapnik style in JOSM.  Map Paint Styles look like\:
+Example of using Röntgen icons on top of Mapnik style in JOSM.  Map Paint Styles look like this\:
 \list
     {✓ Mapnik (true)}
     {✓ Map Machine}

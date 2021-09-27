@@ -24,26 +24,41 @@ will automatically download OSM data and write output SVG map of the specified a
 map-machine tile -b 2.361,48.871,2.368,48.875
 ```
 
-will automatically download OSM data and write output PNG tiles that cover the specified area to `out/tiles` directory. See [Tile generation](#tile-generation).
+will automatically download OSM data and write output PNG tiles that cover the specified area to the `out/tiles` directory. See [Tile generation](#tile-generation).
+
+Röntgen icon set
+----------------
+
+The central feature of the project is Röntgen icon set. It is a set of monochrome 14 × 14 px pixel-aligned icons. Unlike the Map Machine source code, which is under MIT license, all icons are under [CC BY](http://creativecommons.org/licenses/by/4.0/) license. So, with the appropriate credit icon set can be used outside the project. Some icons can be used as emoji symbols.
+
+All icons tend to support a common design style, which is heavily inspired by [Maki](https://github.com/mapbox/maki), [Osmic](https://github.com/gmgeo/osmic), and [Temaki](https://github.com/ideditor/temaki).
+
+Icons are used to visualize tags for nodes and areas. Unlike other renderers, Map Machine can use more than one icon to visualize an entity and use colors to visualize [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) value or other entity properties (like [`material`](https://wiki.openstreetmap.org/wiki/Key:material) or [`genus`](https://wiki.openstreetmap.org/wiki/Key:genus)).
+
+![Icons](doc/grid.png)
+
+Feel free to request new icons via issues for whatever you want to see on the map. No matter how frequently the tag is used in OpenStreetMap since the final goal is to cover all tags. However, commonly used tags have priority, other things being equal.
+
+Generate icon grid and sets of individual icons with `map-machine icons`. It will create `out/icon_grid.svg` file, and SVG files in `out/icons_by_id` directory where files are named using shape identifiers (e.g. `power_tower_portal_2_level.svg`) and in `icons_by_name` directory where files are named using shape names (e.g. `Röntgen portal two-level transmission tower.svg`). Files from the last directory are used in OpenStreetMap wiki (e.g. [`File:Röntgen_portal_two-level_transmission_tower.svg`](https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg)).
 
 Map features
 ------------
 
 ### Isometric building shapes ###
 
-With `--buildings isometric` or `--buildings isometric-no-parts` (not set by default), buildings are drawn using isometric shapes for walls and shade in proportion to [`building:levels`](https://wiki.openstreetmap.org/wiki/Key:building:levels), [`building:min_level`](https://wiki.openstreetmap.org/wiki/Key:building:min_level), [`height`](https://wiki.openstreetmap.org/wiki/Key:height) and [`min_height`](https://wiki.openstreetmap.org/wiki/Key:min_height) values.
+With `--buildings isometric` or `--buildings isometric-no-parts` (not set by default), buildings are drawn using isometric shapes for walls and shade in proportion to [`building:levels`](https://wiki.openstreetmap.org/wiki/Key:building:levels), [`building:min_level`](https://wiki.openstreetmap.org/wiki/Key:building:min_level), [`height`](https://wiki.openstreetmap.org/wiki/Key:height), and [`min_height`](https://wiki.openstreetmap.org/wiki/Key:min_height) values.
 
 ![3D buildings](doc/buildings.png)
 
 ### Road lanes ###
 
-To determine road width Map Machine uses the [`width`](https://wiki.openstreetmap.org/wiki/Key:width) tag value or estimates it based on the [`lanes`](https://wiki.openstreetmap.org/wiki/Key:lanes) value.
+To determine road width Map Machine uses the [`width`](https://wiki.openstreetmap.org/wiki/Key:width) tag value or estimates it based on the [`lanes`](https://wiki.openstreetmap.org/wiki/Key:lanes) value. If lane value is specified, it also draws lane separators. This map style is highly inspired by Christoph Hormann's post [Navigating the Maze](http://blog.imagico.de/navigating-the-maze-part-2/).
 
 ![Road lanes](doc/lanes.png)
 
 ### Trees ###
 
-Visualization of tree leaf types (broadleaved or needleleaved) and genus or taxon by means of icon shapes and leaf cycles (deciduous or evergreen) by means of color.
+Visualization of tree leaf types (broadleaved or needle-leaved) and genus or taxon by means of icon shapes and leaf cycles (deciduous or evergreen) by means of color.
 
 ![Trees](doc/trees.png)
 
@@ -65,9 +80,7 @@ Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used
 
 ### Colors ###
 
-Map icons have [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) tag value if it is present, otherwise icons displayed with dark grey color by default, purple color for shop nodes, red color for emergency features, and special colors for natural features. Map Machine also takes into account [`building:colour`](https://wiki.openstreetmap.org/wiki/Key:building:colour), [`roof:colour`](https://wiki.openstreetmap.org/wiki/Key:roof:colour) and other `*:colour` tags. We also use [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) tag value to paint subway lines.
-
-E.g. [`building:colour`](https://wiki.openstreetmap.org/wiki/Key:building:colour) visualization:
+Map icons have [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) tag value if it is present, otherwise, icons are displayed with dark grey color by default, purple color for shop nodes, red color for emergency features, and special colors for natural features. Map Machine also takes into account [`building:colour`](https://wiki.openstreetmap.org/wiki/Key:building:colour), [`roof:colour`](https://wiki.openstreetmap.org/wiki/Key:roof:colour) and other `*:colour` tags, and uses [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) tag value to paint subway lines.
 
 ![Building colors](doc/colors.png)
 
@@ -81,24 +94,9 @@ There are [special symbols](https://en.wikipedia.org/wiki/List_of_Japanese_map_s
 
 ![Japanese map symbols](doc/japanese.png)
 
-Icon set
---------
-
-The central feature of the project is Röntgen icon set. It is a set of monochrome 14 × 14 px pixel-aligned icons. Unlike the Map Machine source code, which is under MIT license, all icons are under [CC BY](http://creativecommons.org/licenses/by/4.0/) license. So, with the appropriate credit icon set can be used outside the project. Some icons can be used as emoji symbols.
-
-All icons tend to support common design style, which is heavily inspired by [Maki](https://github.com/mapbox/maki), [Osmic](https://github.com/gmgeo/osmic), and [Temaki](https://github.com/ideditor/temaki).
-
-Icons are used to visualize tags for nodes and areas. Unlike other renderers, Map Machine can use more than one icon to visualize an entity and use colors to visualize [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) value or other entity properties (like [`material`](https://wiki.openstreetmap.org/wiki/Key:material) or [`genus`](https://wiki.openstreetmap.org/wiki/Key:genus)).
-
-![Icons](doc/grid.png)
-
-Feel free to request new icons via issues for whatever you want to see on the map. No matter how frequently the tag is used in OpenStreetMap since final goal is to cover all tags. However, common used tags have priority, other things being equal.
-
-Generate icon grid and sets of individual icons with `map-machine icons`. It will create `out/icon_grid.svg` file, and SVG files in `out/icons_by_id` directory where files are named using shape identifiers (e.g. `power_tower_portal_2_level.svg`) and in `icons_by_name` directory where files are named using shape names (e.g. `Röntgen portal two-level transmission tower.svg`). Files from the last directory are used in OpenStreetMap wiki (e.g. [`File:Röntgen_portal_two-level_transmission_tower.svg`](https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg)).
-
 ### Shape combination ###
 
-Map Machine constructs icons from the shapes extracted from the sketch SVG file. Some icons consists of just one shape, to construct other it may be necessary to combine two or more shapes.
+Map Machine constructs icons from the shapes extracted from the sketch SVG file. Some icons consist of just one shape, to construct others it may be necessary to combine two or more shapes.
 
 ![Bus stop icon combination](doc/bus_stop.png)
 
@@ -152,7 +150,7 @@ map-machine render \
     --output out/esplanade_du_trocadéro.svg
 ```
 
-will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and write output SVG map of the specified area to `out/esplanade_du_trocadéro.svg`.
+will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and write an output SVG map of the specified area to `out/esplanade_du_trocadéro.svg`.
 
 ### Arguments ###
 
@@ -160,9 +158,9 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and write output
 |---|---|
 | <span style="white-space: nowrap;">`-i`</span>, <span style="white-space: nowrap;">`--input`</span> `<path>` | input XML file name or names (if not specified, file will be downloaded using OpenStreetMap API) |
 | <span style="white-space: nowrap;">`-o`</span>, <span style="white-space: nowrap;">`--output`</span> `<path>` | output SVG file name, default value: `out/map.svg` |
-| <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | geo boundary box; if first value is negative, enclose the value with quotes and use space before `-` |
+| <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | geo boundary box; if the first value is negative, enclose the value with quotes and use space before `-` |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
-| <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<integer>` | OSM zoom level, default value: 18 |
+| <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<float>` | OSM zoom level, default value: 18 |
 | <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location inside the tile |
 | <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--size`</span> `<width>,<height>` | resulted image size |
 
@@ -178,9 +176,9 @@ Command `tile` is used to generate PNG tiles for [slippy maps](https://wiki.open
 | <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location inside the tile |
 | <span style="white-space: nowrap;">`-t`</span>, <span style="white-space: nowrap;">`--tile`</span> `<zoom level>/<x>/<y>` | tile specification |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
-| <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | construct the minimum amount of tiles that cover requested boundary box |
-| <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<integer>` | OSM zoom levels; can be list of numbers or ranges, e.g. `16-18`, `16,17,18`, or `16,18-20`, default value: `18` |
-| <span style="white-space: nowrap;">`-i`</span>, <span style="white-space: nowrap;">`--input`</span> `<path>` | input OSM XML file name (if not specified, file will be downloaded using OpenStreetMap API) |
+| <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | construct the minimum amount of tiles that cover the requested boundary box |
+| <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<range>` | OSM zoom levels; can be list of numbers or ranges, e.g. `16-18`, `16,17,18`, or `16,18-20`, default value: `18` |
+| <span style="white-space: nowrap;">`-i`</span>, <span style="white-space: nowrap;">`--input`</span> `<path>` | input OSM XML file name (if not specified, the file will be downloaded using OpenStreetMap API) |
 
 plus [map configuration options](#map-options)
 
@@ -220,7 +218,7 @@ map-machine tile \
     --zoom <OSM zoom levels>
 ```
 
-Boundary box will be extended to the boundaries of the minimal tile set that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point. Map with new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG files `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates.
+The boundary box will be extended to the boundaries of the minimal tileset that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point. Map with new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG files `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates.
 
 Example:
 
@@ -239,7 +237,7 @@ Command `server` is used to run tile server for slippy maps.
 map-machine server
 ```
 
-Stop server interrupting process with <kbd>Ctrl</kbd> + <kbd>C</kbd>.
+Stop server interrupting the process with <kbd>Ctrl</kbd> + <kbd>C</kbd>.
 
 | Option | Description |
 |---|---|
@@ -290,14 +288,16 @@ Map configuration options used by `render` and `tile` commands:
 
 | Option | Description |
 |---|---|
-| <span style="white-space: nowrap;">`--buildings`</span> `<mode>` | building drawing mode: flat, isometric, isometric-no-parts, default value: `flat` |
+| <span style="white-space: nowrap;">`--buildings`</span> `<mode>` | building drawing mode: no, flat, isometric, isometric-no-parts, default value: `flat` |
 | <span style="white-space: nowrap;">`--mode`</span> `<string>` | map drawing mode: normal, author, time, default value: `normal` |
 | <span style="white-space: nowrap;">`--overlap`</span> `<integer>` | how many pixels should be left around icons and text, default value: 12 |
 | <span style="white-space: nowrap;">`--labels`</span> `<string>` | label drawing mode: no, main, all, default value: `main` |
 | <span style="white-space: nowrap;">`--level`</span> | display only this floor level, default value: `overground` |
 | <span style="white-space: nowrap;">`--seed`</span> `<string>` | seed for random |
-| <span style="white-space: nowrap;">`--show-tooltips`</span> | add tooltips with tags for icons in SVG files |
+| <span style="white-space: nowrap;">`--tooltips`</span> | add tooltips with tags for icons in SVG files |
 | <span style="white-space: nowrap;">`--country`</span> | two-letter code (ISO 3166-1 alpha-2) of country, that should be used for location restrictions, default value: `world` |
+| <span style="white-space: nowrap;">`--ignore-level-matching`</span> | draw all map features ignoring the current level |
+| <span style="white-space: nowrap;">`--roofs`</span> | draw building roofs, set by default |
 
 MapCSS 0.2 generation
 ---------------------
@@ -320,13 +320,13 @@ To create MapCSS with Map Machine style also for ways and relations, run `map-ma
   * Active styles: press <kbd>+</kbd>.
   * URL / File: set path to `out/map_machine_mapcss/map_machine.mapcss`.
 
-To enable / disable Map Machine map paint style go to <kbd>View</kbd> → <kbd>Map Paint Styles</kbd> → <kbd>Map Machine</kbd>.
+To enable/disable Map Machine map paint style go to <kbd>View</kbd> → <kbd>Map Paint Styles</kbd> → <kbd>Map Machine</kbd>.
 
 #### Example ####
 
 ![JOSM example](doc/josm.png)
 
-Example of using Röntgen icons on top of Mapnik style in JOSM. Map Paint Styles look like:
+Example of using Röntgen icons on top of Mapnik style in JOSM. Map Paint Styles look like this:
 
   * ✓ Mapnik (true)
   * ✓ Map Machine
