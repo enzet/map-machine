@@ -609,6 +609,9 @@
   "power_tower_donau": {
     "name": "donau transmission tower"
   },
+  "power_tower_donau_inverse": {
+    "name": "inverse donau transmission tower"
+  },
   "power_tower_flag": {
     "name": "flag transmission tower"
   },

@@ -727,6 +727,8 @@ node_icons:
       shapes: [power_tower_4_level]
     - tags: {power: tower, design: donau}
       shapes: [power_tower_donau]
+    - tags: {power: tower, design: donau_inverse}
+      shapes: [power_tower_donau_inverse]
     - tags: {power: tower, design: barrel}
       shapes: [power_tower_barrel]
     - tags: {power: tower, design: asymmetric}
