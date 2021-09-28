@@ -4,7 +4,7 @@ Icon grid drawing.
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
 
 import numpy as np
 from colour import Color
@@ -50,58 +50,51 @@ class IconCollection:
         """
         icons: list[Icon] = []
 
-        def add() -> Optional[Icon]:
+        def add(current_set: list[dict[str, str]]) -> None:
             """Construct icon and add it to the list."""
             specifications: list[ShapeSpecification] = []
             for shape_specification in current_set:
                 if "#" in shape_specification["shape"]:
-                    return None
-                scheme.get_shape_specification(shape_specification, extractor)
+                    return
+                specifications.append(
+                    scheme.get_shape_specification(
+                        shape_specification, extractor
+                    )
+                )
             constructed_icon: Icon = Icon(specifications)
             constructed_icon.recolor(color, white=background_color)
             if constructed_icon not in icons:
                 icons.append(constructed_icon)
 
-            return constructed_icon
-
-        current_set: list[Union[str, dict[str, str]]]
-
         for matcher in scheme.node_matchers:
             matcher: NodeMatcher
             if matcher.shapes:
-                current_set = matcher.shapes
-                add()
+                add(matcher.shapes)
             if matcher.add_shapes:
-                current_set = matcher.add_shapes
-                add()
+                add(matcher.add_shapes)
             if not matcher.over_icon:
                 continue
             if matcher.under_icon:
                 for icon_id in matcher.under_icon:
-                    current_set = [icon_id] + matcher.over_icon
-                    add()
+                    add([icon_id] + matcher.over_icon)
             if not (matcher.under_icon and matcher.with_icon):
                 continue
             for icon_id in matcher.under_icon:
                 for icon_2_id in matcher.with_icon:
-                    current_set: list[str] = (
-                        [icon_id] + [icon_2_id] + matcher.over_icon
-                    )
-                    add()
+                    add([icon_id] + [icon_2_id] + matcher.over_icon)
                 for icon_2_id in matcher.with_icon:
                     for icon_3_id in matcher.with_icon:
-                        current_set = (
-                            [icon_id]
-                            + [icon_2_id]
-                            + [icon_3_id]
-                            + matcher.over_icon
-                        )
                         if (
                             icon_2_id != icon_3_id
                             and icon_2_id != icon_id
                             and icon_3_id != icon_id
                         ):
-                            add()
+                            add(
+                                [icon_id]
+                                + [icon_2_id]
+                                + [icon_3_id]
+                                + matcher.over_icon
+                            )
 
         specified_ids: set[str] = set()
 
