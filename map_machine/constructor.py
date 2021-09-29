@@ -507,4 +507,5 @@ def check_level_overground(tags: dict[str, Any]) -> bool:
     return (
         tags.get("location") != "underground"
         and tags.get("parking") != "underground"
+        and tags.get("tunnel") != "yes"
     )
