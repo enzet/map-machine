@@ -372,6 +372,14 @@ class OSMData:
                 node = OSMNode.parse_from_structure(element)
                 node_map[node.id_] = node
                 self.add_node(node)
+                if not self.view_box:
+                    self.view_box = BoundaryBox(
+                        node.coordinates[1],
+                        node.coordinates[0],
+                        node.coordinates[1],
+                        node.coordinates[0],
+                    )
+                self.view_box.update(node.coordinates)
 
         for element in structure["elements"]:
             if element["type"] == "way":

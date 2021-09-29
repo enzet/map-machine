@@ -159,9 +159,16 @@ class BoundaryBox:
 
         return f"{left:.3f},{bottom:.3f},{right:.3f},{top:.3f}"
 
+    def update(self, coordinates: np.ndarray) -> None:
+        """Make the boundary box cover coordinates."""
+        self.left = min(self.left, coordinates[1])
+        self.bottom = min(self.bottom, coordinates[0])
+        self.right = max(self.right, coordinates[1])
+        self.top = max(self.top, coordinates[0])
+
     def combine(self, other: "BoundaryBox") -> None:
         """Combine with another boundary box."""
         self.left = min(self.left, other.left)
-        self.right = min(self.right, other.right)
         self.bottom = min(self.bottom, other.bottom)
-        self.top = min(self.top, other.top)
+        self.right = max(self.right, other.right)
+        self.top = max(self.top, other.top)
