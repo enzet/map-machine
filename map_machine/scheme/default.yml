@@ -1440,31 +1440,37 @@ node_icons:
 
 roads:
   - tags: {highway: motorway}
-    default_width: 15
+    default_width: 7
     border_color: motorway_border_color
     color: motorway_color
     priority: 41.8
   - tags: {highway: trunk}
-    default_width: 13
-    border_color: road_border_color
+    default_width: 7
+    border_color: motorway_border_color
+    color: motorway_color
+    priority: 41
+  - tags: {highway: trunk_link}
+    default_width: 7
+    border_color: motorway_border_color
+    color: motorway_color
     priority: 41
   - tags: {highway: primary}
-    default_width: 11
+    default_width: 7
     border_color: primary_border_color
     color: primary_color
     priority: 41.7
   - tags: {highway: motorway_link}
-    default_width: 9
+    default_width: 7
     border_color: motorway_border_color
     color: motorway_color
     priority: 41.8
   - tags: {highway: secondary}
-    default_width: 9
+    default_width: 7
     border_color: secondary_border_color
     priority: 41.6
     color: secondary_color
   - tags: {highway: secondary_link}
-    default_width: 9
+    default_width: 7
     border_color: secondary_border_color
     priority: 41.6
     color: secondary_color
@@ -1978,7 +1984,7 @@ ways:
   - tags: {leisure: playground}
     style:
       fill: playground_color
-      opacity: 0.2
+      stroke: playground_border_color
     priority: 21
   - tags: {leisure: swimming_pool}
     style:
@@ -2177,8 +2183,9 @@ tags_to_skip:
   - "curve_geometry"
   - "diameter_crown"
   - "fixme"
-  - "junction"
+  - "import_uuid"
   - "indoor"
+  - "junction"
   - "layer"
   - "level"
   - "level:ref"
