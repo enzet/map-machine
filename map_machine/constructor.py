@@ -9,7 +9,6 @@ from typing import Any, Iterator, Optional, Union
 import numpy as np
 from colour import Color
 
-from map_machine import ui
 from map_machine.color import get_gradient_color
 from map_machine.figure import (
     Building,
@@ -18,7 +17,6 @@ from map_machine.figure import (
     StyledFigure,
     Tree,
 )
-from map_machine.road import Road, Roads
 from map_machine.flinger import Flinger
 from map_machine.icon import (
     DEFAULT_SMALL_SHAPE_ID,
@@ -37,6 +35,7 @@ from map_machine.osm_reader import (
     parse_levels,
 )
 from map_machine.point import Point
+from map_machine.road import Road, Roads
 from map_machine.scheme import DEFAULT_COLOR, LineStyle, RoadMatcher, Scheme
 from map_machine.text import Label
 from map_machine.ui import BuildingMode
@@ -206,17 +205,10 @@ class Constructor:
 
     def construct_ways(self) -> None:
         """Construct Map Machine ways."""
-        for index, way_id in enumerate(self.osm_data.ways):
-            ui.progress_bar(
-                index,
-                len(self.osm_data.ways),
-                step=10,
-                text="Constructing ways",
-            )
+        logging.info("Constructing ways...")
+        for way_id in self.osm_data.ways:
             way: OSMWay = self.osm_data.ways[way_id]
             self.construct_line(way, [], [way.nodes])
-
-        ui.progress_bar(-1, len(self.osm_data.ways), text="Constructing ways")
 
     def construct_line(
         self,
@@ -400,17 +392,14 @@ class Constructor:
 
     def construct_nodes(self) -> None:
         """Draw nodes."""
+        logging.info("Constructing nodes...")
+
         sorted_node_ids: Iterator[int] = sorted(
             self.osm_data.nodes.keys(),
             key=lambda x: -self.osm_data.nodes[x].coordinates[0],
         )
-
-        for index, node_id in enumerate(sorted_node_ids):
-            ui.progress_bar(
-                index, len(self.osm_data.nodes), text="Constructing nodes"
-            )
+        for node_id in sorted_node_ids:
             self.construct_node(self.osm_data.nodes[node_id])
-        ui.progress_bar(-1, len(self.osm_data.nodes), text="Constructing nodes")
 
     def construct_node(self, node: OSMNode) -> None:
         """Draw one node."""

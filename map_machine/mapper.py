@@ -24,7 +24,7 @@ from map_machine.osm_reader import OSMData, OSMNode
 from map_machine.point import Occupied, Point
 from map_machine.road import Intersection, Road, RoadPart
 from map_machine.scheme import Scheme
-from map_machine.ui import BuildingMode, progress_bar
+from map_machine.ui import BuildingMode
 from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
@@ -60,15 +60,14 @@ class Map:
         ways: list[StyledFigure] = sorted(
             constructor.figures, key=lambda x: x.line_style.priority
         )
-        ways_length: int = len(ways)
-        for index, way in enumerate(ways):
-            progress_bar(index, ways_length, step=10, text="Drawing ways")
+        logging.info("Drawing ways...")
+
+        for way in ways:
             path_commands: str = way.get_path(self.flinger)
             if path_commands:
                 path: SVGPath = SVGPath(d=path_commands)
                 path.update(way.line_style.style)
                 self.svg.add(path)
-        progress_bar(-1, 0, text="Drawing ways")
 
         constructor.roads.draw(self.svg, self.flinger)
 
@@ -97,22 +96,16 @@ class Map:
         nodes: list[Point] = sorted(
             constructor.points, key=lambda x: -x.priority
         )
-        steps: int = len(nodes)
-
-        for index, node in enumerate(nodes):
-            progress_bar(index, steps * 3, step=10, text="Drawing main icons")
+        logging.info("Drawing main icons...")
+        for node in nodes:
             node.draw_main_shapes(self.svg, occupied)
 
-        for index, point in enumerate(nodes):
-            progress_bar(
-                steps + index, steps * 3, step=10, text="Drawing extra icons"
-            )
+        logging.info("Drawing extra icons...")
+        for point in nodes:
             point.draw_extra_shapes(self.svg, occupied)
 
-        for index, point in enumerate(nodes):
-            progress_bar(
-                steps * 2 + index, steps * 3, step=10, text="Drawing texts"
-            )
+        logging.info("Drawing texts...")
+        for point in nodes:
             if (
                 not self.configuration.is_wireframe()
                 and self.configuration.label_mode != LabelMode.NO
@@ -120,8 +113,6 @@ class Map:
                 point.draw_texts(
                     self.svg, occupied, self.configuration.label_mode
                 )
-
-        progress_bar(-1, len(nodes), step=10, text="Drawing nodes")
 
     def draw_buildings(self, constructor: Constructor) -> None:
         """Draw buildings: shade, walls, and roof."""
@@ -132,6 +123,8 @@ class Map:
                 building.draw(self.svg, self.flinger)
             return
 
+        logging.info("Drawing buildings...")
+
         scale: float = self.flinger.get_scale() / 3.0
         building_shade: Group = Group(opacity=0.1)
         for building in constructor.buildings:
@@ -139,9 +132,7 @@ class Map:
         self.svg.add(building_shade)
 
         previous_height: float = 0
-        count: int = len(constructor.heights)
-        for index, height in enumerate(sorted(constructor.heights)):
-            progress_bar(index, count, step=1, text="Drawing buildings")
+        for height in sorted(constructor.heights):
             fill: Color()
             for building in constructor.buildings:
                 if building.height < height or building.min_height > height:
@@ -154,8 +145,6 @@ class Map:
                         building.draw_roof(self.svg, self.flinger, scale)
 
             previous_height = height
-
-        progress_bar(-1, count, step=1, text="Drawing buildings")
 
     def draw_roads(self, roads: Iterator[Road]) -> None:
         """Draw road as simple SVG path."""
