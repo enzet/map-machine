@@ -262,15 +262,17 @@ class Tree(Tagged):
         """Draw crown and trunk."""
         scale: float = flinger.get_scale(self.coordinates)
         radius: float
-        if "diameter_crown" in self.tags:
+        diameter_crown: Optional[float] = self.get_float("diameter_crown")
+        if diameter_crown is not None:
             radius = float(self.tags["diameter_crown"]) / 2.0
         else:
             radius = 2.0
         color: Color = scheme.get_color("evergreen_color")
         svg.add(svg.circle(self.point, radius * scale, fill=color, opacity=0.3))
 
-        if "circumference" in self.tags:
-            radius: float = float(self.tags["circumference"]) / 2.0 / np.pi
+        circumference: Optional[float] = self.get_float("circumference")
+        if circumference is not None:
+            radius: float = circumference / 2.0 / np.pi
             svg.add(svg.circle(self.point, radius * scale, fill="#B89A74"))
 
 
