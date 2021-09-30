@@ -408,6 +408,8 @@ node_icons:
       shapes: [pole_dancer]
     - tags: {club: computer}
       shapes: [glider]
+    - tags: {leisure: hackerspace}
+      shapes: [glider]
     - tags: {man_made: survey_point}
       shapes: [survey_point]
     - tags: {leisure: amusement_arcade}
@@ -576,6 +578,8 @@ node_icons:
     - tags: {amenity: kindergarten}
       shapes: [toy_horse]
     - tags: {building: kindergarten, amenity: kindergarten}
+      shapes: [toy_horse]
+    - tags: {leisure: indoor_playground}
       shapes: [toy_horse]
     - tags: {building: office}
       shapes: [briefcase]
@@ -1033,6 +1037,8 @@ node_icons:
     - tags: {historic: memorial, memorial: plaque}
       shapes: [plaque]
     - tags: {historic: memorial, memorial: statue}
+      shapes: [statue]
+    - tags: {barrier: artwork, artwork_type: statue}
       shapes: [statue]
     - tags: {historic: stone}
       shapes: [stone_with_inscription]
