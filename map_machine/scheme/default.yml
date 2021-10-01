@@ -674,6 +674,8 @@ node_icons:
 
     - tags: {traffic_calming: bump}
       shapes: [bump]
+    - tags: {traffic_calming: mini_bumps}
+      shapes: [mini_bumps]
     - tags: {traffic_calming: table}
       shapes: [traffic_table]
     - tags: {traffic_calming: cushion}
