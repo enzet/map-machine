@@ -671,8 +671,13 @@ node_icons:
       shapes: [traffic_signals]
     - tags: {crossing_ref: toucan}
       shapes: [toucan_crossing]
+
     - tags: {traffic_calming: bump}
       shapes: [bump]
+    - tags: {traffic_calming: table}
+      shapes: [traffic_table]
+    - tags: {traffic_calming: cushion}
+      shapes: [traffic_cushion]
 
   - group: "Important middle objects"
     start_zoom_level: 16
