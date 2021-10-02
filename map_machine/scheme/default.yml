@@ -680,6 +680,10 @@ node_icons:
       shapes: [traffic_table]
     - tags: {traffic_calming: cushion}
       shapes: [traffic_cushion]
+    - tags: {traffic_calming: dip}
+      shapes: [dip]
+    - tags: {traffic_calming: double_dip}
+      shapes: [double_dip]
 
   - group: "Important middle objects"
     start_zoom_level: 16

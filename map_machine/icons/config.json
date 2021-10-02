@@ -103,7 +103,9 @@
     "name": "buffer stop"
   },
   "building": {},
-  "bump": {},
+  "bump": {
+    "name": "bump"
+  },
   "buoy": {},
   "burger": {
     "emoji": "🍔",
@@ -247,6 +249,7 @@
     "is_part": true
   },
   "digital_clock": {},
+  "dip": {},
   "dog": {
     "emoji": "🐕"
   },
@@ -256,6 +259,7 @@
   "door_with_keyhole": {
     "name": "door with keyhole"
   },
+  "double_dip": {},
   "drinking_water": {
     "emoji": "🚰"
   },
@@ -469,6 +473,7 @@
     "name": "microphone"
   },
   "milk": {},
+  "mini_bumps": {},
   "money": {},
   "monorail": {},
   "muslim": {
