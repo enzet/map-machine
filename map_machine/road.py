@@ -15,7 +15,6 @@ from map_machine.drawing import PathCommands
 from map_machine.flinger import Flinger
 from map_machine.osm_reader import OSMNode, Tagged
 from map_machine.scheme import RoadMatcher
-
 from map_machine.vector import (
     Line,
     Polyline,
@@ -493,6 +492,27 @@ class Road(Tagged):
             path.update(style)
             svg.add(path)
 
+    def draw_caption(self, svg: Drawing) -> None:
+        """Draw road name along its path."""
+        name: Optional[str] = self.tags.get("name")
+        if not name:
+            return
+
+        path = svg.path(d=self.line.get_path(3), fill="none")
+        svg.add(path)
+
+        text = svg.add(svgwrite.text.Text(""))
+        text_path = svgwrite.text.TextPath(
+            path=path,
+            text=name,
+            startOffset=None,
+            method="align",
+            spacing="exact",
+            font_family="Roboto",
+            font_size=10,
+        )
+        text.add(text_path)
+
 
 def get_curve_points(
     road: Road, scale: float, center: np.ndarray, road_end: np.ndarray
@@ -703,7 +723,9 @@ class Roads:
                 self.nodes[node.id_] = []
             self.nodes[node.id_].append((road, index))
 
-    def draw(self, svg: Drawing, flinger: Flinger) -> None:
+    def draw(
+        self, svg: Drawing, flinger: Flinger, draw_captions: bool = False
+    ) -> None:
         """Draw whole road system."""
         if not self.roads:
             return
@@ -769,3 +791,7 @@ class Roads:
 
             for road in roads:
                 road.draw_lanes(svg, flinger, road.matcher.border_color)
+
+        if draw_captions:
+            for road in self.roads:
+                road.draw_caption(svg)
