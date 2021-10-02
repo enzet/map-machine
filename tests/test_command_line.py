@@ -12,6 +12,15 @@ from xml.etree.ElementTree import Element
 
 from map_machine.ui import COMMAND_LINES
 
+LOG: bytes = (
+    b"INFO Constructing ways...\n"
+    b"INFO Constructing nodes...\n"
+    b"INFO Drawing ways...\n"
+    b"INFO Drawing main icons...\n"
+    b"INFO Drawing extra icons...\n"
+    b"INFO Drawing texts...\n"
+)
+
 
 def error_run(arguments: list[str], message: bytes) -> None:
     """Run command that should fail and check error message."""
@@ -42,7 +51,7 @@ def test_render() -> None:
     """Test `render` command."""
     run(
         COMMAND_LINES["render"] + ["--cache", "tests/data"],
-        b"INFO Writing output SVG to out/map.svg...\n",
+        LOG + b"INFO Writing output SVG to out/map.svg...\n",
     )
     with Path("out/map.svg").open() as output_file:
         root: Element = ElementTree.parse(output_file).getroot()
@@ -59,7 +68,7 @@ def test_render_with_tooltips() -> None:
     """Test `render` command."""
     run(
         COMMAND_LINES["render_with_tooltips"] + ["--cache", "tests/data"],
-        b"INFO Writing output SVG to out/map.svg...\n",
+        LOG + b"INFO Writing output SVG to out/map.svg...\n",
     )
     with Path("out/map.svg").open() as output_file:
         root: Element = ElementTree.parse(output_file).getroot()
@@ -116,7 +125,7 @@ def test_tile() -> None:
     """Test `tile` command."""
     run(
         COMMAND_LINES["tile"] + ["--cache", "tests/data"],
-        b"INFO Tile is drawn to out/tiles/tile_18_160199_88904.svg.\n"
+        LOG + b"INFO Tile is drawn to out/tiles/tile_18_160199_88904.svg.\n"
         b"INFO SVG file is rasterized to out/tiles/tile_18_160199_88904.png.\n",
     )
 
