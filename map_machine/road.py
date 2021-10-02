@@ -416,27 +416,27 @@ class Road(Tagged):
         if "layer" in tags:
             self.layer = float(tags["layer"])
 
-    def draw(
-        self,
-        svg: Drawing,
-        flinger: Flinger,
-        color: Color,
-        extra_width: float = 0,
-    ) -> None:
+    def draw(self, svg: Drawing, flinger: Flinger, is_border: bool) -> None:
         """Draw road as simple SVG path."""
         width: float
         if self.width is not None:
             width = self.width
         else:
             width = self.matcher.default_width
-        if extra_width and self.tags.get("bridge") == "yes":
-            color = Color("#666666")
-        if extra_width and self.tags.get("ford") == "yes":
-            color = Color("#88BBFF")
-            width += 2
-        if extra_width and self.tags.get("embankment") == "yes":
-            color = Color("#666666")
-            width += 4
+
+        if is_border:
+            color = self.get_border_color()
+            extra_width = 2
+        else:
+            color = self.get_color()
+            extra_width = 0
+
+        if is_border:
+            if self.tags.get("ford") == "yes":
+                width += 2
+            if self.tags.get("embankment") == "yes":
+                width += 4
+
         scale: float = flinger.get_scale(self.nodes[0].coordinates)
         path_commands: str = self.line.get_path()
         path: Path = Path(d=path_commands)
@@ -447,12 +447,31 @@ class Road(Tagged):
             "stroke-linejoin": "round",
             "stroke-width": scale * width + extra_width,
         }
-        if extra_width and self.tags.get("embankment") == "yes":
+        if is_border and self.tags.get("embankment") == "yes":
             style["stroke-dasharray"] = "1,3"
-        if extra_width and self.tags.get("tunnel") == "yes":
-            style["stroke-dasharray"] = "3,3"
+        if self.tags.get("tunnel") == "yes":
+            if is_border:
+                style["stroke-dasharray"] = "3,3"
         path.update(style)
         svg.add(path)
+
+    def get_color(self) -> Color:
+        """Get road main color."""
+        color: Color = self.matcher.color
+        if self.tags.get("tunnel") == "yes":
+            color = Color(color, luminance=min(1, color.luminance + 0.2))
+        return color
+
+    def get_border_color(self) -> Color:
+        """Get road border color."""
+        color: Color = self.matcher.border_color
+        if self.tags.get("bridge") == "yes":
+            color = Color("#666666")
+        if self.tags.get("ford") == "yes":
+            color = Color("#88BBFF")
+        if self.tags.get("embankment") == "yes":
+            color = Color("#666666")
+        return color
 
     def draw_lanes(self, svg: Drawing, flinger: Flinger, color: Color) -> None:
         """Draw lane separators."""
@@ -507,10 +526,12 @@ class Connector:
         scale: float,
     ) -> None:
         self.connections: list[tuple[Road, int]] = connections
-        self.road_1: Road = connections[0][0]
-        self.index_1: int = connections[0][1]
+        self.road_1: Road
+        self.index_1: int
+        self.road_1, self.index_1 = connections[0]
 
-        self.layer: float = min(x[0].layer for x in connections)
+        self.min_layer: float = min(x[0].layer for x in connections)
+        self.max_layer: float = max(x[0].layer for x in connections)
         self.scale: float = scale
         self.flinger: Flinger = flinger
 
@@ -547,7 +568,7 @@ class SimpleConnector(Connector):
         circle: Circle = svg.circle(
             self.point,
             self.road_1.width * self.scale / 2,
-            fill=self.road_1.matcher.color.hex,
+            fill=self.road_1.get_color().hex,
         )
         svg.add(circle)
 
@@ -672,16 +693,15 @@ class Roads:
 
     def __init__(self) -> None:
         self.roads: list[Road] = []
-        self.connections: dict[int, list[tuple[Road, int]]] = {}
+        self.nodes: dict[int, list[tuple[Road, int]]] = {}
 
     def append(self, road: Road) -> None:
         """Add road and update connections."""
         self.roads.append(road)
-        for index in road.nodes[0].id_, road.nodes[-1].id_:
-            if index not in self.connections:
-                self.connections[index] = []
-        self.connections[road.nodes[0].id_].append((road, 0))
-        self.connections[road.nodes[-1].id_].append((road, -1))
+        for index, node in enumerate(road.nodes):
+            if node.id_ not in self.nodes:
+                self.nodes[node.id_] = []
+            self.nodes[node.id_].append((road, index))
 
     def draw(self, svg: Drawing, flinger: Flinger) -> None:
         """Draw whole road system."""
@@ -697,23 +717,33 @@ class Roads:
                 layered_roads[road.layer] = []
             layered_roads[road.layer].append(road)
 
-        for id_ in self.connections:
-            connected: list[tuple[Road, int]] = self.connections[id_]
+        for id_ in self.nodes:
+            connected: list[tuple[Road, int]] = self.nodes[id_]
             connector: Connector
 
-            if len(self.connections[id_]) == 2:
-                road_1, _ = connected[0]
-                road_2, _ = connected[1]
-                if road_1.width == road_2.width:
+            if len(self.nodes[id_]) <= 1:
+                continue
+            elif len(self.nodes[id_]) == 2:
+                road_1, index_1 = connected[0]
+                road_2, index_2 = connected[1]
+                if (
+                    road_1.width == road_2.width
+                    or index_1 not in [0, len(road_1.nodes) - 1]
+                    or index_2 not in [0, len(road_2.nodes) - 1]
+                ):
                     connector = SimpleConnector(connected, flinger, scale)
                 else:
                     connector = ComplexConnector(connected, flinger, scale)
             else:
                 connector = SimpleIntersection(connected, flinger, scale)
 
-            if connector.layer not in layered_connectors:
-                layered_connectors[connector.layer] = []
-            layered_connectors[connector.layer].append(connector)
+            if connector.min_layer not in layered_connectors:
+                layered_connectors[connector.min_layer] = []
+            layered_connectors[connector.min_layer].append(connector)
+
+            if connector.max_layer not in layered_connectors:
+                layered_connectors[connector.max_layer] = []
+            layered_connectors[connector.max_layer].append(connector)
 
         for layer in sorted(layered_roads.keys()):
             roads: list[Road] = sorted(
@@ -726,14 +756,16 @@ class Roads:
                 connectors = []
 
             for road in roads:
-                road.draw(svg, flinger, road.matcher.border_color, 2)
+                road.draw(svg, flinger, True)
             for connector in connectors:
-                connector.draw_border(svg)
+                if connector.min_layer == layer:
+                    connector.draw_border(svg)
 
             for connector in connectors:
-                connector.draw(svg)
+                if connector.max_layer == layer:
+                    connector.draw(svg)
             for road in roads:
-                road.draw(svg, flinger, road.matcher.color)
+                road.draw(svg, flinger, False)
 
             for road in roads:
                 road.draw_lanes(svg, flinger, road.matcher.border_color)
