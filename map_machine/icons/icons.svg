@@ -148,9 +148,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="452.29283"
-     inkscape:cx="779.95084"
-     inkscape:zoom="16"
+     inkscape:cy="372.29283"
+     inkscape:cx="599.95084"
+     inkscape:zoom="2"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -589,9 +589,10 @@
        rx="1"
        ry="1" />
     <path
-       style="opacity:1;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="M 662 275 C 661.446 275 661 275.446 661 276 L 661 284 C 661 284.554 661.446 285 662 285 L 666 285 C 666.554 285 667 284.554 667 284 L 667 276 C 667 275.446 666.554 275 666 275 L 662 275 z M 663.5 277 L 664.5 277 C 664.777 277 665 277.223 665 277.5 L 665 278.5 C 665 278.777 664.777 279 664.5 279 L 663.5 279 C 663.223 279 663 278.777 663 278.5 L 663 277.5 C 663 277.223 663.223 277 663.5 277 z M 663.5 281 L 664.5 281 C 664.777 281 665 281.223 665 281.5 L 665 282.5 C 665 282.777 664.777 283 664.5 283 L 663.5 283 C 663.223 283 663 282.777 663 282.5 L 663 281.5 C 663 281.223 663.223 281 663.5 281 z "
-       id="rect7372" />
+       id="signal"
+       inkscape:label="#rect7372" />
     <path
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="M 34.5 50 C 34.223 50 34 50.223 34 50.5 L 34 60.5 C 34 60.777 34.223 61 34.5 61 L 44.5 61 C 44.777 61 45 60.777 45 60.5 L 45 50.5 C 45 50.223 44.777 50 44.5 50 L 34.5 50 z M 38.5 52 L 40.449219 52 C 40.726219 52 40.949219 52.223 40.949219 52.5 L 40.949219 54 L 42.449219 54 C 42.726219 54 42.949219 54.223 42.949219 54.5 L 42.949219 56.449219 C 42.949219 56.726219 42.726219 56.949219 42.449219 56.949219 L 40.949219 56.949219 L 40.949219 58.449219 C 40.949219 58.726219 40.726219 58.949219 40.449219 58.949219 L 38.5 58.949219 C 38.223 58.949219 38 58.726219 38 58.449219 L 38 56.949219 L 36.5 56.949219 C 36.223 56.949219 36 56.726219 36 56.449219 L 36 54.5 C 36 54.223 36.223 54 36.5 54 L 38 54 L 38 52.5 C 38 52.223 38.223 52 38.5 52 z "

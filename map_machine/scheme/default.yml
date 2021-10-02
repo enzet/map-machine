@@ -1070,10 +1070,12 @@ node_icons:
       shapes: [lift_gate]
     - tags: {barrier: turnstile}
       shapes: [turnstile]
-    - tags: {railway: level_crossing}
-      shapes: [x]
     - tags: {railway: crossing}
       shapes: [x]
+    - tags: {railway: level_crossing}
+      shapes: [x]
+    - tags: {railway: signal}
+      shapes: [signal]
     - tags: {amenity: atm}
       shapes: [atm]
     - tags: {amenity: bicycle_parking}
