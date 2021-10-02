@@ -1291,7 +1291,7 @@ node_icons:
       shapes: [buffer_stop]
     - tags: {traffic_sign: city_limit}
       shapes: [city_limit_sign]
-    - tags: {traffic_sign: maxspeed, maxspeed: "(\\d)(\\d)"}
+    - tags: {traffic_sign: maxspeed, maxspeed: "^(\\d)(\\d)$"}
       shapes: [
         circle_11,
         {shape: digit_#maxspeed0, offset: [-2, 0], color: "#FFFFFF"},
