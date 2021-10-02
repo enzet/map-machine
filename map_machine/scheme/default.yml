@@ -682,6 +682,8 @@ node_icons:
       shapes: [traffic_table]
     - tags: {traffic_calming: cushion}
       shapes: [traffic_cushion]
+    - tags: {traffic_calming: rumble_strip}
+      shapes: [rumble_strip]
     - tags: {traffic_calming: dip}
       shapes: [dip]
     - tags: {traffic_calming: double_dip}
