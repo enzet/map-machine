@@ -1409,7 +1409,7 @@ node_icons:
     - tags: {bicycle: "no"}
       shapes:
       - {shape: bicycle, offset: [0, 2]}
-      - {shape: x_small, offset: [-5, -4]}
+      - {shape: x_4, offset: [-5, -4]}
     - tags: {internet_access: wlan, "internet_access:fee": "no"}
       add_shapes:
       - {shape: wlan, offset: [0, -3]}
@@ -1431,6 +1431,10 @@ node_icons:
       add_shapes: [atm]
     - tags: {tactile_paving: "yes"}
       add_shapes: [tactile_paving]
+    - tags: {tactile_paving: "no"}
+      add_shapes:
+      - {shape: tactile_paving, offset: [0, 2]}
+      - {shape: x_5, offset: [0, -3]}
     - tags: {"payment:credit_cards": "yes"}
       add_shapes: [credit_card]
 
