@@ -1150,6 +1150,10 @@ node_icons:
       shapes: [binoculars_on_pole]
     - tags: {amenity: parking_space}
       shapes: [p_small]
+    - tags: {amenity: parking, parking: lane}
+      shapes: [p_small]
+    - tags: {amenity: parking, parking: street_side}
+      shapes: [p_small]
     - tags: {amenity: post_box}
       shapes: [envelope]
     - tags: {amenity: recycling}
