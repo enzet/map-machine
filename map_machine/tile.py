@@ -305,6 +305,7 @@ class Tiles:
         cache_path: Path,
         configuration: MapConfiguration,
         osm_data: OSMData,
+        redraw: bool = False,
     ) -> None:
         """
         Draw one PNG image with all tiles and split it into a set of separate
@@ -314,13 +315,16 @@ class Tiles:
         :param cache_path: directory for temporary OSM files
         :param configuration: drawing configuration
         :param osm_data: OpenStreetMap data
+        :param redraw: update cache
         """
-        if self.tiles_exist(directory):
+        if self.tiles_exist(directory) and not redraw:
             return
 
-        self.draw_image_from_osm_data(cache_path, configuration, osm_data)
-
+        self.draw_image_from_osm_data(
+            cache_path, configuration, osm_data, redraw
+        )
         input_path: Path = self.get_file_path(cache_path).with_suffix(".png")
+
         with input_path.open("rb") as input_file:
             image: Image = Image.open(input_file)
 
@@ -365,11 +369,12 @@ class Tiles:
         cache_path: Path,
         configuration: MapConfiguration,
         osm_data: OSMData,
+        redraw: bool = False,
     ) -> None:
         """Draw all tiles using OSM data."""
         output_path: Path = self.get_file_path(cache_path)
 
-        if not output_path.exists():
+        if not output_path.exists() or redraw:
             top, left = self.tile_1.get_coordinates()
             bottom, right = Tile(
                 self.tile_2.x + 1,
@@ -404,7 +409,8 @@ class Tiles:
             logging.debug(f"File {output_path} already exists.")
 
         png_path: Path = self.get_file_path(cache_path).with_suffix(".png")
-        if not png_path.exists():
+
+        if not png_path.exists() or redraw:
             with output_path.open(encoding="utf-8") as input_file:
                 cairosvg.svg2png(file_obj=input_file, write_to=str(png_path))
             logging.info(f"SVG file is rasterized to {png_path}.")
