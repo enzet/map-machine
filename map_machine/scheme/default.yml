@@ -84,6 +84,21 @@ colors:
   rose: "#FF007F"  # Wikipedia
   slate_blue: "#6A5ACD"  # W3C slateblue
 
+carto_colors:
+  building_border_color: {color: building_color, darken: "15%"}
+  building_color: "#d9d0c9"
+  cemetery_color: "#aacbaf"
+  commercial_color: "#f2dad9"
+  commercial_border_color: "#d1b2b0"
+  grass_color: "#cdebb0"
+  industrial_color: "#ebdbe8"
+  industrial_border_color: "#d1b2b0"
+  military_color: "#f55"
+  park_color: "#c8facc"
+  residential_color: "#e0dfdf"
+  residential_border_color: "#b9b9b9"
+  wood_color: "#add19e"
+
 material_colors:
 
   bronze: "#CD7F32"
