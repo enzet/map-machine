@@ -51,28 +51,62 @@ def parse_arguments(args: list[str]) -> argparse.Namespace:
     )
     subparser = parser.add_subparsers(dest="command")
 
-    render_parser = subparser.add_parser("render", help="draw SVG map")
+    render_parser = subparser.add_parser(
+        "render",
+        description="Render SVG map.  Use --boundary-box to specify geo "
+        "boundaries, --input to specify OSM XML or JSON input file, or "
+        "--coordinates and --size to specify central point and resulting image "
+        "size.",
+        help="draw SVG map",
+    )
     add_render_arguments(render_parser)
     add_map_arguments(render_parser)
 
     tile_parser = subparser.add_parser(
-        "tile", help="generate PNG tiles for slippy maps"
+        "tile",
+        description="Generate SVG and PNG 256 × 256 px tiles for slippy maps.  "
+        "You can use server command to run server in order to display "
+        "generated tiles as a map (e.g. with Leaflet).",
+        help="generate SVG and PNG tiles for slippy maps",
     )
     add_tile_arguments(tile_parser)
     add_map_arguments(tile_parser)
 
-    add_server_arguments(subparser.add_parser("server", help="run tile server"))
+    add_server_arguments(
+        subparser.add_parser(
+            "server",
+            description="Run in order to display generated tiles as a map "
+            "(e.g. with Leaflet).",
+            help="run tile server",
+        )
+    )
     add_element_arguments(
         subparser.add_parser(
-            "element", help="draw OSM element: node, way, relation"
+            "element",
+            description="Draw map element separately.",
+            help="draw OSM element: node, way, relation",
         )
     )
     add_mapcss_arguments(
-        subparser.add_parser("mapcss", help="write MapCSS file")
+        subparser.add_parser(
+            "mapcss",
+            description="Write directory with MapCSS file and generated "
+            "Röntgen icons.",
+            help="write MapCSS file",
+        )
     )
 
-    subparser.add_parser("icons", help="draw icons")
-    subparser.add_parser("taginfo", help="write Taginfo JSON file")
+    subparser.add_parser(
+        "icons",
+        description="Generate Röntgen icons as a grid and as separate SVG "
+        "icons",
+        help="draw Röntgen icons",
+    )
+    subparser.add_parser(
+        "taginfo",
+        description="Generate JSON file for Taginfo project.",
+        help="write Taginfo JSON file",
+    )
 
     arguments: argparse.Namespace = parser.parse_args(args[1:])
 
