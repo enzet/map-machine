@@ -72,15 +72,17 @@ class Tile:
         lat_deg: np.ndarray = np.degrees(lat_rad)
         return np.array((lat_deg, lon_deg))
 
-    def get_boundary_box(self) -> tuple[np.ndarray, np.ndarray]:
+    def get_boundary_box(self) -> BoundaryBox:
         """
         Get geographical boundary box of the tile: north-west and south-east
         points.
         """
-        return (
-            self.get_coordinates(),
-            Tile(self.x + 1, self.y + 1, self.zoom_level).get_coordinates(),
-        )
+        point_1: np.ndarray = self.get_coordinates()
+        point_2: np.ndarray = Tile(
+            self.x + 1, self.y + 1, self.zoom_level
+        ).get_coordinates()
+
+        return BoundaryBox(point_1[1], point_2[0], point_2[1], point_1[0])
 
     def get_extended_boundary_box(self) -> BoundaryBox:
         """Same as get_boundary_box, but with extended boundaries."""
@@ -278,6 +280,7 @@ class Tiles:
         :param configuration: drawing configuration
         """
         osm_data: OSMData = self.load_osm_data(cache_path)
+
         for tile in self.tiles:
             file_path: Path = tile.get_file_name(directory)
             if not file_path.exists():
@@ -286,6 +289,7 @@ class Tiles:
                 logging.debug(f"File {file_path} already exists.")
 
             output_path: Path = file_path.with_suffix(".png")
+
             if not output_path.exists():
                 with file_path.open(encoding="utf-8") as input_file:
                     cairosvg.svg2png(
