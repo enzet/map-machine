@@ -362,7 +362,15 @@ class Scheme:
         :return: color specification
         """
         if color in self.colors:
-            return Color(self.colors[color])
+            specification = self.colors[color]
+            if isinstance(specification, str):
+                return Color(self.colors[color])
+            else:
+                color: Color = self.get_color(specification["color"])
+                if "darken" in specification:
+                    percent: float = float(specification["darken"])
+                    color.set_luminance(color.get_luminance() * (1 - percent))
+                return color
         if color.lower() in self.colors:
             return Color(self.colors[color.lower()])
         try:

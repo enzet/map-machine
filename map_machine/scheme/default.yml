@@ -86,7 +86,7 @@ colors:
   slate_blue: "#6A5ACD"  # W3C slateblue
 
 carto_colors:
-  building_border_color: {color: building_color, darken: "15%"}
+  building_border_color: {color: building_color, darken: 0.15}
   building_color: "#d9d0c9"
   cemetery_color: "#aacbaf"
   commercial_color: "#f2dad9"
