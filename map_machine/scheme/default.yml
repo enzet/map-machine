@@ -56,6 +56,7 @@ colors:
   orchard_border_color: "#98BC84"
   outline_color: "#FFFFFF"
   parking_color: "#DDCC99"
+  park_color: "#CFE0A8"
   pitch_color: "#AADDCC"
   pitch_border_color: "#88BBAA"
   platform_border_color: "#AAAAAA"
@@ -1864,30 +1865,37 @@ ways:
     style:
       fill: hidden_color
       opacity: 0.05
+    priority: 1
   - tags: {landuse: commercial}
     style:
       fill: hidden_color
       opacity: 0.05
+    priority: 1
   - tags: {landuse: industrial}
     style:
       fill: hidden_color
       opacity: 0.05
+    priority: 1
   - tags: {landuse: military}
     style:
       fill: hidden_color
       opacity: 0.05
+    priority: 1
   - tags: {landuse: railway}
     style:
       fill: hidden_color
       opacity: 0.05
+    priority: 1
   - tags: {landuse: residential}
     style:
       fill: hidden_color
       opacity: 0.05
+    priority: 1
   - tags: {power: substation}
     style:
       fill: hidden_color
       opacity: 0.05
+    priority: 1
 
   - tags: {amenity: ferry_terminal}
     style:
@@ -1983,8 +1991,7 @@ ways:
     priority: 21
   - tags: {leisure: park}
     style:
-      fill: grass_color
-      opacity: 0.5
+      fill: park_color
   - tags: {landuse: recreation_ground}
     style:
       fill: grass_color
