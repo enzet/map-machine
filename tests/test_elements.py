@@ -72,16 +72,21 @@ ROAD_FEATURES: list[dict[str, str]] = [
 
 
 class Grid:
+    """
+    Creating map with elements ordered in grid.
+    """
+
     def __init__(self) -> None:
-        self.x_step = 0.0003
-        self.y_step = 0.0003
-        self.x_start = 0.0028
+        self.x_step: float = 0.0003
+        self.y_step: float = 0.0003
+        self.x_start: float = 0.0028
         self.index: int = 0
         self.nodes: dict[OSMNode, tuple[int, int]] = {}
         self.max_j: float = 0
         self.max_i: float = 0
 
     def add_node(self, tags: dict[str, str], i: int, j: int) -> OSMNode:
+        """Add OSM node to the grid."""
         self.index += 1
         node: OSMNode = OSMNode(
             tags,
@@ -94,6 +99,7 @@ class Grid:
         return node
 
     def get_boundary_box(self) -> BoundaryBox:
+        """Compute resulting boundary box with margin of one grid step."""
         return BoundaryBox(
             -self.x_step,
             -self.max_i - self.y_step,
@@ -112,7 +118,7 @@ def lanes() -> None:
         previous: Optional[OSMNode] = None
 
         for j in range(len(ROAD_FEATURES) + 1):
-            node = grid.add_node({}, i, j)
+            node: OSMNode = grid.add_node({}, i, j)
 
             if previous:
                 tags: dict[str, str] = dict(ROAD_FEATURES[j - 1])
@@ -123,33 +129,7 @@ def lanes() -> None:
                 osm_data.add_way(way)
             previous = node
 
-    boundary_box = grid.get_boundary_box()
-
-    draw(osm_data, Path("out") / "lanes.svg", boundary_box)
-
-
-def test_road() -> None:
-    osm_data: OSMData = OSMData()
-
-    for index in range(8):
-        nodes: list[OSMNode] = [
-            OSMNode(
-                {}, index * 2 + 1, np.array((0.0010 - index * 0.0003, -0.0010))
-            ),
-            OSMNode(
-                {}, index * 2 + 2, np.array((0.0010 - index * 0.0003, 0.0010))
-            ),
-        ]
-        for node in nodes:
-            osm_data.add_node(node)
-        osm_data.add_way(
-            OSMWay(
-                {"highway": "primary", "lanes": str(index + 1)},
-                index + 1,
-                nodes,
-            )
-        )
-    draw(osm_data, Path("out") / "map.svg")
+    draw(osm_data, Path("out") / "lanes.svg", grid.get_boundary_box())
 
 
 def draw(
