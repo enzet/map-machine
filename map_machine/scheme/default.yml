@@ -1552,6 +1552,12 @@ roads:
     default_width: 5
     priority: 21
 
+  - tags: {highway: raceway}
+    color: pitch_color
+    border_color: pitch_border_color
+    default_width: 7
+    priority: 21
+
 ways:
   - tags: {man_made: bridge}
     style: {fill: "#AAAAAA"}
