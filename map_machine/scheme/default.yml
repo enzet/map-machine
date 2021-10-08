@@ -1951,17 +1951,48 @@ ways:
       stroke-width: 3
       stroke: "#BBBBBB"
     priority: 42
+  - tags: {railway: light_rail}
+    style:
+      stroke-width: 3
+      stroke: "#CCCCCC"
+    priority: 42
+  - tags: {railway: monorail}
+    style:
+      stroke-width: 3
+      stroke: "#CCCCCC"
+    priority: 42
+  - tags: {railway: funicular}
+    style:
+      stroke-width: 3
+      stroke: "#CCCCCC"
+    priority: 42
   - tags: {railway: narrow_gauge}
     style:
       stroke-width: 3
-      stroke: "#BBBBBB"
+      stroke: "#DDDDDD"
     priority: 42
   - tags: {railway: tram}
     style:
       stroke-width: 3
       stroke: "#BBBBBB"
     priority: 42
+
   - tags: {railway: rail}
+    style:
+      stroke-width: 1
+      stroke: "#444444"
+    priority: 43
+  - tags: {railway: light_rail}
+    style:
+      stroke-width: 1
+      stroke: "#444444"
+    priority: 43
+  - tags: {railway: monorail}
+    style:
+      stroke-width: 1
+      stroke: "#444444"
+    priority: 43
+  - tags: {railway: funicular}
     style:
       stroke-width: 1
       stroke: "#444444"
