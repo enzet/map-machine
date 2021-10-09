@@ -12,7 +12,7 @@ Please, create an issue with \m {icon} label.
 
 \2 {Report a bug} {}
 
-Please, create an issue with \m {bug} and \m {generator} labels.
+Please, create an issue with \m {bug} label.
 
 \2 {Fix a typo in documentation} {}
 
@@ -26,8 +26,15 @@ First of all, configure your workspace.
     {Install formatter, linter and test system\: \m {pip install black flake8 pytest}.}
     {Be sure to run \m {git config --local core.hooksPath data/githooks} to enable Git hooks.}
 
+If you are using Pycharm, you may want to set up user dictionary as well:
+
+\list
+    {\m {cp data/dictionary.xml .idea/dictionaries/<user name>.xml}}
+    {in \m {.idea/dictionaries/<user name>.xml} change \m {%USERNAME%} to your user name,}
+    {restart Pycharm.}
+
 \3 {Code style} {code-style}
 
-We use \ref {http://github.com/psf/black} {Black} code formatter with maximum 80 characters line lenght for all Python files within the project.  Reformat a file is as simple as \m {black -l 80 \formal {file name}}.
+We use \ref {http://github.com/psf/black} {Black} code formatter with maximum 80 characters line length for all Python files within the project.  Reformat a file is as simple as \m {black -l 80 \formal {file name}}.
 
 If you create new Python file, make sure you add \m {__author__ = "\formal {first name} \formal {second name}"} and \m {__email__ = "\formal {author e-mail}"} string variables.

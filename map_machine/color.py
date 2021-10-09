@@ -13,7 +13,7 @@ __email__ = "me@enzet.ru"
 
 def is_bright(color: Color) -> bool:
     """
-    Check whether color bright enough to have black outline instead of white.
+    Check whether color is bright enough to have black outline instead of white.
     """
     return (
         0.2126 * color.red + 0.7152 * color.green + 0.0722 * color.blue
