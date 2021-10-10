@@ -78,6 +78,11 @@ colors:
   wood_border_color: "#A8BC74"
   wood_color: "#B8CC84"
 
+  runway_color: "#999399"
+  runway_border_color: {color: runway_color, darken: 0.25}
+  taxiway_color: "#AAA4AA"
+  taxiway_border_color: {color: taxiway_color, darken: 0.25}
+
   sell_color: "#880088"
 
   # Colors not in W3C
@@ -1734,6 +1739,37 @@ ways:
       stroke: foot_color
     priority: 42
 
+  - tags: {aeroway: runway}
+    style:
+      stroke-width: 50
+      stroke: runway_color
+    priority: 22
+  - tags: {aeroway: taxiway}
+    style:
+      stroke-width: 50
+      stroke: taxiway_color
+    priority: 21
+  - tags: {aeroway: runway}
+    style:
+      stroke-width: 2
+      stroke: "#DDDDDD"
+      stroke-dasharray: 40,20
+    priority: 23
+  - tags: {aeroway: taxiway}
+    style:
+      stroke-width: 1
+      stroke: "#CCCCCC"
+    priority: 23
+  - tags: {aeroway: parking_position}
+    style:
+      stroke-width: 1
+      stroke: "#DDCC00"
+    priority: 23
+  - tags: {area:aeroway: taxiway}
+    style:
+      fill: "#CCCCCC"
+    priority: 20
+
   - tags: {natural: wood}
     style:
       fill: wood_color
@@ -2007,6 +2043,7 @@ ways:
       stroke-width: 1
       stroke: "#444444"
     priority: 43
+
   - tags: {railway: platform}
     style:
       fill: platform_color
