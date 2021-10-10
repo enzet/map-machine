@@ -146,14 +146,14 @@ class Map:
 
             previous_height = height
 
-    def draw_roads(self, roads: Iterator[Road]) -> None:
+    def draw_simple_roads(self, roads: Iterator[Road]) -> None:
         """Draw road as simple SVG path."""
         nodes: dict[OSMNode, set[RoadPart]] = {}
 
         for road in roads:
-            for index in range(len(road.outers[0]) - 1):
-                node_1: OSMNode = road.outers[0][index]
-                node_2: OSMNode = road.outers[0][index + 1]
+            for index in range(len(road.nodes) - 1):
+                node_1: OSMNode = road.nodes[index]
+                node_2: OSMNode = road.nodes[index + 1]
                 point_1: np.ndarray = self.flinger.fling(node_1.coordinates)
                 point_2: np.ndarray = self.flinger.fling(node_2.coordinates)
                 scale: float = self.flinger.get_scale(node_1.coordinates)

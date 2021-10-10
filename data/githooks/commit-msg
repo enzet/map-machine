@@ -12,12 +12,6 @@ SHORT_MESSAGE_MAX_LENGTH: int = 50
 MESSAGE_MAX_LENGTH: int = 72
 
 
-def error(message: str):
-    """Print error message and return exit code 1."""
-    print(f"Error: {message}")
-    sys.exit(1)
-
-
 def check_file(file_name: str) -> Optional[str]:
     """
     Exit program with exit code 1 if commit message does not conform the rules.

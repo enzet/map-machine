@@ -25,4 +25,6 @@ def test_compute_angle() -> None:
 
 def test_turn_by_compute_angle() -> None:
     """Test turing one angle by another."""
-    assert np.allclose(turn_by_angle((1, 0), np.pi / 2), np.array((0, 1)))
+    assert np.allclose(
+        turn_by_angle(np.array((1, 0)), np.pi / 2), np.array((0, 1))
+    )

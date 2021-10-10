@@ -1,3 +1,6 @@
+"""
+Check whether `requirements.txt` contains all requirements from `setup.py`.
+"""
 from map_machine import REQUIREMENTS
 from pathlib import Path
 

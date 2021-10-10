@@ -464,6 +464,7 @@ class Road(Tagged):
         return style
 
     def get_filter(self, svg: Drawing, is_border: bool) -> Optional[Filter]:
+        """Get blurring filter."""
         if not USE_BLUR:
             return None
 
