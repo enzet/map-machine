@@ -2738,7 +2738,7 @@
        inkscape:label="#path4425"
        style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:Sans;-inkscape-font-specification:Sans;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;marker:none;enable-background:accumulate"
        d="m 600.09375,147 c 0.5236,0.0245 0.97767,0.52328 0.95313,1.04687 -0.0246,0.5236 -0.52328,0.97767 -1.04688,0.95313 -1.6687,0 -3,1.3313 -3,3 0,1.6687 1.3313,3 3,3 1.6687,0 3,-1.3313 3,-3 -2,0 -2,0 -2,0 l 3,-3 3,3 c 0,0 0,0 -2,0 0,2.74958 -2.25042,5 -5,5 -2.74958,0 -5,-2.25042 -5,-5 0,-2.74958 2.25042,-5 5,-5 0.0312,-0.001 0.0625,-0.001 0.0937,0 z"
-       id="contrclockwise"
+       id="counterclockwise"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cscsscccccsscc" />
     <rect
@@ -18139,11 +18139,11 @@
     <path
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="M 375.57812,84.640625 C 374.39317,85.091847 373.98682,86.298595 374,87.5 c 7e-5,0.535824 0.28596,1.030917 0.75,1.298828 0.4641,0.267949 1.0359,0.267949 1.5,0 0.46403,-0.267911 0.74992,-0.763004 0.75,-1.298828 0,-0.818561 -0.36781,-1.344673 -0.70703,-1.796875 0.004,0.464275 -0.17551,0.807863 -0.41602,1.009766 -0.63673,-0.526641 -0.71293,-1.200797 -0.29883,-2.072266 z m -4.09765,5.357422 a 0.50005,0.50005 0 0 0 -0.15625,0.970703 l 2.75,1.03125 -2.75,1.03125 a 0.50062478,0.50062478 0 1 0 0.35156,0.9375 l 3.82422,-1.433594 3.82422,1.433594 a 0.50062478,0.50062478 0 0 0 0.35156,-0.9375 l -2.75,-1.03125 2.75,-1.03125 a 0.50005,0.50005 0 0 0 -0.16992,-0.970703 0.50005,0.50005 0 0 0 -0.18164,0.0332 L 375.5,91.464844 371.67578,90.03125 a 0.50005,0.50005 0 0 0 -0.19531,-0.0332 z"
-       id="firepit"
+       id="fire_pit"
        inkscape:label="#path13147"
        inkscape:connector-curvature="0">
       <title
-         id="title13158">firepit</title>
+         id="title13158">fire pit</title>
     </path>
     <path
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
@@ -19428,7 +19428,7 @@
     <path
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10000002;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="m 325,50 c -0.554,0 -1,0.446 -1,1 l 0,10 c 0,0.554 0.446,1 1,1 l 6,0 c 0.554,0 1,-0.446 1,-1 l 0,-10 c 0,-0.554 -0.446,-1 -1,-1 l -6,0 z m 3,1.859375 A 1.1407001,1.1407001 0 0 1 329.14062,53 1.1407001,1.1407001 0 0 1 328,54.140625 1.1407001,1.1407001 0 0 1 326.85938,53 1.1407001,1.1407001 0 0 1 328,51.859375 Z m 0.041,3.3125 A 2.8284373,2.8284373 0 0 1 330,56 a 2.8284373,2.8284373 0 0 1 0,4 2.8284373,2.8284373 0 0 1 -4,0 2.8284373,2.8284373 0 0 1 0,-4 2.8284373,2.8284373 0 0 1 2.04102,-0.828125 z M 328,56.859375 A 1.1407001,1.1407001 0 0 0 326.85938,58 1.1407001,1.1407001 0 0 0 328,59.140625 1.1407001,1.1407001 0 0 0 329.14062,58 1.1407001,1.1407001 0 0 0 328,56.859375 Z"
-       id="hifi"
+       id="hi_fi"
        inkscape:label="#rect7691"
        inkscape:connector-curvature="0">
       <title

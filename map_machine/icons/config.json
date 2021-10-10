@@ -193,7 +193,7 @@
   "comb_and_scissors": {
     "name": "comb and scissors"
   },
-  "contrclockwise": {},
+  "counterclockwise": {},
   "crater": {
     "name": "crater"
   },
@@ -293,8 +293,8 @@
     "emoji": "🧯"
   },
   "fire_hydrant": {},
-  "firepit": {
-    "name": "firepit"
+  "fire_pit": {
+    "name": "fire pit"
   },
   "fireplace": {},
   "fishing_angle": {
@@ -362,7 +362,7 @@
     "emoji": "H",
     "name": "H letter"
   },
-  "hifi": {
+  "hi_fi": {
     "name": "Hi-Fi"
   },
   "historic": {},

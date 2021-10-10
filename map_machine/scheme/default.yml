@@ -512,7 +512,7 @@ node_icons:
     - tags: {shop: hardware}
       shapes: [wretch_and_hammer]
     - tags: {shop: hifi}
-      shapes: [{shape: hifi, color: sell_color}]
+      shapes: [{shape: hi_fi, color: sell_color}]
     - tags: {shop: houseware}
       shapes: [{shape: pan, color: sell_color}]
     - tags: {shop: jewelry}
@@ -1280,7 +1280,7 @@ node_icons:
     - tags: {amenity: bbq}
       shapes: [bbq]
     - tags: {leisure: firepit}
-      shapes: [firepit]
+      shapes: [fire_pit]
     - tags: {man_made: cross}
       shapes: [cross]
     - tags: {man_made: flagpole}
@@ -1452,8 +1452,8 @@ node_icons:
       add_shapes: [lock]
     - tags: {direction: clockwise}
       add_shapes: [clockwise]
-    - tags: {direction: contrclockwise}
-      add_shapes: [contrclockwise]
+    - tags: {direction: anticlockwise}
+      add_shapes: [counterclockwise]
     - tags: {atm: "yes"}
       add_shapes: [atm]
     - tags: {tactile_paving: "yes"}

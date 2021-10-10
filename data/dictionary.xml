@@ -1,28 +1,36 @@
 <component name="ProjectDictionaryState">
   <dictionary name="%USERNAME%">
     <words>
+      <w>addr</w>
       <w>arecaceae</w>
       <w>betula</w>
       <w>carto</w>
       <w>changeset</w>
       <w>dasharray</w>
+      <w>defs</w>
+      <w>dharmachakra</w>
       <w>flinger</w>
       <w>githooks</w>
+      <w>housenumber</w>
       <w>josm</w>
       <w>landuse</w>
       <w>levelname</w>
       <w>linalg</w>
       <w>linecap</w>
       <w>linejoin</w>
+      <w>lunokhod</w>
       <w>mapcss</w>
       <w>maxlat</w>
       <w>maxlon</w>
+      <w>maxspeed</w>
       <w>minlat</w>
       <w>minlon</w>
       <w>needleleaved</w>
+      <w>noninfringement</w>
       <w>osmic</w>
       <w>portolan</w>
       <w>rasterize</w>
+      <w>rasterized</w>
       <w>röntgen</w>
       <w>subparser</w>
       <w>svgwrite</w>

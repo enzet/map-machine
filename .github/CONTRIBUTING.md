@@ -21,7 +21,7 @@ This action is not that easy as it supposed to be. We use [Moire](http://github.
 Modify the code
 ---------------
 
-First of all, configure your workspace.
+First configure your workspace.
 
   * Install formatter, linter and test system: `pip install black flake8 pytest`.
   * Be sure to run `git config --local core.hooksPath data/githooks` to enable Git hooks.
@@ -29,7 +29,7 @@ First of all, configure your workspace.
 If you are using Pycharm, you may want to set up user dictionary as well:
 
   * `cp data/dictionary.xml .idea/dictionaries/<user name>.xml`
-  * in `.idea/dictionaries/<user name>.xml` change `%USERNAME%` to your user name,
+  * in `.idea/dictionaries/<user name>.xml` change `%USERNAME%` to your username,
   * restart Pycharm.
 
 ### Code style ###

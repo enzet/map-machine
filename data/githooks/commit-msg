@@ -30,7 +30,7 @@ def check_file(file_name: str) -> Optional[str]:
 
 
 def check_commit_message(parts: List[str]) -> Optional[str]:
-
+    """Check whether the commit message is well-formed."""
     short_message: str = parts[0]
 
     if short_message[0] != short_message[0].upper():
@@ -77,7 +77,8 @@ def check_commit_message(parts: List[str]) -> Optional[str]:
             + '\nCommit message should end with ".".'
         )
 
-    def up(text: str):
+    def first_letter_uppercase(text: str):
+        """Change first letter to upper case."""
         return text[0].upper() + text[1:]
 
     verbs_1 = ["add", "fix", "check", "refactor"]
@@ -101,16 +102,18 @@ def check_commit_message(parts: List[str]) -> Optional[str]:
 
     for verb in verbs:
         if short_message.startswith(f"{verb} ") or short_message.startswith(
-            f"{up(verb)} "
+            f"{first_letter_uppercase(verb)} "
         ):
             return (
                 f'Commit message should start with the verb in infinitive '
-                f'form. Please, use "{up(verbs[verb])} ..." instead of '
-                f'"{up(verb)} ...".'
+                f'form. Please, use '
+                f'"{first_letter_uppercase(verbs[verb])} ..." instead of '
+                f'"{first_letter_uppercase(verb)} ...".'
             )
 
 
-def check(commit_message):
+def check(commit_message: str) -> None:
+    """Print commit_message and checking result."""
     print("\033[33m" + commit_message + "\033[0m")
     print(check_commit_message(commit_message.split("\n")))
 
@@ -120,7 +123,7 @@ def test():
     check("Added foo.")
     check("Created foo.")
     check("Doesn't end with dot")
-    check("Tooooooooooooooooooooooooooooooooooooooooooooo long")
+    check("To-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o long")
 
 
 if __name__ == "__main__":

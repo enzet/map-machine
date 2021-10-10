@@ -13,14 +13,14 @@ ROOT: float = np.sqrt(2)
 
 def test_compute_angle() -> None:
     """Test angle computing for all angles between 0 and 2π with step π / 4."""
-    assert np.allclose(compute_angle((1, 0)), 0)
-    assert np.allclose(compute_angle((ROOT, ROOT)), np.pi * 0.25)
-    assert np.allclose(compute_angle((0, 1)), np.pi * 0.5)
-    assert np.allclose(compute_angle((-ROOT, ROOT)), np.pi * 0.75)
-    assert np.allclose(compute_angle((-1, 0)), np.pi)
-    assert np.allclose(compute_angle((-ROOT, -ROOT)), np.pi * 1.25)
-    assert np.allclose(compute_angle((0, -1)), np.pi * 1.5)
-    assert np.allclose(compute_angle((ROOT, -ROOT)), np.pi * 1.75)
+    assert np.allclose(compute_angle(np.array((1, 0))), 0)
+    assert np.allclose(compute_angle(np.array((ROOT, ROOT))), np.pi * 0.25)
+    assert np.allclose(compute_angle(np.array((0, 1))), np.pi * 0.5)
+    assert np.allclose(compute_angle(np.array((-ROOT, ROOT))), np.pi * 0.75)
+    assert np.allclose(compute_angle(np.array((-1, 0))), np.pi)
+    assert np.allclose(compute_angle(np.array((-ROOT, -ROOT))), np.pi * 1.25)
+    assert np.allclose(compute_angle(np.array((0, -1))), np.pi * 1.5)
+    assert np.allclose(compute_angle(np.array((ROOT, -ROOT))), np.pi * 1.75)
 
 
 def test_turn_by_compute_angle() -> None:

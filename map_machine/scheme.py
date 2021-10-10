@@ -362,7 +362,7 @@ class Scheme:
         :return: color specification
         """
         if color in self.colors:
-            specification = self.colors[color]
+            specification: Union[str, dict] = self.colors[color]
             if isinstance(specification, str):
                 return Color(self.colors[color])
             else:

@@ -3,7 +3,7 @@
 **Map Machine** project consists of
 
   * Python [OpenStreetMap](http://openstreetmap.org) renderer and tile generator (see [usage](#usage-example), [renderer documentation](#map-generation), [tile generation](#tile-generation)),
-  * [Röntgen icon set](#icon-set): unique CC-BY 4.0 icons.
+  * [Röntgen icon set](#röntgen-icon-set): unique CC-BY 4.0 icons.
 
 The idea behind the Map Machine project is to **show all the richness of the OpenStreetMap data**: to have a possibility to *display any map feature* represented by OpenStreetMap data tags by means of colors, shapes, and icons. Map Machine is created for OpenStreetMap contributors: to display all changes one made on the map even if they are small, and for users: to dig down into the map and find every detail that was mapped.
 
@@ -132,7 +132,7 @@ pip install .
 Map generation
 --------------
 
-Command `render` is used to generates SVG map from OpenStreetMap data. You can run it using:
+Command `render` is used to generate SVG map from OpenStreetMap data. You can run it using:
 
 ```bash
 map-machine render \

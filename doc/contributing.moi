@@ -20,7 +20,7 @@ This action is not that easy as it supposed to be.  We use \ref {http://github.c
 
 \2 {Modify the code} {}
 
-First of all, configure your workspace.
+First configure your workspace.
 
 \list
     {Install formatter, linter and test system\: \m {pip install black flake8 pytest}.}
@@ -30,7 +30,7 @@ If you are using Pycharm, you may want to set up user dictionary as well:
 
 \list
     {\m {cp data/dictionary.xml .idea/dictionaries/<user name>.xml}}
-    {in \m {.idea/dictionaries/<user name>.xml} change \m {%USERNAME%} to your user name,}
+    {in \m {.idea/dictionaries/<user name>.xml} change \m {%USERNAME%} to your username,}
     {restart Pycharm.}
 
 \3 {Code style} {code-style}
