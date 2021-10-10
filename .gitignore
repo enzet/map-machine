@@ -22,5 +22,6 @@ cache/
 work
 precommit.py
 
-venv
 .idea
+temp
+venv

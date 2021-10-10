@@ -1,4 +1,10 @@
+"""
+Creating fish shell autocompletion commands.
+
+See https://fishshell.com/docs/current/completions.html
+"""
 import argparse
+from pathlib import Path
 from typing import Any
 
 from map_machine import ui
@@ -7,7 +13,7 @@ from map_machine.ui import COMMANDS
 
 class ArgumentParser(argparse.ArgumentParser):
     """
-    Argument parser that stores arguments and creates help in Moire markup.
+    Argument parser that generates fish shell autocompletion commands.
     """
 
     def __init__(self, *args, **kwargs) -> None:
@@ -25,36 +31,34 @@ class ArgumentParser(argparse.ArgumentParser):
         self.arguments.append(argument)
 
     def get_complete(self, command: str) -> str:
-        """
-        Return Moire table with "Option" and "Description" columns filled with
-        arguments.
-        """
-        s = ""
+        """Return fish complete command."""
+        result: str = ""
 
         for argument in self.arguments:
-            s += "complete -c map-machine"
-            s += f' -n "__fish_seen_subcommand_from {command}"'
+            result += "complete -c map-machine"
+            result += f' -n "__fish_seen_subcommand_from {command}"'
             if len(argument["arguments"]) == 2:
-                s += f" -s {argument['arguments'][0][1:]}"
-                s += f" -l {argument['arguments'][1][2:]}"
+                result += f" -s {argument['arguments'][0][1:]}"
+                result += f" -l {argument['arguments'][1][2:]}"
             else:
-                s += f" -l {argument['arguments'][0][2:]}"
+                result += f" -l {argument['arguments'][0][2:]}"
             if "help" in argument:
-                s += f" -d \"{argument['help']}\""
-            s += "\n"
+                result += f' -d "{argument["help"]}"'
+            result += "\n"
 
-        return s
+        return result
 
 
-if __name__ == "__main__":
+def completion_commands() -> str:
+    """Print fish completion commands."""
     commands: str = " ".join(COMMANDS)
-    print(f"set -l commands {commands}")
-    print("complete -c map-machine -f")
-    print(
+    result: str = ""
+    result += f"set -l commands {commands}\n"
+    result += "complete -c map-machine -f\n"
+    result += (
         f'complete -c map-machine -n "not __fish_seen_subcommand_from '
-        f'$commands" -a "{commands}"'
+        f'$commands" -a "{commands}"\n'
     )
-
     for command in COMMANDS:
         if command in ["icons", "taginfo"]:
             continue
@@ -75,4 +79,12 @@ if __name__ == "__main__":
             raise NotImplementedError(
                 f"no separate function for parser creation for {command}"
             )
-        print(parser.get_complete(command))
+        result += parser.get_complete(command) + "\n"
+
+    return result
+
+
+if __name__ == "__main__":
+    completions_path: Path = Path("~/.config/fish/completions/map-machine.fish")
+    with completions_path.open("w+") as output_file:
+        output_file.write(completion_commands())

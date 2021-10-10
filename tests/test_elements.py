@@ -1,6 +1,7 @@
 """
 Draw test nodes, ways, and relations.
 """
+import logging
 from pathlib import Path
 from typing import Optional
 
@@ -156,7 +157,10 @@ def draw(
 
     with output_path.open("w") as output_file:
         svg.write(output_file)
+        logging.info(f"Map is drawn to {output_path}.")
 
 
 if __name__ == "__main__":
+    logging.basicConfig(format="%(levelname)s %(message)s", level=logging.INFO)
+
     lanes()
