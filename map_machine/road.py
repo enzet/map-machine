@@ -2,12 +2,13 @@
 WIP: road shape drawing.
 """
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 import numpy as np
 import svgwrite
 from colour import Color
 from svgwrite import Drawing
+from svgwrite.filters import Filter
 from svgwrite.path import Path
 from svgwrite.shapes import Circle
 
@@ -25,6 +26,8 @@ from map_machine.vector import (
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
+
+USE_BLUR: bool = False
 
 
 @dataclass
@@ -417,7 +420,7 @@ class Road(Tagged):
 
     def get_style(
         self, flinger: Flinger, is_border: bool, is_for_stroke: bool = False
-    ) -> dict:
+    ) -> dict[str, Union[int, float, str]]:
         """Get road SVG style."""
         width: float
         if self.width is not None:
@@ -443,7 +446,7 @@ class Road(Tagged):
                 extra_width = 4.0
 
         scale: float = flinger.get_scale(self.nodes[0].coordinates)
-        style: dict[str, Any] = {
+        style: dict[str, Union[int, float, str]] = {
             "fill": "none",
             "stroke": color.hex,
             "stroke-linecap": "butt",
@@ -460,11 +463,31 @@ class Road(Tagged):
 
         return style
 
+    def get_filter(self, svg: Drawing, is_border: bool) -> Optional[Filter]:
+        if not USE_BLUR:
+            return None
+
+        if is_border and self.tags.get("bridge") == "yes":
+            filter_ = svg.defs.add(svg.filter())
+            filter_.feGaussianBlur(in_="SourceGraphic", stdDeviation=2)
+            return filter_
+
+        return None
+
     def draw(self, svg: Drawing, flinger: Flinger, is_border: bool) -> None:
         """Draw road as simple SVG path."""
-        style = self.get_style(flinger, is_border)
+        filter_: Filter = self.get_filter(svg, is_border)
+
+        style: dict[str, Union[int, float, str]] = self.get_style(
+            flinger, is_border
+        )
         path_commands: str = self.line.get_path()
-        path: Path = Path(d=path_commands)
+        path: Path
+        if filter_:
+            path = Path(d=path_commands, filter=filter_.get_funciri())
+        else:
+            path = Path(d=path_commands)
+
         path.update(style)
         svg.add(path)
 
@@ -489,8 +512,10 @@ class Road(Tagged):
     def draw_lanes(self, svg: Drawing, flinger: Flinger, color: Color) -> None:
         """Draw lane separators."""
         scale: float = flinger.get_scale(self.nodes[0].coordinates)
+
         if len(self.lanes) < 2:
             return
+
         for index in range(1, len(self.lanes)):
             parallel_offset: float = scale * (
                 -self.width / 2 + index * self.width / len(self.lanes)
@@ -512,11 +537,11 @@ class Road(Tagged):
         if not name:
             return
 
-        path = svg.path(d=self.line.get_path(3), fill="none")
+        path: Path = svg.path(d=self.line.get_path(3), fill="none")
         svg.add(path)
 
-        text = svg.add(svgwrite.text.Text(""))
-        text_path = svgwrite.text.TextPath(
+        text = svg.add(svg.text.Text(""))
+        text_path = svg.text.TextPath(
             path=path,
             text=name,
             startOffset=None,
@@ -676,9 +701,17 @@ class ComplexConnector(Connector):
 
     def draw_border(self, svg: Drawing) -> None:
         """Draw connection outline."""
-        path: Path = svg.path(
-            d=["M"] + self.curve_1 + ["L"] + self.curve_2 + ["Z"]
-        )
+        filter_: Filter = self.road_1.get_filter(svg, True)
+
+        if filter_:
+            path: Path = svg.path(
+                d=["M"] + self.curve_1 + ["L"] + self.curve_2 + ["Z"],
+                filter=filter_.get_funciri(),
+            )
+        else:
+            path: Path = svg.path(
+                d=["M"] + self.curve_1 + ["L"] + self.curve_2 + ["Z"]
+            )
         path.update(self.road_1.get_style(self.flinger, True, True))
         svg.add(path)
 
