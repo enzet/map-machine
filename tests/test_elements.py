@@ -1,3 +1,6 @@
+"""
+Draw test nodes, ways, and relations.
+"""
 from pathlib import Path
 from typing import Optional
 
