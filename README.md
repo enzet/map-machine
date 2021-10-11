@@ -76,7 +76,7 @@ Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used
 
 ![Power tower design](doc/power_tower_design.png)
 
-![Power tower design](doc/power.png)
+![Power tower design](doc/power.svg)
 
 ### Colors ###
 
@@ -107,13 +107,13 @@ Wireframe view
 
 Visualize element creation time with `--mode time`.
 
-![Creation time mode](doc/time.png)
+![Creation time mode](doc/time.svg)
 
 ### Author mode ###
 
 Every way and node displayed with the random color picked for each author with `--mode author`.
 
-![Author mode](doc/author.png)
+![Author mode](doc/author.svg)
 
 Installation
 ------------

@@ -2,7 +2,6 @@
 
 dist/
 doc/*.html
-doc/*.svg
 doc/*.wiki
 out/
 

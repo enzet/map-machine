@@ -89,7 +89,7 @@ Visualize \osm {design} values used with \osm {power=tower} tag.
 
 \image {doc/power_tower_design.png} {Power tower design}
 
-\image {doc/power.png} {Power tower design}
+\image {doc/power.svg} {Power tower design}
 
 \3 {Colors} {colors}
 
@@ -157,13 +157,13 @@ Countries with right-to-left script direction\:
 
 Visualize element creation time with \m {--mode time}.
 
-\image {doc/time.png} {Creation time mode}
+\image {doc/time.svg} {Creation time mode}
 
 \3 {Author mode} {author_mode}
 
 Every way and node displayed with the random color picked for each author with \m {--mode author}.
 
-\image {doc/author.png} {Author mode}
+\image {doc/author.svg} {Author mode}
 
 \2 {Installation} {installation}
 
