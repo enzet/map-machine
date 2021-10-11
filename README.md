@@ -48,27 +48,27 @@ Map features
 
 With `--buildings isometric` or `--buildings isometric-no-parts` (not set by default), buildings are drawn using isometric shapes for walls and shade in proportion to [`building:levels`](https://wiki.openstreetmap.org/wiki/Key:building:levels), [`building:min_level`](https://wiki.openstreetmap.org/wiki/Key:building:min_level), [`height`](https://wiki.openstreetmap.org/wiki/Key:height), and [`min_height`](https://wiki.openstreetmap.org/wiki/Key:min_height) values.
 
-![3D buildings](doc/buildings.png)
+![3D buildings](doc/buildings.svg)
 
 ### Road lanes ###
 
 To determine road width Map Machine uses the [`width`](https://wiki.openstreetmap.org/wiki/Key:width) tag value or estimates it based on the [`lanes`](https://wiki.openstreetmap.org/wiki/Key:lanes) value. If lane value is specified, it also draws lane separators. This map style is highly inspired by Christoph Hormann's post [Navigating the Maze](http://blog.imagico.de/navigating-the-maze-part-2/).
 
-![Road lanes](doc/lanes.png)
+![Road lanes](doc/lanes.svg)
 
 ### Trees ###
 
 Visualization of tree leaf types (broadleaved or needle-leaved) and genus or taxon by means of icon shapes and leaf cycles (deciduous or evergreen) by means of color.
 
-![Trees](doc/trees.png)
+![Trees](doc/trees.svg)
 
 ### Viewpoint and camera direction ###
 
 Visualize [`direction`](https://wiki.openstreetmap.org/wiki/Key:direction) tag for [`tourism`](https://wiki.openstreetmap.org/wiki/Key:tourism)=[`viewpoint`](https://wiki.openstreetmap.org/wiki/Tag:tourism=viewpoint) and [`camera:direction`](https://wiki.openstreetmap.org/wiki/Key:camera:direction) for [`man_made`](https://wiki.openstreetmap.org/wiki/Key:man_made)=[`surveillance`](https://wiki.openstreetmap.org/wiki/Tag:man_made=surveillance).
 
-![Surveillance](doc/surveillance.png)
+![Surveillance](doc/surveillance.svg)
 
-![Viewpoints](doc/viewpoints.png)
+![Viewpoints](doc/viewpoints.svg)
 
 ### Power tower design ###
 
@@ -82,7 +82,7 @@ Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used
 
 Map icons have [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) tag value if it is present, otherwise, icons are displayed with dark grey color by default, purple color for shop nodes, red color for emergency features, and special colors for natural features. Map Machine also takes into account [`building:colour`](https://wiki.openstreetmap.org/wiki/Key:building:colour), [`roof:colour`](https://wiki.openstreetmap.org/wiki/Key:roof:colour) and other `*:colour` tags, and uses [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) tag value to paint subway lines.
 
-![Building colors](doc/colors.png)
+![Building colors](doc/colors.svg)
 
 ### Emergency ###
 

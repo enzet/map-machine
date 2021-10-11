@@ -43,13 +43,13 @@ Generate icon grid and sets of individual icons with \m {\command {icons}}.  It 
 
 With \m {--buildings isometric} or \m {--buildings isometric-no-parts} (not set by default), buildings are drawn using isometric shapes for walls and shade in proportion to \osm {building:levels}, \osm {building:min_level}, \osm {height}, and \osm {min_height} values.
 
-\image {doc/buildings.png} {3D buildings}
+\image {doc/buildings.svg} {3D buildings}
 
 \3 {Road lanes} {road-lanes}
 
 To determine road width Map Machine uses the \osm {width} tag value or estimates it based on the \osm {lanes} value. If lane value is specified, it also draws lane separators.  This map style is highly inspired by Christoph Hormann's post \ref {http://blog.imagico.de/navigating-the-maze-part-2/} {Navigating the Maze}.
 
-\image {doc/lanes.png} {Road lanes}
+\image {doc/lanes.svg} {Road lanes}
 
 \3 {Trees} {trees}
 
@@ -73,15 +73,15 @@ Visualization of tree \icon {tree} leaf types (broadleaved \icon {tree_with_leaf
 
 */
 
-\image {doc/trees.png} {Trees}
+\image {doc/trees.svg} {Trees}
 
 \3 {Viewpoint and camera direction} {direction}
 
 Visualize \osm {direction} tag for \osm {tourism=viewpoint} and \osm {camera:direction} for \osm {man_made=surveillance}.
 
-\image {doc/surveillance.png} {Surveillance}
+\image {doc/surveillance.svg} {Surveillance}
 
-\image {doc/viewpoints.png} {Viewpoints}
+\image {doc/viewpoints.svg} {Viewpoints}
 
 \3 {Power tower design} {power-tower-design}
 
@@ -95,7 +95,7 @@ Visualize \osm {design} values used with \osm {power=tower} tag.
 
 Map icons have \osm {colour} tag value if it is present, otherwise, icons are displayed with dark grey color by default, purple color for shop nodes, red color for emergency features, and special colors for natural features.  Map Machine also takes into account \osm {building:colour}, \osm {roof:colour} and other \m {*:colour} tags, and uses \osm {colour} tag value to paint subway lines.
 
-\image {doc/colors.png} {Building colors}
+\image {doc/colors.svg} {Building colors}
 
 \3 {Emergency} {emergency}
 
