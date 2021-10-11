@@ -363,7 +363,9 @@ node_icons:
     - tags: {amenity: car_sharing}
       shapes: [{shape: car, offset: [0, 3]}, {shape: sharing, offset: [0, -4]}]
     - tags: {amenity: car_wash}
-      shapes: [car_wash]
+      shapes: 
+      - {shape: car, offset: [0, 3]}
+      - {shape: shower_head, offset: [0, -4]}
       # Place of worship
     - tags: {building: shrine, religion: shinto}
       shapes: [japan_shinto_shrine]
