@@ -706,13 +706,11 @@ class ComplexConnector(Connector):
 
         if filter_:
             path: Path = svg.path(
-                d=["M"] + self.curve_1 + ["L"] + self.curve_2 + ["Z"],
+                d=["M"] + self.curve_1 + ["M"] + self.curve_2,
                 filter=filter_.get_funciri(),
             )
         else:
-            path: Path = svg.path(
-                d=["M"] + self.curve_1 + ["L"] + self.curve_2 + ["Z"]
-            )
+            path: Path = svg.path(d=["M"] + self.curve_1 + ["M"] + self.curve_2)
         path.update(self.road_1.get_style(self.flinger, True, True))
         svg.add(path)
 
