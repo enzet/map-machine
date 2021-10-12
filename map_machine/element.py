@@ -9,8 +9,8 @@ import numpy as np
 import svgwrite
 from svgwrite.path import Path as SVGPath
 
-from map_machine.icon import ShapeExtractor
-from map_machine.point import Point
+from map_machine.pictogram.icon import ShapeExtractor
+from map_machine.pictogram.point import Point
 from map_machine.scheme import LineStyle, Scheme
 from map_machine.text import Label
 from map_machine.workspace import workspace

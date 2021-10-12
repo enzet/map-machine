@@ -3,7 +3,7 @@ Test OSM XML parsing.
 """
 import numpy as np
 
-from map_machine.osm_reader import (
+from map_machine.osm.osm_reader import (
     OSMData,
     OSMNode,
     OSMRelation,

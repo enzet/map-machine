@@ -7,8 +7,8 @@ import argparse
 from pathlib import Path
 from typing import Any
 
-from map_machine import ui
-from map_machine.ui import COMMANDS
+from map_machine.ui import cli
+from map_machine.ui.cli import COMMANDS
 
 
 class ArgumentParser(argparse.ArgumentParser):
@@ -64,17 +64,17 @@ def completion_commands() -> str:
             continue
         parser: ArgumentParser = ArgumentParser()
         if command == "render":
-            ui.add_render_arguments(parser)
-            ui.add_map_arguments(parser)
+            cli.add_render_arguments(parser)
+            cli.add_map_arguments(parser)
         elif command == "server":
-            ui.add_server_arguments(parser)
+            cli.add_server_arguments(parser)
         elif command == "tile":
-            ui.add_tile_arguments(parser)
-            ui.add_map_arguments(parser)
+            cli.add_tile_arguments(parser)
+            cli.add_map_arguments(parser)
         elif command == "element":
-            ui.add_element_arguments(parser)
+            cli.add_element_arguments(parser)
         elif command == "mapcss":
-            ui.add_mapcss_arguments(parser)
+            cli.add_mapcss_arguments(parser)
         else:
             raise NotImplementedError(
                 f"no separate function for parser creation for {command}"

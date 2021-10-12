@@ -3,7 +3,7 @@ Test coordinates computation.
 """
 import numpy as np
 
-from map_machine.flinger import (
+from map_machine.geometry.flinger import (
     osm_zoom_level_to_pixels_per_meter,
     pseudo_mercator,
 )

@@ -9,7 +9,7 @@ from typing import Optional
 
 import cairosvg
 
-from map_machine.tile import Tile
+from map_machine.slippy.tile import Tile
 from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"

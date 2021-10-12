@@ -10,7 +10,7 @@ __email__ = "me@enzet.ru"
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
-from map_machine.ui import COMMAND_LINES
+from map_machine.ui.cli import COMMAND_LINES
 
 LOG: bytes = (
     b"INFO Constructing ways...\n"

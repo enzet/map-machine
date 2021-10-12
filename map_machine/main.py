@@ -6,7 +6,7 @@ import logging
 import sys
 from pathlib import Path
 
-from map_machine.ui import parse_arguments
+from map_machine.ui.cli import parse_arguments
 from map_machine.workspace import Workspace
 
 __author__ = "Sergey Vartanov"
@@ -32,12 +32,12 @@ def main() -> None:
         mapper.ui(arguments)
 
     elif arguments.command == "tile":
-        from map_machine import tile
+        from map_machine.slippy import tile
 
         tile.ui(arguments)
 
     elif arguments.command == "icons":
-        from map_machine.grid import draw_icons
+        from map_machine.pictogram.icon_collection import draw_icons
 
         draw_icons()
 
@@ -52,7 +52,7 @@ def main() -> None:
         draw_element(arguments)
 
     elif arguments.command == "server":
-        from map_machine import server
+        from map_machine.slippy import server
 
         server.ui(arguments)
 

@@ -13,10 +13,10 @@ from svgwrite.path import Path
 from svgwrite.shapes import Circle
 
 from map_machine.drawing import PathCommands
-from map_machine.flinger import Flinger
-from map_machine.osm_reader import OSMNode, Tagged
+from map_machine.geometry.flinger import Flinger
+from map_machine.osm.osm_reader import OSMNode, Tagged
 from map_machine.scheme import RoadMatcher
-from map_machine.vector import (
+from map_machine.geometry.vector import (
     Line,
     Polyline,
     compute_angle,

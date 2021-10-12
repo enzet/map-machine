@@ -12,8 +12,8 @@ import numpy as np
 import yaml
 from colour import Color
 
-from map_machine.direction import DirectionSet
-from map_machine.icon import (
+from map_machine.feature.direction import DirectionSet
+from map_machine.pictogram.icon import (
     DEFAULT_COLOR,
     DEFAULT_SHAPE_ID,
     Icon,

@@ -6,7 +6,7 @@ import sys
 
 from map_machine import __version__
 from map_machine.map_configuration import BuildingMode, DrawingMode, LabelMode
-from map_machine.osm_reader import STAGES_OF_DECAY
+from map_machine.osm.osm_reader import STAGES_OF_DECAY
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

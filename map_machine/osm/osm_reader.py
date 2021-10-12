@@ -13,7 +13,7 @@ from xml.etree.ElementTree import Element
 
 import numpy as np
 
-from map_machine.boundary_box import BoundaryBox
+from map_machine.geometry.boundary_box import BoundaryBox
 from map_machine.util import MinMax
 
 __author__ = "Sergey Vartanov"

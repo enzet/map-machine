@@ -11,7 +11,12 @@ from colour import Color
 from svgwrite import Drawing
 from svgwrite.shapes import Rect
 
-from map_machine.icon import Icon, Shape, ShapeExtractor, ShapeSpecification
+from map_machine.pictogram.icon import (
+    Icon,
+    Shape,
+    ShapeExtractor,
+    ShapeSpecification,
+)
 from map_machine.scheme import NodeMatcher, Scheme
 from map_machine.workspace import workspace
 

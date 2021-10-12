@@ -17,8 +17,8 @@ from map_machine.figure import (
     StyledFigure,
     Tree,
 )
-from map_machine.flinger import Flinger
-from map_machine.icon import (
+from map_machine.geometry.flinger import Flinger
+from map_machine.pictogram.icon import (
     DEFAULT_SMALL_SHAPE_ID,
     Icon,
     IconSet,
@@ -27,18 +27,18 @@ from map_machine.icon import (
     ShapeSpecification,
 )
 from map_machine.map_configuration import DrawingMode, MapConfiguration
-from map_machine.osm_reader import (
+from map_machine.osm.osm_reader import (
     OSMData,
     OSMNode,
     OSMRelation,
     OSMWay,
     parse_levels,
 )
-from map_machine.point import Point
-from map_machine.road import Road, Roads
+from map_machine.pictogram.point import Point
+from map_machine.feature.road import Road, Roads
 from map_machine.scheme import DEFAULT_COLOR, LineStyle, RoadMatcher, Scheme
 from map_machine.text import Label
-from map_machine.ui import BuildingMode
+from map_machine.ui.cli import BuildingMode
 from map_machine.util import MinMax
 
 __author__ = "Sergey Vartanov"

@@ -6,8 +6,8 @@ from typing import Optional
 import pytest
 from colour import Color
 
-from map_machine.grid import IconCollection
-from map_machine.icon import IconSet
+from map_machine.pictogram.icon_collection import IconCollection
+from map_machine.pictogram.icon import IconSet
 from tests import SCHEME, SHAPE_EXTRACTOR, workspace
 
 __author__ = "Sergey Vartanov"

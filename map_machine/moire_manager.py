@@ -9,9 +9,9 @@ from typing import Any, Union
 from moire.default import Default, DefaultHTML, DefaultMarkdown, DefaultWiki
 from moire.moire import Tag
 
-from map_machine import ui
-from map_machine.icon import ShapeExtractor
-from map_machine.ui import COMMAND_LINES
+from map_machine.ui import cli
+from map_machine.pictogram.icon import ShapeExtractor
+from map_machine.ui.cli import COMMAND_LINES
 from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
@@ -154,17 +154,17 @@ class MapMachineMoire(Default, ABC):
         parser: ArgumentParser = ArgumentParser()
         command: str = self.clear(args[0])
         if command == "render":
-            ui.add_render_arguments(parser)
+            cli.add_render_arguments(parser)
         elif command == "server":
-            ui.add_server_arguments(parser)
+            cli.add_server_arguments(parser)
         elif command == "tile":
-            ui.add_tile_arguments(parser)
+            cli.add_tile_arguments(parser)
         elif command == "map":
-            ui.add_map_arguments(parser)
+            cli.add_map_arguments(parser)
         elif command == "element":
-            ui.add_element_arguments(parser)
+            cli.add_element_arguments(parser)
         elif command == "mapcss":
-            ui.add_mapcss_arguments(parser)
+            cli.add_mapcss_arguments(parser)
         else:
             raise NotImplementedError(
                 "no separate function for parser creation"

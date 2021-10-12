@@ -13,18 +13,18 @@ from svgwrite.container import Group
 from svgwrite.path import Path as SVGPath
 from svgwrite.shapes import Rect
 
-from map_machine.boundary_box import BoundaryBox
+from map_machine.geometry.boundary_box import BoundaryBox
 from map_machine.constructor import Constructor
 from map_machine.figure import StyledFigure
-from map_machine.flinger import Flinger
-from map_machine.icon import ShapeExtractor
+from map_machine.geometry.flinger import Flinger
+from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.map_configuration import LabelMode, MapConfiguration
-from map_machine.osm_getter import NetworkError, get_osm
-from map_machine.osm_reader import OSMData, OSMNode
-from map_machine.point import Occupied, Point
-from map_machine.road import Intersection, Road, RoadPart
+from map_machine.osm.osm_getter import NetworkError, get_osm
+from map_machine.osm.osm_reader import OSMData, OSMNode
+from map_machine.pictogram.point import Occupied, Point
+from map_machine.feature.road import Intersection, Road, RoadPart
 from map_machine.scheme import Scheme
-from map_machine.ui import BuildingMode
+from map_machine.ui.cli import BuildingMode
 from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"

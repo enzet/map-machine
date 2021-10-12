@@ -3,7 +3,7 @@ Tests for Map Machine project.
 """
 from pathlib import Path
 
-from map_machine.icon import ShapeExtractor
+from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.scheme import Scheme
 from map_machine.workspace import Workspace
 
