@@ -7,6 +7,7 @@ import numpy as np
 from colour import Color
 from svgwrite import Drawing
 from svgwrite.container import Group
+from svgwrite.gradients import RadialGradient
 from svgwrite.path import Path
 
 from map_machine.direction import DirectionSet, Sector
@@ -261,16 +262,18 @@ class Tree(Tagged):
     def draw(self, svg: Drawing, flinger: Flinger, scheme: Scheme) -> None:
         """Draw crown and trunk."""
         scale: float = flinger.get_scale(self.coordinates)
-        radius: float
         diameter_crown: Optional[float] = self.get_float("diameter_crown")
+
+        radius: float
         if diameter_crown is not None:
             radius = float(self.tags["diameter_crown"]) / 2.0
         else:
             radius = 2.0
+
         color: Color = scheme.get_color("evergreen_color")
         svg.add(svg.circle(self.point, radius * scale, fill=color, opacity=0.3))
-
         circumference: Optional[float] = self.get_float("circumference")
+
         if circumference is not None:
             radius: float = circumference / 2.0 / np.pi
             svg.add(svg.circle(self.point, radius * scale, fill="#B89A74"))
@@ -323,12 +326,13 @@ class DirectionSector(Tagged):
             paths = DirectionSet(direction).draw(point, direction_radius)
 
         for path in paths:
-            radial_gradient = svg.radialGradient(
+            radial_gradient: RadialGradient = svg.radialGradient(
                 center=point,
                 r=direction_radius,
                 gradientUnits="userSpaceOnUse",
             )
-            gradient = svg.defs.add(radial_gradient)
+            gradient: RadialGradient = svg.defs.add(radial_gradient)
+
             if is_revert_gradient:
                 (
                     gradient
@@ -341,16 +345,17 @@ class DirectionSector(Tagged):
                     .add_stop_color(0, direction_color.hex, opacity=0.4)
                     .add_stop_color(1, direction_color.hex, opacity=0)
                 )  # fmt: skip
+
             path_element: Path = svg.path(
                 d=["M", point] + path + ["L", point, "Z"],
-                fill=gradient.get_paint_server(),
+                fill=gradient.get_funciri(),
             )
             svg.add(path_element)
 
 
 class Segment:
     """
-    Line segment.
+    Closed line segment.
     """
 
     def __init__(self, point_1: np.ndarray, point_2: np.ndarray) -> None:
