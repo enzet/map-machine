@@ -20,7 +20,15 @@ with Path("README.md").open() as input_file:
 setup(
     name="map-machine",
     version=__version__,
-    packages=["map_machine"],
+    packages=[
+        "map_machine",
+        "map_machine.feature",
+        "map_machine.geometry",
+        "map_machine.osm",
+        "map_machine.pictogram",
+        "map_machine.slippy",
+        "map_machine.ui",
+    ],
     url=__url__,
     project_urls={
         "Bug Tracker": f"{__url__}/issues",
