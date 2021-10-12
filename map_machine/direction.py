@@ -64,7 +64,7 @@ class Sector:
         self.end: Optional[np.ndarray] = None
         self.main_direction: Optional[np.ndarray] = None
 
-        if "-" in text:
+        if "-" in text and not text.startswith("-"):
             parts: list[str] = text.split("-")
             self.start = parse_vector(parts[0])
             self.end = parse_vector(parts[1])
