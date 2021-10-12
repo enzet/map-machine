@@ -92,5 +92,5 @@ class Flinger:
             # Get pixels per meter ratio for the center of the boundary box.
             coordinates = self.geo_boundaries.center()
 
-        scale_factor: float = 1 / np.cos(coordinates[0] / 180 * np.pi)
+        scale_factor: float = abs(1 / np.cos(coordinates[0] / 180 * np.pi))
         return self.pixels_per_meter * scale_factor
