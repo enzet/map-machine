@@ -282,6 +282,7 @@ class Constructor:
             )
             if not (
                 line.get_tag("area") == "yes"
+                or line.get_tag("type") == "multipolygon"
                 or is_cycle(outers[0])
                 and line.get_tag("area") != "no"
                 and self.scheme.is_area(line.tags)
