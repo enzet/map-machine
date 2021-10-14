@@ -15,7 +15,7 @@ from map_machine.text import Label
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-DEFAULT_FONT: str = "Roboto"
+DEFAULT_FONT: str = "Helvetica"
 
 
 class Occupied:
