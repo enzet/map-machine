@@ -1646,7 +1646,7 @@ ways:
       stroke-linejoin: round
     priority: 41
   - tags: {highway: footway}
-    exception: {area: "yes"}
+    exception: {area: "yes", type: "multipolygon"}
     style:
       stroke-width: 3
       stroke: foot_border_color
@@ -1681,7 +1681,7 @@ ways:
     priority: 41
 
   - tags: {highway: footway}
-    exception: {area: "yes"}
+    exception: {area: "yes", type: "multipolygon"}
     style:
       stroke-width: 1.5
       stroke-dasharray: 7,3
@@ -1700,11 +1700,18 @@ ways:
     priority: 42
   - tags: {highway: footway, area: "yes"}
     style:
-      stroke: none
+      stroke: "#BBBBBB"
       fill: "#DDDDDD"
       stroke-linecap: round
       stroke-linejoin: round
-    priority: -55  # FIXME
+    priority: 55
+  - tags: {highway: footway, type: "multipolygon"}
+    style:
+      stroke: "#BBBBBB"
+      fill: "#DDDDDD"
+      stroke-linecap: round
+      stroke-linejoin: round
+    priority: 55
   - tags: {highway: pedestrian, area: "yes"}
     style:
       stroke: none
