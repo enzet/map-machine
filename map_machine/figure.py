@@ -241,7 +241,7 @@ class Crater(Tagged):
         circle = svg.circle(
             self.point,
             radius * scale,
-            fill=gradient.get_paint_server(),
+            fill=gradient.get_funciri(),
             opacity=0.2,
         )
         svg.add(circle)
