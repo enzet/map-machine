@@ -2070,6 +2070,7 @@ ways:
   - tags: {leisure: park}
     style:
       fill: park_color
+      opacity: 0.5
   - tags: {landuse: recreation_ground}
     style:
       fill: grass_color
