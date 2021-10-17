@@ -58,7 +58,7 @@ def main() -> None:
 
     elif arguments.command == "taginfo":
         from map_machine.scheme import Scheme
-        from map_machine.taginfo import write_taginfo_project_file
+        from doc.taginfo import write_taginfo_project_file
 
         write_taginfo_project_file(Scheme(workspace.DEFAULT_SCHEME_PATH))
 

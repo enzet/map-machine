@@ -1,0 +1,3 @@
+"""
+OpenStreetMap-specific things.
+"""
