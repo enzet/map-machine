@@ -1976,6 +1976,10 @@ ways:
     style:
       stroke: water_color
       stroke-width: 2.5
+  - tags: {waterway: canal}
+    style:
+      stroke: water_color
+      stroke-width: 2
   - tags: {waterway: stream}
     style:
       stroke: water_color
