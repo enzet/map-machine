@@ -2207,7 +2207,7 @@ area_tags:
   - tags: {power: "compensator"}
   - tags: {power: "substation"}
 
-tags_to_write:
+keys_to_write:
   - "STIF:zone"
   - "alt_name"
   - "artist_name"
@@ -2314,7 +2314,7 @@ prefix_to_write:
   - "website"
   - "wikipedia"
 
-tags_to_skip:
+keys_to_skip:
   - "FIXME"
   - "attribution"
   - "building:levels"
@@ -2347,3 +2347,6 @@ prefix_to_skip:
   - "source"
   - "razed"
   - "removed"
+
+tags_to_skip:
+  highway: motorway_junction

@@ -346,10 +346,11 @@ class Scheme:
         self.area_matchers: list[Matcher] = [
             Matcher(x) for x in content["area_tags"]
         ]
-        self.tags_to_write: list[str] = content["tags_to_write"]
+        self.keys_to_write: list[str] = content["keys_to_write"]
         self.prefix_to_write: list[str] = content["prefix_to_write"]
-        self.tags_to_skip: list[str] = content["tags_to_skip"]
+        self.keys_to_skip: list[str] = content["keys_to_skip"]
         self.prefix_to_skip: list[str] = content["prefix_to_skip"]
+        self.tags_to_skip: dict[str, str] = content["tags_to_skip"]
 
         # Storage for created icon sets.
         self.cache: dict[str, tuple[IconSet, int]] = {}
@@ -379,34 +380,56 @@ class Scheme:
             logging.debug(f"Unknown color `{color}`.")
             return DEFAULT_COLOR
 
-    def is_no_drawable(self, key: str) -> bool:
+    def is_no_drawable(self, key: str, value: str) -> bool:
         """
         Return true if key is specified as no drawable (should not be
         represented on the map as icon set or as text) by the scheme.
 
         :param key: OpenStreetMap tag key
+        :param value: OpenStreetMap tag value
         """
-        if key in self.tags_to_write or key in self.tags_to_skip:
+        if (
+            key in self.keys_to_write + self.keys_to_skip
+            or key in self.tags_to_skip
+            and self.tags_to_skip[key] == value
+        ):
             return True
-        for prefix in self.prefix_to_write + self.prefix_to_skip:
-            if key[: len(prefix) + 1] == f"{prefix}:":
+
+        if ":" in key:
+            prefix: str = key.split(":")[0]
+            if prefix in self.prefix_to_write + self.prefix_to_skip:
                 return True
+
         return False
 
-    def is_writable(self, key: str) -> bool:
+    def is_writable(self, key: str, value: str) -> bool:
         """
         Return true if key is specified as writable (should be represented on
         the map as text) by the scheme.
 
         :param key: OpenStreetMap tag key
+        :param value: OpenStreetMap tag value
         """
-        if key in self.tags_to_skip:
+        if (
+            key in self.keys_to_skip
+            or key in self.tags_to_skip
+            and self.tags_to_skip[key] == value
+        ):
             return False
-        if key in self.tags_to_write:
+
+        if key in self.keys_to_write:
             return True
-        for prefix in self.prefix_to_write:
-            if key[: len(prefix) + 1] == f"{prefix}:":
-                return True
+
+        prefix: Optional[str] = None
+        if ":" in key:
+            prefix = key.split(":")[0]
+
+        if prefix in self.prefix_to_skip:
+            return False
+
+        if prefix in self.prefix_to_write:
+            return True
+
         return False
 
     def get_icon(
@@ -633,7 +656,11 @@ class Scheme:
         :param tags: input tag dictionary
         :param processed: processed set
         """
-        [processed.add(tag) for tag in tags if self.is_no_drawable(tag)]
+        [
+            processed.add(tag)
+            for tag in tags
+            if self.is_no_drawable(tag, tags[tag])
+        ]
 
     def get_shape_specification(
         self,
