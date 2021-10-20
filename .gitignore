@@ -24,3 +24,6 @@ precommit.py
 .idea
 temp
 venv
+
+compare.html
+taginfo

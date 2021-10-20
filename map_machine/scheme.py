@@ -635,7 +635,7 @@ class Scheme:
             texts.append(Label(f"↕ {tags['height']} m"))
             processed.add("height")
         for tag in tags:
-            if self.is_writable(tag) and tag not in processed:
+            if self.is_writable(tag, tags[tag]) and tag not in processed:
                 texts.append(Label(tags[tag]))
         return texts
 

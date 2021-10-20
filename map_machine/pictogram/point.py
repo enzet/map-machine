@@ -163,7 +163,7 @@ class Point(Tagged):
         self,
         svg: svgwrite.Drawing,
         occupied: Optional[Occupied] = None,
-        label_mode: str = LabelMode.MAIN,
+        label_mode: LabelMode = LabelMode.MAIN,
     ) -> None:
         """Draw all labels."""
         labels: list[Label]
