@@ -148,9 +148,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="562.85702"
-     inkscape:cx="604.22277"
-     inkscape:zoom="11.313708"
+     inkscape:cy="563.91768"
+     inkscape:cx="651.51054"
+     inkscape:zoom="22.627416"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -23794,5 +23794,54 @@
        id="kerb"
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="M 625.42383 566 C 625.18903 566 625 566.223 625 566.5 L 625 568.5 C 625 568.777 625.18903 569 625.42383 569 L 625.48438 569 L 631.57617 569 L 638.51562 569 C 638.78397 569 639 568.777 639 568.5 C 639 568.223 638.78397 568 638.51562 568 L 632 568 L 632 566.5 C 632 566.223 631.81097 566 631.57617 566 L 625.42383 566 z " />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;opacity:0.2"
+       d="m 643.5,547.5 9,-2"
+       id="path11298" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 644,547.5 v 1.5 h 8 v -3.5 z"
+       id="path11468"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;opacity:0.2"
+       d="m 645.5,553.5 -1,5"
+       id="path11802"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;opacity:0.2"
+       d="m 650.5,553.5 1,5"
+       id="path11804"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="font-variation-settings:normal;opacity:0.2;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+       d="m 645,557.5 5.5,-3"
+       id="path12180" />
+    <path
+       style="font-variation-settings:normal;opacity:0.2;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+       d="m 651,557.5 -5.5,-3"
+       id="path12182" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect12286"
+       width="6"
+       height="2"
+       x="645"
+       y="549" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect12729"
+       width="8"
+       height="6"
+       x="644"
+       y="548"
+       ry="1" />
+    <path
+       id="hunting_stand"
+       style="color:#000000;fill:#000000;stroke-linecap:round;-inkscape-stroke:none"
+       d="M 652.48828 561 A 0.5 0.5 0 0 0 652.39062 561.01172 L 643.39062 563.01172 A 0.5 0.5 0 0 0 643.01172 563.60938 A 0.5 0.5 0 0 0 643.60938 563.98828 L 644 563.90234 L 644 565 L 644 569 C 644 569.51671 644.38891 569.93957 644.89062 569.99414 L 644.00977 574.40234 A 0.5 0.5 0 0 0 644.40234 574.99023 A 0.5 0.5 0 0 0 644.99023 574.59766 L 645.11328 573.98438 A 0.5 0.5 0 0 0 645.24023 573.93945 L 648 572.43359 L 650.75977 573.93945 A 0.5 0.5 0 0 0 650.88672 573.98438 L 651.00977 574.59766 A 0.5 0.5 0 0 0 651.59766 574.99023 A 0.5 0.5 0 0 0 651.99023 574.40234 L 651.10938 569.99414 C 651.61109 569.93957 652 569.51671 652 569 L 652 565 L 652 562.12305 L 652.60938 561.98828 A 0.5 0.5 0 0 0 652.98828 561.39062 A 0.5 0.5 0 0 0 652.58594 561.00781 A 0.5 0.5 0 0 0 652.48828 561 z M 645 565 L 651 565 L 651 567 L 645 567 L 645 565 z M 645.91016 570 L 650.08984 570 L 650.11719 570.13867 L 648 571.29297 L 645.88281 570.13867 L 645.91016 570 z M 645.67578 571.16602 L 646.95508 571.86328 L 645.36328 572.73242 L 645.67578 571.16602 z M 650.32422 571.16602 L 650.63672 572.73047 L 649.04688 571.86328 L 650.32422 571.16602 z ">
+      <title
+         id="title12959">hunting stand</title>
+    </path>
   </g>
 </svg>
