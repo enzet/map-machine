@@ -735,6 +735,8 @@ node_icons:
       shapes: [kiosk]
     - tags: {amenity: stage}
       shapes: [theatre]
+    - tags: {amenity: hunting_stand}
+      shapes: [hunting_stand]
     - tags: {natural: cave_entrance}
       shapes: [cave]
     - tags: {amenity: bureau_de_change}
