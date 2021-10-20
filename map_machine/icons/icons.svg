@@ -148,9 +148,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="563.91768"
-     inkscape:cx="651.51054"
-     inkscape:zoom="22.627416"
+     inkscape:cy="563.74088"
+     inkscape:cx="663.97327"
+     inkscape:zoom="22.627417"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -23842,6 +23842,49 @@
        d="M 652.48828 561 A 0.5 0.5 0 0 0 652.39062 561.01172 L 643.39062 563.01172 A 0.5 0.5 0 0 0 643.01172 563.60938 A 0.5 0.5 0 0 0 643.60938 563.98828 L 644 563.90234 L 644 565 L 644 569 C 644 569.51671 644.38891 569.93957 644.89062 569.99414 L 644.00977 574.40234 A 0.5 0.5 0 0 0 644.40234 574.99023 A 0.5 0.5 0 0 0 644.99023 574.59766 L 645.11328 573.98438 A 0.5 0.5 0 0 0 645.24023 573.93945 L 648 572.43359 L 650.75977 573.93945 A 0.5 0.5 0 0 0 650.88672 573.98438 L 651.00977 574.59766 A 0.5 0.5 0 0 0 651.59766 574.99023 A 0.5 0.5 0 0 0 651.99023 574.40234 L 651.10938 569.99414 C 651.61109 569.93957 652 569.51671 652 569 L 652 565 L 652 562.12305 L 652.60938 561.98828 A 0.5 0.5 0 0 0 652.98828 561.39062 A 0.5 0.5 0 0 0 652.58594 561.00781 A 0.5 0.5 0 0 0 652.48828 561 z M 645 565 L 651 565 L 651 567 L 645 567 L 645 565 z M 645.91016 570 L 650.08984 570 L 650.11719 570.13867 L 648 571.29297 L 645.88281 570.13867 L 645.91016 570 z M 645.67578 571.16602 L 646.95508 571.86328 L 645.36328 572.73242 L 645.67578 571.16602 z M 650.32422 571.16602 L 650.63672 572.73047 L 649.04688 571.86328 L 650.32422 571.16602 z ">
       <title
          id="title12959">hunting stand</title>
+    </path>
+    <rect
+       style="opacity:1;fill:none;stroke:#000000;stroke-width:0.099999;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect16358"
+       width="8"
+       height="3"
+       x="660"
+       y="555"
+       ry="0" />
+    <circle
+       style="opacity:1;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path16404"
+       cx="664"
+       cy="549"
+       r="3" />
+    <rect
+       style="opacity:1;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect16428"
+       width="6"
+       height="8"
+       x="661"
+       y="549"
+       ry="0" />
+    <rect
+       style="opacity:1;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect16430"
+       width="4"
+       height="2"
+       x="662"
+       y="549" />
+    <rect
+       style="opacity:1;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect16432"
+       width="4"
+       height="2"
+       x="662"
+       y="553" />
+    <path
+       id="milestone"
+       style="opacity:1;fill:#000000;stroke:none;stroke-width:0.099999;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 664 562 A 3 3 0 0 0 661 565 L 661 571 L 660 571 L 660 574 L 668 574 L 668 571 L 667 571 L 667 565 A 3 3 0 0 0 664 562 z M 662 565 L 666 565 L 666 567 L 662 567 L 662 565 z M 662 569 L 666 569 L 666 571 L 662 571 L 662 569 z ">
+      <title
+         id="title16656">milestone</title>
     </path>
   </g>
 </svg>

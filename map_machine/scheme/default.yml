@@ -1334,6 +1334,8 @@ node_icons:
         {shape: digit_#maxspeed0, offset: [-2, 2]},
         {shape: digit_#maxspeed1, offset: [2, 2]},
       ]
+    - tags: {highway: milestone}
+      shapes: [milestone]
     - tags: {traffic_sign: stop}
       shapes: [stop]
     - tags: {highway: give_way}
