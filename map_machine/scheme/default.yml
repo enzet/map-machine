@@ -1344,6 +1344,8 @@ node_icons:
       shapes: [stone]
     - tags: {barrier: bollard}
       shapes: [bollard]
+    - tags: {barrier: kerb}
+      shapes: [kerb]
 
   - group: "Trees"
     start_zoom_level: 18

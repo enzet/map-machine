@@ -137,9 +137,9 @@
      inkscape:snap-intersection-paths="true"
      inkscape:object-nodes="true"
      inkscape:window-maximized="0"
-     inkscape:window-y="0"
+     inkscape:window-y="25"
      inkscape:window-x="0"
-     inkscape:window-height="900"
+     inkscape:window-height="847"
      inkscape:window-width="1440"
      inkscape:snap-bbox="true"
      inkscape:object-paths="true"
@@ -148,8 +148,8 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="167.27495"
-     inkscape:cx="261.62951"
+     inkscape:cy="562.85702"
+     inkscape:cx="604.22277"
      inkscape:zoom="11.313708"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -23772,5 +23772,27 @@
        id="shower_head"
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0999997;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="M 247 181 L 247 181.5 C 247 181.777 246.777 182 246.5 182 L 245 182 C 244.446 182 244 182.446 244 183 L 251 183 C 251 182.446 250.554 182 250 182 L 248.5 182 C 248.223 182 248 181.777 248 181.5 L 248 181 L 247 181 z M 246.5 184 C 246.5 184 246.03337 184.93322 246.00195 185.44727 L 246.00195 185.44922 L 246.00195 185.45117 C 246.00038 185.4674 246 185.48335 246 185.5 C 246 185.777 246.223 186 246.5 186 C 246.777 186 247 185.777 247 185.5 C 247 185.48438 246.99899 185.46577 246.99805 185.44922 L 246.99805 185.44727 C 246.96663 184.93322 246.5 184 246.5 184 z M 250.5 184 C 250.5 184 250.03337 184.93322 250.00195 185.44727 L 250.00195 185.44922 L 250.00195 185.45117 C 250.00038 185.4674 250 185.48335 250 185.5 C 250 185.777 250.223 186 250.5 186 C 250.777 186 251 185.777 251 185.5 C 251 185.48438 250.99899 185.46577 250.99805 185.44922 L 250.99805 185.44727 C 250.96663 184.93322 250.5 184 250.5 184 z M 244.5 185 C 244.5 185 244.03337 185.93322 244.00195 186.44727 L 244.00195 186.44922 L 244.00195 186.45117 C 244.00038 186.4674 244 186.48335 244 186.5 C 244 186.777 244.223 187 244.5 187 C 244.777 187 245 186.777 245 186.5 C 245 186.48438 244.99899 186.46577 244.99805 186.44922 L 244.99805 186.44727 C 244.96663 185.93322 244.5 185 244.5 185 z M 248.5 185 C 248.5 185 248.03337 185.93322 248.00195 186.44727 L 248.00195 186.44922 L 248.00195 186.45117 C 248.00038 186.4674 248 186.48335 248 186.5 C 248 186.777 248.223 187 248.5 187 C 248.777 187 249 186.777 249 186.5 C 249 186.48438 248.99899 186.46773 248.99805 186.45117 L 248.99805 186.44922 L 248.99805 186.44727 C 248.96663 185.93322 248.5 185 248.5 185 z " />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3451"
+       width="14"
+       height="1"
+       x="625"
+       y="552"
+       rx="0.484375"
+       ry="0.5" />
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect3453"
+       width="7"
+       height="3"
+       x="625"
+       y="550"
+       rx="0.42382812"
+       ry="0.5" />
+    <path
+       id="kerb"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 625.42383 566 C 625.18903 566 625 566.223 625 566.5 L 625 568.5 C 625 568.777 625.18903 569 625.42383 569 L 625.48438 569 L 631.57617 569 L 638.51562 569 C 638.78397 569 639 568.777 639 568.5 C 639 568.223 638.78397 568 638.51562 568 L 632 568 L 632 566.5 C 632 566.223 631.81097 566 631.57617 566 L 625.42383 566 z " />
   </g>
 </svg>
