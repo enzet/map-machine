@@ -148,9 +148,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="241.03502"
-     inkscape:cx="152.29312"
-     inkscape:zoom="11.313708"
+     inkscape:cy="172.5"
+     inkscape:cx="421"
+     inkscape:zoom="8"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -24009,5 +24009,34 @@
       <title
          id="title33013">bicycle parking stand</title>
     </path>
+    <path
+       style="font-variation-settings:normal;opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
+       d="m 420,172 v -7 l 1,-1 1,1 v 7 z"
+       id="path50222"
+       sodipodi:nodetypes="cccccc" />
+    <path
+       style="font-variation-settings:normal;opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
+       d="m 419,167 v 1 h 10 v -1 z"
+       id="path50224"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="font-variation-settings:normal;opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
+       d="m 423,172 v -7 l 1,-1 1,1 v 7 z"
+       id="path50443"
+       sodipodi:nodetypes="cccccc" />
+    <path
+       style="font-variation-settings:normal;opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
+       d="m 419,169 v 1 h 10 v -1 z"
+       id="path50445"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="font-variation-settings:normal;opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
+       d="m 426,172 v -7 l 1,-1 1,1 v 7 z"
+       id="path50546"
+       sodipodi:nodetypes="cccccc" />
+    <path
+       id="path50685"
+       style="font-variation-settings:normal;opacity:1;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
+       d="m 421,180 -1,1 v 2 h -1 v 1 h 1 v 1 h -1 v 1 h 1 v 2 h 2 v -2 h 1 v 2 h 2 v -2 h 1 v 2 h 2 v -2 h 1 v -1 h -1 v -1 h 1 v -1 h -1 v -2 l -1,-1 -1,1 v 2 h -1 v -2 l -1,-1 -1,1 v 2 h -1 v -2 z m 1,4 h 1 v 1 h -1 z m 3,0 h 1 v 1 h -1 z" />
   </g>
 </svg>
