@@ -1119,6 +1119,10 @@ node_icons:
       shapes:
       - {shape: p_small, offset: [-5, -3]}
       - bicycle_parking_wall_loops
+    - tags: {amenity: bicycle_parking, bicycle_parking: rack}
+      shapes:
+      - {shape: p_small, offset: [-5, -3]}
+      - bicycle_parking_rack
     - tags: {amenity: telephone}
       shapes: [telephone]
     - tags: {information: "*"}
