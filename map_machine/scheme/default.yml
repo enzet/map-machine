@@ -1111,6 +1111,10 @@ node_icons:
       shapes:
       - {shape: bicycle, offset: [0, 2]}
       - {shape: p_small, offset: [-6, -3]}
+    - tags: {amenity: bicycle_parking, bicycle_parking: stands}
+      shapes:
+      - {shape: p_small, offset: [-5, -3]}
+      - bicycle_parking_stand
     - tags: {amenity: telephone}
       shapes: [telephone]
     - tags: {information: "*"}
