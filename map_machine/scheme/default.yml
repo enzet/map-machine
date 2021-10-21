@@ -676,6 +676,8 @@ node_icons:
       shapes: [{shape: car, offset: [0, 4]}, {shape: car, offset: [0, -3]}]
     - tags: {highway: turning_circle}
       shapes: [circle_empty]
+    - tags: {highway: turning_loop}
+      shapes: [turning_loop]
     - tags: {highway: crossing}
       shapes: [crossing]
     - tags: {crossing: zebra}

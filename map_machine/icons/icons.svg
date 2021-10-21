@@ -148,8 +148,8 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="563.74088"
-     inkscape:cx="663.97327"
+     inkscape:cy="564.97832"
+     inkscape:cx="683.77226"
      inkscape:zoom="22.627417"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -23885,6 +23885,35 @@
        d="M 664 562 A 3 3 0 0 0 661 565 L 661 571 L 660 571 L 660 574 L 668 574 L 668 571 L 667 571 L 667 565 A 3 3 0 0 0 664 562 z M 662 565 L 666 565 L 666 567 L 662 567 L 662 565 z M 662 569 L 666 569 L 666 571 L 662 571 L 662 569 z ">
       <title
          id="title16656">milestone</title>
+    </path>
+    <path
+       style="opacity:0.2;fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path20119"
+       sodipodi:type="arc"
+       sodipodi:cx="679"
+       sodipodi:cy="549"
+       sodipodi:rx="3"
+       sodipodi:ry="3"
+       sodipodi:start="2.3561945"
+       sodipodi:end="0"
+       sodipodi:arc-type="arc"
+       d="M 676.87868,551.12132 A 3,3 0 0 1 676.40192,547.5 3,3 0 0 1 679.77646,546.10222 3,3 0 0 1 682,549"
+       sodipodi:open="true" />
+    <path
+       style="font-variation-settings:normal;opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
+       d="m 682,549 v 9"
+       id="path20344"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="font-variation-settings:normal;opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
+       d="m 682,556.24264 -5.12132,-5.12132"
+       id="path20752" />
+    <path
+       id="turning_loop"
+       style="color:#000000;fill:#000000;stroke-linecap:round;-inkscape-stroke:none"
+       d="M 678.88672 561.00195 C 677.52649 561.04236 676.24046 561.77837 675.53516 563 C 674.63236 564.56369 674.89514 566.55139 676.17188 567.82812 L 681 572.65625 L 681 574 L 683 574 L 683 565 C 683 563.19441 681.77922 561.60404 680.03516 561.13672 C 679.65364 561.03449 679.26758 560.99064 678.88672 561.00195 z M 679.02344 563 C 679.18757 563.0023 679.35276 563.0242 679.51758 563.06836 C 680.39661 563.3039 681 564.08996 681 565 L 681 569.82812 L 677.58594 566.41406 C 676.94244 565.77057 676.81256 564.78812 677.26758 564 C 677.63728 563.35965 678.31219 562.99001 679.02344 563 z ">
+      <title
+         id="title21358">turning loop</title>
     </path>
   </g>
 </svg>

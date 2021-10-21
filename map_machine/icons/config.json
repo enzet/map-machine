@@ -861,6 +861,9 @@
   },
   "tube": {},
   "tube_guyed": {},
+  "turning_loop": {
+    "name": "turning loop"
+  },
   "turnstile": {
     "name": "turnstile"
   },
