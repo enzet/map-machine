@@ -148,9 +148,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="253.75"
-     inkscape:cx="171"
-     inkscape:zoom="8"
+     inkscape:cy="241.03502"
+     inkscape:cx="152.29312"
+     inkscape:zoom="11.313708"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -23989,9 +23989,12 @@
        d="M 172.91421,234.08579 169.32843,230.5 H 167.5"
        id="path32517" />
     <path
-       id="path32916"
-       style="color:#000000;fill:#0000ff;stroke-linecap:square;-inkscape-stroke:none;stroke:none"
-       d="M 157 244 L 157 244.5 L 157 246 C 156.13889 246 155.3725 246.29547 154.83398 246.83398 C 154.29547 247.3725 154 248.13889 154 249 C 154 249.86111 154.29547 250.6275 154.83398 251.16602 C 155.3725 251.70453 156.13889 252 157 252 L 157 253.5 L 157 254 L 158 254 L 158 253.5 L 158 252 L 158 251 L 158 247 L 158 246 L 158 244.5 L 158 244 L 157 244 z M 157 247 L 157 251 C 156.36111 251 155.8775 250.79547 155.54102 250.45898 C 155.20453 250.1225 155 249.63889 155 249 C 155 248.36111 155.20453 247.8775 155.54102 247.54102 C 155.8775 247.20453 156.36111 247 157 247 z " />
+       id="bicycle_parking_wall_loops"
+       style="color:#000000;fill:#000000;stroke-linecap:square;-inkscape-stroke:none;stroke:none"
+       d="M 157 244 L 157 244.5 L 157 246 C 156.13889 246 155.3725 246.29547 154.83398 246.83398 C 154.29547 247.3725 154 248.13889 154 249 C 154 249.86111 154.29547 250.6275 154.83398 251.16602 C 155.3725 251.70453 156.13889 252 157 252 L 157 253.5 L 157 254 L 158 254 L 158 253.5 L 158 252 L 158 251 L 158 247 L 158 246 L 158 244.5 L 158 244 L 157 244 z M 157 247 L 157 251 C 156.36111 251 155.8775 250.79547 155.54102 250.45898 C 155.20453 250.1225 155 249.63889 155 249 C 155 248.36111 155.20453 247.8775 155.54102 247.54102 C 155.8775 247.20453 156.36111 247 157 247 z ">
+      <title
+         id="title43358">bicycle parking wall loops</title>
+    </path>
     <path
        id="path32920"
        style="color:#000000;fill:#0000ff;stroke-linecap:round;-inkscape-stroke:none;stroke:none"
