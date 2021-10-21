@@ -139,7 +139,8 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
         return True
 
     style: dict[str, str] = dict(
-        [x.split(":") for x in element.attrib["style"].split(";")]
+        (x.split(":")[0], x.split(":")[1])
+        for x in element.attrib["style"].split(";")
     )
     if (
         style["fill"] == "none"
@@ -157,7 +158,11 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
     ):
         return True
 
-    if style["fill"] == "#0000ff" and style["stroke"] == "none":
+    if (
+        style["fill"] == "#0000ff"
+        and "stroke" in style
+        and style["stroke"] == "none"
+    ):
         return True
 
     if style and not id_.startswith("use"):
