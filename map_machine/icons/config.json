@@ -413,6 +413,9 @@
   "japan_tv_tower": {
     "name": "Japanese map symbol for TV tower"
   },
+  "japan_weather_station": {
+    "name": "Japanese map symbol for meteorological observatory"
+  },
   "japan_well": {
     "name": "Japanese map symbol for oil or gas well"
   },
