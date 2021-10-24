@@ -55,9 +55,9 @@ class Tile:
         :param zoom_level: zoom level in OpenStreetMap terminology
         """
         lat_rad: np.ndarray = np.radians(coordinates[0])
-        n: float = 2.0 ** zoom_level
-        x: int = int((coordinates[1] + 180.0) / 360.0 * n)
-        y: int = int((1.0 - np.arcsinh(np.tan(lat_rad)) / np.pi) / 2.0 * n)
+        scale: float = 2.0 ** zoom_level
+        x: int = int((coordinates[1] + 180.0) / 360.0 * scale)
+        y: int = int((1.0 - np.arcsinh(np.tan(lat_rad)) / np.pi) / 2.0 * scale)
         return cls(x, y, zoom_level)
 
     def get_coordinates(self) -> np.ndarray:
@@ -66,9 +66,9 @@ class Tile:
 
         Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
         """
-        n: float = 2.0 ** self.zoom_level
-        lon_deg: float = self.x / n * 360.0 - 180.0
-        lat_rad: float = np.arctan(np.sinh(np.pi * (1 - 2 * self.y / n)))
+        scale: float = 2.0 ** self.zoom_level
+        lon_deg: float = self.x / scale * 360.0 - 180.0
+        lat_rad: float = np.arctan(np.sinh(np.pi * (1 - 2 * self.y / scale)))
         lat_deg: np.ndarray = np.degrees(lat_rad)
         return np.array((lat_deg, lon_deg))
 
@@ -141,8 +141,8 @@ class Tile:
         """
         try:
             osm_data: OSMData = self.load_osm_data(cache_path)
-        except NetworkError as e:
-            raise NetworkError(f"Map is not loaded. {e.message}")
+        except NetworkError as error:
+            raise NetworkError(f"Map is not loaded. {error.message}")
 
         self.draw_with_osm_data(osm_data, directory_name, configuration)
 
@@ -198,12 +198,12 @@ class Tile:
         assert zoom_level >= self.zoom_level
 
         tiles: list["Tile"] = []
-        n: int = 2 ** (zoom_level - self.zoom_level)
-        for i in range(n):
-            for j in range(n):
+        scale: int = 2 ** (zoom_level - self.zoom_level)
+        for i in range(scale):
+            for j in range(scale):
                 tile: Tile = Tile(
-                    n * self.x + i,
-                    n * self.y + j,
+                    scale * self.x + i,
+                    scale * self.y + j,
                     zoom_level,
                 )
                 tiles.append(tile)

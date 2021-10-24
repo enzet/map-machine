@@ -3,6 +3,7 @@ Simple OpenStreetMap renderer.
 """
 import argparse
 import logging
+import sys
 from pathlib import Path
 from typing import Iterator, Optional
 
@@ -133,7 +134,6 @@ class Map:
 
         previous_height: float = 0
         for height in sorted(constructor.heights):
-            fill: Color()
             for building in constructor.buildings:
                 if building.height < height or building.min_height > height:
                     continue
@@ -168,15 +168,14 @@ class Map:
                 nodes[node_1].add(part_1)
                 nodes[node_2].add(part_2)
 
-        for node in nodes:
-            parts: set[RoadPart] = nodes[node]
+        for node, parts in nodes.items():
             if len(parts) < 4:
                 continue
             intersection: Intersection = Intersection(list(parts))
             intersection.draw(self.svg, True)
 
 
-def ui(arguments: argparse.Namespace) -> None:
+def render_map(arguments: argparse.Namespace) -> None:
     """
     Map Machine entry point.
 
@@ -189,7 +188,6 @@ def ui(arguments: argparse.Namespace) -> None:
     cache_path.mkdir(parents=True, exist_ok=True)
 
     boundary_box: Optional[BoundaryBox] = None
-    input_file_names: list[Path] = []
 
     if arguments.input_file_names:
         input_file_names = list(map(Path, arguments.input_file_names))
@@ -213,7 +211,7 @@ def ui(arguments: argparse.Namespace) -> None:
                 "Specify either --input, or --boundary-box, or --coordinates "
                 "and --size."
             )
-            exit(1)
+            sys.exit(1)
 
         try:
             cache_file_path: Path = (
@@ -221,13 +219,11 @@ def ui(arguments: argparse.Namespace) -> None:
             )
             get_osm(boundary_box, cache_file_path)
             input_file_names = [cache_file_path]
-        except NetworkError as e:
-            logging.fatal(e.message)
-            exit(1)
+        except NetworkError as error:
+            logging.fatal(error.message)
+            sys.exit(1)
 
     scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
-    min_: np.ndarray
-    max_: np.ndarray
     osm_data: OSMData
 
     osm_data: OSMData = OSMData()

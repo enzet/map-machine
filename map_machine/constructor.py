@@ -228,7 +228,7 @@ class Constructor:
         if not self.check_level(line.tags):
             return
 
-        center_point, center_coordinates = line_center(outers[0], self.flinger)
+        center_point, _ = line_center(outers[0], self.flinger)
         if self.configuration.is_wireframe():
             color: Color
             if self.configuration.drawing_mode == DrawingMode.AUTHOR:

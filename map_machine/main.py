@@ -29,7 +29,7 @@ def main() -> None:
     elif arguments.command == "render":
         from map_machine import mapper
 
-        mapper.ui(arguments)
+        mapper.render_map(arguments)
 
     elif arguments.command == "tile":
         from map_machine.slippy import tile
@@ -44,7 +44,7 @@ def main() -> None:
     elif arguments.command == "mapcss":
         from map_machine import mapcss
 
-        mapcss.ui(arguments)
+        mapcss.generate_mapcss(arguments)
 
     elif arguments.command == "element":
         from map_machine.element import draw_element

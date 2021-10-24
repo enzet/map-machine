@@ -134,8 +134,8 @@ class MapCSSWriter:
             return ""
 
         selector: str = target + matcher.get_mapcss_selector(prefix) + " {\n"
-        for element in elements:
-            selector += f"    {element}: {elements[element]};\n"
+        for key, value in elements.items():
+            selector += f"    {key}: {value};\n"
         selector += "}\n"
 
         return selector
@@ -176,7 +176,7 @@ class MapCSSWriter:
                     )
 
 
-def ui(options: argparse.Namespace) -> None:
+def generate_mapcss(options: argparse.Namespace) -> None:
     """Write MapCSS 0.2 scheme."""
     directory: Path = workspace.get_mapcss_path()
     icons_with_outline_path: Path = workspace.get_mapcss_icons_path()
