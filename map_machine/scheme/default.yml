@@ -334,6 +334,7 @@ node_icons:
       shapes: [waving_flag]
     - tags: {man_made: monitoring_station, monitoring:weather: "yes"}
       shapes: [japan_weather_station]
+      location_restrictions: {include: [jp]}
     - tags: {amenity: veterinary}
       shapes: [dog_and_cross]
     - tags: {tourism: hotel}
