@@ -36,26 +36,15 @@ def get_address(
     """
     address: list[str] = []
 
+    tag_names: list[str] = ["housenumber"]
     if draw_captions_mode == "address":
-        if "addr:postcode" in tags:
-            address.append(tags["addr:postcode"])
-            processed.add("addr:postcode")
-        if "addr:country" in tags:
-            address.append(tags["addr:country"])
-            processed.add("addr:country")
-        if "addr:city" in tags:
-            address.append(tags["addr:city"])
-            processed.add("addr:city")
-        if "addr:street" in tags:
-            street = tags["addr:street"]
-            if street.startswith("улица "):
-                street = "ул. " + street[len("улица ") :]
-            address.append(street)
-            processed.add("addr:street")
+        tag_names += ["postcode", "country", "city", "street"]
 
-    if "addr:housenumber" in tags:
-        address.append(tags["addr:housenumber"])
-        processed.add("addr:housenumber")
+    for tag_name in tag_names:
+        key: str = f"addr:{tag_name}"
+        if key in tags:
+            address.append(tags[key])
+            processed.add(key)
 
     return address
 
