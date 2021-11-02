@@ -22,8 +22,8 @@ from map_machine.pictogram.icon import (
     ShapeExtractor,
     ShapeSpecification,
 )
-from map_machine.map_configuration import MapConfiguration
-from map_machine.text import Label, get_address, get_text
+from map_machine.map_configuration import MapConfiguration, LabelMode
+from map_machine.text import Label, construct_text
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -565,75 +565,11 @@ class Scheme:
         return None
 
     def construct_text(
-        self, tags: dict[str, str], draw_captions: str, processed: set[str]
+        self, tags: dict[str, str], processed: set[str], label_mode: LabelMode
     ) -> list[Label]:
         """Construct labels for not processed tags."""
-        texts: list[Label] = []
+        texts: list[Label] = construct_text(tags, processed, label_mode)
 
-        name = None
-        alt_name = None
-        if "name" in tags:
-            name = tags["name"]
-            processed.add("name")
-        elif "name:en" in tags:
-            if not name:
-                name = tags["name:en"]
-                processed.add("name:en")
-            processed.add("name:en")
-        if "alt_name" in tags:
-            if alt_name:
-                alt_name += ", "
-            else:
-                alt_name = ""
-            alt_name += tags["alt_name"]
-            processed.add("alt_name")
-        if "old_name" in tags:
-            if alt_name:
-                alt_name += ", "
-            else:
-                alt_name = ""
-            alt_name += "ex " + tags["old_name"]
-
-        address: list[str] = get_address(tags, draw_captions, processed)
-
-        if name:
-            texts.append(Label(name, Color("black")))
-        if alt_name:
-            texts.append(Label(f"({alt_name})"))
-        if address:
-            texts.append(Label(", ".join(address)))
-
-        if draw_captions == "main":
-            return texts
-
-        texts += get_text(tags, processed)
-
-        if "route_ref" in tags:
-            texts.append(Label(tags["route_ref"].replace(";", " ")))
-            processed.add("route_ref")
-        if "cladr:code" in tags:
-            texts.append(Label(tags["cladr:code"], size=7))
-            processed.add("cladr:code")
-        if "website" in tags:
-            link = tags["website"]
-            if link[:7] == "http://":
-                link = link[7:]
-            if link[:8] == "https://":
-                link = link[8:]
-            if link[:4] == "www.":
-                link = link[4:]
-            if link[-1] == "/":
-                link = link[:-1]
-            link = link[:25] + ("..." if len(tags["website"]) > 25 else "")
-            texts.append(Label(link, Color("#000088")))
-            processed.add("website")
-        for key in ["phone"]:
-            if key in tags:
-                texts.append(Label(tags[key], Color("#444444")))
-                processed.add(key)
-        if "height" in tags:
-            texts.append(Label(f"↕ {tags['height']} m"))
-            processed.add("height")
         for tag in tags:
             if self.is_writable(tag, tags[tag]) and tag not in processed:
                 texts.append(Label(tags[tag]))

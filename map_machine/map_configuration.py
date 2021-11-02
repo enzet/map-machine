@@ -23,6 +23,7 @@ class LabelMode(Enum):
     NO = "no"
     MAIN = "main"
     ALL = "all"
+    ADDRESS = "address"
 
 
 class BuildingMode(Enum):

@@ -1,6 +1,7 @@
 """
 Test label generation for nodes.
 """
+from map_machine.map_configuration import LabelMode
 from map_machine.text import Label
 from tests import SCHEME
 
@@ -11,7 +12,7 @@ __email__ = "me@enzet.ru"
 def construct_labels(tags: dict[str, str]) -> list[Label]:
     """Construct labels from OSM node tags."""
     processed: set[str] = set()
-    return SCHEME.construct_text(tags, "all", processed)
+    return SCHEME.construct_text(tags, processed, LabelMode.ALL)
 
 
 def test_1_label() -> None:

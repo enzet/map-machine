@@ -6,6 +6,8 @@ from typing import Any
 
 from colour import Color
 
+from map_machine.map_configuration import LabelMode
+
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
@@ -25,19 +27,19 @@ class Label:
 
 
 def get_address(
-    tags: dict[str, Any], draw_captions_mode: str, processed: set[str]
+    tags: dict[str, Any], processed: set[str], label_mode: LabelMode
 ) -> list[str]:
     """
     Construct address text list from the tags.
 
     :param tags: OSM node, way or relation tags
-    :param draw_captions_mode: captions mode ("all", "main", or "no")
     :param processed: set of processed tag keys
+    :param label_mode: captions mode
     """
     address: list[str] = []
 
     tag_names: list[str] = ["housenumber"]
-    if draw_captions_mode == "address":
+    if label_mode == LabelMode.ADDRESS:
         tag_names += ["postcode", "country", "city", "street"]
 
     for tag_name in tag_names:
@@ -95,5 +97,83 @@ def get_text(tags: dict[str, Any], processed: set[str]) -> list[Label]:
         )
         texts.append(Label(text))
         processed.add("frequency")
+
+    return texts
+
+
+def construct_text(
+    tags: dict[str, str], processed: set[str], label_mode: LabelMode
+) -> list[Label]:
+
+    texts: list[Label] = []
+
+    name = None
+    alt_name = None
+    if "name" in tags:
+        name = tags["name"]
+        processed.add("name")
+    elif "name:en" in tags:
+        if not name:
+            name = tags["name:en"]
+            processed.add("name:en")
+        processed.add("name:en")
+    if "alt_name" in tags:
+        if alt_name:
+            alt_name += ", "
+        else:
+            alt_name = ""
+        alt_name += tags["alt_name"]
+        processed.add("alt_name")
+    if "old_name" in tags:
+        if alt_name:
+            alt_name += ", "
+        else:
+            alt_name = ""
+        alt_name += "ex " + tags["old_name"]
+
+    address: list[str] = get_address(tags, processed, label_mode)
+
+    if name:
+        texts.append(Label(name, Color("black")))
+    if alt_name:
+        texts.append(Label(f"({alt_name})"))
+    if address:
+        texts.append(Label(", ".join(address)))
+
+    if label_mode == LabelMode.MAIN:
+        return texts
+
+    texts += get_text(tags, processed)
+
+    if "route_ref" in tags:
+        texts.append(Label(tags["route_ref"].replace(";", " ")))
+        processed.add("route_ref")
+
+    if "cladr:code" in tags:
+        texts.append(Label(tags["cladr:code"], size=7))
+        processed.add("cladr:code")
+
+    if "website" in tags:
+        link = tags["website"]
+        if link[:7] == "http://":
+            link = link[7:]
+        if link[:8] == "https://":
+            link = link[8:]
+        if link[:4] == "www.":
+            link = link[4:]
+        if link[-1] == "/":
+            link = link[:-1]
+        link = link[:25] + ("..." if len(tags["website"]) > 25 else "")
+        texts.append(Label(link, Color("#000088")))
+        processed.add("website")
+
+    for key in ["phone"]:
+        if key in tags:
+            texts.append(Label(tags[key], Color("#444444")))
+            processed.add(key)
+
+    if "height" in tags:
+        texts.append(Label(f"↕ {tags['height']} m"))
+        processed.add("height")
 
     return texts

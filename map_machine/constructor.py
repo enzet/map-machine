@@ -296,7 +296,7 @@ class Constructor:
             )
             if icon_set is not None:
                 labels: list[Label] = self.scheme.construct_text(
-                    line.tags, "all", processed
+                    line.tags, processed, self.configuration.label_mode
                 )
                 point: Point = Point(
                     icon_set,
@@ -334,7 +334,7 @@ class Constructor:
             )
             if icon_set is not None:
                 labels: list[Label] = self.scheme.construct_text(
-                    line.tags, "all", processed
+                    line.tags, processed, self.configuration.label_mode
                 )
                 point: Point = Point(
                     icon_set,
@@ -445,7 +445,9 @@ class Constructor:
         )
         if icon_set is None:
             return
-        labels: list[Label] = self.scheme.construct_text(tags, "all", processed)
+        labels: list[Label] = self.scheme.construct_text(
+            tags, processed, self.configuration.label_mode
+        )
         self.scheme.process_ignored(tags, processed)
 
         if node.get_tag("natural") == "tree" and (
