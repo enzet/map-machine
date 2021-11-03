@@ -745,7 +745,10 @@ node_icons:
     - tags: {natural: cave_entrance}
       shapes: [cave]
     - tags: {amenity: bureau_de_change}
-      shapes: [exchange]
+      shapes:
+      - {shape: exchange}
+      - {shape: dollar, offset: [-4, 3]}
+      - {shape: pound, offset: [5, -2]}
     - tags: {sport: skateboard}
       shapes: [skateboard]
     - tags: {pipeline: substation}
