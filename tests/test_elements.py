@@ -46,8 +46,11 @@ ROAD_TYPES: list[dict[str, str]] = [
     {"highway": "path"},
     {"highway": "track"},
     {"highway": "raceway"},
-    {"highway": "runway"},
-    {"highway": "taxiway"},
+    {"aeroway": "runway"},
+    {"aeroway": "taxiway"},
+]
+
+RAILWAY_TYPES: list[dict[str, str]] = [
     {"railway": "rail"},
     {"railway": "light_rail"},
     {"railway": "monorail"},
@@ -57,7 +60,6 @@ ROAD_TYPES: list[dict[str, str]] = [
     {"railway": "subway", "color": "red"},
     {"railway": "subway", "color": "blue"},
 ]
-
 
 ROAD_FEATURES: list[dict[str, str]] = [
     {"lanes": "1"},
