@@ -10,9 +10,7 @@ __email__ = "me@enzet.ru"
 
 @dataclass
 class MinMax:
-    """
-    Minimum and maximum.
-    """
+    """Minimum and maximum."""
 
     min_: Any = None
     max_: Any = None

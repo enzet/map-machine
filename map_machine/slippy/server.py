@@ -17,9 +17,7 @@ __email__ = "me@enzet.ru"
 
 
 class _Handler(SimpleHTTPRequestHandler):
-    """
-    HTTP request handler that process sloppy map tile requests.
-    """
+    """HTTP request handler that process sloppy map tile requests."""
 
     cache: Path = Path("cache")
     update_cache: bool = False

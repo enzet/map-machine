@@ -38,9 +38,7 @@ GRID_STEP: int = 16
 
 @dataclass
 class Shape:
-    """
-    SVG icon path description.
-    """
+    """SVG icon path description."""
 
     path: str  # SVG icon path
     offset: np.ndarray  # vector that should be used to shift the path
@@ -257,9 +255,7 @@ class ShapeExtractor:
 
 @dataclass
 class ShapeSpecification:
-    """
-    Specification for shape as a part of an icon.
-    """
+    """Specification for shape as a part of an icon."""
 
     shape: Shape
     color: Color = DEFAULT_COLOR
@@ -335,9 +331,7 @@ class ShapeSpecification:
 
 @dataclass
 class Icon:
-    """
-    Icon that consists of (probably) multiple shapes.
-    """
+    """Icon that consists of (probably) multiple shapes."""
 
     shape_specifications: list[ShapeSpecification]
     opacity: float = 1.0
@@ -450,9 +444,7 @@ class Icon:
 
 @dataclass
 class IconSet:
-    """
-    Node representation: icons and color.
-    """
+    """Node representation: icons and color."""
 
     main_icon: Icon
     extra_icons: list[Icon]

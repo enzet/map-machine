@@ -212,9 +212,7 @@ class Tile:
 
 @dataclass
 class Tiles:
-    """
-    Collection of tiles.
-    """
+    """Collection of tiles."""
 
     tiles: list[Tile]
     tile_1: Tile  # Left top tile.

@@ -33,18 +33,14 @@ IconDescription = list[Union[str, dict[str, str]]]
 
 @dataclass
 class LineStyle:
-    """
-    SVG line style and its priority.
-    """
+    """SVG line style and its priority."""
 
     style: dict[str, Union[int, float, str]]
     priority: float = 0.0
 
 
 class MatchingType(Enum):
-    """
-    Description on how tag was matched.
-    """
+    """Description on how tag was matched."""
 
     NOT_MATCHED = 0
     MATCHED_BY_SET = 1
@@ -106,9 +102,7 @@ def match_location(restrictions: dict[str, str], country: str) -> bool:
 
 
 class Matcher:
-    """
-    Tag matching.
-    """
+    """Tag matching."""
 
     def __init__(
         self, structure: dict[str, Any], group: Optional[dict[str, Any]] = None
@@ -215,9 +209,7 @@ def get_shape_specifications(
 
 
 class NodeMatcher(Matcher):
-    """
-    Tag specification matcher.
-    """
+    """Tag specification matcher."""
 
     def __init__(
         self, structure: dict[str, Any], group: dict[str, Any]
@@ -265,9 +257,7 @@ class NodeMatcher(Matcher):
 
 
 class WayMatcher(Matcher):
-    """
-    Special tag matcher for ways.
-    """
+    """Special tag matcher for ways."""
 
     def __init__(self, structure: dict[str, Any], scheme: "Scheme") -> None:
         super().__init__(structure)
@@ -289,9 +279,7 @@ class WayMatcher(Matcher):
 
 
 class RoadMatcher(Matcher):
-    """
-    Special tag matcher for highways.
-    """
+    """Special tag matcher for highways."""
 
     def __init__(self, structure: dict[str, Any], scheme: "Scheme") -> None:
         super().__init__(structure)

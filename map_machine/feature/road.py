@@ -33,9 +33,7 @@ USE_BLUR: bool = False
 
 @dataclass
 class Lane:
-    """
-    Road lane specification.
-    """
+    """Road lane specification."""
 
     width: Optional[float] = None  # Width in meters
     is_forward: Optional[bool] = None  # Whether lane is forward or backward
@@ -57,9 +55,7 @@ class Lane:
 
 
 class RoadPart:
-    """
-    Line part of the road.
-    """
+    """Line part of the road."""
 
     def __init__(
         self,
@@ -366,9 +362,7 @@ class Intersection:
 
 
 class Road(Tagged):
-    """
-    Road or track on the map.
-    """
+    """Road or track on the map."""
 
     def __init__(
         self,
@@ -755,16 +749,9 @@ class ComplexConnector(Connector):
 class SimpleIntersection(Connector):
     """Connection between more than two roads."""
 
-    def __init__(
-        self,
-        connections: list[tuple[Road, int]],
-        flinger: Flinger,
-    ) -> None:
-        super().__init__(connections, flinger)
-
     def draw(self, svg: Drawing) -> None:
         """Draw connection fill."""
-        for road, index in sorted(
+        for road, _ in sorted(
             self.connections, key=lambda x: x[0].matcher.priority
         ):
             node: OSMNode = self.road_1.nodes[self.index_1]
@@ -776,7 +763,7 @@ class SimpleIntersection(Connector):
 
     def draw_border(self, svg: Drawing) -> None:
         """Draw connection outline."""
-        for road, index in self.connections:
+        for road, _ in self.connections:
             node: OSMNode = self.road_1.nodes[self.index_1]
             point: np.ndarray = self.flinger.fling(node.coordinates)
             circle: Circle = svg.circle(
@@ -817,13 +804,13 @@ class Roads:
                 layered_roads[road.layer] = []
             layered_roads[road.layer].append(road)
 
-        for id_ in self.nodes:
-            connected: list[tuple[Road, int]] = self.nodes[id_]
+        for _, connected in self.nodes.items():
             connector: Connector
 
-            if len(self.nodes[id_]) <= 1:
+            if len(connected) <= 1:
                 continue
-            elif len(self.nodes[id_]) == 2:
+
+            if len(connected) == 2:
                 road_1, index_1 = connected[0]
                 road_2, index_2 = connected[1]
                 if (
@@ -851,11 +838,7 @@ class Roads:
             roads: list[Road] = sorted(
                 layered_roads[layer], key=lambda x: x.matcher.priority
             )
-            connectors: list[Connector]
-            if layer in layered_connectors:
-                connectors = layered_connectors[layer]
-            else:
-                connectors = []
+            connectors: list[Connector] = layered_connectors.get(layer)
 
             # Draw borders.
 

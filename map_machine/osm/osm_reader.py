@@ -59,9 +59,7 @@ def parse_levels(string: str) -> list[float]:
 
 @dataclass
 class Tagged:
-    """
-    Something with tags (string to string mapping).
-    """
+    """Something with tags (string to string mapping)."""
 
     tags: dict[str, str]
 
@@ -224,9 +222,7 @@ class OSMWay(Tagged):
 
 @dataclass
 class OSMMember:
-    """
-    Member of OpenStreetMap relation.
-    """
+    """Member of OpenStreetMap relation."""
 
     type_: str
     ref: int
@@ -298,15 +294,11 @@ class OSMRelation(Tagged):
 
 
 class NotWellFormedOSMDataException(Exception):
-    """
-    OSM data structure is not well-formed.
-    """
+    """OSM data structure is not well-formed."""
 
 
 class OSMData:
-    """
-    The whole OpenStreetMap information about nodes, ways, and relations.
-    """
+    """The whole OpenStreetMap information about nodes, ways, and relations."""
 
     def __init__(self) -> None:
         self.nodes: dict[int, OSMNode] = {}

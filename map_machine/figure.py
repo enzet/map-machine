@@ -26,9 +26,7 @@ BUILDING_MINIMAL_HEIGHT: float = 8.0
 
 
 class Figure(Tagged):
-    """
-    Some figure on the map: way or area.
-    """
+    """Some figure on the map: way or area."""
 
     def __init__(
         self,
@@ -64,9 +62,7 @@ class Figure(Tagged):
 
 
 class Building(Figure):
-    """
-    Building on the map.
-    """
+    """Building on the map."""
 
     def __init__(
         self,
@@ -193,9 +189,7 @@ class Building(Figure):
 
 
 class StyledFigure(Figure):
-    """
-    Figure with stroke and fill style.
-    """
+    """Figure with stroke and fill style."""
 
     def __init__(
         self,
@@ -209,9 +203,7 @@ class StyledFigure(Figure):
 
 
 class Crater(Tagged):
-    """
-    Volcano or impact crater on the map.
-    """
+    """Volcano or impact crater on the map."""
 
     def __init__(
         self, tags: dict[str, str], coordinates: np.ndarray, point: np.ndarray
@@ -248,9 +240,7 @@ class Crater(Tagged):
 
 
 class Tree(Tagged):
-    """
-    Tree on the map.
-    """
+    """Tree on the map."""
 
     def __init__(
         self, tags: dict[str, str], coordinates: np.ndarray, point: np.ndarray
@@ -280,9 +270,7 @@ class Tree(Tagged):
 
 
 class DirectionSector(Tagged):
-    """
-    Sector that represents direction.
-    """
+    """Sector that represents direction."""
 
     def __init__(self, tags: dict[str, str], point: np.ndarray) -> None:
         super().__init__(tags)
@@ -354,9 +342,7 @@ class DirectionSector(Tagged):
 
 
 class Segment:
-    """
-    Closed line segment.
-    """
+    """Closed line segment."""
 
     def __init__(self, point_1: np.ndarray, point_2: np.ndarray) -> None:
         self.point_1: np.ndarray = point_1

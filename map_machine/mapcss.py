@@ -67,9 +67,7 @@ meta {{
 
 
 class MapCSSWriter:
-    """
-    Writer that converts Map Machine scheme into MapCSS 0.2 format.
-    """
+    """Writer that converts Map Machine scheme into MapCSS 0.2 format."""
 
     def __init__(
         self,

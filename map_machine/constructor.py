@@ -152,9 +152,7 @@ def try_to_glue(
 
 
 class Constructor:
-    """
-    Map Machine node and way constructor.
-    """
+    """Map Machine node and way constructor."""
 
     def __init__(
         self,

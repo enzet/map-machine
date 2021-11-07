@@ -12,9 +12,7 @@ from map_machine.ui.cli import COMMANDS
 
 
 class ArgumentParser(argparse.ArgumentParser):
-    """
-    Argument parser that generates fish shell autocompletion commands.
-    """
+    """Argument parser that generates fish shell autocompletion commands."""
 
     def __init__(self, *args, **kwargs) -> None:
         self.arguments: list[dict[str, Any]] = []

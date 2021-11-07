@@ -21,9 +21,7 @@ from map_machine.workspace import workspace
 
 
 class TaginfoProjectFile:
-    """
-    JSON structure with OpenStreetMap tag usage.
-    """
+    """JSON structure with OpenStreetMap tag usage."""
 
     def __init__(self, path: Path, scheme: Scheme) -> None:
         self.path: Path = path

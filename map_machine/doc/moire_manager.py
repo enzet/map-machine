@@ -116,9 +116,9 @@ class ArgumentParser(argparse.ArgumentParser):
 class MapMachineMoire(Default, ABC):
     """Moire extension stub for Map Machine."""
 
-    def osm(self, args: Arguments) -> str:
+    def osm(self, arg: Arguments) -> str:
         """OSM tag key or key–value pair of tag."""
-        spec: str = self.clear(args[0])
+        spec: str = self.clear(arg[0])
         if "=" in spec:
             key, tag = spec.split("=")
             return (
@@ -129,26 +129,26 @@ class MapMachineMoire(Default, ABC):
 
         return self.get_ref_(f"{PREFIX}Key:{spec}", self.m([spec]))
 
-    def color(self, args: Arguments) -> str:
+    def color(self, arg: Arguments) -> str:
         """Simple color sample."""
         raise NotImplementedError("color")
 
-    def page_icon(self, args: Arguments) -> str:
+    def page_icon(self, arg: Arguments) -> str:
         """HTML page icon."""
         return ""
 
-    def command(self, args: Arguments) -> str:
+    def command(self, arg: Arguments) -> str:
         """Bash command from integration tests."""
-        return "map-machine " + " ".join(COMMAND_LINES[self.clear(args[0])])
+        return "map-machine " + " ".join(COMMAND_LINES[self.clear(arg[0])])
 
-    def icon(self, args: Arguments) -> str:
+    def icon(self, arg: Arguments) -> str:
         """Image with Röntgen icon."""
         raise NotImplementedError("icon")
 
-    def options(self, args: Arguments) -> str:
+    def options(self, arg: Arguments) -> str:
         """Table with option descriptions."""
         parser: ArgumentParser = ArgumentParser()
-        command: str = self.clear(args[0])
+        command: str = self.clear(arg[0])
         if command == "render":
             cli.add_render_arguments(parser)
         elif command == "server":
@@ -167,13 +167,13 @@ class MapMachineMoire(Default, ABC):
             )
         return self.parse(parser.get_moire_help())
 
-    def kbd(self, args: Arguments) -> str:
+    def kbd(self, arg: Arguments) -> str:
         """Keyboard key."""
-        return self.m(args)
+        return self.m(arg)
 
-    def no_wrap(self, args: Arguments) -> str:
+    def no_wrap(self, arg: Arguments) -> str:
         """Do not wrap text at white spaces."""
-        return self.parse(args[0])
+        return self.parse(arg[0])
 
 
 class MapMachineHTML(MapMachineMoire, DefaultHTML):
@@ -197,41 +197,39 @@ class MapMachineHTML(MapMachineMoire, DefaultHTML):
             content += f"<tr>{cell}</tr>"
         return f"<table>{content}</table>"
 
-    def color(self, args: Arguments) -> str:
+    def color(self, arg: Arguments) -> str:
         """Simple color sample."""
         return (
             f'<span class="color" '
-            f'style="background-color: {self.clear(args[0])};"></span>'
+            f'style="background-color: {self.clear(arg[0])};"></span>'
         )
 
-    def icon(self, args: Arguments) -> str:
+    def icon(self, arg: Arguments) -> str:
         """Image with Röntgen icon."""
-        size: str = self.clear(args[1]) if len(args) > 1 else 16
+        size: str = self.clear(arg[1]) if len(arg) > 1 else 16
         return (
             f'<img class="icon" style="width: {size}px; height: {size}px;" '
-            f'src="out/icons_by_id/{self.clear(args[0])}.svg" />'
+            f'src="out/icons_by_id/{self.clear(arg[0])}.svg" />'
         )
 
-    def kbd(self, args: Arguments) -> str:
+    def kbd(self, arg: Arguments) -> str:
         """Keyboard key."""
-        return f"<kbd>{self.clear(args[0])}</kbd>"
+        return f"<kbd>{self.clear(arg[0])}</kbd>"
 
-    def page_icon(self, args: Arguments) -> str:
+    def page_icon(self, arg: Arguments) -> str:
         """HTML page icon."""
         return (
-            f'<link rel="icon" type="image/svg" href="{self.clear(args[0])}"'
+            f'<link rel="icon" type="image/svg" href="{self.clear(arg[0])}"'
             ' sizes="16x16">'
         )
 
-    def no_wrap(self, args: Arguments) -> str:
+    def no_wrap(self, arg: Arguments) -> str:
         """Do not wrap text at white spaces."""
-        return (
-            f'<span style="white-space: nowrap;">{self.parse(args[0])}</span>'
-        )
+        return f'<span style="white-space: nowrap;">{self.parse(arg[0])}</span>'
 
-    def formal(self, args: Arguments) -> str:
+    def formal(self, arg: Arguments) -> str:
         """Formal variable."""
-        return f'<span class="formal">{self.parse(args[0])}</span>'
+        return f'<span class="formal">{self.parse(arg[0])}</span>'
 
 
 class MapMachineOSMWiki(MapMachineMoire, DefaultWiki):
@@ -248,23 +246,23 @@ class MapMachineOSMWiki(MapMachineMoire, DefaultWiki):
             workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
         )
 
-    def osm(self, args: Arguments) -> str:
+    def osm(self, arg: Arguments) -> str:
         """OSM tag key or key–value pair of tag."""
-        spec: str = self.clear(args[0])
+        spec: str = self.clear(arg[0])
         if "=" in spec:
             key, tag = spec.split("=")
             return f"{{{{Key|{key}|{tag}}}}}"
 
         return f"{{{{Tag|{spec}}}}}"
 
-    def color(self, args: Arguments) -> str:
+    def color(self, arg: Arguments) -> str:
         """Simple color sample."""
-        return f"{{{{Color box|{self.clear(args[0])}}}}}"
+        return f"{{{{Color box|{self.clear(arg[0])}}}}}"
 
-    def icon(self, args: Arguments) -> str:
+    def icon(self, arg: Arguments) -> str:
         """Image with Röntgen icon."""
-        size: str = self.clear(args[1]) if len(args) > 1 else 16
-        shape_id: str = self.clear(args[0])
+        size: str = self.clear(arg[1]) if len(arg) > 1 else 16
+        shape_id: str = self.clear(arg[0])
         name: str = self.extractor.get_shape(shape_id).name
         return f"[[File:Röntgen {name}.svg|{size}px]]"
 
@@ -274,27 +272,25 @@ class MapMachineMarkdown(MapMachineMoire, DefaultMarkdown):
 
     images = {}
 
-    def color(self, args: Arguments) -> str:
+    def color(self, arg: Arguments) -> str:
         """Simple color sample."""
-        return self.clear(args[0])
+        return self.clear(arg[0])
 
-    def icon(self, args: Arguments) -> str:
+    def icon(self, arg: Arguments) -> str:
         """Image with Röntgen icon."""
-        return f"[{self.clear(args[0])}]"
+        return f"[{self.clear(arg[0])}]"
 
-    def kbd(self, args: Arguments) -> str:
+    def kbd(self, arg: Arguments) -> str:
         """Keyboard key."""
-        return f"<kbd>{self.clear(args[0])}</kbd>"
+        return f"<kbd>{self.clear(arg[0])}</kbd>"
 
-    def no_wrap(self, args: Arguments) -> str:
+    def no_wrap(self, arg: Arguments) -> str:
         """Do not wrap text at white spaces."""
-        return (
-            f'<span style="white-space: nowrap;">{self.parse(args[0])}</span>'
-        )
+        return f'<span style="white-space: nowrap;">{self.parse(arg[0])}</span>'
 
-    def formal(self, args: Arguments) -> str:
+    def formal(self, arg: Arguments) -> str:
         """Formal variable."""
-        return f"<{self.parse(args[0])}>"
+        return f"<{self.parse(arg[0])}>"
 
 
 def convert(input_path: Path, output_path: Path) -> None:

@@ -41,9 +41,7 @@ def norm(vector: np.ndarray) -> np.ndarray:
 
 
 class Polyline:
-    """
-    List of connected points.
-    """
+    """List of connected points."""
 
     def __init__(self, points: list[np.ndarray]) -> None:
         self.points: list[np.ndarray] = points

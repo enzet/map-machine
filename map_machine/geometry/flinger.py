@@ -40,9 +40,7 @@ def osm_zoom_level_to_pixels_per_meter(
 
 
 class Flinger:
-    """
-    Convert geo coordinates into SVG position points.
-    """
+    """Convert geo coordinates into SVG position points."""
 
     def __init__(
         self,

@@ -25,9 +25,7 @@ __email__ = "me@enzet.ru"
 
 @dataclass
 class IconCollection:
-    """
-    Collection of icons.
-    """
+    """Collection of icons."""
 
     icons: list[Icon]
 

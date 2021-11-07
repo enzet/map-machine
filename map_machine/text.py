@@ -17,9 +17,7 @@ DEFAULT_COLOR: Color = Color("#444444")
 
 @dataclass
 class Label:
-    """
-    Text label.
-    """
+    """Text label."""
 
     text: str
     fill: Color = DEFAULT_COLOR

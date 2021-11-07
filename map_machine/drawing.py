@@ -23,9 +23,7 @@ PathCommands = list[Union[float, str, np.ndarray]]
 
 @dataclass
 class Style:
-    """
-    Drawing element style.
-    """
+    """Drawing element style."""
 
     fill: Optional[Color] = None
     stroke: Optional[Color] = None
@@ -60,9 +58,7 @@ class Style:
 
 
 class Drawing:
-    """
-    Image.
-    """
+    """Image."""
 
     def __init__(self, file_path: Path, width: int, height: int) -> None:
         self.file_path: Path = file_path
@@ -95,9 +91,7 @@ class Drawing:
 
 
 class SVGDrawing(Drawing):
-    """
-    SVG image.
-    """
+    """SVG image."""
 
     def __init__(self, file_path: Path, width: int, height: int) -> None:
         super().__init__(file_path, width, height)
@@ -145,9 +139,7 @@ class SVGDrawing(Drawing):
 
 
 class PNGDrawing(Drawing):
-    """
-    PNG image.
-    """
+    """PNG image."""
 
     def __init__(self, file_path: Path, width: int, height: int) -> None:
         super().__init__(file_path, width, height)

@@ -33,9 +33,7 @@ __email__ = "me@enzet.ru"
 
 
 class Map:
-    """
-    Map drawing.
-    """
+    """Map drawing."""
 
     def __init__(
         self,

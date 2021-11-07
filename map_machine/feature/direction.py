@@ -51,9 +51,7 @@ def rotation_matrix(angle: float) -> np.ndarray:
 
 
 class Sector:
-    """
-    Sector described by two vectors.
-    """
+    """Sector described by two vectors."""
 
     def __init__(self, text: str, angle: Optional[float] = None) -> None:
         """
@@ -120,9 +118,7 @@ class Sector:
 
 
 class DirectionSet:
-    """
-    Describes direction, set of directions.
-    """
+    """Describes direction, set of directions."""
 
     def __init__(self, text: str) -> None:
         """
