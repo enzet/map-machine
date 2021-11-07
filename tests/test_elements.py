@@ -46,6 +46,9 @@ ROAD_TYPES: list[dict[str, str]] = [
     {"highway": "path"},
     {"highway": "track"},
     {"highway": "raceway"},
+]
+
+AEROWAY_TYPES: list[dict[str, str]] = [
     {"aeroway": "runway"},
     {"aeroway": "taxiway"},
 ]
@@ -61,7 +64,23 @@ RAILWAY_TYPES: list[dict[str, str]] = [
     {"railway": "subway", "color": "blue"},
 ]
 
-ROAD_FEATURES: list[dict[str, str]] = [
+ROAD_WIDTHS_AND_FEATURES: list[dict[str, str]] = [
+    {"width": "4"},
+    {"width": "8"},
+    {"width": "12"},
+    {"width": "16"},
+    {"bridge": "yes", "width": "4"},
+    {"bridge": "yes", "width": "8"},
+    {"tunnel": "yes", "width": "4"},
+    {"tunnel": "yes", "width": "8"},
+    {"ford": "yes", "width": "4"},
+    {"ford": "yes", "width": "8"},
+    {"embankment": "yes", "width": "4"},
+    {"embankment": "yes", "width": "8"},
+]
+
+
+ROAD_LANES_AND_FEATURES: list[dict[str, str]] = [
     {"lanes": "1"},
     {"lanes": "2"},
     {"lanes": "3"},
@@ -114,28 +133,30 @@ class Grid:
         )
 
 
-def lanes() -> None:
+def road_features(
+    types: list[dict[str, str]], features: list[dict[str, str]], path: Path
+) -> None:
     """Draw test image with different road features."""
     osm_data: OSMData = OSMData()
 
     grid: Grid = Grid()
 
-    for i in range(len(ROAD_TYPES)):
+    for i in range(len(types)):
         previous: Optional[OSMNode] = None
 
-        for j in range(len(ROAD_FEATURES) + 1):
+        for j in range(len(features) + 1):
             node: OSMNode = grid.add_node({}, i, j)
 
             if previous:
-                tags: dict[str, str] = dict(ROAD_FEATURES[j - 1])
-                tags |= ROAD_TYPES[i]
+                tags: dict[str, str] = dict(features[j - 1])
+                tags |= types[i]
                 way: OSMWay = OSMWay(
-                    tags, i * (len(ROAD_FEATURES) + 1) + j, [previous, node]
+                    tags, i * (len(features) + 1) + j, [previous, node]
                 )
                 osm_data.add_way(way)
             previous = node
 
-    draw(osm_data, Path("out") / "lanes.svg", grid.get_boundary_box())
+    draw(osm_data, path, grid.get_boundary_box())
 
 
 def draw(
@@ -165,4 +186,11 @@ def draw(
 if __name__ == "__main__":
     logging.basicConfig(format="%(levelname)s %(message)s", level=logging.INFO)
 
-    lanes()
+    road_features(
+        ROAD_TYPES, ROAD_LANES_AND_FEATURES, Path("out") / "lanes.svg"
+    )
+    road_features(
+        ROAD_TYPES + RAILWAY_TYPES + AEROWAY_TYPES,
+        ROAD_WIDTHS_AND_FEATURES,
+        Path("out") / "width.svg",
+    )
