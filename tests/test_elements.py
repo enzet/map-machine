@@ -96,10 +96,19 @@ ROAD_LANES_AND_FEATURES: list[dict[str, str]] = [
 ]
 
 
+# See https://wiki.openstreetmap.org/wiki/Proposed_features/placement
+
+PLACEMENT_FEATURES_1: list[dict[str, str]] = [
+    {"lanes": "1"},
+    {"lanes": "2", "placement": "middle_of:1"},
+    {"lanes": "4", "placement": "middle_of:2"},
+    {"placement": "transition"},
+    {"lanes": "3", "placement": "right_of:1"},  # or placement=left_of:2
+]
+
+
 class Grid:
-    """
-    Creating map with elements ordered in grid.
-    """
+    """Creating map with elements ordered in grid."""
 
     def __init__(self) -> None:
         self.x_step: float = 0.0003
@@ -165,11 +174,7 @@ def draw(
     """Draw map."""
     configuration: MapConfiguration = MapConfiguration(level="all")
 
-    flinger: Flinger = Flinger(
-        boundary_box,
-        18,
-        osm_data.equator_length,
-    )
+    flinger: Flinger = Flinger(boundary_box, 18, osm_data.equator_length)
     svg: Drawing = Drawing(output_path.name, flinger.size)
     constructor: Constructor = Constructor(
         osm_data, flinger, SCHEME, SHAPE_EXTRACTOR, configuration
@@ -193,4 +198,7 @@ if __name__ == "__main__":
         ROAD_TYPES + RAILWAY_TYPES + AEROWAY_TYPES,
         ROAD_WIDTHS_AND_FEATURES,
         Path("out") / "width.svg",
+    )
+    road_features(
+        ROAD_TYPES, PLACEMENT_FEATURES_1, Path("out") / "placement.svg"
     )
