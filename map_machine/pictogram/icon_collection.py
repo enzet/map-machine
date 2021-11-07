@@ -9,7 +9,6 @@ from typing import Optional
 import numpy as np
 from colour import Color
 from svgwrite import Drawing
-from svgwrite.shapes import Rect
 
 from map_machine.pictogram.icon import (
     Icon,
@@ -166,6 +165,7 @@ class IconCollection:
         columns: int = 16,
         step: float = 24,
         background_color: Color = Color("white"),
+        scale: float = 1.0,
     ) -> None:
         """
         Draw icons in the form of table.
@@ -174,26 +174,22 @@ class IconCollection:
         :param columns: number of columns in grid
         :param step: horizontal and vertical distance between icons in grid
         :param background_color: background color
+        :param scale: scale icon by the magnitude
         """
-        point: np.ndarray = np.array((step / 2, step / 2))
-        width: float = step * columns
+        point: np.ndarray = np.array((step / 2 * scale, step / 2 * scale))
+        width: float = step * columns * scale
 
-        height: int = int(int(len(self.icons) / (width / step) + 1) * step)
+        height: int = int(int(len(self.icons) / columns + 1) * step * scale)
         svg: Drawing = Drawing(str(file_name), (width, height))
         svg.add(svg.rect((0, 0), (width, height), fill=background_color.hex))
 
         for icon in self.icons:
-            icon: Icon
-            rectangle: Rect = svg.rect(
-                point - np.array((10, 10)), (20, 20), fill=background_color.hex
-            )
-            svg.add(rectangle)
-            icon.draw(svg, point)
-            point += np.array((step, 0))
+            icon.draw(svg, point, scale=scale)
+            point += np.array((step * scale, 0))
             if point[0] > width - 8:
-                point[0] = step / 2
-                point += np.array((0, step))
-                height += step
+                point[0] = step / 2 * scale
+                point += np.array((0, step * scale))
+                height += step * scale
 
         with file_name.open("w", encoding="utf-8") as output_file:
             svg.write(output_file)

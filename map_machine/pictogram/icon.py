@@ -279,6 +279,7 @@ class ShapeSpecification:
         tags: dict[str, Any] = None,
         outline: bool = False,
         outline_opacity: float = 1.0,
+        scale: float = 1.0,
     ) -> None:
         """
         Draw icon shape into SVG file.
@@ -289,15 +290,18 @@ class ShapeSpecification:
             displayed, this argument should be None
         :param outline: draw outline for the shape
         :param outline_opacity: opacity of the outline
+        :param scale: scale icon by the magnitude
         """
-        scale: np.ndarray = np.array((1, 1))
+        scale_vector: np.ndarray = np.array((scale, scale))
         if self.flip_vertically:
-            scale = np.array((1, -1))
+            scale_vector = np.array((scale, -scale))
         if self.flip_horizontally:
-            scale = np.array((-1, 1))
+            scale_vector = np.array((-scale, scale))
 
         point: np.ndarray = np.array(list(map(int, point)))
-        path: SVGPath = self.shape.get_path(point, self.offset, scale)
+        path: SVGPath = self.shape.get_path(
+            point, self.offset * scale, scale_vector
+        )
         path.update({"fill": self.color.hex})
 
         if outline and self.use_outline:
@@ -355,6 +359,7 @@ class Icon:
         point: np.ndarray,
         tags: dict[str, Any] = None,
         outline: bool = False,
+        scale: float = 1,
     ) -> None:
         """
         Draw icon to SVG.
@@ -369,12 +374,14 @@ class Icon:
             opacity: float = 0.7 if bright else 0.5
             outline_group: Group = Group(opacity=opacity)
             for shape_specification in self.shape_specifications:
-                shape_specification.draw(outline_group, point, tags, True)
+                shape_specification.draw(
+                    outline_group, point, tags, True, scale=scale
+                )
             svg.add(outline_group)
         else:
             group: Group = Group(opacity=self.opacity)
             for shape_specification in self.shape_specifications:
-                shape_specification.draw(group, point, tags)
+                shape_specification.draw(group, point, tags, scale=scale)
             svg.add(group)
 
     def draw_to_file(
