@@ -166,7 +166,8 @@ class Matcher:
             )
             if is_matched == MatchingType.NOT_MATCHED:
                 return False, {}
-            elif matched_groups:
+
+            if matched_groups:
                 for index, element in enumerate(matched_groups):
                     groups[f"#{config_tag_key}{index}"] = element
 

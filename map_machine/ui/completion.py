@@ -18,15 +18,13 @@ class ArgumentParser(argparse.ArgumentParser):
 
     def __init__(self, *args, **kwargs) -> None:
         self.arguments: list[dict[str, Any]] = []
-        super(ArgumentParser, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def add_argument(self, *args, **kwargs) -> None:
         """Just store argument with options."""
-        super(ArgumentParser, self).add_argument(*args, **kwargs)
-        argument: dict[str, Any] = {"arguments": [x for x in args]}
-
-        for key in kwargs:
-            argument[key] = kwargs[key]
+        super().add_argument(*args, **kwargs)
+        argument: dict[str, Any] = {"arguments": args}
+        argument |= kwargs
 
         self.arguments.append(argument)
 
@@ -85,6 +83,8 @@ def completion_commands() -> str:
 
 
 if __name__ == "__main__":
-    completions_path: Path = Path("~/.config/fish/completions/map-machine.fish")
+    completions_path: Path = (
+        Path.home() / ".config/fish/completions/map-machine.fish"
+    )
     with completions_path.open("w+") as output_file:
         output_file.write(completion_commands())

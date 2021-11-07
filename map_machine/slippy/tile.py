@@ -496,8 +496,8 @@ def ui(options: argparse.Namespace) -> None:
         )
         try:
             osm_data: OSMData = min_tile.load_osm_data(Path(options.cache))
-        except NetworkError as e:
-            raise NetworkError(f"Map is not loaded. {e.message}")
+        except NetworkError as error:
+            raise NetworkError(f"Map is not loaded. {error.message}")
 
         for zoom_level in zoom_levels:
             tile: Tile = Tile.from_coordinates(
@@ -508,8 +508,8 @@ def ui(options: argparse.Namespace) -> None:
                     options, zoom_level
                 )
                 tile.draw_with_osm_data(osm_data, directory, configuration)
-            except NetworkError as e:
-                logging.fatal(e.message)
+            except NetworkError as error:
+                logging.fatal(error.message)
     elif options.tile:
         zoom_level, x, y = map(int, options.tile.split("/"))
         tile: Tile = Tile(x, y, zoom_level)
@@ -526,8 +526,8 @@ def ui(options: argparse.Namespace) -> None:
         min_tiles: Tiles = Tiles.from_boundary_box(boundary_box, min_zoom_level)
         try:
             osm_data: OSMData = min_tiles.load_osm_data(Path(options.cache))
-        except NetworkError as e:
-            raise NetworkError(f"Map is not loaded. {e.message}")
+        except NetworkError as error:
+            raise NetworkError(f"Map is not loaded. {error.message}")
 
         for zoom_level in zoom_levels:
             if EXTEND_TO_BIGGER_TILE:

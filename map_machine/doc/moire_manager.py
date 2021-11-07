@@ -51,11 +51,11 @@ class ArgumentParser(argparse.ArgumentParser):
 
     def __init__(self, *args, **kwargs) -> None:
         self.arguments: list[dict[str, Any]] = []
-        super(ArgumentParser, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def add_argument(self, *args, **kwargs) -> None:
         """Just store argument with options."""
-        super(ArgumentParser, self).add_argument(*args, **kwargs)
+        super().add_argument(*args, **kwargs)
         argument: dict[str, Any] = {"arguments": [x for x in args]}
 
         for key in kwargs:
