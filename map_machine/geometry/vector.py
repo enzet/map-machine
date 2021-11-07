@@ -51,14 +51,19 @@ class Polyline:
     def get_path(self, parallel_offset: float = 0) -> str:
         """Construct SVG path commands."""
         points: list[np.ndarray]
-        try:
-            points = (
-                LineString(self.points).parallel_offset(parallel_offset).coords
-                if parallel_offset
-                else self.points
-            )
-        except ValueError:
+        if np.allclose(parallel_offset, 0):
             points = self.points
+        else:
+            try:
+                points = (
+                    LineString(self.points)
+                    .parallel_offset(parallel_offset)
+                    .coords
+                    if parallel_offset
+                    else self.points
+                )
+            except ValueError:
+                points = self.points
         path: str = "M " + " L ".join(f"{x[0]},{x[1]}" for x in points)
         return path + (" Z" if np.allclose(points[0], points[-1]) else "")
 
