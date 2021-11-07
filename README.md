@@ -35,7 +35,7 @@ All icons tend to support a common design style, which is heavily inspired by [M
 
 Icons are used to visualize tags for nodes and areas. Unlike other renderers, Map Machine can use more than one icon to visualize an entity and use colors to visualize [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) value or other entity properties (like [`material`](https://wiki.openstreetmap.org/wiki/Key:material) or [`genus`](https://wiki.openstreetmap.org/wiki/Key:genus)).
 
-![Icons](doc/grid.png)
+![Icons](doc/grid.svg)
 
 Feel free to request new icons via issues for whatever you want to see on the map. No matter how frequently the tag is used in OpenStreetMap since the final goal is to cover all tags. However, commonly used tags have priority, other things being equal.
 
@@ -291,7 +291,7 @@ Map configuration options used by `render` and `tile` commands:
 | <span style="white-space: nowrap;">`--buildings`</span> `<mode>` | building drawing mode: no, flat, isometric, isometric-no-parts, default value: `flat` |
 | <span style="white-space: nowrap;">`--mode`</span> `<string>` | map drawing mode: normal, author, time, default value: `normal` |
 | <span style="white-space: nowrap;">`--overlap`</span> `<integer>` | how many pixels should be left around icons and text, default value: 12 |
-| <span style="white-space: nowrap;">`--labels`</span> `<string>` | label drawing mode: no, main, all, default value: `main` |
+| <span style="white-space: nowrap;">`--labels`</span> `<string>` | label drawing mode: no, main, all, address, default value: `main` |
 | <span style="white-space: nowrap;">`--level`</span> | display only this floor level, default value: `overground` |
 | <span style="white-space: nowrap;">`--seed`</span> `<string>` | seed for random |
 | <span style="white-space: nowrap;">`--tooltips`</span> | add tooltips with tags for icons in SVG files |
