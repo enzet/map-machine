@@ -428,10 +428,14 @@ class Road(Tagged):
             self.layer = float(tags["layer"])
 
         self.placement_offset: float = 0.0
+        self.transition: bool = False
+
         if "placement" in tags:
             value: str = tags["placement"]
-            if ":" in value:
-                place, lane = value.split(":")
+            if value == "transition":
+                self.is_transition = True
+            elif ":" in value and len(parts := value.split(":")) == 2:
+                place, lane = parts
                 lane_number: int = int(lane)
                 self.placement_offset = (
                     sum(
@@ -454,7 +458,7 @@ class Road(Tagged):
                     logging.error(f"Unknown placement `{place}`.")
 
     def get_style(
-        self, flinger: Flinger, is_border: bool, is_for_stroke: bool = False
+        self, is_border: bool, is_for_stroke: bool = False
     ) -> dict[str, Union[int, float, str]]:
         """Get road SVG style."""
         width: float
@@ -480,13 +484,12 @@ class Road(Tagged):
             if self.tags.get("embankment") == "yes":
                 extra_width = 4.0
 
-        scale: float = flinger.get_scale(self.nodes[0].coordinates)
         style: dict[str, Union[int, float, str]] = {
             "fill": "none",
             "stroke": color.hex,
             "stroke-linecap": "butt",
             "stroke-linejoin": "round",
-            "stroke-width": scale * width + extra_width + border_width,
+            "stroke-width": self.scale * width + extra_width + border_width,
         }
         if is_for_stroke:
             style["stroke-width"] = 2.0 + extra_width
@@ -510,13 +513,11 @@ class Road(Tagged):
 
         return None
 
-    def draw(self, svg: Drawing, flinger: Flinger, is_border: bool) -> None:
+    def draw(self, svg: Drawing, is_border: bool) -> None:
         """Draw road as simple SVG path."""
         filter_: Filter = self.get_filter(svg, is_border)
 
-        style: dict[str, Union[int, float, str]] = self.get_style(
-            flinger, is_border
-        )
+        style: dict[str, Union[int, float, str]] = self.get_style(is_border)
         path_commands: str = self.line.get_path(self.placement_offset)
         path: Path
         if filter_:
@@ -593,7 +594,6 @@ class Road(Tagged):
 
 def get_curve_points(
     road: Road,
-    scale: float,
     center: np.ndarray,
     road_end: np.ndarray,
     placement_offset: float,
@@ -601,11 +601,12 @@ def get_curve_points(
 ) -> list[np.ndarray]:
     """
     :param road: road segment
-    :param scale: current zoom scale
     :param center: road intersection point
     :param road_end: end point of the road segment
+    :param placement_offset: offset based on placement tag value
+    :param is_end: whether the point represents road end
     """
-    width: float = road.width / 2.0 * scale
+    width: float = road.width / 2.0 * road.scale
 
     direction: np.ndarray = (center - road_end) / np.linalg.norm(
         center - road_end
@@ -623,15 +624,12 @@ def get_curve_points(
 
 
 class Connector:
-    """
-    Two roads connection.
-    """
+    """Two roads connection."""
 
     def __init__(
         self,
         connections: list[tuple[Road, int]],
         flinger: Flinger,
-        scale: float,
     ) -> None:
         self.connections: list[tuple[Road, int]] = connections
         self.road_1: Road
@@ -641,7 +639,7 @@ class Connector:
 
         self.min_layer: float = min(x[0].layer for x in connections)
         self.max_layer: float = max(x[0].layer for x in connections)
-        self.scale: float = scale
+        self.scale: float = self.road_1.scale
         self.flinger: Flinger = flinger
 
     def draw(self, svg: Drawing) -> None:
@@ -654,17 +652,14 @@ class Connector:
 
 
 class SimpleConnector(Connector):
-    """
-    Simple connection between roads that don't change width.
-    """
+    """Simple connection between roads that don't change width."""
 
     def __init__(
         self,
         connections: list[tuple[Road, int]],
         flinger: Flinger,
-        scale: float,
     ) -> None:
-        super().__init__(connections, flinger, scale)
+        super().__init__(connections, flinger)
 
         self.road_2: Road = connections[1][0]
         self.index_2: int = connections[1][1]
@@ -698,14 +693,15 @@ class ComplexConnector(Connector):
         self,
         connections: list[tuple[Road, int]],
         flinger: Flinger,
-        scale: float,
     ) -> None:
-        super().__init__(connections, flinger, scale)
+        super().__init__(connections, flinger)
 
         self.road_2: Road = connections[1][0]
         self.index_2: int = connections[1][1]
 
-        length: float = abs(self.road_2.width - self.road_1.width) * scale
+        length: float = (
+            abs(self.road_2.width - self.road_1.width) * self.road_1.scale
+        )
         self.road_1.line.shorten(self.index_1, length)
         self.road_2.line.shorten(self.index_2, length)
 
@@ -714,7 +710,6 @@ class ComplexConnector(Connector):
 
         points_1: list[np.ndarray] = get_curve_points(
             self.road_1,
-            scale,
             point,
             self.road_1.line.points[self.index_1],
             self.road_1.placement_offset,
@@ -722,7 +717,6 @@ class ComplexConnector(Connector):
         )
         points_2: list[np.ndarray] = get_curve_points(
             self.road_2,
-            scale,
             point,
             self.road_2.line.points[self.index_2],
             self.road_2.placement_offset,
@@ -768,22 +762,19 @@ class ComplexConnector(Connector):
             )
         else:
             path: Path = svg.path(d=["M"] + self.curve_1 + ["M"] + self.curve_2)
-        path.update(self.road_1.get_style(self.flinger, True, True))
+        path.update(self.road_1.get_style(True, True))
         svg.add(path)
 
 
 class SimpleIntersection(Connector):
-    """
-    Connection between more than two roads.
-    """
+    """Connection between more than two roads."""
 
     def __init__(
         self,
         connections: list[tuple[Road, int]],
         flinger: Flinger,
-        scale: float,
     ) -> None:
-        super().__init__(connections, flinger, scale)
+        super().__init__(connections, flinger)
 
     def draw(self, svg: Drawing) -> None:
         """Draw connection fill."""
@@ -832,7 +823,6 @@ class Roads:
         if not self.roads:
             return
 
-        scale: float = flinger.get_scale(self.roads[0].nodes[0].coordinates)
         layered_roads: dict[float, list[Road]] = {}
         layered_connectors: dict[float, list[Connector]] = {}
 
@@ -855,9 +845,9 @@ class Roads:
                     or index_1 not in [0, len(road_1.nodes) - 1]
                     or index_2 not in [0, len(road_2.nodes) - 1]
                 ):
-                    connector = SimpleConnector(connected, flinger, scale)
+                    connector = SimpleConnector(connected, flinger)
                 else:
-                    connector = ComplexConnector(connected, flinger, scale)
+                    connector = ComplexConnector(connected, flinger)
             else:
                 # We can also use SimpleIntersection(connected, flinger, scale)
                 # here.
@@ -884,7 +874,7 @@ class Roads:
             # Draw borders.
 
             for road in roads:
-                road.draw(svg, flinger, True)
+                road.draw(svg, True)
             for connector in connectors:
                 if connector.min_layer == layer:
                     connector.draw_border(svg)
@@ -892,7 +882,7 @@ class Roads:
             # Draw inner parts.
 
             for road in roads:
-                road.draw(svg, flinger, False)
+                road.draw(svg, False)
             for connector in connectors:
                 if connector.max_layer == layer:
                     connector.draw(svg)
