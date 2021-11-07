@@ -87,7 +87,7 @@ Visualize \osm {direction} tag for \osm {tourism=viewpoint} and \osm {camera:dir
 
 Visualize \osm {design} values used with \osm {power=tower} tag.
 
-\image {doc/power_tower_design.png} {Power tower design}
+\image {doc/power_tower_design.svg} {Power tower design}
 
 \image {doc/power.svg} {Power tower design}
 
@@ -99,13 +99,13 @@ Map icons have \osm {colour} tag value if it is present, otherwise, icons are di
 
 \3 {Emergency} {emergency}
 
-\image {doc/emergency.png} {Emergency}
+\image {doc/emergency.svg} {Emergency}
 
 \3 {Japanese map symbols} {japanese-map-symbols}
 
 There are \ref {https://en.wikipedia.org/wiki/List_of_Japanese_map_symbols} {special symbols} appearing on Japanese maps.
 
-\image {doc/japanese.png} {Japanese map symbols}
+\image {doc/japanese.svg} {Japanese map symbols}
 
 \3 {Shape combination} {shape_combination}
 

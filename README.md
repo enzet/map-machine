@@ -74,7 +74,7 @@ Visualize [`direction`](https://wiki.openstreetmap.org/wiki/Key:direction) tag f
 
 Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used with [`power`](https://wiki.openstreetmap.org/wiki/Key:power)=[`tower`](https://wiki.openstreetmap.org/wiki/Tag:power=tower) tag.
 
-![Power tower design](doc/power_tower_design.png)
+![Power tower design](doc/power_tower_design.svg)
 
 ![Power tower design](doc/power.svg)
 
@@ -86,13 +86,13 @@ Map icons have [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) tag va
 
 ### Emergency ###
 
-![Emergency](doc/emergency.png)
+![Emergency](doc/emergency.svg)
 
 ### Japanese map symbols ###
 
 There are [special symbols](https://en.wikipedia.org/wiki/List_of_Japanese_map_symbols) appearing on Japanese maps.
 
-![Japanese map symbols](doc/japanese.png)
+![Japanese map symbols](doc/japanese.svg)
 
 ### Shape combination ###
 
