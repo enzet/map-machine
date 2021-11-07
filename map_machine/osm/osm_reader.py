@@ -127,9 +127,9 @@ class OSMNode(Tagged):
     def from_xml_structure(cls, element: Element) -> "OSMNode":
         """Parse node from OSM XML `<node>` element."""
         attributes = element.attrib
-        tags: dict[str, str] = dict(
-            [(x.attrib["k"], x.attrib["v"]) for x in element if x.tag == "tag"]
-        )
+        tags: dict[str, str] = {
+            x.attrib["k"]: x.attrib["v"] for x in element if x.tag == "tag"
+        }
         return cls(
             tags,
             int(attributes["id"]),
@@ -182,9 +182,9 @@ class OSMWay(Tagged):
     ) -> "OSMWay":
         """Parse way from OSM XML `<way>` element."""
         attributes = element.attrib
-        tags: dict[str, str] = dict(
-            [(x.attrib["k"], x.attrib["v"]) for x in element if x.tag == "tag"]
-        )
+        tags: dict[str, str] = {
+            x.attrib["k"]: x.attrib["v"] for x in element if x.tag == "tag"
+        }
         return cls(
             tags,
             int(element.attrib["id"]),
@@ -301,8 +301,6 @@ class NotWellFormedOSMDataException(Exception):
     """
     OSM data structure is not well-formed.
     """
-
-    pass
 
 
 class OSMData:

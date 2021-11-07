@@ -18,7 +18,7 @@ def check_file(file_name: str) -> Optional[str]:
 
     :param file_name: commit message file name
     """
-    with open(file_name) as input_file:
+    with open(file_name, encoding="utf-8") as input_file:
         parts: List[str] = list(map(lambda x: x[:-1], input_file.readlines()))
     return check_commit_message(parts)
 
@@ -94,15 +94,15 @@ def check_commit_message(parts: List[str]) -> Optional[str]:
     for verb in verbs_2:
         verbs[verb + "d"] = verb
 
-    for verb in verbs:
-        if short_message.startswith(f"{verb} ") or short_message.startswith(
-            f"{first_letter_uppercase(verb)} "
+    for wrong_verb, right_verb in verbs.items():
+        if short_message.startswith(f"{wrong_verb} ") or short_message.startswith(
+            f"{first_letter_uppercase(wrong_verb)} "
         ):
             return (
                 f'Commit message should start with the verb in infinitive '
                 f'form. Please, use '
-                f'"{first_letter_uppercase(verbs[verb])} ..." instead of '
-                f'"{first_letter_uppercase(verb)} ...".'
+                f'"{first_letter_uppercase(right_verb)} ..." instead of '
+                f'"{first_letter_uppercase(wrong_verb)} ...".'
             )
 
 
@@ -113,6 +113,7 @@ def check(commit_message: str) -> None:
 
 
 def test():
+    """Test rules."""
     check("start with lowercase letter.")
     check("Added foo.")
     check("Created foo.")

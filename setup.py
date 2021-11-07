@@ -14,7 +14,7 @@ from map_machine import (
     REQUIREMENTS,
 )
 
-with Path("README.md").open() as input_file:
+with Path("README.md").open(encoding="utf-8") as input_file:
     long_description: str = input_file.read()
 
 setup(

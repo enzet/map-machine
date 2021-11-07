@@ -217,7 +217,7 @@ class Constructor:
         outers: list[list[OSMNode]],
     ) -> None:
         """
-        Way or relation construction.
+        Construct way or relation.
 
         :param line: OpenStreetMap way or relation
         :param inners: list of polygons that compose inner boundary
@@ -310,43 +310,45 @@ class Constructor:
                 )
                 self.points.append(point)
 
-        if not line_styles:
-            if DEBUG:
-                style: dict[str, Any] = {
-                    "fill": "none",
-                    "stroke": Color("red").hex,
-                    "stroke-width": 1,
-                }
-                figure: StyledFigure = StyledFigure(
-                    line.tags, inners, outers, LineStyle(style, 1000)
-                )
-                self.figures.append(figure)
+        if line_styles:
+            return
 
-            processed: set[str] = set()
+        self.add_point_for_line(center_point, inners, line, outers)
 
-            priority: int
-            icon_set: IconSet
-            icon_set, priority = self.scheme.get_icon(
-                self.extractor,
+    def add_point_for_line(self, center_point, inners, line, outers) -> None:
+        """Add icon at the center point of the way or relation."""
+        if DEBUG:
+            style: dict[str, Any] = {
+                "fill": "none",
+                "stroke": Color("red").hex,
+                "stroke-width": 1,
+            }
+            figure: StyledFigure = StyledFigure(
+                line.tags, inners, outers, LineStyle(style, 1000)
+            )
+            self.figures.append(figure)
+
+        processed: set[str] = set()
+        priority: int
+        icon_set: IconSet
+        icon_set, priority = self.scheme.get_icon(
+            self.extractor, line.tags, processed, self.configuration
+        )
+        if icon_set is not None:
+            labels: list[Label] = self.scheme.construct_text(
+                line.tags, processed, self.configuration.label_mode
+            )
+            point: Point = Point(
+                icon_set,
+                labels,
                 line.tags,
                 processed,
-                self.configuration,
+                center_point,
+                is_for_node=False,
+                priority=priority,
+                add_tooltips=self.configuration.show_tooltips,
             )
-            if icon_set is not None:
-                labels: list[Label] = self.scheme.construct_text(
-                    line.tags, processed, self.configuration.label_mode
-                )
-                point: Point = Point(
-                    icon_set,
-                    labels,
-                    line.tags,
-                    processed,
-                    center_point,
-                    is_for_node=False,
-                    priority=priority,
-                    add_tooltips=self.configuration.show_tooltips,
-                )
-                self.points.append(point)
+            self.points.append(point)
 
     def draw_special_mode(
         self,

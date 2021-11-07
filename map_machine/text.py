@@ -104,6 +104,7 @@ def get_text(tags: dict[str, Any], processed: set[str]) -> list[Label]:
 def construct_text(
     tags: dict[str, str], processed: set[str], label_mode: LabelMode
 ) -> list[Label]:
+    """Construct list of labels from OSM tags."""
 
     texts: list[Label] = []
 

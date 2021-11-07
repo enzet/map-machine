@@ -159,7 +159,7 @@ def road_features(
 
     grid: Grid = Grid()
 
-    for i in range(len(types)):
+    for i, type_ in enumerate(types):
         previous: Optional[OSMNode] = None
 
         for j in range(len(features) + 1):
@@ -167,7 +167,7 @@ def road_features(
 
             if previous:
                 tags: dict[str, str] = dict(features[j - 1])
-                tags |= types[i]
+                tags |= type_
                 way: OSMWay = OSMWay(
                     tags, i * (len(features) + 1) + j, [previous, node]
                 )

@@ -367,14 +367,16 @@ class Scheme:
             specification: Union[str, dict] = self.colors[color]
             if isinstance(specification, str):
                 return Color(self.colors[color])
-            else:
-                color: Color = self.get_color(specification["color"])
-                if "darken" in specification:
-                    percent: float = float(specification["darken"])
-                    color.set_luminance(color.get_luminance() * (1 - percent))
-                return color
+
+            color: Color = self.get_color(specification["color"])
+            if "darken" in specification:
+                percent: float = float(specification["darken"])
+                color.set_luminance(color.get_luminance() * (1 - percent))
+            return color
+
         if color.lower() in self.colors:
             return Color(self.colors[color.lower()])
+
         try:
             return Color(color)
         except (ValueError, AttributeError):
@@ -593,11 +595,9 @@ class Scheme:
         :param tags: input tag dictionary
         :param processed: processed set
         """
-        [
-            processed.add(tag)
-            for tag in tags
-            if self.is_no_drawable(tag, tags[tag])
-        ]
+        processed.update(
+            set(tag for tag in tags if self.is_no_drawable(tag, tags[tag]))
+        )
 
     def get_shape_specification(
         self,

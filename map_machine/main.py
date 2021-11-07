@@ -34,7 +34,7 @@ def main() -> None:
     elif arguments.command == "tile":
         from map_machine.slippy import tile
 
-        tile.ui(arguments)
+        tile.generate_tiles(arguments)
 
     elif arguments.command == "icons":
         from map_machine.pictogram.icon_collection import draw_icons
@@ -54,11 +54,11 @@ def main() -> None:
     elif arguments.command == "server":
         from map_machine.slippy import server
 
-        server.ui(arguments)
+        server.run_server(arguments)
 
     elif arguments.command == "taginfo":
         from map_machine.scheme import Scheme
-        from doc.taginfo import write_taginfo_project_file
+        from map_machine.doc.taginfo import write_taginfo_project_file
 
         write_taginfo_project_file(Scheme(workspace.DEFAULT_SCHEME_PATH))
 

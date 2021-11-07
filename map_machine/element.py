@@ -9,6 +9,7 @@ import numpy as np
 import svgwrite
 from svgwrite.path import Path as SVGPath
 
+from map_machine.map_configuration import LabelMode
 from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.pictogram.point import Point
 from map_machine.scheme import LineStyle, Scheme
@@ -33,17 +34,17 @@ def draw_element(options: argparse.Namespace) -> None:
         target = "area"
         tags_description = options.area
 
-    tags: dict[str, str] = dict(
-        [x.split("=") for x in tags_description.split(",")]
-    )
+    tags: dict[str, str] = {
+        x.split("=")[0]: x.split("=")[1] for x in tags_description.split(",")
+    }
     scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
     extractor: ShapeExtractor = ShapeExtractor(
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
     processed: set[str] = set()
-    icon, priority = scheme.get_icon(extractor, tags, processed)
+    icon, _ = scheme.get_icon(extractor, tags, processed)
     is_for_node: bool = target == "node"
-    labels: list[Label] = scheme.construct_text(tags, "all", processed)
+    labels: list[Label] = scheme.construct_text(tags, processed, LabelMode.ALL)
     point: Point = Point(
         icon,
         labels,

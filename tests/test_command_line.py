@@ -24,18 +24,18 @@ LOG: bytes = (
 
 def error_run(arguments: list[str], message: bytes) -> None:
     """Run command that should fail and check error message."""
-    p = Popen(["map-machine"] + arguments, stderr=PIPE)
-    _, error = p.communicate()
-    assert p.returncode != 0
-    assert error == message
+    with Popen(["map-machine"] + arguments, stderr=PIPE) as pipe:
+        _, error = pipe.communicate()
+        assert pipe.returncode != 0
+        assert error == message
 
 
 def run(arguments: list[str], message: bytes) -> None:
     """Run command that should fail and check error message."""
-    p = Popen(["map-machine"] + arguments, stderr=PIPE)
-    _, error = p.communicate()
-    assert p.returncode == 0
-    assert error == message
+    with Popen(["map-machine"] + arguments, stderr=PIPE) as pipe:
+        _, error = pipe.communicate()
+        assert pipe.returncode == 0
+        assert error == message
 
 
 def test_wrong_render_arguments() -> None:
@@ -53,7 +53,7 @@ def test_render() -> None:
         COMMAND_LINES["render"] + ["--cache", "tests/data"],
         LOG + b"INFO Writing output SVG to out/map.svg...\n",
     )
-    with Path("out/map.svg").open() as output_file:
+    with Path("out/map.svg").open(encoding="utf-8") as output_file:
         root: Element = ElementTree.parse(output_file).getroot()
 
     # 4 expected elements: `defs`, `rect` (background), `g` (outline),
@@ -70,7 +70,7 @@ def test_render_with_tooltips() -> None:
         COMMAND_LINES["render_with_tooltips"] + ["--cache", "tests/data"],
         LOG + b"INFO Writing output SVG to out/map.svg...\n",
     )
-    with Path("out/map.svg").open() as output_file:
+    with Path("out/map.svg").open(encoding="utf-8") as output_file:
         root: Element = ElementTree.parse(output_file).getroot()
 
     # 4 expected elements: `defs`, `rect` (background), `g` (outline),

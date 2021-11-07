@@ -7,7 +7,7 @@ import pytest
 from colour import Color
 
 from map_machine.pictogram.icon_collection import IconCollection
-from map_machine.pictogram.icon import IconSet
+from map_machine.pictogram.icon import IconSet, ShapeSpecification, Icon
 from tests import SCHEME, SHAPE_EXTRACTOR, workspace
 
 __author__ = "Sergey Vartanov"
@@ -47,14 +47,14 @@ def test_no_icons() -> None:
     Tags that has no description in scheme and should be visualized with default
     shape.
     """
-    icon = get_icon({"aaa": "bbb"})
+    icon: IconSet = get_icon({"aaa": "bbb"})
     assert icon.main_icon.is_default()
 
 
 def check_icon_set(
     icon: IconSet,
     main_specification: list[tuple[str, Optional[str]]],
-    extra_specification: list[list[tuple[str, Optional[str]]]],
+    extra_specifications: list[list[tuple[str, Optional[str]]]],
 ) -> None:
     """Check icon set using simple specification."""
     if not main_specification:
@@ -64,17 +64,20 @@ def check_icon_set(
         assert len(main_specification) == len(
             icon.main_icon.shape_specifications
         )
-        for i, s in enumerate(main_specification):
-            assert icon.main_icon.shape_specifications[i].shape.id_ == s[0]
-            assert icon.main_icon.shape_specifications[i].color == Color(s[1])
+        for index, shape in enumerate(main_specification):
+            shape_specification: ShapeSpecification = (
+                icon.main_icon.shape_specifications[index]
+            )
+            assert shape_specification.shape.id_ == shape[0]
+            assert shape_specification.color == Color(shape[1])
 
-    assert len(extra_specification) == len(icon.extra_icons)
-    for i, x in enumerate(extra_specification):
-        extra_icon = icon.extra_icons[i]
-        assert len(x) == len(extra_icon.shape_specifications)
-        for j, s in enumerate(x):
-            assert extra_icon.shape_specifications[j].shape.id_ == s[0]
-            assert extra_icon.shape_specifications[j].color == Color(s[1])
+    assert len(extra_specifications) == len(icon.extra_icons)
+    for i, extra_specification in enumerate(extra_specifications):
+        extra_icon: Icon = icon.extra_icons[i]
+        assert len(extra_specification) == len(extra_icon.shape_specifications)
+        for j, shape in enumerate(extra_specification):
+            assert extra_icon.shape_specifications[j].shape.id_ == shape[0]
+            assert extra_icon.shape_specifications[j].color == Color(shape[1])
 
 
 def test_icon() -> None:
@@ -90,7 +93,7 @@ def test_icon_1_extra() -> None:
     """
     Tags that should be visualized with single main icon and single extra icon.
     """
-    icon = get_icon({"barrier": "gate", "access": "private"})
+    icon: IconSet = get_icon({"barrier": "gate", "access": "private"})
     check_icon_set(
         icon, [("gate", "#444444")], [[("lock_with_keyhole", "#888888")]]
     )
@@ -100,7 +103,9 @@ def test_icon_2_extra() -> None:
     """
     Tags that should be visualized with single main icon and two extra icons.
     """
-    icon = get_icon({"barrier": "gate", "access": "private", "bicycle": "yes"})
+    icon: IconSet = get_icon(
+        {"barrier": "gate", "access": "private", "bicycle": "yes"}
+    )
     check_icon_set(
         icon,
         [("gate", "#444444")],
@@ -115,7 +120,7 @@ def test_no_icon_1_extra() -> None:
     """
     Tags that should be visualized with default main icon and single extra icon.
     """
-    icon = get_icon({"access": "private"})
+    icon: IconSet = get_icon({"access": "private"})
     check_icon_set(icon, [], [[("lock_with_keyhole", "#888888")]])
 
 
@@ -123,7 +128,7 @@ def test_no_icon_2_extra() -> None:
     """
     Tags that should be visualized with default main icon and two extra icons.
     """
-    icon = get_icon({"access": "private", "bicycle": "yes"})
+    icon: IconSet = get_icon({"access": "private", "bicycle": "yes"})
     check_icon_set(
         icon,
         [],
@@ -138,7 +143,7 @@ def test_icon_regex() -> None:
     """
     Tags that should be visualized with default main icon and single extra icon.
     """
-    icon = get_icon({"traffic_sign": "maxspeed", "maxspeed": "42"})
+    icon: IconSet = get_icon({"traffic_sign": "maxspeed", "maxspeed": "42"})
     check_icon_set(
         icon,
         [

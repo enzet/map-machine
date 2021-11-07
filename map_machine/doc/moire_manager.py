@@ -56,10 +56,8 @@ class ArgumentParser(argparse.ArgumentParser):
     def add_argument(self, *args, **kwargs) -> None:
         """Just store argument with options."""
         super().add_argument(*args, **kwargs)
-        argument: dict[str, Any] = {"arguments": [x for x in args]}
-
-        for key in kwargs:
-            argument[key] = kwargs[key]
+        argument: dict[str, Any] = {"arguments": args}
+        argument |= kwargs
 
         self.arguments.append(argument)
 
@@ -116,9 +114,7 @@ class ArgumentParser(argparse.ArgumentParser):
 
 
 class MapMachineMoire(Default, ABC):
-    """
-    Moire extension stub for Map Machine.
-    """
+    """Moire extension stub for Map Machine."""
 
     def osm(self, args: Arguments) -> str:
         """OSM tag key or key–value pair of tag."""
@@ -130,8 +126,8 @@ class MapMachineMoire(Default, ABC):
                 + "="
                 + self.get_ref_(f"{PREFIX}Tag:{key}={tag}", self.m([tag]))
             )
-        else:
-            return self.get_ref_(f"{PREFIX}Key:{spec}", self.m([spec]))
+
+        return self.get_ref_(f"{PREFIX}Key:{spec}", self.m([spec]))
 
     def color(self, args: Arguments) -> str:
         """Simple color sample."""
@@ -181,9 +177,7 @@ class MapMachineMoire(Default, ABC):
 
 
 class MapMachineHTML(MapMachineMoire, DefaultHTML):
-    """
-    Simple HTML.
-    """
+    """Simple HTML."""
 
     def __init__(self) -> None:
         super().__init__()
@@ -196,9 +190,9 @@ class MapMachineHTML(MapMachineMoire, DefaultHTML):
             ["<th>" + self.parse(td, in_block=True) + "</th>" for td in arg[0]]
         )
         content += f"<tr>{cell}</tr>"
-        for tr in arg[1:]:
+        for row in arg[1:]:
             cell: str = "".join(
-                ["<td>" + self.parse(td, in_block=True) + "</td>" for td in tr]
+                ["<td>" + self.parse(td, in_block=True) + "</td>" for td in row]
             )
             content += f"<tr>{cell}</tr>"
         return f"<table>{content}</table>"
@@ -260,8 +254,8 @@ class MapMachineOSMWiki(MapMachineMoire, DefaultWiki):
         if "=" in spec:
             key, tag = spec.split("=")
             return f"{{{{Key|{key}|{tag}}}}}"
-        else:
-            return f"{{{{Tag|{spec}}}}}"
+
+        return f"{{{{Tag|{spec}}}}}"
 
     def color(self, args: Arguments) -> str:
         """Simple color sample."""
@@ -276,9 +270,7 @@ class MapMachineOSMWiki(MapMachineMoire, DefaultWiki):
 
 
 class MapMachineMarkdown(MapMachineMoire, DefaultMarkdown):
-    """
-    GitHub flavored markdown.
-    """
+    """GitHub flavored markdown."""
 
     images = {}
 

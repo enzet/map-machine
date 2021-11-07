@@ -293,9 +293,8 @@ class Intersection:
     def __init__(self, parts: list[RoadPart]) -> None:
         self.parts: list[RoadPart] = sorted(parts, key=lambda x: x.get_angle())
 
-        for index in range(len(self.parts)):
+        for index, part_1 in enumerate(self.parts):
             next_index: int = 0 if index == len(self.parts) - 1 else index + 1
-            part_1: RoadPart = self.parts[index]
             part_2: RoadPart = self.parts[next_index]
             line_1: Line = Line(
                 part_1.point_1 + part_1.right_vector,
@@ -312,9 +311,8 @@ class Intersection:
             part_1.update()
             part_2.update()
 
-        for index in range(len(self.parts)):
+        for index, part_1 in enumerate(self.parts):
             next_index: int = 0 if index == len(self.parts) - 1 else index + 1
-            part_1: RoadPart = self.parts[index]
             part_2: RoadPart = self.parts[next_index]
             part_1.update()
             part_2.update()
@@ -412,10 +410,10 @@ class Road(Tagged):
         number: int
         if "lanes:forward" in tags:
             number = int(tags["lanes:forward"])
-            [x.set_forward(True) for x in self.lanes[-number:]]
+            map(lambda x: x.set_forward(True), self.lanes[-number:])
         if "lanes:backward" in tags:
             number = int(tags["lanes:backward"])
-            [x.set_forward(False) for x in self.lanes[:number]]
+            map(lambda x: x.set_forward(False), self.lanes[:number])
 
         if "width" in tags:
             try:
@@ -731,20 +729,8 @@ class ComplexConnector(Connector):
         ]
         # fmt: on
 
-    def draw(self, svg: Drawing, draw_circle: bool = False) -> None:
+    def draw(self, svg: Drawing) -> None:
         """Draw connection fill."""
-        if draw_circle:
-            for road, index in [
-                (self.road_1, self.index_1),
-                (self.road_2, self.index_2),
-            ]:
-                circle: Circle = svg.circle(
-                    road.line.points[index] - road.placement_offset,
-                    road.width * self.scale / 2,
-                    fill=road.get_color(),
-                )
-                svg.add(circle)
-
         path: Path = svg.path(
             d=["M"] + self.curve_1 + ["L"] + self.curve_2 + ["Z"],
             fill=self.road_1.get_color(),

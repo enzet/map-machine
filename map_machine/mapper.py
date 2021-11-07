@@ -231,7 +231,7 @@ def render_map(arguments: argparse.Namespace) -> None:
     for input_file_name in input_file_names:
         if not input_file_name.is_file():
             logging.fatal(f"No such file: {input_file_name}.")
-            exit(1)
+            sys.exit(1)
 
         if input_file_name.name.endswith(".json"):
             osm_data.parse_overpass(input_file_name)

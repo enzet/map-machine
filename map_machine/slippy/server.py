@@ -66,7 +66,7 @@ class _Handler(SimpleHTTPRequestHandler):
                 return
 
 
-def ui(options: argparse.Namespace) -> None:
+def run_server(options: argparse.Namespace) -> None:
     """Command-line interface for tile server."""
     server: Optional[HTTPServer] = None
     try:

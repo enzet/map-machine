@@ -51,8 +51,8 @@ def get_osm(
                 "Cannot download data: too many nodes (limit is 50000). Try "
                 "to request smaller area."
             )
-        else:
-            raise NetworkError("Cannot download data.")
+
+        raise NetworkError("Cannot download data.")
 
     with cache_file_path.open("bw+") as output_file:
         output_file.write(content)

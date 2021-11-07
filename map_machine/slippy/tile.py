@@ -457,9 +457,9 @@ def parse_zoom_level(zoom_level_specification: str) -> list[int]:
     result: list[int] = []
     for part in parts:
         if "-" in part:
-            from_, to = part.split("-")
-            from_zoom_level: int = parse(from_)
-            to_zoom_level: int = parse(to)
+            start, end = part.split("-")
+            from_zoom_level: int = parse(start)
+            to_zoom_level: int = parse(end)
             if from_zoom_level > to_zoom_level:
                 raise ScaleConfigurationException("Wrong range.")
             result += range(from_zoom_level, to_zoom_level + 1)
@@ -469,7 +469,7 @@ def parse_zoom_level(zoom_level_specification: str) -> list[int]:
     return result
 
 
-def ui(options: argparse.Namespace) -> None:
+def generate_tiles(options: argparse.Namespace) -> None:
     """Simple user interface for tile generation."""
     directory: Path = workspace.get_tile_path()
 
