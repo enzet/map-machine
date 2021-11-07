@@ -106,6 +106,15 @@ PLACEMENT_FEATURES_1: list[dict[str, str]] = [
     {"lanes": "3", "placement": "right_of:1"},  # or placement=left_of:2
 ]
 
+PLACEMENT_FEATURES_2: list[dict[str, str]] = [
+    {"lanes": "2"},
+    # or placement:backward=left_of:1
+    {"lanes": "3", "placement:forward": "left_of:1"},
+    {"lanes": "3", "placement": "transition"},
+    {"lanes": "4", "placement:backward": "middle_of:1"},
+    {"lanes": "3"},
+]
+
 
 class Grid:
     """Creating map with elements ordered in grid."""
@@ -200,5 +209,7 @@ if __name__ == "__main__":
         Path("out") / "width.svg",
     )
     road_features(
-        ROAD_TYPES, PLACEMENT_FEATURES_1, Path("out") / "placement.svg"
+        ROAD_TYPES,
+        PLACEMENT_FEATURES_1 + [{}] + PLACEMENT_FEATURES_2,
+        Path("out") / "placement.svg",
     )
