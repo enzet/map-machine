@@ -13,6 +13,7 @@ import yaml
 from colour import Color
 
 from map_machine.feature.direction import DirectionSet
+from map_machine.map_configuration import MapConfiguration, LabelMode
 from map_machine.pictogram.icon import (
     DEFAULT_COLOR,
     DEFAULT_SHAPE_ID,
@@ -22,7 +23,6 @@ from map_machine.pictogram.icon import (
     ShapeExtractor,
     ShapeSpecification,
 )
-from map_machine.map_configuration import MapConfiguration, LabelMode
 from map_machine.text import Label, construct_text
 
 __author__ = "Sergey Vartanov"

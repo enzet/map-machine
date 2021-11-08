@@ -9,8 +9,8 @@ from typing import Any, Union
 from moire.default import Default, DefaultHTML, DefaultMarkdown, DefaultWiki
 from moire.moire import Tag
 
-from map_machine.ui import cli
 from map_machine.pictogram.icon import ShapeExtractor
+from map_machine.ui import cli
 from map_machine.ui.cli import COMMAND_LINES
 from map_machine.workspace import workspace
 

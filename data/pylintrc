@@ -12,3 +12,7 @@ disable=
     too-many-return-statements
 
 good-names=i,j,x,y,a,b,c,n
+
+[SIMILARITIES]
+
+ignore-imports=yes

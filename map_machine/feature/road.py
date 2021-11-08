@@ -15,8 +15,6 @@ from svgwrite.shapes import Circle
 
 from map_machine.drawing import PathCommands
 from map_machine.geometry.flinger import Flinger
-from map_machine.osm.osm_reader import OSMNode, Tagged
-from map_machine.scheme import RoadMatcher
 from map_machine.geometry.vector import (
     Line,
     Polyline,
@@ -24,6 +22,8 @@ from map_machine.geometry.vector import (
     norm,
     turn_by_angle,
 )
+from map_machine.osm.osm_reader import OSMNode, Tagged
+from map_machine.scheme import RoadMatcher
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

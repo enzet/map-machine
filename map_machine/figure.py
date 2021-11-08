@@ -10,8 +10,8 @@ from svgwrite.container import Group
 from svgwrite.gradients import RadialGradient
 from svgwrite.path import Path
 
-from map_machine.feature.direction import DirectionSet, Sector
 from map_machine.drawing import PathCommands
+from map_machine.feature.direction import DirectionSet, Sector
 from map_machine.geometry.flinger import Flinger
 from map_machine.osm.osm_reader import OSMNode, Tagged
 from map_machine.scheme import LineStyle, Scheme

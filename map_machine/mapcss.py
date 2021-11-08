@@ -9,9 +9,9 @@ from typing import Optional, TextIO
 from colour import Color
 
 from map_machine import __project__, __url__
-from map_machine.pictogram.icon_collection import IconCollection
-from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.osm.osm_reader import STAGES_OF_DECAY
+from map_machine.pictogram.icon import ShapeExtractor
+from map_machine.pictogram.icon_collection import IconCollection
 from map_machine.scheme import Matcher, Scheme
 from map_machine.workspace import workspace
 

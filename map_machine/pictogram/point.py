@@ -7,9 +7,9 @@ import numpy as np
 import svgwrite
 from colour import Color
 
-from map_machine.pictogram.icon import Icon, IconSet
 from map_machine.map_configuration import LabelMode
 from map_machine.osm.osm_reader import Tagged
+from map_machine.pictogram.icon import Icon, IconSet
 from map_machine.text import Label
 
 __author__ = "Sergey Vartanov"

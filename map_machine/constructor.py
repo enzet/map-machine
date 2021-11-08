@@ -10,6 +10,7 @@ import numpy as np
 from colour import Color
 
 from map_machine.color import get_gradient_color
+from map_machine.feature.road import Road, Roads
 from map_machine.figure import (
     Building,
     Crater,
@@ -18,14 +19,6 @@ from map_machine.figure import (
     Tree,
 )
 from map_machine.geometry.flinger import Flinger
-from map_machine.pictogram.icon import (
-    DEFAULT_SMALL_SHAPE_ID,
-    Icon,
-    IconSet,
-    Shape,
-    ShapeExtractor,
-    ShapeSpecification,
-)
 from map_machine.map_configuration import DrawingMode, MapConfiguration
 from map_machine.osm.osm_reader import (
     OSMData,
@@ -34,8 +27,15 @@ from map_machine.osm.osm_reader import (
     OSMWay,
     parse_levels,
 )
+from map_machine.pictogram.icon import (
+    DEFAULT_SMALL_SHAPE_ID,
+    Icon,
+    IconSet,
+    Shape,
+    ShapeExtractor,
+    ShapeSpecification,
+)
 from map_machine.pictogram.point import Point
-from map_machine.feature.road import Road, Roads
 from map_machine.scheme import DEFAULT_COLOR, LineStyle, RoadMatcher, Scheme
 from map_machine.text import Label
 from map_machine.ui.cli import BuildingMode

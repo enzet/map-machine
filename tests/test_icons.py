@@ -3,36 +3,32 @@ Test icon generation for nodes.
 """
 from typing import Optional
 
-import pytest
 from colour import Color
 
-from map_machine.pictogram.icon_collection import IconCollection
 from map_machine.pictogram.icon import IconSet, ShapeSpecification, Icon
+from map_machine.pictogram.icon_collection import IconCollection
 from tests import SCHEME, SHAPE_EXTRACTOR, workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
-@pytest.fixture
-def init_collection() -> IconCollection:
-    """Create collection of all possible icon sets."""
-    return IconCollection.from_scheme(SCHEME, SHAPE_EXTRACTOR)
+COLLECTION: IconCollection = IconCollection.from_scheme(SCHEME, SHAPE_EXTRACTOR)
 
 
-def test_grid(init_collection: IconCollection) -> None:
+def test_grid() -> None:
     """Test grid drawing."""
-    init_collection.draw_grid(workspace.output_path / "grid.svg")
+    COLLECTION.draw_grid(workspace.output_path / "grid.svg")
 
 
-def test_icons_by_id(init_collection: IconCollection) -> None:
+def test_icons_by_id() -> None:
     """Test individual icons drawing."""
-    init_collection.draw_icons(workspace.get_icons_by_id_path())
+    COLLECTION.draw_icons(workspace.get_icons_by_id_path())
 
 
-def test_icons_by_name(init_collection: IconCollection) -> None:
+def test_icons_by_name() -> None:
     """Test drawing individual icons that have names."""
-    init_collection.draw_icons(workspace.get_icons_by_name_path(), by_name=True)
+    COLLECTION.draw_icons(workspace.get_icons_by_name_path(), by_name=True)
 
 
 def get_icon(tags: dict[str, str]) -> IconSet:
