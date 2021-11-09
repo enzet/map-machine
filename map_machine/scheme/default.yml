@@ -2,7 +2,7 @@ colors:
 
   # Entity
 
-  direction_view_color: "#E0F0FF"
+  direction_view_color: "#C8E8FF"
   direction_camera_color: "#0088FF"
 
   background_color: "#EEEEEE"
@@ -2173,10 +2173,17 @@ ways:
     style:
       fill: none
       stroke: "#000000"
-      stroke-width: 1
-      opacity: 0.35
+      stroke-width: 2.0
+      opacity: 0.5
     priority: 40
   - tags: {barrier: wall}
+    style:
+      fill: none
+      stroke: "#000000"
+      stroke-width: 1.5
+      opacity: 0.4
+    priority: 40
+  - tags: {man_made: embankment}
     style:
       fill: none
       stroke: "#000000"
