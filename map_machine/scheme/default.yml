@@ -641,6 +641,8 @@ node_icons:
       shapes: [telescope_radio]
     - tags: {man_made: telescope, telescope:type: gamma}
       shapes: [telescope_gamma]
+    - tags: {man_made: telescope, telescope:type: optical}
+      shapes: [observatory]
     - tags: {man_made: tower}
       shapes: [tower]
     - tags: {man_made: crane}
