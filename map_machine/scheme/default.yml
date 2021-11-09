@@ -643,6 +643,8 @@ node_icons:
       shapes: [telescope_gamma]
     - tags: {man_made: tower}
       shapes: [tower]
+    - tags: {man_made: crane}
+      shapes: [crane]
 
   - group: "Emergency"
     start_zoom_level: 15
