@@ -2,11 +2,12 @@
 OSM address tag processing.
 """
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Optional
 
 from colour import Color
 
 from map_machine.map_configuration import LabelMode
+from map_machine.osm.osm_reader import Tags
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -100,14 +101,15 @@ def get_text(tags: dict[str, Any], processed: set[str]) -> list[Label]:
 
 
 def construct_text(
-    tags: dict[str, str], processed: set[str], label_mode: LabelMode
+    tags: Tags, processed: set[str], label_mode: LabelMode
 ) -> list[Label]:
     """Construct list of labels from OSM tags."""
 
     texts: list[Label] = []
 
-    name = None
-    alt_name = None
+    name: Optional[str] = None
+    alternative_name: Optional[str] = None
+
     if "name" in tags:
         name = tags["name"]
         processed.add("name")
@@ -117,25 +119,25 @@ def construct_text(
             processed.add("name:en")
         processed.add("name:en")
     if "alt_name" in tags:
-        if alt_name:
-            alt_name += ", "
+        if alternative_name:
+            alternative_name += ", "
         else:
-            alt_name = ""
-        alt_name += tags["alt_name"]
+            alternative_name = ""
+        alternative_name += tags["alt_name"]
         processed.add("alt_name")
     if "old_name" in tags:
-        if alt_name:
-            alt_name += ", "
+        if alternative_name:
+            alternative_name += ", "
         else:
-            alt_name = ""
-        alt_name += "ex " + tags["old_name"]
+            alternative_name = ""
+        alternative_name += "ex " + tags["old_name"]
 
     address: list[str] = get_address(tags, processed, label_mode)
 
     if name:
         texts.append(Label(name, Color("black")))
-    if alt_name:
-        texts.append(Label(f"({alt_name})"))
+    if alternative_name:
+        texts.append(Label(f"({alternative_name})"))
     if address:
         texts.append(Label(", ".join(address)))
 

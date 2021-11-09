@@ -353,7 +353,7 @@ class Icon:
         point: np.ndarray,
         tags: dict[str, Any] = None,
         outline: bool = False,
-        scale: float = 1,
+        scale: float = 1.0,
     ) -> None:
         """
         Draw icon to SVG.
@@ -362,6 +362,7 @@ class Icon:
         :param point: 2D position of the icon centre
         :param tags: tags to be displayed as a tooltip
         :param outline: draw outline for the icon
+        :param scale: scale icon by the magnitude
         """
         if outline:
             bright: bool = is_bright(self.shape_specifications[0].color)

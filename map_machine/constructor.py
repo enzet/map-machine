@@ -2,6 +2,7 @@
 Construct Map Machine nodes and ways.
 """
 import logging
+import sys
 from datetime import datetime
 from hashlib import sha256
 from typing import Any, Iterator, Optional, Union
@@ -26,6 +27,7 @@ from map_machine.osm.osm_reader import (
     OSMRelation,
     OSMWay,
     parse_levels,
+    Tags,
 )
 from map_machine.pictogram.icon import (
     DEFAULT_SMALL_SHAPE_ID,
@@ -231,8 +233,14 @@ class Constructor:
             color: Color
             if self.configuration.drawing_mode == DrawingMode.AUTHOR:
                 color = get_user_color(line.user, self.configuration.seed)
-            else:  # self.mode == TIME_MODE
+            elif self.configuration.drawing_mode == DrawingMode.TIME:
                 color = get_time_color(line.timestamp, self.osm_data.time)
+            elif self.configuration.drawing_mode != DrawingMode.NORMAL:
+                logging.fatal(
+                    f"Drawing mode {self.configuration.drawing_mode} is not "
+                    f"supported."
+                )
+                sys.exit(1)
             self.draw_special_mode(line, inners, outers, color)
             return
 
@@ -475,7 +483,7 @@ class Constructor:
         self.points.append(point)
 
 
-def check_level_number(tags: dict[str, Any], level: float) -> bool:
+def check_level_number(tags: Tags, level: float) -> bool:
     """Check if element described by tags is no the specified level."""
     if "level" in tags:
         if level not in parse_levels(tags["level"]):
@@ -485,12 +493,11 @@ def check_level_number(tags: dict[str, Any], level: float) -> bool:
     return True
 
 
-def check_level_overground(tags: dict[str, Any]) -> bool:
+def check_level_overground(tags: Tags) -> bool:
     """Check if element described by tags is overground."""
     if "level" in tags:
         try:
-            levels: map = map(float, tags["level"].replace(",", ".").split(";"))
-            for level in levels:
+            for level in map(float, tags["level"].replace(",", ".").split(";")):
                 if level < 0:
                     return False
         except ValueError:

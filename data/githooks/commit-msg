@@ -29,7 +29,8 @@ def check_commit_message(parts: List[str]) -> Optional[str]:
 
     if short_message[0] != short_message[0].upper():
         return (
-            short_message + "\n^"
+            short_message
+            + "\n^"
             + "\nCommit message short description should start with uppercase "
             + "letter."
         )
@@ -95,12 +96,12 @@ def check_commit_message(parts: List[str]) -> Optional[str]:
         verbs[verb + "d"] = verb
 
     for wrong_verb, right_verb in verbs.items():
-        if short_message.startswith(f"{wrong_verb} ") or short_message.startswith(
-            f"{first_letter_uppercase(wrong_verb)} "
-        ):
+        if short_message.startswith(
+            f"{wrong_verb} "
+        ) or short_message.startswith(f"{first_letter_uppercase(wrong_verb)} "):
             return (
-                f'Commit message should start with the verb in infinitive '
-                f'form. Please, use '
+                f"Commit message should start with the verb in infinitive "
+                f"form. Please, use "
                 f'"{first_letter_uppercase(right_verb)} ..." instead of '
                 f'"{first_letter_uppercase(wrong_verb)} ...".'
             )

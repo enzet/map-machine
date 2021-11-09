@@ -35,7 +35,8 @@ def draw_element(options: argparse.Namespace) -> None:
         tags_description = options.area
 
     tags: dict[str, str] = {
-        x.split("=")[0]: x.split("=")[1] for x in tags_description.split(",")
+        tag.split("=")[0]: tag.split("=")[1]
+        for tag in tags_description.split(",")
     }
     scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
     extractor: ShapeExtractor = ShapeExtractor(

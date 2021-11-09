@@ -191,6 +191,9 @@
     "name": "comb and scissors"
   },
   "counterclockwise": {},
+  "crane": {
+    "name": "crane"
+  },
   "crater": {
     "name": "crater"
   },
@@ -500,6 +503,9 @@
   },
   "oat": {},
   "oat_2": {},
+  "observatory": {
+    "name": "observatory"
+  },
   "onion_roof_shape": {
     "name": "onion roof shape"
   },

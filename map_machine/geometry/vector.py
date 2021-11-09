@@ -62,8 +62,12 @@ class Polyline:
                 )
             except ValueError:
                 points = self.points
-        path: str = "M " + " L ".join(f"{x[0]},{x[1]}" for x in points)
-        return path + (" Z" if np.allclose(points[0], points[-1]) else "")
+
+        return (
+            "M "
+            + " L ".join(f"{point[0]},{point[1]}" for point in points)
+            + (" Z" if np.allclose(points[0], points[-1]) else "")
+        )
 
     def shorten(self, index: int, length: float) -> None:
         """Make shorten part specified with index."""

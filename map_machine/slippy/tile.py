@@ -202,9 +202,7 @@ class Tile:
         for i in range(scale):
             for j in range(scale):
                 tile: Tile = Tile(
-                    scale * self.x + i,
-                    scale * self.y + j,
-                    zoom_level,
+                    scale * self.x + i, scale * self.y + j, zoom_level
                 )
                 tiles.append(tile)
         return tiles

@@ -121,13 +121,13 @@ class BoundaryBox:
         """Get maximum coordinates."""
         return np.array((self.top, self.right))
 
-    def get_left_top(self) -> (np.ndarray, np.ndarray):
+    def get_left_top(self) -> np.ndarray:
         """Get left top corner of the boundary box."""
-        return self.top, self.left
+        return np.array((self.top, self.left))
 
-    def get_right_bottom(self) -> (np.ndarray, np.ndarray):
+    def get_right_bottom(self) -> np.ndarray:
         """Get right bottom corner of the boundary box."""
-        return self.bottom, self.right
+        return np.array((self.bottom, self.right))
 
     def round(self) -> "BoundaryBox":
         """Round boundary box."""

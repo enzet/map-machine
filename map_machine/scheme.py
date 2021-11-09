@@ -14,6 +14,7 @@ from colour import Color
 
 from map_machine.feature.direction import DirectionSet
 from map_machine.map_configuration import MapConfiguration, LabelMode
+from map_machine.osm.osm_reader import Tags
 from map_machine.pictogram.icon import (
     DEFAULT_COLOR,
     DEFAULT_SHAPE_ID,
@@ -52,7 +53,7 @@ class MatchingType(Enum):
 def is_matched_tag(
     matcher_tag_key: str,
     matcher_tag_value: Union[str, list],
-    tags: dict[str, str],
+    tags: Tags,
 ) -> tuple[MatchingType, list[str]]:
     """
     Check whether element tags contradict tag matcher.
@@ -107,7 +108,7 @@ class Matcher:
     def __init__(
         self, structure: dict[str, Any], group: Optional[dict[str, Any]] = None
     ) -> None:
-        self.tags: dict[str, str] = structure["tags"]
+        self.tags: Tags = structure["tags"]
 
         self.exception: dict[str, str] = {}
         if "exception" in structure:
@@ -132,9 +133,7 @@ class Matcher:
         )
 
     def is_matched(
-        self,
-        tags: dict[str, str],
-        configuration: Optional[MapConfiguration] = None,
+        self, tags: Tags, configuration: Optional[MapConfiguration] = None
     ) -> tuple[bool, dict[str, str]]:
         """
         Check whether element tags matches tag matcher.
@@ -294,7 +293,7 @@ class RoadMatcher(Matcher):
         if "priority" in structure:
             self.priority = structure["priority"]
 
-    def get_priority(self, tags: dict[str, str]) -> float:
+    def get_priority(self, tags: Tags) -> float:
         """Get priority for drawing order."""
         layer: float = 0
         if "layer" in tags:
@@ -556,7 +555,7 @@ class Scheme:
         return None
 
     def construct_text(
-        self, tags: dict[str, str], processed: set[str], label_mode: LabelMode
+        self, tags: Tags, processed: set[str], label_mode: LabelMode
     ) -> list[Label]:
         """Construct labels for not processed tags."""
         texts: list[Label] = construct_text(tags, processed, label_mode)
@@ -566,7 +565,7 @@ class Scheme:
                 texts.append(Label(tags[tag]))
         return texts
 
-    def is_area(self, tags: dict[str, str]) -> bool:
+    def is_area(self, tags: Tags) -> bool:
         """Check whether way described by tags is area."""
         for matcher in self.area_matchers:
             matching, _ = matcher.is_matched(tags)
@@ -574,9 +573,7 @@ class Scheme:
                 return True
         return False
 
-    def process_ignored(
-        self, tags: dict[str, str], processed: set[str]
-    ) -> None:
+    def process_ignored(self, tags: Tags, processed: set[str]) -> None:
         """
         Mark all ignored tag as processed.
 

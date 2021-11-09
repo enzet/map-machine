@@ -119,16 +119,17 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         "--buildings",
         metavar="<mode>",
         default="flat",
-        choices=(x.value for x in BuildingMode),
+        choices=(mode.value for mode in BuildingMode),
         help="building drawing mode: "
-        + ", ".join(x.value for x in BuildingMode),
+        + ", ".join(mode.value for mode in BuildingMode),
     )
     parser.add_argument(
         "--mode",
         default="normal",
         metavar="<string>",
-        choices=(x.value for x in DrawingMode),
-        help="map drawing mode: " + ", ".join(x.value for x in DrawingMode),
+        choices=(mode.value for mode in DrawingMode),
+        help="map drawing mode: "
+        + ", ".join(mode.value for mode in DrawingMode),
     )
     parser.add_argument(
         "--overlap",
@@ -143,8 +144,9 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         dest="label_mode",
         default="main",
         metavar="<string>",
-        choices=(x.value for x in LabelMode),
-        help="label drawing mode: " + ", ".join(x.value for x in LabelMode),
+        choices=(mode.value for mode in LabelMode),
+        help="label drawing mode: "
+        + ", ".join(mode.value for mode in LabelMode),
     )
     parser.add_argument(
         "--level",

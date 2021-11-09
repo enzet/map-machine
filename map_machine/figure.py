@@ -395,5 +395,5 @@ def make_counter_clockwise(polygon: list[OSMNode]) -> list[OSMNode]:
 def get_path(nodes: list[OSMNode], shift: np.ndarray, flinger: Flinger) -> str:
     """Construct SVG path commands from nodes."""
     return Polyline(
-        [flinger.fling(x.coordinates) + shift for x in nodes]
+        [flinger.fling(node.coordinates) + shift for node in nodes]
     ).get_path()

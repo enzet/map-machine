@@ -73,8 +73,8 @@ class ArgumentParser(argparse.ArgumentParser):
                 continue
 
             array: Code = [
-                [Tag("no_wrap", [Tag("m", [x])]), ", "]
-                for x in option["arguments"]
+                [Tag("no_wrap", [Tag("m", [text])]), ", "]
+                for text in option["arguments"]
             ]
             cell: Code = [x for y in array for x in y][:-1]
             if "metavar" in option:

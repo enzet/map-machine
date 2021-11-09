@@ -9,6 +9,7 @@ from typing import Optional
 
 import cairosvg
 
+from map_configuration import MapConfiguration
 from map_machine.slippy.tile import Tile
 from map_machine.workspace import workspace
 
@@ -16,12 +17,12 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
-class _Handler(SimpleHTTPRequestHandler):
+class TileServerHandler(SimpleHTTPRequestHandler):
     """HTTP request handler that process sloppy map tile requests."""
 
     cache: Path = Path("cache")
     update_cache: bool = False
-    options = None
+    options: Optional[argparse.Namespace] = None
 
     def __init__(
         self,
@@ -29,6 +30,7 @@ class _Handler(SimpleHTTPRequestHandler):
         client_address: tuple[str, int],
         server: HTTPServer,
     ) -> None:
+        # TODO: delete?
         super().__init__(request, client_address, server)
 
     def do_GET(self) -> None:
@@ -48,7 +50,11 @@ class _Handler(SimpleHTTPRequestHandler):
         if self.update_cache:
             if not png_path.exists():
                 if not svg_path.exists():
-                    tile.draw(tile_path, self.cache, self.options)
+                    tile.draw(
+                        tile_path,
+                        self.cache,
+                        MapConfiguration(zoom_level=zoom_level),
+                    )
                 with svg_path.open(encoding="utf-8") as input_file:
                     cairosvg.svg2png(
                         file_obj=input_file, write_to=str(png_path)
@@ -68,7 +74,7 @@ def run_server(options: argparse.Namespace) -> None:
     """Command-line interface for tile server."""
     server: Optional[HTTPServer] = None
     try:
-        handler = _Handler
+        handler = TileServerHandler
         handler.cache = Path(options.cache)
         handler.options = options
         server: HTTPServer = HTTPServer(("", options.port), handler)

@@ -25,6 +25,9 @@ METERS_PATTERN: re.Pattern = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*m$")
 KILOMETERS_PATTERN: re.Pattern = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*km$")
 MILES_PATTERN: re.Pattern = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*mi$")
 
+EARTH_EQUATOR_LENGTH: float = 40_075_017.0
+
+Tags = dict[str, str]
 
 # See https://wiki.openstreetmap.org/wiki/Lifecycle_prefix#Stages_of_decay
 STAGES_OF_DECAY: list[str] = [
@@ -61,7 +64,7 @@ def parse_levels(string: str) -> list[float]:
 class Tagged:
     """Something with tags (string to string mapping)."""
 
-    tags: dict[str, str]
+    tags: Tags
 
     def get_tag(self, key: str) -> Optional[str]:
         """
@@ -125,7 +128,7 @@ class OSMNode(Tagged):
     def from_xml_structure(cls, element: Element) -> "OSMNode":
         """Parse node from OSM XML `<node>` element."""
         attributes = element.attrib
-        tags: dict[str, str] = {
+        tags: Tags = {
             x.attrib["k"]: x.attrib["v"] for x in element if x.tag == "tag"
         }
         return cls(
@@ -180,7 +183,7 @@ class OSMWay(Tagged):
     ) -> "OSMWay":
         """Parse way from OSM XML `<way>` element."""
         attributes = element.attrib
-        tags: dict[str, str] = {
+        tags: Tags = {
             x.attrib["k"]: x.attrib["v"] for x in element if x.tag == "tag"
         }
         return cls(
@@ -250,7 +253,7 @@ class OSMRelation(Tagged):
         """Parse relation from OSM XML `<relation>` element."""
         attributes = element.attrib
         members: list[OSMMember] = []
-        tags: dict[str, str] = {}
+        tags: Tags = {}
         for subelement in element:
             if subelement.tag == "member":
                 subattributes = subelement.attrib
@@ -309,7 +312,7 @@ class OSMData:
         self.levels: set[float] = set()
         self.time: MinMax = MinMax()
         self.view_box: Optional[BoundaryBox] = None
-        self.equator_length: float = 40_075_017.0
+        self.equator_length: float = EARTH_EQUATOR_LENGTH
 
     def add_node(self, node: OSMNode) -> None:
         """Add node and update map parameters."""

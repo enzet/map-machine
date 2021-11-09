@@ -1,8 +1,10 @@
 #!/bin/sh
 
+python_files="map_machine setup.py tests data/githooks/commit-msg"
+
 echo "Checking code format with Black..."
-if ! black -l 80 --check tests map_machine; then
-    black -l 80 --diff --color tests map_machine
+if ! black -l 80 --check ${python_files}; then
+    black -l 80 --diff --color ${python_files}
     echo "FAIL"
     exit 1
 fi
@@ -13,5 +15,5 @@ echo "Lint with Flake8..."
 flake8 \
     --max-line-length=80 \
     --ignore=E203,W503,ANN002,ANN003,ANN101,ANN102 \
-    map_machine setup.py tests \
+    ${python_files} \
     || { echo "FAIL"; exit 1; }
