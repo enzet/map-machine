@@ -2,6 +2,7 @@
 WIP: road shape drawing.
 """
 import logging
+from collections import defaultdict
 from dataclasses import dataclass
 from typing import Any, Optional, Union
 
@@ -376,7 +377,7 @@ class Road(Tagged):
         self.matcher: RoadMatcher = matcher
 
         self.line: Polyline = Polyline(
-            [flinger.fling(x.coordinates) for x in self.nodes]
+            [flinger.fling(node.coordinates) for node in self.nodes]
         )
         self.width: Optional[float] = matcher.default_width
         self.lanes: list[Lane] = []
@@ -420,19 +421,19 @@ class Road(Tagged):
             self.layer = float(tags["layer"])
 
         self.placement_offset: float = 0.0
-        self.transition: bool = False
+        self.is_transition: bool = False
 
         if "placement" in tags:
             value: str = tags["placement"]
             if value == "transition":
                 self.is_transition = True
             elif ":" in value and len(parts := value.split(":")) == 2:
-                place, lane = parts
-                lane_number: int = int(lane)
+                place, lane_string = parts
+                lane_number: int = int(lane_string)
                 self.placement_offset = (
                     sum(
-                        x.get_width(self.scale)
-                        for x in self.lanes[: lane_number - 1]
+                        lane.get_width(self.scale)
+                        for lane in self.lanes[: lane_number - 1]
                     )
                     - self.width * self.scale / 2
                 )
@@ -629,8 +630,12 @@ class Connector:
         self.road_1, self.index_1 = connections[0]
         self.priority = self.road_1.matcher.priority
 
-        self.min_layer: float = min(x[0].layer for x in connections)
-        self.max_layer: float = max(x[0].layer for x in connections)
+        self.min_layer: float = min(
+            connection[0].layer for connection in connections
+        )
+        self.max_layer: float = max(
+            connection[0].layer for connection in connections
+        )
         self.scale: float = self.road_1.scale
         self.flinger: Flinger = flinger
 
@@ -697,8 +702,11 @@ class ComplexConnector(Connector):
         self.road_1.line.shorten(self.index_1, length)
         self.road_2.line.shorten(self.index_2, length)
 
-        node: OSMNode = self.road_1.nodes[self.index_1]
-        point: np.ndarray = flinger.fling(node.coordinates)
+        node_1: OSMNode = self.road_1.nodes[self.index_1]
+        point_1: np.ndarray = flinger.fling(node_1.coordinates)
+        node_2: OSMNode = self.road_2.nodes[self.index_2]
+        point_2: np.ndarray = flinger.fling(node_2.coordinates)
+        point = (point_1 + point_2) / 2
 
         points_1: list[np.ndarray] = get_curve_points(
             self.road_1,
@@ -796,15 +804,29 @@ class Roads:
         if not self.roads:
             return
 
-        layered_roads: dict[float, list[Road]] = {}
-        layered_connectors: dict[float, list[Connector]] = {}
+        layered_roads: dict[float, list[Road]] = defaultdict(list)
+        layered_connectors: dict[float, list[Connector]] = defaultdict(list)
 
         for road in self.roads:
-            if road.layer not in layered_roads:
-                layered_roads[road.layer] = []
-            layered_roads[road.layer].append(road)
+            if not road.is_transition:
+                layered_roads[road.layer].append(road)
+            else:
+                connections = []
+                for end in 0, -1:
+                    connections.append(
+                        [
+                            connection
+                            for connection in self.nodes[road.nodes[end].id_]
+                            if not connection[0].is_transition
+                        ]
+                    )
+                if len(connections[0]) == 1 and len(connections[1]) == 1:
+                    connector: Connector = ComplexConnector(
+                        [connections[0][0], connections[1][0]], flinger
+                    )
+                    layered_connectors[road.layer].append(connector)
 
-        for _, connected in self.nodes.items():
+        for connected in self.nodes.values():
             connector: Connector
 
             if len(connected) <= 1:
@@ -819,19 +841,16 @@ class Roads:
                     or index_2 not in [0, len(road_2.nodes) - 1]
                 ):
                     connector = SimpleConnector(connected, flinger)
-                else:
+                elif not road_1.is_transition and not road_2.is_transition:
                     connector = ComplexConnector(connected, flinger)
+                else:
+                    continue
             else:
                 # We can also use SimpleIntersection(connected, flinger, scale)
                 # here.
                 continue
 
-            if connector.min_layer not in layered_connectors:
-                layered_connectors[connector.min_layer] = []
             layered_connectors[connector.min_layer].append(connector)
-
-            if connector.max_layer not in layered_connectors:
-                layered_connectors[connector.max_layer] = []
             layered_connectors[connector.max_layer].append(connector)
 
         for layer in sorted(layered_roads.keys()):
@@ -844,17 +863,19 @@ class Roads:
 
             for road in roads:
                 road.draw(svg, True)
-            for connector in connectors:
-                if connector.min_layer == layer:
-                    connector.draw_border(svg)
+            if connectors:
+                for connector in connectors:
+                    if connector.min_layer == layer:
+                        connector.draw_border(svg)
 
             # Draw inner parts.
 
             for road in roads:
                 road.draw(svg, False)
-            for connector in connectors:
-                if connector.max_layer == layer:
-                    connector.draw(svg)
+            if connectors:
+                for connector in connectors:
+                    if connector.max_layer == layer:
+                        connector.draw(svg)
 
             # Draw lane separators.
 

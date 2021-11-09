@@ -24,36 +24,37 @@ SCHEME: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
 SHAPE_EXTRACTOR: ShapeExtractor = ShapeExtractor(
     workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
 )
+DEFAULT_ZOOM: float = 18.0
 
 
-ROAD_TYPES: list[dict[str, str]] = [
-    {"highway": "motorway"},
-    {"highway": "trunk"},
-    {"highway": "primary"},
-    {"highway": "secondary"},
-    {"highway": "tertiary"},
-    {"highway": "unclassified"},
-    {"highway": "residential"},
-    {"highway": "service"},
-    {"highway": "service_minor"},
-    {"highway": "road"},
-    {"highway": "pedestrian"},
-    {"highway": "living_street"},
-    {"highway": "bridleway"},
-    {"highway": "cycleway"},
-    {"highway": "footway"},
-    {"highway": "steps"},
-    {"highway": "path"},
-    {"highway": "track"},
-    {"highway": "raceway"},
+HIGHWAY_VALUES: list[str] = [
+    "motorway",
+    "trunk",
+    "primary",
+    "secondary",
+    "tertiary",
+    "unclassified",
+    "residential",
+    "service",
+    "service_minor",
+    "road",
+    "pedestrian",
+    "living_street",
+    "bridleway",
+    "cycleway",
+    "footway",
+    "steps",
+    "path",
+    "track",
+    "raceway",
 ]
 
-AEROWAY_TYPES: list[dict[str, str]] = [
-    {"aeroway": "runway"},
-    {"aeroway": "taxiway"},
+AEROWAY_VALUES: list[str] = [
+    "runway",
+    "taxiway",
 ]
 
-RAILWAY_TYPES: list[dict[str, str]] = [
+RAILWAY_TAGS: list[dict[str, str]] = [
     {"railway": "rail"},
     {"railway": "light_rail"},
     {"railway": "monorail"},
@@ -120,9 +121,9 @@ class Grid:
     """Creating map with elements ordered in grid."""
 
     def __init__(self) -> None:
-        self.x_step: float = 0.0003
+        self.x_step: float = 0.0002
         self.y_step: float = 0.0003
-        self.x_start: float = 0.0028
+        self.x_start: float = 0.0
         self.index: int = 0
         self.nodes: dict[OSMNode, tuple[int, int]] = {}
         self.max_j: float = 0
@@ -156,7 +157,6 @@ def road_features(
 ) -> None:
     """Draw test image with different road features."""
     osm_data: OSMData = OSMData()
-
     grid: Grid = Grid()
 
     for i, type_ in enumerate(types):
@@ -166,8 +166,8 @@ def road_features(
             node: OSMNode = grid.add_node({}, i, j)
 
             if previous:
-                tags: dict[str, str] = dict(features[j - 1])
-                tags |= type_
+                tags: dict[str, str] = dict(type_)
+                tags |= dict(features[j - 1])
                 way: OSMWay = OSMWay(
                     tags, i * (len(features) + 1) + j, [previous, node]
                 )
@@ -178,12 +178,15 @@ def road_features(
 
 
 def draw(
-    osm_data: OSMData, output_path: Path, boundary_box: BoundaryBox
+    osm_data: OSMData,
+    output_path: Path,
+    boundary_box: BoundaryBox,
+    zoom: float = DEFAULT_ZOOM,
 ) -> None:
     """Draw map."""
     configuration: MapConfiguration = MapConfiguration(level="all")
 
-    flinger: Flinger = Flinger(boundary_box, 18, osm_data.equator_length)
+    flinger: Flinger = Flinger(boundary_box, zoom, osm_data.equator_length)
     svg: Drawing = Drawing(output_path.name, flinger.size)
     constructor: Constructor = Constructor(
         osm_data, flinger, SCHEME, SHAPE_EXTRACTOR, configuration
@@ -200,16 +203,23 @@ def draw(
 if __name__ == "__main__":
     logging.basicConfig(format="%(levelname)s %(message)s", level=logging.INFO)
 
+    highway_tags: list[dict[str, str]] = [
+        {"highway": value} for value in HIGHWAY_VALUES
+    ]
+    aeroway_tags: list[dict[str, str]] = [
+        {"aeroway": value} for value in AEROWAY_VALUES
+    ]
+
     road_features(
-        ROAD_TYPES, ROAD_LANES_AND_FEATURES, Path("out") / "lanes.svg"
+        highway_tags, ROAD_LANES_AND_FEATURES, Path("out") / "lanes.svg"
     )
     road_features(
-        ROAD_TYPES + RAILWAY_TYPES + AEROWAY_TYPES,
+        highway_tags + RAILWAY_TAGS + aeroway_tags,
         ROAD_WIDTHS_AND_FEATURES,
         Path("out") / "width.svg",
     )
     road_features(
-        ROAD_TYPES,
-        PLACEMENT_FEATURES_1 + [{}] + PLACEMENT_FEATURES_2,
+        highway_tags,
+        PLACEMENT_FEATURES_1 + [{"highway": "none"}] + PLACEMENT_FEATURES_2,
         Path("out") / "placement.svg",
     )
