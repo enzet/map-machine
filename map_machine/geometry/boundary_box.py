@@ -141,7 +141,7 @@ class BoundaryBox:
     def center(self) -> np.ndarray:
         """Return center point of boundary box."""
         return np.array(
-            ((self.left + self.right) / 2, (self.top + self.bottom) / 2)
+            ((self.top + self.bottom) / 2, (self.left + self.right) / 2)
         )
 
     def get_format(self) -> str:
