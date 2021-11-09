@@ -103,6 +103,10 @@ class MapCSSWriter:
         """
         elements: dict[str, str] = {}
 
+        for value in matcher.tags.values():
+            if value.startswith("^"):
+                return ""
+
         clean_shapes = matcher.get_clean_shapes()
         if clean_shapes:
             elements["icon-image"] = (
