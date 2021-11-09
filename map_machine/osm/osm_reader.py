@@ -335,7 +335,8 @@ class OSMData:
             self.authors.add(way.user)
         if way.tags.get("level"):
             self.levels.union(parse_levels(way.tags["level"]))
-        self.time.update(way.timestamp)
+        if way.timestamp:
+            self.time.update(way.timestamp)
 
     def add_relation(self, relation: OSMRelation) -> None:
         """Add relation and update map parameters."""
