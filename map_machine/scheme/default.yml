@@ -649,10 +649,14 @@ node_icons:
       shapes: [crane]
     - tags: {man_made: crane, crane:type: gantry_crane}
       shapes: [crane_gantry]
+    - tags: {man_made: crane, crane:type: floor-mounted_crane}
+      shapes: [crane]
     - tags: {man_made: crane, crane:type: portal_crane}
       shapes: [crane_portal]
     - tags: {man_made: crane, crane:type: travel_lift}
       shapes: [crane_travel_lift]
+    - tags: {man_made: crane, crane:type: tower_crane}
+      shapes: [crane]
 
   - group: "Emergency"
     start_zoom_level: 15.0
