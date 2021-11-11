@@ -20,7 +20,9 @@ def pseudo_mercator(coordinates: np.ndarray) -> np.ndarray:
     :return: position on the plane in the form of (x, y)
     """
     y: float = (
-        180 / np.pi * np.log(np.tan(np.pi / 4 + coordinates[0] * np.pi / 360))
+        180.0
+        / np.pi
+        * np.log(np.tan(np.pi / 4.0 + coordinates[0] * np.pi / 360.0))
     )
     return np.array((coordinates[1], y))
 
@@ -36,7 +38,7 @@ def osm_zoom_level_to_pixels_per_meter(
         function allows any non-negative float value
     :param equator_length: celestial body equator length in meters
     """
-    return 2 ** zoom_level / equator_length * 256
+    return 2.0 ** zoom_level / equator_length * 256.0
 
 
 class Flinger:
@@ -54,7 +56,7 @@ class Flinger:
         :param equator_length: celestial body equator length in meters
         """
         self.geo_boundaries: BoundaryBox = geo_boundaries
-        self.ratio: float = 2 ** zoom_level * 256 / 360
+        self.ratio: float = 2.0 ** zoom_level * 256.0 / 360.0
         self.size: np.ndarray = self.ratio * (
             pseudo_mercator(self.geo_boundaries.max_())
             - pseudo_mercator(self.geo_boundaries.min_())
@@ -90,5 +92,5 @@ class Flinger:
             # Get pixels per meter ratio for the center of the boundary box.
             coordinates = self.geo_boundaries.center()
 
-        scale_factor: float = abs(1 / np.cos(coordinates[0] / 180 * np.pi))
+        scale_factor: float = abs(1.0 / np.cos(coordinates[0] / 180.0 * np.pi))
         return self.pixels_per_meter * scale_factor

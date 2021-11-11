@@ -189,7 +189,7 @@ class Constructor:
         self.craters: list[Crater] = []
         self.direction_sectors: list[DirectionSector] = []
 
-        self.heights: set[float] = {2, 4}
+        self.heights: set[float] = {2.0, 4.0}
 
     def add_building(self, building: Building) -> None:
         """Add building and update levels."""
@@ -327,10 +327,10 @@ class Constructor:
             style: dict[str, Any] = {
                 "fill": "none",
                 "stroke": Color("red").hex,
-                "stroke-width": 1,
+                "stroke-width": 1.0,
             }
             figure: StyledFigure = StyledFigure(
-                line.tags, inners, outers, LineStyle(style, 1000)
+                line.tags, inners, outers, LineStyle(style, 1000.0)
             )
             self.figures.append(figure)
 
@@ -453,6 +453,7 @@ class Constructor:
         )
         if icon_set is None:
             return
+
         labels: list[Label] = self.scheme.construct_text(
             tags, processed, self.configuration.label_mode
         )
@@ -498,7 +499,7 @@ def check_level_overground(tags: Tags) -> bool:
     if "level" in tags:
         try:
             for level in map(float, tags["level"].replace(",", ".").split(";")):
-                if level < 0:
+                if level < 0.0:
                     return False
         except ValueError:
             pass

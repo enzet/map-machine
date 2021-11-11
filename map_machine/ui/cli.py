@@ -293,7 +293,7 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         type=float,
         metavar="<float>",
         help="OSM zoom level",
-        default=18,
+        default=18.0,
     )
     parser.add_argument(
         "-c",
@@ -354,6 +354,7 @@ def progress_bar(
         fill_length: int = int(parts / BOXES_LENGTH)
         box: str = BOXES[int(parts - fill_length * BOXES_LENGTH)]
         sys.stdout.write(
-            f"{str(int(int(ratio * 1000) / 10)):>3} % {fill_length * '█'}{box}"
+            f"{str(int(int(ratio * 1000.0) / 10.0)):>3} % "
+            f"{fill_length * '█'}{box}"
             f"{int(length - fill_length - 1) * ' '}▏{text}\n\033[F"
         )

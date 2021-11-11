@@ -95,15 +95,15 @@ class BoundaryBox:
         n: float = 2.0 ** (zoom_level + 8.0)
 
         x: int = int((coordinates[1] + 180.0) / 360.0 * n)
-        left: float = (x - width / 2) / n * 360.0 - 180.0
-        right: float = (x + width / 2) / n * 360.0 - 180.0
+        left: float = (x - width / 2.0) / n * 360.0 - 180.0
+        right: float = (x + width / 2.0) / n * 360.0 - 180.0
 
         y: int = (1.0 - np.arcsinh(np.tan(lat_rad)) / np.pi) / 2.0 * n
         bottom_radians = np.arctan(
-            np.sinh((1.0 - (y + height / 2) * 2.0 / n) * np.pi)
+            np.sinh((1.0 - (y + height / 2.0) * 2.0 / n) * np.pi)
         )
         top_radians = np.arctan(
-            np.sinh((1.0 - (y - height / 2) * 2.0 / n) * np.pi)
+            np.sinh((1.0 - (y - height / 2.0) * 2.0 / n) * np.pi)
         )
 
         return cls(
@@ -131,17 +131,17 @@ class BoundaryBox:
 
     def round(self) -> "BoundaryBox":
         """Round boundary box."""
-        self.left = round(self.left * 1000) / 1000 - 0.001
-        self.bottom = round(self.bottom * 1000) / 1000 - 0.001
-        self.right = round(self.right * 1000) / 1000 + 0.001
-        self.top = round(self.top * 1000) / 1000 + 0.001
+        self.left = round(self.left * 1000.0) / 1000.0 - 0.001
+        self.bottom = round(self.bottom * 1000.0) / 1000.0 - 0.001
+        self.right = round(self.right * 1000.0) / 1000.0 + 0.001
+        self.top = round(self.top * 1000.0) / 1000.0 + 0.001
 
         return self
 
     def center(self) -> np.ndarray:
         """Return center point of boundary box."""
         return np.array(
-            ((self.top + self.bottom) / 2, (self.left + self.right) / 2)
+            ((self.top + self.bottom) / 2.0, (self.left + self.right) / 2.0)
         )
 
     def get_format(self) -> str:
@@ -150,10 +150,10 @@ class BoundaryBox:
         <longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>.  Coordinates are
         rounded to three digits after comma.
         """
-        left: float = np.floor(self.left * 1000) / 1000
-        bottom: float = np.floor(self.bottom * 1000) / 1000
-        right: float = np.ceil(self.right * 1000) / 1000
-        top: float = np.ceil(self.top * 1000) / 1000
+        left: float = np.floor(self.left * 1000.0) / 1000.0
+        bottom: float = np.floor(self.bottom * 1000.0) / 1000.0
+        right: float = np.ceil(self.right * 1000.0) / 1000.0
+        top: float = np.ceil(self.top * 1000.0) / 1000.0
 
         return f"{left:.3f},{bottom:.3f},{right:.3f},{top:.3f}"
 

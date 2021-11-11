@@ -206,7 +206,7 @@ class MapMachineHTML(MapMachineMoire, DefaultHTML):
 
     def icon(self, arg: Arguments) -> str:
         """Image with Röntgen icon."""
-        size: str = self.clear(arg[1]) if len(arg) > 1 else 16
+        size: str = self.clear(arg[1]) if len(arg) > 1 else "16"
         return (
             f'<img class="icon" style="width: {size}px; height: {size}px;" '
             f'src="out/icons_by_id/{self.clear(arg[0])}.svg" />'
@@ -261,7 +261,7 @@ class MapMachineOSMWiki(MapMachineMoire, DefaultWiki):
 
     def icon(self, arg: Arguments) -> str:
         """Image with Röntgen icon."""
-        size: str = self.clear(arg[1]) if len(arg) > 1 else 16
+        size: str = self.clear(arg[1]) if len(arg) > 1 else "16"
         shape_id: str = self.clear(arg[0])
         name: str = self.extractor.get_shape(shape_id).name
         return f"[[File:Röntgen {name}.svg|{size}px]]"

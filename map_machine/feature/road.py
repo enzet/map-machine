@@ -435,7 +435,7 @@ class Road(Tagged):
                         lane.get_width(self.scale)
                         for lane in self.lanes[: lane_number - 1]
                     )
-                    - self.width * self.scale / 2
+                    - self.width * self.scale / 2.0
                 )
                 if place == "left_of":
                     pass
@@ -525,7 +525,7 @@ class Road(Tagged):
         """Get road main color."""
         color: Color = self.matcher.color
         if self.tags.get("tunnel") == "yes":
-            color = Color(color, luminance=min(1, color.luminance + 0.2))
+            color = Color(color, luminance=min(1.0, color.luminance + 0.2))
         return color
 
     def get_border_color(self) -> Color:
@@ -546,7 +546,7 @@ class Road(Tagged):
 
         for index in range(1, len(self.lanes)):
             lane_offset: float = self.scale * (
-                -self.width / 2 + index * self.width / len(self.lanes)
+                -self.width / 2.0 + index * self.width / len(self.lanes)
             )
             path: Path = Path(
                 d=self.line.get_path(self.placement_offset + lane_offset)
@@ -555,7 +555,7 @@ class Road(Tagged):
                 "fill": "none",
                 "stroke": color.hex,
                 "stroke-linejoin": "round",
-                "stroke-width": 1,
+                "stroke-width": 1.0,
                 "opacity": 0.5,
             }
             path.update(style)
@@ -568,7 +568,7 @@ class Road(Tagged):
             return
 
         path: Path = svg.path(
-            d=self.line.get_path(self.placement_offset + 3), fill="none"
+            d=self.line.get_path(self.placement_offset + 3.0), fill="none"
         )
         svg.add(path)
 
@@ -580,7 +580,7 @@ class Road(Tagged):
             method="align",
             spacing="exact",
             font_family="Roboto",
-            font_size=10,
+            font_size=10.0,
         )
         text.add(text_path)
 
@@ -668,7 +668,7 @@ class SimpleConnector(Connector):
         """Draw connection fill."""
         circle: Circle = svg.circle(
             self.point,
-            self.road_1.width * self.scale / 2,
+            self.road_1.width * self.scale / 2.0,
             fill=self.road_1.get_color().hex,
         )
         svg.add(circle)
@@ -677,7 +677,7 @@ class SimpleConnector(Connector):
         """Draw connection outline."""
         circle: Circle = svg.circle(
             self.point,
-            self.road_1.width * self.scale / 2 + 1,
+            self.road_1.width * self.scale / 2.0 + 1.0,
             fill=self.road_1.matcher.border_color.hex,
         )
         svg.add(circle)
@@ -706,7 +706,7 @@ class ComplexConnector(Connector):
         point_1: np.ndarray = flinger.fling(node_1.coordinates)
         node_2: OSMNode = self.road_2.nodes[self.index_2]
         point_2: np.ndarray = flinger.fling(node_2.coordinates)
-        point = (point_1 + point_2) / 2
+        point = (point_1 + point_2) / 2.0
 
         points_1: list[np.ndarray] = get_curve_points(
             self.road_1,
@@ -765,7 +765,9 @@ class SimpleIntersection(Connector):
             node: OSMNode = self.road_1.nodes[self.index_1]
             point: np.ndarray = self.flinger.fling(node.coordinates)
             circle: Circle = svg.circle(
-                point, road.width * self.scale / 2, fill=road.matcher.color.hex
+                point,
+                road.width * self.scale / 2.0,
+                fill=road.matcher.color.hex,
             )
             svg.add(circle)
 
@@ -776,7 +778,7 @@ class SimpleIntersection(Connector):
             point: np.ndarray = self.flinger.fling(node.coordinates)
             circle: Circle = svg.circle(
                 point,
-                road.width * self.scale / 2 + 1,
+                road.width * self.scale / 2.0 + 1.0,
                 fill=road.matcher.border_color.hex,
             )
             svg.add(circle)

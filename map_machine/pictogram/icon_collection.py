@@ -161,7 +161,7 @@ class IconCollection:
         self,
         file_name: Path,
         columns: int = 16,
-        step: float = 24,
+        step: float = 24.0,
         background_color: Color = Color("white"),
         scale: float = 1.0,
     ) -> None:
@@ -174,19 +174,19 @@ class IconCollection:
         :param background_color: background color
         :param scale: scale icon by the magnitude
         """
-        point: np.ndarray = np.array((step / 2 * scale, step / 2 * scale))
+        point: np.ndarray = np.array((step / 2.0 * scale, step / 2.0 * scale))
         width: float = step * columns * scale
 
-        height: int = int(int(len(self.icons) / columns + 1) * step * scale)
+        height: int = int(int(len(self.icons) / columns + 1.0) * step * scale)
         svg: Drawing = Drawing(str(file_name), (width, height))
         svg.add(svg.rect((0, 0), (width, height), fill=background_color.hex))
 
         for icon in self.icons:
             icon.draw(svg, point, scale=scale)
-            point += np.array((step * scale, 0))
-            if point[0] > width - 8:
-                point[0] = step / 2 * scale
-                point += np.array((0, step * scale))
+            point += np.array((step * scale, 0.0))
+            if point[0] > width - 8.0:
+                point[0] = step / 2.0 * scale
+                point += np.array((0.0, step * scale))
                 height += step * scale
 
         with file_name.open("w", encoding="utf-8") as output_file:

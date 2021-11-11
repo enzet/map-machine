@@ -166,7 +166,7 @@ class MapCSSWriter:
             return
 
         for index, stage_of_decay in enumerate(STAGES_OF_DECAY):
-            opacity: float = 0.6 - 0.4 * index / (len(STAGES_OF_DECAY) - 1)
+            opacity: float = 0.6 - 0.4 * index / (len(STAGES_OF_DECAY) - 1.0)
             for matcher in self.point_matchers:
                 if len(matcher.tags) > 1:
                     continue

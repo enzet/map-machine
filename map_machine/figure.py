@@ -42,7 +42,7 @@ class Figure(Tagged):
         )
 
     def get_path(
-        self, flinger: Flinger, offset: np.ndarray = np.array((0, 0))
+        self, flinger: Flinger, offset: np.ndarray = np.array((0.0, 0.0))
     ) -> str:
         """
         Get SVG path commands.
@@ -365,13 +365,13 @@ def is_clockwise(polygon: list[OSMNode]) -> bool:
 
     :param polygon: list of OpenStreetMap nodes
     """
-    count: float = 0
+    count: float = 0.0
     for index, node in enumerate(polygon):
         next_index: int = 0 if index == len(polygon) - 1 else index + 1
         count += (polygon[next_index].coordinates[0] - node.coordinates[0]) * (
             polygon[next_index].coordinates[1] + node.coordinates[1]
         )
-    return count >= 0
+    return count >= 0.0
 
 
 def make_clockwise(polygon: list[OSMNode]) -> list[OSMNode]:

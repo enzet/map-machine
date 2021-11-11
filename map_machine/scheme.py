@@ -289,16 +289,16 @@ class RoadMatcher(Matcher):
         if "color" in structure:
             self.color = Color(scheme.get_color(structure["color"]))
         self.default_width: float = structure["default_width"]
-        self.priority: float = 0
+        self.priority: float = 0.0
         if "priority" in structure:
             self.priority = structure["priority"]
 
     def get_priority(self, tags: Tags) -> float:
         """Get priority for drawing order."""
-        layer: float = 0
+        layer: float = 0.0
         if "layer" in tags:
             layer = float(tags.get("layer"))
-        return 1000 * layer + self.priority
+        return 1000.0 * layer + self.priority
 
 
 class Scheme:
@@ -598,7 +598,7 @@ class Scheme:
         """
         shape: Shape = extractor.get_shape(DEFAULT_SHAPE_ID)
         color: Color = color
-        offset: np.ndarray = np.array((0, 0))
+        offset: np.ndarray = np.array((0.0, 0.0))
         flip_horizontally: bool = False
         flip_vertically: bool = False
         use_outline: bool = True

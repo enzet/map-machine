@@ -32,13 +32,13 @@ class Occupied:
 
     def check(self, point: np.ndarray) -> bool:
         """Check whether point is already occupied by other elements."""
-        if 0 <= point[0] < self.width and 0 <= point[1] < self.height:
+        if 0.0 <= point[0] < self.width and 0.0 <= point[1] < self.height:
             return self.matrix[point[0], point[1]]
         return True
 
     def register(self, point: np.ndarray) -> None:
         """Register that point is occupied by an element."""
-        if 0 <= point[0] < self.width and 0 <= point[1] < self.height:
+        if 0.0 <= point[0] < self.width and 0.0 <= point[1] < self.height:
             self.matrix[point[0], point[1]] = True
             assert self.matrix[point[0], point[1]]
 
@@ -57,7 +57,7 @@ class Point(Tagged):
         tags: dict[str, str],
         processed: set[str],
         point: np.ndarray,
-        priority: float = 0,
+        priority: float = 0.0,
         is_for_node: bool = True,
         draw_outline: bool = True,
         add_tooltips: bool = False,
@@ -71,12 +71,12 @@ class Point(Tagged):
         self.processed: set[str] = processed
         self.point: np.ndarray = point
         self.priority: float = priority
-        self.layer: float = 0
+        self.layer: float = 0.0
         self.is_for_node: bool = is_for_node
         self.draw_outline: bool = draw_outline
         self.add_tooltips: bool = add_tooltips
 
-        self.y = 0
+        self.y: float = 0.0
         self.main_icon_painted: bool = False
 
     def draw_main_shapes(
@@ -91,7 +91,7 @@ class Point(Tagged):
         ):
             return
 
-        position: np.ndarray = self.point + np.array((0, self.y))
+        position: np.ndarray = self.point + np.array((0.0, self.y))
         tags: Optional[dict[str, str]] = (
             self.tags if self.add_tooltips else None
         )
@@ -99,7 +99,7 @@ class Point(Tagged):
             svg, self.icon_set.main_icon, position, occupied, tags=tags
         )
         if self.main_icon_painted:
-            self.y += 16
+            self.y += 16.0
 
     def draw_extra_shapes(
         self, svg: svgwrite.Drawing, occupied: Optional[Occupied] = None
@@ -110,7 +110,7 @@ class Point(Tagged):
 
         is_place_for_extra: bool = True
         if occupied:
-            left: float = -(len(self.icon_set.extra_icons) - 1) * 8
+            left: float = -(len(self.icon_set.extra_icons) - 1.0) * 8.0
             for _ in self.icon_set.extra_icons:
                 point: np.ndarray = np.array(
                     (int(self.point[0] + left), int(self.point[1] + self.y))
@@ -118,16 +118,16 @@ class Point(Tagged):
                 if occupied.check(point):
                     is_place_for_extra = False
                     break
-                left += 16
+                left += 16.0
 
         if is_place_for_extra:
-            left: float = -(len(self.icon_set.extra_icons) - 1) * 8
+            left: float = -(len(self.icon_set.extra_icons) - 1.0) * 8.0
             for icon in self.icon_set.extra_icons:
                 point: np.ndarray = self.point + np.array((left, self.y))
                 self.draw_point_shape(svg, icon, point, occupied=occupied)
-                left += 16
+                left += 16.0
             if self.icon_set.extra_icons:
-                self.y += 16
+                self.y += 16.0
 
     def draw_point_shape(
         self,
@@ -180,7 +180,7 @@ class Point(Tagged):
             text = text.replace("&quot;", '"')
             text = text.replace("&amp;", "&")
             text = text[:26] + ("..." if len(text) > 26 else "")
-            point = self.point + np.array((0, self.y + 2))
+            point = self.point + np.array((0.0, self.y + 2.0))
             self.draw_text(
                 svg, text, point, occupied, label.fill, size=label.size
             )
@@ -212,9 +212,9 @@ class Point(Tagged):
 
         if occupied:
             is_occupied: bool = False
-            for i in range(-int(length / 2), int(length / 2)):
+            for i in range(-int(length / 2.0), int(length / 2.0)):
                 text_position: np.ndarray = np.array(
-                    (int(point[0] + i), int(point[1] - 4))
+                    (int(point[0] + i), int(point[1] - 4.0))
                 )
                 if occupied.check(text_position):
                     is_occupied = True
@@ -223,7 +223,7 @@ class Point(Tagged):
             if is_occupied:
                 return
 
-            for i in range(-int(length / 2), int(length / 2)):
+            for i in range(-int(length / 2.0), int(length / 2.0)):
                 for j in range(-12, 5):
                     occupied.register(
                         np.array((int(point[0] + i), int(point[1] + j)))
@@ -233,24 +233,40 @@ class Point(Tagged):
 
         if out_fill_2:
             text_element = svg.text(
-                text, point, font_size=size, text_anchor="middle",
-                font_family=DEFAULT_FONT, fill=out_fill_2.hex,
-                stroke_linejoin="round", stroke_width=5, stroke=out_fill_2.hex,
-                opacity=out_opacity_2
-            )  # fmt: skip
+                text,
+                point,
+                font_size=size,
+                text_anchor="middle",
+                font_family=DEFAULT_FONT,
+                fill=out_fill_2.hex,
+                stroke_linejoin="round",
+                stroke_width=5.0,
+                stroke=out_fill_2.hex,
+                opacity=out_opacity_2,
+            )
             svg.add(text_element)
         if out_fill:
             text_element = svg.text(
-                text, point, font_size=size, text_anchor="middle",
-                font_family=DEFAULT_FONT, fill=out_fill.hex,
-                stroke_linejoin="round", stroke_width=3, stroke=out_fill.hex,
+                text,
+                point,
+                font_size=size,
+                text_anchor="middle",
+                font_family=DEFAULT_FONT,
+                fill=out_fill.hex,
+                stroke_linejoin="round",
+                stroke_width=3.0,
+                stroke=out_fill.hex,
                 opacity=out_opacity,
-            )  # fmt: skip
+            )
             svg.add(text_element)
         text_element = svg.text(
-            text, point, font_size=size, text_anchor="middle",
-            font_family=DEFAULT_FONT, fill=fill.hex,
-        )  # fmt: skip
+            text,
+            point,
+            font_size=size,
+            text_anchor="middle",
+            font_family=DEFAULT_FONT,
+            fill=fill.hex,
+        )
         svg.add(text_element)
 
         self.y += 11
@@ -264,7 +280,9 @@ class Point(Tagged):
         width: int = icon_size * (
             1 + max(2, len(self.icon_set.extra_icons) - 1)
         )
-        height: int = icon_size * (1 + int(len(self.icon_set.extra_icons) / 3))
+        height: int = icon_size * (
+            1 + np.ceil(len(self.icon_set.extra_icons) / 3.0)
+        )
         if len(self.labels):
             height += 4 + 11 * len(self.labels)
         return np.array((width, height))

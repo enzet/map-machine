@@ -151,7 +151,7 @@ def construct_text(
         processed.add("route_ref")
 
     if "cladr:code" in tags:
-        texts.append(Label(tags["cladr:code"], size=7))
+        texts.append(Label(tags["cladr:code"], size=7.0))
         processed.add("cladr:code")
 
     if "website" in tags:

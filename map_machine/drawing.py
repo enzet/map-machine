@@ -27,7 +27,7 @@ class Style:
 
     fill: Optional[Color] = None
     stroke: Optional[Color] = None
-    width: float = 1
+    width: float = 1.0
 
     def update_svg_element(self, element: BaseElement) -> None:
         """Set style for SVG element."""
@@ -41,7 +41,7 @@ class Style:
     def draw_png_fill(self, context: Context) -> None:
         """Set style for context and draw fill."""
         context.set_source_rgba(
-            self.fill.get_red(), self.fill.get_green(), self.fill.get_blue(), 1
+            self.fill.get_red(), self.fill.get_green(), self.fill.get_blue()
         )
         context.fill()
 
@@ -51,7 +51,6 @@ class Style:
             self.stroke.get_red(),
             self.stroke.get_green(),
             self.stroke.get_blue(),
-            1,
         )
         context.set_line_width(self.width)
         context.stroke()
@@ -176,7 +175,7 @@ class PNGDrawing(Drawing):
 
     def _do_path(self, commands: PathCommands) -> None:
         """Draw path."""
-        current: np.ndarray = np.array((0, 0))
+        current: np.ndarray = np.array((0.0, 0.0))
         start_point: Optional[np.ndarray] = None
         command: str = "M"
         is_absolute: bool = True
@@ -231,14 +230,14 @@ class PNGDrawing(Drawing):
                 point: np.ndarray
                 if is_absolute:
                     if command == "v":
-                        point = np.array((0, commands[index]))
+                        point = np.array((0.0, commands[index]))
                     else:
-                        point = np.array((commands[index], 0))
+                        point = np.array((commands[index], 0.0))
                 else:
                     if command == "v":
-                        point = current + np.array((0, commands[index]))
+                        point = current + np.array((0.0, commands[index]))
                     else:
-                        point = current + np.array((commands[index], 0))
+                        point = current + np.array((commands[index], 0.0))
                 current = point
                 self.context.line_to(point[0], point[1])
                 if start_point is None:

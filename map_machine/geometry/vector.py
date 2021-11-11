@@ -14,14 +14,14 @@ def compute_angle(vector: np.ndarray) -> float:
     For the given vector compute an angle between it and (1, 0) vector.  The
     result is in [0, 2π].
     """
-    if vector[0] == 0:
-        if vector[1] > 0:
-            return np.pi / 2
-        return np.pi + np.pi / 2
-    if vector[0] < 0:
+    if vector[0] == 0.0:
+        if vector[1] > 0.0:
+            return np.pi / 2.0
+        return np.pi + np.pi / 2.0
+    if vector[0] < 0.0:
         return np.arctan(vector[1] / vector[0]) + np.pi
-    if vector[1] < 0:
-        return np.arctan(vector[1] / vector[0]) + 2 * np.pi
+    if vector[1] < 0.0:
+        return np.arctan(vector[1] / vector[0]) + 2.0 * np.pi
     return np.arctan(vector[1] / vector[0])
 
 
@@ -46,10 +46,10 @@ class Polyline:
     def __init__(self, points: list[np.ndarray]) -> None:
         self.points: list[np.ndarray] = points
 
-    def get_path(self, parallel_offset: float = 0) -> str:
+    def get_path(self, parallel_offset: float = 0.0) -> str:
         """Construct SVG path commands."""
         points: list[np.ndarray]
-        if np.allclose(parallel_offset, 0):
+        if np.allclose(parallel_offset, 0.0):
             points = self.points
         else:
             try:
@@ -98,12 +98,12 @@ class Line:
 
     def is_parallel(self, other: "Line") -> bool:
         """If lines are parallel or equal."""
-        return np.allclose(other.a * self.b - self.a * other.b, 0)
+        return np.allclose(other.a * self.b - self.a * other.b, 0.0)
 
     def get_intersection_point(self, other: "Line") -> np.ndarray:
         """Get point of intersection current line with other."""
-        if other.a * self.b - self.a * other.b == 0:
-            return np.array((0, 0))
+        if other.a * self.b - self.a * other.b == 0.0:
+            return np.array((0.0, 0.0))
 
         x: float = -(self.b * other.c - other.b * self.c) / (
             other.a * self.b - self.a * other.b

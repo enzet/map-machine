@@ -51,13 +51,13 @@ def draw_element(options: argparse.Namespace) -> None:
         labels,
         tags,
         processed,
-        np.array((32, 32)),
+        np.array((32.0, 32.0)),
         is_for_node=is_for_node,
         draw_outline=is_for_node,
     )
-    border: np.ndarray = np.array((16, 16))
+    border: np.ndarray = np.array((16.0, 16.0))
     size: np.ndarray = point.get_size() + border
-    point.point = np.array((size[0] / 2, 16 / 2 + border[1] / 2))
+    point.point = np.array((size[0] / 2.0, 16.0 / 2.0 + border[1] / 2.0))
 
     output_file_path: Path = workspace.output_path / "element.svg"
     svg: svgwrite.Drawing = svgwrite.Drawing(

@@ -54,7 +54,7 @@ class Map:
     def draw(self, constructor: Constructor) -> None:
         """Draw map."""
         self.svg.add(
-            Rect((0, 0), self.flinger.size, fill=self.background_color)
+            Rect((0.0, 0.0), self.flinger.size, fill=self.background_color)
         )
         ways: list[StyledFigure] = sorted(
             constructor.figures, key=lambda x: x.line_style.priority
@@ -130,7 +130,7 @@ class Map:
             building.draw_shade(building_shade, self.flinger)
         self.svg.add(building_shade)
 
-        previous_height: float = 0
+        previous_height: float = 0.0
         for height in sorted(constructor.heights):
             for building in constructor.buildings:
                 if building.height < height or building.min_height > height:

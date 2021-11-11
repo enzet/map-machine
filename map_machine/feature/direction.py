@@ -11,9 +11,9 @@ from map_machine.drawing import PathCommands
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-SHIFT: float = -np.pi / 2
-SMALLEST_ANGLE: float = np.pi / 15
-DEFAULT_ANGLE: float = np.pi / 30
+SHIFT: float = -np.pi / 2.0
+SMALLEST_ANGLE: float = np.pi / 15.0
+DEFAULT_ANGLE: float = np.pi / 30.0
 
 
 def parse_vector(text: str) -> Optional[np.ndarray]:
@@ -66,13 +66,13 @@ class Sector:
             parts: list[str] = text.split("-")
             self.start = parse_vector(parts[0])
             self.end = parse_vector(parts[1])
-            self.main_direction = (self.start + self.end) / 2
+            self.main_direction = (self.start + self.end) / 2.0
         else:
             result_angle: float
             if angle is None:
                 result_angle = DEFAULT_ANGLE
             else:
-                result_angle = max(SMALLEST_ANGLE, np.radians(angle) / 2)
+                result_angle = max(SMALLEST_ANGLE, np.radians(angle) / 2.0)
 
             vector: Optional[np.ndarray] = parse_vector(text)
             self.main_direction = vector
@@ -105,9 +105,9 @@ class Sector:
             None otherwise.
         """
         if self.main_direction is not None:
-            if np.allclose(self.main_direction[0], 0):
+            if np.allclose(self.main_direction[0], 0.0):
                 return None
-            if self.main_direction[0] > 0:
+            if self.main_direction[0] > 0.0:
                 return True
             return False
 

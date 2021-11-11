@@ -93,8 +93,8 @@ class Shape:
     def get_path(
         self,
         point: np.ndarray,
-        offset: np.ndarray = np.array((0, 0)),
-        scale: np.ndarray = np.array((1, 1)),
+        offset: np.ndarray = np.array((0.0, 0.0)),
+        scale: np.ndarray = np.array((1.0, 1.0)),
     ) -> SVGPath:
         """
         Draw icon into SVG file.
@@ -108,7 +108,7 @@ class Shape:
 
         transformations.append(f"translate({shift[0]},{shift[1]})")
 
-        if not np.allclose(scale, np.array((1, 1))):
+        if not np.allclose(scale, np.array((1.0, 1.0))):
             transformations.append(f"scale({scale[0]},{scale[1]})")
 
         transformations.append(f"translate({self.offset[0]},{self.offset[1]})")
@@ -221,7 +221,7 @@ class ShapeExtractor:
             def get_offset(value: str) -> float:
                 """Get negated icon offset from the origin."""
                 return (
-                    -int(float(value) / GRID_STEP) * GRID_STEP - GRID_STEP / 2
+                    -int(float(value) / GRID_STEP) * GRID_STEP - GRID_STEP / 2.0
                 )
 
             point: np.ndarray = np.array(
@@ -259,7 +259,7 @@ class ShapeSpecification:
 
     shape: Shape
     color: Color = DEFAULT_COLOR
-    offset: np.ndarray = np.array((0, 0))
+    offset: np.ndarray = np.array((0.0, 0.0))
     flip_horizontally: bool = False
     flip_vertically: bool = False
     use_outline: bool = True
@@ -401,7 +401,7 @@ class Icon:
                 shape_specification.color = color
             shape_specification.draw(
                 svg,
-                np.array((8, 8)),
+                np.array((8.0, 8.0)),
                 outline=outline,
                 outline_opacity=outline_opacity,
             )
@@ -409,7 +409,7 @@ class Icon:
         for shape_specification in self.shape_specifications:
             if color:
                 shape_specification.color = color
-            shape_specification.draw(svg, np.array((8, 8)))
+            shape_specification.draw(svg, np.array((8.0, 8.0)))
 
         with file_name.open("w", encoding="utf-8") as output_file:
             svg.write(output_file)

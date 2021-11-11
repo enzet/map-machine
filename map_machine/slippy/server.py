@@ -9,7 +9,7 @@ from typing import Optional
 
 import cairosvg
 
-from map_configuration import MapConfiguration
+from map_machine.map_configuration import MapConfiguration
 from map_machine.slippy.tile import Tile
 from map_machine.workspace import workspace
 

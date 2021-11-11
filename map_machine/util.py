@@ -26,7 +26,7 @@ class MinMax:
 
     def center(self) -> Any:
         """Get middle point between minimum and maximum."""
-        return (self.min_ + self.max_) / 2
+        return (self.min_ + self.max_) / 2.0
 
     def is_empty(self) -> bool:
         """Check if interval is empty."""
