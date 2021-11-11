@@ -649,6 +649,8 @@ node_icons:
       shapes: [crane]
     - tags: {man_made: crane, crane:type: gantry_crane}
       shapes: [crane_gantry]
+    - tags: {man_made: crane, crane:type: portal_crane}
+      shapes: [crane_portal]
 
   - group: "Emergency"
     start_zoom_level: 15.0
