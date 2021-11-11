@@ -771,6 +771,8 @@ node_icons:
       shapes: [transformer]
     - tags: {power: generator, generator:source: solar}
       shapes: [solar_panel]
+    - tags: {power: heliostat}
+      shapes: [solar_panel]
     - tags: {power: generator, generator:source: wind}
       shapes: [wind_turbine]
     - tags: {power: tower}
@@ -1664,11 +1666,17 @@ ways:
       opacity: 0.3
     priority: 80.0
   - tags: {man_made: pipeline}
-    style: {stroke: "#888888", stroke-width: 1, stroke-dasharray: "12,1.5"}
-    priority: 80
+    style:
+      stroke: "#888888"
+      stroke-width: 1.0
+      stroke-dasharray: "12.0,1.5"
+    priority: 80.0
   - tags: {man_made: pipeline}
-    style: {stroke: "#888888", stroke-width: 3, stroke-dasharray: "1,10,1,1.5"}
-    priority: 80
+    style:
+      stroke: "#888888"
+      stroke-width: 3.0
+      stroke-dasharray: "1.0,10.0,1.0,1.5"
+    priority: 80.0
 
   - tags: {highway: track}
     style:
