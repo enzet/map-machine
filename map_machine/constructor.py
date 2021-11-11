@@ -11,11 +11,11 @@ import numpy as np
 from colour import Color
 
 from map_machine.color import get_gradient_color
+from map_machine.feature.building import Building
+from map_machine.feature.crater import Crater
+from map_machine.feature.direction import DirectionSector
 from map_machine.feature.road import Road, Roads
 from map_machine.figure import (
-    Building,
-    Crater,
-    DirectionSector,
     StyledFigure,
     Tree,
 )

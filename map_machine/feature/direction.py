@@ -1,12 +1,17 @@
 """
 Direction tag support.
 """
+from colour import Color
+from svgwrite import Drawing
+from svgwrite.gradients import RadialGradient
+from svgwrite.path import Path
 from typing import Iterator, Optional
 
 import numpy as np
 from portolan import middle
 
 from map_machine.drawing import PathCommands
+from map_machine.osm.osm_reader import Tagged
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -155,3 +160,95 @@ class DirectionSet:
         if result == [False] * len(result):
             return False
         return None
+
+
+class DirectionSector(Tagged):
+    """Sector that represents direction."""
+
+    def __init__(self, tags: dict[str, str], point: np.ndarray) -> None:
+        super().__init__(tags)
+        self.point: np.ndarray = point
+
+    def draw(self, svg: Drawing, scheme) -> None:
+        """Draw gradient sector."""
+        angle: Optional[float] = None
+        is_revert_gradient: bool = False
+        direction: str
+        direction_radius: float
+        direction_color: Color
+
+        if self.get_tag("man_made") == "surveillance":
+            direction = self.get_tag("camera:direction")
+            if "camera:angle" in self.tags:
+                angle = float(self.get_tag("camera:angle"))
+            if "angle" in self.tags:
+                angle = float(self.get_tag("angle"))
+            direction_radius = 50.0
+            direction_color = scheme.get_color("direction_camera_color")
+        elif self.get_tag("traffic_sign") == "stop":
+            direction = self.get_tag("direction")
+            direction_radius = 25.0
+            direction_color = Color("red")
+        else:
+            direction = self.get_tag("direction")
+            direction_radius = 50.0
+            direction_color = scheme.get_color("direction_view_color")
+            is_revert_gradient = True
+
+        if not direction:
+            return
+
+        point: np.ndarray = (self.point.astype(int)).astype(float)
+
+        paths: Iterator[PathCommands]
+        if angle is not None:
+            paths = [Sector(direction, angle).draw(point, direction_radius)]
+        else:
+            paths = DirectionSet(direction).draw(point, direction_radius)
+
+        for path in paths:
+            radial_gradient: RadialGradient = svg.radialGradient(
+                center=point,
+                r=direction_radius,
+                gradientUnits="userSpaceOnUse",
+            )
+            gradient: RadialGradient = svg.defs.add(radial_gradient)
+
+            if is_revert_gradient:
+                (
+                    gradient
+                    .add_stop_color(0.0, direction_color.hex, opacity=0.0)
+                    .add_stop_color(1.0, direction_color.hex, opacity=0.7)
+                )  # fmt: skip
+            else:
+                (
+                    gradient
+                    .add_stop_color(0.0, direction_color.hex, opacity=0.4)
+                    .add_stop_color(1.0, direction_color.hex, opacity=0.0)
+                )  # fmt: skip
+
+            path_element: Path = svg.path(
+                d=["M", point] + path + ["L", point, "Z"],
+                fill=gradient.get_funciri(),
+            )
+            svg.add(path_element)
+
+
+class Segment:
+    """Closed line segment."""
+
+    def __init__(self, point_1: np.ndarray, point_2: np.ndarray) -> None:
+        self.point_1: np.ndarray = point_1
+        self.point_2: np.ndarray = point_2
+
+        difference: np.ndarray = point_2 - point_1
+        vector: np.ndarray = difference / np.linalg.norm(difference)
+        self.angle: float = (
+            np.arccos(np.dot(vector, np.array((0.0, 1.0)))) / np.pi
+        )
+
+    def __lt__(self, other: "Segment") -> bool:
+        return (
+            ((self.point_1 + self.point_2) / 2.0)[1]
+            < ((other.point_1 + other.point_2) / 2.0)[1]
+        )  # fmt: skip
