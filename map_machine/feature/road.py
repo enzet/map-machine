@@ -29,6 +29,7 @@ from map_machine.scheme import RoadMatcher
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+DEFAULT_LANE_WIDTH: float = 3.7
 USE_BLUR: bool = False
 
 
@@ -386,7 +387,7 @@ class Road(Tagged):
 
         if "lanes" in tags:
             try:
-                self.width = int(tags["lanes"]) * 3.7
+                self.width = int(tags["lanes"]) * DEFAULT_LANE_WIDTH
                 self.lanes = [Lane()] * int(tags["lanes"])
             except ValueError:
                 pass

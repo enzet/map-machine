@@ -47,6 +47,7 @@ class Shape:
     is_right_directed: Optional[bool] = None
     emojis: set[str] = field(default_factory=set)
     is_part: bool = False
+    group: str = ""
 
     @classmethod
     def from_structure(
@@ -80,6 +81,9 @@ class Shape:
 
         if "is_part" in structure:
             shape.is_part = structure["is_part"]
+
+        if "group" in structure:
+            shape.group = structure["group"]
 
         return shape
 
@@ -116,6 +120,10 @@ class Shape:
         return svgwrite.path.Path(
             d=self.path, transform=" ".join(transformations)
         )
+
+    def get_full_id(self) -> str:
+        """Compute full shape identifier with group for sorting."""
+        return self.group + "_" + self.id_
 
 
 def parse_length(text: str) -> float:
@@ -169,6 +177,41 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
     return True
 
 
+def parse_configuration(root: dict, configuration: dict, group: str) -> None:
+    """
+    Shape description is a probably empty dictionary with optional fields
+    `name`, `emoji`, `is_part`, and `directed`.  Shape configuration is a
+    dictionary that contains shape descriptions.  Shape descriptions may be
+    grouped and the nesting level may be arbitrary:
+
+    {
+        <shape id>: {<shape description>},
+        <shape id>: {<shape description>},
+        <group>: {
+            <shape id>: {<shape description>},
+            <shape id>: {<shape description>}
+        },
+        <group>: {
+            <subgroup>: {
+                <shape id>: {<shape description>},
+                <shape id>: {<shape description>}
+            }
+        }
+    }
+    """
+    for key, value in root.items():
+        if (
+            not value
+            or "name" in value
+            or "emoji" in value
+            or "is_part" in value
+            or "directed" in value
+        ):
+            configuration[key] = value | {"group": group}
+        else:
+            parse_configuration(value, configuration, f"{group}_{key}")
+
+
 class ShapeExtractor:
     """
     Extract shapes from SVG file.
@@ -182,10 +225,16 @@ class ShapeExtractor:
         """
         :param svg_file_name: input SVG file name with icons.  File may contain
             any other irrelevant graphics.
+        :param configuration_file_name: JSON file with grouped shape
+            descriptions
         """
         self.shapes: dict[str, Shape] = {}
-        self.configuration: dict[str, Any] = json.load(
-            configuration_file_name.open(encoding="utf-8")
+
+        self.configuration: dict[str, Any] = {}
+        parse_configuration(
+            json.load(configuration_file_name.open(encoding="utf-8")),
+            self.configuration,
+            "root",
         )
         root: Element = ElementTree.parse(svg_file_name).getroot()
         self.parse(root)
@@ -439,8 +488,8 @@ class Icon:
 
     def __lt__(self, other: "Icon") -> bool:
         return "".join(
-            [x.shape.id_ for x in self.shape_specifications]
-        ) < "".join([x.shape.id_ for x in other.shape_specifications])
+            [x.shape.get_full_id() for x in self.shape_specifications]
+        ) < "".join([x.shape.get_full_id() for x in other.shape_specifications])
 
 
 @dataclass
