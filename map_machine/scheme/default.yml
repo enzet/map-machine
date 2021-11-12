@@ -496,6 +496,8 @@ node_icons:
       shapes: [{shape: bed, color: sell_color}]
     - tags: {shop: beauty}
       shapes: [vanity_mirror]
+    - tags: {shop: cosmetics}
+      shapes: [vanity_mirror]
     - tags: {shop: bicycle}
       shapes: [{shape: bicycle, color: sell_color}]
     - tags: {shop: books}
@@ -514,6 +516,8 @@ node_icons:
       shapes: [wretch_and_hammer]
     - tags: {shop: fireplace}
       shapes: [{shape: fireplace, color: sell_color}]
+    - tags: {shop: greengrocer}
+      shapes: [{shape: apple, color: sell_color}]
     - tags: {shop: hairdresser}
       shapes: [comb_and_scissors]
     - tags: {shop: hardware}
@@ -530,6 +534,8 @@ node_icons:
       shapes: [massage]
     - tags: {shop: mobile_phone}
       shapes: [{shape: phone, color: sell_color}]
+    - tags: {shop: newsagent}
+      shapes: [sheets]
     - tags: {shop: pet}
       shapes: [{shape: dog, color: sell_color}]
     - tags: {shop: photo}
@@ -548,6 +554,8 @@ node_icons:
       shapes: [ticket]
     - tags: {shop: tailor}
       shapes: [t_shirt_and_scissors]
+    - tags: {shop: toys}
+      shapes: [{shape: toy_horse, color: sell_color}]
     - tags: {craft: tailor}
       shapes: [t_shirt_and_scissors]
     - tags: {shop: video}
