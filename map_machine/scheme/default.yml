@@ -1534,6 +1534,14 @@ node_icons:
 
     - tags: {recycling:glass_bottles: "yes"}
       add_shapes: [bottle]
+    - tags: {recycling:paper: "yes"}
+      add_shapes: [sheets]
+    - tags: {recycling:paper_packaging: "yes"}
+      add_shapes: [sheets]
+    - tags: {recycling:newspaper: "yes"}
+      add_shapes: [sheets]
+    - tags: {recycling:magazines: "yes"}
+      add_shapes: [sheets]
 
     - tags: {crossing:island: "yes"}
       add_shapes: [rectangle_vertical_rounded]
