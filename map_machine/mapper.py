@@ -48,8 +48,8 @@ class Map:
         self.configuration = configuration
 
         self.background_color: Color = self.scheme.get_color("background_color")
-        if self.configuration.is_wireframe():
-            self.background_color: Color = Color("#111111")
+        if self.configuration.backghround_color():
+            self.background_color = self.configuration.backghround_color()
 
     def draw(self, constructor: Constructor) -> None:
         """Draw map."""

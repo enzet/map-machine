@@ -238,6 +238,10 @@ class Constructor:
                 color = get_user_color(line.user, self.configuration.seed)
             elif self.configuration.drawing_mode == DrawingMode.TIME:
                 color = get_time_color(line.timestamp, self.osm_data.time)
+            elif self.configuration.drawing_mode == DrawingMode.WHITE:
+                color = Color("#666666")
+            elif self.configuration.drawing_mode == DrawingMode.BLACK:
+                color = Color("#BBBBBB")
             elif self.configuration.drawing_mode != DrawingMode.NORMAL:
                 logging.fatal(
                     f"Drawing mode {self.configuration.drawing_mode} is not "
@@ -416,6 +420,8 @@ class Constructor:
     def construct_node(self, node: OSMNode) -> None:
         """Draw one node."""
         tags: dict[str, str] = node.tags
+        if not tags:
+            return
         if not self.check_level(tags):
             return
 
@@ -427,9 +433,10 @@ class Constructor:
         icon_set: IconSet
         draw_outline: bool = True
 
-        if self.configuration.is_wireframe():
-            if not tags:
-                return
+        if self.configuration.drawing_mode in (
+            DrawingMode.AUTHOR,
+            DrawingMode.TIME,
+        ):
             color: Color = DEFAULT_COLOR
             if self.configuration.drawing_mode == DrawingMode.AUTHOR:
                 color = get_user_color(node.user, self.configuration.seed)
@@ -446,6 +453,29 @@ class Constructor:
                 processed,
                 flung,
                 draw_outline=False,
+                add_tooltips=self.configuration.show_tooltips,
+            )
+            self.points.append(point)
+            return
+
+        if self.configuration.drawing_mode in (
+            DrawingMode.WHITE,
+            DrawingMode.BLACK,
+        ):
+            if self.configuration.drawing_mode == DrawingMode.WHITE:
+                color = Color("#CCCCCC")
+            if self.configuration.drawing_mode == DrawingMode.BLACK:
+                color = Color("#444444")
+            icon_set, priority = self.scheme.get_icon(
+                self.extractor, tags, processed, self.configuration
+            )
+            icon_set.main_icon.recolor(color)
+            point: Point = Point(
+                icon_set,
+                [],
+                tags,
+                processed,
+                flung,
                 add_tooltips=self.configuration.show_tooltips,
             )
             self.points.append(point)

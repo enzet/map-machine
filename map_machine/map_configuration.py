@@ -2,8 +2,11 @@
 Map drawing configuration.
 """
 import argparse
+from colour import Color
 from dataclasses import dataclass
 from enum import Enum
+
+from typing import Optional
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -15,6 +18,8 @@ class DrawingMode(Enum):
     NORMAL = "normal"
     AUTHOR = "author"
     TIME = "time"
+    WHITE = "white"
+    BLACK = "black"
 
 
 class LabelMode(Enum):
@@ -73,3 +78,8 @@ class MapConfiguration:
     def is_wireframe(self) -> bool:
         """Whether drawing mode is special."""
         return self.drawing_mode != DrawingMode.NORMAL
+
+    def backghround_color(self) -> Optional[Color]:
+        if self.drawing_mode not in (DrawingMode.NORMAL, DrawingMode.BLACK):
+            return Color("#111111")
+        return None
