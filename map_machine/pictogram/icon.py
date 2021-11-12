@@ -48,6 +48,7 @@ class Shape:
     emojis: set[str] = field(default_factory=set)
     is_part: bool = False
     group: str = ""
+    categories: list[str] = field(default_factory=list)
 
     @classmethod
     def from_structure(
@@ -84,6 +85,9 @@ class Shape:
 
         if "group" in structure:
             shape.group = structure["group"]
+
+        if "categories" in structure:
+            shape.categories = structure["categories"]
 
         return shape
 
@@ -180,9 +184,9 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
 def parse_configuration(root: dict, configuration: dict, group: str) -> None:
     """
     Shape description is a probably empty dictionary with optional fields
-    `name`, `emoji`, `is_part`, and `directed`.  Shape configuration is a
-    dictionary that contains shape descriptions.  Shape descriptions may be
-    grouped and the nesting level may be arbitrary:
+    `name`, `emoji`, `is_part`, `directed`, and `categories`.  Shape
+    configuration is a dictionary that contains shape descriptions.  Shape
+    descriptions may be grouped and the nesting level may be arbitrary:
 
     {
         <shape id>: {<shape description>},
@@ -206,6 +210,7 @@ def parse_configuration(root: dict, configuration: dict, group: str) -> None:
             or "emoji" in value
             or "is_part" in value
             or "directed" in value
+            or "categories" in value
         ):
             configuration[key] = value | {"group": group}
         else:
