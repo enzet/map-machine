@@ -225,6 +225,9 @@ class Constructor:
         """
         assert len(outers) >= 1
 
+        if len(outers[0]) == 0:
+            return
+
         if not self.check_level(line.tags):
             return
 
