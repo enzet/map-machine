@@ -643,6 +643,8 @@ node_icons:
     - tags: {man_made: communications_tower}
       location_restrictions: {include: [jp]}
       shapes: [japan_tv_tower]
+    - tags: {man_made: communications_tower}
+      shapes: [tower_communication]
     - tags: {man_made: telescope}
       shapes: [telescope_radio]
     - tags: {man_made: telescope, telescope:type: radio}
