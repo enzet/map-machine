@@ -1536,12 +1536,18 @@ node_icons:
       add_shapes: [bottle]
     - tags: {recycling:paper: "yes"}
       add_shapes: [sheets]
+    - tags: {recycling:clothes: "yes"}
+      add_shapes: [t_shirt]
+    - tags: {recycling:shoes: "yes"}
+      add_shapes: [shoe]
     - tags: {recycling:paper_packaging: "yes"}
       add_shapes: [sheets]
     - tags: {recycling:newspaper: "yes"}
       add_shapes: [sheets]
     - tags: {recycling:magazines: "yes"}
       add_shapes: [sheets]
+    - tags: {recycling:bags: "yes"}
+      add_shapes: [bag]
 
     - tags: {crossing:island: "yes"}
       add_shapes: [rectangle_vertical_rounded]
