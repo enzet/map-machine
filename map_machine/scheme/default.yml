@@ -1542,20 +1542,32 @@ node_icons:
       add_shapes: [t_shirt]
     - tags: {recycling:shoes: "yes"}
       add_shapes: [shoe]
+    - tags: {recycling:green_waste: "yes"}
+      add_shapes: [apple]
     - tags: {recycling:paper_packaging: "yes"}
       add_shapes: [sheets]
     - tags: {recycling:newspaper: "yes"}
       add_shapes: [sheets]
     - tags: {recycling:magazines: "yes"}
       add_shapes: [sheets]
+    - tags: {recycling:books: "yes"}
+      add_shapes: [book]
+    - tags: {recycling:wood: "yes"}
+      add_shapes: [{shape: wood, color: trunk_color}]
     - tags: {recycling:glass_bottles:colour: "yes"}
       add_shapes: [{shape: bottle, color: green}]
     - tags: {recycling:cartons: "yes"}
       add_shapes: [milk]
     - tags: {recycling:beverage_cartons: "yes"}
       add_shapes: [milk]
+    - tags: {recycling:organic: "yes"}
+      add_shapes: [apple]
     - tags: {recycling:tetrapak: "yes"}
       add_shapes: [milk]
+    - tags: {recycling:tyres: "yes"}
+      add_shapes: [tyre]
+    - tags: {recycling:toys: "yes"}
+      add_shapes: [toy_horse]
     - tags: {recycling:verre: "yes"}
       add_shapes: [bottle_and_wine_glass]
     - tags: {recycling:bags: "yes"}
