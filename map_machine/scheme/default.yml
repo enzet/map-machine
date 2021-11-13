@@ -1536,6 +1536,8 @@ node_icons:
       add_shapes: [bottle]
     - tags: {recycling:paper: "yes"}
       add_shapes: [sheets]
+    - tags: {recycling:glass: "yes"}
+      add_shapes: [bottle_and_wine_glass]
     - tags: {recycling:clothes: "yes"}
       add_shapes: [t_shirt]
     - tags: {recycling:shoes: "yes"}
@@ -1546,6 +1548,16 @@ node_icons:
       add_shapes: [sheets]
     - tags: {recycling:magazines: "yes"}
       add_shapes: [sheets]
+    - tags: {recycling:glass_bottles:colour: "yes"}
+      add_shapes: [{shape: bottle, color: green}]
+    - tags: {recycling:cartons: "yes"}
+      add_shapes: [milk]
+    - tags: {recycling:beverage_cartons: "yes"}
+      add_shapes: [milk]
+    - tags: {recycling:tetrapak: "yes"}
+      add_shapes: [milk]
+    - tags: {recycling:verre: "yes"}
+      add_shapes: [bottle_and_wine_glass]
     - tags: {recycling:bags: "yes"}
       add_shapes: [bag]
 
