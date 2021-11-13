@@ -141,7 +141,7 @@ class IconCollection:
 
             def get_file_name(x: Icon) -> str:
                 """Generate human-readable file name."""
-                return f"Röntgen {' + '.join(x.get_names())}.svg"
+                return f"Röntgen {x.get_name()}.svg"
 
         else:
 

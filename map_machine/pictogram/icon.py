@@ -43,12 +43,12 @@ class Shape:
     path: str  # SVG icon path
     offset: np.ndarray  # vector that should be used to shift the path
     id_: str  # shape identifier
-    name: Optional[str] = None  # icon description
+    name: Optional[str] = None  # shape human-readable description
     is_right_directed: Optional[bool] = None
     emojis: set[str] = field(default_factory=set)
     is_part: bool = False
     group: str = ""
-    categories: list[str] = field(default_factory=list)
+    categories: set[str] = field(default_factory=set)
 
     @classmethod
     def from_structure(
@@ -70,6 +70,9 @@ class Shape:
         """
         shape: "Shape" = cls(path, offset, id_, name)
 
+        if "name" in structure:
+            shape.name = structure["name"]
+
         if "directed" in structure:
             if structure["directed"] == "right":
                 shape.is_right_directed = True
@@ -87,7 +90,7 @@ class Shape:
             shape.group = structure["group"]
 
         if "categories" in structure:
-            shape.categories = structure["categories"]
+            shape.categories = set(structure["categories"])
 
         return shape
 
@@ -394,12 +397,50 @@ class Icon:
         """Get all shape identifiers in the icon."""
         return [x.shape.id_ for x in self.shape_specifications]
 
+    def has_names(self) -> bool:
+        """Check whether oll shape names are known."""
+        for specification in self.shape_specifications:
+            if not specification.shape.name:
+                return False
+
+        return True
+
     def get_names(self) -> list[str]:
         """Get all shape names in the icon."""
         return [
             (x.shape.name if x.shape.name else "unknown")
             for x in self.shape_specifications
         ]
+
+    def get_name(self) -> str:
+        """Get combined human-readable icon name."""
+        names: list[str] = self.get_names()
+
+        if len(names) == 1:
+            return names[0]
+
+        if len(names) == 2:
+            return names[0] + " and " + names[1]
+
+        if len(names) > 2:
+            return ", ".join(names[:-1]) + " and " + names[-1]
+
+    def has_categories(self) -> bool:
+        """Check whether oll shape categories are known."""
+        for specification in self.shape_specifications:
+            if specification.shape.categories:
+                return True
+
+        return False
+
+    def get_categories(self) -> set[str]:
+        """Get all shape names in the icon."""
+        result: set[str] = set()
+
+        for specification in self.shape_specifications:
+            result = result.union(specification.shape.categories)
+
+        return result
 
     def draw(
         self,
