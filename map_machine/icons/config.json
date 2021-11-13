@@ -475,5 +475,9 @@
     "memorial": {"categories": ["historic"]},
     "plaque": {"name": "plaque with inscription", "categories": ["historic"]},
     "statue": {"name": "statue", "categories": ["historic"]}
+  },
+  "parts": {
+    "siren_left": {"is_part": true, "name": "leftward siren"},
+    "siren_right": {"is_part": true, "name": "rightward siren"}
   }
 }

@@ -896,6 +896,11 @@ node_icons:
       - tube
       - {shape: wave_left, offset: [-3, -3]}
       - {shape: wave_right, offset: [3, -3]}
+    - tags: {man_made: mast, tower:type: siren}
+      shapes:
+        - tube
+        - {shape: siren_left, offset: [-3, -3]}
+        - {shape: siren_right, offset: [3, -3]}
     - tags:
         man_made: mast
         tower:type: lighting
@@ -914,6 +919,14 @@ node_icons:
       - {shape: wave_right, offset: [3, -3]}
     - tags:
         man_made: mast
+        tower:type: siren
+        tower:construction: guyed_tube
+      shapes:
+        - tube_guyed
+        - {shape: siren_left, offset: [-3, -3]}
+        - {shape: siren_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
         tower:type: lighting
         tower:construction: freestanding
       shapes:
@@ -930,6 +943,14 @@ node_icons:
       - {shape: wave_right, offset: [3, -3]}
     - tags:
         man_made: mast
+        tower:type: siren
+        tower:construction: freestanding
+      shapes:
+        - tube
+        - {shape: siren_left, offset: [-3, -3]}
+        - {shape: siren_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
         tower:type: lighting
         tower:construction: guyed_lattice
       shapes:
@@ -946,6 +967,14 @@ node_icons:
       - {shape: wave_right, offset: [3, -3]}
     - tags:
         man_made: mast
+        tower:type: siren
+        tower:construction: guyed_lattice
+      shapes:
+        - lattice_guyed
+        - {shape: siren_left, offset: [-4, -3]}
+        - {shape: siren_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
         tower:type: lighting
         tower:construction: lattice
       shapes:
@@ -960,6 +989,14 @@ node_icons:
       - lattice
       - {shape: wave_left, offset: [-4, -3]}
       - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: siren
+        tower:construction: lattice
+      shapes:
+        - lattice
+        - {shape: siren_left, offset: [-4, -3]}
+        - {shape: siren_right, offset: [3, -3]}
 
     - tags: {man_made: tower, tower:construction: guyed_tube}
       shapes: [tube_guyed]
