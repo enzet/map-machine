@@ -267,7 +267,6 @@
     "guidepost": {"directed": "right"},
     "guys": {},
     "hi_fi": {"name": "Hi-Fi"},
-    "historic": {},
     "hopscotch": {"name": "hopscotch"},
     "human_on_ferry": {},
     "hunting_stand": {"name": "hunting stand"},
@@ -285,7 +284,6 @@
     "main_entrance": {},
     "manhole_drain": {"name": "drain manhole cover"},
     "medicine_bottle": {"name": "medicine bottle"},
-    "memorial": {"categories": ["historic"]},
     "microphone": {"emoji": "🎤", "name": "microphone"},
     "milestone": {"name": "milestone"},
     "mini_bumps": {},
@@ -301,7 +299,6 @@
     "picture": {},
     "pillar": {},
     "pipeline": {},
-    "plaque": {"name": "plaque with inscription", "categories": ["historic"]},
     "platform": {"is_part": true },
     "pole": {},
     "power_generator": {},
@@ -322,7 +319,6 @@
     "speed_limit_mph": {"name": "speed limit box for mph"},
     "stained_glass": {"name": "stained glass"},
     "staircase": {"name": "door with stairs"},
-    "statue": {"name": "statue", "categories": ["historic"]},
     "statue_exhibit": {},
     "street_cabinet": {},
     "street_lamp": {},
@@ -472,5 +468,12 @@
     "vending_machine": {},
     "vending_p": {"name": "vending machine with letter P"},
     "vending_tickets": {}
+  },
+  "historic": {
+    "historic": {},
+    "obelisk": {"name": "obelisk", "categories": ["historic"]},
+    "memorial": {"categories": ["historic"]},
+    "plaque": {"name": "plaque with inscription", "categories": ["historic"]},
+    "statue": {"name": "statue", "categories": ["historic"]}
   }
 }

@@ -750,6 +750,8 @@ node_icons:
       shapes: [woman_and_man]
     - tags: {amenity: shelter}
       shapes: [shelter]
+    - tags: {man_made: obelisk}
+      shapes: [obelisk]
 
   - group: "Normal middle objects"
     start_zoom_level: 17.0
