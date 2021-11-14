@@ -903,6 +903,11 @@ node_icons:
         - tube
         - {shape: siren_left, offset: [-3, -3]}
         - {shape: siren_right, offset: [3, -3]}
+    - tags: {man_made: mast, tower:type: monitoring}
+      shapes:
+        - tube
+        - {shape: dish_antenna_left, offset: [-3, -3]}
+        - {shape: dish_antenna_right, offset: [3, -3]}
     - tags:
         man_made: mast
         tower:type: lighting
@@ -929,6 +934,14 @@ node_icons:
         - {shape: siren_right, offset: [3, -3]}
     - tags:
         man_made: mast
+        tower:type: monitoring
+        tower:construction: guyed_tube
+      shapes:
+        - tube_guyed
+        - {shape: dish_antenna_left, offset: [-3, -3]}
+        - {shape: dish_antenna_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
         tower:type: lighting
         tower:construction: freestanding
       shapes:
@@ -951,6 +964,14 @@ node_icons:
         - tube
         - {shape: siren_left, offset: [-3, -3]}
         - {shape: siren_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: monitoring
+        tower:construction: freestanding
+      shapes:
+        - tube
+        - {shape: dish_antenna_left, offset: [-3, -3]}
+        - {shape: dish_antenna_right, offset: [3, -3]}
     - tags:
         man_made: mast
         tower:type: lighting
@@ -977,6 +998,14 @@ node_icons:
         - {shape: siren_right, offset: [3, -3]}
     - tags:
         man_made: mast
+        tower:type: monitoring
+        tower:construction: guyed_lattice
+      shapes:
+        - lattice_guyed
+        - {shape: dish_antenna_left, offset: [-4, -3]}
+        - {shape: dish_antenna_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
         tower:type: lighting
         tower:construction: lattice
       shapes:
@@ -999,6 +1028,14 @@ node_icons:
         - lattice
         - {shape: siren_left, offset: [-4, -3]}
         - {shape: siren_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: monitoring
+        tower:construction: lattice
+      shapes:
+        - lattice
+        - {shape: dish_antenna_left, offset: [-4, -3]}
+        - {shape: dish_antenna_right, offset: [3, -3]}
 
     - tags: {man_made: tower, tower:construction: guyed_tube}
       shapes: [tube_guyed]
