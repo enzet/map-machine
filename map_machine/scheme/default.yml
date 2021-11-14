@@ -886,7 +886,7 @@ node_icons:
       shapes: [tube]
     - tags: {man_made: mast, tower:construction: lattice}
       shapes: [lattice]
-    - tags: {man_made: mast, tower:construction: lattice_guyed}
+    - tags: {man_made: mast, tower:construction: guyed_lattice}
       shapes: [lattice_guyed]
     - tags: {man_made: mast, tower:type: lighting}
       shapes:
