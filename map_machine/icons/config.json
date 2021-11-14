@@ -173,7 +173,7 @@
   "food": {
     "burger": {"emoji": "🍔", "name": "burger"},
     "cupcake": {"emoji": "🧁"},
-    "milk": {},
+    "aseptic_carton": {"name":  "aseptic carton"},
     "ice_cream": {"emoji": "🍨"},
     "ice_cream_2": {}
   },

@@ -511,7 +511,7 @@ node_icons:
     - tags: {shop: copyshop}
       shapes: [sheets]
     - tags: {shop: dairy}
-      shapes: [milk]
+      shapes: [aseptic_carton]
     - tags: {shop: doityourself}
       shapes: [wretch_and_hammer]
     - tags: {shop: fireplace}
@@ -545,7 +545,7 @@ node_icons:
     - tags: {shop: sports}
       shapes: [{shape: dumbbell, color: sell_color}]
     - tags: {shop: milk}
-      shapes: [milk]
+      shapes: [aseptic_carton]
     - tags: {shop: wine}
       shapes: [{shape: bottle_and_wine_glass, color: sell_color}]
     - tags: {building: store}
@@ -1598,13 +1598,13 @@ node_icons:
     - tags: {recycling:glass_bottles:colour: "yes"}
       add_shapes: [{shape: bottle, color: green}]
     - tags: {recycling:cartons: "yes"}
-      add_shapes: [milk]
+      add_shapes: [aseptic_carton]
     - tags: {recycling:beverage_cartons: "yes"}
-      add_shapes: [milk]
+      add_shapes: [aseptic_carton]
     - tags: {recycling:organic: "yes"}
       add_shapes: [apple]
     - tags: {recycling:tetrapak: "yes"}
-      add_shapes: [milk]
+      add_shapes: [aseptic_carton]
     - tags: {recycling:tyres: "yes"}
       add_shapes: [tyre]
     - tags: {recycling:toys: "yes"}
