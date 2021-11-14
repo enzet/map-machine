@@ -168,7 +168,7 @@
     "knives": {"name": "knives"},
     "steak_and_fork": {"name": "steak and fork"},
     "bottle": {},
-    "bottle_and_wine_glass": {}
+    "bottle_and_wine_glass": {"name": "wine bottle and wine glass"}
   },
   "food": {
     "burger": {"emoji": "🍔", "name": "burger"},
@@ -211,7 +211,7 @@
     "crane_travel_lift": {}
   },
   "hand_items": {
-    "bag": {},
+    "bag": {"name": "bag"},
     "book": {"emoji": "📕", "name": "book"},
     "books": {"emoji": "📚", "name": "books"}
   },
@@ -219,11 +219,11 @@
     "beach": {},
     "amusement_ride": {"emoji": "🎠"},
     "atm": {},
-    "awning": {"is_part": true },
+    "awning": {"is_part": true},
     "binoculars": {"name": "binocular"},
     "binoculars_on_pole": {"name": "binoculars on pole"},
     "bleachers": {},
-    "bottom_right_horizontal_line": {"is_part": true },
+    "bottom_right_horizontal_line": {"is_part": true},
     "briefcase": {},
     "buffer_stop": {"name": "buffer stop"},
     "camp": {"name": "camp"},
@@ -295,18 +295,18 @@
     "onion_roof_shape": {"name": "onion roof shape"},
     "pac_man": {"name": "Pac-Man"},
     "pan": {},
-    "pergola": {"is_part": true },
+    "pergola": {"is_part": true},
     "picture": {},
     "pillar": {},
     "pipeline": {},
-    "platform": {"is_part": true },
+    "platform": {"is_part": true},
     "pole": {},
     "power_generator": {},
     "prison": {},
     "restaurant": {"emoji": "🍴"},
     "rings": {"name": "gymnastic rings"},
-    "roof": {"is_part": true },
-    "roof_and_walls": {"is_part": true },
+    "roof": {"is_part": true},
+    "roof_and_walls": {"is_part": true},
     "roundabout": {},
     "rumble_strip": {},
     "sheets": {"name": "two sheets"},
@@ -323,27 +323,27 @@
     "street_cabinet": {},
     "street_lamp": {},
     "supermarket_cart": {},
-    "support_column": {"is_part": true },
-    "support_pole": {"is_part": true },
-    "support_wall": {"is_part": true },
+    "support_column": {"is_part": true},
+    "support_pole": {"is_part": true},
+    "support_wall": {"is_part": true},
     "survey_point": {},
     "suspension_railway": {"name": "suspension railway"},
     "swimming_area": {},
     "table_and_two_chairs": {"name": "table and two chairs"},
     "tactile_paving": {},
-    "ticket": {"emoji": [ "🎫", "🎟" ] },
+    "ticket": {"emoji": [ "🎫", "🎟" ]},
     "toll_booth": {"name": "toll booth"},
     "tomb": {"emoji": "🪦"},
     "torch": {"name": "torch"},
     "toucan_crossing": {},
-    "toy_horse": {},
+    "toy_horse": {"name": "rocking horse"},
     "traffic_signals": {"emoji": "🚦"},
     "transformer": {"name": "transformer"},
     "triangle_down_hollow": {},
     "turning_loop": {"name": "turning loop"},
     "turnstile": {"name": "turnstile"},
-    "umbrella": {"is_part": true },
-    "urban_tree_pot": {"is_part": true },
+    "umbrella": {"is_part": true},
+    "urban_tree_pot": {"is_part": true},
     "vanity_mirror": {"name": "vanity mirror"},
     "ventilation": {},
     "watches": {},
@@ -355,8 +355,8 @@
   },
   "clothes": {
     "shoe": {"name": "shoe"},
-    "t_shirt": {"name": "t-shirt"},
-    "t_shirt_and_scissors": {"name": "t-shirt and scissors"}
+    "t_shirt": {"name": "T-shirt"},
+    "t_shirt_and_scissors": {"name": "T-shirt and scissors"}
   },
   "sport": {
     "low_horizontal_bars": {"name": "low horizontal bars", "categories": ["sport"]},
@@ -382,7 +382,7 @@
     "cctv": {"directed": "right"}
   },
   "car_part": {
-    "tyre": {}
+    "tyre": {"name": "tyre"}
   },
   "human": {
     "woman_and_man": {"emoji": "🚻", "name": "woman and man"},
@@ -451,7 +451,7 @@
     "trolleybus": {"name": "trolleybus", "categories": ["public transport"]},
     "tram": {"emoji": "🚊", "name": "tram", "categories": ["public transport"]},
     "train": {"emoji": "🚆", "name": "train", "categories": ["public transport"]},
-    "maglev": {"categories": ["public transport"]},
+    "maglev": {"name": "maglev", "categories": ["public transport"]},
     "plane": {"emoji": "✈️", "name": "plane", "categories": ["aeroway", "public transport"]},
     "caravan": {"name": "caravan"},
     "car": {"name": "car"},
@@ -465,7 +465,7 @@
     "vending_chemist": {},
     "vending_drop": {},
     "vending_excrement_bag": {"name": "excrement bag vending"},
-    "vending_machine": {},
+    "vending_machine": {"name": "vending machine"},
     "vending_p": {"name": "vending machine with letter P"},
     "vending_tickets": {}
   },
