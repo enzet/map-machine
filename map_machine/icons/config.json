@@ -99,6 +99,7 @@
     "religious": {
       "baptist": {},
       "cross": {"emoji": "✝️"},
+      "cross_and_horizontal_bar": {"name": "cross and horizontal bar️"},
       "jewish": {"emoji": "✡️"},
       "orthodox": {"emoji": "☦️"},
       "muslim": {"emoji": "☪️"},
