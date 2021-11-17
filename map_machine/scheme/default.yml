@@ -1213,6 +1213,8 @@ node_icons:
       shapes: [lift_gate]
     - tags: {barrier: turnstile}
       shapes: [turnstile]
+    - tags: {barrier: log}
+      shapes: [wood]
     - tags: {railway: crossing}
       shapes: [x]
     - tags: {railway: level_crossing}
