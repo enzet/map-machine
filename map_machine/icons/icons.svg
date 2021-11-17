@@ -148,8 +148,8 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="313.95541"
-     inkscape:cx="492.49987"
+     inkscape:cy="280.72139"
+     inkscape:cx="446.53793"
      inkscape:zoom="2.8284271"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -24347,8 +24347,8 @@
        cy="258"
        r="1" />
     <path
-       id="path110262"
-       style="color:#000000;opacity:1;fill:#0000ff;fill-opacity:1;stroke:none;stroke-linecap:round;-inkscape-stroke:none"
+       id="monument"
+       style="color:#000000;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-linecap:round;-inkscape-stroke:none"
        d="m 471,273 c -0.55228,0 -1,0.44772 -1,1 0,0.55228 0.44772,1 1,1 0.55228,0 1,-0.44772 1,-1 0,-0.55228 -0.44772,-1 -1,-1 z m -2,3 1,1 c -0.27614,0 -0.5,0.22386 -0.5,0.5 5.1e-4,0.24409 0.17718,0.45214 0.41797,0.49219 L 469.08398,283 H 469 c -0.27614,0 -0.5,0.22386 -0.5,0.5 0,0.27614 0.22386,0.5 0.5,0.5 v 2 h -0.5 l -0.5,0.5 v 0.5 h 6 v -0.5 L 473.5,286 H 473 v -2 c 0.27614,0 0.5,-0.22386 0.5,-0.5 0,-0.27614 -0.22386,-0.5 -0.5,-0.5 h -0.084 l -0.83399,-5.00781 c 0.24079,-0.0401 0.41746,-0.2481 0.41797,-0.49219 0,-0.27614 -0.22386,-0.5 -0.5,-0.5 l 1,-1 z"
        sodipodi:nodetypes="ssssscccccssccccccccccsscccccc" />
     <rect

@@ -754,6 +754,8 @@ node_icons:
       shapes: [shelter]
     - tags: {man_made: obelisk}
       shapes: [obelisk]
+    - tags: {historic: monument}
+      shapes: [monument]
 
   - group: "Normal middle objects"
     start_zoom_level: 17.0

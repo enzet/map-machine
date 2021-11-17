@@ -473,6 +473,7 @@
   "historic": {
     "historic": {},
     "memorial": {"categories": ["historic"]},
+    "monument": {"name": "monument"},
     "obelisk": {"name": "obelisk", "categories": ["historic"]},
     "plaque": {"name": "plaque with inscription", "categories": ["historic"]},
     "statue": {"name": "statue", "categories": ["historic"]}
