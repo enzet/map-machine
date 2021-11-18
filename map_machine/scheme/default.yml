@@ -875,6 +875,8 @@ node_icons:
       shapes: [tower_cooling]
     - tags: {man_made: tower, tower:type: defensive}
       shapes: [tower_defensive]
+    - tags: {man_made: tower, tower:type: diving}
+      shapes: [diving_platform]
     - tags: {man_made: tower, tower:type: pagoda}
       shapes: [pagoda]
     - tags: {man_made: tower, tower:type: observation}
