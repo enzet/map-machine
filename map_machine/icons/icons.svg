@@ -145,12 +145,12 @@
      inkscape:object-paths="true"
      inkscape:guide-bbox="true"
      showguides="false"
-     showgrid="true"
+     showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="215.13724"
-     inkscape:cx="151.49763"
-     inkscape:zoom="11.313708"
+     inkscape:cy="364.69032"
+     inkscape:cx="190.56528"
+     inkscape:zoom="5.6568542"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -561,6 +561,10 @@
      inkscape:label="main"
      id="layer1"
      style="display:inline">
+    <path
+       style="font-variation-settings:normal;opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
+       d="m 181,357 h 6 l -1,8 h -4 z"
+       id="path79397" />
     <path
        id="crane_travel_lift"
        style="color:#000000;fill:#000000;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none;opacity:1"
@@ -1249,12 +1253,6 @@
       <title
          id="title5984">Greek cross</title>
     </path>
-    <path
-       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker:none;enable-background:accumulate"
-       d="m 186.07071,365 -1,1 -3.07071,0 0,-1 -1.0289,0.11169 -0.90039,-8.11169 8,0 -1,8 z"
-       id="path3061"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccccc" />
     <circle
        r="2.5"
        cy="364.5"
@@ -9702,21 +9700,6 @@
        y="354"
        ry="0.5"
        rx="0.5" />
-    <circle
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path5609"
-       cx="181.96484"
-       cy="365"
-       r="1" />
-    <path
-       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker:none;enable-background:accumulate"
-       d="m 183.5,370 c -0.277,0 -0.5,0.223 -0.5,0.5 l 0,0.5 -2.5,0 c -0.277,0 -0.5,0.223 -0.5,0.5 l 0,0.5 3.5,0 4,0 0.5,0 0,-0.5 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 l -2.5,0 0,-0.5 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 z m -3.42969,3 0.89649,8.07031 a 1,1 0 0 0 0.004,0.041 1,1 0 0 0 0.99404,0.88869 1,1 0 0 0 0.0352,0 l 2.57422,0 a 2.5,2.5 0 0 1 -0.50391,-1.5 2.5,2.5 0 0 1 2.5,-2.5 2.5,2.5 0 0 1 0.85547,0.15234 L 188.07031,373 Z m 6.5,6 a 1.5,1.5 0 0 0 -1.5,1.5 1.5,1.5 0 0 0 1.5,1.5 1.5,1.5 0 0 0 1.5,-1.5 1.5,1.5 0 0 0 -1.5,-1.5 z"
-       id="recycling_container"
-       inkscape:label="#path5611"
-       inkscape:connector-curvature="0">
-      <title
-         id="title5980">recycling container</title>
-    </path>
     <rect
        rx="0.5"
        ry="0.5"
@@ -24851,5 +24834,18 @@
        sodipodi:end="6.2831853"
        sodipodi:arc-type="slice"
        d="m 469.5,290.5 a 1,1 0 0 1 1,-1 1,1 0 0 1 1,1 h -1 z" />
+    <rect
+       ry="0"
+       rx="0"
+       y="355.5"
+       x="179"
+       height="1.5"
+       width="10"
+       id="rect79479"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       id="recycling_container"
+       style="color:#000000;opacity:1;fill:#000000;stroke:none;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
+       d="m 183.5,370 c -0.277,0 -0.5,0.223 -0.5,0.5 v 0.5 h -2.5 c -0.277,0 -0.5,0.223 -0.5,0.5 v 0.5 h 8 v -0.5 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 H 185 v -0.5 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 z m -3.5,3 c 8e-5,0.0411 0.003,0.083 0.008,0.125 l 1,8 c 0.063,0.49999 0.48824,0.87497 0.99219,0.875 h 2.57812 a 2.5,2.5 0 0 1 -0.50781,-1.5 2.5,2.5 0 0 1 2.5,-2.5 2.5,2.5 0 0 1 0.79688,0.13086 l 0.625,-5.00586 C 187.99719,373.083 188,373.0411 188,373 Z m 6.57031,6 a 1.5,1.5 0 0 0 -1.5,1.5 1.5,1.5 0 0 0 1.5,1.5 1.5,1.5 0 0 0 1.5,-1.5 1.5,1.5 0 0 0 -1.5,-1.5 z" />
   </g>
 </svg>
