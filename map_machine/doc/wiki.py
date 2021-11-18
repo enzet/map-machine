@@ -19,6 +19,7 @@ EXTRACTOR: ShapeExtractor = ShapeExtractor(
 )
 
 HEADER_PATTERN: re.Pattern = re.compile("==?=?.*==?=?")
+SEE_ALSO_HEADER_PATTERN: re.Pattern = re.compile("==\\s*See also\\s*==")
 EXAMPLE_HEADER_PATTERN: re.Pattern = re.compile("==\\s*Example\\s*==")
 RENDERING_HEADER_PATTERN: re.Pattern = re.compile(
     "===\\s*\\[\\[Röntgen]] icons\\s*==="
@@ -73,7 +74,7 @@ def generate_table(
             current_tags: Tags = dict(tags) | {row_key: row_value}
             if column_value:
                 current_tags |= {column_key: column_value}
-            icon, priority = SCHEME.get_icon(
+            icon, _ = SCHEME.get_icon(
                 EXTRACTOR, current_tags, processed, MapConfiguration()
             )
             if not icon:
@@ -106,35 +107,56 @@ def generate_new_text(
     :param column_values: list of tag values to be used in columns
     :return: new wiki page text
     """
-    table_wiki_text: str = generate_table(
-        tags, row_key, row_values, column_key, column_values
-    )
+    wiki_text: str
+
+    if row_key:
+        wiki_text = generate_table(
+            tags, row_key, row_values, column_key, column_values
+        )
+    else:
+        processed = set()
+        icon, _ = SCHEME.get_icon(
+            EXTRACTOR, tags, processed, MapConfiguration()
+        )
+        if icon.main_icon.is_default():
+            wiki_text = (
+                f"Röntgen icon set has additional icon for the tag: "
+                f"[[Image:Röntgen {icon.extra_icons[0].get_name()}.svg|32px]]."
+                f"\n"
+            )
+        else:
+            wiki_text = (
+                f"[[Image:Röntgen {icon.main_icon.get_name()}.svg|32px]]\n"
+            )
+
     lines: list[str] = old_text.split("\n")
 
-    table_start: Optional[int] = None
-    table_end: int = -1
+    start: Optional[int] = None
+    end: int = -1
 
     for index, line in enumerate(lines):
         if HEADER_PATTERN.match(line):
-            if table_start is not None:
-                table_end = index
+            if start is not None:
+                end = index
                 break
         if RENDERING_HEADER_PATTERN.match(line):
-            table_start = index
+            start = index
 
-    if table_start is not None:
+    if start is not None:
         return (
-            "\n".join(lines[: table_start + 2])
+            "\n".join(lines[: start + 2])
             + "\n"
-            + table_wiki_text
+            + wiki_text
             + "\n"
-            + "\n".join(lines[table_end:])
+            + "\n".join(lines[end:])
         )
 
     example_header: Optional[int] = None
 
     for index, line in enumerate(lines):
-        if EXAMPLE_HEADER_PATTERN.match(line):
+        if EXAMPLE_HEADER_PATTERN.match(line) or SEE_ALSO_HEADER_PATTERN.match(
+            line
+        ):
             example_header = index
             break
 
@@ -143,7 +165,7 @@ def generate_new_text(
             "\n".join(lines[:example_header])
             + "\n"
             + "== Rendering ==\n\n=== [[Röntgen]] icons ===\n\n"
-            + table_wiki_text
+            + wiki_text
             + "\n"
             + "\n".join(lines[example_header:])
         )
