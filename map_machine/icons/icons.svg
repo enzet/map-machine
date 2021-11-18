@@ -148,8 +148,8 @@
      showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="345"
-     inkscape:cx="405"
+     inkscape:cy="321"
+     inkscape:cx="435"
      inkscape:zoom="4"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -24864,9 +24864,9 @@
     <g
        id="path30996" />
     <path
-       style="color:#000000;fill:#0000ff;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none;stroke:none"
+       style="color:#000000;fill:#000000;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none;stroke:none"
        d="m 439.5,305.00781 c -0.27311,-1e-5 -0.49571,0.21911 -0.5,0.49219 v 1.95117 L 438.08984,312 H 437.5 c -0.27613,3e-5 -0.49997,0.22387 -0.5,0.5 v 2.5 h -0.5 c -0.27613,3e-5 -0.49997,0.22387 -0.5,0.5 v 1.5 h -0.5 c -0.27613,3e-5 -0.49997,0.22387 -0.5,0.5 v 1 c 3e-5,0.27613 0.22387,0.49997 0.5,0.5 h 8 c 0.27613,-3e-5 0.49997,-0.22387 0.5,-0.5 v -1 c -3e-5,-0.27613 -0.22387,-0.49997 -0.5,-0.5 H 443 v -1.5 c -3e-5,-0.27613 -0.22387,-0.49997 -0.5,-0.5 H 442 v -2.5 c -3e-5,-0.27613 -0.22387,-0.49997 -0.5,-0.5 h -0.58984 L 440,307.45117 V 305.5 c -0.004,-0.27308 -0.22689,-0.4922 -0.5,-0.49219 z"
-       id="path31269"
+       id="stupa"
        sodipodi:nodetypes="scccsccsccsssccsssccsccscccs" />
     <path
        style="font-variation-settings:normal;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;opacity:0.2"

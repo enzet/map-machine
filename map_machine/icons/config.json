@@ -430,6 +430,7 @@
     "power_tower_triangle": {"name": "triangle transmission tower", "categories": ["power"]},
     "power_tower_x_frame": {"name": "x-frame transmission tower", "categories": ["power"]},
     "power_tower_y_frame": {"name": "y-frame transmission tower", "categories": ["power"]},
+    "stupa": {"name": "stupa"},
     "telescope_gamma": {"name": "gamma telescope"},
     "telescope_radio": {"name": "radio telescope"},
     "tower": {},

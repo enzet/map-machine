@@ -883,6 +883,8 @@ node_icons:
       shapes: [tower_observation]
     - tags: {man_made: mast}
       shapes: [tube]
+    - tags: {man_made: stupa}
+      shapes: [stupa]
 
     - tags: {man_made: mast, tower:construction: guyed_tube}
       shapes: [tube_guyed]
