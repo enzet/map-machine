@@ -2,11 +2,11 @@
 Map drawing configuration.
 """
 import argparse
-from colour import Color
 from dataclasses import dataclass
 from enum import Enum
-
 from typing import Optional
+
+from colour import Color
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

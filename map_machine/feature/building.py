@@ -1,12 +1,13 @@
 """
 Buildings on the map.
 """
+from typing import Any, Optional
+
 import numpy as np
 from colour import Color
 from svgwrite import Drawing
 from svgwrite.container import Group
 from svgwrite.path import Path
-from typing import Any, Optional
 
 from map_machine.drawing import PathCommands
 from map_machine.feature.direction import Segment

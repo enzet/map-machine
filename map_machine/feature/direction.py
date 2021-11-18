@@ -1,14 +1,14 @@
 """
 Direction tag support.
 """
-from colour import Color
-from svgwrite import Drawing
-from svgwrite.gradients import RadialGradient
-from svgwrite.path import Path
 from typing import Iterator, Optional
 
 import numpy as np
+from colour import Color
 from portolan import middle
+from svgwrite import Drawing
+from svgwrite.gradients import RadialGradient
+from svgwrite.path import Path
 
 from map_machine.drawing import PathCommands
 from map_machine.osm.osm_reader import Tagged
