@@ -79,7 +79,8 @@ class MapConfiguration:
         """Whether drawing mode is special."""
         return self.drawing_mode != DrawingMode.NORMAL
 
-    def backghround_color(self) -> Optional[Color]:
+    def background_color(self) -> Optional[Color]:
+        """Get background map color based on drawing mode."""
         if self.drawing_mode not in (DrawingMode.NORMAL, DrawingMode.BLACK):
             return Color("#111111")
         return None
