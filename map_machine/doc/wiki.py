@@ -7,7 +7,7 @@ from typing import Optional
 
 from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import Tags
-from map_machine.pictogram.icon import ShapeExtractor
+from map_machine.pictogram.icon import Icon, ShapeExtractor
 from map_machine.scheme import Scheme
 from map_machine.workspace import Workspace
 
@@ -20,7 +20,7 @@ EXTRACTOR: ShapeExtractor = ShapeExtractor(
 
 HEADER_PATTERN: re.Pattern = re.compile("==?=?.*==?=?")
 SEE_ALSO_HEADER_PATTERN: re.Pattern = re.compile("==\\s*See also\\s*==")
-EXAMPLE_HEADER_PATTERN: re.Pattern = re.compile("==\\s*Example\\s*==")
+EXAMPLE_HEADER_PATTERN: re.Pattern = re.compile("==\\s*Example.*==")
 RENDERING_HEADER_PATTERN: re.Pattern = re.compile(
     "===\\s*\\[\\[Röntgen]] icons\\s*==="
 )
@@ -32,7 +32,7 @@ def generate_table(
     row_values: list[str],
     column_key: str,
     column_values: list[str],
-) -> str:
+) -> tuple[str, list[Icon]]:
     """
     Generate Röntgen icon table for the OpenStreetMap wiki page.
 
@@ -42,6 +42,7 @@ def generate_table(
     :param column_key: tag key to be used in columns
     :param column_values: list of tag values to be used in columns
     """
+    icons: list[Icon] = []
     text: str = '{| class="wikitable"\n'
 
     if column_key is not None:
@@ -82,10 +83,11 @@ def generate_table(
             text += (
                 f"| [[Image:Röntgen {icon.main_icon.get_name()}.svg|32px]]\n"
             )
+            icons.append(icon.main_icon)
 
     text += "|}\n"
 
-    return text
+    return text, icons
 
 
 def generate_new_text(
@@ -95,7 +97,7 @@ def generate_new_text(
     row_values: list[str],
     column_key: str,
     column_values: list[str],
-) -> Optional[str]:
+) -> tuple[Optional[str], list[Icon]]:
     """
     Generate Röntgen icon table for the OpenStreetMap wiki page.
 
@@ -108,9 +110,10 @@ def generate_new_text(
     :return: new wiki page text
     """
     wiki_text: str
+    icons = []
 
     if row_key:
-        wiki_text = generate_table(
+        wiki_text, icons = generate_table(
             tags, row_key, row_values, column_key, column_values
         )
     else:
@@ -124,10 +127,12 @@ def generate_new_text(
                 f"[[Image:Röntgen {icon.extra_icons[0].get_name()}.svg|32px]]."
                 f"\n"
             )
+            icons.append(icon.extra_icons[0])
         else:
             wiki_text = (
                 f"[[Image:Röntgen {icon.main_icon.get_name()}.svg|32px]]\n"
             )
+            icons.append(icon.main_icon)
 
     lines: list[str] = old_text.split("\n")
 
@@ -149,7 +154,7 @@ def generate_new_text(
             + wiki_text
             + "\n"
             + "\n".join(lines[end:])
-        )
+        ), icons
 
     example_header: Optional[int] = None
 
@@ -168,6 +173,6 @@ def generate_new_text(
             + wiki_text
             + "\n"
             + "\n".join(lines[example_header:])
-        )
+        ), icons
 
-    return None
+    return None, []
