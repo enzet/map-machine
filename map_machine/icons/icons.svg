@@ -145,12 +145,12 @@
      inkscape:object-paths="true"
      inkscape:guide-bbox="true"
      showguides="false"
-     showgrid="false"
+     showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="364.69032"
-     inkscape:cx="190.56528"
-     inkscape:zoom="5.6568542"
+     inkscape:cy="201.5"
+     inkscape:cx="581"
+     inkscape:zoom="2"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -4551,12 +4551,9 @@
     <path
        inkscape:connector-curvature="0"
        inkscape:label="#rect3783"
-       id="information"
+       id="i"
        d="m 535.5,466 c -0.277,0 -0.5,0.223 -0.5,0.5 l 0,2 c 0,0.277 0.223,0.5 0.5,0.5 l 2,0 c 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-2 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 z m -1,5 c -0.277,0 -0.5,0.223 -0.5,0.5 0,0.277 0.223,0.5 0.5,0.5 l 0.5,0 0,5 -0.5,0 c -0.277,0 -0.5,0.223 -0.5,0.5 0,0.277 0.223,0.5 0.5,0.5 l 4,0 c 0.277,0 0.5,-0.223 0.5,-0.5 0,-0.277 -0.223,-0.5 -0.5,-0.5 l -0.5,0 0,-5.5 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 z"
-       style="fill:#000000;stroke:none">
-      <title
-         id="title7784">i letter</title>
-    </path>
+       style="fill:#000000;stroke:none" />
     <rect
        ry="0.5"
        rx="0.49999997"
@@ -4677,9 +4674,12 @@
     <path
        inkscape:connector-curvature="0"
        inkscape:label="#rect3929"
-       id="information_board"
+       id="i_in_square"
        d="m 549,467 c -0.554,0 -1,0.446 -1,1 l 0,7 c 0,0.554 0.446,1 1,1 l 8,0 c 0.554,0 1,-0.446 1,-1 l 0,-7 c 0,-0.554 -0.446,-1 -1,-1 z m 3.5,1 1,0 c 0.277,0 0.5,0.223 0.5,0.5 l 0,1 c 0,0.277 -0.223,0.5 -0.5,0.5 l -1,0 c -0.277,0 -0.5,-0.223 -0.5,-0.5 l 0,-1 c 0,-0.277 0.223,-0.5 0.5,-0.5 z m -0.5,3 0.5,0 1,0 c 0.277,0 0.5,0.223 0.5,0.5 l 0,2.5 c 0.2683,0 0.5,0.23166 0.5,0.5 0,0.26834 -0.2317,0.5 -0.5,0.5 l -2,0 c -0.2683,0 -0.5,-0.23166 -0.5,-0.5 0,-0.26834 0.2317,-0.5 0.5,-0.5 l 0,-2 c -0.277,0 -0.5,-0.223 -0.5,-0.5 0,-0.277 0.223,-0.5 0.5,-0.5 z"
-       style="fill:#000000;fill-opacity:1;stroke:none" />
+       style="fill:#000000;fill-opacity:1;stroke:none">
+      <title
+         id="title90673">letter i in square</title>
+    </path>
     <path
        sodipodi:nodetypes="sscssscsssccssscss"
        inkscape:connector-curvature="0"
@@ -6785,7 +6785,7 @@
     <path
        inkscape:connector-curvature="0"
        inkscape:label="#rect5775"
-       id="noexit"
+       id="t"
        d="m 628.5,147 c -0.277,0 -0.5,0.223 -0.5,0.5 l 0,1 c 0,0.277 0.223,0.5 0.5,0.5 l 2.5,0 0,6.5 c 0,0.277 0.223,0.5 0.5,0.5 l 1,0 c 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-6.5 2.5,0 c 0.277,0 0.5,-0.223 0.5,-0.5 l 0,-1 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 z"
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1">
       <title

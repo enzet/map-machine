@@ -1246,19 +1246,19 @@ node_icons:
     - tags: {amenity: telephone}
       shapes: [telephone]
     - tags: {information: "*"}
-      shapes: [information]
+      shapes: [i]
       replace_shapes: no
     - tags: {tourism: "*"}
       shapes: [historic]
       replace_shapes: no
     - tags: {tourism: information}
-      shapes: [information]
+      shapes: [i]
     - tags: {information: guidepost}
       shapes: [guidepost]
     - tags: {tourism: viewpoint}
       shapes: [binoculars]
     - tags: {information: board}
-      shapes: [information_board]
+      shapes: [i_in_square]
     - tags: {vending: admission_tickets}
       shapes: [vending_tickets]
     - tags: {vending: candles}
@@ -1475,7 +1475,7 @@ node_icons:
     - tags: {highway: give_way}
       shapes: [triangle_down_hollow]
     - tags: {noexit: "yes"}
-      shapes: [noexit]
+      shapes: [t]
     - tags: {barrier: block}
       shapes: [block]
     - tags: {barrier: rock}
@@ -1549,13 +1549,13 @@ node_icons:
     tags:
     - tags: {support: pole}
       over_icon: [support_pole]
-      under_icon: [clock, information_board]
+      under_icon: [clock, i_in_square]
     - tags: {support: wall_mounted}
       over_icon: [support_wall]
-      under_icon: [clock, information_board]
+      under_icon: [clock, i_in_square]
     - tags: {support: column}
       over_icon: [support_column]
-      under_icon: [clock, information_board]
+      under_icon: [clock, i_in_square]
     - tags: {amenity: "*", karaoke: "yes"}
       add_shapes: [microphone]
     - tags: {building: "*", "roof:shape": onion}
