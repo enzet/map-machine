@@ -301,5 +301,5 @@ def convert(input_path: Path, output_path: Path) -> None:
 
 
 if __name__ == "__main__":
-    convert(Path("readme.moi"), Path("../../README.md"))
-    convert(Path("contributing.moi"), Path("../../.github/CONTRIBUTING.md"))
+    convert(Path("doc/readme.moi"), Path("README.md"))
+    convert(Path("doc/contributing.moi"), Path(".github/CONTRIBUTING.md"))

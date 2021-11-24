@@ -74,7 +74,7 @@ Visualize [`direction`](https://wiki.openstreetmap.org/wiki/Key:direction) tag f
 
 Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used with [`power`](https://wiki.openstreetmap.org/wiki/Key:power)=[`tower`](https://wiki.openstreetmap.org/wiki/Tag:power=tower) tag.
 
-![Power tower design](doc/power_tower_design.svg)
+![Power tower design](doc/icons_power.svg)
 
 ![Power tower design](doc/power.svg)
 
@@ -86,13 +86,13 @@ Map icons have [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) tag va
 
 ### Emergency ###
 
-![Emergency](doc/emergency.svg)
+![Emergency](doc/icons_emergency.svg)
 
 ### Japanese map symbols ###
 
 There are [special symbols](https://en.wikipedia.org/wiki/List_of_Japanese_map_symbols) appearing on Japanese maps.
 
-![Japanese map symbols](doc/japanese.svg)
+![Japanese map symbols](doc/icons_japanese.svg)
 
 ### Shape combination ###
 
@@ -160,7 +160,7 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and write an out
 | <span style="white-space: nowrap;">`-o`</span>, <span style="white-space: nowrap;">`--output`</span> `<path>` | output SVG file name, default value: `out/map.svg` |
 | <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | geo boundary box; if the first value is negative, enclose the value with quotes and use space before `-` |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
-| <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<float>` | OSM zoom level, default value: 18 |
+| <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<float>` | OSM zoom level, default value: 18.0 |
 | <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location inside the tile |
 | <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--size`</span> `<width>,<height>` | resulted image size |
 
@@ -289,7 +289,7 @@ Map configuration options used by `render` and `tile` commands:
 | Option | Description |
 |---|---|
 | <span style="white-space: nowrap;">`--buildings`</span> `<mode>` | building drawing mode: no, flat, isometric, isometric-no-parts, default value: `flat` |
-| <span style="white-space: nowrap;">`--mode`</span> `<string>` | map drawing mode: normal, author, time, default value: `normal` |
+| <span style="white-space: nowrap;">`--mode`</span> `<string>` | map drawing mode: normal, author, time, white, black, default value: `normal` |
 | <span style="white-space: nowrap;">`--overlap`</span> `<integer>` | how many pixels should be left around icons and text, default value: 12 |
 | <span style="white-space: nowrap;">`--labels`</span> `<string>` | label drawing mode: no, main, all, address, default value: `main` |
 | <span style="white-space: nowrap;">`--level`</span> | display only this floor level, default value: `overground` |

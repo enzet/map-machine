@@ -1,9 +1,6 @@
 # Generated files
 
 dist/
-doc/*.html
-doc/*.svg
-doc/*.wiki
 out/
 
 # Cache
