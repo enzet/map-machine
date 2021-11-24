@@ -189,9 +189,12 @@
   },
   "street": {
     "playground": {
+      "hopscotch": {"name": "hopscotch"},
+      "roundabout": {"name": "roundabout"},
       "seesaw": {"name": "seesaw", "categories": ["amenity"]},
       "slide": {"directed": "right", "name": "slide", "categories": ["amenity"]},
-      "slide_and_water": {"categories": ["amenity"]}
+      "slide_and_water": {"categories": ["amenity"], "name": "water slide"},
+      "toy_horse": {"name": "rocking horse"}
     },
     "bench": {"name": "bench", "categories": ["amenity"]},
     "bench_backrest": {"name": "bench with backrest", "categories": ["amenity"]},
@@ -271,7 +274,6 @@
     "guidepost": {"directed": "right"},
     "guys": {},
     "hi_fi": {"name": "Hi-Fi"},
-    "hopscotch": {"name": "hopscotch"},
     "human_on_ferry": {},
     "hunting_stand": {"name": "hunting stand"},
     "judgement": {},
@@ -306,10 +308,8 @@
     "power_generator": {},
     "prison": {},
     "restaurant": {"emoji": "🍴"},
-    "rings": {"name": "gymnastic rings"},
     "roof": {"is_part": true},
     "roof_and_walls": {"is_part": true},
-    "roundabout": {},
     "sheets": {"name": "two sheets"},
     "shelter": {"name": "shelter"},
     "shop_convenience": {},
@@ -337,7 +337,6 @@
     "tomb": {"emoji": "🪦"},
     "torch": {"name": "torch"},
     "toucan_crossing": {},
-    "toy_horse": {"name": "rocking horse"},
     "traffic_signals": {"emoji": "🚦"},
     "transformer": {"name": "transformer"},
     "triangle_down_hollow": {},
@@ -367,6 +366,7 @@
     "horizontal_bar": {"name": "high horizontal bar", "categories": ["sport"]},
     "horizontal_ladder": {"name": "horizontal ladder", "categories": ["sport"]},
     "low_horizontal_bars": {"name": "low horizontal bars", "categories": ["sport"]},
+    "rings": {"name": "gymnastic rings"},
     "sit_up": {"name": "incline bench", "categories": ["sport"]},
     "wall_bars": {"name": "wall bars", "categories": ["sport"]}
   },
