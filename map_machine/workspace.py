@@ -25,7 +25,10 @@ class Workspace:
     DEFAULT_SCHEME_PATH: Path = SCHEME_PATH / "default.yml"
     ICONS_PATH: Path = HERE / Path("icons/icons.svg")
     ICONS_CONFIG_PATH: Path = HERE / Path("icons/config.json")
+
     GITHUB_TEST_PATH: Path = Path(".github/workflows/test.yml")
+    DOCUMENTATION_PATH: Path = Path("doc")
+    GRID_PATH: Path = DOCUMENTATION_PATH / "grid.svg"
 
     # Generated directories and files.
 

@@ -209,10 +209,12 @@ def draw_icons() -> None:
     extractor: ShapeExtractor = ShapeExtractor(
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
-    collection: IconCollection = IconCollection.from_scheme(
-        scheme, extractor, add_all=True
-    )
+    collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
+    collection.sort()
+    for icon in collection.icons:
+        icon.recolor(Color("#444444"))
     icon_grid_path: Path = workspace.get_icon_grid_path()
+    collection.draw_grid(workspace.GRID_PATH)
     collection.draw_grid(icon_grid_path)
     logging.info(f"Icon grid is written to {icon_grid_path}.")
 
