@@ -36,12 +36,12 @@ collections = [
         [""] + tower_type_values,
     ),
     Collection(
-        "Tag:man_made=mast",
-        {"man_made": "mast"},
-        "tower:construction",
-        ["freestanding", "lattice", "guyed_tube", "guyed_lattice"],
-        "tower:type",
-        [""] + tower_type_values,
+        "Tag:natural=volcano",
+        {"natural": "volcano"},
+        "volcano:type",
+        ["stratovolcano", "shield", "scoria"],
+        "volcano:status",
+        ["active", "dormant", "extinct"],
     ),
     Collection(
         "Tag:tower:construction=guyed_tube",
