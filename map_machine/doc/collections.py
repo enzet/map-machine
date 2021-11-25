@@ -77,6 +77,18 @@ collections = [
         ],
     ),
     Collection(
+        "Key:crane:type",
+        {"man_made": "crane"},
+        "crane:type",
+        [
+            "gantry_crane",
+            "floor-mounted_crane",
+            "portal_crane",
+            "travel_lift",
+            "tower_crane",
+        ],
+    ),
+    Collection(
         "Tag:tower:type=diving",
         {"man_made": "tower", "tower:type": "diving"},
     ),
