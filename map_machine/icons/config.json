@@ -9,7 +9,7 @@
   "plant": {
     "fruit": {
       "apple": {"emoji": ["🍎", "🍏"], "name": "apple", "categories": ["natural"]},
-      "peach": {"categories": ["natural"], "name": "peach"},
+      "peach": {"categories": ["natural"], "name": "peach", "emoji": "🍑"},
       "pear": {"emoji": "🍐", "name": "pear", "categories": ["natural"]}
     },
     "tree": {
@@ -21,10 +21,10 @@
       "tree_with_leaf": {"name": "tree with leaf", "categories": ["natural"]}
     },
     "leaf": {
-      "leaf_maple": {"categories": ["natural"], "name": "maple leaf"}
+      "leaf_maple": {"categories": ["natural"], "name": "maple leaf", "emoji": "🍁"}
     },
     "bush": {"categories": ["natural"], "name": "bush"},
-    "cactus": {"categories": ["natural"], "name": "cactus"},
+    "cactus": {"categories": ["natural"], "name": "cactus", "emoji": "🌵"},
     "ear_botany": {"categories": ["natural"], "name": "ear (botany)"},
     "ear_botany_2": {"categories": ["natural"]},
     "grapes": {"categories": ["natural"], "name": "grapes"},
@@ -145,12 +145,12 @@
     "cliff": {"categories": ["natural"]},
     "crater": {"categories": ["natural"]},
     "ford": {"categories": ["natural"]},
-    "shield_volcano": {"name": "shield volcano", "categories": ["natural"]},
+    "shield_volcano": {"name": "shield volcano", "categories": ["natural"], "emoji": "🌋"},
     "smoke": {"name": "smoke"},
     "smoke_2": {"name": "clouds"},
     "stone": {"emoji": "🪨", "categories": ["natural"]},
     "stone_with_inscription": {"categories": ["natural"]},
-    "stratovolcano": {"name": "stratovolcano", "categories": ["natural"]},
+    "stratovolcano": {"name": "stratovolcano", "categories": ["natural"], "emoji": "🌋"},
     "volcanic_cone": {"name": "volcanic cone", "categories": ["natural"]},
     "waterfall": {"directed": "right", "name": "waterfall", "categories": ["natural"]}
   },
@@ -159,7 +159,7 @@
     "descent_stage": {"name": "descent stage"},
     "lander": {"name": "lander"},
     "lunokhod": {"name": "lunokhod"},
-    "orbiter": {"name": "orbiter"},
+    "orbiter": {"name": "orbiter", "emoji": "🛰"},
     "probe": {"name": "probe"},
     "rocket_flying": {"emoji": "🚀", "name": "flying rocket", "categories": ["aeroway"]},
     "rocket_on_launch_pad": {"name": "rocket on launch pad", "categories": ["aeroway"]},
@@ -170,8 +170,8 @@
     "beer_mug": {"emoji": "🍺", "name": "beer mug"},
     "bottle": {},
     "bottle_and_wine_glass": {"name": "wine bottle and wine glass"},
-    "cocktail_glass": {"name": "cocktail glass"},
-    "cocktail_glass_with_straw": {"name": "cocktail glass with straw"},
+    "cocktail_glass": {"name": "cocktail glass", "emoji": "🍸"},
+    "cocktail_glass_with_straw": {"name": "cocktail glass with straw", "emoji": "🍸"},
     "coffee_cup": {"emoji": "☕", "name": "coffee cup"},
     "knives": {"name": "knives"},
     "steak_and_fork": {"name": "steak and fork"}
@@ -192,7 +192,7 @@
       "hopscotch": {"name": "hopscotch"},
       "roundabout": {"name": "roundabout"},
       "seesaw": {"name": "seesaw", "categories": ["amenity"]},
-      "slide": {"directed": "right", "name": "slide", "categories": ["amenity"]},
+      "slide": {"directed": "right", "name": "slide", "categories": ["amenity"], "emoji": "🛝"},
       "slide_and_water": {"categories": ["amenity"], "name": "water slide"},
       "toy_horse": {"name": "rocking horse"}
     },
@@ -280,7 +280,7 @@
     "kerb": {},
     "key": {"is_part": true, "name": "key"},
     "kiosk": {},
-    "life_ring": {"categories": ["emergency"]},
+    "life_ring": {"categories": ["emergency"], "emoji": "🛟"},
     "lift_gate": {},
     "lock": {},
     "lock_unlocked": {},
@@ -328,7 +328,7 @@
     "support_pole": {"is_part": true},
     "support_wall": {"is_part": true},
     "survey_point": {},
-    "suspension_railway": {"name": "suspension railway"},
+    "suspension_railway": {"name": "suspension railway", "emoji": "🚟"},
     "swimming_area": {},
     "table_and_two_chairs": {"name": "table and two chairs"},
     "tactile_paving": {},
@@ -351,7 +351,7 @@
     "wretch_and_hammer": {"name": "wretch and hammer"}
   },
   "body_part": {
-    "tooth": {"name": "tooth"}
+    "tooth": {"name": "tooth", "emoji": "🦷"}
   },
   "clothes": {
     "shoe": {"name": "shoe"},
@@ -389,7 +389,7 @@
     "massage": {},
     "pole_dancer": {"name": "pole dancer"},
     "sauna": {},
-    "two_people_together": {},
+    "two_people_together": {"emoji": "🧑‍🤝‍🧑"},
     "woman_and_man": {"emoji": "🚻", "name": "woman and man"}
   },
   "tower": {
@@ -445,8 +445,8 @@
   "transport": {
     "small": {
       "bicycle": {"emoji": "🚲", "name": "bicycle"},
-      "skateboard": {},
-      "wheelchair": {"emoji": "🦽"}
+      "skateboard": {"emoji": "🛹", "name": "skateboard"},
+      "wheelchair": {"emoji": "🦽", "name": "wheelchair"}
     },
     "bus": {"emoji": "🚌", "name": "bus", "categories": ["public transport"]},
     "buses": {"name": "two buses", "categories": ["public transport"]},
