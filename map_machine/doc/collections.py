@@ -138,7 +138,7 @@ class SVGTable:
     def draw_delimiter(self) -> None:
         """Draw line between column and row titles."""
         if self.column_values:
-            line = self.svg.line(
+            line: Line = self.svg.line(
                 self.start_point - self.half_step - self.border,
                 self.start_point
                 - self.half_step
@@ -225,10 +225,9 @@ class Collection:
     # List of tag values to be used in columns
     column_values: list[str] = field(default_factory=list)
 
-    def generate_table(self) -> tuple[str, list[Icon]]:
+    def generate_wiki_table(self) -> tuple[str, list[Icon]]:
         """
         Generate Röntgen icon table for the OpenStreetMap wiki page.
-
         """
         icons: list[Icon] = []
         text: str = '{| class="wikitable"\n'
@@ -278,7 +277,7 @@ class Collection:
 
         return text, icons
 
-    def draw_table(self, svg: Drawing):
+    def draw_table(self, svg: Drawing) -> np.ndarray:
         """Draw SVG table."""
         table: SVGTable = SVGTable(
             svg,
@@ -409,15 +408,24 @@ collections = [
             "two-level",
             "three-level",
             "four-level",
-            "donau",
-            "donau_inverse",
-            "barrel",
             "asymmetric",
             "triangle",
             "flag",
             "delta",
             "delta_two-level",
             "delta_three-level",
+        ],
+    ),
+    Collection(
+        "Key:design_2",
+        {},
+        "power",
+        ["tower"],
+        "design",
+        [
+            "donau",
+            "donau_inverse",
+            "barrel",
             "y-frame",
             "x-frame",
             "h-frame",
@@ -430,17 +438,18 @@ collections = [
 ]
 
 
-def main() -> None:
-    with Path("result.html").open("w+") as html_file:
+def draw_svg_tables(output_path: Path, html_file_path: Path) -> None:
+    """Draw SVG tables of icon collections."""
+    with html_file_path.open("w+") as html_file:
         for collection in collections:
-            path: Path = Path("doc") / f"{collection.page_name}.svg"
+            path: Path = output_path / f"{collection.page_name}.svg"
             svg: svgwrite = svgwrite.Drawing(path.name)
             width, height = collection.draw_table(svg)
             svg.update({"width": width, "height": height})
             with path.open("w+") as output_file:
                 svg.write(output_file)
-            html_file.write(f'<img src="doc/{path.name}" />\n')
+            html_file.write(f'<img src="{path}" />\n')
 
 
 if __name__ == "__main__":
-    main()
+    draw_svg_tables(Path("doc"), Path("result.html"))
