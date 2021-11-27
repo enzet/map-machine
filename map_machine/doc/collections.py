@@ -8,10 +8,12 @@ from typing import Optional
 import numpy as np
 import svgwrite
 from svgwrite import Drawing
+from svgwrite.text import Text
+from svgwrite.shapes import Line, Rect
 
 from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import Tags
-from map_machine.pictogram.icon import ShapeExtractor, Icon
+from map_machine.pictogram.icon import ShapeExtractor, Icon, IconSet
 from map_machine.scheme import Scheme
 from map_machine.workspace import Workspace
 
@@ -27,13 +29,20 @@ EXTRACTOR: ShapeExtractor = ShapeExtractor(
 class SVGTable:
     """SVG table with icon combinations."""
 
-    def __init__(self, svg, row_key, row_values, column_key, column_values):
-        self.svg = svg
+    def __init__(
+        self,
+        svg: svgwrite.Drawing,
+        row_key: Optional[str],
+        row_values: list[str],
+        column_key: Optional[str],
+        column_values: list[str],
+    ):
+        self.svg: svgwrite.Drawing = svg
 
-        self.row_key = row_key
-        self.row_values = row_values
-        self.column_key = column_key
-        self.column_values = column_values
+        self.row_key: Optional[str] = row_key
+        self.row_values: list[str] = row_values
+        self.column_key: Optional[str] = column_key
+        self.column_values: list[str] = column_values
 
         self.border: np.ndarray = np.array((16.0, 16.0))
         self.step: float = 48.0
@@ -75,59 +84,59 @@ class SVGTable:
             2 * self.border + np.array(self.size) + self.half_step
         )
 
-    def draw(self):
+    def draw(self) -> None:
         """Draw rows and columns."""
         self.draw_rows()
         self.draw_columns()
         self.draw_delimiter()
         self.draw_rectangle()
 
-    def draw_rows(self):
+    def draw_rows(self) -> None:
         """Draw row texts."""
-        point = np.array(self.start_point) - np.array(
+        point: np.ndarray = np.array(self.start_point) - np.array(
             (self.step / 2.0 + self.border[0], 0.0)
         )
-        shift = (
-            -self.offset if self.column_values else 0,
+        shift: np.ndarray = (
+            -self.offset if self.column_values else 0.9,
             2.0 - self.step / 2.0 - self.border[1],
         )
         if self.row_key:
-            self.draw_bold_text(f"{self.row_key}=*", point + np.array(shift))
+            self.draw_text(
+                f"{self.row_key}=*",
+                point + np.array(shift),
+                anchor="end",
+                weight="bold",
+            )
         for row_value in self.row_values:
             if row_value:
-                self.draw_text(row_value, point + np.array((0.0, 2.0)))
+                self.draw_text(
+                    row_value, point + np.array((0.0, 2.0)), anchor="end"
+                )
             point += np.array((0, self.step))
 
-    def draw_columns(self):
+    def draw_columns(self) -> None:
         """Draw column texts."""
-        point = np.array(self.start_point) - np.array(
-            (self.step / 2.0 + self.border[0], 0.0)
+        point: np.ndarray = (
+            self.start_point
+            - self.half_step
+            - self.border
+            + np.array((0.0, 2.0 - self.offset))
         )
         if self.column_key:
-            self.draw_bold_text(
-                f"{self.column_key}=*",
-                point
-                + np.array(
-                    (0.0, 2.0 - self.step / 2.0 - self.border[0] - self.offset)
-                ),
+            self.draw_text(
+                f"{self.column_key}=*", point, anchor="end", weight="bold"
             )
 
         point = np.array(self.start_point)
         for column_value in self.column_values:
-            text_point = point + np.array(
-                (2, -self.step / 2.0 - self.border[1])
+            text_point: np.ndarray = point + np.array(
+                (2.0, -self.step / 2.0 - self.border[1])
             )
-            text = self.svg.text(
-                f"{column_value}",
-                text_point,
-                font_family=self.font,
-                font_size=self.font_size,
-                transform=f"rotate(270,{text_point[0]},{text_point[1]})",
-            )
-            self.svg.add(text)
+            self.draw_text(f"{column_value}", text_point, rotate=True)
             point += np.array((self.step, 0.0))
 
-    def draw_delimiter(self):
+    def draw_delimiter(self) -> None:
+        """Draw line between column and row titles."""
         if self.column_values:
             line = self.svg.line(
                 self.start_point - self.half_step - self.border,
@@ -140,46 +149,49 @@ class SVGTable:
             )
             self.svg.add(line)
 
-    def draw_rectangle(self):
-        rectangle = self.svg.rect(
+    def draw_rectangle(self, color: str = "#FEA") -> None:
+        """Draw rectangle beneath all cells."""
+        rectangle: Rect = self.svg.rect(
             self.start_point - self.half_step,
             np.array((max(1, len(self.column_values)), len(self.row_values)))
             * self.step,
-            fill="#fea",
+            fill=color,
         )
         self.svg.add(rectangle)
 
-    def draw_icon(self, position, icon):
+    def draw_icon(self, position: np.ndarray, icon: IconSet) -> None:
+        """Draw icon in the table cell."""
         if not self.column_values:
             self.column_values = [""]
-        point = np.array(self.start_point) + position * self.step
+        point: np.ndarray = np.array(self.start_point) + position * self.step
         icon.main_icon.draw(self.svg, point, scale=self.icon_size / 16.0)
 
-    def draw_text(self, text, point):
-        text = self.svg.text(
+    def draw_text(
+        self,
+        text: str,
+        point: np.ndarray,
+        anchor: str = "start",
+        weight: str = "normal",
+        rotate: bool = False,
+    ) -> None:
+        """Draw text on the table."""
+        text: Text = self.svg.text(
             text,
             point,
             font_family=self.font,
             font_size=self.font_size,
-            text_anchor="end",
+            text_anchor=anchor,
+            font_weight=weight,
         )
+        if rotate:
+            text.update({"transform": f"rotate(270,{point[0]},{point[1]})"})
         self.svg.add(text)
 
-    def draw_bold_text(self, text, point):
-        text = self.svg.text(
-            text,
-            point,
-            font_family=self.font,
-            font_size=self.font_size,
-            font_weight="bold",
-            text_anchor="end",
-        )
-        self.svg.add(text)
-
-    def draw_cross(self, position: np.ndarray, size: float = 15):
-        point = self.start_point + position * self.step
+    def draw_cross(self, position: np.ndarray, size: float = 15) -> None:
+        """Draw cross in the cell."""
+        point: np.ndarray = self.start_point + position * self.step
         for vector in np.array((1, 1)), np.array((1, -1)):
-            line = self.svg.line(
+            line: Line = self.svg.line(
                 point - size * vector,
                 point + size * vector,
                 stroke_width=0.5,
@@ -187,7 +199,8 @@ class SVGTable:
             )
             self.svg.add(line)
 
-    def get_size(self):
+    def get_size(self) -> np.ndarray:
+        """Get the whole picture size."""
         return (
             self.start_point
             + np.array((max(1, len(self.column_values)), len(self.row_values)))
@@ -267,7 +280,7 @@ class Collection:
 
     def draw_table(self, svg: Drawing):
         """Draw SVG table."""
-        table = SVGTable(
+        table: SVGTable = SVGTable(
             svg,
             self.row_key + "=*" if self.row_key else None,
             self.row_values,
