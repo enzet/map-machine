@@ -1,0 +1,78 @@
+[
+    [
+        "Tag:man_made=mast",
+        {"man_made": "mast"},
+        "tower:construction",
+        ["freestanding", "lattice", "guyed_tube", "guyed_lattice"],
+        "tower:type",
+        ["", "communication", "lighting", "monitoring", "siren"]
+    ],
+    [
+        "Tag:natural=volcano",
+        {"natural": "volcano"},
+        "volcano:type",
+        ["stratovolcano", "shield", "scoria"],
+        "volcano:status",
+        [ "", "active", "dormant", "extinct"]
+    ],
+    [
+        "Tag:tower:construction=guyed_tube",
+        {"man_made": "mast", "tower:construction": "guyed_tube"},
+        "tower:type",
+        ["", "communication", "lighting", "monitoring", "siren"]
+    ],
+    [
+        "Tag:tower:construction=guyed_lattice",
+        {"man_made": "mast", "tower:construction": "guyed_lattice"},
+        "tower:type",
+        ["", "communication", "lighting", "monitoring", "siren"]
+    ],
+    [
+        "Key:communication:mobile_phone",
+        {"communication:mobile_phone": "yes"}
+    ],
+    [
+        "Key:traffic_calming",
+        {},
+        "traffic_calming",
+        [
+            "bump", "mini_bumps", "hump", "table", "cushion", "rumble_strip",
+            "dip", "double_dip"
+        ]
+    ],
+    [
+        "Key:crane:type",
+        {"man_made": "crane"},
+        "crane:type",
+        [
+            "gantry_crane", "floor-mounted_crane", "portal_crane",
+            "travel_lift", "tower_crane"
+        ]
+    ],
+    [
+        "Tag:tower:type=diving",
+        {"man_made": "tower", "tower:type": "diving"}
+    ],
+    [
+        "Key:design",
+        {},
+        "power",
+        ["tower", "pole"],
+        "design",
+        [
+            "one-level", "two-level", "three-level", "four-level", "asymmetric",
+            "triangle", "flag", "delta", "delta_two-level", "delta_three-level"
+        ]
+    ],
+    [
+        "Key:design_2",
+        {},
+        "power",
+        ["tower"],
+        "design",
+        [
+            "donau", "donau_inverse", "barrel", "y-frame", "x-frame", "h-frame",
+            "guyed_h-frame", "portal", "portal_two-level", "portal_three-level"
+        ]
+    ]
+]
