@@ -1,6 +1,7 @@
 """
 Special icon collections for documentation.
 """
+import json
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
@@ -26,23 +27,92 @@ EXTRACTOR: ShapeExtractor = ShapeExtractor(
 
 
 @dataclass
-class SVGTable:
+class Collection:
+    """Icon collection."""
+
+    page_name: str
+    # Core tags
+    tags: Tags
+    # Tag key to be used in rows
+    row_key: Optional[str] = None
+    # List of tag values to be used in rows
+    row_values: list[str] = field(default_factory=list)
+    # Tag key to be used in columns
+    column_key: Optional[str] = None
+    # List of tag values to be used in columns
+    column_values: list[str] = field(default_factory=list)
+
+    def generate_wiki_table(self) -> tuple[str, list[Icon]]:
+        """
+        Generate Röntgen icon table for the OpenStreetMap wiki page.
+        """
+        icons: list[Icon] = []
+        text: str = '{| class="wikitable"\n'
+
+        if self.column_key is not None:
+            text += f"! {{{{Key|{self.column_key}}}}}"
+        else:
+            text += "! Tag || Icon"
+
+        if not self.column_values:
+            self.column_values = [""]
+        else:
+            for column_value in self.column_values:
+                text += " ||"
+                if column_value:
+                    text += (
+                        " {{vert header|"
+                        f"{{{{TagValue|{self.column_key}|{column_value}}}}}"
+                        "}}"
+                    )
+        text += "\n"
+
+        processed: set[str] = set()
+
+        for row_value in self.row_values:
+            text += "|-\n"
+            if row_value:
+                text += f"| {{{{Tag|{self.row_key}|{row_value}}}}}\n"
+            else:
+                text += "|\n"
+            for column_value in self.column_values:
+                current_tags: Tags = dict(self.tags) | {self.row_key: row_value}
+                if column_value:
+                    current_tags |= {self.column_key: column_value}
+                icon, _ = SCHEME.get_icon(
+                    EXTRACTOR, current_tags, processed, MapConfiguration()
+                )
+                if not icon:
+                    print("Icon was not constructed.")
+                text += (
+                    "| "
+                    f"[[Image:Röntgen {icon.main_icon.get_name()}.svg|32px]]\n"
+                )
+                icons.append(icon.main_icon)
+
+        text += "|}\n"
+
+        return text, icons
+
+
+class SVGTable(Collection):
     """SVG table with icon combinations."""
 
     def __init__(
         self,
         svg: svgwrite.Drawing,
-        row_key: Optional[str],
-        row_values: list[str],
-        column_key: Optional[str],
-        column_values: list[str],
+        page_name: str,
+        tags: Tags,
+        row_key: Optional[str] = None,
+        row_values: list[str] = field(default_factory=list),
+        column_key: Optional[str] = None,
+        column_values: list[str] = field(default_factory=list),
     ):
-        self.svg: svgwrite.Drawing = svg
+        super().__init__(
+            page_name, tags, row_key, row_values, column_key, column_values
+        )
 
-        self.row_key: Optional[str] = row_key
-        self.row_values: list[str] = row_values
-        self.column_key: Optional[str] = column_key
-        self.column_values: list[str] = column_values
+        self.svg: svgwrite.Drawing = svg
 
         self.border: np.ndarray = np.array((16.0, 16.0))
         self.step: float = 48.0
@@ -84,12 +154,48 @@ class SVGTable:
             2 * self.border + np.array(self.size) + self.half_step
         )
 
-    def draw(self) -> None:
-        """Draw rows and columns."""
+    def draw_table(self) -> None:
+        """Draw SVG table."""
         self.draw_rows()
         self.draw_columns()
         self.draw_delimiter()
         self.draw_rectangle()
+
+        for i, row_value in enumerate(self.row_values):
+            for j, column_value in enumerate(
+                (self.column_values if self.column_values else [""])
+            ):
+                current_tags: Tags = dict(self.tags) | {self.row_key: row_value}
+                if column_value:
+                    current_tags |= {self.column_key: column_value}
+                processed: set[str] = set()
+                icon, _ = SCHEME.get_icon(
+                    EXTRACTOR, current_tags, processed, MapConfiguration()
+                )
+                processed = icon.processed
+                if not icon:
+                    print("Icon was not constructed.")
+
+                if (
+                    icon.main_icon
+                    and not icon.main_icon.is_default()
+                    and (
+                        not self.column_key
+                        or not column_value
+                        or (self.column_key in processed)
+                    )
+                    and (
+                        not self.row_key
+                        or not row_value
+                        or (self.row_key in processed)
+                    )
+                ):
+                    self.draw_icon(np.array((j, i)), icon)
+                else:
+                    self.draw_cross(np.array((j, i)))
+
+        width, height = self.get_size()
+        self.svg.update({"width": width, "height": height})
 
     def draw_rows(self) -> None:
         """Draw row texts."""
@@ -209,246 +315,35 @@ class SVGTable:
         )
 
 
-@dataclass
-class Collection:
-    """Icon collection."""
-
-    page_name: str
-    # Core tags
-    tags: Tags
-    # Tag key to be used in rows
-    row_key: Optional[str] = None
-    # List of tag values to be used in rows
-    row_values: list[str] = field(default_factory=list)
-    # Tag key to be used in columns
-    column_key: Optional[str] = None
-    # List of tag values to be used in columns
-    column_values: list[str] = field(default_factory=list)
-
-    def generate_wiki_table(self) -> tuple[str, list[Icon]]:
-        """
-        Generate Röntgen icon table for the OpenStreetMap wiki page.
-        """
-        icons: list[Icon] = []
-        text: str = '{| class="wikitable"\n'
-
-        if self.column_key is not None:
-            text += f"! {{{{Key|{self.column_key}}}}}"
-        else:
-            text += "! Tag || Icon"
-
-        if not self.column_values:
-            self.column_values = [""]
-        else:
-            for column_value in self.column_values:
-                text += " ||"
-                if column_value:
-                    text += (
-                        " {{vert header|"
-                        f"{{{{TagValue|{self.column_key}|{column_value}}}}}"
-                        "}}"
-                    )
-        text += "\n"
-
-        processed: set[str] = set()
-
-        for row_value in self.row_values:
-            text += "|-\n"
-            if row_value:
-                text += f"| {{{{Tag|{self.row_key}|{row_value}}}}}\n"
-            else:
-                text += "|\n"
-            for column_value in self.column_values:
-                current_tags: Tags = dict(self.tags) | {self.row_key: row_value}
-                if column_value:
-                    current_tags |= {self.column_key: column_value}
-                icon, _ = SCHEME.get_icon(
-                    EXTRACTOR, current_tags, processed, MapConfiguration()
-                )
-                if not icon:
-                    print("Icon was not constructed.")
-                text += (
-                    "| "
-                    f"[[Image:Röntgen {icon.main_icon.get_name()}.svg|32px]]\n"
-                )
-                icons.append(icon.main_icon)
-
-        text += "|}\n"
-
-        return text, icons
-
-    def draw_table(self, svg: Drawing) -> np.ndarray:
-        """Draw SVG table."""
-        table: SVGTable = SVGTable(
-            svg,
-            self.row_key + "=*" if self.row_key else None,
-            self.row_values,
-            self.column_key + "=*" if self.column_key else None,
-            self.column_values,
-        )
-        table.draw()
-
-        for i, row_value in enumerate(self.row_values):
-            for j, column_value in enumerate(
-                (self.column_values if self.column_values else [""])
-            ):
-                current_tags: Tags = dict(self.tags) | {self.row_key: row_value}
-                if column_value:
-                    current_tags |= {self.column_key: column_value}
-                processed: set[str] = set()
-                icon, _ = SCHEME.get_icon(
-                    EXTRACTOR, current_tags, processed, MapConfiguration()
-                )
-                processed = icon.processed
-                if not icon:
-                    print("Icon was not constructed.")
-
-                if (
-                    icon.main_icon
-                    and not icon.main_icon.is_default()
-                    and (
-                        not self.column_key
-                        or not column_value
-                        or (self.column_key in processed)
-                    )
-                    and (
-                        not self.row_key
-                        or not row_value
-                        or (self.row_key in processed)
-                    )
-                ):
-                    table.draw_icon(np.array((j, i)), icon)
-                else:
-                    table.draw_cross(np.array((j, i)))
-
-        return table.get_size()
-
-
-tower_type_values: list[str] = [
-    "communication",
-    "lighting",
-    "monitoring",
-    "siren",
-]
-
-collections = [
-    Collection(
-        "Tag:man_made=mast",
-        {"man_made": "mast"},
-        "tower:construction",
-        ["freestanding", "lattice", "guyed_tube", "guyed_lattice"],
-        "tower:type",
-        [""] + tower_type_values,
-    ),
-    Collection(
-        "Tag:natural=volcano",
-        {"natural": "volcano"},
-        "volcano:type",
-        ["stratovolcano", "shield", "scoria"],
-        "volcano:status",
-        ["", "active", "dormant", "extinct"],
-    ),
-    Collection(
-        "Tag:tower:construction=guyed_tube",
-        {"man_made": "mast", "tower:construction": "guyed_tube"},
-        "tower:type",
-        [""] + tower_type_values,
-    ),
-    Collection(
-        "Tag:tower:construction=guyed_lattice",
-        {"man_made": "mast", "tower:construction": "guyed_lattice"},
-        "tower:type",
-        [""] + tower_type_values,
-    ),
-    Collection(
-        "Key:communication:mobile_phone",
-        {"communication:mobile_phone": "yes"},
-    ),
-    Collection(
-        "Key:traffic_calming",
-        {},
-        "traffic_calming",
-        [
-            "bump",
-            "mini_bumps",
-            "hump",
-            "table",
-            "cushion",
-            "rumble_strip",
-            "dip",
-            "double_dip",
-            # "dynamic_bump", "chicane",
-            # "choker", "island", "chocked_island", "chocked_table",
-        ],
-    ),
-    Collection(
-        "Key:crane:type",
-        {"man_made": "crane"},
-        "crane:type",
-        [
-            "gantry_crane",
-            "floor-mounted_crane",
-            "portal_crane",
-            "travel_lift",
-            "tower_crane",
-        ],
-    ),
-    Collection(
-        "Tag:tower:type=diving",
-        {"man_made": "tower", "tower:type": "diving"},
-    ),
-    Collection(
-        "Key:design",
-        {},
-        "power",
-        ["tower", "pole"],
-        "design",
-        [
-            "one-level",
-            "two-level",
-            "three-level",
-            "four-level",
-            "asymmetric",
-            "triangle",
-            "flag",
-            "delta",
-            "delta_two-level",
-            "delta_three-level",
-        ],
-    ),
-    Collection(
-        "Key:design_2",
-        {},
-        "power",
-        ["tower"],
-        "design",
-        [
-            "donau",
-            "donau_inverse",
-            "barrel",
-            "y-frame",
-            "x-frame",
-            "h-frame",
-            "guyed_h-frame",
-            "portal",
-            "portal_two-level",
-            "portal_three-level",
-        ],
-    ),
-]
-
-
 def draw_svg_tables(output_path: Path, html_file_path: Path) -> None:
     """Draw SVG tables of icon collections."""
-    with html_file_path.open("w+") as html_file:
-        for collection in collections:
-            path: Path = output_path / f"{collection.page_name}.svg"
-            svg: svgwrite = svgwrite.Drawing(path.name)
-            width, height = collection.draw_table(svg)
-            svg.update({"width": width, "height": height})
-            with path.open("w+") as output_file:
-                svg.write(output_file)
-            html_file.write(f'<img src="{path}" />\n')
+
+    with Path("data/collections.json").open() as input_file:
+        collections: list[list] = json.load(input_file)
+        with html_file_path.open("w+") as html_file:
+            for collection in collections:
+                path: Path = output_path / f"{collection[0]}.svg"
+                svg: Drawing = svgwrite.Drawing(path.name)
+
+                row_key = collection[2] if len(collection) > 2 else None
+                row_values = collection[3] if len(collection) > 3 else []
+                column_key = collection[4] if len(collection) > 4 else None
+                column_values = collection[5] if len(collection) > 5 else []
+
+                table: SVGTable = SVGTable(
+                    svg,
+                    collection[0],
+                    collection[1],
+                    row_key,
+                    row_values,
+                    column_key,
+                    column_values,
+                )
+                table.draw_table()
+
+                with path.open("w+") as output_file:
+                    svg.write(output_file)
+                html_file.write(f'<img src="{path}" />\n')
 
 
 if __name__ == "__main__":
