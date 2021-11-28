@@ -211,17 +211,23 @@ def draw_icons() -> None:
     )
     collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
     collection.sort()
-    for icon in collection.icons:
-        icon.recolor(Color("#444444"))
-    icon_grid_path: Path = workspace.get_icon_grid_path()
-    collection.draw_grid(workspace.GRID_PATH)
-    collection.draw_grid(icon_grid_path)
-    logging.info(f"Icon grid is written to {icon_grid_path}.")
+
+    # Draw individual icons.
 
     icons_by_id_path: Path = workspace.get_icons_by_id_path()
     icons_by_name_path: Path = workspace.get_icons_by_name_path()
     collection.draw_icons(icons_by_id_path)
     collection.draw_icons(icons_by_name_path, by_name=True)
+
     logging.info(
         f"Icons are written to {icons_by_name_path} and {icons_by_id_path}."
     )
+
+    # Draw grid.
+
+    for icon in collection.icons:
+        icon.recolor(Color("#444444"))
+
+    for path in workspace.get_icon_grid_path(), workspace.GRID_PATH:
+        collection.draw_grid(path)
+        logging.info(f"Icon grid is written to {path}.")

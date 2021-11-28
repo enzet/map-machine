@@ -419,11 +419,7 @@ class Icon:
         if len(names) == 1:
             return names[0]
 
-        if len(names) == 2:
-            return names[0] + " and " + names[1]
-
-        if len(names) > 2:
-            return ", ".join(names[:-1]) + " and " + names[-1]
+        return ", ".join(names[:-1]) + " and " + names[-1]
 
     def has_categories(self) -> bool:
         """Check whether oll shape categories are known."""
