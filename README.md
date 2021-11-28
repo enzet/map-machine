@@ -98,7 +98,13 @@ There are [special symbols](https://en.wikipedia.org/wiki/List_of_Japanese_map_s
 
 Map Machine constructs icons from the shapes extracted from the sketch SVG file. Some icons consist of just one shape, to construct others it may be necessary to combine two or more shapes.
 
-![Bus stop icon combination](doc/bus_stop.png)
+### Masts ###
+
+![Mast types](doc/mast.svg)
+
+### Volcanoes ###
+
+![Volcano types](doc/volcano.svg)
 
 Wireframe view
 --------------
