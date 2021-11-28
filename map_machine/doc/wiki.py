@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 from typing import Optional
 
+from map_machine.doc.collections import Collection
 from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import Tags
 from map_machine.pictogram.icon import Icon, ShapeExtractor
@@ -26,100 +27,87 @@ RENDERING_HEADER_PATTERN: re.Pattern = re.compile(
 )
 
 
-def generate_table(
-    tags: Tags,
-    row_key: str,
-    row_values: list[str],
-    column_key: str,
-    column_values: list[str],
-) -> tuple[str, list[Icon]]:
-    """
-    Generate Röntgen icon table for the OpenStreetMap wiki page.
+class WikiTable:
+    """SVG table with icon combinations."""
 
-    :param tags: core tags
-    :param row_key: tag key to be used in rows
-    :param row_values: list of tag values to be used in rows
-    :param column_key: tag key to be used in columns
-    :param column_values: list of tag values to be used in columns
-    """
-    icons: list[Icon] = []
-    text: str = '{| class="wikitable"\n'
+    def __init__(self, collection: Collection, page_name: str):
+        self.collection: Collection = collection
+        self.page_name: str = page_name
 
-    if column_key is not None:
-        text += f"! {{{{Key|{column_key}}}}}"
-    else:
-        text += "! Tag || Icon"
+    def generate_wiki_table(self) -> tuple[str, list[Icon]]:
+        """
+        Generate Röntgen icon table for the OpenStreetMap wiki page.
+        """
+        icons: list[Icon] = []
+        text: str = '{| class="wikitable"\n'
 
-    if not column_values:
-        column_values = [""]
-    else:
-        for column_value in column_values:
-            text += " ||"
-            if column_value:
-                text += (
-                    " {{vert header|"
-                    f"{{{{TagValue|{column_key}|{column_value}}}}}"
-                    "}}"
-                )
-    text += "\n"
-
-    processed: set[str] = set()
-
-    for row_value in row_values:
-        text += "|-\n"
-        if row_value:
-            text += f"| {{{{Tag|{row_key}|{row_value}}}}}\n"
+        if self.collection.column_key is not None:
+            text += f"! {{{{Key|{self.collection.column_key}}}}}"
         else:
-            text += "|\n"
-        for column_value in column_values:
-            current_tags: Tags = dict(tags) | {row_key: row_value}
-            if column_value:
-                current_tags |= {column_key: column_value}
-            icon, _ = SCHEME.get_icon(
-                EXTRACTOR, current_tags, processed, MapConfiguration()
-            )
-            if not icon:
-                print("Icon was not constructed.")
-            text += (
-                f"| [[Image:Röntgen {icon.main_icon.get_name()}.svg|32px]]\n"
-            )
-            icons.append(icon.main_icon)
+            text += "! Tag || Icon"
 
-    text += "|}\n"
+        if not self.collection.column_values:
+            self.collection.column_values = [""]
+        else:
+            for column_value in self.collection.column_values:
+                text += " ||"
+                if column_value:
+                    text += (
+                        f" {{{{vert header|{{{{TagValue|"
+                        f"{self.collection.column_key}|{column_value}}}}}}}}}"
+                    )
+        text += "\n"
 
-    return text, icons
+        processed: set[str] = set()
+
+        for row_value in self.collection.row_values:
+            text += "|-\n"
+            if row_value:
+                text += f"| {{{{Tag|{self.collection.row_key}|{row_value}}}}}\n"
+            else:
+                text += "|\n"
+            for column_value in self.collection.column_values:
+                current_tags: Tags = dict(self.collection.tags) | {
+                    self.collection.row_key: row_value
+                }
+                if column_value:
+                    current_tags |= {self.collection.column_key: column_value}
+                icon, _ = SCHEME.get_icon(
+                    EXTRACTOR, current_tags, processed, MapConfiguration()
+                )
+                if not icon:
+                    print("Icon was not constructed.")
+                text += (
+                    "| "
+                    f"[[Image:Röntgen {icon.main_icon.get_name()}.svg|32px]]\n"
+                )
+                icons.append(icon.main_icon)
+
+        text += "|}\n"
+
+        return text, icons
 
 
 def generate_new_text(
     old_text: str,
-    tags: Tags,
-    row_key: str,
-    row_values: list[str],
-    column_key: str,
-    column_values: list[str],
+    table: WikiTable,
 ) -> tuple[Optional[str], list[Icon]]:
     """
     Generate Röntgen icon table for the OpenStreetMap wiki page.
 
     :param old_text: previous wiki page text
-    :param tags: core tags
-    :param row_key: tag key to be used in rows
-    :param row_values: list of tag values to be used in rows
-    :param column_key: tag key to be used in columns
-    :param column_values: list of tag values to be used in columns
+    :param table: wiki table generator
     :return: new wiki page text
     """
     wiki_text: str
     icons = []
 
-    if row_key:
-        wiki_text, icons = generate_table(
-            tags, row_key, row_values, column_key, column_values
-        )
+    if table.collection.row_key:
+        wiki_text, icons = table.generate_wiki_table()
     else:
         processed = set()
         icon, _ = SCHEME.get_icon(
-            EXTRACTOR, tags, processed, MapConfiguration()
+            EXTRACTOR, table.collection.tags, processed, MapConfiguration()
         )
         if icon.main_icon.is_default():
             wiki_text = (
