@@ -145,6 +145,7 @@
     "cliff": {"categories": ["natural"]},
     "crater": {"categories": ["natural"]},
     "ford": {"categories": ["natural"]},
+    "lava": {"name": "lava"},
     "shield_volcano": {"name": "shield volcano", "categories": ["natural"], "emoji": "🌋"},
     "smoke": {"name": "smoke"},
     "smoke_2": {"name": "clouds"},
