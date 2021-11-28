@@ -30,17 +30,44 @@ EXTRACTOR: ShapeExtractor = ShapeExtractor(
 class Collection:
     """Icon collection."""
 
-    page_name: str
     # Core tags
     tags: Tags
+
     # Tag key to be used in rows
     row_key: Optional[str] = None
+
     # List of tag values to be used in rows
     row_values: list[str] = field(default_factory=list)
+
     # Tag key to be used in columns
     column_key: Optional[str] = None
+
     # List of tag values to be used in columns
     column_values: list[str] = field(default_factory=list)
+
+    @classmethod
+    def deserialize(cls, structure):
+        """Deserialize icon collection from structure."""
+        row_key = structure[2] if len(structure) > 2 else None
+        row_values = structure[3] if len(structure) > 3 else []
+        column_key = structure[4] if len(structure) > 4 else None
+        column_values = structure[5] if len(structure) > 5 else []
+
+        return cls(
+            structure[1],
+            row_key,
+            row_values,
+            column_key,
+            column_values,
+        )
+
+
+class WikiTable:
+    """SVG table with icon combinations."""
+
+    def __init__(self, collection: Collection, page_name: str):
+        self.collection: Collection = collection
+        self.page_name: str = page_name
 
     def generate_wiki_table(self) -> tuple[str, list[Icon]]:
         """
@@ -49,36 +76,37 @@ class Collection:
         icons: list[Icon] = []
         text: str = '{| class="wikitable"\n'
 
-        if self.column_key is not None:
-            text += f"! {{{{Key|{self.column_key}}}}}"
+        if self.collection.column_key is not None:
+            text += f"! {{{{Key|{self.collection.column_key}}}}}"
         else:
             text += "! Tag || Icon"
 
-        if not self.column_values:
-            self.column_values = [""]
+        if not self.collection.column_values:
+            self.collection.column_values = [""]
         else:
-            for column_value in self.column_values:
+            for column_value in self.collection.column_values:
                 text += " ||"
                 if column_value:
                     text += (
-                        " {{vert header|"
-                        f"{{{{TagValue|{self.column_key}|{column_value}}}}}"
-                        "}}"
+                        f" {{{{vert header|{{{{TagValue|"
+                        f"{self.collection.column_key}|{column_value}}}}}}}}}"
                     )
         text += "\n"
 
         processed: set[str] = set()
 
-        for row_value in self.row_values:
+        for row_value in self.collection.row_values:
             text += "|-\n"
             if row_value:
-                text += f"| {{{{Tag|{self.row_key}|{row_value}}}}}\n"
+                text += f"| {{{{Tag|{self.collection.row_key}|{row_value}}}}}\n"
             else:
                 text += "|\n"
-            for column_value in self.column_values:
-                current_tags: Tags = dict(self.tags) | {self.row_key: row_value}
+            for column_value in self.collection.column_values:
+                current_tags: Tags = dict(self.collection.tags) | {
+                    self.collection.row_key: row_value
+                }
                 if column_value:
-                    current_tags |= {self.column_key: column_value}
+                    current_tags |= {self.collection.column_key: column_value}
                 icon, _ = SCHEME.get_icon(
                     EXTRACTOR, current_tags, processed, MapConfiguration()
                 )
@@ -95,23 +123,11 @@ class Collection:
         return text, icons
 
 
-class SVGTable(Collection):
+class SVGTable:
     """SVG table with icon combinations."""
 
-    def __init__(
-        self,
-        svg: svgwrite.Drawing,
-        page_name: str,
-        tags: Tags,
-        row_key: Optional[str] = None,
-        row_values: list[str] = field(default_factory=list),
-        column_key: Optional[str] = None,
-        column_values: list[str] = field(default_factory=list),
-    ):
-        super().__init__(
-            page_name, tags, row_key, row_values, column_key, column_values
-        )
-
+    def __init__(self, collection: Collection, svg: svgwrite.Drawing):
+        self.collection: Collection = collection
         self.svg: svgwrite.Drawing = svg
 
         self.border: np.ndarray = np.array((16.0, 16.0))
@@ -140,14 +156,14 @@ class SVGTable(Collection):
 
         self.size: list[float] = [
             max(
-                max(map(len, self.row_values)) * self.font_width,
-                len(self.row_key) * self.font_width
-                + (self.offset if self.column_values else 0),
+                max(map(len, self.collection.row_values)) * self.font_width,
+                len(self.collection.row_key) * self.font_width
+                + (self.offset if self.collection.column_values else 0),
             )
-            if self.row_values
+            if self.collection.row_values
             else 25.0,
-            max(map(len, self.column_values)) * self.font_width
-            if self.column_values
+            max(map(len, self.collection.column_values)) * self.font_width
+            if self.collection.column_values
             else 25.0,
         ]
         self.start_point: np.ndarray = (
@@ -161,13 +177,19 @@ class SVGTable(Collection):
         self.draw_delimiter()
         self.draw_rectangle()
 
-        for i, row_value in enumerate(self.row_values):
+        for i, row_value in enumerate(self.collection.row_values):
             for j, column_value in enumerate(
-                (self.column_values if self.column_values else [""])
+                (
+                    self.collection.column_values
+                    if self.collection.column_values
+                    else [""]
+                )
             ):
-                current_tags: Tags = dict(self.tags) | {self.row_key: row_value}
+                current_tags: Tags = dict(self.collection.tags) | {
+                    self.collection.row_key: row_value
+                }
                 if column_value:
-                    current_tags |= {self.column_key: column_value}
+                    current_tags |= {self.collection.column_key: column_value}
                 processed: set[str] = set()
                 icon, _ = SCHEME.get_icon(
                     EXTRACTOR, current_tags, processed, MapConfiguration()
@@ -180,14 +202,14 @@ class SVGTable(Collection):
                     icon.main_icon
                     and not icon.main_icon.is_default()
                     and (
-                        not self.column_key
+                        not self.collection.column_key
                         or not column_value
-                        or (self.column_key in processed)
+                        or (self.collection.column_key in processed)
                     )
                     and (
-                        not self.row_key
+                        not self.collection.row_key
                         or not row_value
-                        or (self.row_key in processed)
+                        or (self.collection.row_key in processed)
                     )
                 ):
                     self.draw_icon(np.array((j, i)), icon)
@@ -203,17 +225,17 @@ class SVGTable(Collection):
             (self.step / 2.0 + self.border[0], 0.0)
         )
         shift: np.ndarray = (
-            -self.offset if self.column_values else 0.9,
+            -self.offset if self.collection.column_values else 0.9,
             2.0 - self.step / 2.0 - self.border[1],
         )
-        if self.row_key:
+        if self.collection.row_key:
             self.draw_text(
-                f"{self.row_key}=*",
+                f"{self.collection.row_key}=*",
                 point + np.array(shift),
                 anchor="end",
                 weight="bold",
             )
-        for row_value in self.row_values:
+        for row_value in self.collection.row_values:
             if row_value:
                 self.draw_text(
                     row_value, point + np.array((0.0, 2.0)), anchor="end"
@@ -228,13 +250,16 @@ class SVGTable(Collection):
             - self.border
             + np.array((0.0, 2.0 - self.offset))
         )
-        if self.column_key:
+        if self.collection.column_key:
             self.draw_text(
-                f"{self.column_key}=*", point, anchor="end", weight="bold"
+                f"{self.collection.column_key}=*",
+                point,
+                anchor="end",
+                weight="bold",
             )
 
         point = np.array(self.start_point)
-        for column_value in self.column_values:
+        for column_value in self.collection.column_values:
             text_point: np.ndarray = point + np.array(
                 (2.0, -self.step / 2.0 - self.border[1])
             )
@@ -243,7 +268,7 @@ class SVGTable(Collection):
 
     def draw_delimiter(self) -> None:
         """Draw line between column and row titles."""
-        if self.column_values:
+        if self.collection.column_values:
             line: Line = self.svg.line(
                 self.start_point - self.half_step - self.border,
                 self.start_point
@@ -259,7 +284,12 @@ class SVGTable(Collection):
         """Draw rectangle beneath all cells."""
         rectangle: Rect = self.svg.rect(
             self.start_point - self.half_step,
-            np.array((max(1, len(self.column_values)), len(self.row_values)))
+            np.array(
+                (
+                    max(1, len(self.collection.column_values)),
+                    len(self.collection.row_values),
+                )
+            )
             * self.step,
             fill=color,
         )
@@ -267,8 +297,8 @@ class SVGTable(Collection):
 
     def draw_icon(self, position: np.ndarray, icon: IconSet) -> None:
         """Draw icon in the table cell."""
-        if not self.column_values:
-            self.column_values = [""]
+        if not self.collection.column_values:
+            self.collection.column_values = [""]
         point: np.ndarray = np.array(self.start_point) + position * self.step
         icon.main_icon.draw(self.svg, point, scale=self.icon_size / 16.0)
 
@@ -309,7 +339,12 @@ class SVGTable(Collection):
         """Get the whole picture size."""
         return (
             self.start_point
-            + np.array((max(1, len(self.column_values)), len(self.row_values)))
+            + np.array(
+                (
+                    max(1, len(self.collection.column_values)),
+                    len(self.collection.row_values),
+                )
+            )
             * self.step
             + self.border
         )
@@ -321,24 +356,13 @@ def draw_svg_tables(output_path: Path, html_file_path: Path) -> None:
     with Path("data/collections.json").open() as input_file:
         collections: list[list] = json.load(input_file)
         with html_file_path.open("w+") as html_file:
-            for collection in collections:
-                path: Path = output_path / f"{collection[0]}.svg"
+            for structure in collections:
+                path: Path = output_path / f"{structure[0]}.svg"
                 svg: Drawing = svgwrite.Drawing(path.name)
 
-                row_key = collection[2] if len(collection) > 2 else None
-                row_values = collection[3] if len(collection) > 3 else []
-                column_key = collection[4] if len(collection) > 4 else None
-                column_values = collection[5] if len(collection) > 5 else []
+                collection: Collection = Collection.deserialize(structure)
 
-                table: SVGTable = SVGTable(
-                    svg,
-                    collection[0],
-                    collection[1],
-                    row_key,
-                    row_values,
-                    column_key,
-                    column_values,
-                )
+                table: SVGTable = SVGTable(collection, svg)
                 table.draw_table()
 
                 with path.open("w+") as output_file:
