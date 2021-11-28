@@ -4,7 +4,7 @@ Special icon collections for documentation.
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 import numpy as np
 import svgwrite
@@ -46,19 +46,22 @@ class Collection:
     column_values: list[str] = field(default_factory=list)
 
     @classmethod
-    def deserialize(cls, structure):
+    def deserialize(cls, structure: dict[str, Any]):
         """Deserialize icon collection from structure."""
-        row_key = structure[2] if len(structure) > 2 else None
-        row_values = structure[3] if len(structure) > 3 else []
-        column_key = structure[4] if len(structure) > 4 else None
-        column_values = structure[5] if len(structure) > 5 else []
-
+        row_key: Optional[str] = (
+            structure["row_key"] if "row_key" in structure else None
+        )
+        row_values: list[str] = (
+            structure["row_values"] if "row_values" in structure else []
+        )
+        column_key: Optional[str] = (
+            structure["column_key"] if "column_key" in structure else None
+        )
+        column_values: list[str] = (
+            structure["column_values"] if "column_values" in structure else []
+        )
         return cls(
-            structure[1],
-            row_key,
-            row_values,
-            column_key,
-            column_values,
+            structure["tags"], row_key, row_values, column_key, column_values
         )
 
 
@@ -98,12 +101,13 @@ class SVGTable:
                 max(map(len, self.collection.row_values)) * self.font_width,
                 len(self.collection.row_key) * self.font_width
                 + (self.offset if self.collection.column_values else 0),
+                170.0,
             )
             if self.collection.row_values
-            else 25.0,
+            else 0.0,
             max(map(len, self.collection.column_values)) * self.font_width
             if self.collection.column_values
-            else 25.0,
+            else 0.0,
         ]
         self.start_point: np.ndarray = (
             2 * self.border + np.array(self.size) + self.half_step
@@ -285,6 +289,7 @@ class SVGTable:
                 )
             )
             * self.step
+            - self.half_step
             + self.border
         )
 
@@ -293,10 +298,14 @@ def draw_svg_tables(output_path: Path, html_file_path: Path) -> None:
     """Draw SVG tables of icon collections."""
 
     with Path("data/collections.json").open() as input_file:
-        collections: list[list] = json.load(input_file)
+        collections: list[dict[str, Any]] = json.load(input_file)
+
         with html_file_path.open("w+") as html_file:
             for structure in collections:
-                path: Path = output_path / f"{structure[0]}.svg"
+                if "id" not in structure:
+                    continue
+
+                path: Path = output_path / f"{structure['id']}.svg"
                 svg: Drawing = svgwrite.Drawing(path.name)
 
                 collection: Collection = Collection.deserialize(structure)
@@ -306,7 +315,9 @@ def draw_svg_tables(output_path: Path, html_file_path: Path) -> None:
 
                 with path.open("w+") as output_file:
                     svg.write(output_file)
-                html_file.write(f'<img src="{path}" />\n')
+                html_file.write(
+                    f'<img src="{path}" style="border: 1px solid #DDD;" />\n'
+                )
 
 
 if __name__ == "__main__":

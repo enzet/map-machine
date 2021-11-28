@@ -1,78 +1,80 @@
 [
-    [
-        "Tag:man_made=mast",
-        {"man_made": "mast"},
-        "tower:construction",
-        ["freestanding", "lattice", "guyed_tube", "guyed_lattice"],
-        "tower:type",
-        ["", "communication", "lighting", "monitoring", "siren"]
-    ],
-    [
-        "Tag:natural=volcano",
-        {"natural": "volcano"},
-        "volcano:type",
-        ["stratovolcano", "shield", "scoria"],
-        "volcano:status",
-        [ "", "active", "dormant", "extinct"]
-    ],
-    [
-        "Tag:tower:construction=guyed_tube",
-        {"man_made": "mast", "tower:construction": "guyed_tube"},
-        "tower:type",
-        ["", "communication", "lighting", "monitoring", "siren"]
-    ],
-    [
-        "Tag:tower:construction=guyed_lattice",
-        {"man_made": "mast", "tower:construction": "guyed_lattice"},
-        "tower:type",
-        ["", "communication", "lighting", "monitoring", "siren"]
-    ],
-    [
-        "Key:communication:mobile_phone",
-        {"communication:mobile_phone": "yes"}
-    ],
-    [
-        "Key:traffic_calming",
-        {},
-        "traffic_calming",
-        [
+    {
+        "page": "Tag:man_made=mast",
+        "id": "mast",
+        "tags": {"man_made": "mast"},
+        "row_key": "tower:construction",
+        "row_values": ["freestanding", "lattice", "guyed_tube", "guyed_lattice"],
+        "column_key": "tower:type",
+        "column_values": ["", "communication", "lighting", "monitoring", "siren"]
+    },
+    {
+        "page": "Tag:natural=volcano",
+        "id": "volcano",
+        "tags": {"natural": "volcano"},
+        "row_key": "volcano:type",
+        "row_values": ["stratovolcano", "shield", "scoria"],
+        "column_key": "volcano:status",
+        "column_values": [ "", "active", "dormant", "extinct"]
+    },
+    {
+        "page": "Tag:tower:construction=guyed_tube",
+        "tags": {"man_made": "mast", "tower:construction": "guyed_tube"},
+        "row_key": "tower:type",
+        "row_values": ["", "communication", "lighting", "monitoring", "siren"]
+    },
+    {
+        "page": "Tag:tower:construction=guyed_lattice",
+        "tags": {"man_made": "mast", "tower:construction": "guyed_lattice"},
+        "row_key": "tower:type",
+        "row_values": ["", "communication", "lighting", "monitoring", "siren"]
+    },
+    {
+        "page": "Key:communication:mobile_phone",
+        "tags": {"communication:mobile_phone": "yes"}
+    },
+    {
+        "page": "Key:traffic_calming",
+        "tags": {},
+        "column_key": "traffic_calming",
+        "column_values": [
             "bump", "mini_bumps", "hump", "table", "cushion", "rumble_strip",
             "dip", "double_dip"
         ]
-    ],
-    [
-        "Key:crane:type",
-        {"man_made": "crane"},
-        "crane:type",
-        [
+    },
+    {
+        "page": "Key:crane:type",
+        "tags": {"man_made": "crane"},
+        "column_key": "crane:type",
+        "column_values": [
             "gantry_crane", "floor-mounted_crane", "portal_crane",
             "travel_lift", "tower_crane"
         ]
-    ],
-    [
-        "Tag:tower:type=diving",
-        {"man_made": "tower", "tower:type": "diving"}
-    ],
-    [
-        "Key:design",
-        {},
-        "power",
-        ["tower", "pole"],
-        "design",
-        [
+    },
+    {
+        "page": "Tag:tower:type=diving",
+        "tags": {"man_made": "tower", "tower:type": "diving"}
+    },
+    {
+        "page": "Key:design",
+        "tags": {},
+        "row_key": "power",
+        "row_values": ["tower", "pole"],
+        "column_key": "design",
+        "column_values": [
             "one-level", "two-level", "three-level", "four-level", "asymmetric",
             "triangle", "flag", "delta", "delta_two-level", "delta_three-level"
         ]
-    ],
-    [
-        "Key:design_2",
-        {},
-        "power",
-        ["tower"],
-        "design",
-        [
+    },
+    {
+        "page": "Key:design_2",
+        "tags": {},
+        "row_key": "power",
+        "row_values": ["tower"],
+        "column_key": "design",
+        "column_values": [
             "donau", "donau_inverse", "barrel", "y-frame", "x-frame", "h-frame",
             "guyed_h-frame", "portal", "portal_two-level", "portal_three-level"
         ]
-    ]
+    }
 ]
