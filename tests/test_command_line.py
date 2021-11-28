@@ -86,8 +86,9 @@ def test_icons() -> None:
     """Test `icons` command."""
     run(
         COMMAND_LINES["icons"],
+        b"INFO Icons are written to out/icons_by_name and out/icons_by_id.\n"
         b"INFO Icon grid is written to out/icon_grid.svg.\n"
-        b"INFO Icons are written to out/icons_by_name and out/icons_by_id.\n",
+        b"INFO Icon grid is written to doc/grid.svg.\n",
     )
 
     assert (Path("out") / "icon_grid.svg").is_file()
