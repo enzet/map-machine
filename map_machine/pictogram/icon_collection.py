@@ -228,6 +228,9 @@ def draw_icons() -> None:
     for icon in collection.icons:
         icon.recolor(Color("#444444"))
 
-    for path in workspace.get_icon_grid_path(), workspace.GRID_PATH:
-        collection.draw_grid(path)
+    for path, scale in (
+        (workspace.get_icon_grid_path(), 1.0),
+        (workspace.GRID_PATH, 2.0),
+    ):
+        collection.draw_grid(path, scale=scale)
         logging.info(f"Icon grid is written to {path}.")
