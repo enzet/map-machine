@@ -877,11 +877,11 @@ node_icons:
       shapes: [tower_defensive]
     - tags: {man_made: tower, tower:type: diving}
       shapes: [diving_platform]
-    - tags: {man_made: tower, tower:type: diving, tower:platforms: 2}
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "2"}
       shapes: [diving_2_platforms]
-    - tags: {man_made: tower, tower:type: diving, tower:platforms: 3}
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "3"}
       shapes: [diving_3_platforms]
-    - tags: {man_made: tower, tower:type: diving, tower:platforms: 4}
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "4"}
       shapes: [diving_4_platforms]
     - tags: {man_made: tower, tower:type: pagoda}
       shapes: [pagoda]
