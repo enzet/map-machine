@@ -373,19 +373,19 @@ node_icons:
     - tags: {building: shrine, religion: shinto}
       shapes: [japan_shinto_shrine]
     - tags: {religion: christian}
-      shapes: [cross]
+      shapes: [latin_cross]
     - tags: {amenity: place_of_worship, religion: christian}
-      shapes: [cross]
+      shapes: [latin_cross]
     - tags:
         amenity: place_of_worship
         religion: christian
         denomination: catholic
-      shapes: [cross]
+      shapes: [latin_cross]
     - tags:
         amenity: place_of_worship
         religion: christian
         denomination: russian_orthodox
-      shapes: [russian_orthodox]
+      shapes: [russian_orthodox_cross]
     - tags:
         amenity: place_of_worship
         religion: christian
@@ -397,11 +397,11 @@ node_icons:
         denomination: baptist
       shapes: [baptist]
     - tags: {amenity: place_of_worship, religion: muslim}
-      shapes: [muslim]
+      shapes: [crescent]
     - tags: {amenity: place_of_worship, religion: buddhist}
       shapes: [dharmachakra]
     - tags: {amenity: place_of_worship, religion: jewish}
-      shapes: [jewish]
+      shapes: [star_of_david]
     - tags: {historic: tomb, tomb: mausoleum}
       shapes: [mausoleum]
     - tags: {historic: "*"}
@@ -1428,7 +1428,7 @@ node_icons:
     - tags: {leisure: firepit}
       shapes: [fire_pit]
     - tags: {man_made: cross}
-      shapes: [cross]
+      shapes: [latin_cross]
     - tags: {man_made: flagpole}
       shapes: [flagpole]
     - tags: {man_made: manhole}
