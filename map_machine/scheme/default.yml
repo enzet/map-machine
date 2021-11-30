@@ -492,6 +492,8 @@ node_icons:
       shapes: [{shape: picture, color: sell_color}]
     - tags: {shop: bakery}
       shapes: [cupcake]
+    - tags: {shop: bag}
+      shapes: [{shape: bag, color: sell_color}]
     - tags: {shop: bed}
       shapes: [{shape: bed, color: sell_color}]
     - tags: {shop: beauty}
