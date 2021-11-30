@@ -396,6 +396,9 @@
   "tower": {
     "city_gate": {"name": "city gate"},
     "diving_platform": {"name": "diving platform"},
+    "diving_2_platforms": {"name": "diving tower with 2 platforms"},
+    "diving_3_platforms": {"name": "diving tower with 3 platforms"},
+    "diving_4_platforms": {"name": "diving tower with 4 platforms"},
     "lattice": {"name": "lattice mast"},
     "lattice_guyed": {"name": "guyed lattice mast"},
     "observatory": {"name": "observatory"},
