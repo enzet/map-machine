@@ -554,6 +554,8 @@ node_icons:
       shapes: [ticket]
     - tags: {shop: tailor}
       shapes: [t_shirt_and_scissors]
+    - tags: {shop: tyres}
+      shapes: [{shape: tyre, color: sell_color}]
     - tags: {shop: toys}
       shapes: [{shape: toy_horse, color: sell_color}]
     - tags: {craft: tailor}
