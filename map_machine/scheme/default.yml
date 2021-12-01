@@ -236,6 +236,8 @@ node_icons:
       shapes: [cliff]
     - tags: {natural: peak}
       shapes: [triangle_small]
+    - tags: {natural: saddle}
+      shapes: [saddle]
     - tags: {natural: crater}
       exception: {diameter: "*"}
       shapes: [crater]
