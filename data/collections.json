@@ -15,7 +15,13 @@
         "row_key": "volcano:type",
         "row_values": ["stratovolcano", "shield", "scoria"],
         "column_key": "volcano:status",
-        "column_values": [ "", "active", "dormant", "extinct"]
+        "column_values": ["", "active", "dormant", "extinct"]
+    },
+    {
+        "id": "volcano_status",
+        "tags": {"natural": "volcano"},
+        "row_key": "volcano:status",
+        "row_values": ["", "active", "dormant", "extinct"]
     },
     {
         "page": "Tag:tower:construction=guyed_tube",
@@ -36,8 +42,8 @@
     {
         "page": "Key:traffic_calming",
         "tags": {},
-        "column_key": "traffic_calming",
-        "column_values": [
+        "row_key": "traffic_calming",
+        "row_values": [
             "bump", "mini_bumps", "hump", "table", "cushion", "rumble_strip",
             "dip", "double_dip"
         ]
@@ -52,11 +58,6 @@
         ]
     },
     {
-        "page": "Tag:tower:type=diving",
-        "tags": {"man_made": "tower", "tower:type": "diving"}
-    },
-    {
-        "page": "Key:design",
         "tags": {},
         "row_key": "power",
         "row_values": ["tower", "pole"],
@@ -67,7 +68,6 @@
         ]
     },
     {
-        "page": "Key:design_2",
         "tags": {},
         "row_key": "power",
         "row_values": ["tower"],
@@ -76,5 +76,12 @@
             "donau", "donau_inverse", "barrel", "y-frame", "x-frame", "h-frame",
             "guyed_h-frame", "portal", "portal_two-level", "portal_three-level"
         ]
+    },
+    {
+        "page": "Tag:tower:type=diving",
+        "id": "diving",
+        "tags": {"man_made": "tower", "tower:type": "diving"},
+        "row_key": "tower:platforms",
+        "row_values": ["", "1", "2", "3", "4"]
     }
 ]
