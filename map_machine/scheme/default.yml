@@ -190,6 +190,8 @@ node_icons:
     tags:
     - tags: {leisure: fishing}
       shapes: [fishing_angle]
+    - tags: {historic: archaeological_site}
+      shapes: [amphora]
     - tags: {leisure: swimming_area}
       shapes: [swimming_area]
     - tags: {leisure: swimming_pool}
