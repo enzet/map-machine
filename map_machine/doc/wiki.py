@@ -109,7 +109,12 @@ def generate_new_text(
         icon, _ = SCHEME.get_icon(
             EXTRACTOR, table.collection.tags, processed, MapConfiguration()
         )
-        if icon.main_icon.is_default():
+        if not icon.main_icon.is_default():
+            wiki_text = (
+                f"[[Image:Röntgen {icon.main_icon.get_name()}.svg|32px]]\n"
+            )
+            icons.append(icon.main_icon)
+        elif icon.extra_icons:
             wiki_text = (
                 f"Röntgen icon set has additional icon for the tag: "
                 f"[[Image:Röntgen {icon.extra_icons[0].get_name()}.svg|32px]]."
@@ -117,10 +122,7 @@ def generate_new_text(
             )
             icons.append(icon.extra_icons[0])
         else:
-            wiki_text = (
-                f"[[Image:Röntgen {icon.main_icon.get_name()}.svg|32px]]\n"
-            )
-            icons.append(icon.main_icon)
+            wiki_text = ""
 
     lines: list[str] = old_text.split("\n")
 
