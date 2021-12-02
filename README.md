@@ -90,7 +90,7 @@ Map icons have [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) tag va
 
 ### Japanese map symbols ###
 
-There are [special symbols](https://en.wikipedia.org/wiki/List_of_Japanese_map_symbols) appearing on Japanese maps.
+Japanese maps usually use [special symbols](https://en.wikipedia.org/wiki/List_of_Japanese_map_symbols) called *chizukigou* (地図記号) which are different from standard map symbols used in other countries. They can be enabled with `--country jp` option.
 
 ![Japanese map symbols](doc/icons_japanese.svg)
 
