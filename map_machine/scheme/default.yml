@@ -885,6 +885,8 @@ node_icons:
       shapes: [tower_defensive]
     - tags: {man_made: tower, tower:type: diving}
       shapes: [diving_platform]
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "1"}
+      shapes: [diving_platform]
     - tags: {man_made: tower, tower:type: diving, tower:platforms: "2"}
       shapes: [diving_2_platforms]
     - tags: {man_made: tower, tower:type: diving, tower:platforms: "3"}
