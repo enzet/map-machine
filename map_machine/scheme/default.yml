@@ -2078,6 +2078,9 @@ ways:
   - tags: {landuse: farmland}
     style: {fill: farmland_color, stroke: farmland_border_color}
     priority: 20.0
+  - tags: {landuse: farmyard}
+    style: {fill: farmland_color, stroke: farmland_border_color}  # FIXME
+    priority: 20.0
   - tags: {landuse: farmland, crop: wheat}
     style: {fill: wheat_color, stroke: wheat_border_color}
     priority: 20.0
