@@ -107,6 +107,20 @@ class Tagged:
 
         return None
 
+    def verify(self) -> bool:
+        """Check key and value types."""
+        is_well_formed: bool = True
+
+        for value, key in self.tags.items():
+            if not isinstance(key, str):
+                logging.warning(f"Not string key {key}.")
+                is_well_formed = False
+            if not isinstance(value, str):
+                logging.warning(f"Not string value {value}.")
+                is_well_formed = False
+
+        return is_well_formed
+
 
 @dataclass
 class OSMNode(Tagged):

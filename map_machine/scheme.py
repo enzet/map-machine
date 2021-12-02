@@ -14,7 +14,7 @@ from colour import Color
 
 from map_machine.feature.direction import DirectionSet
 from map_machine.map_configuration import MapConfiguration, LabelMode
-from map_machine.osm.osm_reader import Tags
+from map_machine.osm.osm_reader import Tagged, Tags
 from map_machine.pictogram.icon import (
     DEFAULT_COLOR,
     DEFAULT_SHAPE_ID,
@@ -102,7 +102,7 @@ def match_location(restrictions: dict[str, str], country: str) -> bool:
     return True
 
 
-class Matcher:
+class Matcher(Tagged):
     """Tag matching."""
 
     def __init__(
@@ -125,6 +125,8 @@ class Matcher:
         self.location_restrictions: dict[str, str] = {}
         if "location_restrictions" in structure:
             self.location_restrictions = structure["location_restrictions"]
+
+        self.verify()
 
     def check_zoom_level(self, zoom_level: float) -> bool:
         """Check whether zoom level is matching."""
