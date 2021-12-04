@@ -340,7 +340,7 @@ class Scheme:
             else []
         )
         self.keys_to_write: list[str] = (
-            content["keys_to_write"] if "key_to_write" in content else []
+            content["keys_to_write"] if "keys_to_write" in content else []
         )
         self.prefix_to_write: list[str] = (
             content["prefix_to_write"] if "prefix_to_write" in content else []
