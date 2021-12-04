@@ -20,7 +20,7 @@ from map_machine.workspace import Workspace
 
 WORKSPACE: Workspace = Workspace(Path("temp"))
 
-SCHEME: Scheme = Scheme(WORKSPACE.DEFAULT_SCHEME_PATH)
+SCHEME: Scheme = Scheme.from_file(WORKSPACE.DEFAULT_SCHEME_PATH)
 EXTRACTOR: ShapeExtractor = ShapeExtractor(
     WORKSPACE.ICONS_PATH, WORKSPACE.ICONS_CONFIG_PATH
 )

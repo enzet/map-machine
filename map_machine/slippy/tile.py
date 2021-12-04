@@ -173,7 +173,7 @@ class Tile:
         icon_extractor: ShapeExtractor = ShapeExtractor(
             workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
         )
-        scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
+        scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
         constructor: Constructor = Constructor(
             osm_data, flinger, scheme, icon_extractor, configuration
         )
@@ -390,7 +390,7 @@ class Tiles:
             extractor: ShapeExtractor = ShapeExtractor(
                 workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
             )
-            scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
+            scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
             constructor: Constructor = Constructor(
                 osm_data, flinger, scheme, extractor, configuration
             )

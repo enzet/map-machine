@@ -60,7 +60,9 @@ def main() -> None:
         from map_machine.scheme import Scheme
         from map_machine.doc.taginfo import write_taginfo_project_file
 
-        write_taginfo_project_file(Scheme(workspace.DEFAULT_SCHEME_PATH))
+        write_taginfo_project_file(
+            Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
+        )
 
 
 if __name__ == "__main__":

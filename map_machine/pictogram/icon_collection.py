@@ -205,7 +205,7 @@ def draw_icons() -> None:
     Draw all possible icon shapes combinations as grid in one SVG file and as
     individual SVG files.
     """
-    scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
+    scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
     extractor: ShapeExtractor = ShapeExtractor(
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )

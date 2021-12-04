@@ -310,7 +310,56 @@ class Scheme:
     Specifies map colors and rules to draw icons for OpenStreetMap tags.
     """
 
-    def __init__(self, file_name: Path) -> None:
+    def __init__(self, content: dict[str, Any]) -> None:
+        self.node_matchers: list[NodeMatcher] = []
+        if "node_icons" in content:
+            for group in content["node_icons"]:
+                for element in group["tags"]:
+                    self.node_matchers.append(NodeMatcher(element, group))
+
+        self.colors: dict[str, str] = (
+            content["colors"] if "colors" in content else {}
+        )
+        self.material_colors: dict[str, str] = (
+            content["material_colors"] if "material_colors" in content else {}
+        )
+
+        self.way_matchers: list[WayMatcher] = (
+            [WayMatcher(x, self) for x in content["ways"]]
+            if "ways" in content
+            else []
+        )
+        self.road_matchers: list[RoadMatcher] = (
+            [RoadMatcher(x, self) for x in content["roads"]]
+            if "roads" in content
+            else []
+        )
+        self.area_matchers: list[Matcher] = (
+            [Matcher(x) for x in content["area_tags"]]
+            if "area_tags" in content
+            else []
+        )
+        self.keys_to_write: list[str] = (
+            content["keys_to_write"] if "key_to_write" in content else []
+        )
+        self.prefix_to_write: list[str] = (
+            content["prefix_to_write"] if "prefix_to_write" in content else []
+        )
+        self.keys_to_skip: list[str] = (
+            content["keys_to_skip"] if "keys_to_skip" in content else []
+        )
+        self.prefix_to_skip: list[str] = (
+            content["prefix_to_skip"] if "prefix_to_skip" in content else []
+        )
+        self.tags_to_skip: dict[str, str] = (
+            content["tags_to_skip"] if "tags_to_skip" in content else {}
+        )
+
+        # Storage for created icon sets.
+        self.cache: dict[str, tuple[IconSet, int]] = {}
+
+    @classmethod
+    def from_file(cls, file_name: Path) -> "Scheme":
         """
         :param file_name: name of the scheme file with tags, colors, and tag key
             specification
@@ -319,31 +368,7 @@ class Scheme:
             content: dict[str, Any] = yaml.load(
                 input_file.read(), Loader=yaml.FullLoader
             )
-        self.node_matchers: list[NodeMatcher] = []
-        for group in content["node_icons"]:
-            for element in group["tags"]:
-                self.node_matchers.append(NodeMatcher(element, group))
-
-        self.colors: dict[str, str] = content["colors"]
-        self.material_colors: dict[str, str] = content["material_colors"]
-
-        self.way_matchers: list[WayMatcher] = [
-            WayMatcher(x, self) for x in content["ways"]
-        ]
-        self.road_matchers: list[RoadMatcher] = [
-            RoadMatcher(x, self) for x in content["roads"]
-        ]
-        self.area_matchers: list[Matcher] = [
-            Matcher(x) for x in content["area_tags"]
-        ]
-        self.keys_to_write: list[str] = content["keys_to_write"]
-        self.prefix_to_write: list[str] = content["prefix_to_write"]
-        self.keys_to_skip: list[str] = content["keys_to_skip"]
-        self.prefix_to_skip: list[str] = content["prefix_to_skip"]
-        self.tags_to_skip: dict[str, str] = content["tags_to_skip"]
-
-        # Storage for created icon sets.
-        self.cache: dict[str, tuple[IconSet, int]] = {}
+            return cls(content)
 
     def get_color(self, color: str) -> Color:
         """

@@ -221,7 +221,7 @@ def render_map(arguments: argparse.Namespace) -> None:
             logging.fatal(error.message)
             sys.exit(1)
 
-    scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
+    scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
     osm_data: OSMData
 
     osm_data: OSMData = OSMData()

@@ -38,7 +38,7 @@ def draw_element(options: argparse.Namespace) -> None:
         tag.split("=")[0]: tag.split("=")[1]
         for tag in tags_description.split(",")
     }
-    scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
+    scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
     extractor: ShapeExtractor = ShapeExtractor(
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
