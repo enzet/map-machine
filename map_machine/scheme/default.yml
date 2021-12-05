@@ -310,6 +310,8 @@ node_icons:
     - tags: {historic: castle}
       location_restrictions: {include: [jp]}
       shapes: [japan_castle]
+    - tags: {historic: fort}
+      shapes: [fort]
     - tags: {shop: mall}
       shapes: [bag]
     - tags: {shop: mall, building: "yes"}
