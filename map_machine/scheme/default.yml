@@ -665,6 +665,12 @@ node_icons:
       shapes: [observatory]
     - tags: {man_made: tower}
       shapes: [tower]
+    - tags: {man_made: tower, tower:construction: dish}
+      shapes: [telescope_radio]
+    - tags: {man_made: tower, tower:construction: dish, telescope:type: radio}
+      shapes: [telescope_radio]
+    - tags: {man_made: tower, tower:construction: dish, telescope:type: gamma}
+      shapes: [telescope_gamma]
     - tags: {man_made: crane}
       shapes: [crane]
     - tags: {man_made: crane, crane:type: gantry_crane}
