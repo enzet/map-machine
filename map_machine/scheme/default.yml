@@ -1220,6 +1220,8 @@ node_icons:
       shapes: [stone_with_inscription]
     - tags: {historic: wayside_cross}
       shapes: [cross_and_horizontal_bar]
+    - tags: {historic: wayside_shrine}
+      shapes: [wayside_shrine]
     - tags: {historic: memorial, memorial: stone}
       shapes: [stone_with_inscription]
     - tags: {historic: tomb}
