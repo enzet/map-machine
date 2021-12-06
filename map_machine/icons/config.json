@@ -1,44 +1,54 @@
 {
-  "building": {
-    "apartments": {},
-    "building": {},
-    "mausoleum": {"name": "mausoleum"},
-    "pagoda": {"name": "pagoda"},
-    "townhall": {"name": "town hall"}
+  "architecture": {
+    "building_size": {
+      "apartments": {},
+      "building": {},
+      "fort": {"name": "fort"},
+      "mausoleum": {"name": "mausoleum"},
+      "minaret": {"name": "minaret"},
+      "pagoda": {"name": "pagoda"},
+      "townhall": {"name": "town hall"}
+    },
+    "small": {
+      "pillar": {"name": "pillar"},
+      "wayside_shrine": {"name": "wayside shrine"}
+    }
   },
-  "plant": {
-    "fruit": {
-      "apple": {"emoji": ["🍎", "🍏"], "name": "apple", "categories": ["natural"]},
-      "peach": {"categories": ["natural"], "name": "peach", "emoji": "🍑"},
-      "pear": {"emoji": "🍐", "name": "pear", "categories": ["natural"]}
+  "life": {
+    "plant": {
+      "fruit": {
+        "apple": {"emoji": ["🍎", "🍏"], "name": "apple", "categories": ["natural"]},
+        "peach": {"categories": ["natural"], "name": "peach", "emoji": "🍑"},
+        "pear": {"emoji": "🍐", "name": "pear", "categories": ["natural"]}
+      },
+      "tree": {
+        "betula": {"name": "birch", "categories": ["natural"]},
+        "christmas_tree": {"emoji": "🎄", "name": "Christmas tree", "categories": ["natural"]},
+        "needleleaved_tree": {"emoji": "🌲", "name": "needleleaved tree", "categories": ["natural"]},
+        "palm": {"emoji": "🌴", "categories": ["natural"], "name": "palm"},
+        "tree": {"emoji": "🌳", "name": "tree", "categories": ["natural"]},
+        "tree_with_leaf": {"name": "tree with leaf", "categories": ["natural"]}
+      },
+      "leaf": {
+        "leaf_maple": {"categories": ["natural"], "name": "maple leaf", "emoji": "🍁"}
+      },
+      "bush": {"categories": ["natural"], "name": "bush"},
+      "cactus": {"categories": ["natural"], "name": "cactus", "emoji": "🌵"},
+      "ear_botany": {"categories": ["natural"], "name": "ear (botany)"},
+      "ear_botany_2": {"categories": ["natural"]},
+      "grapes": {"categories": ["natural"], "name": "grapes"},
+      "grapes_2": {"categories": ["natural"]},
+      "grapes_3": {"categories": ["natural"]},
+      "oat": {"categories": ["natural"], "name": "oat"},
+      "oat_2": {"categories": ["natural"]},
+      "rape": {"categories": ["natural"], "name": "rape"},
+      "rape_2": {"categories": ["natural"]},
+      "sunflower": {"categories": ["natural"], "name": "sunflower"}
     },
-    "tree": {
-      "betula": {"name": "birch", "categories": ["natural"]},
-      "christmas_tree": {"emoji": "🎄", "name": "Christmas tree", "categories": ["natural"]},
-      "needleleaved_tree": {"emoji": "🌲", "name": "needleleaved tree", "categories": ["natural"]},
-      "palm": {"emoji": "🌴", "categories": ["natural"], "name": "palm"},
-      "tree": {"emoji": "🌳", "name": "tree", "categories": ["natural"]},
-      "tree_with_leaf": {"name": "tree with leaf", "categories": ["natural"]}
-    },
-    "leaf": {
-      "leaf_maple": {"categories": ["natural"], "name": "maple leaf", "emoji": "🍁"}
-    },
-    "bush": {"categories": ["natural"], "name": "bush"},
-    "cactus": {"categories": ["natural"], "name": "cactus", "emoji": "🌵"},
-    "ear_botany": {"categories": ["natural"], "name": "ear (botany)"},
-    "ear_botany_2": {"categories": ["natural"]},
-    "grapes": {"categories": ["natural"], "name": "grapes"},
-    "grapes_2": {"categories": ["natural"]},
-    "grapes_3": {"categories": ["natural"]},
-    "oat": {"categories": ["natural"], "name": "oat"},
-    "oat_2": {"categories": ["natural"]},
-    "rape": {"categories": ["natural"], "name": "rape"},
-    "rape_2": {"categories": ["natural"]},
-    "sunflower": {"categories": ["natural"], "name": "sunflower"}
-  },
-  "animal": {
-    "dog": {"emoji": "🐕", "name": "dog"},
-    "dog_and_cross": {"name": "dog and cross"}
+    "animal": {
+      "dog": {"emoji": "🐕", "name": "dog"},
+      "dog_and_cross": {"name": "dog and cross"}
+    }
   },
   "symbol": {
     "abstract": {
@@ -49,7 +59,9 @@
       "at_in_square": {"emoji": "@", "name": "@ in square", "categories": ["letter"]},
       "circle_11": {"name": "circle 11 px"},
       "circle_9": {"emoji": "🕳", "name": "circle 9 px"},
-      "circle_empty": {},
+      "circle_empty": {"name": "empty circle"},
+      "clockwise": {"name": "clockwise arrow"},
+      "counterclockwise": {"name": "counterclockwise arrow"},
       "default": {},
       "default_small": {},
       "electricity": {"emoji": "⚡", "name": "lightning"},
@@ -61,7 +73,7 @@
       "triangle_small": {"emoji": "⛰️", "name": "small triangle"},
       "wave_left": {"is_part": true, "name": "leftward waves"},
       "wave_right": {"is_part": true, "name": "rightward waves"},
-      "wlan": {}
+      "wlan": {"name": "wireless LAN"}
     },
     "japan": {
       "japan_castle": {"name": "Japanese map symbol for castle"},
@@ -175,6 +187,7 @@
     "cocktail_glass_with_straw": {"name": "cocktail glass with straw", "emoji": "🍸"},
     "coffee_cup": {"emoji": "☕", "name": "coffee cup"},
     "knives": {"name": "knives"},
+    "pan": {"name": "pan"},
     "steak_and_fork": {"name": "steak and fork"}
   },
   "food": {
@@ -242,9 +255,7 @@
     "chimney": {"name": "chimney"},
     "city_limit_sign": {},
     "clock": {"emoji": "⌚", "name": "clock"},
-    "clockwise": {},
     "comb_and_scissors": {"name": "comb and scissors"},
-    "counterclockwise": {},
     "credit_card": {"emoji": "💳", "name": "payment card"},
     "crossing": {},
     "defibrillator": {"categories": ["emergency"]},
@@ -277,15 +288,15 @@
     "hi_fi": {"name": "Hi-Fi"},
     "human_on_ferry": {},
     "hunting_stand": {"name": "hunting stand"},
-    "judgement": {},
+    "judgement": {"name": "gavel"},
     "kerb": {},
     "key": {"is_part": true, "name": "key"},
     "kiosk": {},
     "life_ring": {"categories": ["emergency"], "emoji": "🛟"},
     "lift_gate": {},
-    "lock": {},
-    "lock_unlocked": {},
-    "lock_with_keyhole": {"emoji": "🔒"},
+    "lock": {"emoji": "🔒", "name": "closed lock"},
+    "lock_unlocked": {"name": "opened lock"},
+    "lock_with_keyhole": {"emoji": "🔒", "name": "closed lock with keyhole"},
     "lowered_kerb": {},
     "main_entrance": {},
     "manhole_drain": {"name": "drain manhole cover"},
@@ -296,13 +307,11 @@
     "no_door": {},
     "no_foot": {},
     "no_traffic_signals": {},
-    "no_wheelchair": {},
+    "no_wheelchair": {"name": "wheelchair with X sign"},
     "onion_roof_shape": {"name": "onion roof shape"},
     "pac_man": {"name": "Pac-Man"},
-    "pan": {},
     "pergola": {"is_part": true},
     "picture": {},
-    "pillar": {},
     "pipeline": {},
     "platform": {"is_part": true},
     "pole": {},
@@ -367,7 +376,7 @@
     "horizontal_bar": {"name": "high horizontal bar", "categories": ["sport"]},
     "horizontal_ladder": {"name": "horizontal ladder", "categories": ["sport"]},
     "low_horizontal_bars": {"name": "low horizontal bars", "categories": ["sport"]},
-    "rings": {"name": "gymnastic rings"},
+    "rings": {"name": "gymnastic rings", "categories": ["sport"]},
     "sit_up": {"name": "incline bench", "categories": ["sport"]},
     "wall_bars": {"name": "wall bars", "categories": ["sport"]}
   },
