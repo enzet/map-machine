@@ -590,8 +590,8 @@
        cy="99.5"
        r="2" />
     <path
-       id="path136052"
-       style="fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="marketplace"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 484 113 L 481 116 L 484 116 L 486 113 L 484 113 z M 487 113 L 486 116 L 489 116 L 488 113 L 487 113 z M 489 113 L 491 116 L 494 116 L 491 113 L 489 113 z M 481 117 C 481 117.554 481.446 118 482 118 L 483 118 C 483.554 118 484 117.554 484 117 L 481 117 z M 486 117 C 486 117.554 486.446 118 487 118 L 488 118 C 488.554 118 489 117.554 489 117 L 486 117 z M 491 117 C 491 117.554 491.446 118 492 118 L 493 118 C 493.554 118 494 117.554 494 117 L 491 117 z M 482 119 L 482 125 L 481.5 125 C 481.223 125 481 125.223 481 125.5 C 481 125.777 481.223 126 481.5 126 L 482 126 L 482 127 L 483 127 L 483 126 L 492 126 L 492 127 L 493 127 L 493 126 L 493.5 126 C 493.777 126 494 125.777 494 125.5 C 494 125.223 493.777 125 493.5 125 L 493 125 L 493 119 L 492 119 L 492 125 L 483 125 L 483 119 L 482 119 z M 485.5 121 L 485 122 L 487 122 L 487 121 L 485.5 121 z M 488 121 L 488 122 L 490 122 L 489.5 121 L 488 121 z M 484.5 123 L 484 124 L 487 124 L 487 123 L 484.5 123 z M 488 123 L 488 124 L 491 124 L 490.5 123 L 488 123 z " />
     <path
        style="font-variation-settings:normal;opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"

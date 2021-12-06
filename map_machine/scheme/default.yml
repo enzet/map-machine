@@ -436,6 +436,8 @@ node_icons:
       shapes: [at_in_square]
     - tags: {amenity: library}
       shapes: [book]
+    - tags: {amenity: marketplace}
+      shapes: [marketplace]
     - tags: {amenity: prison}
       shapes: [prison]
     - tags: {amenity: stripclub}
