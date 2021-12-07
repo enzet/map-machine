@@ -526,6 +526,8 @@ node_icons:
       shapes: [wretch_and_hammer]
     - tags: {shop: fireplace}
       shapes: [{shape: fireplace, color: sell_color}]
+    - tags: {shop: florist}
+      shapes: [{shape: flower_in_pot, color: sell_color}]
     - tags: {shop: furniture}
       shapes: [{shape: drawer, color: sell_color}]
     - tags: {shop: greengrocer}

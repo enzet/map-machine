@@ -25703,8 +25703,8 @@
        d="m 451.5,105.5 h 8"
        id="path145631" />
     <path
-       id="circle145633"
-       style="opacity:1;fill:#0000ff;stroke:none;stroke-width:0.1;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="flower_in_pot"
+       style="opacity:1;fill:#000000;stroke:none;stroke-width:0.1;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 455.5,113.5 c -0.82843,0 -1.5,0.67157 -1.5,1.5 -0.82843,0 -1.5,0.67157 -1.5,1.5 0,0.82843 0.67157,1.5 1.5,1.5 0,0.82843 0.67157,1.5 1.5,1.5 0.82843,0 1.5,-0.67157 1.5,-1.5 0.82843,0 1.5,-0.67157 1.5,-1.5 0,-0.82843 -0.67157,-1.5 -1.5,-1.5 0,-0.82843 -0.67157,-1.5 -1.5,-1.5 z m 0,2 c 0.55228,0 1,0.44772 1,1 0,0.55228 -0.44772,1 -1,1 -0.55228,0 -1,-0.44772 -1,-1 0,-0.55228 0.44772,-1 1,-1 z M 455,120 v 1 h -3.5 c -0.27614,0 -0.5,0.22386 -0.5,0.5 0,0.27614 0.22386,0.5 0.5,0.5 h 0.58984 l 0.91993,4.59766 c 0.0466,0.23384 0.2518,0.40225 0.49023,0.40234 h 4 c 0.23843,-9e-5 0.44364,-0.1685 0.49023,-0.40234 L 458.91016,122 H 459.5 c 0.27614,0 0.5,-0.22386 0.5,-0.5 0,-0.27614 -0.22386,-0.5 -0.5,-0.5 H 456 v -1 z"
        sodipodi:nodetypes="scscscscssssssccsssccccccsssccc" />
     <rect
