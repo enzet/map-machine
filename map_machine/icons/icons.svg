@@ -26094,8 +26094,8 @@
        style="color:#000000;fill:#000000;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none;opacity:1"
        d="M 659 20 L 659 20.5 A 0.5 0.5 0 0 0 659.5 21 L 667.5 21 A 0.5 0.5 0 0 0 668 20.5 L 668 20 L 659 20 z M 659.5 22 C 659.22387 22.000028 659.00003 22.223869 659 22.5 C 659 24.979357 661.02064 27 663.5 27 C 665.97936 27 668 24.979357 668 22.5 C 667.99997 22.223869 667.77613 22.000028 667.5 22 L 663.5 22 L 659.5 22 z M 663.5 25 A 1.5 1.5 0 0 1 664.79688 25.744141 C 664.39927 25.908342 663.96305 26 663.5 26 C 663.03786 26 662.60204 25.909683 662.20508 25.746094 A 1.5 1.5 0 0 1 663.5 25 z " />
     <path
-       id="path142296"
-       style="color:#000000;opacity:1;fill:#0000ff;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
+       id="cctv_dome_wall"
+       style="color:#000000;opacity:1;fill:#000000;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
        d="m 676,28 h 0.5 a 0.5,0.5 0 0 0 0.5,-0.5 v -8 A 0.5,0.5 0 0 0 676.5,19 H 676 Z m 2,-0.5 c 3e-5,0.27613 0.22387,0.49997 0.5,0.5 2.47936,0 4.5,-2.02064 4.5,-4.5 0,-2.47936 -2.02064,-4.5 -4.5,-4.5 -0.27613,3e-5 -0.49997,0.22387 -0.5,0.5 v 4 z m 3,-4 a 1.5,1.5 0 0 1 0.74414,-1.29688 C 681.90834,22.60073 682,23.03695 682,23.5 c 0,0.46214 -0.0903,0.89796 -0.25391,1.29492 A 1.5,1.5 0 0 1 681,23.5 Z" />
     <rect
        style="opacity:1;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"

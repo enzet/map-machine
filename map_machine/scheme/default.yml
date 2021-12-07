@@ -1473,6 +1473,10 @@ node_icons:
       shapes: [street_cabinet]
     - tags: {man_made: surveillance}
       shapes: [cctv]
+    - tags: {man_made: surveillance, camera:type: dome, camera:mount: ceiling}
+      shapes: [cctv_dome_ceiling]
+    - tags: {man_made: surveillance, camera:type: dome, camera:mount: wall}
+      shapes: [cctv_dome_wall]
     - tags: {man_made: ventilation_shaft}
       shapes: [ventilation]
     - tags: {railway: ventilation_shaft}
