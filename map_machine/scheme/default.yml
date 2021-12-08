@@ -1437,6 +1437,10 @@ node_icons:
       shapes: [bench_backrest]
     - tags: {amenity: bench, backrest: "no"}
       shapes: [bench_no_backrest]
+    - tags: {historic: memorial, memorial: bench, amenity: bench}
+      shapes: [bench_with_inscription]
+    - tags: {historic: memorial, memorial: bench}
+      shapes: [bench_with_inscription]
     - tags: {amenity: clock}
       shapes: [clock]
     - tags: {amenity: fountain}
