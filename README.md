@@ -2,12 +2,17 @@
 
 **Map Machine** project consists of
 
-  * Python [OpenStreetMap](http://openstreetmap.org) renderer and tile generator (see [usage](#usage-example), [renderer documentation](#map-generation), [tile generation](#tile-generation)),
-  * [Röntgen icon set](#röntgen-icon-set): unique CC-BY 4.0 icons.
+
+  * Python [OpenStreetMap](http://openstreetmap.org) renderer: 
+    * SVG [map generation](#map-generation),
+
+    * SVG and PNG [tile generation](#tile-generation),
+
+  * [Röntgen](#röntgen-icon-set) icon set: unique CC-BY 4.0 map icons.
 
 The idea behind the Map Machine project is to **show all the richness of the OpenStreetMap data**: to have a possibility to *display any map feature* represented by OpenStreetMap data tags by means of colors, shapes, and icons. Map Machine is created for OpenStreetMap contributors: to display all changes one made on the map even if they are small, and for users: to dig down into the map and find every detail that was mapped.
 
-Unlike standard OpenStreetMap layers, **Map Machine is a playground for experiments** where one can easily try to support proposed tags, tags with little or even single usage, deprecated tags.
+Unlike standard OpenStreetMap layers, **Map Machine is a playground for experiments** where one can easily try to support any unsupported tag, proposed tagging scheme, tags with little or even single usage, deprecated tags.
 
 Map Machine is intended to be highly configurable, so it can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users, can use slow algorithms for some experimental features.
 
@@ -29,20 +34,22 @@ will automatically download OSM data and write output PNG tiles that cover the s
 Röntgen icon set
 ----------------
 
-The central feature of the project is Röntgen icon set. It is a set of monochrome 14 × 14 px pixel-aligned icons. Unlike the Map Machine source code, which is under MIT license, all icons are under [CC BY](http://creativecommons.org/licenses/by/4.0/) license. So, with the appropriate credit icon set can be used outside the project. Some icons can be used as emoji symbols.
+The central feature of the project is Röntgen icon set. It is a set of monochrome 14 × 14 px pixel-aligned icons specially created for Map Machine project. Unlike the Map Machine source code, which is under MIT license, all icons are under [CC BY](http://creativecommons.org/licenses/by/4.0/) license. So, with the appropriate credit icon set can be used outside the project. Some icons can be used as emoji symbols.
 
 All icons tend to support a common design style, which is heavily inspired by [Maki](https://github.com/mapbox/maki), [Osmic](https://github.com/gmgeo/osmic), and [Temaki](https://github.com/ideditor/temaki).
-
-Icons are used to visualize tags for nodes and areas. Unlike other renderers, Map Machine can use more than one icon to visualize an entity and use colors to visualize [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) value or other entity properties (like [`material`](https://wiki.openstreetmap.org/wiki/Key:material) or [`genus`](https://wiki.openstreetmap.org/wiki/Key:genus)).
 
 ![Icons](doc/grid.svg)
 
 Feel free to request new icons via issues for whatever you want to see on the map. No matter how frequently the tag is used in OpenStreetMap since the final goal is to cover all tags. However, commonly used tags have priority, other things being equal.
 
-Generate icon grid and sets of individual icons with `map-machine icons`. It will create `out/icon_grid.svg` file, and SVG files in `out/icons_by_id` directory where files are named using shape identifiers (e.g. `power_tower_portal_2_level.svg`) and in `icons_by_name` directory where files are named using shape names (e.g. `Röntgen portal two-level transmission tower.svg`). Files from the last directory are used in OpenStreetMap wiki (e.g. [`File:Röntgen_portal_two-level_transmission_tower.svg`](https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg)).
+Generate icon grid and sets of individual icons with `map-machine icons`. It will update `doc/grid.svg` file, and create SVG files in `out/icons_by_id` directory where files are named using shape identifiers (e.g. `power_tower_portal_2_level.svg`) and in `icons_by_name` directory where files are named using shape names (e.g. `Röntgen portal two-level transmission tower.svg`). Files from the last directory are used in OpenStreetMap wiki (e.g. [`File:Röntgen_portal_two-level_transmission_tower.svg`](https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg)).
 
 Map features
 ------------
+
+### Extra icons ###
+
+Map Machine uses icons to visualize tags for nodes and areas. But unlike other renderers, Map Machine can use more than one icon to visualize an entity and use colors to visualize [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) value or other entity properties (like [`material`](https://wiki.openstreetmap.org/wiki/Key:material) or [`genus`](https://wiki.openstreetmap.org/wiki/Key:genus)).
 
 ### Isometric building shapes ###
 
@@ -126,8 +133,11 @@ Installation
 
 Requirements: Python 3.9.
 
+
   * Install [cairo 2D graphic library](https://www.cairographics.org/download/),
+
   * install [GEOS library](https://trac.osgeo.org/geos),
+
   * install Python packages:
 
 
@@ -320,10 +330,15 @@ To create MapCSS with Map Machine style also for ways and relations, run `map-ma
 
 ### Use Map Machine as JOSM map paint style ###
 
+
   * Run `map-machine mapcss`.
+
   * Open [JOSM](https://josm.openstreetmap.de/).
+
   * Go to <kbd>Preferences</kbd> → Third tab on the left → <kbd>Map Paint Styles</kbd>.
+
   * Active styles: press <kbd>+</kbd>.
+
   * URL / File: set path to `out/map_machine_mapcss/map_machine.mapcss`.
 
 To enable/disable Map Machine map paint style go to <kbd>View</kbd> → <kbd>Map Paint Styles</kbd> → <kbd>Map Machine</kbd>.
@@ -335,5 +350,6 @@ To enable/disable Map Machine map paint style go to <kbd>View</kbd> → <kbd>Map
 Example of using Röntgen icons on top of Mapnik style in JOSM. Map Paint Styles look like this:
 
   * ✓ Mapnik (true)
+
   * ✓ Map Machine
 
