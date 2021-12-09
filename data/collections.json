@@ -2,7 +2,7 @@
     {
         "page": "Tag:memorial=bench",
         "id": "diving",
-        "tags": {"amenity": "bench", "historic": "memorial"}
+        "tags": {"memorial": "bench", "historic": "memorial"}
     },
     {
         "page": "Tag:man_made=mast",
