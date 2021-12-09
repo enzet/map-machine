@@ -10,11 +10,11 @@
         {SVG and PNG \ref {#tile-generation} {tile generation},}}
     {\ref {#röntgen-icon-set} {Röntgen} icon set\: unique CC-BY 4.0 map icons.}
 
-The idea behind the Map Machine project is to \b {show all the richness of the OpenStreetMap data}\: to have a possibility to \i {display any map feature} represented by OpenStreetMap data tags by means of colors, shapes, and icons.  Map Machine is created for OpenStreetMap contributors\: to display all changes one made on the map even if they are small, and for users\: to dig down into the map and find every detail that was mapped.
+The idea behind the Map Machine project is to \b {show all the richness of the OpenStreetMap data}\: to have a possibility to display any map feature represented by OpenStreetMap data tags by means of colors, shapes, and icons.  Map Machine is created both for map contributors\: to display all changes one made on the map even if they are small, and for map users\: to dig down into the map and find every detail that was mapped.
 
-Unlike standard OpenStreetMap layers, \b {Map Machine is a playground for experiments} where one can easily try to support any unsupported tag, proposed tagging scheme, tags with little or even single usage, deprecated tags.
+Unlike standard OpenStreetMap layers, \b {Map Machine is a playground for experiments} where one can easily try to support any unsupported tag, proposed tagging scheme, tags with little or even single usage, deprecated ones that are still in use.
 
-Map Machine is intended to be highly configurable, so it can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users, can use slow algorithms for some experimental features.
+Map Machine is intended to be highly configurable, so it can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users.  It can also use some slow algorithms for experimental features.
 
 \2 {Usage example} {usage-example}
 
@@ -26,7 +26,7 @@ will automatically download OSM data and write output SVG map of the specified a
 
 will automatically download OSM data and write output PNG tiles that cover the specified area to the \m {out/tiles} directory.  See \ref {#tile-generation} {Tile generation}.
 
-\2 {Röntgen icon set} {icon-set}
+\2 {Röntgen icon set} {röntgen-icon-set}
 
 The central feature of the project is Röntgen icon set.  It is a set of monochrome 14 × 14 px pixel-aligned icons specially created for Map Machine project.  Unlike the Map Machine source code, which is under MIT license, all icons are under \ref {http://creativecommons.org/licenses/by/4.0/} {CC BY} license.  So, with the appropriate credit icon set can be used outside the project.  Some icons can be used as emoji symbols.
 
@@ -44,7 +44,7 @@ Generate icon grid and sets of individual icons with \m {\command {icons}}.  It 
 
 Map Machine uses icons to visualize tags for nodes and areas.  But unlike other renderers, Map Machine can use more than one icon to visualize an entity and use colors to visualize \osm {colour} value or other entity properties (like \osm {material} or \osm {genus}).
 
-\3 {Isometric building shapes} {levels}
+\3 {Isometric building shapes} {isometric-building-shapes}
 
 With \m {--buildings isometric} or \m {--buildings isometric-no-parts} (not set by default), buildings are drawn using isometric shapes for walls and shade in proportion to \osm {building:levels}, \osm {building:min_level}, \osm {height}, and \osm {min_height} values.
 
@@ -80,7 +80,7 @@ Visualization of tree \icon {tree} leaf types (broadleaved \icon {tree_with_leaf
 
 \image {doc/trees.svg} {Trees}
 
-\3 {Viewpoint and camera direction} {direction}
+\3 {Viewpoint and camera direction} {viewpoint-and-camera-direction}
 
 Visualize \osm {direction} tag for \osm {tourism=viewpoint} and \osm {camera:direction} for \osm {man_made=surveillance}.
 
@@ -112,11 +112,11 @@ Japanese maps usually use \ref {https://en.wikipedia.org/wiki/List_of_Japanese_m
 
 \image {doc/icons_japanese.svg} {Japanese map symbols}
 
-\3 {Shape combination} {shape_combination}
+\3 {Shape combination} {shape-combination}
 
 Map Machine constructs icons from the shapes extracted from the sketch SVG file.  Some icons consist of just one shape, to construct others it may be necessary to combine two or more shapes.
 
-\3 {Masts} {mast}
+\3 {Masts} {masts}
 
 \image {doc/mast.svg} {Mast types}
 
@@ -128,7 +128,7 @@ Map Machine constructs icons from the shapes extracted from the sketch SVG file.
 
 \image {doc/bus_stop.png} {Bus stop icon combination}
 
-\3 {Icon settings} {icon_settings}
+\3 {Icon settings} {icon-settings}
 
 \4 {Japanese map symbols} {japanese-map-symbols}
 
@@ -166,7 +166,7 @@ Countries with right-to-left script direction\:
 
 \2 {Wireframe view} {wireframe-view}
 
-\3 {Creation time mode} {time_mode}
+\3 {Creation time mode} {creation-time-mode}
 
 Visualize element creation time with \m {--mode time}.
 
@@ -199,7 +199,7 @@ Command \m {render} is used to generate SVG map from OpenStreetMap data.  You ca
     -z \formal {OSM zoom level} \\
     \formal {other arguments}} {bash}
 
-\3 {Example} {example-2}
+\3 {Example} {example}
 
 \code {map-machine render \\
     --boundary-box 2.284,48.860,2.290,48.865 \\
@@ -267,7 +267,7 @@ Stop server interrupting the process with \kbd {Ctrl} + \kbd {C}.
 
 \options {server}
 
-\3 {Example} {example}
+\3 {Example} {example-2}
 
 Create a minimal amount of tiles that cover specified boundary box for zoom levels 16, 17, 18, and 19\:
 
@@ -321,7 +321,7 @@ To create MapCSS with Map Machine style also for ways and relations, run \m {map
 
 To enable/disable Map Machine map paint style go to \kbd {View} → \kbd {Map Paint Styles} → \kbd {Map Machine}.
 
-\4 {Example}
+\4 {Example} {example-3}
 
 \image {doc/josm.png} {JOSM example}
 

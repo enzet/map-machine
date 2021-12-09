@@ -23,10 +23,12 @@ Modify the code
 
 First configure your workspace.
 
+
   * Install formatter, linter and test system: `pip install black flake8 pytest`.
   * Be sure to run `git config --local core.hooksPath data/githooks` to enable Git hooks.
 
 If you are using Pycharm, you may want to set up user dictionary as well:
+
 
   * `cp data/dictionary.xml .idea/dictionaries/<user name>.xml`
   * in `.idea/dictionaries/<user name>.xml` change `%USERNAME%` to your username,

@@ -5,16 +5,14 @@
 
   * Python [OpenStreetMap](http://openstreetmap.org) renderer: 
     * SVG [map generation](#map-generation),
-
     * SVG and PNG [tile generation](#tile-generation),
-
   * [Röntgen](#röntgen-icon-set) icon set: unique CC-BY 4.0 map icons.
 
-The idea behind the Map Machine project is to **show all the richness of the OpenStreetMap data**: to have a possibility to *display any map feature* represented by OpenStreetMap data tags by means of colors, shapes, and icons. Map Machine is created for OpenStreetMap contributors: to display all changes one made on the map even if they are small, and for users: to dig down into the map and find every detail that was mapped.
+The idea behind the Map Machine project is to **show all the richness of the OpenStreetMap data**: to have a possibility to display any map feature represented by OpenStreetMap data tags by means of colors, shapes, and icons. Map Machine is created both for map contributors: to display all changes one made on the map even if they are small, and for map users: to dig down into the map and find every detail that was mapped.
 
-Unlike standard OpenStreetMap layers, **Map Machine is a playground for experiments** where one can easily try to support any unsupported tag, proposed tagging scheme, tags with little or even single usage, deprecated tags.
+Unlike standard OpenStreetMap layers, **Map Machine is a playground for experiments** where one can easily try to support any unsupported tag, proposed tagging scheme, tags with little or even single usage, deprecated ones that are still in use.
 
-Map Machine is intended to be highly configurable, so it can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users, can use slow algorithms for some experimental features.
+Map Machine is intended to be highly configurable, so it can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users. It can also use some slow algorithms for experimental features.
 
 Usage example
 -------------
@@ -135,11 +133,8 @@ Requirements: Python 3.9.
 
 
   * Install [cairo 2D graphic library](https://www.cairographics.org/download/),
-
   * install [GEOS library](https://trac.osgeo.org/geos),
-
   * install Python packages:
-
 
 ```bash
 pip install .
@@ -332,13 +327,9 @@ To create MapCSS with Map Machine style also for ways and relations, run `map-ma
 
 
   * Run `map-machine mapcss`.
-
   * Open [JOSM](https://josm.openstreetmap.de/).
-
   * Go to <kbd>Preferences</kbd> → Third tab on the left → <kbd>Map Paint Styles</kbd>.
-
   * Active styles: press <kbd>+</kbd>.
-
   * URL / File: set path to `out/map_machine_mapcss/map_machine.mapcss`.
 
 To enable/disable Map Machine map paint style go to <kbd>View</kbd> → <kbd>Map Paint Styles</kbd> → <kbd>Map Machine</kbd>.
@@ -350,6 +341,5 @@ To enable/disable Map Machine map paint style go to <kbd>View</kbd> → <kbd>Map
 Example of using Röntgen icons on top of Mapnik style in JOSM. Map Paint Styles look like this:
 
   * ✓ Mapnik (true)
-
   * ✓ Map Machine
 
