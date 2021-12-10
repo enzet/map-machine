@@ -1441,6 +1441,8 @@ node_icons:
       shapes: [bench_with_inscription]
     - tags: {historic: memorial, memorial: bench}
       shapes: [bench_with_inscription]
+    - tags: {memorial: bench}
+      shapes: [bench_with_inscription]
     - tags: {amenity: clock}
       shapes: [clock]
     - tags: {amenity: fountain}
