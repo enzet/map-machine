@@ -20,11 +20,12 @@ EXTRACTOR: ShapeExtractor = ShapeExtractor(
 )
 
 HEADER_PATTERN: re.Pattern = re.compile("==?=?.*==?=?")
-SEE_ALSO_HEADER_PATTERN: re.Pattern = re.compile("==\\s*See also\\s*==")
-EXAMPLE_HEADER_PATTERN: re.Pattern = re.compile("==\\s*Example.*==")
-RENDERING_HEADER_PATTERN: re.Pattern = re.compile(
-    "===\\s*\\[\\[Röntgen]] icons\\s*==="
-)
+HEADER_PATTERNS: list[re.Pattern] = [
+    re.compile("==\\s*See also\\s*=="),
+    re.compile("==\\s*Example.*=="),
+]
+RENDERING_HEADER_PATTERN: re.Pattern = re.compile("==\\s*Rendering\\s*==")
+ROENTGEN_HEADER_PATTERN: re.Pattern = re.compile("===.*Röntgen.*===")
 
 
 class WikiTable:
@@ -46,6 +47,33 @@ class WikiTable:
         else:
             text += "! Tag || Icon"
 
+        if self.collection.row_tags:
+            text += "\n"
+            for current_tags in self.collection.row_tags:
+                text += "|-\n"
+                text += "| "
+                if current_tags:
+                    for key, value in current_tags.items():
+                        if value == "*":
+                            text += f"{{{{Key|{key}}}}}<br />"
+                        else:
+                            text += f"{{{{Tag|{key}|{value}}}}}<br />"
+                    text = text[:-6]
+                text += "\n"
+                icon, _ = SCHEME.get_icon(
+                    EXTRACTOR,
+                    current_tags | self.collection.tags,
+                    set(),
+                    MapConfiguration(ignore_level_matching=True),
+                )
+                icons.append(icon.main_icon)
+                text += (
+                    "| "
+                    f"[[Image:Röntgen {icon.main_icon.get_name()}.svg|32px]]\n"
+                )
+            text += "|}\n"
+            return text, icons
+
         if not self.collection.column_values:
             self.collection.column_values = [""]
         else:
@@ -57,8 +85,6 @@ class WikiTable:
                         f"{self.collection.column_key}|{column_value}}}}}}}}}"
                     )
         text += "\n"
-
-        processed: set[str] = set()
 
         for row_value in self.collection.row_values:
             text += "|-\n"
@@ -72,9 +98,7 @@ class WikiTable:
                 }
                 if column_value:
                     current_tags |= {self.collection.column_key: column_value}
-                icon, _ = SCHEME.get_icon(
-                    EXTRACTOR, current_tags, processed, MapConfiguration()
-                )
+                icon, _ = SCHEME.get_icon(EXTRACTOR, current_tags, set())
                 if not icon:
                     print("Icon was not constructed.")
                 text += (
@@ -102,7 +126,7 @@ def generate_new_text(
     wiki_text: str
     icons = []
 
-    if table.collection.row_key:
+    if table.collection.row_key or table.collection.row_tags:
         wiki_text, icons = table.generate_wiki_table()
     else:
         processed = set()
@@ -129,12 +153,14 @@ def generate_new_text(
     start: Optional[int] = None
     end: int = -1
 
+    # If Röntgen rendering section already exists.
+
     for index, line in enumerate(lines):
         if HEADER_PATTERN.match(line):
             if start is not None:
                 end = index
                 break
-        if RENDERING_HEADER_PATTERN.match(line):
+        if ROENTGEN_HEADER_PATTERN.match(line):
             start = index
 
     if start is not None:
@@ -146,23 +172,23 @@ def generate_new_text(
             + "\n".join(lines[end:])
         ), icons
 
-    example_header: Optional[int] = None
+    # Otherwise.
+
+    headers = [None, None]
 
     for index, line in enumerate(lines):
-        if EXAMPLE_HEADER_PATTERN.match(line) or SEE_ALSO_HEADER_PATTERN.match(
-            line
-        ):
-            example_header = index
-            break
+        for i, pattern in enumerate(HEADER_PATTERNS):
+            if pattern.match(line):
+                headers[i] = index
 
-    if example_header is not None:
+    filtered = filter(lambda x: x is not None, headers)
+
+    if filtered:
+        header: int = filtered.__next__()
         return (
-            "\n".join(lines[:example_header])
-            + "\n"
-            + "== Rendering ==\n\n=== [[Röntgen]] icons ===\n\n"
-            + wiki_text
-            + "\n"
-            + "\n".join(lines[example_header:])
+            "\n".join(lines[:header])
+            + "\n== Rendering ==\n\n=== [[Röntgen]] icons in [[Map Machine]] "
+            "===\n\n" + wiki_text + "\n" + "\n".join(lines[header:])
         ), icons
 
     return None, []
