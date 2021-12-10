@@ -45,6 +45,9 @@ class Collection:
     # List of tag values to be used in columns
     column_values: list[str] = field(default_factory=list)
 
+    # List of tags to be used in rows
+    row_tags: list[Tags] = field(default_factory=list)
+
     @classmethod
     def deserialize(cls, structure: dict[str, Any]):
         """Deserialize icon collection from structure."""
@@ -60,8 +63,16 @@ class Collection:
         column_values: list[str] = (
             structure["column_values"] if "column_values" in structure else []
         )
+        row_tags: list[Tags] = (
+            structure["row_tags"] if "row_tags" in structure else []
+        )
         return cls(
-            structure["tags"], row_key, row_values, column_key, column_values
+            structure["tags"],
+            row_key,
+            row_values,
+            column_key,
+            column_values,
+            row_tags,
         )
 
 
