@@ -127,14 +127,15 @@
       "block": {"categories": ["highway"]},
       "bollard": {"categories": ["highway"]},
       "bump": {"name": "speed bump", "categories": ["highway"]},
+      "czech_hedgehog": {"name": "Czech hedgehog", "categories": ["barrier"]},
       "dip": {"name": "dip", "categories": ["highway"]},
       "double_dip": {"name": "double dip", "categories": ["highway"]},
+      "dragons_teeth": {"name": "dragon's teeth", "categories": ["barrier"]},
       "hump": {"categories": ["highway"], "name": "speed hump"},
       "mini_bumps": {"name": "speed bumps", "categories": ["highway"]},
       "rumble_strip": {"name": "rumble strips", "categories": ["highway"]},
       "traffic_cushion": {"categories": ["highway"], "name": "speed cushion"},
-      "traffic_table": {"categories": ["highway"], "name": "speed table"},
-      "czech_hedgehog": {"name": "Czech hedgehog"}
+      "traffic_table": {"categories": ["highway"], "name": "speed table"}
     },
     "traffic_sigh": {
       "stop": {"emoji": [ "🛑", "⛔️" ] , "categories": ["highway"]},
