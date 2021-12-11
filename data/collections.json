@@ -1,8 +1,40 @@
 [
     {
+        "page": "Tag:natural=tree",
+        "id": "trees",
+        "tags": {"natural": "tree"},
+        "row_key": "leaf_type",
+        "row_values": ["broadleaved", "needleleaved", "palm"],
+        "column_key": "denotation",
+        "column_values": ["", "urban", "avenue"]
+    },
+    {
+        "page": "Tag:man_made=surveillance",
+        "id": "surveillance",
+        "tags": {"man_made": "surveillance"},
+        "row_tags": [
+            {},
+            {"camera:type": "dome", "camera:mount": "ceiling"},
+            {"camera:type": "dome", "camera:mount": "wall"}
+        ]
+    },
+    {
+        "page": "Tag:artwork_type=stone",
+        "id": "artwork_stone",
+        "tags": {},
+        "row_tags": [
+            {"tourism": "artwork", "artwork_type": "stone"},
+            {"tourism": "artwork", "artwork_type": "stone", "inscription": "*"}
+        ]
+    },
+    {
         "page": "Tag:memorial=bench",
         "id": "diving",
-        "tags": {"memorial": "bench", "historic": "memorial"}
+        "tags": {},
+        "row_tags": [
+            {"amenity": "bench"},
+            {"memorial": "bench"}
+        ]
     },
     {
         "page": "Tag:man_made=mast",
