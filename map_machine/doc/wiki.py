@@ -150,10 +150,31 @@ def generate_new_text(
 
     lines: list[str] = old_text.split("\n")
 
+    # If rendering section already exists.
+
     start: Optional[int] = None
     end: int = -1
 
+    for index, line in enumerate(lines):
+        if HEADER_PATTERN.match(line):
+            if start is not None:
+                end = index
+                break
+        if RENDERING_HEADER_PATTERN.match(line):
+            start = index
+
+    if start is not None:
+        return (
+            "\n".join(lines[:end])
+            + "\n=== [[Röntgen]] icons in [[Map Machine]] ===\n"
+            + f"\n{wiki_text}\n"
+            + "\n".join(lines[end:])
+        ), icons
+
     # If Röntgen rendering section already exists.
+
+    start: Optional[int] = None
+    end: int = -1
 
     for index, line in enumerate(lines):
         if HEADER_PATTERN.match(line):
@@ -166,15 +187,13 @@ def generate_new_text(
     if start is not None:
         return (
             "\n".join(lines[: start + 2])
-            + "\n"
-            + wiki_text
-            + "\n"
+            + f"\n{wiki_text}\n"
             + "\n".join(lines[end:])
         ), icons
 
     # Otherwise.
 
-    headers = [None, None]
+    headers: list[Optional[int]] = [None, None]
 
     for index, line in enumerate(lines):
         for i, pattern in enumerate(HEADER_PATTERNS):
