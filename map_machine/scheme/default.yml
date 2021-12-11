@@ -1536,6 +1536,8 @@ node_icons:
       shapes: [czech_hedgehog]
     - tags: {tank_trap: dragons_teeth}
       shapes: [dragons_teeth]
+    - tags: {tank_trap: toblerone}
+      shapes: [dragons_teeth]
 
   - group: "Trees"
     start_zoom_level: 18.0

@@ -1,5 +1,12 @@
 [
     {
+        "page": "Key:tank_trap",
+        "id": "tank_trap",
+        "tags": {},
+        "row_key": "tank_trap",
+        "row_values": ["czech_hedgehog", "dragons_teeth", "toblerone"]
+    },
+    {
         "page": "Tag:natural=tree",
         "id": "trees",
         "tags": {"natural": "tree"},
