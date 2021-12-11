@@ -15,6 +15,6 @@ data/githooks/pre-commit || { echo "FAIL"; exit 1; }
 # Unit tests with pytest.
 
 echo "Run tests with pytest..."
-pytest -v || { echo "FAIL"; exit 1; }
+pytest -vv || { echo "FAIL"; exit 1; }
 
 exit 0

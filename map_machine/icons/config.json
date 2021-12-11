@@ -354,7 +354,7 @@
     "turning_loop": {"name": "turning loop"},
     "turnstile": {"name": "turnstile"},
     "umbrella": {"is_part": true},
-    "urban_tree_pot": {"is_part": true},
+    "urban_tree_pot": {"is_part": true, "name": "tree pot"},
     "vanity_mirror": {"name": "vanity mirror"},
     "ventilation": {},
     "watches": {},
@@ -387,7 +387,9 @@
     "waste_disposal": {}
   },
   "electronic_device": {
-    "cctv": {"directed": "right"},
+    "cctv": {"directed": "right", "name": "wall CCTV camera"},
+    "cctv_dome_wall": {"directed": "right", "name": "wall dome CCTV camera"},
+    "cctv_dome_ceiling": {"directed": "right", "name": "ceiling dome CCTV camera"},
     "phone": {"name": "phone"},
     "photo_camera": {"emoji": "📷"},
     "telephone": {"emoji": "☎️"},
