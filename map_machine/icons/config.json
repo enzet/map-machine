@@ -133,7 +133,8 @@
       "mini_bumps": {"name": "speed bumps", "categories": ["highway"]},
       "rumble_strip": {"name": "rumble strips", "categories": ["highway"]},
       "traffic_cushion": {"categories": ["highway"], "name": "speed cushion"},
-      "traffic_table": {"categories": ["highway"], "name": "speed table"}
+      "traffic_table": {"categories": ["highway"], "name": "speed table"},
+      "czech_hedgehog": {"name": "Czech hedgehog"}
     },
     "traffic_sigh": {
       "stop": {"emoji": [ "🛑", "⛔️" ] , "categories": ["highway"]},

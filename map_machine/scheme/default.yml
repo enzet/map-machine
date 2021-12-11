@@ -1532,6 +1532,8 @@ node_icons:
       shapes: [bollard]
     - tags: {barrier: kerb}
       shapes: [kerb]
+    - tags: {tank_trap: czech_hedgehog}
+      shapes: [czech_hedgehog]
 
   - group: "Trees"
     start_zoom_level: 18.0
