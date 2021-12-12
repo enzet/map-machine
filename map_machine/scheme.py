@@ -552,7 +552,7 @@ class Scheme:
                     if (
                         DirectionSet(tags[key]).is_right() is False
                         and specification.shape.is_right_directed is True
-                        or specification.shape.is_right_directed is True
+                        or DirectionSet(tags[key]).is_right() is True
                         and specification.shape.is_right_directed is False
                     ):
                         specification.flip_horizontally = True
