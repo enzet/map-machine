@@ -123,7 +123,7 @@ class MapMachineMoire(Default, ABC):
             key, tag = spec.split("=")
             return (
                 self.get_ref_(f"{PREFIX}Key:{key}", self.m([key]))
-                + "="
+                + " = "
                 + self.get_ref_(f"{PREFIX}Tag:{key}={tag}", self.m([tag]))
             )
 

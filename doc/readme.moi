@@ -82,7 +82,7 @@ Visualization of tree \icon {tree} leaf types (broadleaved \icon {tree_with_leaf
 
 \3 {Viewpoint and camera direction} {viewpoint-and-camera-direction}
 
-Visualize \osm {direction} tag for \osm {tourism=viewpoint} and \osm {camera:direction} for \osm {man_made=surveillance}.
+\osm {direction} tag values for \osm {tourism=viewpoint} and \osm {camera:direction} for \osm {man_made=surveillance} are rendered with sectors displaying the direction and angle (15º if angle is not specified) or the whole circle for panorama view.  Radial gradient is used for surveillance and inverted radial gradient is used for viewpoints.
 
 \image {doc/surveillance.svg} {Surveillance}
 
@@ -116,11 +116,15 @@ Japanese maps usually use \ref {https://en.wikipedia.org/wiki/List_of_Japanese_m
 
 Map Machine constructs icons from the shapes extracted from the sketch SVG file.  Some icons consist of just one shape, to construct others it may be necessary to combine two or more shapes.
 
-\3 {Masts} {masts}
+\4 {Masts} {masts}
+
+For \osm {man_made=mast} distinguish types (communication, lignting, monitoring, and siren) and construction (freestanding or lattice, and using of guys) are rendered by combining 7 unique icon shapes.
 
 \image {doc/mast.svg} {Mast types}
 
-\3 {Volcanoes} {volcanoes}
+\4 {Volcanoes} {volcanoes}
+
+For \osm {natural=volcano} status (active, dormant, extinct, or unspecified) and type (stratovolcano, shield, or scorial) are rendered by combining 7 unique icon shapes.
 
 \image {doc/volcano.svg} {Volcano types}
 

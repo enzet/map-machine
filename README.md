@@ -69,7 +69,7 @@ Visualization of tree leaf types (broadleaved or needle-leaved) and genus or tax
 
 ### Viewpoint and camera direction ###
 
-Visualize [`direction`](https://wiki.openstreetmap.org/wiki/Key:direction) tag for [`tourism`](https://wiki.openstreetmap.org/wiki/Key:tourism)=[`viewpoint`](https://wiki.openstreetmap.org/wiki/Tag:tourism=viewpoint) and [`camera:direction`](https://wiki.openstreetmap.org/wiki/Key:camera:direction) for [`man_made`](https://wiki.openstreetmap.org/wiki/Key:man_made)=[`surveillance`](https://wiki.openstreetmap.org/wiki/Tag:man_made=surveillance).
+[`direction`](https://wiki.openstreetmap.org/wiki/Key:direction) tag values for [`tourism`](https://wiki.openstreetmap.org/wiki/Key:tourism) = [`viewpoint`](https://wiki.openstreetmap.org/wiki/Tag:tourism=viewpoint) and [`camera:direction`](https://wiki.openstreetmap.org/wiki/Key:camera:direction) for [`man_made`](https://wiki.openstreetmap.org/wiki/Key:man_made) = [`surveillance`](https://wiki.openstreetmap.org/wiki/Tag:man_made=surveillance) are rendered with sectors displaying the direction and angle (15º if angle is not specified) or the whole circle for panorama view. Radial gradient is used for surveillance and inverted radial gradient is used for viewpoints.
 
 ![Surveillance](doc/surveillance.svg)
 
@@ -77,7 +77,7 @@ Visualize [`direction`](https://wiki.openstreetmap.org/wiki/Key:direction) tag f
 
 ### Power tower design ###
 
-Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used with [`power`](https://wiki.openstreetmap.org/wiki/Key:power)=[`tower`](https://wiki.openstreetmap.org/wiki/Tag:power=tower) tag.
+Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used with [`power`](https://wiki.openstreetmap.org/wiki/Key:power) = [`tower`](https://wiki.openstreetmap.org/wiki/Tag:power=tower) tag.
 
 ![Power tower design](doc/icons_power.svg)
 
@@ -103,11 +103,15 @@ Japanese maps usually use [special symbols](https://en.wikipedia.org/wiki/List_o
 
 Map Machine constructs icons from the shapes extracted from the sketch SVG file. Some icons consist of just one shape, to construct others it may be necessary to combine two or more shapes.
 
-### Masts ###
+#### Masts ####
+
+For [`man_made`](https://wiki.openstreetmap.org/wiki/Key:man_made) = [`mast`](https://wiki.openstreetmap.org/wiki/Tag:man_made=mast) distinguish types (communication, lignting, monitoring, and siren) and construction (freestanding or lattice, and using of guys) are rendered by combining 7 unique icon shapes.
 
 ![Mast types](doc/mast.svg)
 
-### Volcanoes ###
+#### Volcanoes ####
+
+For [`natural`](https://wiki.openstreetmap.org/wiki/Key:natural) = [`volcano`](https://wiki.openstreetmap.org/wiki/Tag:natural=volcano) status (active, dormant, extinct, or unspecified) and type (stratovolcano, shield, or scorial) are rendered by combining 7 unique icon shapes.
 
 ![Volcano types](doc/volcano.svg)
 
