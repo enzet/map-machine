@@ -524,6 +524,8 @@ node_icons:
       shapes: [aseptic_carton]
     - tags: {shop: doityourself}
       shapes: [wretch_and_hammer]
+    - tags: {shop: dry_cleaning}
+      shapes: [washing_machine]
     - tags: {shop: fireplace}
       shapes: [{shape: fireplace, color: sell_color}]
     - tags: {shop: florist}
@@ -544,6 +546,8 @@ node_icons:
       shapes: [{shape: diamond, color: sell_color}]
     - tags: {shop: jewellery}
       shapes: [{shape: diamond, color: sell_color}]
+    - tags: {shop: laundry}
+      shapes: [washing_machine]
     - tags: {shop: massage}
       shapes: [massage]
     - tags: {shop: mobile_phone}
