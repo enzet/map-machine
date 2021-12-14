@@ -279,6 +279,12 @@ class ShapeExtractor:
         root: Element = ElementTree.parse(svg_file_name).getroot()
         self.parse(root)
 
+        for shape_id in self.configuration:
+            if shape_id not in self.shapes:
+                logging.warning(
+                    f"Configuration for unknown shape `{shape_id}`."
+                )
+
     def parse(self, node: Element) -> None:
         """
         Extract icon paths into a map.
@@ -321,9 +327,15 @@ class ShapeExtractor:
                     name = child_node.text
                     break
 
-            configuration: dict[str, Any] = (
-                self.configuration[id_] if id_ in self.configuration else {}
-            )
+            configuration: dict[str, Any] = {}
+
+            if id_ in self.configuration:
+                configuration = self.configuration[id_]
+                if "name" not in configuration:
+                    logging.warning(f"Shape `{id_}` doesn't have name.")
+            else:
+                logging.warning(f"Shape `{id_}` doesn't have configuration.")
+
             self.shapes[id_] = Shape.from_structure(
                 configuration, path, point, id_, name
             )

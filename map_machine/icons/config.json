@@ -216,7 +216,7 @@
     "bench_backrest": {"name": "bench with backrest", "categories": ["amenity"]},
     "bench_no_backrest": {"name": "bench without backrest", "categories": ["amenity"]},
     "bench_with_inscription": {"name": "bench with inscription", "categories": ["amenity"]},
-    "bench_with_sculpture": {"name": "bench with sculpture", "categories": ["amenity"]},
+    "bench_with_statue": {"name": "bench with statue", "categories": ["amenity"]},
     "bench_with_shelter": {"categories": ["amenity"]},
     "billboard": {"name": "billboard", "categories": ["amenity"]},
     "fountain": {"emoji": "⛲", "name": "fountain", "categories": ["amenity"]},
