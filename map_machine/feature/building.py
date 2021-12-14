@@ -10,9 +10,9 @@ from svgwrite.container import Group
 from svgwrite.path import Path
 
 from map_machine.drawing import PathCommands
-from map_machine.feature.direction import Segment
 from map_machine.figure import Figure
 from map_machine.geometry.flinger import Flinger
+from map_machine.geometry.vector import Segment
 from map_machine.osm.osm_reader import OSMNode
 from map_machine.scheme import Scheme, LineStyle
 
