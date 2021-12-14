@@ -40,14 +40,39 @@ GRID_STEP: int = 16
 class Shape:
     """SVG icon path description."""
 
-    path: str  # SVG icon path
-    offset: np.ndarray  # vector that should be used to shift the path
-    id_: str  # shape identifier
-    name: Optional[str] = None  # shape human-readable description
+    # String representation of SVG path commands.
+    path: str
+
+    # Vector that should be used to shift the path.
+    offset: np.ndarray
+
+    # Shape unique string identifier, e.g. `tree`.
+    id_: str
+
+    # Shape human-readable description.
+    name: Optional[str] = None
+
+    # If value is `None`, shape doesn't have distinct direction or its
+    # direction doesn't make sense.  Shape is directed to the right if value is
+    # `True` and to the left if value is `False`.
+    #
+    # E.g. CCTV camera shape has direction and may be flipped horizontally to
+    # follow surveillance direction, whereas car shape has direction but
+    # flipping icon doesn't make any sense.
     is_right_directed: Optional[bool] = None
+
+    # Set of emojis that represent the same entity.  E.g. 🍐 (pear) for `pear`;
+    # 🍏 (green apple) and 🍎 (red apple) for `apple`.
     emojis: set[str] = field(default_factory=set)
+
+    # If shape is used only as a part of other icons.
     is_part: bool = False
+
+    # Hierarchical icon group.  Is used for icon sorting.
     group: str = ""
+
+    # Icon categories that is used in OpenStreetMap wiki.  E.g. `barrier` means
+    # https://wiki.openstreetmap.org/wiki/Category:Barrier_icons.
     categories: set[str] = field(default_factory=set)
 
     @classmethod
@@ -155,6 +180,9 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
         (x.split(":")[0], x.split(":")[1])
         for x in element.attrib["style"].split(";")
     )
+
+    # Sketch stroke element (black 0.1 px stroke, no fill).
+
     if (
         style["fill"] == "none"
         and style["stroke"] == "#000000"
@@ -163,6 +191,8 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
     ):
         return True
 
+    # Sketch fill element (black fill, no stroke, 20% opacity).
+
     if (
         style["fill"] == "none"
         and style["stroke"] == "#000000"
@@ -170,6 +200,8 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
         and np.allclose(float(style["opacity"]), 0.2)
     ):
         return True
+
+    # Experimental shape (blue fill, no stroke).
 
     if (
         style["fill"] == "#0000ff"
