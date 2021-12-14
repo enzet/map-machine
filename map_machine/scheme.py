@@ -108,7 +108,7 @@ class Matcher(Tagged):
     def __init__(
         self, structure: dict[str, Any], group: Optional[dict[str, Any]] = None
     ) -> None:
-        self.tags: Tags = structure["tags"]
+        super().__init__(structure["tags"])
 
         self.exception: dict[str, str] = {}
         if "exception" in structure:
@@ -546,14 +546,14 @@ class Scheme:
         returned: IconSet = IconSet(main_icon, extra_icons, processed)
         self.cache[tags_hash] = returned, priority
 
-        for key in ["direction", "camera:direction"]:
+        for key in "direction", "camera:direction":
             if key in tags:
                 for specification in main_icon.shape_specifications:
                     if (
-                        DirectionSet(tags[key]).is_right() is False
-                        and specification.shape.is_right_directed is True
-                        or DirectionSet(tags[key]).is_right() is True
-                        and specification.shape.is_right_directed is False
+                        DirectionSet(tags[key]).is_right() is not None
+                        and specification.shape.is_right_directed is not None
+                        and DirectionSet(tags[key]).is_right()
+                        != specification.shape.is_right_directed
                     ):
                         specification.flip_horizontally = True
 
