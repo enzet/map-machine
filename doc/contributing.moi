@@ -20,21 +20,31 @@ This action is not that easy as it supposed to be.  We use \ref {http://github.c
 
 \2 {Modify the code} {}
 
-First configure your workspace.
+\3 {First configure your workspace}
 
-\list
-    {Install formatter, linter and test system\: \m {pip install black flake8 pytest}.}
-    {Be sure to run \m {git config --local core.hooksPath data/githooks} to enable Git hooks.}
+Make sure you have Python 3.9 development tools.  E.g., for Ubuntu, run \m {apt install python3.9-dev python3.9-venv}.
 
-If you are using Pycharm, you may want to set up user dictionary as well:
+Activate virtual environment.  E.g. for fish shell, run \m {source venv/bin/activate.fish}.
+
+Install the project in editable mode:
+
+\code {pip install -e .} {shell}
+
+Install formatter, linter and test system\: \m {pip install black flake8 mypy pytest pytest-cov}.
+
+Be sure to enable Git hooks:
+
+\code {git config --local core.hooksPath data/githooks} {shell}
+
+If you are using PyCharm, you may want to set up user dictionary as well:
 
 \list
     {\m {cp data/dictionary.xml .idea/dictionaries/<user name>.xml}}
     {in \m {.idea/dictionaries/<user name>.xml} change \m {%USERNAME%} to your username,}
-    {restart Pycharm.}
+    {restart PyCharm if it is launched.}
 
 \3 {Code style} {code-style}
 
-We use \ref {http://github.com/psf/black} {Black} code formatter with maximum 80 characters line length for all Python files within the project.  Reformat a file is as simple as \m {black -l 80 \formal {file name}}.
+We use \ref {http://github.com/psf/black} {Black} code formatter with maximum 80 characters line length for all Python files within the project.  Reformat a file is as simple as \m {black -l 80 \formal {file name}}.  Reformat everything with \m {black -l 80 map_machine tests}.
 
 If you create new Python file, make sure you add \m {__author__ = "\formal {first name} \formal {second name}"} and \m {__email__ = "\formal {author e-mail}"} string variables.

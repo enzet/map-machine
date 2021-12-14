@@ -21,22 +21,36 @@ This action is not that easy as it supposed to be. We use [Moire](http://github.
 Modify the code
 ---------------
 
-First configure your workspace.
+### First configure your workspace ###
 
+Make sure you have Python 3.9 development tools. E.g., for Ubuntu, run `apt install python3.9-dev python3.9-venv`.
 
-  * Install formatter, linter and test system: `pip install black flake8 pytest`.
-  * Be sure to run `git config --local core.hooksPath data/githooks` to enable Git hooks.
+Activate virtual environment. E.g. for fish shell, run `source venv/bin/activate.fish`.
 
-If you are using Pycharm, you may want to set up user dictionary as well:
+Install the project in editable mode:
+
+```shell
+pip install -e .
+```
+
+Install formatter, linter and test system: `pip install black flake8 mypy pytest pytest-cov`.
+
+Be sure to enable Git hooks:
+
+```shell
+git config --local core.hooksPath data/githooks
+```
+
+If you are using PyCharm, you may want to set up user dictionary as well:
 
 
   * `cp data/dictionary.xml .idea/dictionaries/<user name>.xml`
   * in `.idea/dictionaries/<user name>.xml` change `%USERNAME%` to your username,
-  * restart Pycharm.
+  * restart PyCharm if it is launched.
 
 ### Code style ###
 
-We use [Black](http://github.com/psf/black) code formatter with maximum 80 characters line length for all Python files within the project. Reformat a file is as simple as `black -l 80 <file name>`.
+We use [Black](http://github.com/psf/black) code formatter with maximum 80 characters line length for all Python files within the project. Reformat a file is as simple as `black -l 80 <file name>`. Reformat everything with `black -l 80 map_machine tests`.
 
 If you create new Python file, make sure you add `__author__ = "<first name> <second name>"` and `__email__ = "<author e-mail>"` string variables.
 

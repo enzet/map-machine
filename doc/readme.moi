@@ -114,7 +114,9 @@ Japanese maps usually use \ref {https://en.wikipedia.org/wiki/List_of_Japanese_m
 
 \3 {Shape combination} {shape-combination}
 
-Map Machine constructs icons from the shapes extracted from the sketch SVG file.  Some icons consist of just one shape, to construct others it may be necessary to combine two or more shapes.
+One of the key features of Map Machine is constructing icons from the several shapes.
+
+/* Some icons consist of just one shape, to construct others it may be necessary to combine two or more shapes. */
 
 \4 {Masts} {masts}
 
@@ -302,7 +304,7 @@ HTML code\:
 
 \2 {Map options} {map-options}
 
-Map configuration options used by \m {render} and \m {tile} commands:
+Map configuration options used by \m {render} and \m {tile} commands\:
 
 \options {map}
 

@@ -101,7 +101,7 @@ Japanese maps usually use [special symbols](https://en.wikipedia.org/wiki/List_o
 
 ### Shape combination ###
 
-Map Machine constructs icons from the shapes extracted from the sketch SVG file. Some icons consist of just one shape, to construct others it may be necessary to combine two or more shapes.
+One of the key features of Map Machine is constructing icons from the several shapes.
 
 #### Masts ####
 
