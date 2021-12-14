@@ -107,6 +107,8 @@
       "p": {"emoji": "P", "name": "letter P", "categories": ["letter"]},
       "p_small": {"name": "small letter P", "categories": ["letter"]},
       "x": {"emoji": "❌", "name": "letter X", "categories": ["letter"]},
+      "x_4": {"emoji": "❌", "name": "X sign 4 px", "categories": ["letter"]},
+      "x_5": {"emoji": "❌", "name": "X sign 5 px", "categories": ["letter"]},
       "y": {"name": "letter Y", "categories": ["letter"]}
     },
     "religious": {
@@ -144,21 +146,21 @@
     "bus_stop": {"emoji": "🚏", "categories": ["public transport"]},
     "bus_stop_bench": {"is_part": true},
     "bus_stop_shelter": {"is_part": true},
-    "charging_station": {}
+    "charging_station": {"name": "charging station"}
   },
   "sea": {
     "anchor": {"emoji": "⚓", "name": "anchor"},
-    "buoy": {}
+    "buoy": {"name": "buoy"}
   },
   "material": {
-    "bricks": {},
-    "wood": {"emoji": "🪵"}
+    "bricks": {"name": "brick wall"},
+    "wood": {"emoji": "🪵", "name": "log"}
   },
   "natural": {
-    "cave": {"categories": ["natural"]},
-    "cliff": {"categories": ["natural"]},
-    "crater": {"categories": ["natural"]},
-    "ford": {"categories": ["natural"]},
+    "cave": {"categories": ["natural"], "name": "cave"},
+    "cliff": {"categories": ["natural"], "name": "cliff"},
+    "crater": {"categories": ["natural"], "name": "crater"},
+    "ford": {"categories": ["natural"], "name": "ford"},
     "lava": {"name": "lava"},
     "shield_volcano": {"name": "shield volcano", "categories": ["natural"], "emoji": "🌋"},
     "smoke": {"name": "smoke"},
@@ -199,10 +201,6 @@
     "ice_cream": {"emoji": "🍨"},
     "ice_cream_2": {}
   },
-  "furniture": {
-    "bed": {"emoji": "🛌"},
-    "table": {}
-  },
   "street": {
     "playground": {
       "hopscotch": {"name": "hopscotch"},
@@ -217,19 +215,24 @@
     "bench_no_backrest": {"name": "bench without backrest", "categories": ["amenity"]},
     "bench_with_inscription": {"name": "bench with inscription", "categories": ["amenity"]},
     "bench_with_statue": {"name": "bench with statue", "categories": ["amenity"]},
-    "bench_with_shelter": {"categories": ["amenity"]},
+    "bench_with_shelter": {"name": "bench with shelter", "categories": ["amenity"]},
     "billboard": {"name": "billboard", "categories": ["amenity"]},
     "fountain": {"emoji": "⛲", "name": "fountain", "categories": ["amenity"]},
     "fountain_bubbler": {"name": "bubbler fountain", "categories": ["amenity"]},
     "fountain_cascade": {"name": "cascade fountain", "categories": ["amenity"]},
     "fountain_roman_wolf": {"name": "Roman wolf fountain", "categories": ["amenity"]},
-    "fountain_toret": {"name": "toret fountain", "categories": ["amenity"]}
+    "fountain_toret": {"name": "toret fountain", "categories": ["amenity"]},
+    "table": {"name": "street table"},
+    "table_and_two_chairs": {"name": "table and two chairs"}
   },
   "indoor": {
+    "furniture": {
+      "bed": {"emoji": "🛌", "name": "bed"},
+      "two_beds": {"name": "two beds"}
+    },
     "curtains": {"name": "curtains"},
     "elevator": {"name": "elevator"},
     "fireplace": {"name": "fireplace"},
-    "two_beds": {"name": "two beds"},
     "washing_machine": {"name": "washing machine"}
   },
   "technique": {
@@ -345,7 +348,6 @@
     "survey_point": {},
     "suspension_railway": {"name": "suspension railway", "emoji": "🚟"},
     "swimming_area": {},
-    "table_and_two_chairs": {"name": "table and two chairs"},
     "tactile_paving": {},
     "ticket": {"emoji": [ "🎫", "🎟" ]},
     "toll_booth": {"name": "toll booth"},
@@ -361,7 +363,6 @@
     "urban_tree_pot": {"is_part": true, "name": "tree pot"},
     "vanity_mirror": {"name": "vanity mirror"},
     "ventilation": {},
-    "watches": {},
     "waving_flag": {},
     "wretch_and_hammer": {"name": "wretch and hammer"}
   },
@@ -372,7 +373,8 @@
     "glasses": {"name": "glasses"},
     "shoe": {"name": "shoe"},
     "t_shirt": {"name": "T-shirt"},
-    "t_shirt_and_scissors": {"name": "T-shirt and scissors"}
+    "t_shirt_and_scissors": {"name": "T-shirt and scissors"},
+    "watches": {"name": "hand watch"}
   },
   "sport": {
     "bowling_ball": {"categories": ["sport"], "name": "bowling ball"},
@@ -387,18 +389,18 @@
     "wall_bars": {"name": "wall bars", "categories": ["sport"]}
   },
   "recycling": {
-    "recycling_container": {"name": "recycling container"},
+    "recycling_container": {"name": "recycling container with wheel"},
     "waste_basket": {"name": "waste basket"},
-    "waste_disposal": {}
+    "waste_disposal": {"name": "recycling container"}
   },
   "electronic_device": {
     "cctv": {"directed": "right", "name": "wall CCTV camera"},
     "cctv_dome_wall": {"directed": "right", "name": "wall dome CCTV camera"},
     "cctv_dome_ceiling": {"directed": "right", "name": "ceiling dome CCTV camera"},
-    "phone": {"name": "phone"},
+    "phone": {"name": "mobile phone"},
     "photo_camera": {"emoji": "📷"},
-    "telephone": {"emoji": "☎️"},
-    "tv": {}
+    "telephone": {"emoji": "☎️", "name": "telephone"},
+    "tv": {"name": "monitor"}
   },
   "car_part": {
     "tyre": {"name": "tyre"}
