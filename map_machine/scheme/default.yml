@@ -554,6 +554,8 @@ node_icons:
       shapes: [{shape: phone, color: sell_color}]
     - tags: {shop: newsagent}
       shapes: [sheets]
+    - tags: {shop: optician}
+      shapes: [glasses]
     - tags: {shop: pet}
       shapes: [{shape: dog, color: sell_color}]
     - tags: {shop: photo}
