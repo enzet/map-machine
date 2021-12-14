@@ -20,6 +20,7 @@ EXTRACTOR: ShapeExtractor = ShapeExtractor(
 )
 
 HEADER_PATTERN: re.Pattern = re.compile("==?=?.*==?=?")
+HEADER_2_PATTERN: re.Pattern = re.compile("== .* ==")
 HEADER_PATTERNS: list[re.Pattern] = [
     re.compile("==\\s*See also\\s*=="),
     re.compile("==\\s*Example.*=="),
@@ -156,7 +157,7 @@ def generate_new_text(
     end: int = -1
 
     for index, line in enumerate(lines):
-        if HEADER_PATTERN.match(line):
+        if HEADER_2_PATTERN.match(line):
             if start is not None:
                 end = index
                 break
@@ -165,7 +166,7 @@ def generate_new_text(
 
     if start is not None:
         return (
-            "\n".join(lines[:end])
+            "\n".join(lines[: start + 2])
             + "\n=== [[Röntgen]] icons in [[Map Machine]] ===\n"
             + f"\n{wiki_text}\n"
             + "\n".join(lines[end:])
@@ -200,14 +201,17 @@ def generate_new_text(
             if pattern.match(line):
                 headers[i] = index
 
-    filtered = filter(lambda x: x is not None, headers)
+    filtered = list(filter(lambda x: x is not None, headers))
+    header: int
 
     if filtered:
-        header: int = filtered.__next__()
-        return (
-            "\n".join(lines[:header])
-            + "\n== Rendering ==\n\n=== [[Röntgen]] icons in [[Map Machine]] "
-            "===\n\n" + wiki_text + "\n" + "\n".join(lines[header:])
-        ), icons
+        header = filtered[0]
+    else:
+        lines += [""]
+        header = len(lines)
 
-    return None, []
+    return (
+        "\n".join(lines[:header])
+        + "\n== Rendering ==\n\n=== [[Röntgen]] icons in [[Map Machine]] "
+        "===\n\n" + wiki_text + "\n" + "\n".join(lines[header:])
+    ), icons
