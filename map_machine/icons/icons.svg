@@ -140,20 +140,20 @@
      inkscape:snap-intersection-paths="true"
      inkscape:object-nodes="true"
      inkscape:window-maximized="0"
-     inkscape:window-y="25"
+     inkscape:window-y="0"
      inkscape:window-x="0"
-     inkscape:window-height="847"
+     inkscape:window-height="900"
      inkscape:window-width="1440"
      inkscape:snap-bbox="true"
      inkscape:object-paths="true"
      inkscape:guide-bbox="true"
      showguides="false"
-     showgrid="true"
+     showgrid="false"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="246.16155"
-     inkscape:cx="209.392"
-     inkscape:zoom="11.313709"
+     inkscape:cy="161.75"
+     inkscape:cx="175"
+     inkscape:zoom="2"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -619,10 +619,6 @@
        style="opacity:0.2;fill:none;stroke:#000000;stroke-linecap:round;stroke-linejoin:round"
        d="m 365.5,514.5 v 2 0"
        id="path34779" />
-    <path
-       style="color:#000000;fill:#000000;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
-       d="m 211.5,247 a 0.50005,0.50005 0 0 0 -0.35352,0.85352 l 1,1 A 0.50005,0.50005 0 0 0 212.5,249 h 7 a 0.50005,0.50005 0 0 0 0.35352,-0.14648 l 1,-1 A 0.50005,0.50005 0 0 0 220.5,247 Z"
-       id="tree_pot" />
     <path
        id="pac_man"
        style="color:#000000;opacity:1;fill:#000000;fill-opacity:0.886364;stroke:none;stroke-linecap:square;stroke-linejoin:round;-inkscape-stroke:none"
@@ -26377,10 +26373,6 @@
        style="fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 394,466 c -0.55228,0 -1,0.44772 -1,1 0,0.55228 0.44772,1 1,1 0.55228,0 1,-0.44772 1,-1 0,-0.55228 -0.44772,-1 -1,-1 z m -1.5,3 c -0.277,0 -0.5,0.223 -0.5,0.5 v 2 c 0,0.277 0.223,0.5 0.5,0.5 h 0.5 v 1 h 2 v -1 h 0.5 c 0.277,0 0.5,-0.223 0.5,-0.5 v -2 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 z m -6,5 c -0.277,0 -0.5,0.223 -0.5,0.5 v 1 c 0,0.277 0.223,0.5 0.5,0.5 h 0.5 v 1.5 c 0,0.277 0.223,0.5 0.5,0.5 0.277,0 0.5,-0.223 0.5,-0.5 V 476 h 8 v 1.5 c 0,0.277 0.223,0.5 0.5,0.5 0.277,0 0.5,-0.223 0.5,-0.5 V 476 h 0.5 c 0.277,0 0.5,-0.223 0.5,-0.5 v -1 c 0,-0.277 -0.223,-0.5 -0.5,-0.5 z"
        sodipodi:nodetypes="sssssssssccccssssssssscsssccssscsssss" />
-    <path
-       style="color:#000000;fill:#000000;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
-       d="m 197.5,247 a 0.5,0.5 0 0 0 -0.5,0.5 0.5,0.5 0 0 0 0.5,0.5 h 4 a 0.5,0.5 0 0 0 0.5,-0.5 0.5,0.5 0 0 0 -0.5,-0.5 z"
-       id="horizontal_line_5px" />
     <rect
        ry="0.5"
        rx="0.5"

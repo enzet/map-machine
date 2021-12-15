@@ -1,5 +1,14 @@
 [
     {
+        "page": "Tag:artwork_type=statue",
+        "id": "statue",
+        "tags": {"tourism": "artwork", "artwork_type": "statue"},
+        "row_tags": [
+            {},
+            {"amenity": "bench"}
+        ]
+    },
+    {
         "page": "Key:tank_trap",
         "id": "tank_trap",
         "tags": {},
