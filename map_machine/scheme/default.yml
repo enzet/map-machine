@@ -516,8 +516,12 @@ node_icons:
       shapes: [knives]
     - tags: {shop: car}
       shapes: [{shape: car, color: sell_color}]
+    - tags: {shop: chocolate}
+      shapes: [cupcake]
     - tags: {shop: coffee}
       shapes: [{shape: coffee_cup, color: sell_color}]
+    - tags: {shop: confectionery}
+      shapes: [cupcake]
     - tags: {shop: copyshop}
       shapes: [sheets]
     - tags: {shop: dairy}
@@ -556,6 +560,8 @@ node_icons:
       shapes: [sheets]
     - tags: {shop: optician}
       shapes: [glasses]
+    - tags: {shop: pastry}
+      shapes: [cupcake]
     - tags: {shop: pet}
       shapes: [{shape: dog, color: sell_color}]
     - tags: {shop: photo}
