@@ -564,6 +564,8 @@ node_icons:
       shapes: [{shape: shoe, color: sell_color}]
     - tags: {shop: sports}
       shapes: [{shape: dumbbell, color: sell_color}]
+    - tags: {shop: travel_agency}
+      shapes: [globe]
     - tags: {shop: milk}
       shapes: [aseptic_carton]
     - tags: {shop: wine}

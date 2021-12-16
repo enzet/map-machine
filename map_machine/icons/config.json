@@ -311,6 +311,7 @@
     "garages": {"name": "car under roof"},
     "gate": {"name": "gate"},
     "gift": {"emoji": "🎁", "name": "gift box"},
+    "globe": {"name": "globe"},
     "government": {"name": "building with dome and flag"},
     "guidepost": {"directed": "right", "name": "guidepost"},
     "guys": {"name": "guys"},

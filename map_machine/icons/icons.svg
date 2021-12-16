@@ -27047,8 +27047,8 @@
        sodipodi:arc-type="arc"
        d="M 314,98.169873 A 5,5 0 0 1 315.83013,105 5,5 0 0 1 309,106.83013" />
     <path
-       id="path38897"
-       style="color:#000000;opacity:1;fill:#0000ff;stroke:none;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
+       id="globe"
+       style="color:#000000;opacity:1;fill:#000000;stroke:none;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
        d="m 314.06445,113.67383 a 0.5,0.5 0 0 0 -0.49804,0.24609 0.5,0.5 0 0 0 0.18359,0.6836 c 2.15744,1.2456 2.89208,3.98904 1.64648,6.14648 -0.82829,1.43465 -2.31915,2.23953 -3.85937,2.25195 A 0.5,0.5 0 0 0 311.5,123 a 0.5,0.5 0 0 0 -0.0195,0.002 c -0.75762,-0.003 -1.52529,-0.19833 -2.23047,-0.60547 a 0.5,0.5 0 0 0 -0.68359,0.1836 0.5,0.5 0 0 0 0.18359,0.68359 c 0.7125,0.41136 1.47952,0.644 2.25,0.71289 V 125 h -2.5 a 0.5,0.5 0 0 0 -0.5,0.5 0.5,0.5 0 0 0 0.5,0.5 h 6 a 0.5,0.5 0 0 0 0.5,-0.5 0.5,0.5 0 0 0 -0.5,-0.5 H 312 v -1.02734 c 1.71812,-0.15985 3.33769,-1.11882 4.26367,-2.72266 1.51582,-2.62548 0.61181,-5.99785 -2.01367,-7.51367 a 0.5,0.5 0 0 0 -0.18555,-0.0625 z M 311.5,115 a 3.5,3.5 0 0 0 -3.5,3.5 3.5,3.5 0 0 0 3.5,3.5 3.5,3.5 0 0 0 3.5,-3.5 3.5,3.5 0 0 0 -3.5,-3.5 z" />
     <path
        style="font-variation-settings:normal;opacity:0.2;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
