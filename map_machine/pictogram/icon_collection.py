@@ -162,7 +162,7 @@ class IconCollection:
         file_name: Path,
         columns: int = 16,
         step: float = 24.0,
-        background_color: Color = Color("white"),
+        background_color: Optional[Color] = Color("white"),
         scale: float = 1.0,
     ) -> None:
         """
@@ -179,7 +179,10 @@ class IconCollection:
 
         height: int = int(int(len(self.icons) / columns + 1.0) * step * scale)
         svg: Drawing = Drawing(str(file_name), (width, height))
-        svg.add(svg.rect((0, 0), (width, height), fill=background_color.hex))
+        if background_color is not None:
+            svg.add(
+                svg.rect((0, 0), (width, height), fill=background_color.hex)
+            )
 
         for icon in self.icons:
             icon.draw(svg, point, scale=scale)
