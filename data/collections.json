@@ -1,5 +1,12 @@
 [
     {
+        "page": "Tag:leisure=outdoor_seating",
+        "id": "outdoor_seating",
+        "tags": {"leisure": "outdoor_seating"},
+        "row_key": "weather_protection",
+        "row_values": ["parasol", "roof", "awning", "pavilion", "pergola"]
+    },
+    {
         "page": "Tag:artwork_type=statue",
         "id": "statue",
         "tags": {"tourism": "artwork", "artwork_type": "statue"},
