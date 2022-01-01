@@ -1,5 +1,6 @@
 [
     {
+        "name": "Outdoor seating",
         "page": "Tag:leisure=outdoor_seating",
         "id": "outdoor_seating",
         "tags": {"leisure": "outdoor_seating"},
@@ -16,6 +17,7 @@
         ]
     },
     {
+        "name": "Tank trap",
         "page": "Key:tank_trap",
         "id": "tank_trap",
         "tags": {},
@@ -32,6 +34,7 @@
         "column_values": ["", "urban", "avenue"]
     },
     {
+        "name": "Surveillance",
         "page": "Tag:man_made=surveillance",
         "id": "surveillance",
         "tags": {"man_made": "surveillance"},
@@ -51,8 +54,9 @@
         ]
     },
     {
+        "name": "Bench",
         "page": "Tag:memorial=bench",
-        "id": "diving",
+        "id": "bench",
         "tags": {},
         "row_tags": [
             {"amenity": "bench"},
@@ -60,6 +64,7 @@
         ]
     },
     {
+        "name": "Mast",
         "page": "Tag:man_made=mast",
         "id": "mast",
         "tags": {"man_made": "mast"},
@@ -69,6 +74,7 @@
         "column_values": ["", "communication", "lighting", "monitoring", "siren"]
     },
     {
+        "name": "Volcano",
         "page": "Tag:natural=volcano",
         "id": "volcano",
         "tags": {"natural": "volcano"},
@@ -100,6 +106,7 @@
         "tags": {"communication:mobile_phone": "yes"}
     },
     {
+        "name": "Traffic calming",
         "page": "Key:traffic_calming",
         "tags": {},
         "row_key": "traffic_calming",
@@ -138,6 +145,7 @@
         ]
     },
     {
+        "name": "Diving tower",
         "page": "Tag:tower:type=diving",
         "id": "diving",
         "tags": {"man_made": "tower", "tower:type": "diving"},
