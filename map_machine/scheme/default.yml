@@ -530,6 +530,8 @@ node_icons:
       shapes: [wretch_and_hammer]
     - tags: {shop: dry_cleaning}
       shapes: [washing_machine]
+    - tags: {shop: farm}
+      shapes: [{shape: apple, color: sell_color}]
     - tags: {shop: fireplace}
       shapes: [{shape: fireplace, color: sell_color}]
     - tags: {shop: florist}
