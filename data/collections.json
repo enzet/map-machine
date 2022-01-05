@@ -126,6 +126,7 @@
     },
     {
         "tags": {},
+        "name": "Power tower and pole",
         "row_key": "power",
         "row_values": ["tower", "pole"],
         "column_key": "design",
@@ -136,6 +137,7 @@
     },
     {
         "tags": {},
+        "name": "Power tower",
         "row_key": "power",
         "row_values": ["tower"],
         "column_key": "design",
