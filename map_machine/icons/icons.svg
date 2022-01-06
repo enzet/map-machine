@@ -9433,7 +9433,7 @@
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 337,171 13,0 -2,-6 -9,0 z"
+       d="m 337,169 h 13 l -2,-6 h -9 z"
        id="path9962"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
@@ -9443,7 +9443,7 @@
        width="1"
        height="10"
        x="343"
-       y="163"
+       y="161"
        rx="0.5"
        ry="0.5" />
     <rect
@@ -9452,12 +9452,12 @@
        width="13"
        height="1"
        x="337"
-       y="167"
+       y="165"
        rx="0.5"
        ry="0.5" />
     <path
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 339,181 -0.66602,2 4.66602,0 0,-2 z m 5,0 0,2 4.66602,0 L 348,181 Z m -6,3 -1,3 6,0 0,-3 z m 6,0 0,3 6,0 -1,-3 z m -6,5 0,1 11,0 0,-1 -4,0 0,-1 -3,0 0,1 z"
+       d="m 339,179 -0.66602,2 H 343 v -2 z m 5,0 v 2 h 4.66602 L 348,179 Z m -6,3 -1,3 h 6 v -3 z m 6,0 v 3 h 6 l -1,-3 z m -6,5 v 1 h 11 v -1 h -4 v -1 h -3 v 1 z"
        id="solar_panel"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccccccccccccccccccccccc" />
@@ -17085,7 +17085,7 @@
        width="11"
        height="1"
        x="338"
-       y="173"
+       y="171"
        rx="0"
        ry="0" />
     <rect
@@ -17094,7 +17094,7 @@
        width="3"
        height="1.5"
        x="342"
-       y="172" />
+       y="170" />
     <path
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="M 612 434 C 611.446 434 611 434.446 611 435 L 611 443 C 611 443.554 611.446 444 612 444 L 616 444 L 616 442 C 616 440.892 616.892 440 618 440 L 618 435 C 618 434.446 617.554 434 617 434 L 612 434 z M 614.5 436 L 616.5 439 L 614.5 442 L 612.5 439 L 614.5 436 z M 618 441 C 617.446 441 617 441.446 617 442 L 617 445 C 617 445.554 617.446 446 618 446 L 621 446 C 621.554 446 622 445.554 622 445 L 622 442 C 622 441.446 621.554 441 621 441 L 618 441 z M 618.5 441.77344 A 0.72727275 0.72727275 0 0 1 619.22656 442.5 A 0.72727275 0.72727275 0 0 1 618.5 443.22656 A 0.72727275 0.72727275 0 0 1 617.77344 442.5 A 0.72727275 0.72727275 0 0 1 618.5 441.77344 z M 620.5 443.77344 A 0.72727275 0.72727275 0 0 1 621.22656 444.5 A 0.72727275 0.72727275 0 0 1 620.5 445.22656 A 0.72727275 0.72727275 0 0 1 619.77344 444.5 A 0.72727275 0.72727275 0 0 1 620.5 443.77344 z "
@@ -17455,7 +17455,7 @@
        rx="1" />
     <path
        style="opacity:0.2;fill:none;stroke:#000000;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 301,169 c 0,1 -1,2 -2,2 h -9 v -6 h 9 l 2,3 z"
+       d="m 301,168 c 0,1 -1,2 -2,2 h -9 v -6 h 9 l 2,3 z"
        id="path25054"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccc" />
@@ -17465,13 +17465,13 @@
        width="2"
        height="1"
        x="301"
-       y="169"
+       y="168"
        rx="0"
        ry="0" />
     <rect
        ry="2"
        rx="2"
-       y="170"
+       y="169"
        x="291"
        height="4"
        width="4"
@@ -17479,7 +17479,7 @@
        style="fill:none;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <rect
        rx="1"
-       y="171"
+       y="170"
        x="292"
        height="2"
        width="2"
@@ -17488,7 +17488,7 @@
        ry="1" />
     <path
        style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-       d="m 290,180 c -0.55226,6e-5 -0.99994,0.44774 -1,1 v 6 c 6e-5,0.55226 0.44774,0.99994 1,1 h 1 c 0,-1.108 0.892,-2 2,-2 1.108,0 2,0.892 2,2 h 4 c 0.83333,0 1.5499,-0.38583 2.08203,-0.91797 0.30316,-0.30315 0.54704,-0.67168 0.71094,-1.08203 H 303 v -1 h -1 v -1 c -10e-6,-0.19742 -0.0585,-0.39043 -0.16797,-0.55469 l -2,-3 C 299.64656,180.16713 299.33434,180.00003 299,180 Z m 0.5,1 h 3 c 0.277,0 0.5,0.223 0.5,0.5 v 2 c 0,0.277 -0.223,0.5 -0.5,0.5 h -3 c -0.277,0 -0.5,-0.223 -0.5,-0.5 v -2 c 0,-0.277 0.223,-0.5 0.5,-0.5 z m 6,0 h 2 c 0.277,0 0.5,0.223 0.5,0.5 v 5 c 0,0.277 -0.223,0.5 -0.5,0.5 h -2 c -0.277,0 -0.5,-0.223 -0.5,-0.5 v -5 c 0,-0.277 0.223,-0.5 0.5,-0.5 z m -3.5,6 c -0.554,0 -1,0.446 -1,1 0,0.554 0.446,1 1,1 0.554,0 1,-0.446 1,-1 0,-0.554 -0.446,-1 -1,-1 z"
+       d="m 290,179 c -0.55226,6e-5 -0.99994,0.44774 -1,1 v 6 c 6e-5,0.55226 0.44774,0.99994 1,1 h 1 c 0,-1.108 0.892,-2 2,-2 1.108,0 2,0.892 2,2 h 4 c 0.83333,0 1.5499,-0.38583 2.08203,-0.91797 0.30316,-0.30315 0.54704,-0.67168 0.71094,-1.08203 H 303 v -1 h -1 v -1 c -10e-6,-0.19742 -0.0585,-0.39043 -0.16797,-0.55469 l -2,-3 C 299.64656,179.16713 299.33434,179.00003 299,179 Z m 0.5,1 h 3 c 0.277,0 0.5,0.223 0.5,0.5 v 2 c 0,0.277 -0.223,0.5 -0.5,0.5 h -3 c -0.277,0 -0.5,-0.223 -0.5,-0.5 v -2 c 0,-0.277 0.223,-0.5 0.5,-0.5 z m 6,0 h 2 c 0.277,0 0.5,0.223 0.5,0.5 v 5 c 0,0.277 -0.223,0.5 -0.5,0.5 h -2 c -0.277,0 -0.5,-0.223 -0.5,-0.5 v -5 c 0,-0.277 0.223,-0.5 0.5,-0.5 z m -3.5,6 c -0.554,0 -1,0.446 -1,1 0,0.554 0.446,1 1,1 0.554,0 1,-0.446 1,-1 0,-0.554 -0.446,-1 -1,-1 z"
        id="caravan"
        inkscape:label="#path25062"
        inkscape:connector-curvature="0">
@@ -17895,7 +17895,7 @@
     <rect
        ry="0.5"
        rx="0.5"
-       y="165"
+       y="164"
        x="290"
        height="3"
        width="4"
@@ -17907,7 +17907,7 @@
        width="3"
        height="6"
        x="296"
-       y="165"
+       y="164"
        rx="0.5"
        ry="0.5" />
     <path
@@ -18748,11 +18748,11 @@
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path7378"
-       d="m 101,132 7,9"
+       d="m 101,131 7,9"
        style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
        style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 108,132 -7,9"
+       d="m 108,131 -7,9"
        id="path7380"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
@@ -18763,39 +18763,41 @@
        d="m 120,142 0,-3 -5,0 5,-7.5 5,7.5 -5,0"
        style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
-       d="m 141,131 a 5,5 0 0 1 -2.5,4.33013 5,5 0 0 1 -5,0 A 5,5 0 0 1 131,131"
+       d="m 141,130 a 5,5 0 0 1 -2.5,4.33013 5,5 0 0 1 -5,0 A 5,5 0 0 1 131,130"
        sodipodi:open="true"
        sodipodi:end="3.1415927"
        sodipodi:start="0"
        sodipodi:ry="5"
        sodipodi:rx="5"
-       sodipodi:cy="131"
+       sodipodi:cy="130"
        sodipodi:cx="136"
        sodipodi:type="arc"
        id="path7384"
-       style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+       style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       sodipodi:arc-type="arc" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path7386"
-       d="m 136,132 0,9"
+       d="m 136,131 v 9"
        style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
        style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path7388"
        sodipodi:type="arc"
        sodipodi:cx="136"
-       sodipodi:cy="-141.9994"
+       sodipodi:cy="-140.9994"
        sodipodi:rx="5"
        sodipodi:ry="5"
        sodipodi:start="0"
        sodipodi:end="3.1415927"
        sodipodi:open="true"
-       d="m 141,-141.9994 a 5,5 0 0 1 -2.5,4.33012 5,5 0 0 1 -5,0 5,5 0 0 1 -2.5,-4.33013"
-       transform="scale(1,-1)" />
+       d="m 141,-140.9994 a 5,5 0 0 1 -2.5,4.33012 5,5 0 0 1 -5,0 5,5 0 0 1 -2.5,-4.33012"
+       transform="scale(1,-1)"
+       sodipodi:arc-type="arc" />
     <path
        style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 147,132 10,0"
+       d="m 147,131 h 10"
        id="path7390"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
@@ -18803,11 +18805,11 @@
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path7392"
-       d="m 149,135 6,0"
+       d="m 149,134 h 6"
        style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
        style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 148,133 0,8"
+       d="m 148,132 v 8"
        id="path7394"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
@@ -18815,7 +18817,7 @@
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path7396"
-       d="m 156,133 0,8"
+       d="m 156,132 v 8"
        style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
        style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
@@ -19257,32 +19259,32 @@
          id="title10926">Japanese map symbol for fire station</title>
     </path>
     <path
-       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-       d="M 101.17578 146.59766 L 99.597656 147.82422 L 100.21094 148.61328 L 103.23438 152.5 L 100.21094 156.38672 L 99.597656 157.17578 L 101.17578 158.40234 L 101.78906 157.61328 L 104.5 154.12695 L 107.21094 157.61328 L 107.82422 158.40234 L 109.40234 157.17578 L 108.78906 156.38672 L 105.76562 152.5 L 108.78906 148.61328 L 109.40234 147.82422 L 107.82422 146.59766 L 107.21094 147.38672 L 104.5 150.87305 L 101.78906 147.38672 L 101.17578 146.59766 z "
+       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       d="m 101.17578,145.59766 -1.578124,1.22656 0.613284,0.78906 3.02344,3.88672 -3.02344,3.88672 -0.613284,0.78906 1.578124,1.22656 0.61328,-0.78906 2.71094,-3.48633 2.71094,3.48633 0.61328,0.78906 1.57812,-1.22656 -0.61328,-0.78906 -3.02344,-3.88672 3.02344,-3.88672 0.61328,-0.78906 -1.57812,-1.22656 -0.61328,0.78906 -2.71094,3.48633 -2.71094,-3.48633 z"
        id="japan_koban"
        inkscape:label="#path7789">
       <title
          id="title8234">Japanese map symbol for kōban</title>
     </path>
     <path
-       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-       d="M 120 145.69727 L 113.13086 156 L 119 156 L 119 158 L 119 159 L 121 159 L 121 158 L 121 156 L 126.86914 156 L 120 145.69727 z M 120 149.30273 L 123.13086 154 L 121 154 L 119 154 L 116.86914 154 L 120 149.30273 z "
+       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       d="M 120,145.69727 113.13086,156 H 119 v 2 1 h 2 v -1 -2 h 5.86914 z m 0,3.60546 L 123.13086,154 H 121 h -2 -2.13086 z"
        id="japan_court"
        inkscape:label="#path7793">
       <title
          id="title8236">Japanese map symbol for court house or building</title>
     </path>
     <path
-       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-       d="M 130 147 C 130 149.14199 131.14498 151.12432 133 152.19531 C 133.20035 152.31098 133.40779 152.40931 133.61719 152.5 C 133.40806 152.5906 133.2001 152.68721 133 152.80273 C 131.14498 153.87373 130 155.85801 130 158 L 132 158 C 132 156.56933 132.76101 155.25049 134 154.53516 C 134.31805 154.35153 134.65423 154.21631 135 154.12695 L 135 157 L 135 158 L 137 158 L 137 157 L 137 154.12695 C 137.34577 154.21631 137.68195 154.35153 138 154.53516 C 139.23899 155.25049 140 156.56933 140 158 L 142 158 C 142 155.85801 140.85502 153.87373 139 152.80273 C 138.7999 152.68721 138.59194 152.5906 138.38281 152.5 C 138.59221 152.40931 138.79965 152.31098 139 152.19531 C 140.85502 151.12432 142 149.14199 142 147 L 140 147 C 140 148.43067 139.23899 149.74951 138 150.46484 C 137.68195 150.64847 137.34577 150.78369 137 150.87305 L 137 148 L 137 147 L 135 147 L 135 148 L 135 150.87305 C 134.65423 150.78369 134.31805 150.64847 134 150.46484 C 132.76101 149.74951 132 148.43067 132 147 L 130 147 z "
+       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       d="m 130,146 c 0,2.14199 1.14498,4.12432 3,5.19531 0.20035,0.11567 0.40779,0.214 0.61719,0.30469 -0.20913,0.0906 -0.41709,0.18721 -0.61719,0.30273 -1.85502,1.071 -3,3.05528 -3,5.19727 h 2 c 0,-1.43067 0.76101,-2.74951 2,-3.46484 0.31805,-0.18363 0.65423,-0.31885 1,-0.40821 V 156 v 1 h 2 v -1 -2.87305 c 0.34577,0.0894 0.68195,0.22458 1,0.40821 1.23899,0.71533 2,2.03417 2,3.46484 h 2 c 0,-2.14199 -1.14498,-4.12627 -3,-5.19727 -0.2001,-0.11552 -0.40806,-0.21213 -0.61719,-0.30273 0.2094,-0.0907 0.41684,-0.18902 0.61719,-0.30469 1.85502,-1.07099 3,-3.05332 3,-5.19531 h -2 c 0,1.43067 -0.76101,2.74951 -2,3.46484 -0.31805,0.18363 -0.65423,0.31885 -1,0.40821 V 147 146 h -2 v 1 2.87305 c -0.34577,-0.0894 -0.68195,-0.22458 -1,-0.40821 -1.23899,-0.71533 -2,-2.03417 -2,-3.46484 z"
        id="japan_forest_service"
        inkscape:label="#path7795">
       <title
          id="title8238">Japanese map symbol for forest service office</title>
     </path>
     <path
-       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-       d="M 146 147 L 146 149 L 147 149 L 147 157 L 147 158 L 149 158 L 149 157 L 149 152 L 155 152 L 155 157 L 155 158 L 157 158 L 157 157 L 157 149 L 158 149 L 158 147 L 157 147 L 147 147 L 146 147 z M 149 149 L 155 149 L 155 150 L 149 150 L 149 149 z "
+       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       d="m 146,146 v 2 h 1 v 8 1 h 2 v -1 -5 h 6 v 5 1 h 2 v -1 -8 h 1 v -2 h -1 -10 z m 3,2 h 6 v 1 h -6 z"
        id="japan_shinto_shrine"
        inkscape:label="#path7801">
       <title
