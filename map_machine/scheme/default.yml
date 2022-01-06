@@ -883,7 +883,11 @@ node_icons:
       shapes: [power_tower_portal]
     - tags: {power: tower, design: portal_two-level}
       shapes: [power_tower_portal_2_level]
+    - tags: {power: portal, design: portal_two-level}
+      shapes: [power_tower_portal_2_level]
     - tags: {power: tower, design: portal_three-level}
+      shapes: [power_tower_portal_3_level]
+    - tags: {power: portal, design: portal_three-level}
       shapes: [power_tower_portal_3_level]
 
     - tags: {power: pole}
