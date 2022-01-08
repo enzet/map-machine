@@ -38,7 +38,7 @@ from map_machine.pictogram.icon import (
     ShapeSpecification,
 )
 from map_machine.pictogram.point import Point
-from map_machine.scheme import DEFAULT_COLOR, LineStyle, RoadMatcher, Scheme
+from map_machine.scheme import LineStyle, RoadMatcher, Scheme
 from map_machine.text import Label
 from map_machine.ui.cli import BuildingMode
 from map_machine.util import MinMax
@@ -437,7 +437,7 @@ class Constructor:
             DrawingMode.AUTHOR,
             DrawingMode.TIME,
         ):
-            color: Color = DEFAULT_COLOR
+            color: Color = self.scheme.get_color("default")
             if self.configuration.drawing_mode == DrawingMode.AUTHOR:
                 color = get_user_color(node.user, self.configuration.seed)
             if self.configuration.drawing_mode == DrawingMode.TIME:
