@@ -51,6 +51,14 @@ class Building(Figure):
         self.height: float = BUILDING_MINIMAL_HEIGHT
         self.min_height: float = 0.0
 
+        self.wall_color_start = scheme.get("wall_color_start")
+        self.wall_bottom_color_1: Color = scheme.get_color(
+            "wall_bottom_1_color"
+        )
+        self.wall_bottom_color_2: Color = scheme.get_color(
+            "wall_bottom_2_color"
+        )
+
         levels: Optional[str] = self.get_float("building:levels")
         if levels:
             self.height = float(levels) * BUILDING_HEIGHT_SCALE
@@ -111,11 +119,11 @@ class Building(Figure):
         for segment in self.parts:
             fill: Color
             if height == 2.0:
-                fill = Color("#AAAAAA")
+                fill = self.wall_bottom_color_1
             elif height == 4.0:
-                fill = Color("#C3C3C3")
+                fill = self.wall_bottom_color_2
             else:
-                color_part: float = 0.8 + segment.angle * 0.2
+                color_part: float = self.wall_color_start + segment.angle * 0.2
                 fill = Color(rgb=(color_part, color_part, color_part))
 
             command = (
