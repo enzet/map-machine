@@ -763,6 +763,8 @@ node_icons:
       shapes: [apartments_3_story]
     - tags: {building: apartments, building:levels: "4"}
       shapes: [apartments_4_story]
+    - tags: {building: apartments, building:levels: "5"}
+      shapes: [apartments_5_story]
     - tags: {building: kindergarten}
       shapes: [toy_horse]
     - tags: {amenity: kindergarten}

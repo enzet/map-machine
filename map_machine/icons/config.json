@@ -4,6 +4,7 @@
       "apartments": {"name": "apartments building"},
       "apartments_3_story": {"name": "three-story apartments building"},
       "apartments_4_story": {"name": "four-story apartments building"},
+      "apartments_5_story": {"name": "five-story apartments building"},
       "building": {"name": "house"},
       "fort": {"name": "fort"},
       "mausoleum": {"name": "mausoleum"},
