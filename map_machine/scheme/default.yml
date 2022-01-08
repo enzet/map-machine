@@ -2,10 +2,16 @@ colors:
 
   # Entity
 
+  default: "#444444"
+
   direction_view_color: "#C8E8FF"
   direction_camera_color: "#0088FF"
 
   background_color: "#EEEEEE"
+  road_color: "#FFFFFF"
+  text_color: "#444444"
+  text_main_color: "#000000"
+  text_outline_color: "#FFFFFF"
 
   wheat_color: "#F0DCAA"
   wheat_border_color: "#F4D67F"
@@ -43,6 +49,8 @@ colors:
   farmland_border_color: "#DDCC99"
   farmland_darker_color: "#998855"
   ferry_terminal_color: "#AABBDD"
+  foot_area_color: "#DDDDDD"
+  foot_area_border_color: "#BBBBBB"
   foot_border_color: "#FFFFFF"
   foot_color: "#B89A74"
   grass_border_color: "#BFD098"
@@ -72,11 +80,117 @@ colors:
   track_color: "#A88A64"
   trunk_color: "#97612b"
   tree_color: "#98AC64"
+  wall_bottom_1_color: "#AAAAAA"
+  wall_bottom_2_color: "#C3C3C3"
+  wall_color_start: 0.8
   water_border_color: "#6688BB"
   water_color: "#AACCFF"
   wetland_color: "#BFE0D8"
   wood_border_color: "#A8BC74"
   wood_color: "#B8CC84"
+
+  runway_color: "#999399"
+  runway_border_color: {color: runway_color, darken: 0.25}
+  taxiway_color: "#AAA4AA"
+  taxiway_border_color: {color: taxiway_color, darken: 0.25}
+
+  sell_color: "#880088"
+
+  # Colors not in W3C
+
+  rose: "#FF007F"  # Wikipedia
+  slate_blue: "#6A5ACD"  # W3C slateblue
+
+colors_dark: # dark
+
+  # Entity
+
+  default: "#CCCCCC"
+
+  direction_view_color: {color: "#C8E8FF", darken: 0.75}
+  direction_camera_color: "#0088FF"
+
+  background_color: "#222222"
+  road_color: "#000000"
+  text_color: "#DDDDDD"
+  text_main_color: "#ffffff"
+  text_outline_color: "#000000"
+
+  wheat_color: "#F0DCAA"
+  wheat_border_color: "#F4D67F"
+  wheat_dark_color: "#BF9340"
+  rye_color: "#E0CA96"
+  rye_dark_color: "#AE955D"
+  oat_color: "#EDDDB7"
+  oat_dark_color: "#C4894A"
+  barley_color: "#F3EEC4"
+  barley_border_color: "#D2CE9D"
+  barley_dark_color: "#908F62"
+  sunflower_dark_color: "#DEAC4A"
+
+  motorway_border_color: "#CC8800"
+  motorway_color: "#FFAA33"
+  primary_border_color: {color: "#AA8800", darken: 0.3}
+  primary_color: {color: "#FFDD66", darken: 0.75}
+  secondary_border_color: {color: "#BB9911", darken: 0.3}
+  secondary_color: {color: "#FFEE77", darken: 0.75}
+  tertiary_border_color: {color: "#CCAA22", darken: 0.3}
+  tertiary_color: {color: "#FFFF88", darken: 0.75}
+
+  allotments_color: "#D0E0D0"
+  beach_color: "#F0E0C0"
+  boundary_color: "#880088"
+  building_border_color: "#888888"
+  building_color: "#444444"
+  construction_color: {color: "#CCCCCC", darken: 0.75}
+  cycle_color: "#4444EE"
+  desert_color: "#F0E0D0"
+  decidious_color: "#FCAF3E"
+  emergency_color: "#DD2222"
+  evergreen_color: "#688C44"
+  farmland_color: "#FFEEBB"
+  farmland_border_color: "#DDCC99"
+  farmland_darker_color: "#998855"
+  ferry_terminal_color: "#AABBDD"
+  foot_area_color: "#222222"
+  foot_area_border_color: "#444444"
+  foot_border_color: "#000000"
+  foot_color: {color: "#B89A74", darken: 0.5}
+  grass_border_color: {color: "#BFD098", darken: 0.75}
+  grass_color: {color: "#CFE0A8", darken: 0.75}
+  hidden_color: "#FFFFFF"
+  indoor_border_color: "#C0B8B0"
+  indoor_color: "#E8E4E0"
+  meadow_border_color: "#BFD078"
+  meadow_color: "#CFE088"
+  orchard_color: "#B8DCA4"
+  orchard_border_color: "#98BC84"
+  outline_color: "#FFFFFF"
+  parking_color: {color: "#DDCC99", darken: 0.75}
+  park_color: {color: "#CFE0A8", darken: 0.75}
+  pitch_color: {color: "#AADDCC", darken: 0.75}
+  pitch_border_color: {color: "#88BBAA", darken: 0.75}
+  platform_border_color: "#AAAAAA"
+  platform_color: "#CCCCCC"
+  playground_border_color: {color: "#FFAA88", darken: 0.75}
+  playground_color: {color: "#FFDDCC", darken: 0.75}
+  ridge_color: "#000000"
+  road_border_color: "#444444"
+  rock_color: "#DDDDDD"
+  route_color: "#FFFFFF"
+  sand_color: "#E8E0C0"
+  scree_color: "#CCCCCC"
+  track_color: "#A88A64"
+  trunk_color: "#97612b"
+  tree_color: "#98AC64"
+  water_border_color: "#6688BB"
+  water_color: "#AACCFF"
+  wall_bottom_1_color: "#444444"
+  wall_bottom_2_color: "#222222"
+  wall_color_start: 0.0
+  wetland_color: "#BFE0D8"
+  wood_border_color: {color: "#A8BC74", darken: 0.75}
+  wood_color: {color: "#B8CC84", darken: 0.75}
 
   runway_color: "#999399"
   runway_border_color: {color: runway_color, darken: 0.25}
@@ -1970,22 +2084,22 @@ ways:
     priority: 42.0
   - tags: {highway: footway, area: "yes"}
     style:
-      stroke: "#BBBBBB"
-      fill: "#DDDDDD"
+      stroke: foot_area_border_color
+      fill: foot_area_color
       stroke-linecap: round
       stroke-linejoin: round
     priority: 55.0
   - tags: {highway: footway, type: "multipolygon"}
     style:
-      stroke: "#BBBBBB"
-      fill: "#DDDDDD"
+      stroke: foot_area_border_color
+      fill: foot_area_color
       stroke-linecap: round
       stroke-linejoin: round
     priority: 55.0
   - tags: {highway: pedestrian, area: "yes"}
     style:
       stroke: none
-      fill: "#DDDDDD"
+      fill: foot_area_color
       stroke-linecap: round
       stroke-linejoin: round
     priority: -55.0  # FIXME
