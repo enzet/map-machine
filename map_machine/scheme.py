@@ -395,7 +395,15 @@ class Scheme:
             return Color(color)
         except (ValueError, AttributeError):
             logging.debug(f"Unknown color `{color}`.")
-            return DEFAULT_COLOR
+            return Color(self.colors["default"])
+
+    def get(self, variable_name: str):
+        """
+        FIXME: colors should be variables.
+        """
+        if variable_name in self.colors:
+            return self.colors[variable_name]
+        return 0.0
 
     def is_no_drawable(self, key: str, value: str) -> bool:
         """
