@@ -29,7 +29,7 @@ doc_path: Path = Path("doc")
 cache: Path = Path("cache")
 cache.mkdir(exist_ok=True)
 
-SCHEME = Scheme.from_file(Path("map_machine/scheme/default.yml"))
+SCHEME: Scheme = Scheme.from_file(Path("map_machine/scheme/default.yml"))
 EXTRACTOR: ShapeExtractor = ShapeExtractor(
     Path("map_machine/icons/icons.svg"),
     Path("map_machine/icons/config.json"),
@@ -45,7 +45,7 @@ def draw(
     """Draw file."""
     osm_data: OSMData = OSMData()
     osm_data.parse_osm_file(input_file_name)
-    flinger = Flinger(
+    flinger: Flinger = Flinger(
         boundary_box, configuration.zoom_level, osm_data.equator_length
     )
     constructor: Constructor = Constructor(
@@ -88,7 +88,7 @@ def draw_around_point(
 
 def main(id_: str) -> None:
     """Entry point."""
-    if id_ is None or id_ in ["draw", "fitness"]:
+    if id_ is None or id_ == "fitness":
         draw_around_point(
             np.array((55.75277, 37.40856)),
             "fitness",
@@ -96,14 +96,14 @@ def main(id_: str) -> None:
             np.array((300, 200)),
         )
 
-    if id_ is None or id_ in ["draw", "power"]:
+    if id_ is None or id_ == "power":
         draw_around_point(
             np.array((52.5622, 12.94)),
             "power",
             configuration=MapConfiguration(zoom_level=15),
         )
 
-    if id_ is None or id_ in ["draw", "playground"]:
+    if id_ is None or id_ == "playground":
         draw_around_point(
             np.array((52.47388, 13.43826)),
             "playground",
@@ -113,7 +113,7 @@ def main(id_: str) -> None:
     # Playground: (59.91991/10.85535), (59.83627/10.83017), Oslo
     # (52.47604/13.43701), (52.47388/13.43826)*, Berlin
 
-    if id_ is None or id_ in ["draw", "surveillance"]:
+    if id_ is None or id_ == "surveillance":
         draw_around_point(
             np.array((52.50892, 13.3244)),
             "surveillance",
@@ -123,7 +123,7 @@ def main(id_: str) -> None:
             ),
         )
 
-    if id_ is None or id_ in ["draw", "viewpoints"]:
+    if id_ is None or id_ == "viewpoints":
         draw_around_point(
             np.array((52.421, 13.101)),
             "viewpoints",
@@ -134,14 +134,14 @@ def main(id_: str) -> None:
             ),
         )
 
-    if id_ is None or id_ in ["draw", "buildings"]:
+    if id_ is None or id_ == "buildings":
         draw_around_point(
             np.array((-26.19049, 28.05605)),
             "buildings",
             MapConfiguration(building_mode=BuildingMode.ISOMETRIC),
         )
 
-    if id_ is None or id_ in ["draw", "trees"]:
+    if id_ is None or id_ == "trees":
         draw_around_point(
             np.array((55.751, 37.628)),
             "trees",
@@ -155,7 +155,7 @@ def main(id_: str) -> None:
     #     tiles = Tiles(np.array((52.5859, 13.4644)), 17, 2, 3)
     #     tiles.draw()
 
-    if id_ is None or id_ in ["draw", "time"]:
+    if id_ is None or id_ == "time":
         draw_around_point(
             np.array((55.7655, 37.6055)),
             "time",
@@ -166,7 +166,7 @@ def main(id_: str) -> None:
             ),
         )
 
-    if id_ is None or id_ in ["draw", "author"]:
+    if id_ is None or id_ == "author":
         draw_around_point(
             np.array((55.7655, 37.6055)),
             "author",
@@ -178,7 +178,7 @@ def main(id_: str) -> None:
             ),
         )
 
-    if id_ is None or id_ in ["draw", "colors"]:
+    if id_ is None or id_ == "colors":
         draw_around_point(
             np.array((48.87422, 2.377)),
             "colors",
@@ -189,7 +189,7 @@ def main(id_: str) -> None:
             ),
         )
 
-    if id_ is None or id_ in ["draw", "lanes"]:
+    if id_ is None or id_ == "lanes":
         draw_around_point(np.array((47.61224, -122.33866)), "lanes")
 
 
