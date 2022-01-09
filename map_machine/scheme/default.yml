@@ -610,6 +610,8 @@ node_icons:
       shapes: [steak_and_fork]
     - tags: {amenity: food_court}
       shapes: [food_court]
+    - tags: {craft: shoemaker}
+      shapes: [{shape: shoe, color: sell_color}]
     - tags: {shop: fishing}
       shapes: [{shape: fishing_angle, color: sell_color}]
     - tags: {shop: alcohol}
