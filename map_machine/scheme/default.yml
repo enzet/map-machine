@@ -1409,6 +1409,8 @@ node_icons:
       shapes: [wood]
     - tags: {railway: crossing}
       shapes: [x]
+    - tags: {railway: railway_crossing}
+      shapes: [x]
     - tags: {railway: level_crossing}
       shapes: [x]
     - tags: {railway: signal}
