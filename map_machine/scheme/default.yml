@@ -548,6 +548,8 @@ node_icons:
       shapes: [card_and_dice]
     - tags: {amenity: community_centre}
       shapes: [two_people_together]
+    - tags: {amenity: social_facility}
+      shapes: [two_people_together]
     - tags: {amenity: internet_cafe}
       shapes: [at_in_square]
     - tags: {amenity: library}
