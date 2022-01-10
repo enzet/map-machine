@@ -786,6 +786,8 @@ node_icons:
     - tags: {amenity: school}
       location_restrictions: {include: [jp]}
       shapes: [japan_elementary_school]
+    - tags: {office: "yes"}
+      shapes: [briefcase]
     - tags: {office: company}
       shapes: [briefcase]
     - tags: {office: government}
