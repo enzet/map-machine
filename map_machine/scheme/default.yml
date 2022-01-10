@@ -767,6 +767,12 @@ node_icons:
       shapes: [apartments_2_story]
     - tags: {building: apartments, building:levels: "1"}
       shapes: [apartments_1_story]
+    - tags: {building: apartments, building:levels: "1", roof:shape: gabled}
+      shapes: [apartments_1_story_gabled_roof]
+    - tags: {building: apartments, building:levels: "1", roof:shape: hipped}
+      shapes: [apartments_1_story_gabled_roof]
+    - tags: {building: apartments, building:levels: "1", roof:shape: pyramidal}
+      shapes: [apartments_1_story_gabled_roof]
     - tags: {building: apartments, building:levels: "2"}
       shapes: [apartments_2_story]
     - tags: {building: apartments, building:levels: "3"}

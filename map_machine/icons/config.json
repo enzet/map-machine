@@ -2,6 +2,7 @@
   "architecture": {
     "building_size": {
       "apartments_1_story": {"name": "one-story apartments building"},
+      "apartments_1_story_gabled_roof": {"name": "one-story apartments building with gabled roof"},
       "apartments_2_story": {"name": "two-story apartments building"},
       "apartments_3_story": {"name": "three-story apartments building"},
       "apartments_4_story": {"name": "four-story apartments building"},
