@@ -765,6 +765,8 @@ node_icons:
     tags:
     - tags: {building: apartments}
       shapes: [apartments_2_story]
+    - tags: {building: apartments, building:levels: "1"}
+      shapes: [apartments_1_story]
     - tags: {building: apartments, building:levels: "2"}
       shapes: [apartments_2_story]
     - tags: {building: apartments, building:levels: "3"}
