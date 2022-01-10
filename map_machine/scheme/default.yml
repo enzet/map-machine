@@ -764,9 +764,9 @@ node_icons:
     start_zoom_level: 15.0
     tags:
     - tags: {building: apartments}
-      shapes: [apartments]
+      shapes: [apartments_2_story]
     - tags: {building: apartments, building:levels: "2"}
-      shapes: [apartments]
+      shapes: [apartments_2_story]
     - tags: {building: apartments, building:levels: "3"}
       shapes: [apartments_3_story]
     - tags: {building: apartments, building:levels: "4"}
