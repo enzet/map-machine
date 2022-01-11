@@ -28344,8 +28344,8 @@
        id="path65583"
        sodipodi:nodetypes="cccc" />
     <path
-       id="rect69846"
-       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#0000ff;stroke:none;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker:none;enable-background:accumulate"
+       id="apartments_3_story_gabled_roof"
+       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#000000;stroke:none;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker:none;enable-background:accumulate"
        d="m 727.91602,209.00586 c -0.0548,0.009 -0.10757,0.0279 -0.15625,0.0547 l -5.5,3 c -0.45636,0.2479 -0.27911,0.94105 0.24023,0.93945 h 0.5 v 2 c -0.277,0 -0.5,0.223 -0.5,0.5 0,0.277 0.223,0.5 0.5,0.5 v 2 c -0.277,0 -0.5,0.223 -0.5,0.5 0,0.277 0.223,0.5 0.5,0.5 v 3.5 c 0,0.277 0.223,0.5 0.5,0.5 h 5.5 v -2.5 c 0,-0.277 0.223,-0.5 0.5,-0.5 h 1 c 0.277,0 0.5,0.223 0.5,0.5 v 2.5 h 1.5 c 0.277,0 0.5,-0.223 0.5,-0.5 V 219 c 0.277,0 0.5,-0.223 0.5,-0.5 0,-0.277 -0.223,-0.5 -0.5,-0.5 v -2 c 0.277,0 0.5,-0.223 0.5,-0.5 0,-0.277 -0.223,-0.5 -0.5,-0.5 v -2 h 0.5 c 0.51934,0.002 0.69659,-0.69155 0.24023,-0.93945 l -5.5,-3 c -0.0988,-0.0543 -0.21307,-0.0735 -0.32421,-0.0547 z M 725.5,213 h 1 c 0.277,0 0.5,0.223 0.5,0.5 v 1 c 0,0.277 -0.223,0.5 -0.5,0.5 h -1 c -0.277,0 -0.5,-0.223 -0.5,-0.5 v -1 c 0,-0.277 0.223,-0.5 0.5,-0.5 z m 4,0 h 1 c 0.277,0 0.5,0.223 0.5,0.5 v 1 c 0,0.277 -0.223,0.5 -0.5,0.5 h -1 c -0.277,0 -0.5,-0.223 -0.5,-0.5 v -1 c 0,-0.277 0.223,-0.5 0.5,-0.5 z m -4,3 h 1 c 0.277,0 0.5,0.223 0.5,0.5 v 1 c 0,0.277 -0.223,0.5 -0.5,0.5 h -1 c -0.277,0 -0.5,-0.223 -0.5,-0.5 v -1 c 0,-0.277 0.223,-0.5 0.5,-0.5 z m 4,0 h 1 c 0.277,0 0.5,0.223 0.5,0.5 v 1 c 0,0.277 -0.223,0.5 -0.5,0.5 h -1 c -0.277,0 -0.5,-0.223 -0.5,-0.5 v -1 c 0,-0.277 0.223,-0.5 0.5,-0.5 z m -4,3 h 1 c 0.277,0 0.5,0.223 0.5,0.5 v 1 c 0,0.277 -0.223,0.5 -0.5,0.5 h -1 c -0.277,0 -0.5,-0.223 -0.5,-0.5 v -1 c 0,-0.277 0.223,-0.5 0.5,-0.5 z"
        sodipodi:nodetypes="scccccsccscsscsssscsscsccscccccssssssssssssssssssssssssssssssssssssssssssssss" />
     <rect
