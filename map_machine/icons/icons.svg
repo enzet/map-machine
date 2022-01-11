@@ -30589,5 +30589,25 @@
        id="rect264151"
        style="opacity:1;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.0999998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="m 486.5,180 c -0.12794,0 -0.25588,0.0489 -0.35352,0.14648 L 483.29297,183 h 9.41406 l -1.85351,-1.85352 c -0.19527,-0.19519 -0.51177,-0.19519 -0.70704,0 L 489,182.29297 486.85352,180.14648 C 486.75588,180.04889 486.62794,180 486.5,180 Z m -4,4 c -0.277,0 -0.5,0.223 -0.5,0.5 0,0.277 0.223,0.5 0.5,0.5 h 0.5 v 2 h 10 v -2 h 0.5 c 0.277,0 0.5,-0.223 0.5,-0.5 0,-0.277 -0.223,-0.5 -0.5,-0.5 H 493 483 Z" />
+    <circle
+       style="fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path31913"
+       cx="728"
+       cy="104"
+       r="2" />
+    <path
+       id="circle_4"
+       style="stroke-width:4;stroke-linecap:round;stroke-linejoin:round"
+       d="m 730,120 a 2,2 0 0 1 -2,2 2,2 0 0 1 -2,-2 2,2 0 0 1 2,-2 2,2 0 0 1 2,2 z" />
+    <circle
+       style="fill:none;stroke:#000000;stroke-width:0.0999998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       id="circle45186"
+       cx="743.5"
+       cy="103.5"
+       r="1.5" />
+    <path
+       id="circle_3"
+       style="stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round"
+       d="m 745,119.5 a 1.5,1.5 0 0 1 -1.5,1.5 1.5,1.5 0 0 1 -1.5,-1.5 1.5,1.5 0 0 1 1.5,-1.5 1.5,1.5 0 0 1 1.5,1.5 z" />
   </g>
 </svg>
