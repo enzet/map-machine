@@ -1589,6 +1589,8 @@ node_icons:
       shapes: [entrance]
     - tags: {entrance: "yes"}
       shapes: [entrance]
+    - tags: {building: entrance}
+      shapes: [{shape: entrance, color: "#FF0000"}]
     - tags: {entrance: shop}
       shapes: [entrance]
     - tags: {entrance: exit}
