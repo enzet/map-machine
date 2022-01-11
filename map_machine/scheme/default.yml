@@ -804,6 +804,13 @@ node_icons:
 
     - tags: {building: apartments, building:levels: "5"}
       shapes: [apartments_5_story]
+    - tags: {building: apartments, building:levels: "5", roof:shape: gabled}
+      shapes: [apartments_5_story_gabled_roof]
+    - tags: {building: apartments, building:levels: "5", roof:shape: hipped}
+      shapes: [apartments_5_story_gabled_roof]
+    - tags: {building: apartments, building:levels: "5", roof:shape: pyramidal}
+      shapes: [apartments_5_story_gabled_roof]
+
     - tags: {building: kindergarten}
       shapes: [toy_horse]
     - tags: {amenity: kindergarten}
