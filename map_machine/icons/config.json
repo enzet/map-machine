@@ -9,6 +9,7 @@
       "apartments_2_story_skillion_roof": {"name": "two-story apartments building with skillion roof", "categories": ["building"]},
       "apartments_3_story": {"name": "three-story apartments building", "categories": ["building"]},
       "apartments_3_story_gabled_roof": {"name": "three-story apartments building with gabled roof", "categories": ["building"]},
+      "apartments_3_story_skillion_roof": {"name": "three-story apartments building with skillion roof", "categories": ["building"]},
       "apartments_4_story": {"name": "four-story apartments building", "categories": ["building"]},
       "apartments_4_story_gabled_roof": {"name": "four-story apartments building with gabled roof", "categories": ["building"]},
       "apartments_5_story": {"name": "five-story apartments building", "categories": ["building"]},

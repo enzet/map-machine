@@ -796,6 +796,8 @@ node_icons:
       shapes: [apartments_3_story_gabled_roof]
     - tags: {building: apartments, building:levels: "3", roof:shape: pyramidal}
       shapes: [apartments_3_story_gabled_roof]
+    - tags: {building: apartments, building:levels: "3", roof:shape: skillion}
+      shapes: [apartments_3_story_skillion_roof]
 
     - tags: {building: apartments, building:levels: "4"}
       shapes: [apartments_4_story]
