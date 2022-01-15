@@ -1,5 +1,15 @@
 [
     {
+        "name": "Apartments",
+        "page": "Tag:building=apartments",
+        "id": "apartments",
+        "tags": {"building": "apartments"},
+        "row_key": "building:levels",
+        "row_values": ["1", "2", "3", "4", "5"],
+        "column_key": "roof:shape",
+        "column_values": ["gabled", "hipped", "pyramidal", "skillion"]
+    },
+    {
         "name": "Outdoor seating",
         "page": "Tag:leisure=outdoor_seating",
         "id": "outdoor_seating",
