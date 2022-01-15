@@ -15,6 +15,7 @@
       "apartments_4_story_skillion_roof": {"name": "four-story apartments building with skillion roof", "categories": ["building"]},
       "apartments_5_story": {"name": "five-story apartments building", "categories": ["building"]},
       "apartments_5_story_gabled_roof": {"name": "five-story apartments building with gabled roof", "categories": ["building"]},
+      "apartments_5_story_skillion_roof": {"name": "five-story apartments building with skillion roof", "categories": ["building"]},
       "building": {"name": "house", "categories": ["building"]},
       "fort": {"name": "fort", "categories": ["building"]},
       "mausoleum": {"name": "mausoleum", "categories": ["building"]},

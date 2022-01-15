@@ -818,6 +818,8 @@ node_icons:
       shapes: [apartments_5_story_gabled_roof]
     - tags: {building: apartments, building:levels: "5", roof:shape: pyramidal}
       shapes: [apartments_5_story_gabled_roof]
+    - tags: {building: apartments, building:levels: "5", roof:shape: skillion}
+      shapes: [apartments_5_story_skillion_roof]
 
     - tags: {building: kindergarten}
       shapes: [toy_horse]
