@@ -13,7 +13,6 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 DEFAULT_FONT_SIZE: float = 10.0
-DEFAULT_COLOR: Color = Color("#444444")
 
 
 @dataclass
@@ -21,7 +20,8 @@ class Label:
     """Text label."""
 
     text: str
-    fill: Color = DEFAULT_COLOR
+    fill: Color
+    out_fill: Color
     size: float = DEFAULT_FONT_SIZE
 
 
@@ -70,111 +70,126 @@ def format_frequency(value: str) -> str:
     return f"{value} "
 
 
-def get_text(tags: dict[str, Any], processed: set[str]) -> list[Label]:
-    """Get text representation of writable tags."""
-    texts: list[Label] = []
-    values: list[str] = []
+@dataclass
+class TextConstructor:
 
-    if "voltage:primary" in tags:
-        values.append(tags["voltage:primary"])
-        processed.add("voltage:primary")
+    default_color: Color
+    main_color: Color
+    default_out_color: Color
 
-    if "voltage:secondary" in tags:
-        values.append(tags["voltage:secondary"])
-        processed.add("voltage:secondary")
-
-    if "voltage" in tags:
-        values = tags["voltage"].split(";")
-        processed.add("voltage")
-
-    if values:
-        texts.append(Label(", ".join(map(format_voltage, values))))
-
-    if "frequency" in tags:
-        text: str = ", ".join(
-            map(format_frequency, tags["frequency"].split(";"))
+    def label(self, text: str, size: float = DEFAULT_FONT_SIZE):
+        return Label(
+            text, self.default_color, self.default_out_color, size=size
         )
-        texts.append(Label(text))
-        processed.add("frequency")
 
-    return texts
+    def get_text(
+        self, tags: dict[str, Any], processed: set[str]
+    ) -> list[Label]:
+        """Get text representation of writable tags."""
+        texts: list[Label] = []
+        values: list[str] = []
 
+        if "voltage:primary" in tags:
+            values.append(tags["voltage:primary"])
+            processed.add("voltage:primary")
 
-def construct_text(
-    tags: Tags, processed: set[str], label_mode: LabelMode
-) -> list[Label]:
-    """Construct list of labels from OSM tags."""
+        if "voltage:secondary" in tags:
+            values.append(tags["voltage:secondary"])
+            processed.add("voltage:secondary")
 
-    texts: list[Label] = []
+        if "voltage" in tags:
+            values = tags["voltage"].split(";")
+            processed.add("voltage")
 
-    name: Optional[str] = None
-    alternative_name: Optional[str] = None
+        if values:
+            texts.append(self.label(", ".join(map(format_voltage, values))))
 
-    if "name" in tags:
-        name = tags["name"]
-        processed.add("name")
-    elif "name:en" in tags:
-        if not name:
-            name = tags["name:en"]
-            processed.add("name:en")
-        processed.add("name:en")
-    if "alt_name" in tags:
-        if alternative_name:
-            alternative_name += ", "
-        else:
-            alternative_name = ""
-        alternative_name += tags["alt_name"]
-        processed.add("alt_name")
-    if "old_name" in tags:
-        if alternative_name:
-            alternative_name += ", "
-        else:
-            alternative_name = ""
-        alternative_name += "ex " + tags["old_name"]
+        if "frequency" in tags:
+            text: str = ", ".join(
+                map(format_frequency, tags["frequency"].split(";"))
+            )
+            texts.append(self.label(text))
+            processed.add("frequency")
 
-    address: list[str] = get_address(tags, processed, label_mode)
-
-    if name:
-        texts.append(Label(name, Color("black")))
-    if alternative_name:
-        texts.append(Label(f"({alternative_name})"))
-    if address:
-        texts.append(Label(", ".join(address)))
-
-    if label_mode == LabelMode.MAIN:
         return texts
 
-    texts += get_text(tags, processed)
+    def construct_text(
+        self, tags: Tags, processed: set[str], label_mode: LabelMode
+    ) -> list[Label]:
+        """Construct list of labels from OSM tags."""
 
-    if "route_ref" in tags:
-        texts.append(Label(tags["route_ref"].replace(";", " ")))
-        processed.add("route_ref")
+        texts: list[Label] = []
 
-    if "cladr:code" in tags:
-        texts.append(Label(tags["cladr:code"], size=7.0))
-        processed.add("cladr:code")
+        name: Optional[str] = None
+        alternative_name: Optional[str] = None
 
-    if "website" in tags:
-        link = tags["website"]
-        if link[:7] == "http://":
-            link = link[7:]
-        if link[:8] == "https://":
-            link = link[8:]
-        if link[:4] == "www.":
-            link = link[4:]
-        if link[-1] == "/":
-            link = link[:-1]
-        link = link[:25] + ("..." if len(tags["website"]) > 25 else "")
-        texts.append(Label(link, Color("#000088")))
-        processed.add("website")
+        if "name" in tags:
+            name = tags["name"]
+            processed.add("name")
+        elif "name:en" in tags:
+            if not name:
+                name = tags["name:en"]
+                processed.add("name:en")
+            processed.add("name:en")
+        if "alt_name" in tags:
+            if alternative_name:
+                alternative_name += ", "
+            else:
+                alternative_name = ""
+            alternative_name += tags["alt_name"]
+            processed.add("alt_name")
+        if "old_name" in tags:
+            if alternative_name:
+                alternative_name += ", "
+            else:
+                alternative_name = ""
+            alternative_name += "ex " + tags["old_name"]
 
-    for key in ["phone"]:
-        if key in tags:
-            texts.append(Label(tags[key], Color("#444444")))
-            processed.add(key)
+        address: list[str] = get_address(tags, processed, label_mode)
 
-    if "height" in tags:
-        texts.append(Label(f"↕ {tags['height']} m"))
-        processed.add("height")
+        if name:
+            texts.append(Label(name, self.main_color, self.default_out_color))
+        if alternative_name:
+            texts.append(self.label(f"({alternative_name})"))
+        if address:
+            texts.append(self.label(", ".join(address)))
 
-    return texts
+        if label_mode == LabelMode.MAIN:
+            return texts
+
+        texts += self.get_text(tags, processed)
+
+        if "route_ref" in tags:
+            texts.append(self.label(tags["route_ref"].replace(";", " ")))
+            processed.add("route_ref")
+
+        if "cladr:code" in tags:
+            texts.append(self.label(tags["cladr:code"], size=7.0))
+            processed.add("cladr:code")
+
+        if "website" in tags:
+            link = tags["website"]
+            if link[:7] == "http://":
+                link = link[7:]
+            if link[:8] == "https://":
+                link = link[8:]
+            if link[:4] == "www.":
+                link = link[4:]
+            if link[-1] == "/":
+                link = link[:-1]
+            link = link[:25] + ("..." if len(tags["website"]) > 25 else "")
+            texts.append(Label(link, Color("#000088"), self.default_out_color))
+            processed.add("website")
+
+        for key in ["phone"]:
+            if key in tags:
+                texts.append(
+                    Label(tags[key], Color("#444444"), self.default_out_color)
+                )
+                processed.add(key)
+
+        if "height" in tags:
+            texts.append(self.label(f"↕ {tags['height']} m"))
+            processed.add("height")
+
+        return texts

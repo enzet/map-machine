@@ -16,7 +16,6 @@ from map_machine.feature.direction import DirectionSet
 from map_machine.map_configuration import MapConfiguration, LabelMode
 from map_machine.osm.osm_reader import Tagged, Tags
 from map_machine.pictogram.icon import (
-    DEFAULT_COLOR,
     DEFAULT_SHAPE_ID,
     Icon,
     IconSet,
@@ -24,7 +23,7 @@ from map_machine.pictogram.icon import (
     ShapeExtractor,
     ShapeSpecification,
 )
-from map_machine.text import Label, construct_text
+from map_machine.text import Label, TextConstructor
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -287,7 +286,7 @@ class RoadMatcher(Matcher):
         self.border_color: Color = Color(
             scheme.get_color(structure["border_color"])
         )
-        self.color: Color = Color("white")
+        self.color: Color = scheme.get_color("road_color")
         if "color" in structure:
             self.color = Color(scheme.get_color(structure["color"]))
         self.default_width: float = structure["default_width"]
@@ -357,6 +356,12 @@ class Scheme:
 
         # Storage for created icon sets.
         self.cache: dict[str, tuple[IconSet, int]] = {}
+
+        self.text_constructor: TextConstructor = TextConstructor(
+            self.get_color("text_color"),
+            self.get_color("text_main_color"),
+            self.get_color("text_outline_color"),
+        )
 
     @classmethod
     def from_file(cls, file_name: Path) -> "Scheme":
@@ -549,7 +554,9 @@ class Scheme:
 
         default_shape = extractor.get_shape(DEFAULT_SHAPE_ID)
         if not main_icon:
-            main_icon = Icon([ShapeSpecification(default_shape)])
+            main_icon = Icon(
+                [ShapeSpecification(default_shape, self.get_color("default"))]
+            )
 
         returned: IconSet = IconSet(main_icon, extra_icons, processed)
         self.cache[tags_hash] = returned, priority
@@ -593,11 +600,19 @@ class Scheme:
         self, tags: Tags, processed: set[str], label_mode: LabelMode
     ) -> list[Label]:
         """Construct labels for not processed tags."""
-        texts: list[Label] = construct_text(tags, processed, label_mode)
+        texts: list[Label] = self.text_constructor.construct_text(
+            tags, processed, label_mode
+        )
 
         for tag in tags:
             if self.is_writable(tag, tags[tag]) and tag not in processed:
-                texts.append(Label(tags[tag]))
+                texts.append(
+                    Label(
+                        tags[tag],
+                        self.get_color("text_color"),
+                        self.get_color("text_outline_color"),
+                    )
+                )
         return texts
 
     def is_area(self, tags: Tags) -> bool:
@@ -624,7 +639,7 @@ class Scheme:
         structure: Union[str, dict[str, Any]],
         extractor: ShapeExtractor,
         groups: dict[str, str] = None,
-        color: Color = DEFAULT_COLOR,
+        color: Optional[Color] = None,
     ) -> ShapeSpecification:
         """
         Parse shape specification from structure, that is just shape string
@@ -632,7 +647,9 @@ class Scheme:
         and offset (optional).
         """
         shape: Shape = extractor.get_shape(DEFAULT_SHAPE_ID)
-        color: Color = color
+        color: Color = (
+            color if color is not None else Color(self.colors["default"])
+        )
         offset: np.ndarray = np.array((0.0, 0.0))
         flip_horizontally: bool = False
         flip_vertically: bool = False

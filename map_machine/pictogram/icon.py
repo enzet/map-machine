@@ -23,7 +23,6 @@ from map_machine.color import is_bright
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-DEFAULT_COLOR: Color = Color("#444444")
 DEFAULT_SHAPE_ID: str = "default"
 DEFAULT_SMALL_SHAPE_ID: str = "default_small"
 
@@ -359,7 +358,7 @@ class ShapeSpecification:
     """Specification for shape as a part of an icon."""
 
     shape: Shape
-    color: Color = DEFAULT_COLOR
+    color: Color
     offset: np.ndarray = np.array((0.0, 0.0))
     flip_horizontally: bool = False
     flip_vertically: bool = False

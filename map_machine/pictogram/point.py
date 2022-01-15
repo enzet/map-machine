@@ -182,7 +182,13 @@ class Point(Tagged):
             text = text[:26] + ("..." if len(text) > 26 else "")
             point = self.point + np.array((0.0, self.y + 2.0))
             self.draw_text(
-                svg, text, point, occupied, label.fill, size=label.size
+                svg,
+                text,
+                point,
+                occupied,
+                label.fill,
+                label.size,
+                label.out_fill,
             )
 
     def draw_text(
@@ -192,8 +198,8 @@ class Point(Tagged):
         point: np.ndarray,
         occupied: Optional[Occupied],
         fill: Color,
-        size: float = 10.0,
-        out_fill: Color = Color("white"),
+        size: float,
+        out_fill: Color,
         out_opacity: float = 0.5,
         out_fill_2: Optional[Color] = None,
         out_opacity_2: float = 1.0,
