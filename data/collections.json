@@ -1,13 +1,34 @@
 [
     {
+        "page": "Tag:roof:shape=skillion",
+        "id": "skillion_roof",
+        "tags": {"building": "apartments", "roof:shape": "skillion"},
+        "row_key": "building:levels",
+        "row_values": ["1", "2", "3", "4", "5"]
+    },
+    {
+        "page": "Tag:roof:shape=flat",
+        "id": "flat_roof",
+        "tags": {"building": "apartments", "roof:shape": "flat"},
+        "row_key": "building:levels",
+        "row_values": ["1", "2", "3", "4", "5"]
+    },
+    {
+        "page": "Tag:roof:shape=gabled",
+        "id": "gabled_roof",
+        "tags": {"building": "apartments", "roof:shape": "gabled"},
+        "row_key": "building:levels",
+        "row_values": ["1", "2", "3", "4", "5"]
+    },
+    {
         "name": "Apartments",
-        "page": "Tag:building=apartments",
+        "page": "Key:building:levels",
         "id": "apartments",
         "tags": {"building": "apartments"},
-        "row_key": "building:levels",
-        "row_values": ["1", "2", "3", "4", "5"],
-        "column_key": "roof:shape",
-        "column_values": ["gabled", "hipped", "pyramidal", "skillion"]
+        "row_key": "roof:shape",
+        "row_values": ["gabled", "flat", "hipped", "pyramidal", "skillion"],
+        "column_key": "building:levels",
+        "column_values": ["1", "2", "3", "4", "5"]
     },
     {
         "name": "Outdoor seating",
