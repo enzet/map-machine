@@ -78,12 +78,19 @@ class WikiTable:
         if not self.collection.column_values:
             self.collection.column_values = [""]
         else:
+            make_vertical: bool = False
+            for column_value in self.collection.column_values:
+                if column_value and len(column_value) > 2:
+                    make_vertical = True
             for column_value in self.collection.column_values:
                 text += " ||"
                 if column_value:
-                    text += (
-                        f" {{{{vert header|{{{{TagValue|"
-                        f"{self.collection.column_key}|{column_value}}}}}}}}}"
+                    tag: str = (
+                        f"{{{{TagValue|"
+                        f"{self.collection.column_key}|{column_value}}}}}"
+                    )
+                    text += " " + (
+                        f"{{{{vert header|{tag}}}}}" if make_vertical else tag
                     )
         text += "\n"
 
