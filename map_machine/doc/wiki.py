@@ -22,10 +22,10 @@ EXTRACTOR: ShapeExtractor = ShapeExtractor(
 HEADER_PATTERN: re.Pattern = re.compile("==?=?.*==?=?")
 HEADER_2_PATTERN: re.Pattern = re.compile("== .* ==")
 HEADER_PATTERNS: list[re.Pattern] = [
-    re.compile("==\\s*See also\\s*=="),
     re.compile("==\\s*Example.*=="),
+    re.compile("==\\s*See also\\s*=="),
 ]
-RENDERING_HEADER_PATTERN: re.Pattern = re.compile("==\\s*Rendering\\s*==")
+RENDERING_HEADER_PATTERN: re.Pattern = re.compile("==\\s*Rendering.*==")
 ROENTGEN_HEADER_PATTERN: re.Pattern = re.compile("===.*Röntgen.*===")
 
 
