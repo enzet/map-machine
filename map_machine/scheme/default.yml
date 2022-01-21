@@ -442,6 +442,8 @@ node_icons:
     - tags: {amenity: police}
       location_restrictions: {include: [jp]}
       shapes: [japan_koban]
+    - tags: {building: construction}
+      shapes: [building_construction]
     - tags: {building: townhall}
       shapes: [townhall]
     - tags: {amenity: townhall}
