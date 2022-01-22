@@ -246,6 +246,7 @@
       "street_lamp": {"name": "street lamp"},
       "toy_horse": {"name": "rocking horse"}
     },
+    "advertising_column": {"name": "advertising column", "categories": ["amenity"]},
     "bench": {"name": "bench", "categories": ["amenity"]},
     "bench_backrest": {"name": "bench with backrest", "categories": ["amenity"]},
     "bench_no_backrest": {"name": "bench without backrest", "categories": ["amenity"]},

@@ -1708,6 +1708,8 @@ node_icons:
       shapes: [ventilation]
     - tags: {advertising: billboard}
       shapes: [billboard]
+    - tags: {advertising: column}
+      shapes: [advertising_column]
     - tags: {natural: rock}
       shapes: [stone]
     - tags: {natural: stone}
