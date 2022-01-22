@@ -18,6 +18,7 @@
       "apartments_5_story_skillion_roof": {"name": "five-story apartments building with skillion roof", "categories": ["building"]},
       "building": {"name": "house", "categories": ["building"]},
       "building_construction": {"name": "building construction", "categories": ["building"]},
+      "building_container": {"name": "container building", "categories": ["building"]},
       "fort": {"name": "fort", "categories": ["building"]},
       "mausoleum": {"name": "mausoleum", "categories": ["building"]},
       "minaret": {"name": "minaret", "categories": ["building"]},

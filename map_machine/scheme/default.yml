@@ -442,8 +442,6 @@ node_icons:
     - tags: {amenity: police}
       location_restrictions: {include: [jp]}
       shapes: [japan_koban]
-    - tags: {building: construction}
-      shapes: [building_construction]
     - tags: {building: townhall}
       shapes: [townhall]
     - tags: {amenity: townhall}
@@ -765,6 +763,11 @@ node_icons:
   - group: "Big objects not for all"
     start_zoom_level: 15.0
     tags:
+    - tags: {building: construction}
+      shapes: [building_construction]
+    - tags: {building: container}
+      shapes: [building_container]
+
     - tags: {building: apartments}
       shapes: [apartments_2_story]
 
