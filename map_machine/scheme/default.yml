@@ -767,6 +767,8 @@ node_icons:
       shapes: [building_construction]
     - tags: {building: container}
       shapes: [building_container]
+    - tags: {building: houseboat}
+      shapes: [houseboat]
 
     - tags: {building: apartments}
       shapes: [apartments_2_story]

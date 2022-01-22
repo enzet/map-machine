@@ -19,6 +19,7 @@
       "building": {"name": "house", "categories": ["building"]},
       "building_construction": {"name": "building construction", "categories": ["building"]},
       "building_container": {"name": "container building", "categories": ["building"]},
+      "houseboat": {"name": "houseboat", "categories": ["building"]},
       "fort": {"name": "fort", "categories": ["building"]},
       "mausoleum": {"name": "mausoleum", "categories": ["building"]},
       "minaret": {"name": "minaret", "categories": ["building"]},
