@@ -189,7 +189,7 @@ class Constructor:
         self.craters: list[Crater] = []
         self.direction_sectors: list[DirectionSector] = []
 
-        self.heights: set[float] = {2.0, 4.0}
+        self.heights: set[float] = {1.0, 2.0}
 
     def add_building(self, building: Building) -> None:
         """Add building and update levels."""

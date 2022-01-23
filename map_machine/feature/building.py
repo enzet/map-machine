@@ -118,9 +118,9 @@ class Building(Figure):
         shift_2: np.ndarray = np.array((0.0, -height * scale))
         for segment in self.parts:
             fill: Color
-            if height == 2.0:
+            if height <= 1.0:
                 fill = self.wall_bottom_color_1
-            elif height == 4.0:
+            elif height <= 2.0:
                 fill = self.wall_bottom_color_2
             else:
                 color_part: float = self.wall_color_start + segment.angle * 0.2
