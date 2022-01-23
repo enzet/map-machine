@@ -1,7 +1,7 @@
 """
 Buildings on the map.
 """
-from typing import Any, Optional
+from typing import Optional
 
 import numpy as np
 from colour import Color
@@ -14,7 +14,7 @@ from map_machine.figure import Figure
 from map_machine.geometry.flinger import Flinger
 from map_machine.geometry.vector import Segment
 from map_machine.osm.osm_reader import OSMNode
-from map_machine.scheme import Scheme, LineStyle
+from map_machine.scheme import Scheme
 
 BUILDING_HEIGHT_SCALE: float = 2.5
 BUILDING_MINIMAL_HEIGHT: float = 8.0
@@ -33,11 +33,17 @@ class Building(Figure):
     ) -> None:
         super().__init__(tags, inners, outers)
 
-        style: dict[str, Any] = {
-            "fill": scheme.get_color("building_color").hex,
-            "stroke": scheme.get_color("building_border_color").hex,
-        }
-        self.line_style: LineStyle = LineStyle(style)
+        self.is_construction: bool = tags.get("building") == "construction"
+
+        if self.is_construction:
+            self.fill: Color = scheme.get_color("building_construction_color")
+            self.stroke: Color = scheme.get_color(
+                "building_construction_border_color"
+            )
+        else:
+            self.fill: Color = scheme.get_color("building_color")
+            self.stroke: Color = scheme.get_color("building_border_color")
+
         self.parts: list[Segment] = []
 
         for nodes in self.inners + self.outers:
@@ -77,9 +83,12 @@ class Building(Figure):
 
     def draw(self, svg: Drawing, flinger: Flinger) -> None:
         """Draw simple building shape."""
-        path: Path = Path(d=self.get_path(flinger))
-        path.update(self.line_style.style)
-        path.update({"stroke-linejoin": "round"})
+        path: Path = Path(
+            d=self.get_path(flinger),
+            stroke=self.stroke,
+            fill=self.fill,
+            stroke_linejoin="round",
+        )
         svg.add(path)
 
     def draw_shade(self, building_shade: Group, flinger: Flinger) -> None:
@@ -89,7 +98,7 @@ class Building(Figure):
         shift_2: np.ndarray = np.array((scale * self.height, 0.0))
         commands: str = self.get_path(flinger, shift_1)
         path: Path = Path(
-            d=commands, fill="#000000", stroke="#000000", stroke_width=1.0
+            commands, fill="#000000", stroke="#000000", stroke_width=1.0
         )
         building_shade.add(path)
         for nodes in self.inners + self.outers:
@@ -148,8 +157,9 @@ class Building(Figure):
     def draw_roof(self, svg: Drawing, flinger: Flinger, scale: float) -> None:
         """Draw building roof."""
         path: Path = Path(
-            d=self.get_path(flinger, np.array([0.0, -self.height * scale]))
+            d=self.get_path(flinger, np.array([0.0, -self.height * scale])),
+            stroke=self.stroke,
+            fill="none" if self.is_construction else self.fill,
+            stroke_linejoin="round",
         )
-        path.update(self.line_style.style)
-        path.update({"stroke-linejoin": "round"})
         svg.add(path)
