@@ -766,8 +766,6 @@ node_icons:
   - group: "Big objects not for all"
     start_zoom_level: 15.0
     tags:
-    - tags: {building: construction}
-      shapes: [building_construction]
     - tags: {building: container}
       shapes: [building_container]
     - tags: {building: houseboat}
@@ -830,6 +828,13 @@ node_icons:
       shapes: [apartments_5_story_gabled_roof]
     - tags: {building: apartments, building:levels: "5", roof:shape: skillion}
       shapes: [apartments_5_story_skillion_roof]
+
+    - tags: {building: construction}
+      shapes: [building_construction]
+    - tags: {building: apartments, construction: "yes"}
+      shapes: [building_construction]
+    - tags: {building: "yes", construction: "yes"}
+      shapes: [building_construction]
 
     - tags: {building: kindergarten}
       shapes: [toy_horse]
