@@ -120,13 +120,13 @@ One of the key features of Map Machine is constructing icons from the several sh
 
 \4 {Masts} {masts}
 
-For \osm {man_made=mast} distinguish types (communication, lignting, monitoring, and siren) and construction (freestanding or lattice, and using of guys) are rendered by combining 7 unique icon shapes.
+For \osm {man_made=mast} distinguish types (communication, lighting, monitoring, and siren) and construction (freestanding or lattice, and using of guys) are rendered by combining 7 unique icon shapes.
 
 \image {doc/mast.svg} {Mast types}
 
 \4 {Volcanoes} {volcanoes}
 
-For \osm {natural=volcano} status (active, dormant, extinct, or unspecified) and type (stratovolcano, shield, or scorial) are rendered by combining 7 unique icon shapes.
+For \osm {natural=volcano} status (active, dormant, extinct, or unspecified) and type (stratovolcano, shield, or scoria) are rendered by combining 7 unique icon shapes.
 
 \image {doc/volcano.svg} {Volcano types}
 
