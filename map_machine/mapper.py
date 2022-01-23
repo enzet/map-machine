@@ -124,7 +124,7 @@ class Map:
 
         logging.info("Drawing buildings...")
 
-        scale: float = self.flinger.get_scale() / 3.0
+        scale: float = self.flinger.get_scale()
         building_shade: Group = Group(opacity=0.1)
         for building in constructor.buildings:
             building.draw_shade(building_shade, self.flinger)

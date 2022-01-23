@@ -11,7 +11,7 @@ import numpy as np
 from colour import Color
 
 from map_machine.color import get_gradient_color
-from map_machine.feature.building import Building
+from map_machine.feature.building import Building, BUILDING_SCALE
 from map_machine.feature.crater import Crater
 from map_machine.feature.direction import DirectionSector
 from map_machine.feature.road import Road, Roads
@@ -189,7 +189,7 @@ class Constructor:
         self.craters: list[Crater] = []
         self.direction_sectors: list[DirectionSector] = []
 
-        self.heights: set[float] = {1.0, 2.0}
+        self.heights: set[float] = {0.25 / BUILDING_SCALE, 0.5 / BUILDING_SCALE}
 
     def add_building(self, building: Building) -> None:
         """Add building and update levels."""

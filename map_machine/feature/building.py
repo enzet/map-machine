@@ -16,8 +16,10 @@ from map_machine.geometry.vector import Segment
 from map_machine.osm.osm_reader import OSMNode
 from map_machine.scheme import Scheme
 
-BUILDING_HEIGHT_SCALE: float = 2.5
 BUILDING_MINIMAL_HEIGHT: float = 8.0
+BUILDING_SCALE: float = 1.0
+LEVEL_HEIGHT: float = 2.5
+SHADE_SCALE: float = 0.4
 
 
 class Building(Figure):
@@ -33,7 +35,10 @@ class Building(Figure):
     ) -> None:
         super().__init__(tags, inners, outers)
 
-        self.is_construction: bool = tags.get("building") == "construction"
+        self.is_construction: bool = (
+            tags.get("building") == "construction"
+            or tags.get("construction") == "yes"
+        )
 
         if self.is_construction:
             self.fill: Color = scheme.get_color("building_construction_color")
@@ -67,11 +72,11 @@ class Building(Figure):
 
         levels: Optional[str] = self.get_float("building:levels")
         if levels:
-            self.height = float(levels) * BUILDING_HEIGHT_SCALE
+            self.height = float(levels) * LEVEL_HEIGHT
 
         levels: Optional[str] = self.get_float("building:min_level")
         if levels:
-            self.min_height = float(levels) * BUILDING_HEIGHT_SCALE
+            self.min_height = float(levels) * LEVEL_HEIGHT
 
         height: Optional[float] = self.get_length("height")
         if height:
@@ -93,7 +98,7 @@ class Building(Figure):
 
     def draw_shade(self, building_shade: Group, flinger: Flinger) -> None:
         """Draw shade casted by the building."""
-        scale: float = flinger.get_scale() / 3.0
+        scale: float = flinger.get_scale() * SHADE_SCALE
         shift_1: np.ndarray = np.array((scale * self.min_height, 0.0))
         shift_2: np.ndarray = np.array((scale * self.height, 0.0))
         commands: str = self.get_path(flinger, shift_1)
@@ -123,17 +128,28 @@ class Building(Figure):
         self, svg: Drawing, height: float, previous_height: float, scale: float
     ) -> None:
         """Draw building walls."""
-        shift_1: np.ndarray = np.array((0.0, -previous_height * scale))
-        shift_2: np.ndarray = np.array((0.0, -height * scale))
+        shift_1: np.ndarray = np.array(
+            (0.0, -previous_height * scale * BUILDING_SCALE)
+        )
+        shift_2: np.ndarray = np.array((0.0, -height * scale * BUILDING_SCALE))
         for segment in self.parts:
-            fill: Color
-            if height <= 1.0:
-                fill = self.wall_bottom_color_1
-            elif height <= 2.0:
-                fill = self.wall_bottom_color_2
+            fill: str
+            if self.is_construction:
+                color_part: float = segment.angle * 0.2
+                fill = Color(
+                    rgb=(
+                        0x84 / 0xFF + color_part,
+                        0x80 / 0xFF + color_part,
+                        0x7C / 0xFF + color_part,
+                    )
+                ).hex
+            elif height <= 0.25 / BUILDING_SCALE:
+                fill = self.wall_bottom_color_1.hex
+            elif height <= 0.5 / BUILDING_SCALE:
+                fill = self.wall_bottom_color_2.hex
             else:
                 color_part: float = self.wall_color_start + segment.angle * 0.2
-                fill = Color(rgb=(color_part, color_part, color_part))
+                fill = Color(rgb=(color_part, color_part, color_part)).hex
 
             command = (
                 "M",
@@ -147,8 +163,8 @@ class Building(Figure):
             )
             path: Path = svg.path(
                 d=command,
-                fill=fill.hex,
-                stroke=fill.hex,
+                fill=fill,
+                stroke=fill,
                 stroke_width=1,
                 stroke_linejoin="round",
             )
@@ -157,7 +173,9 @@ class Building(Figure):
     def draw_roof(self, svg: Drawing, flinger: Flinger, scale: float) -> None:
         """Draw building roof."""
         path: Path = Path(
-            d=self.get_path(flinger, np.array([0.0, -self.height * scale])),
+            d=self.get_path(
+                flinger, np.array([0.0, -self.height * scale * BUILDING_SCALE])
+            ),
             stroke=self.stroke,
             fill="none" if self.is_construction else self.fill,
             stroke_linejoin="round",
