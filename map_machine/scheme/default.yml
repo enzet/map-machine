@@ -225,6 +225,7 @@ material_colors:
 
   bronze: "#CD7F32"
   concrete: "#AAAAAA"
+  glass: "#CCEEFF"
 
 node_icons:
 
