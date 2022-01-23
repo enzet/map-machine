@@ -17,7 +17,7 @@ from map_machine.osm.osm_reader import OSMNode
 from map_machine.scheme import Scheme
 
 BUILDING_MINIMAL_HEIGHT: float = 8.0
-BUILDING_SCALE: float = 1.0
+BUILDING_SCALE: float = 0.33
 LEVEL_HEIGHT: float = 2.5
 SHADE_SCALE: float = 0.4
 

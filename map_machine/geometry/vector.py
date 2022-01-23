@@ -126,6 +126,8 @@ class Segment:
 
         difference: np.ndarray = point_2 - point_1
         vector: np.ndarray = difference / np.linalg.norm(difference)
+        if vector[0] > 0:
+            vector = -vector
         self.angle: float = (
             np.arccos(np.dot(vector, np.array((0.0, 1.0)))) / np.pi
         )
