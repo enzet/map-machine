@@ -39,6 +39,7 @@ class Building(Figure):
             tags.get("building") == "construction"
             or tags.get("construction") == "yes"
         )
+        self.has_walls: bool = tags.get("building") != "roof"
 
         if self.is_construction:
             self.fill: Color = scheme.get_color("building_construction_color")
@@ -128,6 +129,9 @@ class Building(Figure):
         self, svg: Drawing, height: float, previous_height: float, scale: float
     ) -> None:
         """Draw building walls."""
+        if not self.has_walls:
+            return
+
         shift_1: np.ndarray = np.array(
             (0.0, -previous_height * scale * BUILDING_SCALE)
         )
