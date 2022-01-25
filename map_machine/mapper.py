@@ -15,6 +15,7 @@ from svgwrite.path import Path as SVGPath
 from svgwrite.shapes import Rect
 
 from map_machine.constructor import Constructor
+from map_machine.drawing import draw_text
 from map_machine.feature.road import Intersection, Road, RoadPart
 from map_machine.figure import StyledFigure
 from map_machine.geometry.boundary_box import BoundaryBox
@@ -113,6 +114,8 @@ class Map:
                     self.svg, occupied, self.configuration.label_mode
                 )
 
+        self.draw_credits(constructor.flinger.size)
+
     def draw_buildings(self, constructor: Constructor) -> None:
         """Draw buildings: shade, walls, and roof."""
         if self.configuration.building_mode == BuildingMode.NO:
@@ -172,10 +175,32 @@ class Map:
             intersection: Intersection = Intersection(list(parts))
             intersection.draw(self.svg, True)
 
+    def draw_credits(self, size: np.ndarray):
+
+        for text, point in (
+            ("Rendering: © Map Machine", np.array((15, 27))),
+            ("Data: © OpenStreetMap contributors", np.array((15, 15))),
+        ):
+            for stroke_width, stroke, opacity in (
+                (3.0, Color("white"), 0.7),
+                (1.0, None, 1.0),
+            ):
+                draw_text(
+                    self.svg,
+                    text,
+                    size - point,
+                    10,
+                    Color("#888888"),
+                    anchor="end",
+                    stroke_width=stroke_width,
+                    stroke=stroke,
+                    opacity=opacity,
+                )
+
 
 def render_map(arguments: argparse.Namespace) -> None:
     """
-    Map Machine entry point.
+    Map rendering entry point.
 
     :param arguments: command-line arguments
     """
@@ -257,10 +282,10 @@ def render_map(arguments: argparse.Namespace) -> None:
     )
     constructor.construct()
 
-    painter: Map = Map(
+    map_: Map = Map(
         flinger=flinger, svg=svg, scheme=scheme, configuration=configuration
     )
-    painter.draw(constructor)
+    map_.draw(constructor)
 
     logging.info(f"Writing output SVG to {arguments.output_file_name}...")
     with open(arguments.output_file_name, "w", encoding="utf-8") as output_file:

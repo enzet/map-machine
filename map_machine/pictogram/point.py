@@ -7,6 +7,7 @@ import numpy as np
 import svgwrite
 from colour import Color
 
+from map_machine.drawing import draw_text
 from map_machine.map_configuration import LabelMode
 from map_machine.osm.osm_reader import Tagged
 from map_machine.pictogram.icon import Icon, IconSet
@@ -14,8 +15,6 @@ from map_machine.text import Label
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
-
-DEFAULT_FONT: str = "Helvetica"
 
 
 class Occupied:
@@ -238,42 +237,28 @@ class Point(Tagged):
                         svg.add(svg.rect((point[0] + i, point[1] + j), (1, 1)))
 
         if out_fill_2:
-            text_element = svg.text(
+            draw_text(
+                svg,
                 text,
                 point,
-                font_size=size,
-                text_anchor="middle",
-                font_family=DEFAULT_FONT,
-                fill=out_fill_2.hex,
-                stroke_linejoin="round",
+                size,
+                fill=out_fill_2,
                 stroke_width=5.0,
-                stroke=out_fill_2.hex,
+                stroke=out_fill_2,
                 opacity=out_opacity_2,
             )
-            svg.add(text_element)
         if out_fill:
-            text_element = svg.text(
+            draw_text(
+                svg,
                 text,
                 point,
-                font_size=size,
-                text_anchor="middle",
-                font_family=DEFAULT_FONT,
-                fill=out_fill.hex,
-                stroke_linejoin="round",
+                size,
+                fill,
                 stroke_width=3.0,
-                stroke=out_fill.hex,
+                stroke=out_fill,
                 opacity=out_opacity,
             )
-            svg.add(text_element)
-        text_element = svg.text(
-            text,
-            point,
-            font_size=size,
-            text_anchor="middle",
-            font_family=DEFAULT_FONT,
-            fill=fill.hex,
-        )
-        svg.add(text_element)
+        draw_text(svg, text, point, size, fill)
 
         self.y += 11
 

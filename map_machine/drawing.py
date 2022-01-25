@@ -20,6 +20,8 @@ __email__ = "me@enzet.ru"
 
 PathCommands = list[Union[float, str, np.ndarray]]
 
+DEFAULT_FONT: str = "Helvetica"
+
 
 @dataclass
 class Style:
@@ -295,3 +297,30 @@ def parse_path(path: str) -> PathCommands:
         index += 1
 
     return result
+
+
+def draw_text(
+    svg: svgwrite.Drawing,
+    text: str,
+    point: np.ndarray,
+    size: float,
+    fill: Color,
+    anchor: str = "middle",
+    stroke_linejoin: str = "round",
+    stroke_width: float = 1.0,
+    stroke: Optional[Color] = None,
+    opacity: float = 1.0,
+):
+    text_element = svg.text(
+        text,
+        point,
+        font_size=size,
+        text_anchor=anchor,
+        font_family=DEFAULT_FONT,
+        fill=fill.hex,
+        stroke_linejoin=stroke_linejoin,
+        stroke_width=stroke_width,
+        stroke=stroke.hex if stroke else "none",
+        opacity=opacity,
+    )
+    svg.add(text_element)
