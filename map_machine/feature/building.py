@@ -63,7 +63,12 @@ class Building(Figure):
         self.height: float = BUILDING_MINIMAL_HEIGHT
         self.min_height: float = 0.0
 
-        self.wall_color_start = scheme.get("wall_color_start")
+        self.wall_color: Color
+        if self.is_construction:
+            self.wall_color = scheme.get_color("wall_construction_color")
+        else:
+            self.wall_color = scheme.get_color("wall_color")
+
         self.wall_bottom_color_1: Color = scheme.get_color(
             "wall_bottom_1_color"
         )
@@ -142,9 +147,9 @@ class Building(Figure):
                 color_part: float = segment.angle * 0.2
                 fill = Color(
                     rgb=(
-                        0x84 / 0xFF + color_part,
-                        0x80 / 0xFF + color_part,
-                        0x7C / 0xFF + color_part,
+                        self.wall_color.get_red() + color_part,
+                        self.wall_color.get_green() + color_part,
+                        self.wall_color.get_blue() + color_part,
                     )
                 ).hex
             elif height <= 0.25 / BUILDING_SCALE:
@@ -152,8 +157,14 @@ class Building(Figure):
             elif height <= 0.5 / BUILDING_SCALE:
                 fill = self.wall_bottom_color_2.hex
             else:
-                color_part: float = self.wall_color_start + segment.angle * 0.2
-                fill = Color(rgb=(color_part, color_part, color_part)).hex
+                color_part: float = segment.angle * 0.2
+                fill = Color(
+                    rgb=(
+                        self.wall_color.get_red() + color_part,
+                        self.wall_color.get_green() + color_part,
+                        self.wall_color.get_blue() + color_part,
+                    )
+                ).hex
 
             command = (
                 "M",

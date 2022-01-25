@@ -84,7 +84,8 @@ colors:
   tree_color: "#98AC64"
   wall_bottom_1_color: "#AAAAAA"
   wall_bottom_2_color: "#C3C3C3"
-  wall_color_start: 0.8
+  wall_color: "#CCCCCC"
+  wall_construction_color: "#84807C"
   water_border_color: "#6688BB"
   water_color: "#AACCFF"
   wetland_color: "#BFE0D8"
@@ -2428,8 +2429,7 @@ ways:
       opacity: 0.5
   - tags: {amenity: parking_space}
     style:
-      stroke: "#000000"
-      opacity: 0.2
+      stroke: "#FFFFFF"
 
   - tags: {aeroway: landingpad}
     style:
