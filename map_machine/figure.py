@@ -1,15 +1,11 @@
 """
 Figures displayed on the map.
 """
-from typing import Optional
-
 import numpy as np
-from colour import Color
-from svgwrite import Drawing
 
 from map_machine.geometry.flinger import Flinger
 from map_machine.osm.osm_reader import OSMNode, Tagged
-from map_machine.scheme import LineStyle, Scheme
+from map_machine.scheme import LineStyle
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -65,36 +61,6 @@ class StyledFigure(Figure):
     ) -> None:
         super().__init__(tags, inners, outers)
         self.line_style: LineStyle = line_style
-
-
-class Tree(Tagged):
-    """Tree on the map."""
-
-    def __init__(
-        self, tags: dict[str, str], coordinates: np.ndarray, point: np.ndarray
-    ) -> None:
-        super().__init__(tags)
-        self.coordinates: np.ndarray = coordinates
-        self.point: np.ndarray = point
-
-    def draw(self, svg: Drawing, flinger: Flinger, scheme: Scheme) -> None:
-        """Draw crown and trunk."""
-        scale: float = flinger.get_scale(self.coordinates)
-        diameter_crown: Optional[float] = self.get_float("diameter_crown")
-
-        radius: float
-        if diameter_crown is not None:
-            radius = float(self.tags["diameter_crown"]) / 2.0
-        else:
-            radius = 2.0
-
-        color: Color = scheme.get_color("evergreen_color")
-        svg.add(svg.circle(self.point, radius * scale, fill=color, opacity=0.3))
-        circumference: Optional[float] = self.get_float("circumference")
-
-        if circumference is not None:
-            radius: float = circumference / 2.0 / np.pi
-            svg.add(svg.circle(self.point, radius * scale, fill="#B89A74"))
 
 
 def is_clockwise(polygon: list[OSMNode]) -> bool:

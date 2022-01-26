@@ -17,8 +17,8 @@ from map_machine.feature.direction import DirectionSector
 from map_machine.feature.road import Road, Roads
 from map_machine.figure import (
     StyledFigure,
-    Tree,
 )
+from map_machine.feature.tree import Tree
 from map_machine.geometry.flinger import Flinger
 from map_machine.map_configuration import DrawingMode, MapConfiguration
 from map_machine.osm.osm_reader import (
