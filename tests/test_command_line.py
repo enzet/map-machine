@@ -57,8 +57,8 @@ def test_render() -> None:
         root: Element = ElementTree.parse(output_file).getroot()
 
     # 4 expected elements: `defs`, `rect` (background), `g` (outline),
-    # `g` (icon).
-    assert len(root) == 4
+    # `g` (icon), 4 `text` elements (credits).
+    assert len(root) == 8
     assert len(root[3][0]) == 0
     assert root.get("width") == "186.0"
     assert root.get("height") == "198.0"
@@ -74,8 +74,8 @@ def test_render_with_tooltips() -> None:
         root: Element = ElementTree.parse(output_file).getroot()
 
     # 4 expected elements: `defs`, `rect` (background), `g` (outline),
-    # `g` (icon).
-    assert len(root) == 4
+    # `g` (icon), 4 `text` elements (credits).
+    assert len(root) == 8
     assert len(root[3][0]) == 1
     assert root[3][0][0].text == "natural: tree"
     assert root.get("width") == "186.0"
