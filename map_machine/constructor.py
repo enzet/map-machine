@@ -93,7 +93,9 @@ def get_time_color(time: Optional[datetime], boundaries: MinMax) -> Color:
     :param time: current element creation time
     :param boundaries: minimum and maximum element creation time on the map
     """
-    return get_gradient_color(time, boundaries, TIME_COLOR_SCALE)
+    return get_gradient_color(
+        time if time else boundaries.max_, boundaries, TIME_COLOR_SCALE
+    )
 
 
 def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
@@ -235,7 +237,9 @@ class Constructor:
         if self.configuration.is_wireframe():
             color: Color
             if self.configuration.drawing_mode == DrawingMode.AUTHOR:
-                color = get_user_color(line.user, self.configuration.seed)
+                color = get_user_color(
+                    line.user if line.user else "", self.configuration.seed
+                )
             elif self.configuration.drawing_mode == DrawingMode.TIME:
                 color = get_time_color(line.timestamp, self.osm_data.time)
             elif self.configuration.drawing_mode == DrawingMode.WHITE:
