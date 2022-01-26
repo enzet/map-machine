@@ -68,11 +68,12 @@ def is_matched_tag(
         return MatchingType.MATCHED_BY_WILDCARD, []
     if tags[matcher_tag_key] == matcher_tag_value:
         return MatchingType.MATCHED, []
-    matcher: Optional[re.Match] = re.match(
-        matcher_tag_value, tags[matcher_tag_key]
-    )
-    if matcher:
-        return MatchingType.MATCHED_BY_REGEX, list(matcher.groups())
+    if matcher_tag_value.startswith("^"):
+        matcher: Optional[re.Match] = re.match(
+            matcher_tag_value, tags[matcher_tag_key]
+        )
+        if matcher:
+            return MatchingType.MATCHED_BY_REGEX, list(matcher.groups())
 
     return MatchingType.NOT_MATCHED, []
 
