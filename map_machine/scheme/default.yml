@@ -2328,6 +2328,12 @@ ways:
     style:
       stroke-width: 1.0
       stroke: "#BBBBBB"
+  - tags: {natural: cliff}
+    parallel_offset: -2.5
+    style:
+      stroke-width: 5.0
+      stroke: "#BBBBBB"
+      stroke-dasharray: "1,10"
   - tags: {natural: scree}
     style:
       fill: scree_color
