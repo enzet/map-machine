@@ -2634,6 +2634,15 @@ ways:
       stroke-width: 1.0
       opacity: 0.3
     priority: 40.0
+  - tags: {man_made: embankment}
+    parallel_offset: -1.5
+    style:
+      fill: none
+      stroke: "#000000"
+      stroke-width: 3.0
+      opacity: 0.3
+      stroke-dasharray: "1,7"
+    priority: 40.0
   - tags: {barrier: fence}
     style:
       fill: none
