@@ -430,24 +430,28 @@ class Road(Tagged):
                 self.is_transition = True
             elif ":" in value and len(parts := value.split(":")) == 2:
                 place, lane_string = parts
-                lane_number: int = int(lane_string)
-                self.placement_offset = (
-                    sum(
+                lane_number: int = int(lane_string) - 1
+                self.placement_offset = -self.width * self.scale / 2.0
+                if lane_number > 0:
+                    self.placement_offset += sum(
                         lane.get_width(self.scale)
-                        for lane in self.lanes[: lane_number - 1]
+                        for lane in self.lanes[:lane_number]
                     )
-                    - self.width * self.scale / 2.0
-                )
+                elif lane_number < 0:
+                    self.placement_offset += (
+                        DEFAULT_LANE_WIDTH * lane_number * self.scale
+                    )
+
                 if place == "left_of":
                     pass
                 elif place == "middle_of":
                     self.placement_offset += (
-                        self.lanes[lane_number - 1].get_width(self.scale) * 0.5
+                        self.lanes[lane_number].get_width(self.scale) * 0.5
                     )
                 elif place == "right_of":
-                    self.placement_offset += self.lanes[
-                        lane_number - 1
-                    ].get_width(self.scale)
+                    self.placement_offset += self.lanes[lane_number].get_width(
+                        self.scale
+                    )
                 else:
                     logging.error(f"Unknown placement `{place}`.")
 
