@@ -60,7 +60,7 @@ class Polyline:
                     if parallel_offset
                     else self.points
                 )
-            except ValueError:
+            except (ValueError, NotImplementedError):
                 points = self.points
 
         return (
@@ -124,6 +124,8 @@ class Segment:
         self.point_1: np.ndarray = point_1
         self.point_2: np.ndarray = point_2
 
+        self.y = ((self.point_1 + self.point_2) / 2.0)[1]
+
         difference: np.ndarray = point_2 - point_1
         vector: np.ndarray = difference / np.linalg.norm(difference)
         if vector[0] > 0:
@@ -133,7 +135,4 @@ class Segment:
         )
 
     def __lt__(self, other: "Segment") -> bool:
-        return (
-            ((self.point_1 + self.point_2) / 2.0)[1]
-            < ((other.point_1 + other.point_2) / 2.0)[1]
-        )  # fmt: skip
+        return self.y < other.y
