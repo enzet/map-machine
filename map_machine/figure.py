@@ -24,10 +24,14 @@ class Figure(Tagged):
     ) -> None:
         super().__init__(tags)
 
-        self.inners: list[list[OSMNode]] = list(map(make_clockwise, inners))
-        self.outers: list[list[OSMNode]] = list(
-            map(make_counter_clockwise, outers)
-        )
+        if inners and outers:
+            self.inners: list[list[OSMNode]] = list(map(make_clockwise, inners))
+            self.outers: list[list[OSMNode]] = list(
+                map(make_counter_clockwise, outers)
+            )
+        else:
+            self.inners = inners
+            self.outers = outers
 
     def get_path(
         self, flinger: Flinger, offset: np.ndarray = np.array((0.0, 0.0))
