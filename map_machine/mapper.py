@@ -198,6 +198,11 @@ class Map:
                 )
 
 
+def fatal(message: str) -> None:
+    logging.fatal(message)
+    sys.exit(1)
+
+
 def render_map(arguments: argparse.Namespace) -> None:
     """
     Map rendering entry point.
@@ -210,32 +215,28 @@ def render_map(arguments: argparse.Namespace) -> None:
     cache_path: Path = Path(arguments.cache)
     cache_path.mkdir(parents=True, exist_ok=True)
 
+    # Compute boundary box
+
     boundary_box: Optional[BoundaryBox] = None
+
+    if arguments.boundary_box:
+        boundary_box = BoundaryBox.from_text(arguments.boundary_box)
+    elif arguments.coordinates and arguments.size:
+        coordinates: np.ndarray = np.array(
+            list(map(float, arguments.coordinates.split(",")))
+        )
+        if len(coordinates) != 2:
+            fatal("Wrong number of coordinates.")
+        width, height = np.array(list(map(float, arguments.size.split(","))))
+        boundary_box = BoundaryBox.from_coordinates(
+            coordinates, configuration.zoom_level, width, height
+        )
+
+    # Determine files
 
     if arguments.input_file_names:
         input_file_names = list(map(Path, arguments.input_file_names))
-        if arguments.boundary_box:
-            boundary_box = BoundaryBox.from_text(arguments.boundary_box)
-    else:
-        if arguments.boundary_box:
-            boundary_box = BoundaryBox.from_text(arguments.boundary_box)
-        elif arguments.coordinates and arguments.size:
-            coordinates: np.ndarray = np.array(
-                list(map(float, arguments.coordinates.split(",")))
-            )
-            width, height = np.array(
-                list(map(float, arguments.size.split(",")))
-            )
-            boundary_box = BoundaryBox.from_coordinates(
-                coordinates, configuration.zoom_level, width, height
-            )
-        else:
-            logging.fatal(
-                "Specify either --input, or --boundary-box, or --coordinates "
-                "and --size."
-            )
-            sys.exit(1)
-
+    elif boundary_box:
         try:
             cache_file_path: Path = (
                 cache_path / f"{boundary_box.get_format()}.osm"
@@ -245,12 +246,15 @@ def render_map(arguments: argparse.Namespace) -> None:
         except NetworkError as error:
             logging.fatal(error.message)
             sys.exit(1)
+    else:
+        fatal(
+            "Specify either --input, or --boundary-box, or --coordinates and "
+            "--size."
+        )
 
-    scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
-    osm_data: OSMData
+    # Get OpenStreetMap data
 
     osm_data: OSMData = OSMData()
-
     for input_file_name in input_file_names:
         if not input_file_name.is_file():
             logging.fatal(f"No such file: {input_file_name}.")
@@ -261,10 +265,13 @@ def render_map(arguments: argparse.Namespace) -> None:
         else:
             osm_data.parse_osm_file(input_file_name)
 
-    view_box: BoundaryBox = boundary_box if boundary_box else osm_data.view_box
+    if not boundary_box:
+        boundary_box = osm_data.view_box
+
+    # Render
 
     flinger: Flinger = Flinger(
-        view_box, arguments.zoom, osm_data.equator_length
+        boundary_box, arguments.zoom, osm_data.equator_length
     )
     size: np.ndarray = flinger.size
 
@@ -273,6 +280,7 @@ def render_map(arguments: argparse.Namespace) -> None:
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
 
+    scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
     constructor: Constructor = Constructor(
         osm_data=osm_data,
         flinger=flinger,
