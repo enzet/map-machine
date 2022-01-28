@@ -36,6 +36,7 @@ class LineStyle:
     """SVG line style and its priority."""
 
     style: dict[str, Union[int, float, str]]
+    parallel_offset: float = 0.0
     priority: float = 0.0
 
 
@@ -270,9 +271,14 @@ class WayMatcher(Matcher):
                     self.style[key] = scheme.get_color(style[key]).hex.upper()
                 else:
                     self.style[key] = style[key]
-        self.priority: int = 0
+
+        self.priority: float = 0.0
         if "priority" in structure:
             self.priority = structure["priority"]
+
+        self.parallel_offset: float = 0.0
+        if parallel_offset := structure.get("parallel_offset"):
+            self.parallel_offset = parallel_offset
 
     def get_style(self) -> dict[str, Any]:
         """Return way SVG style."""
@@ -584,7 +590,10 @@ class Scheme:
             if not matching:
                 continue
 
-            line_styles.append(LineStyle(matcher.style, matcher.priority))
+            line_style: LineStyle = LineStyle(
+                matcher.style, matcher.parallel_offset, matcher.priority
+            )
+            line_styles.append(line_style)
 
         return line_styles
 

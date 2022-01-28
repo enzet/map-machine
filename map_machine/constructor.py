@@ -292,7 +292,9 @@ class Constructor:
                     line_style.style
                 )
                 new_style["stroke"] = recolor.hex
-                line_style = LineStyle(new_style, line_style.priority)
+                line_style = LineStyle(
+                    new_style, line_style.parallel_offset, line_style.priority
+                )
 
             self.figures.append(
                 StyledFigure(line.tags, inners, outers, line_style)
@@ -341,7 +343,7 @@ class Constructor:
                 "stroke-width": 1.0,
             }
             figure: StyledFigure = StyledFigure(
-                line.tags, inners, outers, LineStyle(style, 1000.0)
+                line.tags, inners, outers, LineStyle(style, 0.0, 1000.0)
             )
             self.figures.append(figure)
 

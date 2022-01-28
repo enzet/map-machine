@@ -66,6 +66,33 @@ class StyledFigure(Figure):
         super().__init__(tags, inners, outers)
         self.line_style: LineStyle = line_style
 
+    def get_path(
+        self,
+        flinger: Flinger,
+        offset: np.ndarray = np.array((0.0, 0.0)),
+    ) -> str:
+        """
+        Get SVG path commands.
+
+        :param flinger: converter for geo coordinates
+        :param offset: offset vector
+        """
+        path: str = ""
+
+        for outer_nodes in self.outers:
+            commands: str = get_path(
+                outer_nodes, offset, flinger, self.line_style.parallel_offset
+            )
+            path += f"{commands} "
+
+        for inner_nodes in self.inners:
+            commands: str = get_path(
+                inner_nodes, offset, flinger, self.line_style.parallel_offset
+            )
+            path += f"{commands} "
+
+        return path
+
 
 def is_clockwise(polygon: list[OSMNode]) -> bool:
     """
@@ -100,8 +127,13 @@ def make_counter_clockwise(polygon: list[OSMNode]) -> list[OSMNode]:
     return polygon if not is_clockwise(polygon) else list(reversed(polygon))
 
 
-def get_path(nodes: list[OSMNode], shift: np.ndarray, flinger: Flinger) -> str:
+def get_path(
+    nodes: list[OSMNode],
+    shift: np.ndarray,
+    flinger: Flinger,
+    parallel_offset: float = 0.0,
+) -> str:
     """Construct SVG path commands from nodes."""
     return Polyline(
         [flinger.fling(node.coordinates) + shift for node in nodes]
-    ).get_path()
+    ).get_path(parallel_offset)
