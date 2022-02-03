@@ -777,59 +777,59 @@ node_icons:
     - tags: {building: apartments}
       shapes: [apartments_2_story]
 
-    - tags: {building: apartments, building:levels: "1"}
+    - tags: {building: "*", building:levels: "1"}
       shapes: [apartments_1_story]
-    - tags: {building: apartments, building:levels: "1", roof:shape: gabled}
+    - tags: {building: "*", building:levels: "1", roof:shape: gabled}
       shapes: [apartments_1_story_gabled_roof]
-    - tags: {building: apartments, building:levels: "1", roof:shape: hipped}
+    - tags: {building: "*", building:levels: "1", roof:shape: hipped}
       shapes: [apartments_1_story_gabled_roof]
-    - tags: {building: apartments, building:levels: "1", roof:shape: pyramidal}
+    - tags: {building: "*", building:levels: "1", roof:shape: pyramidal}
       shapes: [apartments_1_story_gabled_roof]
-    - tags: {building: apartments, building:levels: "1", roof:shape: skillion}
+    - tags: {building: "*", building:levels: "1", roof:shape: skillion}
       shapes: [apartments_1_story_skillion_roof]
 
-    - tags: {building: apartments, building:levels: "2"}
+    - tags: {building: "*", building:levels: "2"}
       shapes: [apartments_2_story]
-    - tags: {building: apartments, building:levels: "2", roof:shape: gabled}
+    - tags: {building: "*", building:levels: "2", roof:shape: gabled}
       shapes: [apartments_2_story_gabled_roof]
-    - tags: {building: apartments, building:levels: "2", roof:shape: hipped}
+    - tags: {building: "*", building:levels: "2", roof:shape: hipped}
       shapes: [apartments_2_story_gabled_roof]
-    - tags: {building: apartments, building:levels: "2", roof:shape: pyramidal}
+    - tags: {building: "*", building:levels: "2", roof:shape: pyramidal}
       shapes: [apartments_2_story_gabled_roof]
-    - tags: {building: apartments, building:levels: "2", roof:shape: skillion}
+    - tags: {building: "*", building:levels: "2", roof:shape: skillion}
       shapes: [apartments_2_story_skillion_roof]
 
-    - tags: {building: apartments, building:levels: "3"}
+    - tags: {building: "*", building:levels: "3"}
       shapes: [apartments_3_story]
-    - tags: {building: apartments, building:levels: "3", roof:shape: gabled}
+    - tags: {building: "*", building:levels: "3", roof:shape: gabled}
       shapes: [apartments_3_story_gabled_roof]
-    - tags: {building: apartments, building:levels: "3", roof:shape: hipped}
+    - tags: {building: "*", building:levels: "3", roof:shape: hipped}
       shapes: [apartments_3_story_gabled_roof]
-    - tags: {building: apartments, building:levels: "3", roof:shape: pyramidal}
+    - tags: {building: "*", building:levels: "3", roof:shape: pyramidal}
       shapes: [apartments_3_story_gabled_roof]
-    - tags: {building: apartments, building:levels: "3", roof:shape: skillion}
+    - tags: {building: "*", building:levels: "3", roof:shape: skillion}
       shapes: [apartments_3_story_skillion_roof]
 
-    - tags: {building: apartments, building:levels: "4"}
+    - tags: {building: "*", building:levels: "4"}
       shapes: [apartments_4_story]
-    - tags: {building: apartments, building:levels: "4", roof:shape: gabled}
+    - tags: {building: "*", building:levels: "4", roof:shape: gabled}
       shapes: [apartments_4_story_gabled_roof]
-    - tags: {building: apartments, building:levels: "4", roof:shape: hipped}
+    - tags: {building: "*", building:levels: "4", roof:shape: hipped}
       shapes: [apartments_4_story_gabled_roof]
-    - tags: {building: apartments, building:levels: "4", roof:shape: pyramidal}
+    - tags: {building: "*", building:levels: "4", roof:shape: pyramidal}
       shapes: [apartments_4_story_gabled_roof]
-    - tags: {building: apartments, building:levels: "4", roof:shape: skillion}
+    - tags: {building: "*", building:levels: "4", roof:shape: skillion}
       shapes: [apartments_4_story_skillion_roof]
 
-    - tags: {building: apartments, building:levels: "5"}
+    - tags: {building: "*", building:levels: "5"}
       shapes: [apartments_5_story]
-    - tags: {building: apartments, building:levels: "5", roof:shape: gabled}
+    - tags: {building: "*", building:levels: "5", roof:shape: gabled}
       shapes: [apartments_5_story_gabled_roof]
-    - tags: {building: apartments, building:levels: "5", roof:shape: hipped}
+    - tags: {building: "*", building:levels: "5", roof:shape: hipped}
       shapes: [apartments_5_story_gabled_roof]
-    - tags: {building: apartments, building:levels: "5", roof:shape: pyramidal}
+    - tags: {building: "*", building:levels: "5", roof:shape: pyramidal}
       shapes: [apartments_5_story_gabled_roof]
-    - tags: {building: apartments, building:levels: "5", roof:shape: skillion}
+    - tags: {building: "*", building:levels: "5", roof:shape: skillion}
       shapes: [apartments_5_story_skillion_roof]
 
     - tags: {building: construction}
