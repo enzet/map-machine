@@ -107,8 +107,8 @@ class Building(Figure):
         """Draw simple building shape."""
         path: Path = Path(
             d=self.get_path(flinger),
-            stroke=self.stroke,
-            fill=self.fill,
+            stroke=self.stroke.hex,
+            fill=self.fill.hex,
             stroke_linejoin="round",
         )
         svg.add(path)
