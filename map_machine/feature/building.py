@@ -47,8 +47,13 @@ class Building(Figure):
                 "building_construction_border_color"
             )
         else:
-            self.fill: Color = scheme.get_color("building_color")
-            self.stroke: Color = scheme.get_color("building_border_color")
+            if color := tags.get("roof:colour"):
+                self.fill = scheme.get_color(color)
+                self.stroke: Color = Color(self.fill)
+                self.stroke.set_luminance(self.fill.get_luminance() * 0.85)
+            else:
+                self.fill: Color = scheme.get_color("building_color")
+                self.stroke: Color = scheme.get_color("building_border_color")
 
         self.parts: list[Segment] = []
 
@@ -69,11 +74,23 @@ class Building(Figure):
         else:
             self.wall_color = scheme.get_color("wall_color")
 
-        self.wall_bottom_color_1: Color = scheme.get_color(
-            "wall_bottom_1_color"
+        if material := tags.get("building:material"):
+            if material in scheme.material_colors:
+                self.wall_color = Color(scheme.material_colors[material])
+
+        if color := tags.get("building:colour"):
+            self.wall_color = scheme.get_color(color)
+
+        if color := tags.get("colour"):
+            self.wall_color = scheme.get_color(color)
+
+        self.wall_bottom_color_1: Color = Color(self.wall_color)
+        self.wall_bottom_color_1.set_luminance(
+            self.wall_color.get_luminance() * 0.70
         )
-        self.wall_bottom_color_2: Color = scheme.get_color(
-            "wall_bottom_2_color"
+        self.wall_bottom_color_2: Color = Color(self.wall_color)
+        self.wall_bottom_color_2.set_luminance(
+            self.wall_color.get_luminance() * 0.85
         )
 
         levels: Optional[str] = self.get_float("building:levels")
