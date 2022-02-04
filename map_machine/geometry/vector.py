@@ -139,3 +139,35 @@ class Segment:
 
     def __lt__(self, other: "Segment") -> bool:
         return self.y < other.y
+
+    def intersection(self, other: "Segment"):
+        divisor = (self.point_1[0] - self.point_2[0]) * (
+            other.point_1[1] - other.point_2[1]
+        ) - (self.point_1[1] - self.point_2[1]) * (
+            other.point_1[0] - other.point_2[0]
+        )
+        if not divisor:
+            return None
+
+        t: float = (
+            (self.point_1[0] - other.point_1[0])
+            * (other.point_1[1] - other.point_2[1])
+            - (self.point_1[1] - other.point_1[1])
+            * (other.point_1[0] - other.point_2[0])
+        ) / divisor
+
+        u: float = (
+            (self.point_1[0] - other.point_1[0])
+            * (self.point_1[1] - self.point_2[1])
+            - (self.point_1[1] - other.point_1[1])
+            * (self.point_1[0] - self.point_2[0])
+        ) / divisor
+
+        if 0 <= t <= 1 and 0 <= u <= 1:
+            print(t)
+            return [
+                self.point_1[0] + t * (self.point_2[0] - self.point_1[0]),
+                self.point_1[1] + t * (self.point_2[1] - self.point_1[1]),
+            ]
+        else:
+            return None
