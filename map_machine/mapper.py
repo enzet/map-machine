@@ -16,6 +16,7 @@ from svgwrite.shapes import Rect
 
 from map_machine.constructor import Constructor
 from map_machine.drawing import draw_text
+from map_machine.feature.building import Building, draw_walls, BUILDING_SCALE
 from map_machine.feature.road import Intersection, Road, RoadPart
 from map_machine.figure import StyledFigure
 from map_machine.geometry.boundary_box import BoundaryBox
@@ -133,12 +134,28 @@ class Map:
             building.draw_shade(building_shade, self.flinger)
         self.svg.add(building_shade)
 
+        walls: dict[Segment, Building] = {}
+
+        for building in constructor.buildings:
+            for part in building.parts:
+                walls[part] = building
+
+        sorted_walls = sorted(walls.keys())
+
         previous_height: float = 0.0
         for height in sorted(constructor.heights):
-            for building in constructor.buildings:
-                if building.height < height or building.min_height > height:
+            shift_1: np.ndarray = np.array(
+                (0.0, -previous_height * scale * BUILDING_SCALE)
+            )
+            shift_2: np.ndarray = np.array(
+                (0.0, -height * scale * BUILDING_SCALE)
+            )
+            for wall in sorted_walls:
+                building: Building = walls[wall]
+                if building.height < height or building.min_height >= height:
                     continue
-                building.draw_walls(self.svg, height, previous_height, scale)
+
+                draw_walls(self.svg, building, wall, height, shift_1, shift_2)
 
             if self.configuration.draw_roofs:
                 for building in constructor.buildings:

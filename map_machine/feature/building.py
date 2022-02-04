@@ -141,49 +141,9 @@ class Building(Figure):
             (0.0, -previous_height * scale * BUILDING_SCALE)
         )
         shift_2: np.ndarray = np.array((0.0, -height * scale * BUILDING_SCALE))
-        for segment in self.parts:
-            fill: str
-            if self.is_construction:
-                color_part: float = segment.angle * 0.2
-                fill = Color(
-                    rgb=(
-                        self.wall_color.get_red() + color_part,
-                        self.wall_color.get_green() + color_part,
-                        self.wall_color.get_blue() + color_part,
-                    )
-                ).hex
-            elif height <= 0.25 / BUILDING_SCALE:
-                fill = self.wall_bottom_color_1.hex
-            elif height <= 0.5 / BUILDING_SCALE:
-                fill = self.wall_bottom_color_2.hex
-            else:
-                color_part: float = segment.angle * 0.2
-                fill = Color(
-                    rgb=(
-                        self.wall_color.get_red() + color_part,
-                        self.wall_color.get_green() + color_part,
-                        self.wall_color.get_blue() + color_part,
-                    )
-                ).hex
 
-            command = (
-                "M",
-                segment.point_1 + shift_1,
-                "L",
-                segment.point_2 + shift_1,
-                segment.point_2 + shift_2,
-                segment.point_1 + shift_2,
-                segment.point_1 + shift_1,
-                "Z",
-            )
-            path: Path = svg.path(
-                d=command,
-                fill=fill,
-                stroke=fill,
-                stroke_width=1,
-                stroke_linejoin="round",
-            )
-            svg.add(path)
+        for segment in self.parts:
+            draw_walls(svg, self, segment, height, shift_1, shift_2)
 
     def draw_roof(self, svg: Drawing, flinger: Flinger, scale: float) -> None:
         """Draw building roof."""
@@ -192,7 +152,52 @@ class Building(Figure):
                 flinger, np.array([0.0, -self.height * scale * BUILDING_SCALE])
             ),
             stroke=self.stroke,
-            fill="none" if self.is_construction else self.fill,
+            fill="none" if self.is_construction else self.fill.hex,
             stroke_linejoin="round",
         )
         svg.add(path)
+
+
+def draw_walls(svg, building: Building, segment, height, shift_1, shift_2):
+    fill: str
+    if building.is_construction:
+        color_part: float = segment.angle * 0.2
+        fill = Color(
+            rgb=(
+                building.wall_color.get_red() + color_part,
+                building.wall_color.get_green() + color_part,
+                building.wall_color.get_blue() + color_part,
+            )
+        ).hex
+    elif height <= 0.25 / BUILDING_SCALE:
+        fill = building.wall_bottom_color_1.hex
+    elif height <= 0.5 / BUILDING_SCALE:
+        fill = building.wall_bottom_color_2.hex
+    else:
+        color_part: float = segment.angle * 0.2 - 0.1
+        fill = Color(
+            rgb=(
+                max(min(building.wall_color.get_red() + color_part, 1), 0),
+                max(min(building.wall_color.get_green() + color_part, 1), 0),
+                max(min(building.wall_color.get_blue() + color_part, 1), 0),
+            )
+        ).hex
+
+    command = (
+        "M",
+        segment.point_1 + shift_1,
+        "L",
+        segment.point_2 + shift_1,
+        segment.point_2 + shift_2,
+        segment.point_1 + shift_2,
+        segment.point_1 + shift_1,
+        "Z",
+    )
+    path: Path = Path(
+        d=command,
+        fill=fill,
+        stroke=fill,
+        stroke_width=1,
+        stroke_linejoin="round",
+    )
+    svg.add(path)
