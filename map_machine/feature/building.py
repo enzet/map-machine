@@ -1,8 +1,6 @@
 """
 Buildings on the map.
 """
-from typing import Optional
-
 import numpy as np
 from colour import Color
 from svgwrite import Drawing
@@ -93,21 +91,17 @@ class Building(Figure):
             self.wall_color.get_luminance() * 0.85
         )
 
-        levels: Optional[str] = self.get_float("building:levels")
-        if levels:
-            self.height = float(levels) * LEVEL_HEIGHT
+        if levels := self.get_float("building:levels"):
+            self.height = BUILDING_MINIMAL_HEIGHT + levels * LEVEL_HEIGHT
 
-        levels: Optional[str] = self.get_float("building:min_level")
-        if levels:
-            self.min_height = float(levels) * LEVEL_HEIGHT
+        if levels := self.get_float("building:min_level"):
+            self.min_height = BUILDING_MINIMAL_HEIGHT + levels * LEVEL_HEIGHT
 
-        height: Optional[float] = self.get_length("height")
-        if height:
-            self.height = height
+        if height := self.get_length("height"):
+            self.height = BUILDING_MINIMAL_HEIGHT + height
 
-        height: Optional[float] = self.get_length("min_height")
-        if height:
-            self.min_height = height
+        if height := self.get_length("min_height"):
+            self.min_height = BUILDING_MINIMAL_HEIGHT + height
 
     def draw(self, svg: Drawing, flinger: Flinger) -> None:
         """Draw simple building shape."""
