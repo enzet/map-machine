@@ -84,7 +84,7 @@ colors:
   tree_color: "#98AC64"
   wall_bottom_1_color: "#AAAAAA"
   wall_bottom_2_color: "#C3C3C3"
-  wall_color: "#CCCCCC"
+  wall_color: "#E8E8E8"
   wall_construction_color: "#84807C"
   water_border_color: "#6688BB"
   water_color: "#AACCFF"
