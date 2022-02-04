@@ -195,8 +195,8 @@ class Map:
     def draw_credits(self, size: np.ndarray):
 
         for text, point in (
-            ("Rendering: © Map Machine", np.array((15, 27))),
-            ("Data: © OpenStreetMap contributors", np.array((15, 15))),
+            ("Data: © OpenStreetMap contributors", np.array((15, 27))),
+            ("Rendering: Map Machine", np.array((15, 15))),
         ):
             for stroke_width, stroke, opacity in (
                 (3.0, Color("white"), 0.7),
