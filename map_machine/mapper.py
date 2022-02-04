@@ -21,6 +21,7 @@ from map_machine.feature.road import Intersection, Road, RoadPart
 from map_machine.figure import StyledFigure
 from map_machine.geometry.boundary_box import BoundaryBox
 from map_machine.geometry.flinger import Flinger
+from map_machine.geometry.vector import Segment
 from map_machine.map_configuration import LabelMode, MapConfiguration
 from map_machine.osm.osm_getter import NetworkError, get_osm
 from map_machine.osm.osm_reader import OSMData, OSMNode
