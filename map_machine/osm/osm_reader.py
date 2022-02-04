@@ -236,6 +236,9 @@ class OSMWay(Tagged):
     def __repr__(self) -> str:
         return f"Way <{self.id_}> {self.nodes}"
 
+    def __hash__(self) -> int:
+        return self.id_
+
 
 @dataclass
 class OSMMember:
