@@ -134,5 +134,8 @@ class Segment:
             np.arccos(np.dot(vector, np.array((0.0, 1.0)))) / np.pi
         )
 
+    def __repr__(self):
+        return f"{self.point_1} -- {self.point_2}"
+
     def __lt__(self, other: "Segment") -> bool:
         return self.y < other.y
