@@ -1485,6 +1485,8 @@ node_icons:
       shapes: [turnstile]
     - tags: {barrier: log}
       shapes: [wood]
+    - tags: {barrier: chain}
+      shapes: [chain_barrier]
     - tags: {railway: crossing}
       shapes: [x]
     - tags: {railway: railway_crossing}
