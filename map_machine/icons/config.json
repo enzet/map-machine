@@ -151,6 +151,7 @@
     }
   },
   "barrier": {
+    "chain_barrier": {"name": "chain barrier", "categories": ["barrier"]},
     "entrance": {"name": "door", "categories": ["barrier"]},
     "exit": {"name": "door with arrow", "categories": ["barrier"]},
     "door_with_keyhole": {"name": "door with keyhole", "categories": ["barrier"]},
@@ -334,6 +335,7 @@
     "frame": {"name": "picture frame"},
     "fuel_station": {"emoji": "⛽️", "name": "fuel station"},
     "garages": {"name": "car under roof"},
+    "gavel": {"name": "gavel"},
     "gift": {"emoji": "🎁", "name": "gift box"},
     "globe": {"name": "globe"},
     "government": {"name": "building with dome and flag"},
@@ -342,7 +344,6 @@
     "hi_fi": {"name": "Hi-Fi"},
     "human_on_ferry": {"name": "human over water"},
     "hunting_stand": {"name": "hunting stand"},
-    "judgement": {"name": "gavel"},
     "kerb": {"name": "kerb"},
     "key": {"is_part": true, "name": "key"},
     "kiosk": {"name": "kiosk"},
