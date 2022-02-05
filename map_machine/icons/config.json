@@ -73,6 +73,7 @@
       "arrow_down": {"is_part": true, "name": "downwards arrow"},
       "arrow_left": {"is_part": true, "name": "leftwards arrow"},
       "arrow_right": {"is_part": true, "name": "rightwards arrow"},
+      "arrow_right_short": {"is_part": true, "name": "short rightwards arrow"},
       "arrow_up": {"is_part": true, "name": "upwards arrow"},
       "at_in_square": {"emoji": "@", "name": "@ in square", "categories": ["letter"]},
       "circle_3": {"name": "circle 3 px"},
@@ -148,6 +149,14 @@
       "russian_orthodox_cross": {"name": "Russian Orthodox cross", "emoji": "☦"},
       "star_of_david": {"emoji": "✡️", "name": "Star of David"}
     }
+  },
+  "barrier": {
+    "entrance": {"name": "door", "categories": ["barrier"]},
+    "exit": {"name": "door with arrow", "categories": ["barrier"]},
+    "door_with_keyhole": {"name": "door with keyhole", "categories": ["barrier"]},
+    "garage_door": {"name": "garage door", "categories": ["barrier"]},
+    "gate": {"name": "gate", "categories": ["barrier"]},
+    "maze": {"name": "maze", "categories": ["barrier"]}
   },
   "transport_items": {
     "traffic_barrier": {
@@ -310,13 +319,10 @@
     "defibrillator": {"categories": ["emergency"], "name": "heart and lightning"},
     "diamond": {"emoji": "💎", "name": "diamond"},
     "digital_clock": {"name": "digital clock"},
-    "door_with_keyhole": {"name": "door with keyhole"},
     "drinking_water": {"emoji": "🚰", "name": "tap and glass"},
     "dumbbell": {"name": "dumbbell"},
-    "entrance": {"name": "door"},
     "envelope": {"emoji": "✉️", "name": "envelope"},
     "exchange": {"name": "exchange"},
-    "exit": {"name": "door with arrow"},
     "film": {"emoji": "🎞️", "name": "film"},
     "fire_extinguisher": {"emoji": "🧯", "categories": ["emergency"], "name": "fire extinguisher"},
     "fire_hydrant": {"categories": ["emergency"], "name": "fire hydrant"},
@@ -327,9 +333,7 @@
     "foot": {"emoji": "👣", "name": "footprint"},
     "frame": {"name": "picture frame"},
     "fuel_station": {"emoji": "⛽️", "name": "fuel station"},
-    "garage_door": {"name": "garage door"},
     "garages": {"name": "car under roof"},
-    "gate": {"name": "gate"},
     "gift": {"emoji": "🎁", "name": "gift box"},
     "globe": {"name": "globe"},
     "government": {"name": "building with dome and flag"},

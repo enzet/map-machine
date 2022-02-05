@@ -586,6 +586,8 @@ node_icons:
       shapes: [bowling_ball]
     - tags: {leisure: dog_park}
       shapes: [dog]
+    - tags: {leisure: escape_game}
+      shapes: [{shape: maze, offset: [-2, 0]}, {shape: arrow_right_short, offset: [5, -1]}]
     - tags: {leisure: miniature_golf}
       shapes: [golf_club_and_ball]
     - tags: {leisure: sauna}
