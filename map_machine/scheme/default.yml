@@ -1523,9 +1523,9 @@ node_icons:
     - tags: {information: "*"}
       shapes: [i]
       replace_shapes: no
-    - tags: {tourism: "*"}
-      shapes: [historic]
-      replace_shapes: no
+    # tags: {tourism: "*"}
+    # shapes: [historic]
+    # replace_shapes: no
     - tags: {tourism: information}
       shapes: [i]
     - tags: {information: guidepost}
