@@ -98,6 +98,7 @@ colors:
   taxiway_border_color: {color: taxiway_color, darken: 0.25}
 
   sell_color: "#880088"
+  craft_color: "#008800"
 
   # Colors not in W3C
 
@@ -690,6 +691,8 @@ node_icons:
       shapes: [{shape: diamond, color: sell_color}]
     - tags: {shop: jewellery}
       shapes: [{shape: diamond, color: sell_color}]
+    - tags: {craft: jeweller}
+      shapes: [{shape: diamond, color: craft_color}]
     - tags: {shop: laundry}
       shapes: [washing_machine]
     - tags: {shop: massage}
