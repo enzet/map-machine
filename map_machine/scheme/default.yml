@@ -474,6 +474,8 @@ node_icons:
       shapes: [two_beds]
     - tags: {tourism: motel}
       shapes: [{shape: car, offset: [0, 4]}, {shape: bed, offset: [0, -2]}]
+    - tags: {tourism: guest_house}
+      shapes: [bed_and_roof]
     - tags: {amenity: hospital}
       shapes: [greek_cross]
     - tags: {amenity: clinic}
