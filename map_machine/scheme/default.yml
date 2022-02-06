@@ -466,6 +466,8 @@ node_icons:
       location_restrictions: {include: [jp]}
     - tags: {amenity: veterinary}
       shapes: [dog_and_cross]
+    - tags: {tourism: apartment}
+      shapes: [bed_with_floor_and_ceiling]
     - tags: {tourism: hotel}
       shapes: [bed]
     - tags: {building: hotel}
