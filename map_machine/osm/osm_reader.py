@@ -171,6 +171,14 @@ class OSMNode(Tagged):
             coordinates=np.array((structure["lat"], structure["lon"])),
         )
 
+    def get_boundary_box(self) -> BoundaryBox:
+        return BoundaryBox(
+            self.coordinates[1],
+            self.coordinates[0],
+            self.coordinates[1],
+            self.coordinates[0],
+        )
+
     def __hash__(self) -> int:
         return self.id_
 
@@ -346,12 +354,7 @@ class OSMData:
         self.time.update(node.timestamp)
 
         if not self.boundary_box:
-            self.boundary_box = BoundaryBox(
-                node.coordinates[1],
-                node.coordinates[0],
-                node.coordinates[1],
-                node.coordinates[0],
-            )
+            self.boundary_box = node.get_boundary_box()
         self.boundary_box.update(node.coordinates)
 
     def add_way(self, way: OSMWay) -> None:
