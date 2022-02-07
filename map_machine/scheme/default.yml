@@ -639,6 +639,8 @@ node_icons:
       shapes: [{shape: fishing_angle, color: sell_color}]
     - tags: {shop: alcohol}
       shapes: [{shape: bottle, color: sell_color}]
+    - tags: {shop: antiques}
+      shapes: [{shape: amphora, color: sell_color}]
     - tags: {shop: art}
       shapes: [{shape: picture, color: sell_color}]
     - tags: {shop: bakery}
