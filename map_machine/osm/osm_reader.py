@@ -329,6 +329,7 @@ class OSMData:
         self.levels: set[float] = set()
         self.time: MinMax = MinMax()
         self.view_box: Optional[BoundaryBox] = None
+        self.boundary_box: Optional[BoundaryBox] = None
         self.equator_length: float = EARTH_EQUATOR_LENGTH
 
     def add_node(self, node: OSMNode) -> None:
@@ -343,6 +344,15 @@ class OSMData:
         if node.tags.get("level"):
             self.levels.union(parse_levels(node.tags["level"]))
         self.time.update(node.timestamp)
+
+        if not self.boundary_box:
+            self.boundary_box = BoundaryBox(
+                node.coordinates[1],
+                node.coordinates[0],
+                node.coordinates[1],
+                node.coordinates[0],
+            )
+        self.boundary_box.update(node.coordinates)
 
     def add_way(self, way: OSMWay) -> None:
         """Add way and update map parameters."""

@@ -285,6 +285,8 @@ def render_map(arguments: argparse.Namespace) -> None:
 
     if not boundary_box:
         boundary_box = osm_data.view_box
+    if not boundary_box:
+        boundary_box = osm_data.boundary_box
 
     # Render
 
