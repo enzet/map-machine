@@ -1628,6 +1628,8 @@ node_icons:
       shapes: [slide]
     - tags: {playground: roundabout}
       shapes: [roundabout]
+    - tags: {playground: sandpit}
+      shapes: [sandpit]
     - tags: {playground: seesaw}
       shapes: [seesaw]
     - tags: {playground: horizontal_bar}

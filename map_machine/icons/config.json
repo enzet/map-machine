@@ -249,6 +249,7 @@
     "playground": {
       "hopscotch": {"name": "hopscotch"},
       "roundabout": {"name": "roundabout"},
+      "sandpit": {"name": "sandpit", "categories": ["amenity"]},
       "seesaw": {"name": "seesaw", "categories": ["amenity"]},
       "slide": {"directed": "right", "name": "slide", "categories": ["amenity"], "emoji": "🛝"},
       "slide_and_water": {"categories": ["amenity"], "name": "water slide"},
