@@ -279,6 +279,7 @@
     "furniture": {
       "bed": {"emoji": "🛌", "name": "bed"},
       "bed_and_roof": {"name": "bed and roof"},
+      "bed_with_floor_and_ceiling": {"name": "bed with floor and ceiling"},
       "drawer": {"name": "drawer"},
       "two_beds": {"name": "two beds"}
     },
