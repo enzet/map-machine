@@ -4,7 +4,7 @@ Thank you for your interest in the Map Machine project.  Since the primary goal 
 
 \2 {Suggest a tag to support} {}
 
-Please, create an issue with \m {icon} label.
+Please, create an issue describing how you would like the feature to be visualized.
 
 /*
 \2 {Add an icon} {}
@@ -12,7 +12,7 @@ Please, create an issue with \m {icon} label.
 
 \2 {Report a bug} {}
 
-Please, create an issue with \m {bug} label.
+Please, create an issue describing the current behavior, expected behavior, and environment (most importantly, the OS version and Python version if it was not the recommended one).
 
 \2 {Fix a typo in documentation} {}
 
