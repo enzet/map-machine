@@ -141,7 +141,7 @@ Requirements: Python 3.9.
   * install Python packages:
 
 ```bash
-pip install .
+pip install -r requirements.txt
 ```
 
 Map generation
