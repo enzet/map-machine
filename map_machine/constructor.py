@@ -269,9 +269,10 @@ class Constructor:
 
         road_matcher: RoadMatcher = self.scheme.get_road(line.tags)
         if road_matcher:
-            self.roads.append(
-                Road(line.tags, outers[0], road_matcher, self.flinger)
+            road: Road = Road(
+                line.tags, outers[0], road_matcher, self.flinger, self.scheme
             )
+            self.roads.append(road)
             return
 
         processed: set[str] = set()

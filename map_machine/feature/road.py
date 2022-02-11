@@ -24,7 +24,7 @@ from map_machine.geometry.vector import (
     turn_by_angle,
 )
 from map_machine.osm.osm_reader import OSMNode, Tagged
-from map_machine.scheme import RoadMatcher
+from map_machine.scheme import RoadMatcher, Scheme
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -372,6 +372,7 @@ class Road(Tagged):
         nodes: list[OSMNode],
         matcher: RoadMatcher,
         flinger: Flinger,
+        scheme: Scheme,
     ) -> None:
         super().__init__(tags)
         self.nodes: list[OSMNode] = nodes
@@ -384,6 +385,8 @@ class Road(Tagged):
         self.lanes: list[Lane] = []
 
         self.scale: float = flinger.get_scale(self.nodes[0].coordinates)
+
+        self.is_area = scheme.is_area(tags) and nodes[0] == nodes[-1]
 
         if "lanes" in tags:
             try:
@@ -483,7 +486,7 @@ class Road(Tagged):
                 extra_width = 4.0
 
         fill: str = "none"
-        if self.tags.get("area") == "yes":
+        if self.is_area:
             fill = color.hex
 
         style: dict[str, Union[int, float, str]] = {
