@@ -482,8 +482,12 @@ class Road(Tagged):
             if self.tags.get("embankment") == "yes":
                 extra_width = 4.0
 
+        fill: str = "none"
+        if self.tags.get("area") == "yes":
+            fill = color.hex
+
         style: dict[str, Union[int, float, str]] = {
-            "fill": "none",
+            "fill": fill,
             "stroke": color.hex,
             "stroke-linecap": "butt",
             "stroke-linejoin": "round",
