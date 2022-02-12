@@ -55,6 +55,7 @@ class MapConfiguration:
     country: str = "world"
     ignore_level_matching: bool = False
     draw_roofs: bool = True
+    use_building_colors: bool = False
 
     @classmethod
     def from_options(
@@ -73,6 +74,7 @@ class MapConfiguration:
             options.country,
             options.ignore_level_matching,
             options.roofs,
+            options.building_colors,
         )
 
     def is_wireframe(self) -> bool:

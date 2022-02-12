@@ -194,6 +194,13 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         action=argparse.BooleanOptionalAction,
         default=True,
     )
+    parser.add_argument(
+        "--building-colors",
+        help="paint walls (if isometric mode is enabled) and roofs with "
+        "specified colors",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+    )
 
 
 def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
