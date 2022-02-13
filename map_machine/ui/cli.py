@@ -37,6 +37,17 @@ COMMANDS: list[str] = [
     "taginfo",
 ]
 
+BOUNDARY_BOX_WARNING: str = (
+    "if the first value is negative, use `=` sign or enclose the value with "
+    "quotes and use space before `-`, e.g. `-b=-84.752,39.504,-84.749,39.508` "
+    'or `-b " -84.752,39.504,-84.749,39.508"`'
+)
+COORDINATES_WARNING: str = (
+    "if the first value is negative, use `=` sign or enclose the value with "
+    "quotes and use space before `-`, e.g. `-c=-84.752,39.504` or `-c "
+    '" -84.752,39.504"`'
+)
+
 
 def parse_arguments(args: list[str]) -> argparse.Namespace:
     """Parse Map Machine command-line arguments."""
@@ -191,7 +202,8 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         "-c",
         "--coordinates",
         metavar="<latitude>,<longitude>",
-        help="coordinates of any location inside the tile",
+        help="coordinates of any location inside the tile; "
+        + COORDINATES_WARNING,
     )
     parser.add_argument(
         "-t",
@@ -209,7 +221,7 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         "-b",
         "--boundary-box",
         help="construct the minimum amount of tiles that cover the requested "
-        "boundary box",
+        "boundary box; " + BOUNDARY_BOX_WARNING,
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
     )
     parser.add_argument(
@@ -278,8 +290,7 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         "-b",
         "--boundary-box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
-        help="geo boundary box; if the first value is negative, enclose the "
-        "value with quotes and use space before `-`",
+        help="geo boundary box; " + BOUNDARY_BOX_WARNING,
     )
     parser.add_argument(
         "--cache",
@@ -299,7 +310,8 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         "-c",
         "--coordinates",
         metavar="<latitude>,<longitude>",
-        help="coordinates of any location inside the tile",
+        help="coordinates of any location inside the tile; "
+        + COORDINATES_WARNING,
     )
     parser.add_argument(
         "-s",

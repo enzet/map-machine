@@ -18,13 +18,13 @@ Usage example
 -------------
 
 ```bash
-map-machine render -b 2.284,48.860,2.290,48.865
+map-machine render -b=2.284,48.860,2.290,48.865
 ```
 
 will automatically download OSM data and write output SVG map of the specified area to `out/map.svg`. See [Map generation](#map-generation).
 
 ```bash
-map-machine tile -b 2.361,48.871,2.368,48.875
+map-machine tile -b=2.361,48.871,2.368,48.875
 ```
 
 will automatically download OSM data and write output PNG tiles that cover the specified area to the `out/tiles` directory. See [Tile generation](#tile-generation).
@@ -151,9 +151,9 @@ Command `render` is used to generate SVG map from OpenStreetMap data. You can ru
 
 ```bash
 map-machine render \
-    -b <min longitude>,<min latitude>,<max longitude>,<max latitude> \
-    -o <output file name> \
-    -z <OSM zoom level> \
+    -b=<min longitude>,<min latitude>,<max longitude>,<max latitude> \
+    -o=<output file name> \
+    -z=<OSM zoom level> \
     <other arguments>
 ```
 
@@ -161,8 +161,8 @@ map-machine render \
 
 ```bash
 map-machine render \
-    --boundary-box 2.284,48.860,2.290,48.865 \
-    --output out/esplanade_du_trocadéro.svg
+    --boundary-box=2.284,48.860,2.290,48.865 \
+    --output=out/esplanade_du_trocadéro.svg
 ```
 
 will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and write an output SVG map of the specified area to `out/esplanade_du_trocadéro.svg`.
@@ -173,10 +173,10 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and write an out
 |---|---|
 | <span style="white-space: nowrap;">`-i`</span>, <span style="white-space: nowrap;">`--input`</span> `<path>` | input XML file name or names (if not specified, file will be downloaded using OpenStreetMap API) |
 | <span style="white-space: nowrap;">`-o`</span>, <span style="white-space: nowrap;">`--output`</span> `<path>` | output SVG file name, default value: `out/map.svg` |
-| <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | geo boundary box; if the first value is negative, enclose the value with quotes and use space before `-` |
+| <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | geo boundary box; if the first value is negative, use `=` sign or enclose the value with quotes and use space before `-`, e.g. `-b=-84.752,39.504,-84.749,39.508` or `-b " -84.752,39.504,-84.749,39.508"` |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
 | <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<float>` | OSM zoom level, default value: 18.0 |
-| <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location inside the tile |
+| <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location inside the tile; if the first value is negative, use `=` sign or enclose the value with quotes and use space before `-`, e.g. `-c=-84.752,39.504` or `-c " -84.752,39.504"` |
 | <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--size`</span> `<width>,<height>` | resulted image size |
 
 plus [map configuration options](#map-options)
@@ -188,10 +188,10 @@ Command `tile` is used to generate PNG tiles for [slippy maps](https://wiki.open
 
 | Option | Description |
 |---|---|
-| <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location inside the tile |
+| <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location inside the tile; if the first value is negative, use `=` sign or enclose the value with quotes and use space before `-`, e.g. `-c=-84.752,39.504` or `-c " -84.752,39.504"` |
 | <span style="white-space: nowrap;">`-t`</span>, <span style="white-space: nowrap;">`--tile`</span> `<zoom level>/<x>/<y>` | tile specification |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
-| <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | construct the minimum amount of tiles that cover the requested boundary box |
+| <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | construct the minimum amount of tiles that cover the requested boundary box; if the first value is negative, use `=` sign or enclose the value with quotes and use space before `-`, e.g. `-b=-84.752,39.504,-84.749,39.508` or `-b " -84.752,39.504,-84.749,39.508"` |
 | <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<range>` | OSM zoom levels; can be list of numbers or ranges, e.g. `16-18`, `16,17,18`, or `16,18-20`, default value: `18` |
 | <span style="white-space: nowrap;">`-i`</span>, <span style="white-space: nowrap;">`--input`</span> `<path>` | input OSM XML file name (if not specified, the file will be downloaded using OpenStreetMap API) |
 
@@ -209,8 +209,8 @@ or specify any geographical coordinates inside a tile:
 
 ```bash
 map-machine tile \
-    --coordinates <latitude>,<longitude> \
-    --zoom <OSM zoom levels>
+    --coordinates=<latitude>,<longitude> \
+    --zoom=<OSM zoom levels>
 ```
 
 Tile will be stored as SVG file `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG file `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates. `--zoom` option will be ignored if it is used with `--tile` option.
@@ -218,7 +218,7 @@ Tile will be stored as SVG file `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PN
 Example:
 
 ```bash
-map-machine tile -c 55.7510637,37.6270761 -z 18
+map-machine tile -c=55.7510637,37.6270761 -z=18
 ```
 
 will generate SVG file `out/tiles/tile_18_158471_81953.svg` and PNG file `out/tiles/tile_18_158471_81953.png`.
@@ -229,8 +229,8 @@ Specify boundary box to get the minimal set of tiles that covers the area:
 
 ```bash
 map-machine tile \
-    --boundary-box <min longitude>,<min latitude>,<max longitude>,<max latitude> \
-    --zoom <OSM zoom levels>
+    --boundary-box=<min longitude>,<min latitude>,<max longitude>,<max latitude> \
+    --zoom=<OSM zoom levels>
 ```
 
 The boundary box will be extended to the boundaries of the minimal tileset that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point. Map with new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG files `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates.
@@ -238,7 +238,7 @@ The boundary box will be extended to the boundaries of the minimal tileset that 
 Example:
 
 ```bash
-map-machine tile -b 2.361,48.871,2.368,48.875
+map-machine tile -b=2.361,48.871,2.368,48.875
 ```
 
 will generate 36 PNG tiles at zoom level 18 from tile 18/132791/90164 all the way to 18/132796/90169 and two cached files `cache/2.360,48.869,2.370,48.877_18.svg` and `cache/2.360,48.869,2.370,48.877_18.png`.
@@ -264,7 +264,7 @@ Stop server interrupting the process with <kbd>Ctrl</kbd> + <kbd>C</kbd>.
 Create a minimal amount of tiles that cover specified boundary box for zoom levels 16, 17, 18, and 19:
 
 ```bash
-map-machine tile -b 2.364,48.854,2.367,48.857 -z 16-19
+map-machine tile -b=2.364,48.854,2.367,48.857 -z=16-19
 ```
 
 Run tile server on 127.0.0.1:8080:

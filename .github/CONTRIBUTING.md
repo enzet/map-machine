@@ -6,12 +6,12 @@ Thank you for your interest in the Map Machine project. Since the primary goal o
 Suggest a tag to support
 ------------------------
 
-Please, create an issue with `icon` label.
+Please, create an issue describing how you would like the feature to be visualized.
 
 Report a bug
 ------------
 
-Please, create an issue with `bug` label.
+Please, create an issue describing the current behavior, expected behavior, and environment (most importantly, the OS version and Python version if it was not the recommended one).
 
 Fix a typo in documentation
 ---------------------------
