@@ -137,7 +137,7 @@ Requirements: Python 3.9.
 
 
   * Install [cairo 2D graphic library](https://www.cairographics.org/download/),
-  * install [GEOS library](https://trac.osgeo.org/geos),
+  * install [GEOS library](https://libgeos.org),
   * install Python packages:
 
 ```bash
