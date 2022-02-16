@@ -14,6 +14,12 @@ Unlike standard OpenStreetMap layers, **Map Machine is a playground for experime
 
 Map Machine is intended to be highly configurable, so it can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users. It can also use some slow algorithms for experimental features.
 
+See
+
+  * [installation instructions](#installation),
+  * [map features](#map-features),
+  * [using Röntgen as JOSM style](#use-röntgen-as-josm-map-paint-style).
+
 Usage example
 -------------
 
@@ -138,11 +144,13 @@ Requirements: Python 3.9.
 
   * Install [cairo 2D graphic library](https://www.cairographics.org/download/),
   * install [GEOS library](https://libgeos.org),
-  * install Python packages:
+  * install Python packages with the command:
 
-```bash
-pip install .
+```shell
+pip install git+https://github.com/enzet/map-machine
 ```
+
+For more detailed instructions, see [instructions](doc/INSTALL.md).
 
 Map generation
 --------------
@@ -313,6 +321,7 @@ Map configuration options used by `render` and `tile` commands:
 | <span style="white-space: nowrap;">`--country`</span> | two-letter code (ISO 3166-1 alpha-2) of country, that should be used for location restrictions, default value: `world` |
 | <span style="white-space: nowrap;">`--ignore-level-matching`</span> | draw all map features ignoring the current level |
 | <span style="white-space: nowrap;">`--roofs`</span> | draw building roofs, set by default |
+| <span style="white-space: nowrap;">`--building-colors`</span> | paint walls (if isometric mode is enabled) and roofs with specified colors |
 
 MapCSS 0.2 generation
 ---------------------
@@ -327,7 +336,7 @@ To create MapCSS with Map Machine style also for ways and relations, run `map-ma
 | <span style="white-space: nowrap;">`--ways`</span> | add style for ways and relations |
 | <span style="white-space: nowrap;">`--lifecycle`</span> | add icons for lifecycle tags; be careful: this will increase the number of node and area selectors by 9 times, set by default |
 
-### Use Map Machine as JOSM map paint style ###
+### Use Röntgen as JOSM map paint style ###
 
 
   * Run `map-machine mapcss`.
