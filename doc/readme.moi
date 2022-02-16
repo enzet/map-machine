@@ -1,5 +1,4 @@
 \title {Map Machine}
-\page_icon {out/icons_by_id/book.svg}
 
 \b {Map Machine} project consists of
 
@@ -15,6 +14,12 @@ The idea behind the Map Machine project is to \b {show all the richness of the O
 Unlike standard OpenStreetMap layers, \b {Map Machine is a playground for experiments} where one can easily try to support any unsupported tag, proposed tagging scheme, tags with little or even single usage, deprecated ones that are still in use.
 
 Map Machine is intended to be highly configurable, so it can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users.  It can also use some slow algorithms for experimental features.
+
+See
+\list
+    {\ref {#installation} {installation instructions},}
+    {\ref {#map-features} {map features},}
+    {\ref {#use-röntgen-as-josm-map-paint-style} {using Röntgen as JOSM style}.}
 
 \2 {Usage example} {usage-example}
 
@@ -190,10 +195,12 @@ Requirements\: Python 3.9/* or higher*/.
 
 \list
     {Install \ref {https://www.cairographics.org/download/} {cairo 2D graphic library},}
-    {install \ref {https://trac.osgeo.org/geos} {GEOS library},}
-    {install Python packages\:}
+    {install \ref {https://libgeos.org} {GEOS library},}
+    {install Python packages with the command\:}
 
-\code {pip install .} {bash}
+\code {pip install git+https://github.com/enzet/map-machine} {shell}
+
+For more detailed instructions, see \ref {doc/INSTALL.md} {instructions}.
 
 \2 {Map generation} {map-generation}
 
@@ -316,7 +323,7 @@ To create MapCSS with Map Machine style also for ways and relations, run \m {map
 
 \options {mapcss}
 
-\3 {Use Map Machine as JOSM map paint style}
+\3 {Use Röntgen as JOSM map paint style} {use-rntgen-as-josm-map-paint-style}
 
 \list
     {Run \m {\command {mapcss}}.}
