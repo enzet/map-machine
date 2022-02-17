@@ -1,6 +1,7 @@
 """
 Point: node representation on the map.
 """
+import logging
 from typing import Optional
 
 import numpy as np
@@ -25,6 +26,15 @@ class Occupied:
 
     def __init__(self, width: int, height: int, overlap: int) -> None:
         self.matrix = np.full((int(width), int(height)), False, dtype=bool)
+        try:
+            self.matrix = np.full((int(width), int(height)), False, dtype=bool)
+        except Exception:
+            logging.fatal(
+                "Failed to allocate a matrix required by overlap algorithm. "
+                "Try to use smallest area or try --overlap=0 options."
+            )
+            exit(1)
+
         self.width: float = width
         self.height: float = height
         self.overlap: int = overlap
