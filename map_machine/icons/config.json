@@ -382,6 +382,7 @@
     "shelter": {"name": "shelter"},
     "shop_convenience": {"name": "convenience store"},
     "shower": {"name": "shower"},
+    "side_mirror": {"name": "side mirror"},
     "signal": {"name": "railway signal"},
     "solar_panel": {"name": "solar panel"},
     "sos_phone": {"name": "phone with SOS", "categories": ["emergency"]},

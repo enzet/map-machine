@@ -1640,6 +1640,8 @@ node_icons:
       shapes: [golf_tee]
     - tags: {golf: pin}
       shapes: [golf_pin]
+    - tags: {highway: traffic_mirror}
+      shapes: [side_mirror]
 
   - group: "Entrances"
     start_zoom_level: 18.0
