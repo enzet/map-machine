@@ -106,6 +106,7 @@
       "japan_historic": {"name": "Japanese map symbol for place of historic, cultural, or scenic interest"},
       "japan_koban": {"name": "Japanese map symbol for kōban"},
       "japan_police_station": {"name": "Japanese map symbol for police station"},
+      "japan_public_health_center": {"name": "Japanese map symbol for public health center"},
       "japan_post": {"name": "Japanese map symbol for post office"},
       "japan_shinto_shrine": {"name": "Japanese map symbol for shinto shrine"},
       "japan_tv_tower": {"name": "Japanese map symbol for TV tower"},

@@ -482,7 +482,11 @@ node_icons:
     - tags: {tourism: guest_house}
       shapes: [bed_and_roof]
     - tags: {amenity: hospital}
+      location_restrictions: {include: world, exclude: [jp]}
       shapes: [greek_cross]
+    - tags: {amenity: hospital}
+      location_restrictions: {include: [jp]}
+      shapes: [japan_public_health_center]
     - tags: {amenity: clinic}
       shapes: [greek_cross_in_box]
     - tags: {amenity: doctors}
