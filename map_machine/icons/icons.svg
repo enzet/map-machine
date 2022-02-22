@@ -151,8 +151,8 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="101.46213"
-     inkscape:cx="393.44192"
+     inkscape:cy="162.64532"
+     inkscape:cx="145.31008"
      inkscape:zoom="2.9419844"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -20084,9 +20084,9 @@
        d="m 187,133 -6,6"
        style="opacity:0.2;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
-       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        d="m 184,146 c -3.30186,0 -6,2.69814 -6,6 0,3.30186 2.69814,6 6,6 3.30186,0 6,-2.69814 6,-6 0,-3.30186 -2.69814,-6 -6,-6 z m 0,2 c 0.74369,0 1.42906,0.21376 2.02344,0.5625 L 184,150.58594 181.97656,148.5625 C 182.57094,148.21376 183.25631,148 184,148 Z m -3.4375,1.97656 2.02344,2.02344 -2.02344,2.02344 C 180.21376,153.42906 180,152.74369 180,152 c 0,-0.74369 0.21376,-1.42906 0.5625,-2.02344 z m 6.875,0 C 187.78624,150.57094 188,151.25631 188,152 c 0,0.74369 -0.21376,1.42906 -0.5625,2.02344 L 185.41406,152 Z m -3.4375,3.4375 2.02344,2.02344 C 185.42906,155.78624 184.74369,156 184,156 c -0.74369,0 -1.42906,-0.21376 -2.02344,-0.5625 z"
-       id="circle7418" />
+       id="japan_police_station" />
     <circle
        r="5"
        cy="-45.254833"

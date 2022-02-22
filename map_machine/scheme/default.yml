@@ -448,6 +448,9 @@ node_icons:
       shapes: [gavel]
     - tags: {amenity: police}
       location_restrictions: {include: [jp]}
+      shapes: [japan_police_station]
+    - tags: {amenity: police, name:en: Koban}
+      location_restrictions: {include: [jp]}
       shapes: [japan_koban]
     - tags: {building: townhall}
       shapes: [townhall]
