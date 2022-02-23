@@ -190,6 +190,7 @@ def generate_mapcss(options: argparse.Namespace) -> None:
     collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
     collection.draw_icons(
         icons_with_outline_path,
+        workspace.ICONS_LICENSE_PATH,
         color=Color("black"),
         outline=True,
         outline_opacity=0.5,

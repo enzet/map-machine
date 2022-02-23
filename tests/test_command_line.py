@@ -104,13 +104,13 @@ def test_mapcss() -> None:
         COMMAND_LINES["mapcss"],
         b"INFO MapCSS 0.2 scheme is written to out/map_machine_mapcss.\n",
     )
+    out_path: Path = Path("out") / "map_machine_mapcss"
 
-    assert (Path("out") / "map_machine_mapcss").is_dir()
-    assert (Path("out") / "map_machine_mapcss" / "icons").is_dir()
-    assert (
-        Path("out") / "map_machine_mapcss" / "icons" / "apple.svg"
-    ).is_file()
-    assert (Path("out") / "map_machine_mapcss" / "map_machine.mapcss").is_file()
+    assert out_path.is_dir()
+    assert out_path.is_dir()
+    assert (out_path / "icons" / "apple.svg").is_file()
+    assert (out_path / "map_machine.mapcss").is_file()
+    assert (out_path / "icons" / "LICENSE").is_file()
 
 
 def test_element() -> None:

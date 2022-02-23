@@ -21,10 +21,11 @@ class Workspace:
 
     # Project directories and files, that are the part of the repository.
 
-    SCHEME_PATH: Path = HERE / Path("scheme")
+    SCHEME_PATH: Path = HERE / "scheme"
     DEFAULT_SCHEME_PATH: Path = SCHEME_PATH / "default.yml"
-    ICONS_PATH: Path = HERE / Path("icons/icons.svg")
-    ICONS_CONFIG_PATH: Path = HERE / Path("icons/config.json")
+    ICONS_PATH: Path = HERE / "icons" / "icons.svg"
+    ICONS_CONFIG_PATH: Path = HERE / "icons" / "config.json"
+    ICONS_LICENSE_PATH: Path = HERE / "icons" / "LICENSE"
 
     DOCUMENTATION_PATH: Path = Path("doc")
     GRID_PATH: Path = DOCUMENTATION_PATH / "grid.svg"

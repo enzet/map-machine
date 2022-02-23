@@ -1,6 +1,7 @@
 """
 Test icon generation for nodes.
 """
+from pathlib import Path
 from typing import Optional
 
 from colour import Color
@@ -23,12 +24,18 @@ def test_grid() -> None:
 
 def test_icons_by_id() -> None:
     """Test individual icons drawing."""
-    COLLECTION.draw_icons(workspace.get_icons_by_id_path())
+    path: Path = workspace.get_icons_by_id_path()
+    COLLECTION.draw_icons(path, workspace.ICONS_LICENSE_PATH)
+    assert (path / "tree.svg").is_file()
+    assert (path / "LICENSE").is_file()
 
 
 def test_icons_by_name() -> None:
     """Test drawing individual icons that have names."""
-    COLLECTION.draw_icons(workspace.get_icons_by_name_path(), by_name=True)
+    path: Path = workspace.get_icons_by_name_path()
+    COLLECTION.draw_icons(path, workspace.ICONS_LICENSE_PATH, by_name=True)
+    assert (path / "Röntgen tree.svg").is_file()
+    assert (path / "LICENSE").is_file()
 
 
 def get_icon(tags: dict[str, str]) -> IconSet:

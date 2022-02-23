@@ -2,6 +2,7 @@
 Icon grid drawing.
 """
 import logging
+import shutil
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
@@ -40,7 +41,10 @@ class IconCollection:
         add_all: bool = False,
     ) -> "IconCollection":
         """
-        Collect all possible icon combinations in grid.
+        Collect all possible icon combinations.
+
+        This collection won't contain icons for tags matched with regular
+        expressions. E.g. traffic_sign=maxspeed; maxspeed=42.
 
         :param scheme: tag specification
         :param extractor: shape extractor for icon creation
@@ -124,6 +128,7 @@ class IconCollection:
     def draw_icons(
         self,
         output_directory: Path,
+        license_path: Path,
         by_name: bool = False,
         color: Optional[Color] = None,
         outline: bool = False,
@@ -132,6 +137,7 @@ class IconCollection:
         """
         :param output_directory: path to the directory to store individual SVG
             files for icons
+        :param license_path: path to the file with license
         :param by_name: use names instead of identifiers
         :param color: fill color
         :param outline: if true, draw outline beneath the icon
@@ -156,6 +162,8 @@ class IconCollection:
                 outline=outline,
                 outline_opacity=outline_opacity,
             )
+
+        shutil.copy(license_path, output_directory / "LICENSE")
 
     def draw_grid(
         self,
@@ -218,9 +226,12 @@ def draw_icons() -> None:
     # Draw individual icons.
 
     icons_by_id_path: Path = workspace.get_icons_by_id_path()
+    collection.draw_icons(icons_by_id_path, workspace.ICONS_LICENSE_PATH)
+
     icons_by_name_path: Path = workspace.get_icons_by_name_path()
-    collection.draw_icons(icons_by_id_path)
-    collection.draw_icons(icons_by_name_path, by_name=True)
+    collection.draw_icons(
+        icons_by_name_path, workspace.ICONS_LICENSE_PATH, by_name=True
+    )
 
     logging.info(
         f"Icons are written to {icons_by_name_path} and {icons_by_id_path}."

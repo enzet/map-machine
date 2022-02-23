@@ -18,7 +18,8 @@ def test_mapcss() -> None:
     selector = writer.add_selector("node", matcher)
     assert (
         selector
-        == """node[natural="tree"] {
+        == """\
+node[natural="tree"] {
     icon-image: "icons/tree.svg";
 }
 """
