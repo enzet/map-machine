@@ -34,8 +34,7 @@ class Workspace:
     MAPCSS_ICONS_DIRECTORY_NAME: str = "icons"
 
     def __init__(self, output_path: Path) -> None:
-        self.output_path: Path = output_path
-        check_and_create(output_path)
+        self.output_path: Path = check_and_create(output_path)
 
         self._icons_by_id_path: Path = output_path / "icons_by_id"
         self._icons_by_name_path: Path = output_path / "icons_by_name"

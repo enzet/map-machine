@@ -108,15 +108,15 @@ class IconCollection:
                 shape: Shape = extractor.get_shape(shape_id)
                 if shape.is_part:
                     continue
-                icon: Icon = Icon([ShapeSpecification(shape)])
-                icon.recolor(color)
+                icon: Icon = Icon([ShapeSpecification(shape, color)])
+                icon.recolor(color, white=background_color)
                 icons.append(icon)
 
         if add_all:
             for shape_id in extractor.shapes.keys():
                 shape: Shape = extractor.get_shape(shape_id)
-                icon: Icon = Icon([ShapeSpecification(shape)])
-                icon.recolor(color)
+                icon: Icon = Icon([ShapeSpecification(shape, color)])
+                icon.recolor(color, white=background_color)
                 icons.append(icon)
 
         return cls(icons)
