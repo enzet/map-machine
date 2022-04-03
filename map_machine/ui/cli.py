@@ -201,6 +201,12 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         action=argparse.BooleanOptionalAction,
         default=False,
     )
+    parser.add_argument(
+        "--show-overlapped",
+        help="show hidden nodes with a dot",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+    )
 
 
 def add_tile_arguments(parser: argparse.ArgumentParser) -> None:

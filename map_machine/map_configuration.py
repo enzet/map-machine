@@ -56,6 +56,7 @@ class MapConfiguration:
     ignore_level_matching: bool = False
     draw_roofs: bool = True
     use_building_colors: bool = False
+    show_overlapped: bool = False
 
     @classmethod
     def from_options(
@@ -75,6 +76,7 @@ class MapConfiguration:
             options.ignore_level_matching,
             options.roofs,
             options.building_colors,
+            options.show_overlapped,
         )
 
     def is_wireframe(self) -> bool:
