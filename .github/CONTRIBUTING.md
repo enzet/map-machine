@@ -33,7 +33,7 @@ Install the project in editable mode:
 pip install -e .
 ```
 
-Install formatter, linter and test system: `pip install black~=21.4b0 flake8 mypy pytest pytest-cov`.
+Install formatter, linter and test system: `pip install black flake8 mypy pytest pytest-cov`.
 
 Be sure to enable Git hooks:
 

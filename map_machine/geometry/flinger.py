@@ -38,7 +38,7 @@ def osm_zoom_level_to_pixels_per_meter(
         function allows any non-negative float value
     :param equator_length: celestial body equator length in meters
     """
-    return 2.0 ** zoom_level / equator_length * 256.0
+    return 2.0**zoom_level / equator_length * 256.0
 
 
 class Flinger:
@@ -56,7 +56,7 @@ class Flinger:
         :param equator_length: celestial body equator length in meters
         """
         self.geo_boundaries: BoundaryBox = geo_boundaries
-        self.ratio: float = 2.0 ** zoom_level * 256.0 / 360.0
+        self.ratio: float = 2.0**zoom_level * 256.0 / 360.0
         self.size: np.ndarray = self.ratio * (
             pseudo_mercator(self.geo_boundaries.max_())
             - pseudo_mercator(self.geo_boundaries.min_())
