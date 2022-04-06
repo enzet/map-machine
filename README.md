@@ -322,6 +322,7 @@ Map configuration options used by `render` and `tile` commands:
 | <span style="white-space: nowrap;">`--ignore-level-matching`</span> | draw all map features ignoring the current level |
 | <span style="white-space: nowrap;">`--roofs`</span> | draw building roofs, set by default |
 | <span style="white-space: nowrap;">`--building-colors`</span> | paint walls (if isometric mode is enabled) and roofs with specified colors |
+| <span style="white-space: nowrap;">`--show-overlapped`</span> | show hidden nodes with a dot |
 
 MapCSS 0.2 generation
 ---------------------
