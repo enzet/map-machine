@@ -584,6 +584,10 @@ class IconSet:
     main_icon: Icon
     extra_icons: list[Icon]
 
+    # Icon to use if the point is hidden by overlapped icons but still need to
+    # be shown.
+    default_icon: Optional[Icon]
+
     # Tag keys that were processed to create icon set (other tag keys should be
     # displayed by text or ignored)
     processed: set[str]

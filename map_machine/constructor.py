@@ -451,7 +451,10 @@ class Constructor:
                 color = get_time_color(node.timestamp, self.osm_data.time)
             dot: Shape = self.extractor.get_shape(DEFAULT_SMALL_SHAPE_ID)
             icon_set: IconSet = IconSet(
-                Icon([ShapeSpecification(dot, color)]), [], set()
+                Icon([ShapeSpecification(dot, color)]),
+                [],
+                Icon([ShapeSpecification(dot, color)]),
+                set(),
             )
             point: Point = Point(
                 icon_set,

@@ -105,7 +105,12 @@ class Point(Tagged):
             self.tags if self.add_tooltips else None
         )
         self.main_icon_painted: bool = self.draw_point_shape(
-            svg, self.icon_set.main_icon, position, occupied, tags=tags
+            svg,
+            self.icon_set.main_icon,
+            self.icon_set.default_icon,
+            position,
+            occupied,
+            tags=tags,
         )
         if self.main_icon_painted:
             self.y += 16.0
@@ -133,7 +138,7 @@ class Point(Tagged):
             left: float = -(len(self.icon_set.extra_icons) - 1.0) * 8.0
             for icon in self.icon_set.extra_icons:
                 point: np.ndarray = self.point + np.array((left, self.y))
-                self.draw_point_shape(svg, icon, point, occupied=occupied)
+                self.draw_point_shape(svg, icon, None, point, occupied=occupied)
                 left += 16.0
             if self.icon_set.extra_icons:
                 self.y += 16.0
@@ -142,21 +147,27 @@ class Point(Tagged):
         self,
         svg: svgwrite.Drawing,
         icon: Icon,
+        default_icon: Optional[Icon],
         position: np.ndarray,
-        occupied: Occupied,
+        occupied: Optional[Occupied],
         tags: Optional[dict[str, str]] = None,
     ) -> bool:
         """Draw one combined icon and its outline."""
         # Down-cast floats to integers to make icons pixel-perfect.
         position: np.ndarray = np.array((int(position[0]), int(position[1])))
 
+        icon_to_draw: Icon = icon
+
         if occupied and occupied.check(position):
-            return False
+            if default_icon:
+                icon_to_draw = default_icon
+            else:
+                return False
 
         if self.draw_outline:
-            icon.draw(svg, position, outline=True)
+            icon_to_draw.draw(svg, position, outline=True)
 
-        icon.draw(svg, position, tags=tags)
+        icon_to_draw.draw(svg, position, tags=tags)
 
         if occupied:
             overlap: int = occupied.overlap

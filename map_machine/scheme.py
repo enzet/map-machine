@@ -22,6 +22,7 @@ from map_machine.pictogram.icon import (
     Shape,
     ShapeExtractor,
     ShapeSpecification,
+    DEFAULT_SMALL_SHAPE_ID,
 )
 from map_machine.text import Label, TextConstructor
 
@@ -559,13 +560,23 @@ class Scheme:
         if main_icon and color:
             main_icon.recolor(color)
 
-        default_shape = extractor.get_shape(DEFAULT_SHAPE_ID)
         if not main_icon:
-            main_icon = Icon(
-                [ShapeSpecification(default_shape, self.get_color("default"))]
+            dot_spec: ShapeSpecification = ShapeSpecification(
+                extractor.get_shape(DEFAULT_SHAPE_ID), self.get_color("default")
             )
+            main_icon: Icon = Icon([dot_spec])
 
-        returned: IconSet = IconSet(main_icon, extra_icons, processed)
+        default_icon: Optional[Icon] = None
+        if configuration.show_overlapped:
+            small_dot_spec: ShapeSpecification = ShapeSpecification(
+                extractor.get_shape(DEFAULT_SMALL_SHAPE_ID),
+                self.get_color("default"),
+            )
+            default_icon = Icon([small_dot_spec])
+
+        returned: IconSet = IconSet(
+            main_icon, extra_icons, default_icon, processed
+        )
         self.cache[tags_hash] = returned, priority
 
         for key in "direction", "camera:direction":
