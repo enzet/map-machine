@@ -15,7 +15,9 @@ __email__ = "me@enzet.ru"
 
 
 COLLECTION: IconCollection = IconCollection.from_scheme(SCHEME, SHAPE_EXTRACTOR)
-DEFAULT_COLOR: Color = SCHEME.get_color("default")
+DEFAULT_COLOR: Color = SCHEME.get_default_color()
+EXTRA_COLOR: Color = SCHEME.get_extra_color()
+WHITE: Color = Color("white")
 
 
 def test_grid() -> None:
@@ -68,8 +70,8 @@ def test_no_icons_but_color() -> None:
 
 def check_icon_set(
     icon: IconSet,
-    main_specification: list[tuple[str, Optional[str]]],
-    extra_specifications: list[list[tuple[str, Optional[str]]]],
+    main_specification: list[tuple[str, Optional[Color]]],
+    extra_specifications: list[list[tuple[str, Optional[Color]]]],
 ) -> None:
     """Check icon set using simple specification."""
     if not main_specification:
@@ -101,7 +103,7 @@ def test_icon() -> None:
     icons.
     """
     icon: IconSet = get_icon({"natural": "tree"})
-    check_icon_set(icon, [("tree", "#98AC64")], [])
+    check_icon_set(icon, [("tree", Color("#98AC64"))], [])
 
 
 def test_icon_1_extra() -> None:
@@ -110,7 +112,7 @@ def test_icon_1_extra() -> None:
     """
     icon: IconSet = get_icon({"barrier": "gate", "access": "private"})
     check_icon_set(
-        icon, [("gate", "#444444")], [[("lock_with_keyhole", "#888888")]]
+        icon, [("gate", DEFAULT_COLOR)], [[("lock_with_keyhole", EXTRA_COLOR)]]
     )
 
 
@@ -123,10 +125,10 @@ def test_icon_2_extra() -> None:
     )
     check_icon_set(
         icon,
-        [("gate", "#444444")],
+        [("gate", DEFAULT_COLOR)],
         [
-            [("bicycle", "#888888")],
-            [("lock_with_keyhole", "#888888")],
+            [("bicycle", EXTRA_COLOR)],
+            [("lock_with_keyhole", EXTRA_COLOR)],
         ],
     )
 
@@ -136,7 +138,7 @@ def test_no_icon_1_extra() -> None:
     Tags that should be visualized with default main icon and single extra icon.
     """
     icon: IconSet = get_icon({"access": "private"})
-    check_icon_set(icon, [], [[("lock_with_keyhole", "#888888")]])
+    check_icon_set(icon, [], [[("lock_with_keyhole", EXTRA_COLOR)]])
 
 
 def test_no_icon_2_extra() -> None:
@@ -148,8 +150,8 @@ def test_no_icon_2_extra() -> None:
         icon,
         [],
         [
-            [("bicycle", "#888888")],
-            [("lock_with_keyhole", "#888888")],
+            [("bicycle", EXTRA_COLOR)],
+            [("lock_with_keyhole", EXTRA_COLOR)],
         ],
     )
 
@@ -162,9 +164,9 @@ def test_icon_regex() -> None:
     check_icon_set(
         icon,
         [
-            ("circle_11", "#444444"),
-            ("digit_4", "#FFFFFF"),
-            ("digit_2", "#FFFFFF"),
+            ("circle_11", DEFAULT_COLOR),
+            ("digit_4", WHITE),
+            ("digit_2", WHITE),
         ],
         [],
     )

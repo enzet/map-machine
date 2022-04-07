@@ -3,6 +3,7 @@ colors:
   # Entity
 
   default: "#444444"
+  extra: "#888888"
 
   direction_view_color: "#C8E8FF"
   direction_camera_color: "#0088FF"

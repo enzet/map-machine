@@ -410,6 +410,14 @@ class Scheme:
             logging.debug(f"Unknown color `{color}`.")
             return Color(self.colors["default"])
 
+    def get_default_color(self) -> Color:
+        """Get default color for a main icon."""
+        return self.get_color("default")
+
+    def get_extra_color(self) -> Color:
+        """Get default color for an extra icon."""
+        return self.get_color("extra")
+
     def get(self, variable_name: str):
         """
         FIXME: colors should be variables.
@@ -529,7 +537,7 @@ class Scheme:
             if matcher.add_shapes:
                 specifications = [
                     self.get_shape_specification(
-                        x, extractor, color=Color("#888888")
+                        x, extractor, color=self.get_extra_color()
                     )
                     for x in matcher.add_shapes
                 ]
