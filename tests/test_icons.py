@@ -15,6 +15,7 @@ __email__ = "me@enzet.ru"
 
 
 COLLECTION: IconCollection = IconCollection.from_scheme(SCHEME, SHAPE_EXTRACTOR)
+DEFAULT_COLOR: Color = SCHEME.get_color("default")
 
 
 def test_grid() -> None:
@@ -52,6 +53,17 @@ def test_no_icons() -> None:
     """
     icon: IconSet = get_icon({"aaa": "bbb"})
     assert icon.main_icon.is_default()
+    assert icon.main_icon.shape_specifications[0].color == DEFAULT_COLOR
+
+
+def test_no_icons_but_color() -> None:
+    """
+    Tags that has no description in scheme, but have `colour` tag and should be
+    visualized with default shape with the given color.
+    """
+    icon: IconSet = get_icon({"aaa": "bbb", "colour": "#424242"})
+    assert icon.main_icon.is_default()
+    assert icon.main_icon.shape_specifications[0].color == Color("#424242")
 
 
 def check_icon_set(
