@@ -495,6 +495,7 @@ class Scheme:
         main_icon: Optional[Icon] = None
         extra_icons: list[Icon] = []
         priority: int = 0
+        color: Optional[Color] = None
 
         for index, matcher in enumerate(self.node_matchers):
             if not matcher.replace_shapes and main_icon:
@@ -535,11 +536,10 @@ class Scheme:
                 extra_icons += [Icon(specifications)]
                 processed |= matcher_tags
             if matcher.set_main_color and main_icon:
-                main_icon.recolor(self.get_color(matcher.set_main_color))
+                color = self.get_color(matcher.set_main_color)
+                main_icon.recolor(color)
             if matcher.set_opacity and main_icon:
                 main_icon.opacity = matcher.set_opacity
-
-        color: Optional[Color] = None
 
         if "material" in tags:
             value: str = tags["material"]
@@ -570,7 +570,7 @@ class Scheme:
         if configuration.show_overlapped:
             small_dot_spec: ShapeSpecification = ShapeSpecification(
                 extractor.get_shape(DEFAULT_SMALL_SHAPE_ID),
-                self.get_color("default"),
+                color if color else self.get_color("default"),
             )
             default_icon = Icon([small_dot_spec])
 
