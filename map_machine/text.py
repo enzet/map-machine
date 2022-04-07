@@ -8,6 +8,7 @@ from colour import Color
 
 from map_machine.map_configuration import LabelMode
 from map_machine.osm.osm_reader import Tags
+from map_machine.scheme import Scheme
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -72,10 +73,13 @@ def format_frequency(value: str) -> str:
 
 @dataclass
 class TextConstructor:
-
-    default_color: Color
-    main_color: Color
-    default_out_color: Color
+    def __init__(self, scheme: Scheme) -> None:
+        self.scheme: Scheme = scheme
+        self.default_color: Color = self.scheme.get_color("text_color")
+        self.main_color: Color = self.scheme.get_color("text_main_color")
+        self.default_out_color: Color = self.scheme.get_color(
+            "text_outline_color"
+        )
 
     def label(self, text: str, size: float = DEFAULT_FONT_SIZE):
         return Label(
@@ -114,7 +118,10 @@ class TextConstructor:
         return texts
 
     def construct_text(
-        self, tags: Tags, processed: set[str], label_mode: LabelMode
+        self,
+        tags: Tags,
+        processed: set[str],
+        label_mode: LabelMode,
     ) -> list[Label]:
         """Construct list of labels from OSM tags."""
 
@@ -192,4 +199,13 @@ class TextConstructor:
             texts.append(self.label(f"↕ {tags['height']} m"))
             processed.add("height")
 
+        for tag in tags:
+            if self.scheme.is_writable(tag, tags[tag]) and tag not in processed:
+                texts.append(
+                    Label(
+                        tags[tag],
+                        self.default_color,
+                        self.default_out_color,
+                    )
+                )
         return texts

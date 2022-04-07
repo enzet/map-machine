@@ -39,7 +39,7 @@ from map_machine.pictogram.icon import (
 )
 from map_machine.pictogram.point import Point
 from map_machine.scheme import LineStyle, RoadMatcher, Scheme
-from map_machine.text import Label
+from map_machine.text import Label, TextConstructor
 from map_machine.ui.cli import BuildingMode
 from map_machine.util import MinMax
 
@@ -171,6 +171,7 @@ class Constructor:
         self.scheme: Scheme = scheme
         self.extractor: ShapeExtractor = extractor
         self.configuration: MapConfiguration = configuration
+        self.text_constructor: TextConstructor = TextConstructor(self.scheme)
 
         if self.configuration.level == "all":
             self.check_level = lambda x: True
@@ -315,8 +316,10 @@ class Constructor:
                 self.extractor, line.tags, processed, self.configuration
             )
             if icon_set is not None:
-                labels: list[Label] = self.scheme.construct_text(
-                    line.tags, processed, self.configuration.label_mode
+                labels: list[Label] = self.text_constructor.construct_text(
+                    line.tags,
+                    processed,
+                    self.configuration.label_mode,
                 )
                 point: Point = Point(
                     icon_set,
@@ -355,7 +358,7 @@ class Constructor:
             self.extractor, line.tags, processed, self.configuration
         )
         if icon_set is not None:
-            labels: list[Label] = self.scheme.construct_text(
+            labels: list[Label] = self.text_constructor.construct_text(
                 line.tags, processed, self.configuration.label_mode
             )
             point: Point = Point(
@@ -497,7 +500,7 @@ class Constructor:
         if icon_set is None:
             return
 
-        labels: list[Label] = self.scheme.construct_text(
+        labels: list[Label] = self.text_constructor.construct_text(
             tags, processed, self.configuration.label_mode
         )
         self.scheme.process_ignored(tags, processed)

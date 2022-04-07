@@ -13,7 +13,7 @@ from map_machine.map_configuration import LabelMode
 from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.pictogram.point import Point
 from map_machine.scheme import LineStyle, Scheme
-from map_machine.text import Label
+from map_machine.text import Label, TextConstructor
 from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
@@ -45,7 +45,10 @@ def draw_element(options: argparse.Namespace) -> None:
     processed: set[str] = set()
     icon, _ = scheme.get_icon(extractor, tags, processed)
     is_for_node: bool = target == "node"
-    labels: list[Label] = scheme.construct_text(tags, processed, LabelMode.ALL)
+    text_constructor: TextConstructor = TextConstructor(scheme)
+    labels: list[Label] = text_constructor.construct_text(
+        tags, processed, LabelMode.ALL
+    )
     point: Point = Point(
         icon,
         labels,

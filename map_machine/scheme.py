@@ -13,7 +13,7 @@ import yaml
 from colour import Color
 
 from map_machine.feature.direction import DirectionSet
-from map_machine.map_configuration import MapConfiguration, LabelMode
+from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import Tagged, Tags
 from map_machine.pictogram.icon import (
     DEFAULT_SHAPE_ID,
@@ -24,7 +24,6 @@ from map_machine.pictogram.icon import (
     ShapeSpecification,
     DEFAULT_SMALL_SHAPE_ID,
 )
-from map_machine.text import Label, TextConstructor
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -365,12 +364,6 @@ class Scheme:
         # Storage for created icon sets.
         self.cache: dict[str, tuple[IconSet, int]] = {}
 
-        self.text_constructor: TextConstructor = TextConstructor(
-            self.get_color("text_color"),
-            self.get_color("text_main_color"),
-            self.get_color("text_outline_color"),
-        )
-
     @classmethod
     def from_file(cls, file_name: Path) -> "Scheme":
         """
@@ -623,25 +616,6 @@ class Scheme:
                 continue
             return matcher
         return None
-
-    def construct_text(
-        self, tags: Tags, processed: set[str], label_mode: LabelMode
-    ) -> list[Label]:
-        """Construct labels for not processed tags."""
-        texts: list[Label] = self.text_constructor.construct_text(
-            tags, processed, label_mode
-        )
-
-        for tag in tags:
-            if self.is_writable(tag, tags[tag]) and tag not in processed:
-                texts.append(
-                    Label(
-                        tags[tag],
-                        self.get_color("text_color"),
-                        self.get_color("text_outline_color"),
-                    )
-                )
-        return texts
 
     def is_area(self, tags: Tags) -> bool:
         """Check whether way described by tags is area."""
