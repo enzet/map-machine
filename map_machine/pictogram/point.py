@@ -157,10 +157,12 @@ class Point(Tagged):
         position: np.ndarray = np.array((int(position[0]), int(position[1])))
 
         icon_to_draw: Icon = icon
+        is_painted: bool = True
 
         if occupied and occupied.check(position):
             if default_icon:
                 icon_to_draw = default_icon
+                is_painted = False
             else:
                 return False
 
@@ -169,7 +171,7 @@ class Point(Tagged):
 
         icon_to_draw.draw(svg, position, tags=tags)
 
-        if occupied:
+        if occupied and is_painted:
             overlap: int = occupied.overlap
             for i in range(-overlap, overlap):
                 for j in range(-overlap, overlap):
@@ -177,7 +179,7 @@ class Point(Tagged):
                         np.array((position[0] + i, position[1] + j))
                     )
 
-        return True
+        return is_painted
 
     def draw_texts(
         self,
