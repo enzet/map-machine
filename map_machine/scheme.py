@@ -537,7 +537,6 @@ class Scheme:
                 processed |= matcher_tags
             if matcher.set_main_color and main_icon:
                 color = self.get_color(matcher.set_main_color)
-                main_icon.recolor(color)
             if matcher.set_opacity and main_icon:
                 main_icon.opacity = matcher.set_opacity
 
@@ -557,14 +556,14 @@ class Scheme:
                 color = self.get_color(tags[color_tag_key])
                 processed.add(color_tag_key)
 
-        if main_icon and color:
-            main_icon.recolor(color)
-
         if not main_icon:
             dot_spec: ShapeSpecification = ShapeSpecification(
                 extractor.get_shape(DEFAULT_SHAPE_ID), self.get_color("default")
             )
             main_icon: Icon = Icon([dot_spec])
+
+        if main_icon and color:
+            main_icon.recolor(color)
 
         default_icon: Optional[Icon] = None
         if configuration.show_overlapped:
