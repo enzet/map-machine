@@ -550,7 +550,10 @@ class Icon:
 
     def is_default(self) -> bool:
         """Check whether first shape is default."""
-        return self.shape_specifications[0].is_default()
+        return (
+            len(self.shape_specifications) == 1
+            and self.shape_specifications[0].is_default()
+        )
 
     def recolor(self, color: Color, white: Optional[Color] = None) -> None:
         """Paint all shapes in the color."""
