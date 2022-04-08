@@ -149,10 +149,7 @@ def test_no_icon_2_extra() -> None:
     check_icon_set(
         icon,
         [],
-        [
-            [("bicycle", EXTRA_COLOR)],
-            [("lock_with_keyhole", EXTRA_COLOR)],
-        ],
+        [[("bicycle", EXTRA_COLOR)], [("lock_with_keyhole", EXTRA_COLOR)]],
     )
 
 
@@ -163,10 +160,6 @@ def test_icon_regex() -> None:
     icon: IconSet = get_icon({"traffic_sign": "maxspeed", "maxspeed": "42"})
     check_icon_set(
         icon,
-        [
-            ("circle_11", DEFAULT_COLOR),
-            ("digit_4", WHITE),
-            ("digit_2", WHITE),
-        ],
+        [("circle_11", DEFAULT_COLOR), ("digit_4", WHITE), ("digit_2", WHITE)],
         [],
     )
