@@ -1,10 +1,6 @@
 # Generated files
 
 dist/
-doc/*.html
-doc/*.svg
-doc/*.wiki
-missed_tags.yml
 out/
 
 # Cache
@@ -22,3 +18,10 @@ cache/
 
 work
 precommit.py
+
+.idea
+build
+temp
+venv*
+
+taginfo

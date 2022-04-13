@@ -1,0 +1,3 @@
+"""
+Icons and points.
+"""

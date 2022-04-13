@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/bin/env python3
 """
 Commit message checking.
 """
@@ -12,30 +12,25 @@ SHORT_MESSAGE_MAX_LENGTH: int = 50
 MESSAGE_MAX_LENGTH: int = 72
 
 
-def error(message: str):
-    """Print error message and return exit code 1."""
-    print(f"Error: {message}")
-    sys.exit(1)
-
-
 def check_file(file_name: str) -> Optional[str]:
     """
     Exit program with exit code 1 if commit message does not conform the rules.
 
     :param file_name: commit message file name
     """
-    with open(file_name) as input_file:
+    with open(file_name, encoding="utf-8") as input_file:
         parts: List[str] = list(map(lambda x: x[:-1], input_file.readlines()))
     return check_commit_message(parts)
 
 
 def check_commit_message(parts: List[str]) -> Optional[str]:
-
+    """Check whether the commit message is well-formed."""
     short_message: str = parts[0]
 
     if short_message[0] != short_message[0].upper():
         return (
-            short_message + "\n^"
+            short_message
+            + "\n^"
             + "\nCommit message short description should start with uppercase "
             + "letter."
         )
@@ -77,7 +72,8 @@ def check_commit_message(parts: List[str]) -> Optional[str]:
             + '\nCommit message should end with ".".'
         )
 
-    def up(text: str):
+    def first_letter_uppercase(text: str):
+        """Change first letter to upper case."""
         return text[0].upper() + text[1:]
 
     verbs_1 = ["add", "fix", "check", "refactor"]
@@ -99,28 +95,31 @@ def check_commit_message(parts: List[str]) -> Optional[str]:
     for verb in verbs_2:
         verbs[verb + "d"] = verb
 
-    for verb in verbs:
-        if short_message.startswith(f"{verb} ") or short_message.startswith(
-            f"{up(verb)} "
-        ):
+    for wrong_verb, right_verb in verbs.items():
+        if short_message.startswith(
+            f"{wrong_verb} "
+        ) or short_message.startswith(f"{first_letter_uppercase(wrong_verb)} "):
             return (
-                f'Commit message should start with the verb in infinitive '
-                f'form. Please, use "{up(verbs[verb])} ..." instead of '
-                f'"{up(verb)} ...".'
+                f"Commit message should start with the verb in infinitive "
+                f"form. Please, use "
+                f'"{first_letter_uppercase(right_verb)} ..." instead of '
+                f'"{first_letter_uppercase(wrong_verb)} ...".'
             )
 
 
-def check(commit_message):
+def check(commit_message: str) -> None:
+    """Print commit_message and checking result."""
     print("\033[33m" + commit_message + "\033[0m")
     print(check_commit_message(commit_message.split("\n")))
 
 
 def test():
+    """Test rules."""
     check("start with lowercase letter.")
     check("Added foo.")
     check("Created foo.")
     check("Doesn't end with dot")
-    check("Tooooooooooooooooooooooooooooooooooooooooooooo long")
+    check("To-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o long")
 
 
 if __name__ == "__main__":

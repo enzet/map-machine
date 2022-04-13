@@ -6,12 +6,12 @@ Thank you for your interest in the Map Machine project. Since the primary goal o
 Suggest a tag to support
 ------------------------
 
-Please, create an issue with `icon` label.
+Please, create an issue describing how you would like the feature to be visualized.
 
 Report a bug
 ------------
 
-Please, create an issue with `bug` and `generator` labels.
+Please, create an issue describing the current behavior, expected behavior, and environment (most importantly, the OS version and Python version if it was not the recommended one).
 
 Fix a typo in documentation
 ---------------------------
@@ -21,14 +21,36 @@ This action is not that easy as it supposed to be. We use [Moire](http://github.
 Modify the code
 ---------------
 
-First of all, configure your workspace.
+### First configure your workspace ###
 
-  * Install formatter, linter and test system: `pip install black flake8 pytest`.
-  * Be sure to run `git config --local core.hooksPath data/githooks` to enable Git hooks.
+Make sure you have Python 3.9 development tools. E.g., for Ubuntu, run `apt install python3.9-dev python3.9-venv`.
+
+Activate virtual environment. E.g. for fish shell, run `source venv/bin/activate.fish`.
+
+Install the project in editable mode:
+
+```shell
+pip install -e .
+```
+
+Install formatter, linter and test system: `pip install black flake8 mypy pytest pytest-cov`.
+
+Be sure to enable Git hooks:
+
+```shell
+git config --local core.hooksPath data/githooks
+```
+
+If you are using PyCharm, you may want to set up user dictionary as well:
+
+
+  * `cp data/dictionary.xml .idea/dictionaries/<user name>.xml`
+  * in `.idea/dictionaries/<user name>.xml` change `%USERNAME%` to your username,
+  * restart PyCharm if it is launched.
 
 ### Code style ###
 
-We use [Black](http://github.com/psf/black) code formatter with maximum 80 characters line lenght for all Python files within the project. Reformat a file is as simple as `black -l 80 <file name>`.
+We use [Black](http://github.com/psf/black) code formatter with maximum 80 characters line length for all Python files within the project. Reformat a file is as simple as `black -l 80 <file name>`. Reformat everything with `black -l 80 map_machine tests`.
 
 If you create new Python file, make sure you add `__author__ = "<first name> <second name>"` and `__email__ = "<author e-mail>"` string variables.
 

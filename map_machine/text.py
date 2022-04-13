@@ -2,60 +2,51 @@
 OSM address tag processing.
 """
 from dataclasses import dataclass
-from typing import Any, Dict, List, Set
+from typing import Any, Dict, List, Optional, Set
 
 from colour import Color
+
+from map_machine.map_configuration import LabelMode
+from map_machine.osm.osm_reader import Tags
+from map_machine.scheme import Scheme
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 DEFAULT_FONT_SIZE: float = 10.0
-DEFAULT_COLOR: Color = Color("#444444")
 
 
 @dataclass
 class Label:
-    """
-    Text label.
-    """
+    """Text label."""
 
     text: str
-    fill: Color = DEFAULT_COLOR
+    fill: Color
+    out_fill: Color
     size: float = DEFAULT_FONT_SIZE
 
 
 def get_address(
-    tags: Dict[str, Any], draw_captions_mode: str, processed: Set[str]
+    tags: Dict[str, Any], processed: Set[str], label_mode: LabelMode
 ) -> List[str]:
     """
     Construct address text list from the tags.
 
     :param tags: OSM node, way or relation tags
-    :param draw_captions_mode: captions mode ("all", "main", or "no")
     :param processed: set of processed tag keys
+    :param label_mode: captions mode
     """
     address: List[str] = []
 
-    if draw_captions_mode == "address":
-        if "addr:postcode" in tags:
-            address.append(tags["addr:postcode"])
-            processed.add("addr:postcode")
-        if "addr:country" in tags:
-            address.append(tags["addr:country"])
-            processed.add("addr:country")
-        if "addr:city" in tags:
-            address.append(tags["addr:city"])
-            processed.add("addr:city")
-        if "addr:street" in tags:
-            street = tags["addr:street"]
-            if street.startswith("улица "):
-                street = "ул. " + street[len("улица ") :]
-            address.append(street)
-            processed.add("addr:street")
+    tag_names: List[str] = ["housenumber"]
+    if label_mode == LabelMode.ADDRESS:
+        tag_names += ["postcode", "country", "city", "street"]
 
-    if "addr:housenumber" in tags:
-        address.append(tags["addr:housenumber"])
-        processed.add("addr:housenumber")
+    for tag_name in tag_names:
+        key: str = f"addr:{tag_name}"
+        if key in tags:
+            address.append(tags[key])
+            processed.add(key)
 
     return address
 
@@ -80,31 +71,141 @@ def format_frequency(value: str) -> str:
     return f"{value} "
 
 
-def get_text(tags: Dict[str, Any], processed: Set[str]) -> List[Label]:
-    """Get text representation of writable tags."""
-    texts: List[Label] = []
-    values: List[str] = []
-
-    if "voltage:primary" in tags:
-        values.append(tags["voltage:primary"])
-        processed.add("voltage:primary")
-
-    if "voltage:secondary" in tags:
-        values.append(tags["voltage:secondary"])
-        processed.add("voltage:secondary")
-
-    if "voltage" in tags:
-        values = tags["voltage"].split(";")
-        processed.add("voltage")
-
-    if values:
-        texts.append(Label(", ".join(map(format_voltage, values))))
-
-    if "frequency" in tags:
-        text: str = ", ".join(
-            map(format_frequency, tags["frequency"].split(";"))
+@dataclass
+class TextConstructor:
+    def __init__(self, scheme: Scheme) -> None:
+        self.scheme: Scheme = scheme
+        self.default_color: Color = self.scheme.get_color("text_color")
+        self.main_color: Color = self.scheme.get_color("text_main_color")
+        self.default_out_color: Color = self.scheme.get_color(
+            "text_outline_color"
         )
-        texts.append(Label(text))
-        processed.add("frequency")
 
-    return texts
+    def label(self, text: str, size: float = DEFAULT_FONT_SIZE):
+        return Label(
+            text, self.default_color, self.default_out_color, size=size
+        )
+
+    def get_text(
+        self, tags: Dict[str, Any], processed: Set[str]
+    ) -> List[Label]:
+        """Get text representation of writable tags."""
+        texts: List[Label] = []
+        values: List[str] = []
+
+        if "voltage:primary" in tags:
+            values.append(tags["voltage:primary"])
+            processed.add("voltage:primary")
+
+        if "voltage:secondary" in tags:
+            values.append(tags["voltage:secondary"])
+            processed.add("voltage:secondary")
+
+        if "voltage" in tags:
+            values = tags["voltage"].split(";")
+            processed.add("voltage")
+
+        if values:
+            texts.append(self.label(", ".join(map(format_voltage, values))))
+
+        if "frequency" in tags:
+            text: str = ", ".join(
+                map(format_frequency, tags["frequency"].split(";"))
+            )
+            texts.append(self.label(text))
+            processed.add("frequency")
+
+        return texts
+
+    def construct_text(
+        self,
+        tags: Tags,
+        processed: Set[str],
+        label_mode: LabelMode,
+    ) -> List[Label]:
+        """Construct list of labels from OSM tags."""
+
+        texts: List[Label] = []
+
+        name: Optional[str] = None
+        alternative_name: Optional[str] = None
+
+        if "name" in tags:
+            name = tags["name"]
+            processed.add("name")
+        elif "name:en" in tags:
+            if not name:
+                name = tags["name:en"]
+                processed.add("name:en")
+            processed.add("name:en")
+        if "alt_name" in tags:
+            if alternative_name:
+                alternative_name += ", "
+            else:
+                alternative_name = ""
+            alternative_name += tags["alt_name"]
+            processed.add("alt_name")
+        if "old_name" in tags:
+            if alternative_name:
+                alternative_name += ", "
+            else:
+                alternative_name = ""
+            alternative_name += "ex " + tags["old_name"]
+
+        address: List[str] = get_address(tags, processed, label_mode)
+
+        if name:
+            texts.append(Label(name, self.main_color, self.default_out_color))
+        if alternative_name:
+            texts.append(self.label(f"({alternative_name})"))
+        if address:
+            texts.append(self.label(", ".join(address)))
+
+        if label_mode == LabelMode.MAIN:
+            return texts
+
+        texts += self.get_text(tags, processed)
+
+        if "route_ref" in tags:
+            texts.append(self.label(tags["route_ref"].replace(";", " ")))
+            processed.add("route_ref")
+
+        if "cladr:code" in tags:
+            texts.append(self.label(tags["cladr:code"], size=7.0))
+            processed.add("cladr:code")
+
+        if "website" in tags:
+            link = tags["website"]
+            if link[:7] == "http://":
+                link = link[7:]
+            if link[:8] == "https://":
+                link = link[8:]
+            if link[:4] == "www.":
+                link = link[4:]
+            if link[-1] == "/":
+                link = link[:-1]
+            link = link[:25] + ("..." if len(tags["website"]) > 25 else "")
+            texts.append(Label(link, Color("#000088"), self.default_out_color))
+            processed.add("website")
+
+        for key in ["phone"]:
+            if key in tags:
+                texts.append(
+                    Label(tags[key], Color("#444444"), self.default_out_color)
+                )
+                processed.add(key)
+
+        if "height" in tags:
+            texts.append(self.label(f"↕ {tags['height']} m"))
+            processed.add("height")
+
+        for tag in tags:
+            if self.scheme.is_writable(tag, tags[tag]) and tag not in processed:
+                texts.append(
+                    Label(
+                        tags[tag],
+                        self.default_color,
+                        self.default_out_color,
+                    )
+                )
+        return texts

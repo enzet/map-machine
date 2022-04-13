@@ -14,13 +14,21 @@ from map_machine import (
     REQUIREMENTS,
 )
 
-with Path("README.md").open() as input_file:
+with Path("README.md").open(encoding="utf-8") as input_file:
     long_description: str = input_file.read()
 
 setup(
     name="map-machine",
     version=__version__,
-    packages=["map_machine"],
+    packages=[
+        "map_machine",
+        "map_machine.feature",
+        "map_machine.geometry",
+        "map_machine.osm",
+        "map_machine.pictogram",
+        "map_machine.slippy",
+        "map_machine.ui",
+    ],
     url=__url__,
     project_urls={
         "Bug Tracker": f"{__url__}/issues",

@@ -9,9 +9,9 @@ from typing import Dict, List, Optional, TextIO
 from colour import Color
 
 from map_machine import __project__, __url__
-from map_machine.grid import IconCollection
-from map_machine.icon import ShapeExtractor
-from map_machine.osm_reader import STAGES_OF_DECAY
+from map_machine.osm.osm_reader import STAGES_OF_DECAY
+from map_machine.pictogram.icon import ShapeExtractor
+from map_machine.pictogram.icon_collection import IconCollection
 from map_machine.scheme import Matcher, Scheme
 from map_machine.workspace import workspace
 
@@ -67,9 +67,7 @@ meta {{
 
 
 class MapCSSWriter:
-    """
-    Writer that converts Map Machine scheme into MapCSS 0.2 format.
-    """
+    """Writer that converts Map Machine scheme into MapCSS 0.2 format."""
 
     def __init__(
         self,
@@ -105,6 +103,10 @@ class MapCSSWriter:
         """
         elements: Dict[str, str] = {}
 
+        for value in matcher.tags.values():
+            if value.startswith("^"):
+                return ""
+
         clean_shapes = matcher.get_clean_shapes()
         if clean_shapes:
             elements["icon-image"] = (
@@ -134,8 +136,8 @@ class MapCSSWriter:
             return ""
 
         selector: str = target + matcher.get_mapcss_selector(prefix) + " {\n"
-        for element in elements:
-            selector += f"    {element}: {elements[element]};\n"
+        for key, value in elements.items():
+            selector += f"    {key}: {value};\n"
         selector += "}\n"
 
         return selector
@@ -164,7 +166,7 @@ class MapCSSWriter:
             return
 
         for index, stage_of_decay in enumerate(STAGES_OF_DECAY):
-            opacity: float = 0.6 - 0.4 * index / (len(STAGES_OF_DECAY) - 1)
+            opacity: float = 0.6 - 0.4 * index / (len(STAGES_OF_DECAY) - 1.0)
             for matcher in self.point_matchers:
                 if len(matcher.tags) > 1:
                     continue
@@ -176,18 +178,19 @@ class MapCSSWriter:
                     )
 
 
-def ui(options: argparse.Namespace) -> None:
+def generate_mapcss(options: argparse.Namespace) -> None:
     """Write MapCSS 0.2 scheme."""
     directory: Path = workspace.get_mapcss_path()
     icons_with_outline_path: Path = workspace.get_mapcss_icons_path()
 
-    scheme: Scheme = Scheme(workspace.DEFAULT_SCHEME_PATH)
+    scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
     extractor: ShapeExtractor = ShapeExtractor(
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
     collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
     collection.draw_icons(
         icons_with_outline_path,
+        workspace.ICONS_LICENSE_PATH,
         color=Color("black"),
         outline=True,
         outline_opacity=0.5,

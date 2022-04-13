@@ -1,0 +1,188 @@
+[
+    {
+        "page": "Tag:roof:shape=skillion",
+        "id": "skillion_roof",
+        "tags": {"building": "apartments", "roof:shape": "skillion"},
+        "row_key": "building:levels",
+        "row_values": ["1", "2", "3", "4", "5"]
+    },
+    {
+        "page": "Tag:roof:shape=flat",
+        "id": "flat_roof",
+        "tags": {"building": "apartments", "roof:shape": "flat"},
+        "row_key": "building:levels",
+        "row_values": ["1", "2", "3", "4", "5"]
+    },
+    {
+        "page": "Tag:roof:shape=gabled",
+        "id": "gabled_roof",
+        "tags": {"building": "apartments", "roof:shape": "gabled"},
+        "row_key": "building:levels",
+        "row_values": ["1", "2", "3", "4", "5"]
+    },
+    {
+        "name": "Apartments",
+        "page": "Key:building:levels",
+        "id": "apartments",
+        "tags": {"building": "apartments"},
+        "row_key": "roof:shape",
+        "row_values": ["gabled", "flat", "hipped", "pyramidal", "skillion"],
+        "column_key": "building:levels",
+        "column_values": ["1", "2", "3", "4", "5"]
+    },
+    {
+        "name": "Outdoor seating",
+        "page": "Tag:leisure=outdoor_seating",
+        "id": "outdoor_seating",
+        "tags": {"leisure": "outdoor_seating"},
+        "row_key": "weather_protection",
+        "row_values": ["parasol", "roof", "awning", "pavilion", "pergola"]
+    },
+    {
+        "page": "Tag:artwork_type=statue",
+        "id": "statue",
+        "tags": {"tourism": "artwork", "artwork_type": "statue"},
+        "row_tags": [
+            {},
+            {"amenity": "bench"}
+        ]
+    },
+    {
+        "name": "Tank trap",
+        "page": "Key:tank_trap",
+        "id": "tank_trap",
+        "tags": {},
+        "row_key": "tank_trap",
+        "row_values": ["czech_hedgehog", "dragons_teeth", "toblerone"]
+    },
+    {
+        "page": "Tag:natural=tree",
+        "id": "trees",
+        "tags": {"natural": "tree"},
+        "row_key": "leaf_type",
+        "row_values": ["broadleaved", "needleleaved", "palm"],
+        "column_key": "denotation",
+        "column_values": ["", "urban", "avenue"]
+    },
+    {
+        "name": "Surveillance",
+        "page": "Tag:man_made=surveillance",
+        "id": "surveillance",
+        "tags": {"man_made": "surveillance"},
+        "row_tags": [
+            {},
+            {"camera:type": "dome", "camera:mount": "ceiling"},
+            {"camera:type": "dome", "camera:mount": "wall"}
+        ]
+    },
+    {
+        "page": "Tag:artwork_type=stone",
+        "id": "artwork_stone",
+        "tags": {},
+        "row_tags": [
+            {"tourism": "artwork", "artwork_type": "stone"},
+            {"tourism": "artwork", "artwork_type": "stone", "inscription": "*"}
+        ]
+    },
+    {
+        "name": "Bench",
+        "page": "Tag:memorial=bench",
+        "id": "bench",
+        "tags": {},
+        "row_tags": [
+            {"amenity": "bench"},
+            {"memorial": "bench"}
+        ]
+    },
+    {
+        "name": "Mast",
+        "page": "Tag:man_made=mast",
+        "id": "mast",
+        "tags": {"man_made": "mast"},
+        "row_key": "tower:construction",
+        "row_values": ["freestanding", "lattice", "guyed_tube", "guyed_lattice"],
+        "column_key": "tower:type",
+        "column_values": ["", "communication", "lighting", "monitoring", "siren"]
+    },
+    {
+        "name": "Volcano",
+        "page": "Tag:natural=volcano",
+        "id": "volcano",
+        "tags": {"natural": "volcano"},
+        "row_key": "volcano:type",
+        "row_values": ["stratovolcano", "shield", "scoria"],
+        "column_key": "volcano:status",
+        "column_values": ["", "active", "dormant", "extinct"]
+    },
+    {
+        "id": "volcano_status",
+        "tags": {"natural": "volcano"},
+        "row_key": "volcano:status",
+        "row_values": ["", "active", "dormant", "extinct"]
+    },
+    {
+        "page": "Tag:tower:construction=guyed_tube",
+        "tags": {"man_made": "mast", "tower:construction": "guyed_tube"},
+        "row_key": "tower:type",
+        "row_values": ["", "communication", "lighting", "monitoring", "siren"]
+    },
+    {
+        "page": "Tag:tower:construction=guyed_lattice",
+        "tags": {"man_made": "mast", "tower:construction": "guyed_lattice"},
+        "row_key": "tower:type",
+        "row_values": ["", "communication", "lighting", "monitoring", "siren"]
+    },
+    {
+        "page": "Key:communication:mobile_phone",
+        "tags": {"communication:mobile_phone": "yes"}
+    },
+    {
+        "name": "Traffic calming",
+        "page": "Key:traffic_calming",
+        "tags": {},
+        "row_key": "traffic_calming",
+        "row_values": [
+            "bump", "mini_bumps", "hump", "table", "cushion", "rumble_strip",
+            "dip", "double_dip"
+        ]
+    },
+    {
+        "page": "Key:crane:type",
+        "tags": {"man_made": "crane"},
+        "column_key": "crane:type",
+        "column_values": [
+            "gantry_crane", "floor-mounted_crane", "portal_crane",
+            "travel_lift", "tower_crane"
+        ]
+    },
+    {
+        "tags": {},
+        "name": "Power tower and pole",
+        "row_key": "power",
+        "row_values": ["tower", "pole"],
+        "column_key": "design",
+        "column_values": [
+            "one-level", "two-level", "three-level", "four-level", "asymmetric",
+            "triangle", "flag", "delta", "delta_two-level", "delta_three-level"
+        ]
+    },
+    {
+        "tags": {},
+        "name": "Power tower",
+        "row_key": "power",
+        "row_values": ["tower"],
+        "column_key": "design",
+        "column_values": [
+            "donau", "donau_inverse", "barrel", "y-frame", "x-frame", "h-frame",
+            "guyed_h-frame", "portal", "portal_two-level", "portal_three-level"
+        ]
+    },
+    {
+        "name": "Diving tower",
+        "page": "Tag:tower:type=diving",
+        "id": "diving",
+        "tags": {"man_made": "tower", "tower:type": "diving"},
+        "row_key": "tower:platforms",
+        "row_values": ["", "1", "2", "3", "4"]
+    }
+]

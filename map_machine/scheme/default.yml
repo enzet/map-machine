@@ -2,10 +2,17 @@ colors:
 
   # Entity
 
-  direction_view_color: "#E0F0FF"
+  default: "#444444"
+  extra: "#888888"
+
+  direction_view_color: "#C8E8FF"
   direction_camera_color: "#0088FF"
 
   background_color: "#EEEEEE"
+  road_color: "#FFFFFF"
+  text_color: "#444444"
+  text_main_color: "#000000"
+  text_outline_color: "#FFFFFF"
 
   wheat_color: "#F0DCAA"
   wheat_border_color: "#F4D67F"
@@ -31,8 +38,10 @@ colors:
   allotments_color: "#D0E0D0"
   beach_color: "#F0E0C0"
   boundary_color: "#880088"
-  building_border_color: "#E0D0C0"  # "AAAAAA"
-  building_color: "#F8F0E8"  # "D0D0C0"
+  building_border_color: "#E0D0C0"
+  building_color: "#F8F0E8"
+  building_construction_border_color: "#C4C0BC"
+  building_construction_color: "#D4D0CC"
   construction_color: "#CCCCCC"
   cycle_color: "#4444EE"
   desert_color: "#F0E0D0"
@@ -43,6 +52,8 @@ colors:
   farmland_border_color: "#DDCC99"
   farmland_darker_color: "#998855"
   ferry_terminal_color: "#AABBDD"
+  foot_area_color: "#DDDDDD"
+  foot_area_border_color: "#BBBBBB"
   foot_border_color: "#FFFFFF"
   foot_color: "#B89A74"
   grass_border_color: "#BFD098"
@@ -56,12 +67,13 @@ colors:
   orchard_border_color: "#98BC84"
   outline_color: "#FFFFFF"
   parking_color: "#DDCC99"
+  park_color: "#CFE0A8"
   pitch_color: "#AADDCC"
   pitch_border_color: "#88BBAA"
   platform_border_color: "#AAAAAA"
   platform_color: "#CCCCCC"
-  playground_border_color: "#663300"
-  playground_color: "#884400"
+  playground_border_color: "#FFAA88"
+  playground_color: "#FFDDCC"
   ridge_color: "#000000"
   road_border_color: "#CCCCCC"
   rock_color: "#DDDDDD"
@@ -71,11 +83,124 @@ colors:
   track_color: "#A88A64"
   trunk_color: "#97612b"
   tree_color: "#98AC64"
+  wall_bottom_1_color: "#AAAAAA"
+  wall_bottom_2_color: "#C3C3C3"
+  wall_color: "#E8E8E8"
+  wall_construction_color: "#84807C"
   water_border_color: "#6688BB"
   water_color: "#AACCFF"
   wetland_color: "#BFE0D8"
   wood_border_color: "#A8BC74"
   wood_color: "#B8CC84"
+
+  runway_color: "#999399"
+  runway_border_color: {color: runway_color, darken: 0.25}
+  taxiway_color: "#AAA4AA"
+  taxiway_border_color: {color: taxiway_color, darken: 0.25}
+
+  sell_color: "#880088"
+  craft_color: "#008800"
+
+  # Colors not in W3C
+
+  rose: "#FF007F"  # Wikipedia
+  slate_blue: "#6A5ACD"  # W3C slateblue
+
+colors_dark: # dark
+
+  # Entity
+
+  default: "#CCCCCC"
+
+  direction_view_color: {color: "#C8E8FF", darken: 0.75}
+  direction_camera_color: "#0088FF"
+
+  background_color: "#222222"
+  road_color: "#000000"
+  text_color: "#DDDDDD"
+  text_main_color: "#ffffff"
+  text_outline_color: "#000000"
+
+  wheat_color: "#F0DCAA"
+  wheat_border_color: "#F4D67F"
+  wheat_dark_color: "#BF9340"
+  rye_color: "#E0CA96"
+  rye_dark_color: "#AE955D"
+  oat_color: "#EDDDB7"
+  oat_dark_color: "#C4894A"
+  barley_color: "#F3EEC4"
+  barley_border_color: "#D2CE9D"
+  barley_dark_color: "#908F62"
+  sunflower_dark_color: "#DEAC4A"
+
+  motorway_border_color: "#CC8800"
+  motorway_color: "#FFAA33"
+  primary_border_color: {color: "#AA8800", darken: 0.3}
+  primary_color: {color: "#FFDD66", darken: 0.75}
+  secondary_border_color: {color: "#BB9911", darken: 0.3}
+  secondary_color: {color: "#FFEE77", darken: 0.75}
+  tertiary_border_color: {color: "#CCAA22", darken: 0.3}
+  tertiary_color: {color: "#FFFF88", darken: 0.75}
+
+  allotments_color: "#D0E0D0"
+  beach_color: "#F0E0C0"
+  boundary_color: "#880088"
+  building_border_color: "#888888"
+  building_color: "#444444"
+  construction_color: {color: "#CCCCCC", darken: 0.75}
+  cycle_color: "#4444EE"
+  desert_color: "#F0E0D0"
+  decidious_color: "#FCAF3E"
+  emergency_color: "#DD2222"
+  evergreen_color: "#688C44"
+  farmland_color: "#FFEEBB"
+  farmland_border_color: "#DDCC99"
+  farmland_darker_color: "#998855"
+  ferry_terminal_color: "#AABBDD"
+  foot_area_color: "#222222"
+  foot_area_border_color: "#444444"
+  foot_border_color: "#000000"
+  foot_color: {color: "#B89A74", darken: 0.5}
+  grass_border_color: {color: "#BFD098", darken: 0.75}
+  grass_color: {color: "#CFE0A8", darken: 0.75}
+  hidden_color: "#FFFFFF"
+  indoor_border_color: "#C0B8B0"
+  indoor_color: "#E8E4E0"
+  meadow_border_color: "#BFD078"
+  meadow_color: "#CFE088"
+  orchard_color: "#B8DCA4"
+  orchard_border_color: "#98BC84"
+  outline_color: "#FFFFFF"
+  parking_color: {color: "#DDCC99", darken: 0.75}
+  park_color: {color: "#CFE0A8", darken: 0.75}
+  pitch_color: {color: "#AADDCC", darken: 0.75}
+  pitch_border_color: {color: "#88BBAA", darken: 0.75}
+  platform_border_color: "#AAAAAA"
+  platform_color: "#CCCCCC"
+  playground_border_color: {color: "#FFAA88", darken: 0.75}
+  playground_color: {color: "#FFDDCC", darken: 0.75}
+  ridge_color: "#000000"
+  road_border_color: "#444444"
+  rock_color: "#DDDDDD"
+  route_color: "#FFFFFF"
+  sand_color: "#E8E0C0"
+  scree_color: "#CCCCCC"
+  track_color: "#A88A64"
+  trunk_color: "#97612b"
+  tree_color: "#98AC64"
+  water_border_color: "#6688BB"
+  water_color: "#AACCFF"
+  wall_bottom_1_color: "#444444"
+  wall_bottom_2_color: "#222222"
+  wall_color_start: 0.0
+  wetland_color: "#BFE0D8"
+  wood_border_color: {color: "#A8BC74", darken: 0.75}
+  wood_color: {color: "#B8CC84", darken: 0.75}
+
+  runway_color: "#999399"
+  runway_border_color: {color: runway_color, darken: 0.25}
+  taxiway_color: "#AAA4AA"
+  taxiway_border_color: {color: taxiway_color, darken: 0.25}
 
   sell_color: "#880088"
 
@@ -84,10 +209,26 @@ colors:
   rose: "#FF007F"  # Wikipedia
   slate_blue: "#6A5ACD"  # W3C slateblue
 
+carto_colors:
+  building_border_color: {color: building_color, darken: 0.15}
+  building_color: "#d9d0c9"
+  cemetery_color: "#aacbaf"
+  commercial_color: "#f2dad9"
+  commercial_border_color: "#d1b2b0"
+  grass_color: "#cdebb0"
+  industrial_color: "#ebdbe8"
+  industrial_border_color: "#d1b2b0"
+  military_color: "#f55"
+  park_color: "#c8facc"
+  residential_color: "#e0dfdf"
+  residential_border_color: "#b9b9b9"
+  wood_color: "#add19e"
+
 material_colors:
 
   bronze: "#CD7F32"
   concrete: "#AAAAAA"
+  glass: "#CCEEFF"
 
 node_icons:
 
@@ -101,7 +242,7 @@ node_icons:
       draw: false
 
   - group: "Huge transport hubs"
-    start_zoom_level: 10
+    start_zoom_level: 10.0
     tags:
     - tags: {amenity: ferry_terminal}
       shapes: [anchor]
@@ -117,7 +258,7 @@ node_icons:
       shapes: [rocket_on_launch_pad]
 
   - group: "Normal transport hubs"
-    start_zoom_level: 11
+    start_zoom_level: 11.0
     tags:
     - tags: {aeroway: launchpad}
       shapes: [rocket_flying]
@@ -165,10 +306,12 @@ node_icons:
       shapes: [taxi]
 
   - group: "Big territory"
-    start_zoom_level: 12
+    start_zoom_level: 12.0
     tags:
     - tags: {leisure: fishing}
       shapes: [fishing_angle]
+    - tags: {historic: archaeological_site}
+      shapes: [amphora]
     - tags: {leisure: swimming_area}
       shapes: [swimming_area]
     - tags: {leisure: swimming_pool}
@@ -207,7 +350,7 @@ node_icons:
       shapes: [{shape: pear, color: orchard_border_color}]
 
   - group: "Bigger objects"
-    start_zoom_level: 13
+    start_zoom_level: 13.0
     tags:
     - tags: {waterway: waterfall}
       shapes: [{shape: waterfall, color: water_border_color}]
@@ -215,25 +358,26 @@ node_icons:
       shapes: [cliff]
     - tags: {natural: peak}
       shapes: [triangle_small]
+    - tags: {natural: saddle}
+      shapes: [saddle]
     - tags: {natural: crater}
       exception: {diameter: "*"}
       shapes: [crater]
 
-    - tags:
-        natural: volcano
-      shapes: [stratovolcano, {shape: smoke, offset: [0, -3]}]
+    - tags: {natural: volcano}
+      shapes: [stratovolcano, {shape: smoke_2, offset: [0, -3]}]
 
     - tags: {natural: volcano, volcano:type: stratovolcano}
-      shapes: [stratovolcano, {shape: smoke, offset: [0, -3]}]
+      shapes: [stratovolcano, {shape: smoke_2, offset: [0, -3]}]
     - tags: {natural: volcano, volcano:type: shield}
-      shapes: [shield_volcano, {shape: smoke, offset: [0, -1]}]
+      shapes: [shield_volcano, {shape: smoke_2, offset: [0, -1]}]
     - tags: {natural: volcano, volcano:type: scoria}
-      shapes: [volcanic_cone, {shape: smoke, offset: [0, -2]}]
+      shapes: [volcanic_cone, {shape: smoke_2, offset: [0, -2]}]
 
     - tags: {natural: volcano, volcano:status: active}
-      shapes: [stratovolcano, {shape: smoke, offset: [0, -3]}]
+      shapes: [stratovolcano, {shape: lava, offset: [0, -3]}]
     - tags: {natural: volcano, volcano:status: dormant}
-      shapes: [stratovolcano, {shape: smoke_2, offset: [1, -3]}]
+      shapes: [stratovolcano, {shape: smoke, offset: [1, -3]}]
     - tags: {natural: volcano, volcano:status: extinct}
       shapes: [stratovolcano]
 
@@ -241,32 +385,32 @@ node_icons:
         natural: volcano
         volcano:type: stratovolcano
         volcano:status: active
-      shapes: [stratovolcano, {shape: smoke, offset: [0, -3]}]
+      shapes: [stratovolcano, {shape: lava, offset: [0, -3]}]
     - tags:
         natural: volcano
         volcano:type: shield
         volcano:status: active
-      shapes: [shield_volcano, {shape: smoke, offset: [0, -1]}]
+      shapes: [shield_volcano, {shape: lava, offset: [0, -1]}]
     - tags:
         natural: volcano
         volcano:type: scoria
         volcano:status: active
-      shapes: [volcanic_cone, {shape: smoke, offset: [0, -2]}]
+      shapes: [volcanic_cone, {shape: lava, offset: [0, -2]}]
     - tags:
         natural: volcano
         volcano:type: stratovolcano
         volcano:status: dormant
-      shapes: [stratovolcano, {shape: smoke_2, offset: [1, -3]}]
+      shapes: [stratovolcano, {shape: smoke, offset: [1, -3]}]
     - tags:
         natural: volcano
         volcano:type: shield
         volcano:status: dormant
-      shapes: [shield_volcano, {shape: smoke_2, offset: [1, -1]}]
+      shapes: [shield_volcano, {shape: smoke, offset: [1, -1]}]
     - tags:
         natural: volcano
         volcano:type: scoria
         volcano:status: dormant
-      shapes: [volcanic_cone, {shape: smoke_2, offset: [1, -2]}]
+      shapes: [volcanic_cone, {shape: smoke, offset: [1, -2]}]
     - tags:
         natural: volcano
         volcano:type: stratovolcano
@@ -286,6 +430,8 @@ node_icons:
     - tags: {historic: castle}
       location_restrictions: {include: [jp]}
       shapes: [japan_castle]
+    - tags: {historic: fort}
+      shapes: [fort]
     - tags: {shop: mall}
       shapes: [bag]
     - tags: {shop: mall, building: "yes"}
@@ -294,12 +440,17 @@ node_icons:
       shapes: [slide_and_water]
 
   - group: "Important big objects"
-    start_zoom_level: 14
+    start_zoom_level: 14.0
     tags:
     - tags: {amenity: fire_station}
       location_restrictions: {include: [jp]}
       shapes: [{shape: japan_fire_station, color: emergency_color}]
+    - tags: {amenity: courthouse}
+      shapes: [gavel]
     - tags: {amenity: police}
+      location_restrictions: {include: [jp]}
+      shapes: [japan_police_station]
+    - tags: {amenity: police, name:en: Koban}
       location_restrictions: {include: [jp]}
       shapes: [japan_koban]
     - tags: {building: townhall}
@@ -312,8 +463,15 @@ node_icons:
       shapes: [medicine_bottle]
     - tags: {amenity: embassy}
       shapes: [waving_flag]
+    - tags: {office: diplomatic, diplomatic: embassy}
+      shapes: [waving_flag]
+    - tags: {man_made: monitoring_station, monitoring:weather: "yes"}
+      shapes: [japan_weather_station]
+      location_restrictions: {include: [jp]}
     - tags: {amenity: veterinary}
       shapes: [dog_and_cross]
+    - tags: {tourism: apartment}
+      shapes: [bed_with_floor_and_ceiling]
     - tags: {tourism: hotel}
       shapes: [bed]
     - tags: {building: hotel}
@@ -322,8 +480,14 @@ node_icons:
       shapes: [two_beds]
     - tags: {tourism: motel}
       shapes: [{shape: car, offset: [0, 4]}, {shape: bed, offset: [0, -2]}]
+    - tags: {tourism: guest_house}
+      shapes: [bed_and_roof]
     - tags: {amenity: hospital}
+      location_restrictions: {include: world, exclude: [jp]}
       shapes: [greek_cross]
+    - tags: {amenity: hospital}
+      location_restrictions: {include: [jp]}
+      shapes: [japan_public_health_center]
     - tags: {amenity: clinic}
       shapes: [greek_cross_in_box]
     - tags: {amenity: doctors}
@@ -343,24 +507,26 @@ node_icons:
     - tags: {amenity: car_sharing}
       shapes: [{shape: car, offset: [0, 3]}, {shape: sharing, offset: [0, -4]}]
     - tags: {amenity: car_wash}
-      shapes: [car_wash]
+      shapes: 
+      - {shape: car, offset: [0, 3]}
+      - {shape: shower_head, offset: [0, -4]}
       # Place of worship
     - tags: {building: shrine, religion: shinto}
       shapes: [japan_shinto_shrine]
     - tags: {religion: christian}
-      shapes: [cross]
+      shapes: [latin_cross]
     - tags: {amenity: place_of_worship, religion: christian}
-      shapes: [cross]
+      shapes: [latin_cross]
     - tags:
         amenity: place_of_worship
         religion: christian
         denomination: catholic
-      shapes: [cross]
+      shapes: [latin_cross]
     - tags:
         amenity: place_of_worship
         religion: christian
         denomination: russian_orthodox
-      shapes: [russian_orthodox]
+      shapes: [russian_orthodox_cross]
     - tags:
         amenity: place_of_worship
         religion: christian
@@ -372,11 +538,11 @@ node_icons:
         denomination: baptist
       shapes: [baptist]
     - tags: {amenity: place_of_worship, religion: muslim}
-      shapes: [muslim]
+      shapes: [crescent]
     - tags: {amenity: place_of_worship, religion: buddhist}
       shapes: [dharmachakra]
     - tags: {amenity: place_of_worship, religion: jewish}
-      shapes: [jewish]
+      shapes: [star_of_david]
     - tags: {historic: tomb, tomb: mausoleum}
       shapes: [mausoleum]
     - tags: {historic: "*"}
@@ -385,10 +551,12 @@ node_icons:
       location_restrictions: {include: [jp]}
 
   - group: "Normal big objects"
-    start_zoom_level: 15
+    start_zoom_level: 15.0
     tags:
     - tags: {shop: supermarket}
       shapes: [supermarket_cart]
+    - tags: {shop: general}
+      shapes: [bag]
     - tags: {amenity: arts_centre}
       shapes: [picture]
     - tags: {amenity: bank}
@@ -399,15 +567,23 @@ node_icons:
       shapes: [card_and_dice]
     - tags: {amenity: community_centre}
       shapes: [two_people_together]
+    - tags: {amenity: gym}
+      shapes: [dumbbell]
+    - tags: {amenity: social_facility}
+      shapes: [two_people_together]
     - tags: {amenity: internet_cafe}
       shapes: [at_in_square]
     - tags: {amenity: library}
       shapes: [book]
+    - tags: {amenity: marketplace}
+      shapes: [marketplace]
     - tags: {amenity: prison}
       shapes: [prison]
     - tags: {amenity: stripclub}
       shapes: [pole_dancer]
     - tags: {club: computer}
+      shapes: [glider]
+    - tags: {leisure: hackerspace}
       shapes: [glider]
     - tags: {man_made: survey_point}
       shapes: [survey_point]
@@ -425,6 +601,16 @@ node_icons:
       shapes: [bowling_ball]
     - tags: {leisure: dog_park}
       shapes: [dog]
+    - tags: {leisure: escape_game}
+      shapes: [{shape: maze, offset: [-2, 0]}, {shape: arrow_right_short, offset: [5, -1]}]
+    - tags: {leisure: maze}
+      shapes: [maze]
+    - tags: {attraction: maze}
+      shapes: [maze]
+    - tags: {maze: labyrinth}
+      shapes: [maze]
+    - tags: {tourism: maze}
+      shapes: [maze]
     - tags: {leisure: miniature_golf}
       shapes: [golf_club_and_ball]
     - tags: {leisure: sauna}
@@ -444,7 +630,7 @@ node_icons:
     - tags: {leisure: playground}
       shapes: [toy_horse]
     - tags: {amenity: theatre}
-      shapes: [theatre]
+      shapes: [curtains]
     - tags: {amenity: bar}
       shapes: [cocktail_glass]
     - tags: {amenity: pub}
@@ -455,17 +641,25 @@ node_icons:
       shapes: [steak_and_fork]
     - tags: {amenity: food_court}
       shapes: [food_court]
+    - tags: {craft: shoemaker}
+      shapes: [{shape: shoe, color: sell_color}]
     - tags: {shop: fishing}
       shapes: [{shape: fishing_angle, color: sell_color}]
     - tags: {shop: alcohol}
       shapes: [{shape: bottle, color: sell_color}]
+    - tags: {shop: antiques}
+      shapes: [{shape: amphora, color: sell_color}]
     - tags: {shop: art}
       shapes: [{shape: picture, color: sell_color}]
     - tags: {shop: bakery}
       shapes: [cupcake]
+    - tags: {shop: bag}
+      shapes: [{shape: bag, color: sell_color}]
     - tags: {shop: bed}
       shapes: [{shape: bed, color: sell_color}]
     - tags: {shop: beauty}
+      shapes: [vanity_mirror]
+    - tags: {shop: cosmetics}
       shapes: [vanity_mirror]
     - tags: {shop: bicycle}
       shapes: [{shape: bicycle, color: sell_color}]
@@ -475,42 +669,72 @@ node_icons:
       shapes: [knives]
     - tags: {shop: car}
       shapes: [{shape: car, color: sell_color}]
+    - tags: {shop: chocolate}
+      shapes: [cupcake]
     - tags: {shop: coffee}
       shapes: [{shape: coffee_cup, color: sell_color}]
+    - tags: {shop: confectionery}
+      shapes: [cupcake]
     - tags: {shop: copyshop}
       shapes: [sheets]
     - tags: {shop: dairy}
-      shapes: [milk]
+      shapes: [aseptic_carton]
     - tags: {shop: doityourself}
       shapes: [wretch_and_hammer]
+    - tags: {shop: dry_cleaning}
+      shapes: [washing_machine]
+    - tags: {shop: farm}
+      shapes: [{shape: apple, color: sell_color}]
     - tags: {shop: fireplace}
       shapes: [{shape: fireplace, color: sell_color}]
+    - tags: {shop: florist}
+      shapes: [{shape: flower_in_pot, color: sell_color}]
+    - tags: {shop: furniture}
+      shapes: [{shape: drawer, color: sell_color}]
+    - tags: {shop: greengrocer}
+      shapes: [{shape: apple, color: sell_color}]
     - tags: {shop: hairdresser}
       shapes: [comb_and_scissors]
     - tags: {shop: hardware}
       shapes: [wretch_and_hammer]
     - tags: {shop: hifi}
-      shapes: [{shape: hifi, color: sell_color}]
+      shapes: [{shape: hi_fi, color: sell_color}]
     - tags: {shop: houseware}
       shapes: [{shape: pan, color: sell_color}]
     - tags: {shop: jewelry}
       shapes: [{shape: diamond, color: sell_color}]
     - tags: {shop: jewellery}
       shapes: [{shape: diamond, color: sell_color}]
+    - tags: {craft: jeweller}
+      shapes: [{shape: diamond, color: craft_color}]
+    - tags: {shop: laundry}
+      shapes: [washing_machine]
     - tags: {shop: massage}
       shapes: [massage]
+    - tags: {shop: medical_supply}
+      shapes: [{shape: medicine_bottle, color; sell_color}]
     - tags: {shop: mobile_phone}
       shapes: [{shape: phone, color: sell_color}]
+    - tags: {shop: newsagent}
+      shapes: [sheets]
+    - tags: {shop: optician}
+      shapes: [glasses]
+    - tags: {shop: pastry}
+      shapes: [cupcake]
     - tags: {shop: pet}
       shapes: [{shape: dog, color: sell_color}]
     - tags: {shop: photo}
+      shapes: [{shape: photo_camera, color: sell_color}]
+    - tags: {shop: photography}
       shapes: [{shape: photo_camera, color: sell_color}]
     - tags: {shop: shoes}
       shapes: [{shape: shoe, color: sell_color}]
     - tags: {shop: sports}
       shapes: [{shape: dumbbell, color: sell_color}]
+    - tags: {shop: travel_agency}
+      shapes: [globe]
     - tags: {shop: milk}
-      shapes: [milk]
+      shapes: [aseptic_carton]
     - tags: {shop: wine}
       shapes: [{shape: bottle_and_wine_glass, color: sell_color}]
     - tags: {building: store}
@@ -519,6 +743,10 @@ node_icons:
       shapes: [ticket]
     - tags: {shop: tailor}
       shapes: [t_shirt_and_scissors]
+    - tags: {shop: tyres}
+      shapes: [{shape: tyre, color: sell_color}]
+    - tags: {shop: toys}
+      shapes: [{shape: toy_horse, color: sell_color}]
     - tags: {craft: tailor}
       shapes: [t_shirt_and_scissors]
     - tags: {shop: video}
@@ -568,21 +796,93 @@ node_icons:
       shapes: [table]
 
   - group: "Big objects not for all"
-    start_zoom_level: 15
+    start_zoom_level: 15.0
     tags:
+    - tags: {building: container}
+      shapes: [building_container]
+    - tags: {building: houseboat}
+      shapes: [houseboat]
+
     - tags: {building: apartments}
-      shapes: [apartments]
+      shapes: [apartments_2_story]
+
+    - tags: {building: "*", building:levels: "1"}
+      shapes: [apartments_1_story]
+    - tags: {building: "*", building:levels: "1", roof:shape: gabled}
+      shapes: [apartments_1_story_gabled_roof]
+    - tags: {building: "*", building:levels: "1", roof:shape: hipped}
+      shapes: [apartments_1_story_gabled_roof]
+    - tags: {building: "*", building:levels: "1", roof:shape: pyramidal}
+      shapes: [apartments_1_story_gabled_roof]
+    - tags: {building: "*", building:levels: "1", roof:shape: skillion}
+      shapes: [apartments_1_story_skillion_roof]
+
+    - tags: {building: "*", building:levels: "2"}
+      shapes: [apartments_2_story]
+    - tags: {building: "*", building:levels: "2", roof:shape: gabled}
+      shapes: [apartments_2_story_gabled_roof]
+    - tags: {building: "*", building:levels: "2", roof:shape: hipped}
+      shapes: [apartments_2_story_gabled_roof]
+    - tags: {building: "*", building:levels: "2", roof:shape: pyramidal}
+      shapes: [apartments_2_story_gabled_roof]
+    - tags: {building: "*", building:levels: "2", roof:shape: skillion}
+      shapes: [apartments_2_story_skillion_roof]
+
+    - tags: {building: "*", building:levels: "3"}
+      shapes: [apartments_3_story]
+    - tags: {building: "*", building:levels: "3", roof:shape: gabled}
+      shapes: [apartments_3_story_gabled_roof]
+    - tags: {building: "*", building:levels: "3", roof:shape: hipped}
+      shapes: [apartments_3_story_gabled_roof]
+    - tags: {building: "*", building:levels: "3", roof:shape: pyramidal}
+      shapes: [apartments_3_story_gabled_roof]
+    - tags: {building: "*", building:levels: "3", roof:shape: skillion}
+      shapes: [apartments_3_story_skillion_roof]
+
+    - tags: {building: "*", building:levels: "4"}
+      shapes: [apartments_4_story]
+    - tags: {building: "*", building:levels: "4", roof:shape: gabled}
+      shapes: [apartments_4_story_gabled_roof]
+    - tags: {building: "*", building:levels: "4", roof:shape: hipped}
+      shapes: [apartments_4_story_gabled_roof]
+    - tags: {building: "*", building:levels: "4", roof:shape: pyramidal}
+      shapes: [apartments_4_story_gabled_roof]
+    - tags: {building: "*", building:levels: "4", roof:shape: skillion}
+      shapes: [apartments_4_story_skillion_roof]
+
+    - tags: {building: "*", building:levels: "5"}
+      shapes: [apartments_5_story]
+    - tags: {building: "*", building:levels: "5", roof:shape: gabled}
+      shapes: [apartments_5_story_gabled_roof]
+    - tags: {building: "*", building:levels: "5", roof:shape: hipped}
+      shapes: [apartments_5_story_gabled_roof]
+    - tags: {building: "*", building:levels: "5", roof:shape: pyramidal}
+      shapes: [apartments_5_story_gabled_roof]
+    - tags: {building: "*", building:levels: "5", roof:shape: skillion}
+      shapes: [apartments_5_story_skillion_roof]
+
+    - tags: {building: construction}
+      shapes: [building_construction]
+    - tags: {building: apartments, construction: "yes"}
+      shapes: [building_construction]
+    - tags: {building: "yes", construction: "yes"}
+      shapes: [building_construction]
+
     - tags: {building: kindergarten}
       shapes: [toy_horse]
     - tags: {amenity: kindergarten}
       shapes: [toy_horse]
     - tags: {building: kindergarten, amenity: kindergarten}
       shapes: [toy_horse]
+    - tags: {leisure: indoor_playground}
+      shapes: [toy_horse]
     - tags: {building: office}
       shapes: [briefcase]
     - tags: {amenity: school}
       location_restrictions: {include: [jp]}
       shapes: [japan_elementary_school]
+    - tags: {office: "yes"}
+      shapes: [briefcase]
     - tags: {office: company}
       shapes: [briefcase]
     - tags: {office: government}
@@ -593,28 +893,50 @@ node_icons:
       shapes: [telephone]
 
   - group: "Not important big objects"
-    start_zoom_level: 15
+    start_zoom_level: 15.0
     tags:
+    - tags: {building: garage}
+      shapes: [garages]
+    - tags: {building: garages}
+      shapes: [garages]
+    - tags: {landuse: garages}
+      shapes: [garages]
     - tags: {man_made: communications_tower}
       location_restrictions: {include: [jp]}
       shapes: [japan_tv_tower]
-    - tags: {man_made: tower}
-      shapes: [tower]
+    - tags: {man_made: communications_tower}
+      shapes: [tower_communication]
     - tags: {man_made: telescope}
       shapes: [telescope_radio]
     - tags: {man_made: telescope, telescope:type: radio}
       shapes: [telescope_radio]
     - tags: {man_made: telescope, telescope:type: gamma}
       shapes: [telescope_gamma]
-    - tags: {building: garages}
-      shapes: [garages]
-    - tags: {landuse: garages}
-      shapes: [garages]
-    - tags: {building: garage}
-      shapes: [garages]
+    - tags: {man_made: telescope, telescope:type: optical}
+      shapes: [observatory]
+    - tags: {man_made: tower}
+      shapes: [tower]
+    - tags: {man_made: tower, tower:construction: dish}
+      shapes: [telescope_radio]
+    - tags: {man_made: tower, tower:construction: dish, telescope:type: radio}
+      shapes: [telescope_radio]
+    - tags: {man_made: tower, tower:construction: dish, telescope:type: gamma}
+      shapes: [telescope_gamma]
+    - tags: {man_made: crane}
+      shapes: [crane]
+    - tags: {man_made: crane, crane:type: gantry_crane}
+      shapes: [crane_gantry]
+    - tags: {man_made: crane, crane:type: floor-mounted_crane}
+      shapes: [crane]
+    - tags: {man_made: crane, crane:type: portal_crane}
+      shapes: [crane_portal]
+    - tags: {man_made: crane, crane:type: travel_lift}
+      shapes: [crane_travel_lift]
+    - tags: {man_made: crane, crane:type: tower_crane}
+      shapes: [crane]
 
   - group: "Emergency"
-    start_zoom_level: 15
+    start_zoom_level: 15.0
     tags:
     - tags: {emergency: defibrillator}
       shapes: [{shape: defibrillator, color: emergency_color}]
@@ -628,7 +950,7 @@ node_icons:
       shapes: [{shape: sos_phone, color: emergency_color}]
 
   - group: "Transport-important middle objects"
-    start_zoom_level: 16
+    start_zoom_level: 16.0
     tags:
     - tags: {ford: "yes"}
       shapes: [ford]
@@ -648,6 +970,8 @@ node_icons:
       shapes: [{shape: car, offset: [0, 4]}, {shape: car, offset: [0, -3]}]
     - tags: {highway: turning_circle}
       shapes: [circle_empty]
+    - tags: {highway: turning_loop}
+      shapes: [turning_loop]
     - tags: {highway: crossing}
       shapes: [crossing]
     - tags: {crossing: zebra}
@@ -668,11 +992,26 @@ node_icons:
       shapes: [traffic_signals]
     - tags: {crossing_ref: toucan}
       shapes: [toucan_crossing]
+
     - tags: {traffic_calming: bump}
       shapes: [bump]
+    - tags: {traffic_calming: mini_bumps}
+      shapes: [mini_bumps]
+    - tags: {traffic_calming: hump}
+      shapes: [hump]
+    - tags: {traffic_calming: table}
+      shapes: [traffic_table]
+    - tags: {traffic_calming: cushion}
+      shapes: [traffic_cushion]
+    - tags: {traffic_calming: rumble_strip}
+      shapes: [rumble_strip]
+    - tags: {traffic_calming: dip}
+      shapes: [dip]
+    - tags: {traffic_calming: double_dip}
+      shapes: [double_dip]
 
   - group: "Important middle objects"
-    start_zoom_level: 16
+    start_zoom_level: 16.0
     tags:
     - tags: {tourism: attraction, attraction: amusement_ride}
       shapes: [amusement_ride]
@@ -680,9 +1019,13 @@ node_icons:
       shapes: [woman_and_man]
     - tags: {amenity: shelter}
       shapes: [shelter]
+    - tags: {man_made: obelisk}
+      shapes: [obelisk]
+    - tags: {historic: monument}
+      shapes: [monument]
 
   - group: "Normal middle objects"
-    start_zoom_level: 17
+    start_zoom_level: 17.0
     tags:
     - tags: {shop: kiosk}
       shapes: [kiosk]
@@ -691,18 +1034,23 @@ node_icons:
     - tags: {amenity: shop, shop: kiosk}
       shapes: [kiosk]
     - tags: {amenity: stage}
-      shapes: [theatre]
+      shapes: [curtains]
+    - tags: {amenity: hunting_stand}
+      shapes: [hunting_stand]
     - tags: {natural: cave_entrance}
       shapes: [cave]
     - tags: {amenity: bureau_de_change}
-      shapes: [exchange]
+      shapes:
+      - {shape: exchange}
+      - {shape: dollar, offset: [-4, 3]}
+      - {shape: pound, offset: [5, -2]}
     - tags: {sport: skateboard}
       shapes: [skateboard]
     - tags: {pipeline: substation}
       shapes: [pipeline]
 
   - group: "Towers, poles, masts"
-    start_zoom_level: 15
+    start_zoom_level: 15.0
     tags:
     - tags: {building: ventilation_shaft}
       shapes: [ventilation]
@@ -713,6 +1061,8 @@ node_icons:
     - tags: {power: transformer}
       shapes: [transformer]
     - tags: {power: generator, generator:source: solar}
+      shapes: [solar_panel]
+    - tags: {power: heliostat}
       shapes: [solar_panel]
     - tags: {power: generator, generator:source: wind}
       shapes: [wind_turbine]
@@ -728,6 +1078,8 @@ node_icons:
       shapes: [power_tower_4_level]
     - tags: {power: tower, design: donau}
       shapes: [power_tower_donau]
+    - tags: {power: tower, design: donau_inverse}
+      shapes: [power_tower_donau_inverse]
     - tags: {power: tower, design: barrel}
       shapes: [power_tower_barrel]
     - tags: {power: tower, design: asymmetric}
@@ -758,7 +1110,11 @@ node_icons:
       shapes: [power_tower_portal]
     - tags: {power: tower, design: portal_two-level}
       shapes: [power_tower_portal_2_level]
+    - tags: {power: portal, design: portal_two-level}
+      shapes: [power_tower_portal_2_level]
     - tags: {power: tower, design: portal_three-level}
+      shapes: [power_tower_portal_3_level]
+    - tags: {power: portal, design: portal_three-level}
       shapes: [power_tower_portal_3_level]
 
     - tags: {power: pole}
@@ -790,10 +1146,28 @@ node_icons:
       shapes: [tower_cooling]
     - tags: {man_made: tower, tower:type: defensive}
       shapes: [tower_defensive]
+    - tags: {man_made: tower, tower:type: diving}
+      shapes: [diving_platform]
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "1"}
+      shapes: [diving_platform]
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "2"}
+      shapes: [diving_2_platforms]
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "3"}
+      shapes: [diving_3_platforms]
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "4"}
+      shapes: [diving_4_platforms]
     - tags: {man_made: tower, tower:type: pagoda}
       shapes: [pagoda]
+    - tags: {man_made: tower, tower:type: observation}
+      shapes: [tower_observation]
+    - tags: {man_made: tower, tower:type: watchtower}
+      shapes: [tower_observation]
+    - tags: {man_made: tower, tower:type: minaret}
+      shapes: [minaret]
     - tags: {man_made: mast}
       shapes: [tube]
+    - tags: {man_made: stupa}
+      shapes: [stupa]
 
     - tags: {man_made: mast, tower:construction: guyed_tube}
       shapes: [tube_guyed]
@@ -801,7 +1175,7 @@ node_icons:
       shapes: [tube]
     - tags: {man_made: mast, tower:construction: lattice}
       shapes: [lattice]
-    - tags: {man_made: mast, tower:construction: lattice_guyed}
+    - tags: {man_made: mast, tower:construction: guyed_lattice}
       shapes: [lattice_guyed]
     - tags: {man_made: mast, tower:type: lighting}
       shapes:
@@ -813,6 +1187,16 @@ node_icons:
       - tube
       - {shape: wave_left, offset: [-3, -3]}
       - {shape: wave_right, offset: [3, -3]}
+    - tags: {man_made: mast, tower:type: siren}
+      shapes:
+        - tube
+        - {shape: siren_left, offset: [-3, -3]}
+        - {shape: siren_right, offset: [3, -3]}
+    - tags: {man_made: mast, tower:type: monitoring}
+      shapes:
+        - tube
+        - {shape: dish_antenna_left, offset: [-3, -3]}
+        - {shape: dish_antenna_right, offset: [3, -3]}
     - tags:
         man_made: mast
         tower:type: lighting
@@ -831,6 +1215,22 @@ node_icons:
       - {shape: wave_right, offset: [3, -3]}
     - tags:
         man_made: mast
+        tower:type: siren
+        tower:construction: guyed_tube
+      shapes:
+        - tube_guyed
+        - {shape: siren_left, offset: [-3, -3]}
+        - {shape: siren_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: monitoring
+        tower:construction: guyed_tube
+      shapes:
+        - tube_guyed
+        - {shape: dish_antenna_left, offset: [-3, -3]}
+        - {shape: dish_antenna_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
         tower:type: lighting
         tower:construction: freestanding
       shapes:
@@ -847,6 +1247,22 @@ node_icons:
       - {shape: wave_right, offset: [3, -3]}
     - tags:
         man_made: mast
+        tower:type: siren
+        tower:construction: freestanding
+      shapes:
+        - tube
+        - {shape: siren_left, offset: [-3, -3]}
+        - {shape: siren_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: monitoring
+        tower:construction: freestanding
+      shapes:
+        - tube
+        - {shape: dish_antenna_left, offset: [-3, -3]}
+        - {shape: dish_antenna_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
         tower:type: lighting
         tower:construction: guyed_lattice
       shapes:
@@ -863,6 +1279,22 @@ node_icons:
       - {shape: wave_right, offset: [3, -3]}
     - tags:
         man_made: mast
+        tower:type: siren
+        tower:construction: guyed_lattice
+      shapes:
+        - lattice_guyed
+        - {shape: siren_left, offset: [-4, -3]}
+        - {shape: siren_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: monitoring
+        tower:construction: guyed_lattice
+      shapes:
+        - lattice_guyed
+        - {shape: dish_antenna_left, offset: [-4, -3]}
+        - {shape: dish_antenna_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
         tower:type: lighting
         tower:construction: lattice
       shapes:
@@ -877,6 +1309,22 @@ node_icons:
       - lattice
       - {shape: wave_left, offset: [-4, -3]}
       - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: siren
+        tower:construction: lattice
+      shapes:
+        - lattice
+        - {shape: siren_left, offset: [-4, -3]}
+        - {shape: siren_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: monitoring
+        tower:construction: lattice
+      shapes:
+        - lattice
+        - {shape: dish_antenna_left, offset: [-4, -3]}
+        - {shape: dish_antenna_right, offset: [3, -3]}
 
     - tags: {man_made: tower, tower:construction: guyed_tube}
       shapes: [tube_guyed]
@@ -965,7 +1413,7 @@ node_icons:
       add_shapes: [phone]
 
   - group: "Moon small objects"
-    start_zoom_level: 0
+    start_zoom_level: 0.0
     tags:
     - tags: {man_made: rover}
       shapes: [lunokhod]
@@ -1019,7 +1467,7 @@ node_icons:
       set_opacity: 0.5
 
   - group: "Important small objects"
-    start_zoom_level: 17
+    start_zoom_level: 17.0
     tags:
     - tags: {highway: elevator}
       shapes: [elevator]
@@ -1033,8 +1481,14 @@ node_icons:
       shapes: [plaque]
     - tags: {historic: memorial, memorial: statue}
       shapes: [statue]
+    - tags: {barrier: artwork, artwork_type: statue}
+      shapes: [statue]
     - tags: {historic: stone}
       shapes: [stone_with_inscription]
+    - tags: {historic: wayside_cross}
+      shapes: [cross_and_horizontal_bar]
+    - tags: {historic: wayside_shrine}
+      shapes: [wayside_shrine]
     - tags: {historic: memorial, memorial: stone}
       shapes: [stone_with_inscription]
     - tags: {historic: tomb}
@@ -1048,32 +1502,52 @@ node_icons:
       shapes: [lift_gate]
     - tags: {barrier: turnstile}
       shapes: [turnstile]
-    - tags: {railway: level_crossing}
-      shapes: [x]
+    - tags: {barrier: log}
+      shapes: [wood]
+    - tags: {barrier: chain}
+      shapes: [chain_barrier]
     - tags: {railway: crossing}
       shapes: [x]
+    - tags: {railway: railway_crossing}
+      shapes: [x]
+    - tags: {railway: level_crossing}
+      shapes: [x]
+    - tags: {railway: signal}
+      shapes: [signal]
     - tags: {amenity: atm}
       shapes: [atm]
     - tags: {amenity: bicycle_parking}
       shapes:
       - {shape: bicycle, offset: [0, 2]}
       - {shape: p_small, offset: [-6, -3]}
+    - tags: {amenity: bicycle_parking, bicycle_parking: stands}
+      shapes:
+      - {shape: p_small, offset: [-5, -3]}
+      - bicycle_parking_stand
+    - tags: {amenity: bicycle_parking, bicycle_parking: wall_loops}
+      shapes:
+      - {shape: p_small, offset: [-5, -3]}
+      - bicycle_parking_wall_loops
+    - tags: {amenity: bicycle_parking, bicycle_parking: rack}
+      shapes:
+      - {shape: p_small, offset: [-5, -3]}
+      - bicycle_parking_rack
     - tags: {amenity: telephone}
       shapes: [telephone]
     - tags: {information: "*"}
-      shapes: [information]
+      shapes: [i]
       replace_shapes: no
-    - tags: {tourism: "*"}
-      shapes: [historic]
-      replace_shapes: no
+    # tags: {tourism: "*"}
+    # shapes: [historic]
+    # replace_shapes: no
     - tags: {tourism: information}
-      shapes: [information]
+      shapes: [i]
     - tags: {information: guidepost}
       shapes: [guidepost]
     - tags: {tourism: viewpoint}
       shapes: [binoculars]
     - tags: {information: board}
-      shapes: [information_board]
+      shapes: [i_in_square]
     - tags: {vending: admission_tickets}
       shapes: [vending_tickets]
     - tags: {vending: candles}
@@ -1102,6 +1576,8 @@ node_icons:
       shapes: [picture]
     - tags: {tourism: artwork, artwork_type: statue}
       shapes: [statue]
+    - tags: {tourism: artwork, artwork_type: stone}
+      shapes: [stone_with_inscription]
     - tags: {exhibit: artwork, artwork_type: statue}
       shapes: [statue_exhibit]
     - tags: {tourism: artwork, artwork_type: sculpture}
@@ -1118,13 +1594,17 @@ node_icons:
       shapes: {christmas_tree}
 
   - group: "Normal small objects"
-    start_zoom_level: 18
+    start_zoom_level: 18.0
     tags:
     - tags: {railway: switch}
       shapes: [y]
     - tags: {amenity: binoculars}
       shapes: [binoculars_on_pole]
     - tags: {amenity: parking_space}
+      shapes: [p_small]
+    - tags: {amenity: parking, parking: lane}
+      shapes: [p_small]
+    - tags: {amenity: parking, parking: street_side}
       shapes: [p_small]
     - tags: {amenity: post_box}
       shapes: [envelope]
@@ -1156,6 +1636,8 @@ node_icons:
       shapes: [slide]
     - tags: {playground: roundabout}
       shapes: [roundabout]
+    - tags: {playground: sandpit}
+      shapes: [sandpit]
     - tags: {playground: seesaw}
       shapes: [seesaw]
     - tags: {playground: horizontal_bar}
@@ -1166,9 +1648,11 @@ node_icons:
       shapes: [golf_tee]
     - tags: {golf: pin}
       shapes: [golf_pin]
+    - tags: {highway: traffic_mirror}
+      shapes: [side_mirror]
 
   - group: "Entrances"
-    start_zoom_level: 18
+    start_zoom_level: 18.0
     tags:
     - tags: {amenity: parking_entrance}
       shapes:
@@ -1192,6 +1676,8 @@ node_icons:
       shapes: [entrance]
     - tags: {entrance: "yes"}
       shapes: [entrance]
+    - tags: {building: entrance}
+      shapes: [{shape: entrance, color: "#FF0000"}]
     - tags: {entrance: shop}
       shapes: [entrance]
     - tags: {entrance: exit}
@@ -1204,7 +1690,7 @@ node_icons:
       shapes: [no_door]
 
   - group: "Not important small objects"
-    start_zoom_level: 18
+    start_zoom_level: 18.0
     tags:
     - tags: {amenity: bench}
       shapes: [bench]
@@ -1212,6 +1698,16 @@ node_icons:
       shapes: [bench_backrest]
     - tags: {amenity: bench, backrest: "no"}
       shapes: [bench_no_backrest]
+    - tags: {amenity: bench, tourism: artwork, artwork_type: sculpture}
+      shapes: [bench_with_statue]
+    - tags: {amenity: bench, tourism: artwork, artwork_type: statue}
+      shapes: [bench_with_statue]
+    - tags: {historic: memorial, memorial: bench, amenity: bench}
+      shapes: [bench_with_inscription]
+    - tags: {historic: memorial, memorial: bench}
+      shapes: [bench_with_inscription]
+    - tags: {memorial: bench}
+      shapes: [bench_with_inscription]
     - tags: {amenity: clock}
       shapes: [clock]
     - tags: {amenity: fountain}
@@ -1231,9 +1727,9 @@ node_icons:
     - tags: {amenity: bbq}
       shapes: [bbq]
     - tags: {leisure: firepit}
-      shapes: [firepit]
+      shapes: [fire_pit]
     - tags: {man_made: cross}
-      shapes: [cross]
+      shapes: [latin_cross]
     - tags: {man_made: flagpole}
       shapes: [flagpole]
     - tags: {man_made: manhole}
@@ -1248,12 +1744,18 @@ node_icons:
       shapes: [street_cabinet]
     - tags: {man_made: surveillance}
       shapes: [cctv]
+    - tags: {man_made: surveillance, camera:type: dome, camera:mount: ceiling}
+      shapes: [cctv_dome_ceiling]
+    - tags: {man_made: surveillance, camera:type: dome, camera:mount: wall}
+      shapes: [cctv_dome_wall]
     - tags: {man_made: ventilation_shaft}
       shapes: [ventilation]
     - tags: {railway: ventilation_shaft}
       shapes: [ventilation]
     - tags: {advertising: billboard}
       shapes: [billboard]
+    - tags: {advertising: column}
+      shapes: [advertising_column]
     - tags: {natural: rock}
       shapes: [stone]
     - tags: {natural: stone}
@@ -1267,54 +1769,46 @@ node_icons:
       shapes: [buffer_stop]
     - tags: {traffic_sign: city_limit}
       shapes: [city_limit_sign]
-    - tags: {traffic_sign: maxspeed, maxspeed: "30"}
+    - tags: {traffic_sign: maxspeed, maxspeed: "^(\\d)(\\d)$"}
       shapes: [
         circle_11,
-        {shape: digit_3, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
+        {shape: digit_#maxspeed0, offset: [-2, 0], color: "#FFFFFF"},
+        {shape: digit_#maxspeed1, offset: [2, 0], color: "#FFFFFF"},
       ]
-    - tags: {traffic_sign: maxspeed, maxspeed: "40"}
-      shapes: [
-        circle_11,
-        {shape: digit_4, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-      ]
-    - tags: {traffic_sign: maxspeed, maxspeed: "50"}
-      shapes: [
-        circle_11,
-        {shape: digit_5, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-      ]
-    - tags: {traffic_sign: maxspeed, maxspeed: "60"}
-      shapes: [
-        circle_11,
-        {shape: digit_6, offset: [-2, 0], color: "#FFFFFF"},
-        {shape: digit_0, offset: [2, 0], color: "#FFFFFF"},
-      ]
-    - tags: {traffic_sign: maxspeed, maxspeed: "40_mph"}
+    - tags: {traffic_sign: maxspeed, maxspeed: "^(\\d)(\\d) mph$"}
       shapes: [
         speed_limit_mph,
-        {shape: digit_4, offset: [-2, 2]},
-        {shape: digit_0, offset: [2, 2]},
+        {shape: digit_#maxspeed0, offset: [-2, 2]},
+        {shape: digit_#maxspeed1, offset: [2, 2]},
       ]
+    - tags: {highway: milestone}
+      shapes: [milestone]
     - tags: {traffic_sign: stop}
       shapes: [stop]
     - tags: {highway: give_way}
       shapes: [triangle_down_hollow]
     - tags: {noexit: "yes"}
-      shapes: [noexit]
+      shapes: [t]
     - tags: {barrier: block}
       shapes: [block]
     - tags: {barrier: rock}
       shapes: [stone]
     - tags: {barrier: bollard}
       shapes: [bollard]
+    - tags: {barrier: kerb}
+      shapes: [kerb]
+    - tags: {tank_trap: czech_hedgehog}
+      shapes: [czech_hedgehog]
+    - tags: {tank_trap: dragons_teeth}
+      shapes: [dragons_teeth]
+    - tags: {tank_trap: toblerone}
+      shapes: [dragons_teeth]
 
   - group: "Trees"
-    start_zoom_level: 18
+    start_zoom_level: 18.0
     tags:
     - tags: {natural: tree}
-      shapes: [{shape: tree, color: tree_color}]
+      shapes: [{shape: tree, color: tree_color, outline: no}]
     - tags: {leaf_type: broadleaved}
       shapes: [{shape: tree_with_leaf, color: tree_color}]
     - tags: {leaf_type: needleleaved}
@@ -1363,7 +1857,7 @@ node_icons:
       add_shapes: [{shape: pear, color: tree_color}]
 
   - group: "Indoor"
-    start_zoom_level: 18
+    start_zoom_level: 18.0
     tags:
     - tags: {door: "yes"}
       shapes: [entrance]
@@ -1374,13 +1868,13 @@ node_icons:
     tags:
     - tags: {support: pole}
       over_icon: [support_pole]
-      under_icon: [clock, information_board]
+      under_icon: [clock, i_in_square]
     - tags: {support: wall_mounted}
       over_icon: [support_wall]
-      under_icon: [clock, information_board]
+      under_icon: [clock, i_in_square]
     - tags: {support: column}
       over_icon: [support_column]
-      under_icon: [clock, information_board]
+      under_icon: [clock, i_in_square]
     - tags: {amenity: "*", karaoke: "yes"}
       add_shapes: [microphone]
     - tags: {building: "*", "roof:shape": onion}
@@ -1405,7 +1899,7 @@ node_icons:
     - tags: {bicycle: "no"}
       shapes:
       - {shape: bicycle, offset: [0, 2]}
-      - {shape: x_small, offset: [-5, -4]}
+      - {shape: x_4, offset: [-5, -4]}
     - tags: {internet_access: wlan, "internet_access:fee": "no"}
       add_shapes:
       - {shape: wlan, offset: [0, -3]}
@@ -1421,12 +1915,16 @@ node_icons:
       add_shapes: [lock]
     - tags: {direction: clockwise}
       add_shapes: [clockwise]
-    - tags: {direction: contrclockwise}
-      add_shapes: [contrclockwise]
+    - tags: {direction: anticlockwise}
+      add_shapes: [counterclockwise]
     - tags: {atm: "yes"}
       add_shapes: [atm]
     - tags: {tactile_paving: "yes"}
       add_shapes: [tactile_paving]
+    - tags: {tactile_paving: "no"}
+      add_shapes:
+      - {shape: tactile_paving, offset: [0, 2]}
+      - {shape: x_5, offset: [0, -3]}
     - tags: {"payment:credit_cards": "yes"}
       add_shapes: [credit_card]
 
@@ -1443,6 +1941,44 @@ node_icons:
 
     - tags: {recycling:glass_bottles: "yes"}
       add_shapes: [bottle]
+    - tags: {recycling:paper: "yes"}
+      add_shapes: [sheets]
+    - tags: {recycling:glass: "yes"}
+      add_shapes: [bottle_and_wine_glass]
+    - tags: {recycling:clothes: "yes"}
+      add_shapes: [t_shirt]
+    - tags: {recycling:shoes: "yes"}
+      add_shapes: [shoe]
+    - tags: {recycling:green_waste: "yes"}
+      add_shapes: [apple]
+    - tags: {recycling:paper_packaging: "yes"}
+      add_shapes: [sheets]
+    - tags: {recycling:newspaper: "yes"}
+      add_shapes: [sheets]
+    - tags: {recycling:magazines: "yes"}
+      add_shapes: [sheets]
+    - tags: {recycling:books: "yes"}
+      add_shapes: [book]
+    - tags: {recycling:wood: "yes"}
+      add_shapes: [{shape: wood, color: trunk_color}]
+    - tags: {recycling:glass_bottles:colour: "yes"}
+      add_shapes: [{shape: bottle, color: green}]
+    - tags: {recycling:cartons: "yes"}
+      add_shapes: [aseptic_carton]
+    - tags: {recycling:beverage_cartons: "yes"}
+      add_shapes: [aseptic_carton]
+    - tags: {recycling:organic: "yes"}
+      add_shapes: [apple]
+    - tags: {recycling:tetrapak: "yes"}
+      add_shapes: [aseptic_carton]
+    - tags: {recycling:tyres: "yes"}
+      add_shapes: [tyre]
+    - tags: {recycling:toys: "yes"}
+      add_shapes: [toy_horse]
+    - tags: {recycling:verre: "yes"}
+      add_shapes: [bottle_and_wine_glass]
+    - tags: {recycling:bags: "yes"}
+      add_shapes: [bag]
 
     - tags: {crossing:island: "yes"}
       add_shapes: [rectangle_vertical_rounded]
@@ -1451,141 +1987,159 @@ node_icons:
 
 roads:
   - tags: {highway: motorway}
-    default_width: 15
+    default_width: 7.0
     border_color: motorway_border_color
     color: motorway_color
     priority: 41.8
   - tags: {highway: trunk}
-    default_width: 13
-    border_color: road_border_color
-    priority: 41
+    default_width: 7.0
+    border_color: motorway_border_color
+    color: motorway_color
+    priority: 41.0
+  - tags: {highway: trunk_link}
+    default_width: 7.0
+    border_color: motorway_border_color
+    color: motorway_color
+    priority: 41.0
   - tags: {highway: primary}
-    default_width: 11
+    default_width: 7.0
     border_color: primary_border_color
     color: primary_color
     priority: 41.7
   - tags: {highway: motorway_link}
-    default_width: 9
+    default_width: 7.0
     border_color: motorway_border_color
     color: motorway_color
     priority: 41.8
   - tags: {highway: secondary}
-    default_width: 9
+    default_width: 7.0
     border_color: secondary_border_color
     priority: 41.6
     color: secondary_color
   - tags: {highway: secondary_link}
-    default_width: 9
+    default_width: 7.0
     border_color: secondary_border_color
     priority: 41.6
     color: secondary_color
   - tags: {highway: tertiary}
-    default_width: 7
+    default_width: 7.0
     border_color: tertiary_border_color
     priority: 41.5
     color: tertiary_color
   - tags: {highway: tertiary_link}
-    default_width: 7
+    default_width: 7.0
     border_color: tertiary_border_color
     priority: 41.5
     color: tertiary_color
   - tags: {highway: unclassified}
-    default_width: 5
+    default_width: 5.0
     border_color: road_border_color
-    priority: 41
+    priority: 41.0
   - tags: {highway: residential}
-    default_width: 5
+    default_width: 5.0
     border_color: road_border_color
-    priority: 41
+    priority: 41.0
   - tags: {highway: living_street}
-    default_width: 4
+    default_width: 4.0
     border_color: road_border_color
-    priority: 41
+    priority: 41.0
   - tags: {highway: service}
     exception: {service: parking_aisle}
-    default_width: 3
+    default_width: 3.0
     border_color: road_border_color
-    priority: 41
+    priority: 41.0
   - tags: {highway: service, service: parking_aisle}
-    default_width: 2
+    default_width: 2.0
     border_color: road_border_color
-    priority: 41
+    priority: 41.0
   - tags: {leisure: track}
     color: pitch_color
     border_color: pitch_border_color
-    default_width: 5
-    priority: 21
+    default_width: 5.0
+    priority: 21.0
+
+  - tags: {highway: raceway}
+    color: pitch_color
+    border_color: pitch_border_color
+    default_width: 7.0
+    priority: 21.0
 
 ways:
   - tags: {man_made: bridge}
     style: {fill: "#AAAAAA"}
-    priority: 22
+    priority: 22.0
   - tags: {indoor: area}
     style:
       stroke: indoor_border_color
-      stroke-width: 1
+      stroke-width: 1.0
       fill: indoor_color
-    priority: 10
+    priority: 10.0
   - tags: {indoor: corridor}
     style:
       stroke: indoor_color
-      stroke-width: 1
+      stroke-width: 1.0
       fill: indoor_color
-    priority: 11
+    priority: 11.0
   - tags: {highway: corridor}
     style:
       stroke: "#00FF00"
-      stroke-width: 5
-    priority: 11
+      stroke-width: 5.0
+    priority: 11.0
   - tags: {indoor: "yes", area: "yes"}
     style:
       stroke: indoor_color
-      stroke-width: 1
+      stroke-width: 1.0
       fill: indoor_color
-    priority: 12
+    priority: 12.0
   - tags: {indoor: room, area: "yes"}
     style:
       stroke: indoor_color
-      stroke-width: 1
+      stroke-width: 1.0
       fill: indoor_color
-    priority: 12
+    priority: 12.0
   - tags: {indoor: elevator, area: "yes"}
     style:
       stroke: indoor_color
-      stroke-width: 1
+      stroke-width: 1.0
       fill: indoor_color
-    priority: 12
+    priority: 12.0
   - tags: {indoor: column}
     style:
       stroke: indoor_color
-      stroke-width: 1
+      stroke-width: 1.0
       fill: indoor_color
-    priority: 13
+    priority: 13.0
 
   - tags: {power: line}
     style:
       stroke: "#000000"
-      stroke-width: 1
+      stroke-width: 1.0
       opacity: 0.2
-    priority: 80
+    priority: 80.0
   - tags: {power: cable}
     style:
       stroke: "#000000"
-      stroke-width: 1
+      stroke-width: 1.0
       opacity: 0.1
-    priority: 80
+    priority: 80.0
   - tags: {golf: hole}
     style:
       stroke: "#000000"
-      stroke-width: 1
+      stroke-width: 1.0
       opacity: 0.3
-    priority: 80
+    priority: 80.0
   - tags: {man_made: pipeline}
-    style: {stroke: "#888888", stroke-width: 1, stroke-dasharray: "12,1.5"}
-    priority: 80
+    style:
+      stroke: "#888888"
+      stroke-width: 1.0
+      stroke-dasharray: "12.0,1.5"
+    priority: 80.0
   - tags: {man_made: pipeline}
-    style: {stroke: "#888888", stroke-width: 3, stroke-dasharray: "1,10,1,1.5"}
-    priority: 80
+    style:
+      stroke: "#888888"
+      stroke-width: 3.0
+      stroke-dasharray: "1.0,10.0,1.0,1.5"
+    priority: 80.0
 
   - tags: {highway: track}
     style:
@@ -1593,151 +2147,189 @@ ways:
       stroke: track_color
       stroke-linecap: round
       stroke-linejoin: round
-    priority: 41
+    priority: 41.0
   - tags: {highway: footway}
-    exception: {area: "yes"}
+    exception: {area: "yes", type: "multipolygon"}
     style:
-      stroke-width: 3
+      stroke-width: 3.0
       stroke: foot_border_color
       stroke-linecap: round
       stroke-linejoin: round
-    priority: 41
+    priority: 41.0
   - tags: {highway: pedestrian}
     exception: {area: "yes"}
     style:
-      stroke-width: 3
+      stroke-width: 3.0
       stroke: foot_border_color
       stroke-linecap: round
       stroke-linejoin: round
-    priority: 41
+    priority: 41.0
   - tags: {highway: cycleway}
     exception: {area: "yes"}
     style:
-      stroke-width: 3
+      stroke-width: 3.0
       stroke: foot_border_color
       stroke-linecap: round
       stroke-linejoin: round
-    priority: 41
+    priority: 41.0
   - tags: {highway: steps}
     style:
-      stroke-width: 6
+      stroke-width: 6.0
       stroke: foot_border_color
       stroke-linecap: butt
   - tags: {highway: path}
     style:
-      stroke-width: 3
+      stroke-width: 3.0
       stroke: foot_border_color
-    priority: 41
+    priority: 41.0
 
   - tags: {highway: footway}
-    exception: {area: "yes"}
+    exception: {area: "yes", type: "multipolygon"}
     style:
       stroke-width: 1.5
-      stroke-dasharray: 7,3
+      stroke-dasharray: 7.0,3.0
       stroke-linecap: round
       stroke-linejoin: round
       stroke: foot_color
-    priority: 42
+    priority: 42.0
   - tags: {highway: pedestrian}
     exception: {area: "yes"}
     style:
       stroke-width: 1.5
-      stroke-dasharray: 7,3
+      stroke-dasharray: 7.0,3.0
       stroke-linecap: round
       stroke-linejoin: round
       stroke: foot_color
-    priority: 42
+    priority: 42.0
   - tags: {highway: footway, area: "yes"}
     style:
-      stroke: none
-      fill: "#DDDDDD"
+      stroke: foot_area_border_color
+      fill: foot_area_color
       stroke-linecap: round
       stroke-linejoin: round
-    priority: -55  # FIXME
+    priority: 55.0
+  - tags: {highway: footway, type: "multipolygon"}
+    style:
+      stroke: foot_area_border_color
+      fill: foot_area_color
+      stroke-linecap: round
+      stroke-linejoin: round
+    priority: 55.0
   - tags: {highway: pedestrian, area: "yes"}
     style:
       stroke: none
-      fill: "#DDDDDD"
+      fill: foot_area_color
       stroke-linecap: round
       stroke-linejoin: round
-    priority: -55  # FIXME
+    priority: -55.0  # FIXME
   - tags: {highway: cycleway}
     exception: {area: "yes"}
     style:
-      stroke-width: 1
+      stroke-width: 1.0
       stroke: cycle_color
-      stroke-dasharray: 8,2
+      stroke-dasharray: 8.0,2.0
       stroke-linecap: butt
-    priority: 42
+    priority: 42.0
   - tags: {highway: steps, conveying: "*"}
     style:
-      stroke-width: 5
-      stroke-dasharray: 1.5,2
+      stroke-width: 5.0
+      stroke-dasharray: 1.5,2.0
       stroke-linecap: butt
       stroke: "#888888"
-    priority: 42
+    priority: 42.0
   - tags: {highway: steps}
     exception: {conveying: "*"}
     style:
-      stroke-width: 5
-      stroke-dasharray: 1.5,2
+      stroke-width: 5.0
+      stroke-dasharray: 1.5,2.0
       stroke-linecap: butt
       stroke: foot_color
-    priority: 42
+    priority: 42.0
   - tags: {highway: path}
     style:
       stroke-width: 1.5
-      stroke-dasharray: 5,3
+      stroke-dasharray: 5.0,3.0
       stroke-linecap: butt
       stroke: foot_color
-    priority: 42
+    priority: 42.0
+
+  - tags: {aeroway: runway}
+    style:
+      stroke-width: 50.0
+      stroke: runway_color
+    priority: 22.0
+  - tags: {aeroway: taxiway}
+    style:
+      stroke-width: 50.0
+      stroke: taxiway_color
+    priority: 21.0
+  - tags: {aeroway: runway}
+    style:
+      stroke-width: 2.0
+      stroke: "#DDDDDD"
+      stroke-dasharray: 40.0,20.0
+    priority: 23.0
+  - tags: {aeroway: taxiway}
+    style:
+      stroke-width: 1.0
+      stroke: "#CCCCCC"
+    priority: 23.0
+  - tags: {aeroway: parking_position}
+    style:
+      stroke-width: 1.0
+      stroke: "#DDCC00"
+    priority: 23.0
+  - tags: {area:aeroway: taxiway}
+    style:
+      fill: "#CCCCCC"
+    priority: 20.0
 
   - tags: {natural: wood}
     style:
       fill: wood_color
-    priority: 21
+    priority: 21.0
   - tags: {natural: wetland}
     style:
       fill: wetland_color
-    priority: 21
+    priority: 21.0
   - tags: {natural: grassland}
     style:
       fill: grass_color
       stroke: grass_border_color
-    priority: 20
+    priority: 20.0
   - tags: {natural: scrub}
     style:
       fill: wood_color
-    priority: 21
+    priority: 21.0
   - tags: {natural: sand}
     style:
       fill: sand_color
-    priority: 20
+    priority: 20.0
   - tags: {natural: beach}
     style:
       fill: beach_color
-    priority: 20
+    priority: 20.0
   - tags: {natural: heath}
     style:
       fill: "#DDDDDD"
-    priority: 20
+    priority: 20.0
   - tags: {natural: glacier}
     style:
       fill: "#FFFFFF"
-    priority: 20
+    priority: 20.0
   - tags: {natural: desert}
     style:
       fill: desert_color
-    priority: 20
+    priority: 20.0
   - tags: {natural: forest}
     style:
       fill: wood_color
-    priority: 21
+    priority: 21.0
   - tags: {natural: tree_row}
-    priority: 21
+    priority: 21.0
     style:
       stroke: wood_color
-      stroke-width: 5
+      stroke-width: 5.0
       stroke-linecap: round
       stroke-linejoin: round
   - tags: {natural: water}
@@ -1745,34 +2337,40 @@ ways:
     style:
       fill: water_color
       # stroke: water_border_color
-      # stroke-width: 1
-    priority: 21
+      # stroke-width: 1.0
+    priority: 21.0
   - tags: {natural: water, intermittent: "yes"}
     style:
       fill: water_color
       opacity: 0.5
       # stroke: water_border_color
-      # stroke-width: 1
-    priority: 21
+      # stroke-width: 1.0
+    priority: 21.0
   - tags: {natural: coastline}
     style:
       # fill: water_color
       stroke: water_border_color
-      stroke-width: 1
-    priority: 21
+      stroke-width: 1.0
+    priority: 21.0
   - tags: {natural: ridge}
     style:
-      stroke-width: 2
+      stroke-width: 2.0
       opacity: 0.3
       stroke: ridge_color
-    priority: 21
+    priority: 21.0
   - tags: {natural: bare_rock}
     style:
       fill: rock_color
   - tags: {natural: cliff}
     style:
-      stroke-width: 1
+      stroke-width: 1.0
       stroke: "#BBBBBB"
+  - tags: {natural: cliff}
+    parallel_offset: -2.5
+    style:
+      stroke-width: 5.0
+      stroke: "#BBBBBB"
+      stroke-dasharray: "1,10"
   - tags: {natural: scree}
     style:
       fill: scree_color
@@ -1780,48 +2378,51 @@ ways:
   - tags: {landuse: allotments}
     style:
       fill: allotments_color
-    priority: 20
+    priority: 20.0
   - tags: {landuse: conservation}
     style:
       fill: grass_color
-    priority: 20
+    priority: 20.0
   - tags: {landuse: construction}
     style:
       fill: construction_color
   - tags: {landuse: farmland}
     style: {fill: farmland_color, stroke: farmland_border_color}
-    priority: 20
+    priority: 20.0
+  - tags: {landuse: farmyard}
+    style: {fill: farmland_color, stroke: farmland_border_color}  # FIXME
+    priority: 20.0
   - tags: {landuse: farmland, crop: wheat}
     style: {fill: wheat_color, stroke: wheat_border_color}
-    priority: 20
+    priority: 20.0
   - tags: {landuse: farmland, crop: barley}
     style: {fill: barley_color, stroke: barley_border_color}
-    priority: 20
+    priority: 20.0
   - tags: {landuse: farmland, crop: rye}
     style: {fill: rye_color, stroke: rye_dark_color}
-    priority: 20
+    priority: 20.0
   - tags: {landuse: forest}
     style:
       fill: wood_color
-    priority: 20
+    priority: 20.0
   - tags: {landuse: garages}
     style:
       fill: parking_color
-    priority: 21
+    priority: 21.0
   - tags: {landuse: grass}
     style:
       fill: grass_color
       stroke: grass_border_color
-    priority: 20
+    priority: 20.0
   - tags: {landuse: orchard}
     style:
       fill: orchard_color
-    priority: 21
+    priority: 21.0
   - tags: {landuse: meadow}
     style:
       fill: meadow_color
       stroke: meadow_border_color
-    priority: 20
+    priority: 20.0
 
     # Hidden land use
 
@@ -1829,43 +2430,49 @@ ways:
     style:
       fill: hidden_color
       opacity: 0.05
+    priority: 1.0
   - tags: {landuse: commercial}
     style:
       fill: hidden_color
       opacity: 0.05
+    priority: 1.0
   - tags: {landuse: industrial}
     style:
       fill: hidden_color
       opacity: 0.05
+    priority: 1.0
   - tags: {landuse: military}
     style:
       fill: hidden_color
       opacity: 0.05
+    priority: 1.0
   - tags: {landuse: railway}
     style:
       fill: hidden_color
       opacity: 0.05
+    priority: 1.0
   - tags: {landuse: residential}
     style:
       fill: hidden_color
       opacity: 0.05
+    priority: 1.0
   - tags: {power: substation}
     style:
       fill: hidden_color
       opacity: 0.05
+    priority: 1.0
 
   - tags: {amenity: ferry_terminal}
     style:
       fill: ferry_terminal_color
-    priority: 50
+    priority: 50.0
   - tags: {amenity: parking}
     style:
       fill: parking_color
       opacity: 0.5
   - tags: {amenity: parking_space}
     style:
-      stroke: "#000000"
-      opacity: 0.2
+      stroke: "#FFFFFF"
 
   - tags: {aeroway: landingpad}
     style:
@@ -1876,6 +2483,14 @@ ways:
       fill: "#440044"
       opacity: 0.1
 
+  - tags: {waterway: river}
+    style:
+      stroke: water_color
+      stroke-width: 2.5
+  - tags: {waterway: canal}
+    style:
+      stroke: water_color
+      stroke-width: 2.0
   - tags: {waterway: stream}
     style:
       stroke: water_color
@@ -1884,71 +2499,103 @@ ways:
     style:
       fill: water_color
       stroke: water_border_color
-      stroke-width: 1
+      stroke-width: 1.0
   - tags: {waterway: ditch}
     style:
       fill: water_color
       stroke: water_color
-      stroke-width: 2
+      stroke-width: 2.0
 
   - tags: {railway: subway}
     style:
       stroke-width: 3.5
       opacity: 0.7
       stroke: "#AAAAAA"
-    priority: 41
+    priority: 41.0
   - tags: {railway: rail}
     style:
-      stroke-width: 3
+      stroke-width: 3.0
       stroke: "#BBBBBB"
-    priority: 42
+    priority: 42.0
+  - tags: {railway: light_rail}
+    style:
+      stroke-width: 3.0
+      stroke: "#CCCCCC"
+    priority: 42.0
+  - tags: {railway: monorail}
+    style:
+      stroke-width: 3.0
+      stroke: "#CCCCCC"
+    priority: 42.0
+  - tags: {railway: funicular}
+    style:
+      stroke-width: 3.0
+      stroke: "#CCCCCC"
+    priority: 42.0
   - tags: {railway: narrow_gauge}
     style:
-      stroke-width: 3
-      stroke: "#BBBBBB"
-    priority: 42
+      stroke-width: 3.0
+      stroke: "#DDDDDD"
+    priority: 42.0
   - tags: {railway: tram}
     style:
-      stroke-width: 3
+      stroke-width: 3.0
       stroke: "#BBBBBB"
-    priority: 42
+    priority: 42.0
+
   - tags: {railway: rail}
     style:
-      stroke-width: 1
+      stroke-width: 1.0
       stroke: "#444444"
-    priority: 43
+    priority: 43.0
+  - tags: {railway: light_rail}
+    style:
+      stroke-width: 1.0
+      stroke: "#444444"
+    priority: 43.0
+  - tags: {railway: monorail}
+    style:
+      stroke-width: 1.0
+      stroke: "#444444"
+    priority: 43.0
+  - tags: {railway: funicular}
+    style:
+      stroke-width: 1.0
+      stroke: "#444444"
+    priority: 43.0
   - tags: {railway: narrow_gauge}
     style:
-      stroke-width: 1
+      stroke-width: 1.0
       stroke: "#444444"
-    priority: 43
+    priority: 43.0
   - tags: {railway: tram}
     style:
-      stroke-width: 1
+      stroke-width: 1.0
       stroke: "#444444"
-    priority: 43
+    priority: 43.0
+
   - tags: {railway: platform}
     style:
       fill: platform_color
-      stroke-width: 1
+      stroke-width: 1.0
       stroke: platform_border_color
-    priority: 41
+    priority: 41.0
 
   - tags: {route: ferry}
     style:
-      stroke-width: 1
-      stroke-dasharray: 3,3
+      stroke-width: 1.0
+      stroke-dasharray: 3.0,3.0
       stroke-linecap: butt
       stroke: route_color
-    priority: 42
+    priority: 42.0
 
   - tags: {leisure: garden}
     style:
       fill: grass_color
-    priority: 21
+    priority: 21.0
   - tags: {leisure: park}
     style:
-      fill: grass_color
+      fill: park_color
       opacity: 0.5
   - tags: {landuse: recreation_ground}
     style:
@@ -1966,99 +2613,115 @@ ways:
     style:
       fill: pitch_color
       stroke: pitch_border_color
-      stroke-width: 1
-    priority: 21
+      stroke-width: 1.0
+    priority: 21.0
   - tags: {leisure: bleachers}
     style:
       fill: pitch_color
       stroke: pitch_border_color
-      stroke-width: 1
-    priority: 21
+      stroke-width: 1.0
+    priority: 21.0
   - tags: {leisure: track, area: "yes"}
     style:
       fill: pitch_color
       stroke: pitch_border_color
-      stroke-width: 1
-    priority: 21
+      stroke-width: 1.0
+    priority: 21.0
   - tags: {leisure: fitness_station}
     style:
       fill: pitch_color
       stroke: pitch_border_color
-      stroke-width: 1
-    priority: 21
+      stroke-width: 1.0
+    priority: 21.0
   - tags: {leisure: playground}
     style:
       fill: playground_color
-      opacity: 0.2
-    priority: 21
+      stroke: playground_border_color
+    priority: 21.0
   - tags: {leisure: swimming_pool}
     style:
       fill: water_color
       stroke: water_border_color
-      stroke-width: 1
+      stroke-width: 1.0
 
   - tags: {barrier: hedge}
     style:
       fill: none
       stroke: wood_color
-      stroke-width: 4
-    priority: 40
+      stroke-width: 4.0
+    priority: 40.0
   - tags: {barrier: city_wall}
     style:
       fill: none
       stroke: "#000000"
-      stroke-width: 1
-      opacity: 0.35
-    priority: 40
+      stroke-width: 2.0
+      opacity: 0.5
+    priority: 40.0
   - tags: {barrier: wall}
     style:
       fill: none
       stroke: "#000000"
-      stroke-width: 1
+      stroke-width: 1.5
+      opacity: 0.4
+    priority: 40.0
+  - tags: {man_made: embankment}
+    style:
+      fill: none
+      stroke: "#000000"
+      stroke-width: 1.0
       opacity: 0.3
-    priority: 40
+    priority: 40.0
+  - tags: {man_made: embankment}
+    parallel_offset: -1.5
+    style:
+      fill: none
+      stroke: "#000000"
+      stroke-width: 3.0
+      opacity: 0.3
+      stroke-dasharray: "1,7"
+    priority: 40.0
   - tags: {barrier: fence}
     style:
       fill: none
       stroke: "#000000"
-      stroke-width: 1
+      stroke-width: 1.0
       opacity: 0.25
-    priority: 40
+    priority: 40.0
   - tags: {barrier: retaining_wall}
     style:
       fill: none
       stroke: "#000000"
-      stroke-width: 1
+      stroke-width: 1.0
       opacity: 0.25
-    priority: 40
+    priority: 40.0
   - tags: {barrier: handrail}
     style:
       fill: none
       stroke: "#000000"
-      stroke-width: 1
+      stroke-width: 1.0
       opacity: 0.2
-    priority: 40
+    priority: 40.0
   - tags: {barrier: kerb}
     style:
       fill: none
       stroke: "#000000"
-      stroke-width: 1
+      stroke-width: 1.0
       opacity: 0.15
-    priority: 40
+    priority: 40.0
 
   - tags: {border: "*"}
     style:
       stroke: "#FF0000"
       stroke-width: 0.5
-      stroke-dasharray: 10,20
+      stroke-dasharray: 10.0,20.0
   - tags: {"area:highway": "*"}
 
   - tags: {boundary: "*"}
     # style:
     #   stroke: boundary_color
     #   stroke-width: 0.3
-    #   stroke-dasharray: 10,5
-    priority: 60
+    #   stroke-dasharray: 10.0,5.0
+    priority: 60.0
 
 area_tags:
   - tags: {aeroway: "*"}
@@ -2071,7 +2734,7 @@ area_tags:
   - tags: {power: "compensator"}
   - tags: {power: "substation"}
 
-tags_to_write:
+keys_to_write:
   - "STIF:zone"
   - "alt_name"
   - "artist_name"
@@ -2171,14 +2834,13 @@ prefix_to_write:
   - "name"
   - "old_name"
   - "operator"
-  - "ref"
   - "route_ref"
   - "species"
   - "taxon"
   - "website"
   - "wikipedia"
 
-tags_to_skip:
+keys_to_skip:
   - "FIXME"
   - "attribution"
   - "building:levels"
@@ -2188,8 +2850,9 @@ tags_to_skip:
   - "curve_geometry"
   - "diameter_crown"
   - "fixme"
-  - "junction"
+  - "import_uuid"
   - "indoor"
+  - "junction"
   - "layer"
   - "level"
   - "level:ref"
@@ -2210,3 +2873,6 @@ prefix_to_skip:
   - "source"
   - "razed"
   - "removed"
+
+tags_to_skip:
+  highway: motorway_junction

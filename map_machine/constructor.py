@@ -2,6 +2,7 @@
 Construct Map Machine nodes and ways.
 """
 import logging
+import sys
 from datetime import datetime
 from hashlib import sha256
 from typing import Any, Dict, Iterator, List, Optional, Set, Tuple, Union
@@ -9,18 +10,26 @@ from typing import Any, Dict, Iterator, List, Optional, Set, Tuple, Union
 import numpy as np
 from colour import Color
 
-from map_machine import ui
 from map_machine.color import get_gradient_color
+from map_machine.feature.building import Building, BUILDING_SCALE
+from map_machine.feature.crater import Crater
+from map_machine.feature.direction import DirectionSector
+from map_machine.feature.road import Road, Roads
 from map_machine.figure import (
-    Building,
-    Crater,
-    DirectionSector,
     StyledFigure,
-    Tree,
 )
-from map_machine.road import Road, Roads
-from map_machine.flinger import Flinger
-from map_machine.icon import (
+from map_machine.feature.tree import Tree
+from map_machine.geometry.flinger import Flinger
+from map_machine.map_configuration import DrawingMode, MapConfiguration
+from map_machine.osm.osm_reader import (
+    OSMData,
+    OSMNode,
+    OSMRelation,
+    OSMWay,
+    parse_levels,
+    Tags,
+)
+from map_machine.pictogram.icon import (
     DEFAULT_SMALL_SHAPE_ID,
     Icon,
     IconSet,
@@ -28,18 +37,10 @@ from map_machine.icon import (
     ShapeExtractor,
     ShapeSpecification,
 )
-from map_machine.map_configuration import DrawingMode, MapConfiguration
-from map_machine.osm_reader import (
-    OSMData,
-    OSMNode,
-    OSMRelation,
-    OSMWay,
-    parse_levels,
-)
-from map_machine.point import Point
-from map_machine.scheme import DEFAULT_COLOR, LineStyle, RoadMatcher, Scheme
-from map_machine.text import Label
-from map_machine.ui import BuildingMode
+from map_machine.pictogram.point import Point
+from map_machine.scheme import LineStyle, RoadMatcher, Scheme
+from map_machine.text import Label, TextConstructor
+from map_machine.ui.cli import BuildingMode
 from map_machine.util import MinMax
 
 __author__ = "Sergey Vartanov"
@@ -92,7 +93,9 @@ def get_time_color(time: Optional[datetime], boundaries: MinMax) -> Color:
     :param time: current element creation time
     :param boundaries: minimum and maximum element creation time on the map
     """
-    return get_gradient_color(time, boundaries, TIME_COLOR_SCALE)
+    return get_gradient_color(
+        time if time else boundaries.max_, boundaries, TIME_COLOR_SCALE
+    )
 
 
 def glue(ways: List[OSMWay]) -> List[List[OSMNode]]:
@@ -153,9 +156,7 @@ def try_to_glue(
 
 
 class Constructor:
-    """
-    Map Machine node and way constructor.
-    """
+    """Map Machine node and way constructor."""
 
     def __init__(
         self,
@@ -170,6 +171,7 @@ class Constructor:
         self.scheme: Scheme = scheme
         self.extractor: ShapeExtractor = extractor
         self.configuration: MapConfiguration = configuration
+        self.text_constructor: TextConstructor = TextConstructor(self.scheme)
 
         if self.configuration.level == "all":
             self.check_level = lambda x: True
@@ -190,7 +192,7 @@ class Constructor:
         self.craters: List[Crater] = []
         self.direction_sectors: List[DirectionSector] = []
 
-        self.heights: Set[float] = {2, 4}
+        self.heights: Set[float] = {0.25 / BUILDING_SCALE, 0.5 / BUILDING_SCALE}
 
     def add_building(self, building: Building) -> None:
         """Add building and update levels."""
@@ -206,17 +208,10 @@ class Constructor:
 
     def construct_ways(self) -> None:
         """Construct Map Machine ways."""
-        for index, way_id in enumerate(self.osm_data.ways):
-            ui.progress_bar(
-                index,
-                len(self.osm_data.ways),
-                step=10,
-                text="Constructing ways",
-            )
+        logging.info("Constructing ways...")
+        for way_id in self.osm_data.ways:
             way: OSMWay = self.osm_data.ways[way_id]
             self.construct_line(way, [], [way.nodes])
-
-        ui.progress_bar(-1, len(self.osm_data.ways), text="Constructing ways")
 
     def construct_line(
         self,
@@ -225,7 +220,7 @@ class Constructor:
         outers: List[List[OSMNode]],
     ) -> None:
         """
-        Way or relation construction.
+        Construct way or relation.
 
         :param line: OpenStreetMap way or relation
         :param inners: list of polygons that compose inner boundary
@@ -233,23 +228,38 @@ class Constructor:
         """
         assert len(outers) >= 1
 
+        if len(outers[0]) == 0:
+            return
+
         if not self.check_level(line.tags):
             return
 
-        center_point, center_coordinates = line_center(outers[0], self.flinger)
+        center_point, _ = line_center(outers[0], self.flinger)
         if self.configuration.is_wireframe():
             color: Color
             if self.configuration.drawing_mode == DrawingMode.AUTHOR:
-                color = get_user_color(line.user, self.configuration.seed)
-            else:  # self.mode == TIME_MODE
+                color = get_user_color(
+                    line.user if line.user else "", self.configuration.seed
+                )
+            elif self.configuration.drawing_mode == DrawingMode.TIME:
                 color = get_time_color(line.timestamp, self.osm_data.time)
+            elif self.configuration.drawing_mode == DrawingMode.WHITE:
+                color = Color("#666666")
+            elif self.configuration.drawing_mode == DrawingMode.BLACK:
+                color = Color("#BBBBBB")
+            elif self.configuration.drawing_mode != DrawingMode.NORMAL:
+                logging.fatal(
+                    f"Drawing mode {self.configuration.drawing_mode} is not "
+                    f"supported."
+                )
+                sys.exit(1)
             self.draw_special_mode(line, inners, outers, color)
             return
 
         if not line.tags:
             return
 
-        building_mode: str = self.configuration.building_mode
+        building_mode: BuildingMode = self.configuration.building_mode
         if "building" in line.tags or (
             building_mode == BuildingMode.ISOMETRIC
             and "building:part" in line.tags
@@ -260,9 +270,10 @@ class Constructor:
 
         road_matcher: RoadMatcher = self.scheme.get_road(line.tags)
         if road_matcher:
-            self.roads.append(
-                Road(line.tags, outers[0], road_matcher, self.flinger)
+            road: Road = Road(
+                line.tags, outers[0], road_matcher, self.flinger, self.scheme
             )
+            self.roads.append(road)
             return
 
         processed: Set[str] = set()
@@ -283,13 +294,16 @@ class Constructor:
                     line_style.style
                 )
                 new_style["stroke"] = recolor.hex
-                line_style = LineStyle(new_style, line_style.priority)
+                line_style = LineStyle(
+                    new_style, line_style.parallel_offset, line_style.priority
+                )
 
             self.figures.append(
                 StyledFigure(line.tags, inners, outers, line_style)
             )
             if not (
                 line.get_tag("area") == "yes"
+                or line.get_tag("type") == "multipolygon"
                 or is_cycle(outers[0])
                 and line.get_tag("area") != "no"
                 and self.scheme.is_area(line.tags)
@@ -302,8 +316,10 @@ class Constructor:
                 self.extractor, line.tags, processed, self.configuration
             )
             if icon_set is not None:
-                labels: List[Label] = self.scheme.construct_text(
-                    line.tags, "all", processed
+                labels: List[Label] = self.text_constructor.construct_text(
+                    line.tags,
+                    processed,
+                    self.configuration.label_mode,
                 )
                 point: Point = Point(
                     icon_set,
@@ -317,43 +333,45 @@ class Constructor:
                 )
                 self.points.append(point)
 
-        if not line_styles:
-            if DEBUG:
-                style: Dict[str, Any] = {
-                    "fill": "none",
-                    "stroke": Color("red").hex,
-                    "stroke-width": 1,
-                }
-                figure: StyledFigure = StyledFigure(
-                    line.tags, inners, outers, LineStyle(style, 1000)
-                )
-                self.figures.append(figure)
+        if line_styles:
+            return
 
-            processed: Set[str] = set()
+        self.add_point_for_line(center_point, inners, line, outers)
 
-            priority: int
-            icon_set: IconSet
-            icon_set, priority = self.scheme.get_icon(
-                self.extractor,
+    def add_point_for_line(self, center_point, inners, line, outers) -> None:
+        """Add icon at the center point of the way or relation."""
+        if DEBUG:
+            style: Dict[str, Any] = {
+                "fill": "none",
+                "stroke": Color("red").hex,
+                "stroke-width": 1.0,
+            }
+            figure: StyledFigure = StyledFigure(
+                line.tags, inners, outers, LineStyle(style, 0.0, 1000.0)
+            )
+            self.figures.append(figure)
+
+        processed: set[str] = set()
+        priority: int
+        icon_set: IconSet
+        icon_set, priority = self.scheme.get_icon(
+            self.extractor, line.tags, processed, self.configuration
+        )
+        if icon_set is not None:
+            labels: list[Label] = self.text_constructor.construct_text(
+                line.tags, processed, self.configuration.label_mode
+            )
+            point: Point = Point(
+                icon_set,
+                labels,
                 line.tags,
                 processed,
-                self.configuration,
+                center_point,
+                is_for_node=False,
+                priority=priority,
+                add_tooltips=self.configuration.show_tooltips,
             )
-            if icon_set is not None:
-                labels: List[Label] = self.scheme.construct_text(
-                    line.tags, "all", processed
-                )
-                point: Point = Point(
-                    icon_set,
-                    labels,
-                    line.tags,
-                    processed,
-                    center_point,
-                    is_for_node=False,
-                    priority=priority,
-                    add_tooltips=self.configuration.show_tooltips,
-                )
-                self.points.append(point)
+            self.points.append(point)
 
     def draw_special_mode(
         self,
@@ -400,21 +418,20 @@ class Constructor:
 
     def construct_nodes(self) -> None:
         """Draw nodes."""
+        logging.info("Constructing nodes...")
+
         sorted_node_ids: Iterator[int] = sorted(
             self.osm_data.nodes.keys(),
             key=lambda x: -self.osm_data.nodes[x].coordinates[0],
         )
-
-        for index, node_id in enumerate(sorted_node_ids):
-            ui.progress_bar(
-                index, len(self.osm_data.nodes), text="Constructing nodes"
-            )
+        for node_id in sorted_node_ids:
             self.construct_node(self.osm_data.nodes[node_id])
-        ui.progress_bar(-1, len(self.osm_data.nodes), text="Constructing nodes")
 
     def construct_node(self, node: OSMNode) -> None:
         """Draw one node."""
         tags: Dict[str, str] = node.tags
+        if not tags:
+            return
         if not self.check_level(tags):
             return
 
@@ -426,17 +443,21 @@ class Constructor:
         icon_set: IconSet
         draw_outline: bool = True
 
-        if self.configuration.is_wireframe():
-            if not tags:
-                return
-            color: Color = DEFAULT_COLOR
+        if self.configuration.drawing_mode in (
+            DrawingMode.AUTHOR,
+            DrawingMode.TIME,
+        ):
+            color: Color = self.scheme.get_color("default")
             if self.configuration.drawing_mode == DrawingMode.AUTHOR:
                 color = get_user_color(node.user, self.configuration.seed)
             if self.configuration.drawing_mode == DrawingMode.TIME:
                 color = get_time_color(node.timestamp, self.osm_data.time)
             dot: Shape = self.extractor.get_shape(DEFAULT_SMALL_SHAPE_ID)
             icon_set: IconSet = IconSet(
-                Icon([ShapeSpecification(dot, color)]), [], set()
+                Icon([ShapeSpecification(dot, color)]),
+                [],
+                Icon([ShapeSpecification(dot, color)]),
+                set(),
             )
             point: Point = Point(
                 icon_set,
@@ -450,12 +471,38 @@ class Constructor:
             self.points.append(point)
             return
 
+        if self.configuration.drawing_mode in (
+            DrawingMode.WHITE,
+            DrawingMode.BLACK,
+        ):
+            if self.configuration.drawing_mode == DrawingMode.WHITE:
+                color = Color("#CCCCCC")
+            if self.configuration.drawing_mode == DrawingMode.BLACK:
+                color = Color("#444444")
+            icon_set, priority = self.scheme.get_icon(
+                self.extractor, tags, processed, self.configuration
+            )
+            icon_set.main_icon.recolor(color)
+            point: Point = Point(
+                icon_set,
+                [],
+                tags,
+                processed,
+                flung,
+                add_tooltips=self.configuration.show_tooltips,
+            )
+            self.points.append(point)
+            return
+
         icon_set, priority = self.scheme.get_icon(
             self.extractor, tags, processed, self.configuration
         )
         if icon_set is None:
             return
-        labels: List[Label] = self.scheme.construct_text(tags, "all", processed)
+
+        labels: List[Label] = self.text_constructor.construct_text(
+            tags, processed, self.configuration.label_mode
+        )
         self.scheme.process_ignored(tags, processed)
 
         if node.get_tag("natural") == "tree" and (
@@ -483,7 +530,7 @@ class Constructor:
         self.points.append(point)
 
 
-def check_level_number(tags: Dict[str, Any], level: float) -> bool:
+def check_level_number(tags: Tags, level: float) -> bool:
     """Check if element described by tags is no the specified level."""
     if "level" in tags:
         if level not in parse_levels(tags["level"]):
@@ -493,13 +540,12 @@ def check_level_number(tags: Dict[str, Any], level: float) -> bool:
     return True
 
 
-def check_level_overground(tags: Dict[str, Any]) -> bool:
+def check_level_overground(tags: Tags) -> bool:
     """Check if element described by tags is overground."""
     if "level" in tags:
         try:
-            levels: map = map(float, tags["level"].replace(",", ".").split(";"))
-            for level in levels:
-                if level < 0:
+            for level in map(float, tags["level"].replace(",", ".").split(";")):
+                if level < 0.0:
                     return False
         except ValueError:
             pass
@@ -507,4 +553,5 @@ def check_level_overground(tags: Dict[str, Any]) -> bool:
     return (
         tags.get("location") != "underground"
         and tags.get("parking") != "underground"
+        and tags.get("tunnel") != "yes"
     )

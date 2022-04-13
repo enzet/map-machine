@@ -20,16 +20,16 @@ __email__ = "me@enzet.ru"
 
 PathCommands = List[Union[float, str, np.ndarray]]
 
+DEFAULT_FONT: str = "Helvetica"
+
 
 @dataclass
 class Style:
-    """
-    Drawing element style.
-    """
+    """Drawing element style."""
 
     fill: Optional[Color] = None
     stroke: Optional[Color] = None
-    width: float = 1
+    width: float = 1.0
 
     def update_svg_element(self, element: BaseElement) -> None:
         """Set style for SVG element."""
@@ -43,7 +43,7 @@ class Style:
     def draw_png_fill(self, context: Context) -> None:
         """Set style for context and draw fill."""
         context.set_source_rgba(
-            self.fill.get_red(), self.fill.get_green(), self.fill.get_blue(), 1
+            self.fill.get_red(), self.fill.get_green(), self.fill.get_blue()
         )
         context.fill()
 
@@ -53,16 +53,13 @@ class Style:
             self.stroke.get_red(),
             self.stroke.get_green(),
             self.stroke.get_blue(),
-            1,
         )
         context.set_line_width(self.width)
         context.stroke()
 
 
 class Drawing:
-    """
-    Image.
-    """
+    """Image."""
 
     def __init__(self, file_path: Path, width: int, height: int) -> None:
         self.file_path: Path = file_path
@@ -95,9 +92,7 @@ class Drawing:
 
 
 class SVGDrawing(Drawing):
-    """
-    SVG image.
-    """
+    """SVG image."""
 
     def __init__(self, file_path: Path, width: int, height: int) -> None:
         super().__init__(file_path, width, height)
@@ -145,9 +140,7 @@ class SVGDrawing(Drawing):
 
 
 class PNGDrawing(Drawing):
-    """
-    PNG image.
-    """
+    """PNG image."""
 
     def __init__(self, file_path: Path, width: int, height: int) -> None:
         super().__init__(file_path, width, height)
@@ -184,7 +177,7 @@ class PNGDrawing(Drawing):
 
     def _do_path(self, commands: PathCommands) -> None:
         """Draw path."""
-        current: np.ndarray = np.array((0, 0))
+        current: np.ndarray = np.array((0.0, 0.0))
         start_point: Optional[np.ndarray] = None
         command: str = "M"
         is_absolute: bool = True
@@ -239,14 +232,14 @@ class PNGDrawing(Drawing):
                 point: np.ndarray
                 if is_absolute:
                     if command == "v":
-                        point = np.array((0, commands[index]))
+                        point = np.array((0.0, commands[index]))
                     else:
-                        point = np.array((commands[index], 0))
+                        point = np.array((commands[index], 0.0))
                 else:
                     if command == "v":
-                        point = current + np.array((0, commands[index]))
+                        point = current + np.array((0.0, commands[index]))
                     else:
-                        point = current + np.array((commands[index], 0))
+                        point = current + np.array((commands[index], 0.0))
                 current = point
                 self.context.line_to(point[0], point[1])
                 if start_point is None:
@@ -304,3 +297,30 @@ def parse_path(path: str) -> PathCommands:
         index += 1
 
     return result
+
+
+def draw_text(
+    svg: svgwrite.Drawing,
+    text: str,
+    point: np.ndarray,
+    size: float,
+    fill: Color,
+    anchor: str = "middle",
+    stroke_linejoin: str = "round",
+    stroke_width: float = 1.0,
+    stroke: Optional[Color] = None,
+    opacity: float = 1.0,
+):
+    text_element = svg.text(
+        text,
+        point,
+        font_size=size,
+        text_anchor=anchor,
+        font_family=DEFAULT_FONT,
+        fill=fill.hex,
+        stroke_linejoin=stroke_linejoin,
+        stroke_width=stroke_width,
+        stroke=stroke.hex if stroke else "none",
+        opacity=opacity,
+    )
+    svg.add(text_element)

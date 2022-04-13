@@ -46,7 +46,7 @@ jobs:
         pip install .
     - name: Check code style with Black
       run: |
-        black -l 80 --check map_machine tests
+        black -l 80 --check map_machine setup.py tests
     - name: Lint with Flake8
       run: |
         flake8 --max-line-length=80 --ignore=E203,W503

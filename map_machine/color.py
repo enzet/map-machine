@@ -13,7 +13,7 @@ __email__ = "me@enzet.ru"
 
 def is_bright(color: Color) -> bool:
     """
-    Check whether color bright enough to have black outline instead of white.
+    Check whether color is bright enough to have black outline instead of white.
     """
     return (
         0.2126 * color.red + 0.7152 * color.green + 0.0722 * color.blue
@@ -35,7 +35,7 @@ def get_gradient_color(
     scale: List[Color] = colors + [Color("black")]
 
     range_coefficient: float = (
-        0 if bounds.is_empty() else (value - bounds.min_) / bounds.delta()
+        0.0 if bounds.is_empty() else (value - bounds.min_) / bounds.delta()
     )
     # If value is out of range, set it to boundary value.
     range_coefficient = min(1.0, max(0.0, range_coefficient))

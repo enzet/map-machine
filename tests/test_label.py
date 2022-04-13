@@ -3,7 +3,8 @@ Test label generation for nodes.
 """
 from typing import Dict, List, Set
 
-from map_machine.text import Label
+from map_machine.map_configuration import LabelMode
+from map_machine.text import Label, TextConstructor
 from tests import SCHEME
 
 __author__ = "Sergey Vartanov"
@@ -13,7 +14,8 @@ __email__ = "me@enzet.ru"
 def construct_labels(tags: Dict[str, str]) -> List[Label]:
     """Construct labels from OSM node tags."""
     processed: Set[str] = set()
-    return SCHEME.construct_text(tags, "all", processed)
+    text_constructor: TextConstructor = TextConstructor(SCHEME)
+    return text_constructor.construct_text(tags, processed, LabelMode.ALL)
 
 
 def test_1_label() -> None:

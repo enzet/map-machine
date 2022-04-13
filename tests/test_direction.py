@@ -3,7 +3,7 @@ Test direction processing.
 """
 import numpy as np
 
-from map_machine.direction import DirectionSet, parse_vector
+from map_machine.feature.direction import DirectionSet, parse_vector, Sector
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -41,3 +41,14 @@ def test_main_direction() -> None:
     assert DirectionSet("70").is_right() is True
     assert DirectionSet("270").is_right() is False
     assert DirectionSet("180").is_right() is None
+
+
+def test_sector_parsing() -> None:
+    """Test constructing sector from the string representation."""
+    Sector("0", angle=0)
+    Sector("90", angle=0)
+    Sector("-90", angle=0)
+
+    sector: Sector = Sector("0-180")
+    assert np.allclose(sector.start, [0, -1])
+    assert np.allclose(sector.end, [0, 1])

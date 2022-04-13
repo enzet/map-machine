@@ -1,7 +1,7 @@
 """
 Test boundary box.
 """
-from map_machine.boundary_box import BoundaryBox
+from map_machine.geometry.boundary_box import BoundaryBox
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -25,3 +25,23 @@ def test_round_coordinates() -> None:
     ).round()
 
     assert box.get_format() == "10.067,46.093,10.070,46.096"
+
+
+def test_boundary_box_parsing() -> None:
+    """Test parsing boundary box from text."""
+    assert BoundaryBox.from_text("-0.1,-0.1,0.1,0.1") == BoundaryBox(
+        -0.1, -0.1, 0.1, 0.1
+    )
+
+    # Negative horizontal boundary.
+    assert BoundaryBox.from_text("0.1,-0.1,-0.1,0.1") is None
+
+    # Negative vertical boundary.
+    assert BoundaryBox.from_text("-0.1,0.1,0.1,-0.1") is None
+
+    # Wrong format.
+    assert BoundaryBox.from_text("wrong") is None
+    assert BoundaryBox.from_text("-O.1,-0.1,0.1,0.1") is None
+
+    # Too big boundary box.
+    assert BoundaryBox.from_text("-20,-20,20,20") is None

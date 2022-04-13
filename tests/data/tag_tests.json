@@ -1,0 +1,10 @@
+[
+    {"tags": {"addr:housenumber": "5"}, "labels": ["5"]},
+    {
+        "tags": {"amenity": "cafe", "name": "Nero"},
+        "icons": [["coffee_cup"]], "labels": ["Nero"]
+    },
+    {"tags": {"building": "yes"}, "icons": [["building"]]},
+    {"tags": {"natural": "tree"}, "icons": [["tree"]]},
+    {"tags": {"man_made": "surveillance"}, "icons": [["cctv"]]}
+]

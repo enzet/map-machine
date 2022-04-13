@@ -1,0 +1,23 @@
+\2 {Install} {install}
+
+Map Machine requires \ref {https://www.python.org} {Python} 3.9, \ref {https://pip.pypa.io/en/stable/installation/} {pip}, and two libraries\:
+
+\list
+    {\ref {https://www.cairographics.org/download/} {cairo 2D graphic library},}
+    {\ref {https://libgeos.org} {GEOS library}.}
+
+\2 {Installation examples} {installation-examples}
+
+\3 {Ubuntu} {ubuntu}
+
+\code {
+apt install libcairo2-dev libgeos-dev
+pip install git+https://github.com/enzet/map-machine
+} {shell}
+
+\3 {macOS} {macos}
+
+\code {
+brew install cairo geos
+pip install git+https://github.com/enzet/map-machine
+} {shell}
