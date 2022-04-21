@@ -47,7 +47,11 @@ class Polyline:
         self.points: list[np.ndarray] = points
 
     def get_path(self, parallel_offset: float = 0.0) -> str:
-        """Construct SVG path commands."""
+        """ Construct SVG path commands.
+
+        :return str: SVG path 'd' string in the form M<start> L<next-point>... Z[if-closed-path]
+        :param float parallel_offset: move line to right or left by given amount
+        """
         points: list[np.ndarray]
         if np.allclose(parallel_offset, 0.0):
             points = self.points
@@ -69,8 +73,22 @@ class Polyline:
             + (" Z" if np.allclose(points[0], points[-1]) else "")
         )
 
+    def get_length(self) -> float:
+        """ Calculate length of perimeter
+
+        :return float: sum of all segment lengths of the path
+        """
+        if len(self.points) < 2:
+            return 0.0
+
+        return sum(map(np.linalg.norm, np.subtract(self.points[:-1], self.points[1:])))
+
     def shorten(self, index: int, length: float) -> None:
-        """Make shorten part specified with index."""
+        """ Make shorten part specified with index.
+
+        :param int index:
+        :param float length:
+        """
         index_2: int = 1 if index == 0 else -2
         diff: np.ndarray = self.points[index_2] - self.points[index]
         self.points[index] = (

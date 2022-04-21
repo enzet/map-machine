@@ -13,6 +13,7 @@ from svgwrite import Drawing
 from svgwrite.filters import Filter
 from svgwrite.path import Path
 from svgwrite.shapes import Circle
+from svgwrite.text import TextPath, Text
 
 from map_machine.drawing import PathCommands
 from map_machine.geometry.flinger import Flinger
@@ -584,17 +585,42 @@ class Road(Tagged):
         )
         svg.add(path)
 
-        text = svg.add(svg.text.Text(""))
-        text_path = svg.text.TextPath(
-            path=path,
-            text=name,
-            startOffset=None,
-            method="align",
-            spacing="exact",
-            font_family="Roboto",
-            font_size=10.0,
-        )
-        text.add(text_path)
+        # TODO - make parametric (import from style?)
+        font_size = 10.0
+        padding = 50.0
+        spacing = 200.0
+
+        text_width = len(name) * font_size * 0.6  # TODO - determine text width from font (current est good for english)
+        path_length: float = self.line.get_length()
+
+        def _draw_caption(offset: float) -> None:
+            text: Text = svg.add(svg.text(""))
+            text_path: TextPath = svg.textPath(
+                path=path,
+                text=name,
+                startOffset=offset,
+                method="align",
+                spacing="exact",
+                font_family="Roboto",
+                font_size=font_size,
+            )
+            text.add(text_path)
+
+        if path_length < text_width:
+            # Not enough room for one label
+            return
+
+        elif path_length < (text_width * 2 + padding * 4 + spacing):
+            # Not enough room for two labels, print one centered
+            _draw_caption(path_length / 2 - text_width / 2)
+
+        else:
+            # Spacing for multiple labels
+            repeat = np.floor((path_length - text_width - padding * 2) / (text_width + padding * 2 + spacing)) + 1
+            spacing = (path_length - repeat * (text_width + padding * 2)) / (repeat - 1)
+
+            for i in range(repeat.astype(int)):
+                _draw_caption(padding + i * (text_width + padding * 2 + spacing))
 
 
 def get_curve_points(
@@ -812,7 +838,7 @@ class Roads:
             self.nodes[node.id_].append((road, index))
 
     def draw(
-        self, svg: Drawing, flinger: Flinger, draw_captions: bool = False
+        self, svg: Drawing, flinger: Flinger, draw_captions: bool = True
     ) -> None:
         """Draw whole road system."""
         if not self.roads:
