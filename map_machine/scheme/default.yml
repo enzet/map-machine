@@ -2487,24 +2487,29 @@ ways:
     style:
       stroke: water_color
       stroke-width: 2.5
+    priority: 22.0
   - tags: {waterway: canal}
     style:
       stroke: water_color
       stroke-width: 2.0
+    priority: 22.0
   - tags: {waterway: stream}
     style:
       stroke: water_color
       stroke-width: 1.5
+    priority: 22.0
   - tags: {waterway: riverbank}
     style:
       fill: water_color
       stroke: water_border_color
       stroke-width: 1.0
+    priority: 22.0
   - tags: {waterway: ditch}
     style:
       fill: water_color
       stroke: water_color
       stroke-width: 2.0
+    priority: 22.0
 
   - tags: {railway: subway}
     style:
