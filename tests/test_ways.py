@@ -44,3 +44,12 @@ def test_river_and_wood() -> None:
     assert len(figures) == 2
     assert figures[0].tags["natural"] == "wood"
     assert figures[1].tags["waterway"] == "river"
+
+
+def test_empty_ways() -> None:
+    """Ways without nodes."""
+    osm_data: OSMData = OSMData()
+    osm_data.add_way(OSMWay({"natural": "wood"}, 1))
+    osm_data.add_way(OSMWay({"waterway": "river"}, 2))
+
+    assert not get_constructor(osm_data).get_sorted_figures()
