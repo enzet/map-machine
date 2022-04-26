@@ -2618,6 +2618,10 @@ ways:
     style:
       fill: grass_color
       opacity: 0.5
+  - tags: {leisure: recreation_ground}
+    style:
+      fill: grass_color
+      opacity: 0.5
   - tags: {leisure: stadium}
     style:
       fill: grass_color
