@@ -83,6 +83,7 @@ colors:
   track_color: "#A88A64"
   trunk_color: "#97612b"
   tree_color: "#98AC64"
+  village_green_color: "#DDEEBB"
   wall_bottom_1_color: "#AAAAAA"
   wall_bottom_2_color: "#C3C3C3"
   wall_color: "#E8E8E8"
@@ -2409,6 +2410,10 @@ ways:
     style:
       fill: parking_color
     priority: 21.0
+  - tags: {landuse: village_green}
+    style:
+      fill: village_green_color
+    priority: 20.0
   - tags: {landuse: grass}
     style:
       fill: grass_color
