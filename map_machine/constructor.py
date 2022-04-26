@@ -529,6 +529,10 @@ class Constructor:
         )
         self.points.append(point)
 
+    def get_sorted_figures(self) -> list[StyledFigure]:
+        """Get all figures sorted by priority."""
+        return sorted(self.figures, key=lambda x: x.line_style.priority)
+
 
 def check_level_number(tags: Tags, level: float) -> bool:
     """Check if element described by tags is no the specified level."""

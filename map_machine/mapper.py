@@ -18,7 +18,6 @@ from map_machine.constructor import Constructor
 from map_machine.drawing import draw_text
 from map_machine.feature.building import Building, draw_walls, BUILDING_SCALE
 from map_machine.feature.road import Intersection, Road, RoadPart
-from map_machine.figure import StyledFigure
 from map_machine.geometry.boundary_box import BoundaryBox
 from map_machine.geometry.flinger import Flinger
 from map_machine.geometry.vector import Segment
@@ -59,16 +58,13 @@ class Map:
         self.svg.add(
             Rect((0.0, 0.0), self.flinger.size, fill=self.background_color)
         )
-        ways: list[StyledFigure] = sorted(
-            constructor.figures, key=lambda x: x.line_style.priority
-        )
         logging.info("Drawing ways...")
 
-        for way in ways:
-            path_commands: str = way.get_path(self.flinger)
+        for figure in constructor.get_sorted_figures():
+            path_commands: str = figure.get_path(self.flinger)
             if path_commands:
                 path: SVGPath = SVGPath(d=path_commands)
-                path.update(way.line_style.style)
+                path.update(figure.line_style.style)
                 self.svg.add(path)
 
         constructor.roads.draw(self.svg, self.flinger)
