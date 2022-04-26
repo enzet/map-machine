@@ -2547,6 +2547,13 @@ ways:
       stroke-width: 3.0
       stroke: "#BBBBBB"
     priority: 42.0
+  - tags: {railway: construction}
+    style:
+      stroke-width: 3.0
+      stroke: "#000000"
+      stroke-dasharray: 3,3
+      opacity: 0.3
+    priority: 42.0
 
   - tags: {railway: rail}
     style:
