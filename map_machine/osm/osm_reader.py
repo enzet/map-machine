@@ -186,13 +186,13 @@ class OSMNode(Tagged):
         if not isinstance(other, OSMNode):
             return False
         return (
-                self.id_ == other.id_ and
-                np.array_equal(self.coordinates, other.coordinates) and
-                self.visible == other.visible and
-                self.changeset == other.changeset and
-                self.timestamp == other.timestamp and
-                self.user == other.user and
-                self.uid == other.uid
+            self.id_ == other.id_
+            and np.array_equal(self.coordinates, other.coordinates)
+            and self.visible == other.visible
+            and self.changeset == other.changeset
+            and self.timestamp == other.timestamp
+            and self.user == other.user
+            and self.uid == other.uid
         )
 
 
