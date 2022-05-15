@@ -351,14 +351,14 @@ class Constructor:
             )
             self.figures.append(figure)
 
-        processed: set[str] = set()
+        processed: Set[str] = set()
         priority: int
         icon_set: IconSet
         icon_set, priority = self.scheme.get_icon(
             self.extractor, line.tags, processed, self.configuration
         )
         if icon_set is not None:
-            labels: list[Label] = self.text_constructor.construct_text(
+            labels: List[Label] = self.text_constructor.construct_text(
                 line.tags, processed, self.configuration.label_mode
             )
             point: Point = Point(
@@ -528,6 +528,10 @@ class Constructor:
             add_tooltips=self.configuration.show_tooltips,
         )
         self.points.append(point)
+
+    def get_sorted_figures(self) -> List[StyledFigure]:
+        """Get all figures sorted by priority."""
+        return sorted(self.figures, key=lambda x: x.line_style.priority)
 
 
 def check_level_number(tags: Tags, level: float) -> bool:

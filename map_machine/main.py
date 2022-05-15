@@ -47,7 +47,7 @@ def main() -> None:
         mapcss.generate_mapcss(arguments)
 
     elif arguments.command == "element":
-        from map_machine.element import draw_element
+        from map_machine.element.element import draw_element
 
         draw_element(arguments)
 

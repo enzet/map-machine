@@ -1,8 +1,7 @@
 """
 Figures displayed on the map.
 """
-from typing import Any, Dict, Iterator, List, Optional
-from svgwrite import Drawing
+from typing import Dict, List
 
 import numpy as np
 
@@ -54,25 +53,6 @@ class Figure(Tagged):
             path += f"{get_path(inner_nodes, offset, flinger)} "
 
         return path
-
-
-        if levels:
-            self.min_height = float(levels) * BUILDING_HEIGHT_SCALE
-
-        height: Optional[float] = self.get_length("height")
-        if height:
-            self.height = height
-
-        height: Optional[float] = self.get_length("min_height")
-        if height:
-            self.min_height = height
-
-    def draw(self, svg: Drawing, flinger: Flinger) -> None:
-        """Draw simple building shape."""
-        path: Path = Path(d=self.get_path(flinger))
-        path.update(self.line_style.style)
-        path.update({"stroke-linejoin": "round"})
-        svg.add(path)
 
 
 class StyledFigure(Figure):

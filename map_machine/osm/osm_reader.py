@@ -122,7 +122,7 @@ class Tagged:
         return is_well_formed
 
 
-@dataclass
+@dataclass(eq=False)
 class OSMNode(Tagged):
     """
     OpenStreetMap node.
@@ -181,6 +181,19 @@ class OSMNode(Tagged):
 
     def __hash__(self) -> int:
         return self.id_
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, OSMNode):
+            return False
+        return (
+            self.id_ == other.id_
+            and np.array_equal(self.coordinates, other.coordinates)
+            and self.visible == other.visible
+            and self.changeset == other.changeset
+            and self.timestamp == other.timestamp
+            and self.user == other.user
+            and self.uid == other.uid
+        )
 
 
 @dataclass
@@ -343,9 +356,11 @@ class OSMData:
     def add_node(self, node: OSMNode) -> None:
         """Add node and update map parameters."""
         if node.id_ in self.nodes:
-            raise NotWellFormedOSMDataException(
-                f"Node with duplicate id {node.id_}."
-            )
+            if node != self.nodes[node.id_]:
+                raise NotWellFormedOSMDataException(
+                    f"Node with duplicate id {node.id_}."
+                )
+            return
         self.nodes[node.id_] = node
         if node.user:
             self.authors.add(node.user)
@@ -360,9 +375,11 @@ class OSMData:
     def add_way(self, way: OSMWay) -> None:
         """Add way and update map parameters."""
         if way.id_ in self.ways:
-            raise NotWellFormedOSMDataException(
-                f"Way with duplicate id {way.id_}."
-            )
+            if way != self.ways[way.id_]:
+                raise NotWellFormedOSMDataException(
+                    f"Way with duplicate id {way.id_}."
+                )
+            return
         self.ways[way.id_] = way
         if way.user:
             self.authors.add(way.user)
@@ -374,9 +391,11 @@ class OSMData:
     def add_relation(self, relation: OSMRelation) -> None:
         """Add relation and update map parameters."""
         if relation.id_ in self.relations:
-            raise NotWellFormedOSMDataException(
-                f"Relation with duplicate id {relation.id_}."
-            )
+            if relation != self.relations[relation.id_]:
+                raise NotWellFormedOSMDataException(
+                    f"Relation with duplicate id {relation.id_}."
+                )
+            return
         self.relations[relation.id_] = relation
 
     def parse_overpass(self, file_name: Path) -> None:

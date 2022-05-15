@@ -83,6 +83,7 @@ colors:
   track_color: "#A88A64"
   trunk_color: "#97612b"
   tree_color: "#98AC64"
+  village_green_color: "#DDEEBB"
   wall_bottom_1_color: "#AAAAAA"
   wall_bottom_2_color: "#C3C3C3"
   wall_color: "#E8E8E8"
@@ -2389,6 +2390,9 @@ ways:
   - tags: {landuse: farmland}
     style: {fill: farmland_color, stroke: farmland_border_color}
     priority: 20.0
+  - tags: {landuse: greenhouse_horticulture}
+    style: {fill: farmland_color, stroke: farmland_border_color}
+    priority: 20.0
   - tags: {landuse: farmyard}
     style: {fill: farmland_color, stroke: farmland_border_color}  # FIXME
     priority: 20.0
@@ -2409,6 +2413,10 @@ ways:
     style:
       fill: parking_color
     priority: 21.0
+  - tags: {landuse: village_green}
+    style:
+      fill: village_green_color
+    priority: 20.0
   - tags: {landuse: grass}
     style:
       fill: grass_color
@@ -2487,24 +2495,29 @@ ways:
     style:
       stroke: water_color
       stroke-width: 2.5
+    priority: 22.0
   - tags: {waterway: canal}
     style:
       stroke: water_color
       stroke-width: 2.0
+    priority: 22.0
   - tags: {waterway: stream}
     style:
       stroke: water_color
       stroke-width: 1.5
+    priority: 22.0
   - tags: {waterway: riverbank}
     style:
       fill: water_color
       stroke: water_border_color
       stroke-width: 1.0
+    priority: 22.0
   - tags: {waterway: ditch}
     style:
       fill: water_color
       stroke: water_color
       stroke-width: 2.0
+    priority: 22.0
 
   - tags: {railway: subway}
     style:
@@ -2541,6 +2554,13 @@ ways:
     style:
       stroke-width: 3.0
       stroke: "#BBBBBB"
+    priority: 42.0
+  - tags: {railway: construction}
+    style:
+      stroke-width: 3.0
+      stroke: "#000000"
+      stroke-dasharray: 3,3
+      opacity: 0.3
     priority: 42.0
 
   - tags: {railway: rail}
@@ -2598,6 +2618,10 @@ ways:
       fill: park_color
       opacity: 0.5
   - tags: {landuse: recreation_ground}
+    style:
+      fill: grass_color
+      opacity: 0.5
+  - tags: {leisure: recreation_ground}
     style:
       fill: grass_color
       opacity: 0.5
