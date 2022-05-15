@@ -1,6 +1,7 @@
 """
 Test command line commands.
 """
+import argparse
 from pathlib import Path
 from subprocess import PIPE, Popen
 
@@ -10,7 +11,7 @@ __email__ = "me@enzet.ru"
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
-from map_machine.ui.cli import COMMAND_LINES
+from map_machine.ui.cli import COMMAND_LINES, parse_arguments
 
 LOG: bytes = (
     b"INFO Constructing ways...\n"
@@ -120,6 +121,15 @@ def test_element() -> None:
         b"INFO Element is written to out/element.svg.\n",
     )
     assert (Path("out") / "element.svg").is_file()
+
+
+def test_unwrapped_element() -> None:
+    arguments: argparse.Namespace = parse_arguments(
+        ["map_machine"] + COMMAND_LINES["element"]
+    )
+    from map_machine.element.single import draw_element
+
+    draw_element(arguments)
 
 
 def test_tile() -> None:
