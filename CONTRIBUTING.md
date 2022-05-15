@@ -41,6 +41,12 @@ We use [Black](http://github.com/psf/black) code formatter with maximum 80 chara
 
 If you create new Python file, make sure you add `__author__ = "<first name> <second name>"` and `__email__ = "<author e-mail>"` string variables.
 
+### Commit message format ###
+
+The project uses commit messages that starts with a verb in infinitive form with first letter in uppercase, ends with a dot, and is not longer than 50 characters. E.g. `Add new icon.` or `Fix labels.`
+
+If some issues or pull requests are referenced, commit message should starts with prefix such as `PR #123: `, `Issue #42: `, or `Fix #13: ` with the next letter in lowercase. E.g. `PR #123: refactor elements.` or `Issue #42: add icon for natural=tree.`
+
 Suggest a tag to support
 ------------------------
 
