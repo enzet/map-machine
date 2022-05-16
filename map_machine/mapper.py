@@ -14,6 +14,7 @@ from svgwrite.container import Group
 from svgwrite.path import Path as SVGPath
 from svgwrite.shapes import Rect
 
+from map_machine import __project__
 from map_machine.constructor import Constructor
 from map_machine.drawing import draw_text
 from map_machine.feature.building import Building, draw_walls, BUILDING_SCALE
@@ -32,6 +33,8 @@ from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
+
+OPENSTREETMAP_CREDIT: str = "© OpenStreetMap contributors"
 
 
 class Map:
@@ -190,21 +193,37 @@ class Map:
             intersection.draw(self.svg, True)
 
     def draw_credits(self, size: np.ndarray):
+        """
+        Add OpenStreetMap credit and the link to the project itself.
+        OpenStreetMap requires to use the credit “© OpenStreetMap contributors”.
+
+        See https://www.openstreetmap.org/copyright
+        """
+        right_margin: float = 15.0
+        bottom_margin: float = 15.0
+        font_size: float = 10.0
+        vertical_spacing: float = 2.0
+
+        text_color: Color = Color("#888888")
+        outline_color: Color = Color("#FFFFFF")
 
         for text, point in (
-            ("Data: © OpenStreetMap contributors", np.array((15, 27))),
-            ("Rendering: Map Machine", np.array((15, 15))),
+            (
+                f"Data: {OPENSTREETMAP_CREDIT}",
+                (right_margin, bottom_margin + font_size + vertical_spacing),
+            ),
+            (f"Rendering: {__project__}", (right_margin, bottom_margin)),
         ):
             for stroke_width, stroke, opacity in (
-                (3.0, Color("white"), 0.7),
+                (3.0, outline_color, 0.7),
                 (1.0, None, 1.0),
             ):
                 draw_text(
                     self.svg,
                     text,
-                    size - point,
-                    10,
-                    Color("#888888"),
+                    size - np.array(point),
+                    font_size,
+                    text_color,
                     anchor="end",
                     stroke_width=stroke_width,
                     stroke=stroke,
@@ -213,6 +232,7 @@ class Map:
 
 
 def fatal(message: str) -> None:
+    """Print error message and exit with non-zero exit code."""
     logging.fatal(message)
     sys.exit(1)
 

@@ -22,6 +22,8 @@ setup(
     version=__version__,
     packages=[
         "map_machine",
+        "map_machine.doc",
+        "map_machine.element",
         "map_machine.feature",
         "map_machine.geometry",
         "map_machine.osm",
