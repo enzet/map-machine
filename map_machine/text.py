@@ -73,6 +73,8 @@ def format_frequency(value: str) -> str:
 
 @dataclass
 class TextConstructor:
+    """Constructs map labels out of OpenStreetMap tags."""
+
     def __init__(self, scheme: Scheme) -> None:
         self.scheme: Scheme = scheme
         self.default_color: Color = self.scheme.get_color("text_color")

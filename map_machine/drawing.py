@@ -311,6 +311,7 @@ def draw_text(
     stroke: Optional[Color] = None,
     opacity: float = 1.0,
 ):
+    """Add text element to the canvas."""
     text_element = svg.text(
         text,
         point,
