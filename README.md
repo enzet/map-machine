@@ -318,11 +318,15 @@ Map configuration options used by `render` and `tile` commands:
 | <span style="white-space: nowrap;">`--level`</span> | display only this floor level, default value: `overground` |
 | <span style="white-space: nowrap;">`--seed`</span> `<string>` | seed for random |
 | <span style="white-space: nowrap;">`--tooltips`</span> | add tooltips with tags for icons in SVG files |
+| <span style="white-space: nowrap;">`--no-tooltips`</span> | don't add tooltips with tags for icons in SVG files |
 | <span style="white-space: nowrap;">`--country`</span> | two-letter code (ISO 3166-1 alpha-2) of country, that should be used for location restrictions, default value: `world` |
 | <span style="white-space: nowrap;">`--ignore-level-matching`</span> | draw all map features ignoring the current level |
-| <span style="white-space: nowrap;">`--roofs`</span> | draw building roofs, set by default |
+| <span style="white-space: nowrap;">`--no-ignore-level-matching`</span> | draw all map features taking into account the current level |
+| <span style="white-space: nowrap;">`--roofs`</span> | draw building roofs, default value: `True` |
 | <span style="white-space: nowrap;">`--building-colors`</span> | paint walls (if isometric mode is enabled) and roofs with specified colors |
+| <span style="white-space: nowrap;">`--no-building-colors`</span> | don't paint walls (if isometric mode is enabled) and roofs with specified colors |
 | <span style="white-space: nowrap;">`--show-overlapped`</span> | show hidden nodes with a dot |
+| <span style="white-space: nowrap;">`--no-show-overlapped`</span> | don't show hidden nodes with a dot |
 
 MapCSS 0.2 generation
 ---------------------
@@ -333,9 +337,12 @@ To create MapCSS with Map Machine style also for ways and relations, run `map-ma
 
 | Option | Description |
 |---|---|
-| <span style="white-space: nowrap;">`--icons`</span> | add icons for nodes and areas, set by default |
+| <span style="white-space: nowrap;">`--icons`</span> | add icons for nodes and areas, default value: `True` |
+| <span style="white-space: nowrap;">`--no-icons`</span> | don't add icons for nodes and areas |
 | <span style="white-space: nowrap;">`--ways`</span> | add style for ways and relations |
-| <span style="white-space: nowrap;">`--lifecycle`</span> | add icons for lifecycle tags; be careful: this will increase the number of node and area selectors by 9 times, set by default |
+| <span style="white-space: nowrap;">`--no-ways`</span> | don't add style for ways and relations |
+| <span style="white-space: nowrap;">`--lifecycle`</span> | add icons for lifecycle tags; be careful: this will increase the number of node and area selectors by 9 times, default value: `True` |
+| <span style="white-space: nowrap;">`--no-lifecycle`</span> | don't add icons for lifecycle tags |
 
 ### Use Röntgen as JOSM map paint style ###
 

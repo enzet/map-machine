@@ -16,7 +16,7 @@ This will allow you to automatically check your commit message and code before c
 
 ### First configure your workspace ###
 
-Make sure you have Python 3.9 development tools. E.g., for Ubuntu, run `apt install python3.9-dev python3.9-venv`.
+Make sure you have Python 3.8 development tools. E.g., for Ubuntu, run `apt install python3.8-dev python3.8-venv`.
 
 Activate virtual environment. E.g. for fish shell, run `source venv/bin/activate.fish`.
 
