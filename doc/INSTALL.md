@@ -14,12 +14,12 @@ Installation examples
 
 ```shell
 apt install libcairo2-dev libgeos-dev
-pip install git+https://github.com/enzet/map-machine
+pip install git+https://github.com/enzet/map-machine@python3.8
 ```
 
 ### macOS ###
 
 ```shell
 brew install cairo geos
-pip install git+https://github.com/enzet/map-machine
+pip install git+https://github.com/enzet/map-machine@python3.8
 ```

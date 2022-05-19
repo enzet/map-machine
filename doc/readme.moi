@@ -198,7 +198,7 @@ Requirements\: Python 3.8/* or higher*/.
     {install \ref {https://libgeos.org} {GEOS library},}
     {install Python packages with the command\:}
 
-\code {pip install git+https://github.com/enzet/map-machine} {shell}
+\code {pip install git+https://github.com/enzet/map-machine@python3.8} {shell}
 
 For more detailed instructions, see \ref {doc/INSTALL.md} {instructions}.
 

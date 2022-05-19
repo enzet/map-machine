@@ -147,7 +147,7 @@ Requirements: Python 3.8.
   * install Python packages with the command:
 
 ```shell
-pip install git+https://github.com/enzet/map-machine
+pip install git+https://github.com/enzet/map-machine@python3.8
 ```
 
 For more detailed instructions, see [instructions](doc/INSTALL.md).

@@ -12,12 +12,12 @@ Map Machine requires \ref {https://www.python.org} {Python} 3.8, \ref {https://p
 
 \code {
 apt install libcairo2-dev libgeos-dev
-pip install git+https://github.com/enzet/map-machine
+pip install git+https://github.com/enzet/map-machine@python3.8
 } {shell}
 
 \3 {macOS} {macos}
 
 \code {
 brew install cairo geos
-pip install git+https://github.com/enzet/map-machine
+pip install git+https://github.com/enzet/map-machine@python3.8
 } {shell}
