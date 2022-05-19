@@ -1549,22 +1549,6 @@ node_icons:
       shapes: [binoculars]
     - tags: {information: board}
       shapes: [i_in_square]
-    - tags: {vending: admission_tickets}
-      shapes: [vending_tickets]
-    - tags: {vending: candles}
-      shapes: [vending_candles]
-    - tags: {vending: chemist}
-      shapes: [vending_chemist]
-    - tags: {vending: drinks}
-      shapes: [vending_bottle]
-    - tags: {vending: fishing_tackle}
-      shapes: [vending_angle]
-    - tags: {vending: public_transport_tickets}
-      shapes: [vending_tickets]
-    - tags: {vending: parking_tickets}
-      shapes: [vending_p]
-    - tags: {vending: water}
-      shapes: [vending_drop]
     - tags: {buoy: "*"}
       shapes: [buoy]
     - tags: {"seamark:type": "*"}
@@ -1617,8 +1601,42 @@ node_icons:
       shapes: [shower]
     - tags: {amenity: vending_machine}
       shapes: [vending_machine]
+    - tags: {vending: admission_tickets}
+      shapes: [vending_tickets]
+    - tags: {amenity: vending_machine, vending: admission_tickets}
+      shapes: [vending_tickets]
+    - tags: {vending: candles}
+      shapes: [vending_candles]
+    - tags: {amenity: vending_machine, vending: candles}
+      shapes: [vending_candles]
+    - tags: {vending: chemist}
+      shapes: [vending_chemist]
+    - tags: {amenity: vending_machine, vending: chemist}
+      shapes: [vending_chemist]
+    - tags: {vending: drinks}
+      shapes: [vending_bottle]
+    - tags: {amenity: vending_machine, vending: drinks}
+      shapes: [vending_bottle]
+    - tags: {vending: excrement_bags}
+      shapes: [vending_excrement_bag]
     - tags: {amenity: vending_machine, vending: excrement_bags}
       shapes: [vending_excrement_bag]
+    - tags: {vending: fishing_tackle}
+      shapes: [vending_angle]
+    - tags: {amenity: vending_machine, vending: fishing_tackle}
+      shapes: [vending_angle]
+    - tags: {vending: public_transport_tickets}
+      shapes: [vending_tickets]
+    - tags: {amenity: vending_machine, vending: public_transport_tickets}
+      shapes: [vending_tickets]
+    - tags: {vending: parking_tickets}
+      shapes: [vending_p]
+    - tags: {amenity: vending_machine, vending: parking_tickets}
+      shapes: [vending_p]
+    - tags: {vending: water}
+      shapes: [vending_drop]
+    - tags: {amenity: vending_machine, vending: water}
+      shapes: [vending_drop]
     - tags: {fitness_station: horizontal_bar}
       shapes: [horizontal_bar]
     - tags: {fitness_station: rings}
