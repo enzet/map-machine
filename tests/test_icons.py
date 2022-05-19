@@ -163,3 +163,26 @@ def test_icon_regex() -> None:
         [("circle_11", DEFAULT_COLOR), ("digit_4", WHITE), ("digit_2", WHITE)],
         [],
     )
+
+
+def test_vending_machine() -> None:
+    """
+    Check that specific vending machines doesn't render with generic icon.
+
+    See https://github.com/enzet/map-machine/issues/132
+    """
+    check_icon_set(
+        get_icon({"amenity": "vending_machine"}),
+        [("vending_machine", DEFAULT_COLOR)],
+        [],
+    )
+    check_icon_set(
+        get_icon({"amenity": "vending_machine", "vending": "drinks"}),
+        [("vending_bottle", DEFAULT_COLOR)],
+        [],
+    )
+    check_icon_set(
+        get_icon({"vending": "drinks"}),
+        [("vending_bottle", DEFAULT_COLOR)],
+        [],
+    )
