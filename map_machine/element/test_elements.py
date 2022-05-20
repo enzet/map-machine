@@ -8,13 +8,13 @@ from typing import Optional
 import numpy as np
 from svgwrite import Drawing
 
-from map_machine.geometry.boundary_box import BoundaryBox
 from map_machine.constructor import Constructor
+from map_machine.geometry.boundary_box import BoundaryBox
 from map_machine.geometry.flinger import Flinger
-from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.map_configuration import MapConfiguration
 from map_machine.mapper import Map
 from map_machine.osm.osm_reader import OSMData, OSMNode, OSMWay
+from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.scheme import Scheme
 from map_machine.workspace import Workspace
 

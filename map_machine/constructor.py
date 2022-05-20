@@ -15,10 +15,8 @@ from map_machine.feature.building import Building, BUILDING_SCALE
 from map_machine.feature.crater import Crater
 from map_machine.feature.direction import DirectionSector
 from map_machine.feature.road import Road, Roads
-from map_machine.figure import (
-    StyledFigure,
-)
 from map_machine.feature.tree import Tree
+from map_machine.figure import StyledFigure
 from map_machine.geometry.flinger import Flinger
 from map_machine.map_configuration import DrawingMode, MapConfiguration
 from map_machine.osm.osm_reader import (

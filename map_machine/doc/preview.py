@@ -9,19 +9,19 @@ from typing import Optional
 import numpy as np
 import svgwrite
 
-from map_machine.geometry.boundary_box import BoundaryBox
 from map_machine.constructor import Constructor
+from map_machine.geometry.boundary_box import BoundaryBox
 from map_machine.geometry.flinger import Flinger
-from map_machine.pictogram.icon import ShapeExtractor
-from map_machine.mapper import Map
 from map_machine.map_configuration import (
     BuildingMode,
     DrawingMode,
     LabelMode,
     MapConfiguration,
 )
+from map_machine.mapper import Map
 from map_machine.osm.osm_getter import get_osm
 from map_machine.osm.osm_reader import OSMData
+from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.scheme import Scheme
 
 doc_path: Path = Path("doc")

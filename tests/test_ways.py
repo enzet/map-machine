@@ -1,10 +1,10 @@
 import numpy as np
 
+from map_machine.constructor import Constructor
 from map_machine.figure import Figure
 from map_machine.geometry.boundary_box import BoundaryBox
 from map_machine.geometry.flinger import Flinger
 from map_machine.map_configuration import MapConfiguration
-from map_machine.constructor import Constructor
 from map_machine.osm.osm_reader import OSMData, OSMWay, OSMNode
 from tests import SCHEME, SHAPE_EXTRACTOR
 
