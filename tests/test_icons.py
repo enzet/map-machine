@@ -6,6 +6,7 @@ from typing import Optional
 
 from colour import Color
 
+from map_machine.osm.osm_reader import Tags
 from map_machine.pictogram.icon import IconSet, ShapeSpecification, Icon
 from map_machine.pictogram.icon_collection import IconCollection
 from tests import SCHEME, SHAPE_EXTRACTOR, workspace
@@ -41,7 +42,7 @@ def test_icons_by_name() -> None:
     assert (path / "LICENSE").is_file()
 
 
-def get_icon(tags: dict[str, str]) -> IconSet:
+def get_icon(tags: Tags) -> IconSet:
     """Construct icon from tags."""
     processed: set[str] = set()
     icon, _ = SCHEME.get_icon(SHAPE_EXTRACTOR, tags, processed)
@@ -69,11 +70,13 @@ def test_no_icons_but_color() -> None:
 
 
 def check_icon_set(
-    icon: IconSet,
+    tags: Tags,
     main_specification: list[tuple[str, Optional[Color]]],
     extra_specifications: list[list[tuple[str, Optional[Color]]]],
 ) -> None:
     """Check icon set using simple specification."""
+    icon: IconSet = get_icon(tags)
+
     if not main_specification:
         assert icon.main_icon.is_default()
     else:
@@ -102,17 +105,17 @@ def test_icon() -> None:
     Tags that should be visualized with single main icon and without extra
     icons.
     """
-    icon: IconSet = get_icon({"natural": "tree"})
-    check_icon_set(icon, [("tree", Color("#98AC64"))], [])
+    check_icon_set({"natural": "tree"}, [("tree", Color("#98AC64"))], [])
 
 
 def test_icon_1_extra() -> None:
     """
     Tags that should be visualized with single main icon and single extra icon.
     """
-    icon: IconSet = get_icon({"barrier": "gate", "access": "private"})
     check_icon_set(
-        icon, [("gate", DEFAULT_COLOR)], [[("lock_with_keyhole", EXTRA_COLOR)]]
+        {"barrier": "gate", "access": "private"},
+        [("gate", DEFAULT_COLOR)],
+        [[("lock_with_keyhole", EXTRA_COLOR)]],
     )
 
 
@@ -120,11 +123,8 @@ def test_icon_2_extra() -> None:
     """
     Tags that should be visualized with single main icon and two extra icons.
     """
-    icon: IconSet = get_icon(
-        {"barrier": "gate", "access": "private", "bicycle": "yes"}
-    )
     check_icon_set(
-        icon,
+        {"barrier": "gate", "access": "private", "bicycle": "yes"},
         [("gate", DEFAULT_COLOR)],
         [
             [("bicycle", EXTRA_COLOR)],
@@ -137,17 +137,17 @@ def test_no_icon_1_extra() -> None:
     """
     Tags that should be visualized with default main icon and single extra icon.
     """
-    icon: IconSet = get_icon({"access": "private"})
-    check_icon_set(icon, [], [[("lock_with_keyhole", EXTRA_COLOR)]])
+    check_icon_set(
+        {"access": "private"}, [], [[("lock_with_keyhole", EXTRA_COLOR)]]
+    )
 
 
 def test_no_icon_2_extra() -> None:
     """
     Tags that should be visualized with default main icon and two extra icons.
     """
-    icon: IconSet = get_icon({"access": "private", "bicycle": "yes"})
     check_icon_set(
-        icon,
+        {"access": "private", "bicycle": "yes"},
         [],
         [[("bicycle", EXTRA_COLOR)], [("lock_with_keyhole", EXTRA_COLOR)]],
     )
@@ -157,9 +157,8 @@ def test_icon_regex() -> None:
     """
     Tags that should be visualized with default main icon and single extra icon.
     """
-    icon: IconSet = get_icon({"traffic_sign": "maxspeed", "maxspeed": "42"})
     check_icon_set(
-        icon,
+        {"traffic_sign": "maxspeed", "maxspeed": "42"},
         [("circle_11", DEFAULT_COLOR), ("digit_4", WHITE), ("digit_2", WHITE)],
         [],
     )
@@ -172,17 +171,17 @@ def test_vending_machine() -> None:
     See https://github.com/enzet/map-machine/issues/132
     """
     check_icon_set(
-        get_icon({"amenity": "vending_machine"}),
+        {"amenity": "vending_machine"},
         [("vending_machine", DEFAULT_COLOR)],
         [],
     )
     check_icon_set(
-        get_icon({"amenity": "vending_machine", "vending": "drinks"}),
+        {"amenity": "vending_machine", "vending": "drinks"},
         [("vending_bottle", DEFAULT_COLOR)],
         [],
     )
     check_icon_set(
-        get_icon({"vending": "drinks"}),
+        {"vending": "drinks"},
         [("vending_bottle", DEFAULT_COLOR)],
         [],
     )
