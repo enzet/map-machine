@@ -14,6 +14,7 @@ from map_machine.geometry.flinger import Flinger
 from map_machine.map_configuration import MapConfiguration
 from map_machine.mapper import Map
 from map_machine.osm.osm_reader import OSMData, OSMNode, OSMWay
+from map_machine.osm.tags import HIGHWAY_VALUES, AEROWAY_VALUES, RAILWAY_TAGS
 from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.scheme import Scheme
 from map_machine.workspace import Workspace
@@ -25,45 +26,6 @@ SHAPE_EXTRACTOR: ShapeExtractor = ShapeExtractor(
     workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
 )
 DEFAULT_ZOOM: float = 18.0
-
-
-HIGHWAY_VALUES: list[str] = [
-    "motorway",
-    "trunk",
-    "primary",
-    "secondary",
-    "tertiary",
-    "unclassified",
-    "residential",
-    "service",
-    "service_minor",
-    "road",
-    "pedestrian",
-    "living_street",
-    "bridleway",
-    "cycleway",
-    "footway",
-    "steps",
-    "path",
-    "track",
-    "raceway",
-]
-
-AEROWAY_VALUES: list[str] = [
-    "runway",
-    "taxiway",
-]
-
-RAILWAY_TAGS: list[dict[str, str]] = [
-    {"railway": "rail"},
-    {"railway": "light_rail"},
-    {"railway": "monorail"},
-    {"railway": "funicular"},
-    {"railway": "narrow_gauge"},
-    {"railway": "subway"},
-    {"railway": "subway", "color": "red"},
-    {"railway": "subway", "color": "blue"},
-]
 
 ROAD_WIDTHS_AND_FEATURES: list[dict[str, str]] = [
     {"width": "4"},

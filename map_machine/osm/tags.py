@@ -1,0 +1,35 @@
+HIGHWAY_VALUES: list[str] = [
+    "motorway",
+    "trunk",
+    "primary",
+    "secondary",
+    "tertiary",
+    "unclassified",
+    "residential",
+    "service",
+    "service_minor",
+    "road",
+    "pedestrian",
+    "living_street",
+    "bridleway",
+    "cycleway",
+    "footway",
+    "steps",
+    "path",
+    "track",
+    "raceway",
+]
+AEROWAY_VALUES: list[str] = [
+    "runway",
+    "taxiway",
+]
+RAILWAY_TAGS: list[dict[str, str]] = [
+    {"railway": "rail"},
+    {"railway": "light_rail"},
+    {"railway": "monorail"},
+    {"railway": "funicular"},
+    {"railway": "narrow_gauge"},
+    {"railway": "subway"},
+    {"railway": "subway", "color": "red"},
+    {"railway": "subway", "color": "blue"},
+]
