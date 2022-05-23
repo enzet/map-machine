@@ -123,7 +123,6 @@ class Grid:
     def __init__(self) -> None:
         self.x_step: float = 0.0002
         self.y_step: float = 0.0003
-        self.x_start: float = 0.0
         self.index: int = 0
         self.nodes: dict[OSMNode, tuple[int, int]] = {}
         self.max_j: float = 0
