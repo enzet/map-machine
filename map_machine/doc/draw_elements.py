@@ -41,8 +41,6 @@ ROAD_WIDTHS_AND_FEATURES: list[dict[str, str]] = [
     {"embankment": "yes", "width": "4"},
     {"embankment": "yes", "width": "8"},
 ]
-
-
 ROAD_LANES_AND_FEATURES: list[dict[str, str]] = [
     {"lanes": "1"},
     {"lanes": "2"},
@@ -68,7 +66,6 @@ PLACEMENT_FEATURES_1: list[dict[str, str]] = [
     {"placement": "transition"},
     {"lanes": "3", "placement": "right_of:1"},  # or placement=left_of:2
 ]
-
 PLACEMENT_FEATURES_2: list[dict[str, str]] = [
     {"lanes": "2"},
     # or placement:backward=left_of:1
@@ -113,7 +110,7 @@ class Grid:
         )
 
 
-def road_features(
+def draw_road_features(
     types: list[dict[str, str]], features: list[dict[str, str]], path: Path
 ) -> None:
     """Draw test image with different road features."""
@@ -164,6 +161,8 @@ def draw(
 if __name__ == "__main__":
     logging.basicConfig(format="%(levelname)s %(message)s", level=logging.INFO)
 
+    out_path: Path = Path("out")
+
     highway_tags: list[dict[str, str]] = [
         {"highway": value} for value in HIGHWAY_VALUES
     ]
@@ -171,16 +170,16 @@ if __name__ == "__main__":
         {"aeroway": value} for value in AEROWAY_VALUES
     ]
 
-    road_features(
-        highway_tags, ROAD_LANES_AND_FEATURES, Path("out") / "lanes.svg"
+    draw_road_features(
+        highway_tags, ROAD_LANES_AND_FEATURES, out_path / "lanes.svg"
     )
-    road_features(
+    draw_road_features(
         highway_tags + RAILWAY_TAGS + aeroway_tags,
         ROAD_WIDTHS_AND_FEATURES,
-        Path("out") / "width.svg",
+        out_path / "width.svg",
     )
-    road_features(
+    draw_road_features(
         highway_tags,
         PLACEMENT_FEATURES_1 + [{"highway": "none"}] + PLACEMENT_FEATURES_2,
-        Path("out") / "placement.svg",
+        out_path / "placement.svg",
     )
