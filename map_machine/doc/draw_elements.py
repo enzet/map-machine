@@ -111,16 +111,17 @@ class Grid:
     def get_boundary_box(self) -> BoundaryBox:
         """Compute resulting boundary box with margin of one grid step."""
         return BoundaryBox(
-            -self.x_step,
-            -self.max_i - self.y_step,
-            self.max_j + self.x_step,
-            self.y_step,
+            -self.x_step * 1.5,
+            -self.max_i - self.y_step * 1.5,
+            self.max_j + self.x_step * 1.5,
+            self.y_step * 1.5,
         )
 
     def draw(self, output_path: Path, zoom: float = DEFAULT_ZOOM) -> None:
         """Draw grid."""
-        configuration: MapConfiguration = MapConfiguration(level="all")
-
+        configuration: MapConfiguration = MapConfiguration(
+            level="all", credit=None
+        )
         flinger: Flinger = Flinger(
             self.get_boundary_box(), zoom, self.osm_data.equator_length
         )

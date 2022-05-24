@@ -34,8 +34,6 @@ from map_machine.workspace import workspace
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-OPENSTREETMAP_CREDIT: str = "© OpenStreetMap contributors"
-
 
 class Map:
     """Map drawing."""
@@ -207,13 +205,17 @@ class Map:
         text_color: Color = Color("#888888")
         outline_color: Color = Color("#FFFFFF")
 
-        for text, point in (
-            (
-                f"Data: {OPENSTREETMAP_CREDIT}",
+        credit_list: list[tuple[str, tuple[float, float]]] = [
+            (f"Rendering: {__project__}", (right_margin, bottom_margin))
+        ]
+        if self.configuration.credit:
+            data_credit: tuple[str, tuple[float, float]] = (
+                f"Data: {self.configuration.credit}",
                 (right_margin, bottom_margin + font_size + vertical_spacing),
-            ),
-            (f"Rendering: {__project__}", (right_margin, bottom_margin)),
-        ):
+            )
+            credit_list.append(data_credit)
+
+        for text, point in credit_list:
             for stroke_width, stroke, opacity in (
                 (3.0, outline_color, 0.7),
                 (1.0, None, 1.0),
