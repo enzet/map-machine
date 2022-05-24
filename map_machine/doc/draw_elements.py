@@ -2,6 +2,7 @@
 Draw test nodes, ways, and relations.
 """
 import logging
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
 
@@ -76,16 +77,16 @@ PLACEMENT_FEATURES_2: list[dict[str, str]] = [
 ]
 
 
+@dataclass
 class Grid:
     """Creating map with elements ordered in grid."""
 
-    def __init__(self) -> None:
-        self.x_step: float = 0.0002
-        self.y_step: float = 0.0003
-        self.index: int = 0
-        self.nodes: dict[OSMNode, tuple[int, int]] = {}
-        self.max_j: float = 0
-        self.max_i: float = 0
+    x_step: float = 0.0002
+    y_step: float = 0.0003
+    index: int = 0
+    nodes: dict[OSMNode, tuple[int, int]] = field(default_factory=dict)
+    max_j: float = 0
+    max_i: float = 0
 
     def add_node(self, tags: dict[str, str], i: int, j: int) -> OSMNode:
         """Add OSM node to the grid."""
@@ -108,6 +109,31 @@ class Grid:
             self.max_j + self.x_step,
             self.y_step,
         )
+
+
+def draw_overlapped_ways(types: list[dict[str, str]], path: Path) -> None:
+    """
+    Draw two sets of ways intersecting each other to show how they overlapping.
+    """
+    osm_data: OSMData = OSMData()
+    grid: Grid = Grid(0.00012, 0.00012)
+    way_id: int = 0
+
+    for i, type_1 in enumerate(types):
+        node_1: OSMNode = grid.add_node({}, i + 1, 0)
+        node_2: OSMNode = grid.add_node({}, i + 1, len(types) + 1)
+        way: OSMWay = OSMWay(type_1, way_id, [node_1, node_2])
+        way_id += 1
+        osm_data.add_way(way)
+
+    for i, type_1 in enumerate(types):
+        node_1: OSMNode = grid.add_node({}, 0, i + 1)
+        node_2: OSMNode = grid.add_node({}, len(types) + 1, i + 1)
+        way: OSMWay = OSMWay(type_1, way_id, [node_1, node_2])
+        way_id += 1
+        osm_data.add_way(way)
+
+    draw(osm_data, path, grid.get_boundary_box())
 
 
 def draw_road_features(
@@ -183,3 +209,4 @@ if __name__ == "__main__":
         PLACEMENT_FEATURES_1 + [{"highway": "none"}] + PLACEMENT_FEATURES_2,
         out_path / "placement.svg",
     )
+    draw_overlapped_ways(highway_tags, out_path / "overlap.svg")
