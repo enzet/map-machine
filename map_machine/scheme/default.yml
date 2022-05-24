@@ -1949,7 +1949,7 @@ node_icons:
 
     - tags: {bus: "yes"}
       add_shapes: [bus]
-    - tags: {motocar: "yes"}
+    - tags: {motorcar: "yes"}
       add_shapes: [car]
     - tags: {car: "yes"}
       add_shapes: [car]
