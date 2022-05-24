@@ -2,7 +2,6 @@
 Draw test nodes, ways, and relations.
 """
 import logging
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
 
@@ -14,7 +13,7 @@ from map_machine.geometry.boundary_box import BoundaryBox
 from map_machine.geometry.flinger import Flinger
 from map_machine.map_configuration import MapConfiguration
 from map_machine.mapper import Map
-from map_machine.osm.osm_reader import OSMData, OSMNode, OSMWay
+from map_machine.osm.osm_reader import OSMData, OSMNode, OSMWay, Tags
 from map_machine.osm.tags import HIGHWAY_VALUES, AEROWAY_VALUES, RAILWAY_TAGS
 from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.scheme import Scheme
@@ -77,18 +76,20 @@ PLACEMENT_FEATURES_2: list[dict[str, str]] = [
 ]
 
 
-@dataclass
 class Grid:
     """Creating map with elements ordered in grid."""
 
-    x_step: float = 0.0002
-    y_step: float = 0.0003
-    index: int = 0
-    nodes: dict[OSMNode, tuple[int, int]] = field(default_factory=dict)
-    max_j: float = 0
-    max_i: float = 0
+    def __init__(self, x_step: float = 0.0002, y_step: float = 0.0003):
+        self.x_step: float = x_step
+        self.y_step: float = y_step
+        self.index: int = 0
+        self.nodes: dict[OSMNode, tuple[int, int]] = {}
+        self.max_j: float = 0
+        self.max_i: float = 0
+        self.way_id: int = 0
+        self.osm_data: OSMData = OSMData()
 
-    def add_node(self, tags: dict[str, str], i: int, j: int) -> OSMNode:
+    def add_node(self, tags: Tags, i: int, j: int) -> OSMNode:
         """Add OSM node to the grid."""
         self.index += 1
         node: OSMNode = OSMNode(
@@ -101,6 +102,12 @@ class Grid:
         self.max_i = max(self.max_i, i * self.y_step)
         return node
 
+    def add_way(self, tags: Tags, nodes: list[OSMNode]) -> None:
+        """Add OSM way to the grid."""
+        osm_way: OSMWay = OSMWay(tags, self.way_id, nodes)
+        self.osm_data.add_way(osm_way)
+        self.way_id += 1
+
     def get_boundary_box(self) -> BoundaryBox:
         """Compute resulting boundary box with margin of one grid step."""
         return BoundaryBox(
@@ -110,37 +117,49 @@ class Grid:
             self.y_step,
         )
 
+    def draw(self, output_path: Path, zoom: float = DEFAULT_ZOOM) -> None:
+        """Draw grid."""
+        configuration: MapConfiguration = MapConfiguration(level="all")
+
+        flinger: Flinger = Flinger(
+            self.get_boundary_box(), zoom, self.osm_data.equator_length
+        )
+        svg: Drawing = Drawing(output_path.name, flinger.size)
+        constructor: Constructor = Constructor(
+            self.osm_data, flinger, SCHEME, SHAPE_EXTRACTOR, configuration
+        )
+        constructor.construct()
+        map_: Map = Map(flinger, svg, SCHEME, configuration)
+        map_.draw(constructor)
+
+        with output_path.open("w") as output_file:
+            svg.write(output_file)
+            logging.info(f"Map is drawn to {output_path}.")
+
 
 def draw_overlapped_ways(types: list[dict[str, str]], path: Path) -> None:
     """
     Draw two sets of ways intersecting each other to show how they overlapping.
     """
-    osm_data: OSMData = OSMData()
     grid: Grid = Grid(0.00012, 0.00012)
-    way_id: int = 0
 
-    for i, type_1 in enumerate(types):
-        node_1: OSMNode = grid.add_node({}, i + 1, 0)
-        node_2: OSMNode = grid.add_node({}, i + 1, len(types) + 1)
-        way: OSMWay = OSMWay(type_1, way_id, [node_1, node_2])
-        way_id += 1
-        osm_data.add_way(way)
+    for index, tags in enumerate(types):
+        node_1: OSMNode = grid.add_node({}, index + 1, 0)
+        node_2: OSMNode = grid.add_node({}, index + 1, len(types) + 1)
+        grid.add_way(tags, [node_1, node_2])
 
-    for i, type_1 in enumerate(types):
-        node_1: OSMNode = grid.add_node({}, 0, i + 1)
-        node_2: OSMNode = grid.add_node({}, len(types) + 1, i + 1)
-        way: OSMWay = OSMWay(type_1, way_id, [node_1, node_2])
-        way_id += 1
-        osm_data.add_way(way)
+    for index, tags in enumerate(types):
+        node_1: OSMNode = grid.add_node({}, 0, index + 1)
+        node_2: OSMNode = grid.add_node({}, len(types) + 1, index + 1)
+        grid.add_way(tags, [node_1, node_2])
 
-    draw(osm_data, path, grid.get_boundary_box())
+    grid.draw(path)
 
 
 def draw_road_features(
     types: list[dict[str, str]], features: list[dict[str, str]], path: Path
 ) -> None:
     """Draw test image with different road features."""
-    osm_data: OSMData = OSMData()
     grid: Grid = Grid()
 
     for i, type_ in enumerate(types):
@@ -152,36 +171,10 @@ def draw_road_features(
             if previous:
                 tags: dict[str, str] = dict(type_)
                 tags |= dict(features[j - 1])
-                way: OSMWay = OSMWay(
-                    tags, i * (len(features) + 1) + j, [previous, node]
-                )
-                osm_data.add_way(way)
+                grid.add_way(tags, [previous, node])
             previous = node
 
-    draw(osm_data, path, grid.get_boundary_box())
-
-
-def draw(
-    osm_data: OSMData,
-    output_path: Path,
-    boundary_box: BoundaryBox,
-    zoom: float = DEFAULT_ZOOM,
-) -> None:
-    """Draw map."""
-    configuration: MapConfiguration = MapConfiguration(level="all")
-
-    flinger: Flinger = Flinger(boundary_box, zoom, osm_data.equator_length)
-    svg: Drawing = Drawing(output_path.name, flinger.size)
-    constructor: Constructor = Constructor(
-        osm_data, flinger, SCHEME, SHAPE_EXTRACTOR, configuration
-    )
-    constructor.construct()
-    map_: Map = Map(flinger, svg, SCHEME, configuration)
-    map_.draw(constructor)
-
-    with output_path.open("w") as output_file:
-        svg.write(output_file)
-        logging.info(f"Map is drawn to {output_path}.")
+    grid.draw(path)
 
 
 if __name__ == "__main__":
