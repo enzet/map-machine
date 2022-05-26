@@ -7,6 +7,7 @@ from typing import Optional
 
 import numpy as np
 from svgwrite import Drawing
+from svgwrite.text import Text
 
 from map_machine.constructor import Constructor
 from map_machine.geometry.boundary_box import BoundaryBox
@@ -14,7 +15,12 @@ from map_machine.geometry.flinger import Flinger
 from map_machine.map_configuration import MapConfiguration
 from map_machine.mapper import Map
 from map_machine.osm.osm_reader import OSMData, OSMNode, OSMWay, Tags
-from map_machine.osm.tags import HIGHWAY_VALUES, AEROWAY_VALUES, RAILWAY_TAGS
+from map_machine.osm.tags import (
+    HIGHWAY_VALUES,
+    AEROWAY_VALUES,
+    RAILWAY_VALUES,
+    ROAD_VALUES,
+)
 from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.scheme import Scheme
 from map_machine.workspace import Workspace
@@ -145,13 +151,13 @@ def draw_overlapped_ways(types: list[dict[str, str]], path: Path) -> None:
     grid: Grid = Grid(0.00012, 0.00012)
 
     for index, tags in enumerate(types):
-        node_1: OSMNode = grid.add_node({}, index + 1, 0)
-        node_2: OSMNode = grid.add_node({}, index + 1, len(types) + 1)
+        node_1: OSMNode = grid.add_node({}, index + 1, 8)
+        node_2: OSMNode = grid.add_node({}, index + 1, len(types) + 9)
         grid.add_way(tags, [node_1, node_2])
 
     for index, tags in enumerate(types):
-        node_1: OSMNode = grid.add_node({}, 0, index + 1)
-        node_2: OSMNode = grid.add_node({}, len(types) + 1, index + 1)
+        node_1: OSMNode = grid.add_node({}, 0, index + 9)
+        node_2: OSMNode = grid.add_node({}, len(types) + 1, index + 9)
         grid.add_way(tags, [node_1, node_2])
 
     grid.draw(path)
@@ -183,18 +189,24 @@ if __name__ == "__main__":
 
     out_path: Path = Path("out")
 
+    road_tags: list[dict[str, str]] = [
+        {"highway": value} for value in ROAD_VALUES
+    ]
     highway_tags: list[dict[str, str]] = [
         {"highway": value} for value in HIGHWAY_VALUES
     ]
     aeroway_tags: list[dict[str, str]] = [
         {"aeroway": value} for value in AEROWAY_VALUES
     ]
+    railway_tags: list[dict[str, str]] = [
+        {"railway": value} for value in RAILWAY_VALUES
+    ]
 
     draw_road_features(
         highway_tags, ROAD_LANES_AND_FEATURES, out_path / "lanes.svg"
     )
     draw_road_features(
-        highway_tags + RAILWAY_TAGS + aeroway_tags,
+        highway_tags + railway_tags + aeroway_tags,
         ROAD_WIDTHS_AND_FEATURES,
         out_path / "width.svg",
     )
@@ -203,4 +215,4 @@ if __name__ == "__main__":
         PLACEMENT_FEATURES_1 + [{"highway": "none"}] + PLACEMENT_FEATURES_2,
         out_path / "placement.svg",
     )
-    draw_overlapped_ways(highway_tags, out_path / "overlap.svg")
+    draw_overlapped_ways(road_tags + railway_tags, out_path / "overlap.svg")
