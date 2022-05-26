@@ -94,6 +94,7 @@ class Grid:
         self.max_i: float = 0
         self.way_id: int = 0
         self.osm_data: OSMData = OSMData()
+        self.texts: list[tuple[str, int, int]] = []
 
     def add_node(self, tags: Tags, i: int, j: int) -> OSMNode:
         """Add OSM node to the grid."""
@@ -113,6 +114,9 @@ class Grid:
         osm_way: OSMWay = OSMWay(tags, self.way_id, nodes)
         self.osm_data.add_way(osm_way)
         self.way_id += 1
+
+    def add_text(self, text: str, i: int, j: int) -> None:
+        self.texts.append((text, i, j))
 
     def get_boundary_box(self) -> BoundaryBox:
         """Compute resulting boundary box with margin of one grid step."""
@@ -139,6 +143,16 @@ class Grid:
         map_: Map = Map(flinger, svg, SCHEME, configuration)
         map_.draw(constructor)
 
+        for text, i, j in self.texts:
+            svg.add(
+                Text(
+                    text,
+                    flinger.fling((-i * self.y_step, j * self.x_step)) + (0, 3),
+                    font_family="JetBrains Mono",
+                    font_size=12,
+                )
+            )
+
         with output_path.open("w") as output_file:
             svg.write(output_file)
             logging.info(f"Map is drawn to {output_path}.")
@@ -154,6 +168,7 @@ def draw_overlapped_ways(types: list[dict[str, str]], path: Path) -> None:
         node_1: OSMNode = grid.add_node({}, index + 1, 8)
         node_2: OSMNode = grid.add_node({}, index + 1, len(types) + 9)
         grid.add_way(tags, [node_1, node_2])
+        grid.add_text(", ".join(f"{k}={tags[k]}" for k in tags), index + 1, 0)
 
     for index, tags in enumerate(types):
         node_1: OSMNode = grid.add_node({}, 0, index + 9)
