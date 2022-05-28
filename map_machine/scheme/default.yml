@@ -2575,9 +2575,23 @@ ways:
     priority: 42.0
   - tags: {railway: construction}
     style:
+      stroke-width: 2.0
+      stroke: "#000000"
+      stroke-dasharray: 6,3
+      opacity: 0.3
+    priority: 42.0
+  - tags: {railway: disused}
+    style:
       stroke-width: 3.0
       stroke: "#000000"
-      stroke-dasharray: 3,3
+      stroke-dasharray: 6,6
+      opacity: 0.3
+    priority: 42.0
+  - tags: {railway: abandoned}
+    style:
+      stroke-width: 3.0
+      stroke: "#000000"
+      stroke-dasharray: 6,9
       opacity: 0.3
     priority: 42.0
 
