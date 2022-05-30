@@ -19,6 +19,7 @@ from map_machine.constructor import Constructor
 from map_machine.drawing import draw_text
 from map_machine.feature.building import Building, draw_walls, BUILDING_SCALE
 from map_machine.feature.road import Intersection, Road, RoadPart
+from map_machine.figure import StyledFigure
 from map_machine.geometry.boundary_box import BoundaryBox
 from map_machine.geometry.flinger import Flinger
 from map_machine.geometry.vector import Segment
@@ -33,6 +34,8 @@ from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
+
+ROAD_PRIORITY: float = 40.0
 
 
 class Map:
@@ -61,7 +64,16 @@ class Map:
         )
         logging.info("Drawing ways...")
 
-        for figure in constructor.get_sorted_figures():
+        figures: list[StyledFigure] = constructor.get_sorted_figures()
+
+        top_figures: list[StyledFigure] = [
+            x for x in figures if x.line_style.priority >= ROAD_PRIORITY
+        ]
+        bottom_figures: list[StyledFigure] = [
+            x for x in figures if x.line_style.priority < ROAD_PRIORITY
+        ]
+
+        for figure in bottom_figures:
             path_commands: str = figure.get_path(self.flinger)
             if path_commands:
                 path: SVGPath = SVGPath(d=path_commands)
@@ -69,6 +81,13 @@ class Map:
                 self.svg.add(path)
 
         constructor.roads.draw(self.svg, self.flinger)
+
+        for figure in top_figures:
+            path_commands: str = figure.get_path(self.flinger)
+            if path_commands:
+                path: SVGPath = SVGPath(d=path_commands)
+                path.update(figure.line_style.style)
+                self.svg.add(path)
 
         for tree in constructor.trees:
             tree.draw(self.svg, self.flinger, self.scheme)
