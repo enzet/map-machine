@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 echo "Looking for changes..."
 files=`git status --porcelain | wc -l`
