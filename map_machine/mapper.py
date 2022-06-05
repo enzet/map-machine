@@ -276,12 +276,19 @@ def render_map(arguments: argparse.Namespace) -> None:
 
     if arguments.boundary_box:
         boundary_box = BoundaryBox.from_text(arguments.boundary_box)
+
     elif arguments.coordinates and arguments.size:
-        coordinates: np.ndarray = np.array(
-            list(map(float, arguments.coordinates.split(",")))
-        )
-        if len(coordinates) != 2:
-            fatal("Wrong number of coordinates.")
+        coordinates: Optional[np.ndarray] = None
+
+        for delimiter in ",", "/":
+            if delimiter in arguments.coordinates:
+                coordinates = np.array(
+                    list(map(float, arguments.coordinates.split(delimiter)))
+                )
+
+        if coordinates is None or len(coordinates) != 2:
+            fatal("Wrong coordinates format.")
+
         width, height = np.array(list(map(float, arguments.size.split(","))))
         boundary_box = BoundaryBox.from_coordinates(
             coordinates, configuration.zoom_level, width, height
