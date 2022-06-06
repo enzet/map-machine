@@ -395,6 +395,13 @@ class Road(Tagged):
             except ValueError:
                 pass
 
+        if "placement" in tags:
+            value: str = tags["placement"]
+            if ":" in value and len(parts := value.split(":")) == 2:
+                _, lane_string = parts
+                if (lane_number := int(lane_string) - 1) >= len(self.lanes):
+                    self.lanes += [Lane()] * (lane_number + 1 - len(self.lanes))
+
         if "width:lanes" in tags:
             try:
                 widths: list[float] = list(
