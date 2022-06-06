@@ -16,6 +16,10 @@ from tests import SCHEME, SHAPE_EXTRACTOR
 
 
 def get_constructor(osm_data: OSMData) -> Constructor:
+    """
+    Get custom constructor for bounds (-0.01, -0.01, 0.01, 0.01) and zoom level
+    18.
+    """
     flinger: Flinger = Flinger(
         BoundaryBox(-0.01, -0.01, 0.01, 0.01), 18, osm_data.equator_length
     )
@@ -26,13 +30,15 @@ def get_constructor(osm_data: OSMData) -> Constructor:
     return constructor
 
 
-def create_way(tags: Tags, index: int) -> OSMWay:
+def create_way(osm_data: OSMData, tags: Tags, index: int) -> None:
     """Create simple OSM way with two arbitrary nodes."""
     nodes: list[OSMNode] = [
         OSMNode({}, 1, np.array((-0.01, -0.01))),
         OSMNode({}, 2, np.array((0.01, 0.01))),
     ]
-    return OSMWay(tags, index, nodes)
+    for node in nodes:
+        osm_data.add_node(node)
+    osm_data.add_way(OSMWay(tags, index, nodes))
 
 
 def test_river_and_wood() -> None:
@@ -42,14 +48,27 @@ def test_river_and_wood() -> None:
     See https://github.com/enzet/map-machine/issues/126
     """
     osm_data: OSMData = OSMData()
-    osm_data.add_way(create_way({"natural": "wood"}, 1))
-    osm_data.add_way(create_way({"waterway": "river"}, 2))
+    create_way(osm_data, {"natural": "wood"}, 1)
+    create_way(osm_data, {"waterway": "river"}, 2)
 
     figures: list[Figure] = get_constructor(osm_data).get_sorted_figures()
 
     assert len(figures) == 2
     assert figures[0].tags["natural"] == "wood"
     assert figures[1].tags["waterway"] == "river"
+
+
+def test_placement_and_lanes() -> None:
+    """
+    Check that `placement` tag is processed correctly when `lanes` tag is not
+    specified.
+
+    See https://github.com/enzet/map-machine/issues/128
+    """
+    osm_data: OSMData = OSMData()
+    create_way(osm_data, {"highway": "motorway", "placement": "right_of:2"}, 1)
+
+    get_constructor(osm_data)
 
 
 def test_empty_ways() -> None:
