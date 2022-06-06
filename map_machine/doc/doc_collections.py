@@ -9,8 +9,8 @@ from typing import Any, Optional, List, Dict, Set
 import numpy as np
 import svgwrite
 from svgwrite import Drawing
-from svgwrite.text import Text
 from svgwrite.shapes import Line, Rect
+from svgwrite.text import Text
 
 from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import Tags

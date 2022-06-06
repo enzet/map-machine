@@ -15,7 +15,6 @@ from map_machine.pictogram.icon import (
 from map_machine.pictogram.icon_collection import IconCollection
 from map_machine.workspace import workspace
 
-
 SKIP: bool = True
 
 

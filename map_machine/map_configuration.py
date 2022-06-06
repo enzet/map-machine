@@ -57,6 +57,7 @@ class MapConfiguration:
     draw_roofs: bool = True
     use_building_colors: bool = False
     show_overlapped: bool = False
+    credit: Optional[str] = "© OpenStreetMap contributors"
 
     @classmethod
     def from_options(
