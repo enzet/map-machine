@@ -1,5 +1,8 @@
 """
 Test icon generation for nodes.
+
+Tests check that for the given node described by tags, Map Machine generates
+expected icons with expected colors.
 """
 from pathlib import Path
 from typing import Optional
@@ -166,7 +169,7 @@ def test_icon_regex() -> None:
 
 def test_vending_machine() -> None:
     """
-    Check that specific vending machines doesn't render with generic icon.
+    Check that specific vending machines aren't rendered with generic icon.
 
     See https://github.com/enzet/map-machine/issues/132
     """
