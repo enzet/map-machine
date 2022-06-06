@@ -2,7 +2,6 @@
 Command-line user interface.
 """
 import argparse
-import sys
 
 from map_machine import __version__
 from map_machine.map_configuration import BuildingMode, DrawingMode, LabelMode
@@ -10,9 +9,6 @@ from map_machine.osm.osm_reader import STAGES_OF_DECAY
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
-
-BOXES: str = " ▏▎▍▌▋▊▉"
-BOXES_LENGTH: int = len(BOXES)
 
 COMMAND_LINES: dict[str, list[str]] = {
     "render": ["render", "-b", "10.000,20.000,10.001,20.001"],
@@ -356,30 +352,3 @@ def add_mapcss_arguments(parser: argparse.ArgumentParser) -> None:
         f"number of node and area selectors by {len(STAGES_OF_DECAY) + 1} "
         f"times",
     )
-
-
-def progress_bar(
-    number: int, total: int, length: int = 20, step: int = 1000, text: str = ""
-) -> None:
-    """
-    Draw progress bar using Unicode symbols.
-
-    :param number: current value
-    :param total: maximum value
-    :param length: progress bar length.
-    :param step: frequency of progress bar updating (assuming that numbers go
-        subsequently)
-    :param text: short description
-    """
-    if number == -1:
-        sys.stdout.write(f"100 % {length * '█'}▏{text}\n")
-    elif number % step == 0:
-        ratio: float = number / total
-        parts: int = int(ratio * length * BOXES_LENGTH)
-        fill_length: int = int(parts / BOXES_LENGTH)
-        box: str = BOXES[int(parts - fill_length * BOXES_LENGTH)]
-        sys.stdout.write(
-            f"{str(int(int(ratio * 1000.0) / 10.0)):>3} % "
-            f"{fill_length * '█'}{box}"
-            f"{int(length - fill_length - 1) * ' '}▏{text}\n\033[F"
-        )
