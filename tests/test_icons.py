@@ -75,10 +75,13 @@ def test_no_icons_but_color() -> None:
 def check_icon_set(
     tags: Tags,
     main_specification: list[tuple[str, Optional[Color]]],
-    extra_specifications: list[list[tuple[str, Optional[Color]]]],
+    extra_specifications: list[list[tuple[str, Optional[Color]]]] = None,
 ) -> None:
     """Check icon set using simple specification."""
     icon: IconSet = get_icon(tags)
+
+    if extra_specifications is None:
+        extra_specifications = []
 
     if not main_specification:
         assert icon.main_icon.is_default()
@@ -108,7 +111,7 @@ def test_icon() -> None:
     Tags that should be visualized with single main icon and without extra
     icons.
     """
-    check_icon_set({"natural": "tree"}, [("tree", Color("#98AC64"))], [])
+    check_icon_set({"natural": "tree"}, [("tree", Color("#98AC64"))])
 
 
 def test_icon_1_extra() -> None:
@@ -163,7 +166,6 @@ def test_icon_regex() -> None:
     check_icon_set(
         {"traffic_sign": "maxspeed", "maxspeed": "42"},
         [("circle_11", DEFAULT_COLOR), ("digit_4", WHITE), ("digit_2", WHITE)],
-        [],
     )
 
 
@@ -176,15 +178,12 @@ def test_vending_machine() -> None:
     check_icon_set(
         {"amenity": "vending_machine"},
         [("vending_machine", DEFAULT_COLOR)],
-        [],
     )
     check_icon_set(
         {"amenity": "vending_machine", "vending": "drinks"},
         [("vending_bottle", DEFAULT_COLOR)],
-        [],
     )
     check_icon_set(
         {"vending": "drinks"},
         [("vending_bottle", DEFAULT_COLOR)],
-        [],
     )
