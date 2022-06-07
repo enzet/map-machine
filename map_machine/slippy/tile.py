@@ -475,14 +475,23 @@ def generate_tiles(options: argparse.Namespace) -> None:
     if options.input_file_name:
         osm_data: OSMData = OSMData()
         osm_data.parse_osm_file(Path(options.input_file_name))
+
+        if osm_data.view_box is None:
+            logging.fatal(
+                "Failed to parse boundary box input file "
+                f"{options.input_file_name}."
+            )
+            sys.exit(1)
+
+        boundary_box: BoundaryBox = osm_data.view_box
+
         for zoom_level in zoom_levels:
             configuration: MapConfiguration = MapConfiguration.from_options(
                 options, zoom_level
             )
-            tiles: Tiles = Tiles.from_boundary_box(
-                osm_data.view_box, zoom_level
-            )
+            tiles: Tiles = Tiles.from_boundary_box(boundary_box, zoom_level)
             tiles.draw(directory, Path(options.cache), configuration, osm_data)
+
     elif options.coordinates:
         coordinates: list[float] = list(
             map(float, options.coordinates.strip().split(","))
@@ -506,6 +515,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
                 tile.draw_with_osm_data(osm_data, directory, configuration)
             except NetworkError as error:
                 logging.fatal(error.message)
+
     elif options.tile:
         zoom_level, x, y = map(int, options.tile.split("/"))
         tile: Tile = Tile(x, y, zoom_level)
@@ -513,12 +523,15 @@ def generate_tiles(options: argparse.Namespace) -> None:
             options, zoom_level
         )
         tile.draw(directory, Path(options.cache), configuration)
+
     elif options.boundary_box:
         boundary_box: Optional[BoundaryBox] = BoundaryBox.from_text(
             options.boundary_box
         )
         if boundary_box is None:
+            logging.fatal("Failed to parse boundary box.")
             sys.exit(1)
+
         min_tiles: Tiles = Tiles.from_boundary_box(boundary_box, min_zoom_level)
         try:
             osm_data: OSMData = min_tiles.load_osm_data(Path(options.cache))
@@ -534,6 +547,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
                 options, zoom_level
             )
             tiles.draw(directory, Path(options.cache), configuration, osm_data)
+
     else:
         logging.fatal(
             "Specify either --coordinates, --boundary-box, --tile, or --input."
