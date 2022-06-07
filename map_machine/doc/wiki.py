@@ -3,7 +3,7 @@ import re
 from pathlib import Path
 from typing import Optional
 
-from map_machine.doc.collections import Collection
+from map_machine.doc.doc_collections import Collection
 
 from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import Tags
