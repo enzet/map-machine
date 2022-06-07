@@ -14,7 +14,14 @@ from map_machine.geometry.boundary_box import BoundaryBox
 from map_machine.geometry.flinger import Flinger
 from map_machine.map_configuration import MapConfiguration
 from map_machine.mapper import Map
-from map_machine.osm.osm_reader import OSMData, OSMNode, OSMWay, Tags
+from map_machine.osm.osm_reader import (
+    OSMData,
+    OSMNode,
+    OSMWay,
+    Tags,
+    OSMRelation,
+    OSMMember,
+)
 from map_machine.osm.tags import (
     HIGHWAY_VALUES,
     AEROWAY_VALUES,
@@ -88,11 +95,16 @@ class Grid:
     def __init__(self, x_step: float = 0.0002, y_step: float = 0.0003):
         self.x_step: float = x_step
         self.y_step: float = y_step
+
         self.index: int = 0
         self.nodes: dict[OSMNode, tuple[int, int]] = {}
+
         self.max_j: float = 0
         self.max_i: float = 0
+
         self.way_id: int = 0
+        self.relation_id: int = 0
+
         self.osm_data: OSMData = OSMData()
         self.texts: list[tuple[str, int, int]] = []
 
@@ -105,15 +117,23 @@ class Grid:
             np.array((-i * self.y_step, j * self.x_step)),
         )
         self.nodes[node] = (j, i)
+        self.osm_data.add_node(node)
         self.max_j = max(self.max_j, j * self.x_step)
         self.max_i = max(self.max_i, i * self.y_step)
         return node
 
-    def add_way(self, tags: Tags, nodes: list[OSMNode]) -> None:
+    def add_way(self, tags: Tags, nodes: list[OSMNode]) -> OSMWay:
         """Add OSM way to the grid."""
         osm_way: OSMWay = OSMWay(tags, self.way_id, nodes)
         self.osm_data.add_way(osm_way)
         self.way_id += 1
+        return osm_way
+
+    def add_relation(self, tags: Tags, members: list[OSMMember]) -> OSMRelation:
+        osm_relation: OSMRelation = OSMRelation(tags, self.relation_id, members)
+        self.osm_data.add_relation(osm_relation)
+        self.relation_id += 1
+        return osm_relation
 
     def add_text(self, text: str, i: int, j: int) -> None:
         self.texts.append((text, i, j))
@@ -199,6 +219,38 @@ def draw_road_features(
     grid.draw(path)
 
 
+def draw_multipolygon(path: Path) -> None:
+    """Draw simple multipolygon with one outer and one inner way."""
+    grid: Grid = Grid(y_step=0.0002)
+
+    outer_node: OSMNode = grid.add_node({}, 0, 0)
+    outer_nodes: list[OSMNode] = [
+        outer_node,
+        grid.add_node({}, 0, 3),
+        grid.add_node({}, 3, 3),
+        grid.add_node({}, 3, 0),
+        outer_node,
+    ]
+    inner_node: OSMNode = grid.add_node({}, 1, 1)
+    inner_nodes: list[OSMNode] = [
+        inner_node,
+        grid.add_node({}, 1, 2),
+        grid.add_node({}, 2, 2),
+        grid.add_node({}, 2, 1),
+        inner_node,
+    ]
+    outer = grid.add_way({}, outer_nodes)
+    inner = grid.add_way({}, inner_nodes)
+
+    members: list[OSMMember] = [
+        OSMMember("way", outer.id_, "outer"),
+        OSMMember("way", inner.id_, "inner"),
+    ]
+    grid.add_relation({"natural": "water", "type": "multipolygon"}, members)
+
+    grid.draw(path)
+
+
 if __name__ == "__main__":
     logging.basicConfig(format="%(levelname)s %(message)s", level=logging.INFO)
 
@@ -231,3 +283,4 @@ if __name__ == "__main__":
         out_path / "placement.svg",
     )
     draw_overlapped_ways(road_tags + railway_tags, out_path / "overlap.svg")
+    draw_multipolygon(out_path / "multipolygon.svg")
