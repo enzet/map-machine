@@ -1,3 +1,1 @@
-"""
-Map geometry: dealing with coordinates, projections.
-"""
+"""Map geometry: dealing with coordinates, projections."""

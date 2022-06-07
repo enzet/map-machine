@@ -1,3 +1,1 @@
-"""
-Specific map features: roads, directions, etc.
-"""
+"""Specific map features: roads, directions, etc."""

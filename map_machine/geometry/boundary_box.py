@@ -81,8 +81,7 @@ class BoundaryBox:
         height: float,
     ) -> "BoundaryBox":
         """
-        Compute boundary box from central coordinates, zoom level and resulting
-        image size.
+        Compute boundary box from center coordinates, zoom level and image size.
 
         :param coordinates: boundary box central coordinates
         :param zoom_level: resulting image zoom level
@@ -144,7 +143,9 @@ class BoundaryBox:
 
     def get_format(self) -> str:
         """
-        Get text representation of the boundary box:
+        Get text representation of the boundary box.
+
+        Boundary box format is
         <longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>.  Coordinates are
         rounded to three digits after comma.
         """
