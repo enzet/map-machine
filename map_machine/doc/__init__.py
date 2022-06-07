@@ -1,3 +1,1 @@
-"""
-Documentation utilities.
-"""
+"""Documentation utilities."""

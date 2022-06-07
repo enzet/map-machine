@@ -1,6 +1,4 @@
-"""
-Actions to perform before commit: generate PNG images for documentation.
-"""
+"""Actions to perform before commit: generate PNG images for documentation."""
 import logging
 import sys
 from pathlib import Path

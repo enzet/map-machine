@@ -1,6 +1,4 @@
-"""
-Moire markup extension for Map Machine.
-"""
+"""Moire markup extension for Map Machine."""
 import argparse
 from abc import ABC
 from pathlib import Path

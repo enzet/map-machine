@@ -1,6 +1,4 @@
-"""
-Simple OpenStreetMap renderer.
-"""
+"""Simple OpenStreetMap renderer."""
 import argparse
 import logging
 import sys

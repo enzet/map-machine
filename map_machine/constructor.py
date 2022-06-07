@@ -1,6 +1,4 @@
-"""
-Construct Map Machine nodes and ways.
-"""
+"""Construct Map Machine nodes and ways."""
 import logging
 import sys
 from datetime import datetime

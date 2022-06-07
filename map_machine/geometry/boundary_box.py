@@ -1,6 +1,4 @@
-"""
-Rectangle that limit space on the map.
-"""
+"""Rectangle that limit space on the map."""
 import logging
 import re
 from dataclasses import dataclass

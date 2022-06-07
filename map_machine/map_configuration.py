@@ -1,6 +1,4 @@
-"""
-Map drawing configuration.
-"""
+"""Map drawing configuration."""
 import argparse
 from dataclasses import dataclass
 from enum import Enum

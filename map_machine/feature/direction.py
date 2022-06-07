@@ -1,6 +1,4 @@
-"""
-Direction tag support.
-"""
+"""Direction tag support."""
 from typing import Iterator, Optional
 
 import numpy as np

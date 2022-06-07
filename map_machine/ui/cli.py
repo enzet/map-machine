@@ -1,6 +1,4 @@
-"""
-Command-line user interface.
-"""
+"""Command-line user interface."""
 import argparse
 
 from map_machine import __version__

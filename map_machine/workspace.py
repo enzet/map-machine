@@ -1,6 +1,4 @@
-"""
-File and directory path in the project.
-"""
+"""File and directory path in the project."""
 from pathlib import Path
 
 __author__ = "Sergey Vartanov"

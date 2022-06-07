@@ -1,6 +1,4 @@
-"""
-Figures displayed on the map.
-"""
+"""Figures displayed on the map."""
 import numpy as np
 
 from map_machine.geometry.flinger import Flinger

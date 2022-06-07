@@ -1,6 +1,4 @@
-"""
-Drawing separate map elements.
-"""
+"""Drawing separate map elements."""
 import argparse
 import logging
 from pathlib import Path

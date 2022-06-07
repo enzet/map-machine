@@ -1,6 +1,4 @@
-"""
-Special icon collections for documentation.
-"""
+"""Special icon collections for documentation."""
 import json
 from dataclasses import dataclass, field
 from pathlib import Path

@@ -1,6 +1,4 @@
-"""
-Extract icons from SVG file.
-"""
+"""Extract icons from SVG file."""
 import json
 import logging
 import re

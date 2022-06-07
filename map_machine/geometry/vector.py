@@ -1,6 +1,4 @@
-"""
-Vector utility.
-"""
+"""Vector utility."""
 import numpy as np
 
 __author__ = "Sergey Vartanov"

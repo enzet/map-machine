@@ -1,6 +1,4 @@
-"""
-Geo projection.
-"""
+"""Geo projection."""
 from typing import Optional
 
 import numpy as np

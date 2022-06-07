@@ -1,6 +1,4 @@
-"""
-Map Machine entry point.
-"""
+"""Map Machine entry point."""
 import argparse
 import logging
 import sys
