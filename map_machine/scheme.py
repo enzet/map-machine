@@ -411,6 +411,8 @@ class Scheme:
 
     def get(self, variable_name: str):
         """
+        Get value of variable.
+
         FIXME: colors should be variables.
         """
         if variable_name in self.colors:

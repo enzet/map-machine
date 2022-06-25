@@ -74,9 +74,7 @@ def line_center(
 
 
 def get_user_color(text: str, seed: str) -> Color:
-    """
-    Generate random color based on text.
-    """
+    """Generate random color based on text."""
     if text == "":
         return Color("black")
     return Color("#" + sha256((seed + text).encode("utf-8")).hexdigest()[-6:])

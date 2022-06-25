@@ -43,9 +43,7 @@ def parse_text(text: str, margins: str, tag_id: str) -> Code:
 
 
 class ArgumentParser(argparse.ArgumentParser):
-    """
-    Argument parser that stores arguments and creates help in Moire markup.
-    """
+    """Parser that stores arguments and creates help in Moire markup."""
 
     def __init__(self, *args, **kwargs) -> None:
         self.arguments: list[dict[str, Any]] = []

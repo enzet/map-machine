@@ -11,8 +11,7 @@ __email__ = "me@enzet.ru"
 
 def pseudo_mercator(coordinates: np.ndarray) -> np.ndarray:
     """
-    Use spherical pseudo-Mercator projection to convert geo coordinates into
-    plane.
+    Use spherical pseudo-Mercator projection to convert geo coordinates.
 
     :param coordinates: geo positional in the form of (latitude, longitude)
     :return: position on the plane in the form of (x, y)
@@ -29,8 +28,9 @@ def osm_zoom_level_to_pixels_per_meter(
     zoom_level: float, equator_length: float
 ) -> float:
     """
-    Convert OSM zoom level to pixels per meter on Equator. See
-    https://wiki.openstreetmap.org/wiki/Zoom_levels
+    Convert OSM zoom level to pixels per meter on Equator.
+
+    See https://wiki.openstreetmap.org/wiki/Zoom_levels
 
     :param zoom_level: integer number usually not bigger than 20, but this
         function allows any non-negative float value

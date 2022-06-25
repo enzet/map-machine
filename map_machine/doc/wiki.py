@@ -36,9 +36,7 @@ class WikiTable:
         self.page_name: str = page_name
 
     def generate_wiki_table(self) -> tuple[str, list[Icon]]:
-        """
-        Generate Röntgen icon table for the OpenStreetMap wiki page.
-        """
+        """Generate Röntgen icon table for the OpenStreetMap wiki page."""
         icons: list[Icon] = []
         text: str = '{| class="wikitable"\n'
 
