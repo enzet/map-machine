@@ -1,3 +1,1 @@
-"""
-OpenStreetMap-specific things.
-"""
+"""OpenStreetMap-specific things."""

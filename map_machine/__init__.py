@@ -1,6 +1,4 @@
-"""
-Map Machine project: simple Python map renderer for OpenStreetMap and icon set.
-"""
+"""Map Machine: Python map renderer for OpenStreetMap with custom icon set."""
 
 __project__ = "Map Machine"
 __description__ = (
