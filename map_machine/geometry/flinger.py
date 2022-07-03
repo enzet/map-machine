@@ -49,6 +49,8 @@ class Flinger:
         equator_length: float,
     ) -> None:
         """
+        Initialize flinger with geo boundary box and zoom level.
+
         :param geo_boundaries: minimum and maximum latitude and longitude
         :param zoom_level: zoom level in OpenStreetMap terminology
         :param equator_length: celestial body equator length in meters

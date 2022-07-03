@@ -28,22 +28,22 @@ EXTRACTOR: ShapeExtractor = ShapeExtractor(
 class Collection:
     """Icon collection."""
 
-    # Core tags
+    # Core tags.
     tags: Tags
 
-    # Tag key to be used in rows
+    # Tag key to be used in rows.
     row_key: Optional[str] = None
 
-    # List of tag values to be used in rows
+    # List of tag values to be used in rows.
     row_values: list[str] = field(default_factory=list)
 
-    # Tag key to be used in columns
+    # Tag key to be used in columns.
     column_key: Optional[str] = None
 
-    # List of tag values to be used in columns
+    # List of tag values to be used in columns.
     column_values: list[str] = field(default_factory=list)
 
-    # List of tags to be used in rows
+    # List of tags to be used in rows.
     row_tags: list[Tags] = field(default_factory=list)
 
     @classmethod
