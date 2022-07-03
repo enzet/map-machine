@@ -1140,6 +1140,10 @@ node_icons:
       shapes: [power_pole_triangle_armless]
     - tags: {power: pole, design: delta}
       shapes: [power_pole_delta]
+    - tags: {power: pole, design: delta_two-level}
+      shapes: [power_pole_delta]  # power_pole_delta_2_level
+    - tags: {power: pole, design: delta_three-level}
+      shapes: [power_pole_delta]  # power_pole_delta_3_level
 
     - tags: {man_made: chimney}
       shapes: [chimney]
