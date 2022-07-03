@@ -91,6 +91,8 @@
         "tags": {},
         "row_tags": [
             {"amenity": "bench"},
+            {"amenity": "bench", "backrest": "yes"},
+            {"amenity": "bench", "backrest": "no"},
             {"memorial": "bench"}
         ]
     },
@@ -100,9 +102,13 @@
         "id": "mast",
         "tags": {"man_made": "mast"},
         "row_key": "tower:construction",
-        "row_values": ["freestanding", "lattice", "guyed_tube", "guyed_lattice"],
+        "row_values": [
+            "freestanding", "lattice", "guyed_tube", "guyed_lattice"
+        ],
         "column_key": "tower:type",
-        "column_values": ["", "communication", "lighting", "monitoring", "siren"]
+        "column_values": [
+            "", "communication", "lighting", "monitoring", "siren"
+        ]
     },
     {
         "name": "Volcano",
