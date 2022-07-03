@@ -1673,6 +1673,8 @@ node_icons:
       shapes: [golf_pin]
     - tags: {highway: traffic_mirror}
       shapes: [side_mirror]
+    - tags: {amenity: dressing_room}
+      shapes: [hanger]
 
   - group: "Entrances"
     start_zoom_level: 18.0

@@ -420,6 +420,7 @@
   },
   "clothes": {
     "glasses": {"name": "glasses"},
+    "hanger": {"name": "hanger"},
     "shoe": {"name": "shoe"},
     "t_shirt": {"name": "T-shirt"},
     "t_shirt_and_scissors": {"name": "T-shirt and scissors"},
