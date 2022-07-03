@@ -9,7 +9,7 @@ __url__ = "https://github.com/enzet/map-machine"
 __doc_url__ = f"{__url__}/blob/main/README.md"
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
-__version__ = "0.1.5"
+__version__ = "0.1.6"
 
 REQUIREMENTS: list[str] = [
     "CairoSVG>=2.5.0",

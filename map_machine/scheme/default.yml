@@ -1660,6 +1660,8 @@ node_icons:
       shapes: [hopscotch]
     - tags: {playground: slide}
       shapes: [slide]
+    - tags: {attraction: water_slide}
+      shapes: [slide_and_water]
     - tags: {playground: roundabout}
       shapes: [roundabout]
     - tags: {playground: sandpit}
@@ -2167,6 +2169,17 @@ ways:
       stroke: "#888888"
       stroke-width: 3.0
       stroke-dasharray: "1.0,10.0,1.0,1.5"
+    priority: 80.0
+
+  - tags: {attraction: water_slide}
+    style:
+      stroke: "#FFFFFF"
+      stroke-width: 2.0
+    priority: 81
+  - tags: {attraction: water_slide}
+    style:
+      stroke: "#888888"
+      stroke-width: 4.0
     priority: 80.0
 
   - tags: {highway: track}
