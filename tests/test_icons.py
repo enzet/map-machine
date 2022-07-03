@@ -187,3 +187,21 @@ def test_vending_machine() -> None:
         {"vending": "drinks"},
         [("vending_bottle", DEFAULT_COLOR)],
     )
+
+
+def test_diving_tower() -> None:
+    """
+    Check that diving towers are rendered as diving towers, not just
+    freestandging towers.
+
+    See https://github.com/enzet/map-machine/issues/138
+    """
+    check_icon_set(
+        {
+            "man_made": "tower",
+            "tower:type": "diving",
+            "tower:construction": "freestanding",
+            "tower:platforms": "4",
+        },
+        [("diving_4_platforms", DEFAULT_COLOR)],
+    )
