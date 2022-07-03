@@ -525,7 +525,7 @@ class Constructor:
 
     def get_sorted_figures(self) -> list[StyledFigure]:
         """Get all figures sorted by priority."""
-        return sorted(self.figures, key=lambda x: x.line_style.priority)
+        return sorted(self.figures)
 
 
 def check_level_number(tags: Tags, level: float) -> bool:

@@ -91,6 +91,27 @@ class StyledFigure(Figure):
 
         return path
 
+    def get_layer(self) -> float:
+        """
+        Get figure layer value or 0 if it is not specified.
+
+        TODO: support values separated by "," or ";".
+        """
+        try:
+            if "layer" in self.tags:
+                return float(self.tags["layer"])
+        except ValueError:
+            return 0.0
+        return 0.0
+
+    def __lt__(self, other: "StyledFigure") -> bool:
+        """Compare figures based on priority and layer."""
+        if self.get_layer() != other.get_layer():
+            print(self.get_layer() < other.get_layer())
+            return self.get_layer() < other.get_layer()
+
+        return self.line_style.priority < other.line_style.priority
+
 
 def is_clockwise(polygon: list[OSMNode]) -> bool:
     """
