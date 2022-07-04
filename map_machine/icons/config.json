@@ -464,7 +464,7 @@
   },
   "tower": {
     "city_gate": {"name": "city gate"},
-    "diving_platform": {"name": "diving platform"},
+    "diving_1_platforms": {"name": "diving tower with 1 platform"},
     "diving_2_platforms": {"name": "diving tower with 2 platforms"},
     "diving_3_platforms": {"name": "diving tower with 3 platforms"},
     "diving_4_platforms": {"name": "diving tower with 4 platforms"},
