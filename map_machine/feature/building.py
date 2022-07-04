@@ -168,6 +168,11 @@ class Building(Figure):
 
 
 def draw_walls(svg, building: Building, segment, height, shift_1, shift_2):
+    """
+    Draw walls for buildings as a quadrangle.
+
+    Color of the wall is based on illumination.
+    """
     fill: str
     if building.is_construction:
         color_part: float = segment.angle * 0.2

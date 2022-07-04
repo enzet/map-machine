@@ -192,7 +192,7 @@ def test_vending_machine() -> None:
 def test_diving_tower() -> None:
     """
     Check that diving towers are rendered as diving towers, not just
-    freestandging towers.
+    freestanding towers.
 
     See https://github.com/enzet/map-machine/issues/138
     """
