@@ -107,7 +107,6 @@ class StyledFigure(Figure):
     def __lt__(self, other: "StyledFigure") -> bool:
         """Compare figures based on priority and layer."""
         if self.get_layer() != other.get_layer():
-            print(self.get_layer() < other.get_layer())
             return self.get_layer() < other.get_layer()
 
         return self.line_style.priority < other.line_style.priority
