@@ -22,6 +22,18 @@ SCHEME: Scheme = Scheme.from_file(WORKSPACE.DEFAULT_SCHEME_PATH)
 EXTRACTOR: ShapeExtractor = ShapeExtractor(
     WORKSPACE.ICONS_PATH, WORKSPACE.ICONS_CONFIG_PATH
 )
+MONOSPACE_FONTS: list[str] = [
+    "JetBrains Mono",
+    "Fira Code",
+    "Fira Mono",
+    "ui-monospace",
+    "SFMono-regular",
+    "SF Mono",
+    "Menlo",
+    "Consolas",
+    "Liberation Mono",
+    "monospace",
+]
 
 
 @dataclass
@@ -89,20 +101,7 @@ class SVGTable:
         self.half_step: np.ndarray = np.array(
             (self.step / 2.0, self.step / 2.0)
         )
-
-        fonts: list[str] = [
-            "JetBrains Mono",
-            "Fira Code",
-            "Fira Mono",
-            "ui-monospace",
-            "SFMono-regular",
-            "SF Mono",
-            "Menlo",
-            "Consolas",
-            "Liberation Mono",
-            "monospace",
-        ]
-        self.font: str = ",".join(fonts)
+        self.font: str = ",".join(MONOSPACE_FONTS)
         self.font_width: float = self.font_size * 0.7
 
         self.size: list[float] = [
@@ -169,6 +168,9 @@ class SVGTable:
                     self.draw_cross(np.array((j, i)))
 
         width, height = self.get_size()
+        self.svg.elements.insert(
+            0, self.svg.rect((0, 0), (width, height), fill="white")
+        )
         self.svg.update({"width": width, "height": height})
 
     def draw_rows(self) -> None:
@@ -306,7 +308,7 @@ class SVGTable:
 def draw_svg_tables(output_path: Path, html_file_path: Path) -> None:
     """Draw SVG tables of icon collections."""
 
-    with Path("data/collections.json").open() as input_file:
+    with (Path("data") / "collections.json").open() as input_file:
         collections: list[dict[str, Any]] = json.load(input_file)
 
         with html_file_path.open("w+") as html_file:
@@ -330,4 +332,4 @@ def draw_svg_tables(output_path: Path, html_file_path: Path) -> None:
 
 
 if __name__ == "__main__":
-    draw_svg_tables(Path("doc"), Path("result.html"))
+    draw_svg_tables(Path("doc"), Path("out") / "collections.html")
