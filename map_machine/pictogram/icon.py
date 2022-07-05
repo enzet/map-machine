@@ -32,6 +32,9 @@ PATH_MATCHER: re.Pattern = re.compile("[Mm] ([0-9.e-]*)[, ]([0-9.e-]*)")
 
 GRID_STEP: int = 16
 
+USED_ICON_COLOR: str = "#000000"
+UNUSED_ICON_COLORS: list[str] = ["#0000ff", "#ff0000"]
+
 
 @dataclass
 class Shape:
@@ -201,7 +204,7 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
     # Experimental shape (blue fill, no stroke).
 
     if (
-        style["fill"] == "#0000ff"
+        style["fill"] in UNUSED_ICON_COLORS
         and "stroke" in style
         and style["stroke"] == "none"
     ):
