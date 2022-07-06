@@ -148,12 +148,12 @@
      inkscape:object-paths="true"
      inkscape:guide-bbox="true"
      showguides="false"
-     showgrid="false"
+     showgrid="true"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:cy="179.50624"
-     inkscape:cx="217.61999"
-     inkscape:zoom="11.570628"
+     inkscape:cy="218.92013"
+     inkscape:cx="664.08196"
+     inkscape:zoom="20.62396"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -17652,9 +17652,9 @@
        y="-202"
        transform="scale(1,-1)" />
     <path
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        d="m 629,209 v 1 3 h -1 -1 v 1 3 1 h 1 1 v 4 h 1 4 v -1 -3 h 1 1 v -1 -4 h -2 v -4 h -4 z m 1,1 h 3 v 3 h -3 z m -2,4 h 3 v 3 h -1 -1 -1 z m 4,0 h 3 v 3 h -1 -1 -1 z m -2,4 h 1 1 1 v 3 h -3 z"
-       id="hopscotch"
+       id="path115552"
        inkscape:connector-curvature="0"
        inkscape:label="#rect25259">
       <title
@@ -31978,5 +31978,28 @@
        id="path105812"
        style="color:#000000;fill:#0000ff;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none;opacity:1;stroke:none"
        d="M 234 180.86523 A 1.1342664 1.1342664 0 0 0 232.86523 182 A 1.1342664 1.1342664 0 0 0 232.86523 182.00781 L 230.6875 183.09766 A 1.1342664 1.1342664 0 0 0 230 182.86523 A 1.1342664 1.1342664 0 0 0 228.86523 184 A 1.1342664 1.1342664 0 0 0 230 185.13477 A 1.1342664 1.1342664 0 0 0 230.68555 184.90039 L 232.86523 185.99219 A 1.1342664 1.1342664 0 0 0 232.86523 186 A 1.1342664 1.1342664 0 0 0 234 187.13477 A 1.1342664 1.1342664 0 0 0 235.13477 186 A 1.1342664 1.1342664 0 0 0 234 184.86523 A 1.1342664 1.1342664 0 0 0 233.31641 185.09961 L 231.13477 184.00781 A 1.1342664 1.1342664 0 0 0 231.13477 184 A 1.1342664 1.1342664 0 0 0 231.13477 183.99219 L 233.31641 182.90039 A 1.1342664 1.1342664 0 0 0 234 183.13477 A 1.1342664 1.1342664 0 0 0 235.13477 182 A 1.1342664 1.1342664 0 0 0 234 180.86523 z " />
+    <path
+       style="opacity:0.2;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 681.5,197.5 v -4 h -4 v 4"
+       id="path115126"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="opacity:0.2;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 683.5,197.5 h -8 v 4 h 8 z"
+       id="path115128"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="opacity:0.2;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 677.5,201.5 v 4 h 4 v -4"
+       id="path115130"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="opacity:0.2;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 679.5,197.5 v 4"
+       id="path115470" />
+    <path
+       id="hopscotch"
+       style="color:#000000;fill:#000000;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none;opacity:1"
+       d="M 677.5 209 A 0.50005 0.50005 0 0 0 677 209.5 L 677 213 L 675.5 213 A 0.50005 0.50005 0 0 0 675 213.5 L 675 217.5 A 0.50005 0.50005 0 0 0 675.5 218 L 677 218 L 677 221.5 A 0.50005 0.50005 0 0 0 677.5 222 L 681.5 222 A 0.50005 0.50005 0 0 0 682 221.5 L 682 218 L 683.5 218 A 0.50005 0.50005 0 0 0 684 217.5 L 684 213.5 A 0.50005 0.50005 0 0 0 683.5 213 L 682 213 L 682 209.5 A 0.50005 0.50005 0 0 0 681.5 209 L 677.5 209 z M 678 210 L 681 210 L 681 213 L 679.5 213 L 678 213 L 678 210 z M 676 214 L 679 214 L 679 217 L 676 217 L 676 214 z M 680 214 L 683 214 L 683 217 L 680 217 L 680 214 z M 678 218 L 679.5 218 L 681 218 L 681 221 L 678 221 L 678 218 z " />
   </g>
 </svg>
