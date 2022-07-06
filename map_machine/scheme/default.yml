@@ -717,7 +717,7 @@ node_icons:
     - tags: {shop: mobile_phone}
       shapes: [{shape: phone, color: sell_color}]
     - tags: {shop: newsagent}
-      shapes: [sheets]
+      shapes: [gazette]
     - tags: {shop: optician}
       shapes: [glasses]
     - tags: {shop: pastry}
@@ -1972,7 +1972,7 @@ node_icons:
     - tags: {recycling:glass_bottles: "yes"}
       add_shapes: [bottle]
     - tags: {recycling:paper: "yes"}
-      add_shapes: [sheets]
+      add_shapes: [gazette]
     - tags: {recycling:glass: "yes"}
       add_shapes: [bottle_and_wine_glass]
     - tags: {recycling:clothes: "yes"}
@@ -1982,11 +1982,11 @@ node_icons:
     - tags: {recycling:green_waste: "yes"}
       add_shapes: [apple]
     - tags: {recycling:paper_packaging: "yes"}
-      add_shapes: [sheets]
+      add_shapes: [gazette]
     - tags: {recycling:newspaper: "yes"}
-      add_shapes: [sheets]
+      add_shapes: [gazette]
     - tags: {recycling:magazines: "yes"}
-      add_shapes: [sheets]
+      add_shapes: [gazette]
     - tags: {recycling:books: "yes"}
       add_shapes: [book]
     - tags: {recycling:wood: "yes"}
