@@ -34,6 +34,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 ROAD_PRIORITY: float = 40.0
+DEFAULT_SIZE = (800.0, 600.0)
 
 
 class Map:
@@ -275,7 +276,7 @@ def render_map(arguments: argparse.Namespace) -> None:
     if arguments.boundary_box:
         boundary_box = BoundaryBox.from_text(arguments.boundary_box)
 
-    elif arguments.coordinates and arguments.size:
+    elif arguments.coordinates:
         coordinates: Optional[np.ndarray] = None
 
         for delimiter in ",", "/":
@@ -287,7 +288,13 @@ def render_map(arguments: argparse.Namespace) -> None:
         if coordinates is None or len(coordinates) != 2:
             fatal("Wrong coordinates format.")
 
-        width, height = np.array(list(map(float, arguments.size.split(","))))
+        if arguments.size:
+            width, height = np.array(
+                list(map(float, arguments.size.split(",")))
+            )
+        else:
+            width, height = DEFAULT_SIZE
+
         boundary_box = BoundaryBox.from_coordinates(
             coordinates, configuration.zoom_level, width, height
         )
@@ -307,10 +314,7 @@ def render_map(arguments: argparse.Namespace) -> None:
             logging.fatal(error.message)
             sys.exit(1)
     else:
-        fatal(
-            "Specify either --input, or --boundary-box, or --coordinates and "
-            "--size."
-        )
+        fatal("Specify either --input, or --boundary-box, or --coordinates.")
 
     # Get OpenStreetMap data
 
