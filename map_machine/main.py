@@ -1,7 +1,21 @@
 """Map Machine entry point."""
+import sys
+
+if sys.version_info.major < 3 or sys.version_info.minor < 9:
+    print(
+        "FATAL Python "
+        + str(sys.version_info.major)
+        + "."
+        + str(sys.version_info.minor)
+        + " is not supported. Please, use at least Python 3.9."
+    )
+    print(
+        "NOTE For Python 3.8 there is a special Map Machine branch `python3.8`."
+    )
+    sys.exit(1)
+
 import argparse
 import logging
-import sys
 from pathlib import Path
 
 from map_machine.ui.cli import parse_arguments
