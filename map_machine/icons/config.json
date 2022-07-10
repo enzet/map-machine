@@ -341,6 +341,7 @@
     "fuel_station": {"emoji": "⛽️", "name": "fuel station"},
     "garages": {"name": "car under roof"},
     "gavel": {"name": "gavel"},
+    "gazette": {"name": "gazette"},
     "gift": {"emoji": "🎁", "name": "gift box"},
     "globe": {"name": "globe"},
     "government": {"name": "building with dome and flag"},
