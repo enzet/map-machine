@@ -269,7 +269,7 @@ def render_map(arguments: argparse.Namespace) -> None:
     cache_path: Path = Path(arguments.cache)
     cache_path.mkdir(parents=True, exist_ok=True)
 
-    # Compute boundary box
+    # Compute boundary box.
 
     boundary_box: Optional[BoundaryBox] = None
 
@@ -299,8 +299,9 @@ def render_map(arguments: argparse.Namespace) -> None:
             coordinates, configuration.zoom_level, width, height
         )
 
-    # Determine files
+    # Determine files.
 
+    input_file_names: Optional[list[Path]] = None
     if arguments.input_file_names:
         input_file_names = list(map(Path, arguments.input_file_names))
     elif boundary_box:
@@ -316,7 +317,7 @@ def render_map(arguments: argparse.Namespace) -> None:
     else:
         fatal("Specify either --input, or --boundary-box, or --coordinates.")
 
-    # Get OpenStreetMap data
+    # Get OpenStreetMap data.
 
     osm_data: OSMData = OSMData()
     for input_file_name in input_file_names:
@@ -334,7 +335,7 @@ def render_map(arguments: argparse.Namespace) -> None:
     if not boundary_box:
         boundary_box = osm_data.boundary_box
 
-    # Render
+    # Render the map.
 
     flinger: Flinger = Flinger(
         boundary_box, arguments.zoom, osm_data.equator_length
