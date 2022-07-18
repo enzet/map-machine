@@ -128,12 +128,14 @@ class Grid:
         return osm_way
 
     def add_relation(self, tags: Tags, members: list[OSMMember]) -> OSMRelation:
+        """Connect objects on the gird with relations."""
         osm_relation: OSMRelation = OSMRelation(tags, self.relation_id, members)
         self.osm_data.add_relation(osm_relation)
         self.relation_id += 1
         return osm_relation
 
     def add_text(self, text: str, i: int, j: int) -> None:
+        """Add simple text label to the grid."""
         self.texts.append((text, i, j))
 
     def get_boundary_box(self) -> BoundaryBox:
@@ -178,7 +180,9 @@ class Grid:
 
 def draw_overlapped_ways(types: list[dict[str, str]], path: Path) -> None:
     """
-    Draw two sets of ways intersecting each other to show how they overlapping.
+    Draw two sets of ways intersecting each other.
+
+    The goal is to show check priority.
     """
     grid: Grid = Grid(0.00012, 0.00012)
 

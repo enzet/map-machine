@@ -230,7 +230,7 @@ class MapMachineHTML(MapMachineMoire, DefaultHTML):
 
 class MapMachineOSMWiki(MapMachineMoire, DefaultWiki):
     """
-    OpenStreetMap wiki.
+    Moire convertor to OpenStreetMap wiki markup.
 
     See https://wiki.openstreetmap.org/wiki/Main_Page
     """
@@ -243,7 +243,7 @@ class MapMachineOSMWiki(MapMachineMoire, DefaultWiki):
         )
 
     def osm(self, arg: Arguments) -> str:
-        """OSM tag key or key–value pair of tag."""
+        """Add special OSM tag key or key–value pair of tag."""
         spec: str = self.clear(arg[0])
         if "=" in spec:
             key, tag = spec.split("=")
@@ -252,11 +252,11 @@ class MapMachineOSMWiki(MapMachineMoire, DefaultWiki):
         return f"{{{{Tag|{spec}}}}}"
 
     def color(self, arg: Arguments) -> str:
-        """Simple color sample."""
+        """Add color box on the wiki page with specified color."""
         return f"{{{{Color box|{self.clear(arg[0])}}}}}"
 
     def icon(self, arg: Arguments) -> str:
-        """Image with Röntgen icon."""
+        """Process image with Röntgen icon."""
         size: str = self.clear(arg[1]) if len(arg) > 1 else "16"
         shape_id: str = self.clear(arg[0])
         name: str = self.extractor.get_shape(shape_id).name
@@ -269,15 +269,15 @@ class MapMachineMarkdown(MapMachineMoire, DefaultMarkdown):
     images = {}
 
     def color(self, arg: Arguments) -> str:
-        """Simple color sample."""
+        """Ignore colors in Markdown."""
         return self.clear(arg[0])
 
     def icon(self, arg: Arguments) -> str:
-        """Image with Röntgen icon."""
+        """Process image with Röntgen icon."""
         return f"[{self.clear(arg[0])}]"
 
     def kbd(self, arg: Arguments) -> str:
-        """Keyboard key."""
+        """Process keyboard key."""
         return f"<kbd>{self.clear(arg[0])}</kbd>"
 
     def no_wrap(self, arg: Arguments) -> str:
@@ -285,7 +285,7 @@ class MapMachineMarkdown(MapMachineMoire, DefaultMarkdown):
         return f'<span style="white-space: nowrap;">{self.parse(arg[0])}</span>'
 
     def formal(self, arg: Arguments) -> str:
-        """Formal variable."""
+        """Process formal variable."""
         return f"<{self.parse(arg[0])}>"
 
 
