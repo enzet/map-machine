@@ -1,6 +1,4 @@
-"""
-Test Fish shell completion.
-"""
+"""Test Fish shell completion."""
 from map_machine.ui.completion import completion_commands
 
 

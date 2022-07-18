@@ -1,6 +1,4 @@
-"""
-Test text generation.
-"""
+"""Test text generation."""
 from map_machine.text import format_voltage
 
 __author__ = "Sergey Vartanov"

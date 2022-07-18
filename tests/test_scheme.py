@@ -1,6 +1,4 @@
-"""
-Test scheme parsing.
-"""
+"""Test scheme parsing."""
 from typing import Any
 
 from map_machine.scheme import Scheme

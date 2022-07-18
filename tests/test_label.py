@@ -1,6 +1,4 @@
-"""
-Test label generation for nodes.
-"""
+"""Test label generation for nodes."""
 from map_machine.map_configuration import LabelMode
 from map_machine.text import Label, TextConstructor
 from tests import SCHEME
