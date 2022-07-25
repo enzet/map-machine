@@ -121,6 +121,7 @@ def test_element() -> None:
 
 
 def test_unwrapped_element() -> None:
+    """Test `element` command from inside the project."""
     arguments: argparse.Namespace = parse_arguments(
         ["map_machine"] + COMMAND_LINES["element"]
     )

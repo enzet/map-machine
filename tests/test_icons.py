@@ -54,8 +54,10 @@ def get_icon(tags: Tags) -> IconSet:
 
 def test_no_icons() -> None:
     """
-    Tags that has no description in scheme and should be visualized with default
-    shape.
+    Test icon creation for tags not described in the scheme.
+
+    Tags that has no description in the scheme and should be visualized with
+    default shape.
     """
     icon: IconSet = get_icon({"aaa": "bbb"})
     assert icon.main_icon.is_default()
@@ -64,6 +66,8 @@ def test_no_icons() -> None:
 
 def test_no_icons_but_color() -> None:
     """
+    Test icon creation for tags not described in the scheme and `colour` tag.
+
     Tags that has no description in scheme, but have `colour` tag and should be
     visualized with default shape with the given color.
     """
