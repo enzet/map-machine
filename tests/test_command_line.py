@@ -125,7 +125,7 @@ def test_unwrapped_element() -> None:
     arguments: argparse.Namespace = parse_arguments(
         ["map_machine"] + COMMAND_LINES["element"]
     )
-    from map_machine.element.single import draw_element
+    from map_machine.element.node import draw_element
 
     draw_element(arguments)
 
