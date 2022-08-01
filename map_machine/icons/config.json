@@ -454,6 +454,7 @@
     "tv": {"name": "monitor", "emoji": "🖥"}
   },
   "car_part": {
+    "engine": {"name": "engine"},
     "tyre": {"name": "tyre"}
   },
   "human": {

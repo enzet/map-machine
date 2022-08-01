@@ -1,6 +1,7 @@
 # Unreleased
 
 - Redraw diving tower icons.
+- Add icon for `shop=car_parts` (#48).
 
 # 0.1.6
 

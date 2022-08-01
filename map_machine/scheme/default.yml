@@ -670,6 +670,8 @@ node_icons:
       shapes: [knives]
     - tags: {shop: car}
       shapes: [{shape: car, color: sell_color}]
+    - tags: {shop: car_parts}
+      shapes: [shape: engine]
     - tags: {shop: chocolate}
       shapes: [cupcake]
     - tags: {shop: coffee}
