@@ -558,6 +558,8 @@ node_icons:
     tags:
     - tags: {shop: supermarket}
       shapes: [supermarket_cart]
+    - tags: {shop: variety_store}
+      shapes: [bag_with_percent]
     - tags: {shop: general}
       shapes: [bag]
     - tags: {amenity: arts_centre}

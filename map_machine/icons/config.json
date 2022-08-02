@@ -301,6 +301,7 @@
   },
   "hand_items": {
     "bag": {"name": "bag"},
+    "bag_with_percent": {"name": "bag with percent"},
     "book": {"emoji": "📕", "name": "book"},
     "books": {"emoji": "📚", "name": "books"}
   },

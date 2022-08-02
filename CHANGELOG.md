@@ -2,7 +2,7 @@
 
 - Redraw diving tower icons.
 - Add icons for:
-  - `shop=car_parts` (#48),
+  - `shop=car_parts`, `shop=variety_store` (#48),
   - `natural=spring` (#55).
 - Reuse icon for `shop=department_store` (#48).
 
