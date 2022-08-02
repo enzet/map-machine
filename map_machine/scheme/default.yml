@@ -435,6 +435,8 @@ node_icons:
       shapes: [fort]
     - tags: {shop: mall}
       shapes: [bag]
+    - tags: {shop: department_store}
+      shapes: [bag]
     - tags: {shop: mall, building: "yes"}
       shapes: [bag]
     - tags: {leisure: water_park}
