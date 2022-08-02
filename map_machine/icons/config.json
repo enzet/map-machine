@@ -207,6 +207,7 @@
     "shield_volcano": {"name": "shield volcano", "categories": ["natural"], "emoji": "🌋"},
     "smoke": {"name": "smoke"},
     "smoke_2": {"name": "clouds"},
+    "spring": {"name": "spring", "categories": ["natural"]},
     "stone": {"emoji": "🪨", "categories": ["natural"], "name": "stone"},
     "stone_with_inscription": {"categories": ["natural"], "name": "stone with inscription"},
     "stratovolcano": {"name": "stratovolcano", "categories": ["natural"], "emoji": "🌋"},

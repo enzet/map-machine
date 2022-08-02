@@ -1,7 +1,9 @@
 # Unreleased
 
 - Redraw diving tower icons.
-- Add icon for `shop=car_parts` (#48).
+- Add icons for:
+  - `shop=car_parts` (#48),
+  - `natural=spring` (#55).
 
 # 0.1.6
 

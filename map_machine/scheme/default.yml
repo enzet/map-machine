@@ -1479,6 +1479,8 @@ node_icons:
   - group: "Important small objects"
     start_zoom_level: 17.0
     tags:
+    - tags: {natural: spring}
+      shapes: [{shape: spring, color: water_border_color}]
     - tags: {highway: elevator}
       shapes: [elevator]
     - tags: {historic: cannon}
