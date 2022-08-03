@@ -12,7 +12,7 @@
 _4 July 2022_
 
 - Support `attraction=water_slide` (#137).
-- Fix diving tower priority (#138).
+- Fix diving tower priority (#138); test `test_icons/test_diving_tower`.
 - Add icon for `amenity=dressing_room` (#135).
 
 # 0.1.5
