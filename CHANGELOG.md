@@ -5,6 +5,7 @@
   - `shop=car_parts`, `shop=variety_store` (#48),
   - `natural=spring` (#55).
 - Reuse icon for `shop=department_store` (#48).
+- Redraw fountain icons.
 
 # 0.1.6
 
