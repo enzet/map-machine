@@ -7,6 +7,7 @@ import numpy as np
 import svgwrite
 from svgwrite.path import Path as SVGPath
 
+from element.grid import Grid
 from map_machine.map_configuration import LabelMode
 from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.pictogram.point import Point
@@ -16,6 +17,14 @@ from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
+
+from osm.osm_reader import Tags
+
+
+def draw_node(tags: Tags) -> None:
+    grid: Grid = Grid()
+    grid.add_node(tags, 0, 0)
+    grid.draw(Path("out.svg"))
 
 
 def draw_element(options: argparse.Namespace) -> None:
