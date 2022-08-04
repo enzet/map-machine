@@ -548,6 +548,8 @@ node_icons:
       shapes: [star_of_david]
     - tags: {historic: tomb, tomb: mausoleum}
       shapes: [mausoleum]
+    - tags: {historic: tomb, tomb: pyramid}
+      shapes: [pyramid]
     - tags: {historic: "*"}
       shapes: [japan_historic]
       replace_shapes: no
@@ -1510,7 +1512,7 @@ node_icons:
     - tags: {historic: tomb}
       shapes: [tomb]
     - tags: {tomb: "*"}
-      exception: {tomb: mausoleum}
+      exception: {tomb: mausoleum}  # TODO: add exception "tomb: pyramid"
       shapes: [tomb]
     - tags: {barrier: toll_booth}
       shapes: [toll_booth]

@@ -3,7 +3,8 @@
 - Redraw diving tower icons.
 - Add icons for:
   - `shop=car_parts`, `shop=variety_store` (#48),
-  - `natural=spring` (#55).
+  - `natural=spring` (#55),
+  - `tomb=pyramid`.
 - Reuse icon for `shop=department_store` (#48).
 - Redraw fountain icons.
 

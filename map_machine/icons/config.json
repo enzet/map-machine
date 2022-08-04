@@ -24,6 +24,7 @@
       "mausoleum": {"name": "mausoleum", "categories": ["building"]},
       "minaret": {"name": "minaret", "categories": ["building"]},
       "pagoda": {"name": "pagoda", "categories": ["building"]},
+      "pyramid": {"name": "pyramid", "categories": ["building"]},
       "townhall": {"name": "town hall", "categories": ["building"]}
     },
     "small": {
