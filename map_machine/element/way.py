@@ -3,28 +3,14 @@ import logging
 from pathlib import Path
 from typing import Optional
 
-from element.grid import Grid
-from map_machine.osm.osm_reader import (
-    OSMNode,
-    OSMMember,
-)
+from map_machine.element.grid import Grid
+from map_machine.osm.osm_reader import OSMNode, OSMMember
 from map_machine.osm.tags import (
     HIGHWAY_VALUES,
     AEROWAY_VALUES,
     RAILWAY_VALUES,
     ROAD_VALUES,
 )
-from map_machine.pictogram.icon import ShapeExtractor
-from map_machine.scheme import Scheme
-from map_machine.workspace import Workspace
-
-workspace: Workspace = Workspace(Path("temp"))
-
-SCHEME: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
-SHAPE_EXTRACTOR: ShapeExtractor = ShapeExtractor(
-    workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
-)
-DEFAULT_ZOOM: float = 18.0
 
 ROAD_WIDTHS_AND_FEATURES: list[dict[str, str]] = [
     {"width": "4"},

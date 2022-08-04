@@ -7,8 +7,9 @@ import numpy as np
 import svgwrite
 from svgwrite.path import Path as SVGPath
 
-from element.grid import Grid
+from map_machine.element.grid import Grid
 from map_machine.map_configuration import LabelMode
+from map_machine.osm.osm_reader import Tags
 from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.pictogram.point import Point
 from map_machine.scheme import LineStyle, Scheme
@@ -17,8 +18,6 @@ from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
-
-from osm.osm_reader import Tags
 
 
 def draw_node(tags: Tags) -> None:

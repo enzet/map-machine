@@ -5,13 +5,12 @@ import numpy as np
 from svgwrite import Drawing
 from svgwrite.text import Text
 
-from constructor import Constructor
-from element.way import DEFAULT_ZOOM, SCHEME, SHAPE_EXTRACTOR
-from geometry.boundary_box import BoundaryBox
-from geometry.flinger import Flinger
-from map_configuration import MapConfiguration
-from mapper import Map
-from osm.osm_reader import (
+from map_machine.constructor import Constructor
+from map_machine.geometry.boundary_box import BoundaryBox
+from map_machine.geometry.flinger import Flinger
+from map_machine.map_configuration import MapConfiguration
+from map_machine.mapper import Map
+from map_machine.osm.osm_reader import (
     OSMNode,
     OSMData,
     Tags,
@@ -19,6 +18,17 @@ from osm.osm_reader import (
     OSMMember,
     OSMRelation,
 )
+from map_machine.pictogram.icon import ShapeExtractor
+from map_machine.scheme import Scheme
+from map_machine.workspace import Workspace
+
+workspace: Workspace = Workspace(Path("temp"))
+
+SCHEME: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
+SHAPE_EXTRACTOR: ShapeExtractor = ShapeExtractor(
+    workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
+)
+DEFAULT_ZOOM: float = 18.0
 
 
 class Grid:
