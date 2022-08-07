@@ -27,8 +27,11 @@
       "pyramid": {"name": "pyramid", "categories": ["building"]},
       "townhall": {"name": "town hall", "categories": ["building"]}
     },
-    "small": {
+    "building_part": {
+      "main_entrance": {"name": "main entrance"},
       "pillar": {"name": "pillar"},
+      "roof": {"is_part": true, "name": "roof"},
+      "roof_and_walls": {"is_part": true, "name": "roof and wall"},
       "wayside_shrine": {"name": "wayside shrine"}
     }
   },
@@ -339,7 +342,6 @@
     "fishing_angle": {"name": "fishing angle"},
     "flagpole": {"emoji": "🏴", "name": "flagpole"},
     "food_court": {"name": "food court"},
-    "foot": {"emoji": "👣", "name": "footprint"},
     "frame": {"name": "picture frame"},
     "fuel_station": {"emoji": "⛽️", "name": "fuel station"},
     "garages": {"name": "car under roof"},
@@ -362,7 +364,6 @@
     "lock_unlocked": {"name": "opened lock"},
     "lock_with_keyhole": {"emoji": "🔒", "name": "closed lock with keyhole"},
     "lowered_kerb": {"name": "lowered kerb"},
-    "main_entrance": {"name": "main entrance"},
     "manhole_drain": {"name": "drain manhole cover"},
     "marketplace": {"name": "marketplace"},
     "medicine_bottle": {"name": "medicine bottle"},
@@ -381,9 +382,7 @@
     "pole": {"name": "pole"},
     "power_generator": {"name": "power generator"},
     "prison": {"name": "bars"},
-    "restaurant": {"emoji": "🍴", "name": "fork and knife"},
-    "roof": {"is_part": true, "name": "roof"},
-    "roof_and_walls": {"is_part": true, "name": "roof and wall"},
+    "fork_and_knife": {"emoji": "🍴", "name": "fork and knife"},
     "sheets": {"name": "two sheets"},
     "shelter": {"name": "shelter"},
     "shop_convenience": {"name": "convenience store"},
@@ -420,6 +419,7 @@
     "wretch_and_hammer": {"name": "wretch and hammer"}
   },
   "body_part": {
+    "foot": {"emoji": "👣", "name": "footprint"},
     "tooth": {"name": "tooth", "emoji": "🦷"}
   },
   "clothes": {

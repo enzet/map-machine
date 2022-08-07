@@ -779,9 +779,9 @@ node_icons:
     - tags: {amenity: nightclub}
       shapes: [cocktail_glass_with_straw]
     - tags: {amenity: restaurant}
-      shapes: [restaurant]
+      shapes: [fork_and_knife]
     - tags: {amenity: restaurant;bar}
-      shapes: [restaurant]
+      shapes: [fork_and_knife]
       add_shapes: [cocktail_glass]
     - tags: {shop: ice_cream}
       shapes: [ice_cream]
