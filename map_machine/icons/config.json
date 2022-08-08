@@ -25,7 +25,8 @@
       "minaret": {"name": "minaret", "categories": ["building"]},
       "pagoda": {"name": "pagoda", "categories": ["building"]},
       "pyramid": {"name": "pyramid", "categories": ["building"]},
-      "townhall": {"name": "town hall", "categories": ["building"]}
+      "townhall": {"name": "town hall", "categories": ["building"]},
+      "food_court": {"name": "food court"}
     },
     "building_part": {
       "main_entrance": {"name": "main entrance"},
@@ -341,7 +342,6 @@
     "fire_pit": {"name": "fire pit"},
     "fishing_angle": {"name": "fishing angle"},
     "flagpole": {"emoji": "🏴", "name": "flagpole"},
-    "food_court": {"name": "food court"},
     "frame": {"name": "picture frame"},
     "fuel_station": {"emoji": "⛽️", "name": "fuel station"},
     "garages": {"name": "car under roof"},
