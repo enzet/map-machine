@@ -327,9 +327,8 @@ class Constructor:
                 )
                 self.points.append(point)
 
-        if line_styles:
-            return
-
+        # TODO: probably we may want to skip the next part if `line_styles`
+        # are not empty.
         self.add_point_for_line(center_point, inners, line, outers)
 
     def add_point_for_line(self, center_point, inners, line, outers) -> None:
