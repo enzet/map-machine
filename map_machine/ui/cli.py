@@ -121,6 +121,13 @@ def parse_arguments(args: list[str]) -> argparse.Namespace:
 def add_map_arguments(parser: argparse.ArgumentParser) -> None:
     """Add map-specific arguments."""
     parser.add_argument(
+        "--scheme",
+        metavar="<id> or <path>",
+        default="default",
+        help="scheme identifier (look for `<id>.yml` file) or path to a YAML "
+        "scheme file",
+    )
+    parser.add_argument(
         "--buildings",
         metavar="<mode>",
         default="flat",
