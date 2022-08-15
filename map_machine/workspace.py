@@ -4,6 +4,8 @@ from pathlib import Path
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+from typing import Optional
+
 HERE: Path = Path(__file__).parent
 
 
@@ -39,6 +41,33 @@ class Workspace:
         self._icons_by_name_path: Path = output_path / "icons_by_name"
         self._mapcss_path: Path = output_path / "map_machine_mapcss"
         self._tile_path: Path = output_path / "tiles"
+
+    def find_scheme_path(self, identifier: str) -> Optional[Path]:
+        """
+        Find map scheme file by its identifier.
+
+        :param identifier: scheme identifier or file path.
+        :returns:
+          - default scheme file `default.yml` if identifier is not specified,
+          - `<identifier>.yml` from the default scheme directory (`scheme`) if
+            exists,
+          - path if identifier is a relative or absolute path to a scheme file.
+          - `None` otherwise.
+
+        See `Scheme`.
+        """
+        if not identifier:
+            return self.DEFAULT_SCHEME_PATH
+
+        path: Path = self.SCHEME_PATH / (identifier + ".yml")
+        if path.is_file():
+            return path
+
+        path = Path(identifier)
+        if path.is_file():
+            return path
+
+        return None
 
     def get_icons_by_id_path(self) -> Path:
         """Directory for the icon files named by identifiers."""
