@@ -44,12 +44,11 @@ class Map:
         self,
         flinger: Flinger,
         svg: svgwrite.Drawing,
-        scheme: Scheme,
         configuration: MapConfiguration,
     ) -> None:
         self.flinger: Flinger = flinger
         self.svg: svgwrite.Drawing = svg
-        self.scheme: Scheme = scheme
+        self.scheme: Scheme = configuration.scheme
         self.configuration = configuration
 
         self.background_color: Color = self.scheme.get_color("background_color")
@@ -263,8 +262,12 @@ def render_map(arguments: argparse.Namespace) -> None:
 
     :param arguments: command-line arguments
     """
+    scheme: Scheme = Scheme.from_file(
+        workspace.find_scheme_path(arguments.scheme)
+    )
+
     configuration: MapConfiguration = MapConfiguration.from_options(
-        arguments, float(arguments.zoom)
+        scheme, arguments, float(arguments.zoom)
     )
     cache_path: Path = Path(arguments.cache)
     cache_path.mkdir(parents=True, exist_ok=True)
@@ -347,19 +350,15 @@ def render_map(arguments: argparse.Namespace) -> None:
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
 
-    scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
     constructor: Constructor = Constructor(
         osm_data=osm_data,
         flinger=flinger,
-        scheme=scheme,
         extractor=icon_extractor,
         configuration=configuration,
     )
     constructor.construct()
 
-    map_: Map = Map(
-        flinger=flinger, svg=svg, scheme=scheme, configuration=configuration
-    )
+    map_: Map = Map(flinger=flinger, svg=svg, configuration=configuration)
     map_.draw(constructor)
 
     logging.info(f"Writing output SVG to {arguments.output_file_name}...")

@@ -142,8 +142,8 @@ class SVGTable:
                 if column_value:
                     current_tags |= {self.collection.column_key: column_value}
                 processed: set[str] = set()
-                icon, _ = SCHEME.get_icon(
-                    EXTRACTOR, current_tags, processed, MapConfiguration()
+                icon, _ = MapConfiguration(SCHEME).get_icon(
+                    EXTRACTOR, current_tags, processed
                 )
                 processed = icon.processed
                 if not icon:

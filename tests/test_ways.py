@@ -14,6 +14,8 @@ from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import OSMData, OSMWay, OSMNode, Tags
 from tests import SCHEME, SHAPE_EXTRACTOR
 
+CONFIGURATION: MapConfiguration = MapConfiguration(SCHEME)
+
 
 def get_constructor(osm_data: OSMData) -> Constructor:
     """
@@ -24,7 +26,7 @@ def get_constructor(osm_data: OSMData) -> Constructor:
         BoundaryBox(-0.01, -0.01, 0.01, 0.01), 18, osm_data.equator_length
     )
     constructor: Constructor = Constructor(
-        osm_data, flinger, SCHEME, SHAPE_EXTRACTOR, MapConfiguration()
+        osm_data, flinger, SHAPE_EXTRACTOR, CONFIGURATION
     )
     constructor.construct_ways()
     return constructor

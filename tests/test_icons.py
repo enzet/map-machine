@@ -9,6 +9,7 @@ from typing import Optional
 
 from colour import Color
 
+from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import Tags
 from map_machine.pictogram.icon import IconSet, ShapeSpecification, Icon
 from map_machine.pictogram.icon_collection import IconCollection
@@ -18,6 +19,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
+CONFIGURATION: MapConfiguration = MapConfiguration(SCHEME)
 COLLECTION: IconCollection = IconCollection.from_scheme(SCHEME, SHAPE_EXTRACTOR)
 DEFAULT_COLOR: Color = SCHEME.get_default_color()
 EXTRA_COLOR: Color = SCHEME.get_extra_color()
@@ -48,7 +50,7 @@ def test_icons_by_name() -> None:
 def get_icon(tags: Tags) -> IconSet:
     """Construct icon from tags."""
     processed: set[str] = set()
-    icon, _ = SCHEME.get_icon(SHAPE_EXTRACTOR, tags, processed)
+    icon, _ = CONFIGURATION.get_icon(SHAPE_EXTRACTOR, tags, processed)
     return icon
 
 

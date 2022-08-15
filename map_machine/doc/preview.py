@@ -38,23 +38,26 @@ def draw(
     input_file_name: Path,
     output_file_name: Path,
     boundary_box: BoundaryBox,
-    configuration: MapConfiguration = MapConfiguration(),
+    configuration: Optional[MapConfiguration] = None,
 ) -> None:
     """Draw file."""
+    if configuration is None:
+        configuration = MapConfiguration(SCHEME)
+
     osm_data: OSMData = OSMData()
     osm_data.parse_osm_file(input_file_name)
     flinger: Flinger = Flinger(
         boundary_box, configuration.zoom_level, osm_data.equator_length
     )
     constructor: Constructor = Constructor(
-        osm_data, flinger, SCHEME, EXTRACTOR, configuration
+        osm_data, flinger, EXTRACTOR, configuration
     )
     constructor.construct()
 
     svg: svgwrite.Drawing = svgwrite.Drawing(
         str(output_file_name), size=flinger.size
     )
-    map_: Map = Map(flinger, svg, SCHEME, configuration)
+    map_: Map = Map(flinger, svg, configuration)
     map_.draw(constructor)
 
     svg.write(output_file_name.open("w"))
@@ -63,11 +66,14 @@ def draw(
 def draw_around_point(
     point: np.ndarray,
     name: str,
-    configuration: MapConfiguration = MapConfiguration(),
+    configuration: Optional[MapConfiguration] = None,
     size: np.ndarray = np.array((600, 400)),
     get: Optional[BoundaryBox] = None,
 ) -> None:
     """Draw around point."""
+    if configuration is None:
+        configuration = MapConfiguration(SCHEME)
+
     input_path: Path = doc_path / f"{name}.svg"
 
     boundary_box: BoundaryBox = BoundaryBox.from_coordinates(
@@ -90,7 +96,7 @@ def main(id_: str) -> None:
         draw_around_point(
             np.array((55.75277, 37.40856)),
             "fitness",
-            MapConfiguration(zoom_level=20.2),
+            MapConfiguration(SCHEME, zoom_level=20.2),
             np.array((300, 200)),
         )
 
@@ -98,14 +104,14 @@ def main(id_: str) -> None:
         draw_around_point(
             np.array((52.5622, 12.94)),
             "power",
-            configuration=MapConfiguration(zoom_level=15),
+            configuration=MapConfiguration(SCHEME, zoom_level=15),
         )
 
     if id_ is None or id_ == "playground":
         draw_around_point(
             np.array((52.47388, 13.43826)),
             "playground",
-            configuration=MapConfiguration(zoom_level=19),
+            configuration=MapConfiguration(SCHEME, zoom_level=19),
         )
 
     # Playground: (59.91991/10.85535), (59.83627/10.83017), Oslo
@@ -116,6 +122,7 @@ def main(id_: str) -> None:
             np.array((52.50892, 13.3244)),
             "surveillance",
             MapConfiguration(
+                SCHEME,
                 zoom_level=18.5,
                 ignore_level_matching=True,
             ),
@@ -126,6 +133,7 @@ def main(id_: str) -> None:
             np.array((52.421, 13.101)),
             "viewpoints",
             MapConfiguration(
+                SCHEME,
                 label_mode=LabelMode.NO,
                 zoom_level=15.7,
                 ignore_level_matching=True,
@@ -136,7 +144,7 @@ def main(id_: str) -> None:
         draw_around_point(
             np.array((-26.19049, 28.05605)),
             "buildings",
-            MapConfiguration(building_mode=BuildingMode.ISOMETRIC),
+            MapConfiguration(SCHEME, building_mode=BuildingMode.ISOMETRIC),
         )
 
     if id_ is None or id_ == "trees":
@@ -144,7 +152,7 @@ def main(id_: str) -> None:
             np.array((55.751, 37.628)),
             "trees",
             MapConfiguration(
-                label_mode=LabelMode(LabelMode.ALL), zoom_level=18.1
+                SCHEME, label_mode=LabelMode(LabelMode.ALL), zoom_level=18.1
             ),
             get=BoundaryBox(37.624, 55.749, 37.633, 55.753),
         )
@@ -158,6 +166,7 @@ def main(id_: str) -> None:
             np.array((55.7655, 37.6055)),
             "time",
             MapConfiguration(
+                SCHEME,
                 DrawingMode.TIME,
                 zoom_level=16.5,
                 ignore_level_matching=True,
@@ -169,6 +178,7 @@ def main(id_: str) -> None:
             np.array((55.7655, 37.6055)),
             "author",
             MapConfiguration(
+                SCHEME,
                 DrawingMode.AUTHOR,
                 seed="a",
                 zoom_level=16.5,
@@ -181,6 +191,7 @@ def main(id_: str) -> None:
             np.array((48.87422, 2.377)),
             "colors",
             configuration=MapConfiguration(
+                SCHEME,
                 zoom_level=17.6,
                 building_mode=BuildingMode.ISOMETRIC,
                 ignore_level_matching=True,

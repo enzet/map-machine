@@ -94,17 +94,17 @@ class Grid:
     def draw(self, output_path: Path, zoom: float = DEFAULT_ZOOM) -> None:
         """Draw grid."""
         configuration: MapConfiguration = MapConfiguration(
-            level="all", credit=None
+            SCHEME, level="all", credit=None
         )
         flinger: Flinger = Flinger(
             self.get_boundary_box(), zoom, self.osm_data.equator_length
         )
         svg: Drawing = Drawing(output_path.name, flinger.size)
         constructor: Constructor = Constructor(
-            self.osm_data, flinger, SCHEME, SHAPE_EXTRACTOR, configuration
+            self.osm_data, flinger, SHAPE_EXTRACTOR, configuration
         )
         constructor.construct()
-        map_: Map = Map(flinger, svg, SCHEME, configuration)
+        map_: Map = Map(flinger, svg, configuration)
         map_.draw(constructor)
 
         for text, i, j in self.texts:

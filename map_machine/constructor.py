@@ -156,13 +156,12 @@ class Constructor:
         self,
         osm_data: OSMData,
         flinger: Flinger,
-        scheme: Scheme,
         extractor: ShapeExtractor,
         configuration: MapConfiguration,
     ) -> None:
         self.osm_data: OSMData = osm_data
         self.flinger: Flinger = flinger
-        self.scheme: Scheme = scheme
+        self.scheme: Scheme = configuration.scheme
         self.extractor: ShapeExtractor = extractor
         self.configuration: MapConfiguration = configuration
         self.text_constructor: TextConstructor = TextConstructor(self.scheme)
@@ -306,8 +305,8 @@ class Constructor:
 
             priority: int
             icon_set: IconSet
-            icon_set, priority = self.scheme.get_icon(
-                self.extractor, line.tags, processed, self.configuration
+            icon_set, priority = self.configuration.get_icon(
+                self.extractor, line.tags, processed
             )
             if icon_set is not None:
                 labels: list[Label] = self.text_constructor.construct_text(
@@ -347,8 +346,8 @@ class Constructor:
         processed: set[str] = set()
         priority: int
         icon_set: IconSet
-        icon_set, priority = self.scheme.get_icon(
-            self.extractor, line.tags, processed, self.configuration
+        icon_set, priority = self.configuration.get_icon(
+            self.extractor, line.tags, processed
         )
         if icon_set is not None:
             labels: list[Label] = self.text_constructor.construct_text(
@@ -413,6 +412,8 @@ class Constructor:
         """Draw nodes."""
         logging.info("Constructing nodes...")
 
+        # Sort node vertically (using latitude values) to draw them from top to
+        # bottom.
         sorted_node_ids: Iterator[int] = sorted(
             self.osm_data.nodes.keys(),
             key=lambda x: -self.osm_data.nodes[x].coordinates[0],
@@ -423,6 +424,7 @@ class Constructor:
     def construct_node(self, node: OSMNode) -> None:
         """Draw one node."""
         tags: dict[str, str] = node.tags
+
         if not tags:
             return
         if not self.check_level(tags):
@@ -472,8 +474,8 @@ class Constructor:
                 color = Color("#CCCCCC")
             if self.configuration.drawing_mode == DrawingMode.BLACK:
                 color = Color("#444444")
-            icon_set, priority = self.scheme.get_icon(
-                self.extractor, tags, processed, self.configuration
+            icon_set, priority = self.configuration.get_icon(
+                self.extractor, tags, processed
             )
             icon_set.main_icon.recolor(color)
             point: Point = Point(
@@ -487,8 +489,8 @@ class Constructor:
             self.points.append(point)
             return
 
-        icon_set, priority = self.scheme.get_icon(
-            self.extractor, tags, processed, self.configuration
+        icon_set, priority = self.configuration.get_icon(
+            self.extractor, tags, processed
         )
         if icon_set is None:
             return

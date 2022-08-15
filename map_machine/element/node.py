@@ -8,7 +8,7 @@ import svgwrite
 from svgwrite.path import Path as SVGPath
 
 from map_machine.element.grid import Grid
-from map_machine.map_configuration import LabelMode
+from map_machine.map_configuration import LabelMode, MapConfiguration
 from map_machine.osm.osm_reader import Tags
 from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.pictogram.point import Point
@@ -49,7 +49,7 @@ def draw_element(options: argparse.Namespace) -> None:
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
     processed: set[str] = set()
-    icon, _ = scheme.get_icon(extractor, tags, processed)
+    icon, _ = MapConfiguration(scheme).get_icon(extractor, tags, processed)
     is_for_node: bool = target == "node"
     text_constructor: TextConstructor = TextConstructor(scheme)
     labels: list[Label] = text_constructor.construct_text(

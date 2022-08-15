@@ -173,14 +173,13 @@ class Tile:
         icon_extractor: ShapeExtractor = ShapeExtractor(
             workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
         )
-        scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
         constructor: Constructor = Constructor(
-            osm_data, flinger, scheme, icon_extractor, configuration
+            osm_data, flinger, icon_extractor, configuration
         )
         constructor.construct()
 
         painter: Map = Map(
-            flinger=flinger, svg=svg, scheme=scheme, configuration=configuration
+            flinger=flinger, svg=svg, configuration=configuration
         )
         painter.draw(constructor)
 
@@ -390,16 +389,15 @@ class Tiles:
             extractor: ShapeExtractor = ShapeExtractor(
                 workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
             )
-            scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
             constructor: Constructor = Constructor(
-                osm_data, flinger, scheme, extractor, configuration
+                osm_data, flinger, extractor, configuration
             )
             constructor.construct()
 
             svg: svgwrite.Drawing = svgwrite.Drawing(
                 str(output_path), size=flinger.size
             )
-            map_: Map = Map(flinger, svg, scheme, configuration)
+            map_: Map = Map(flinger, svg, configuration)
             map_.draw(constructor)
 
             logging.info(f"Writing output SVG {output_path}...")
@@ -472,6 +470,10 @@ def generate_tiles(options: argparse.Namespace) -> None:
     zoom_levels: list[int] = parse_zoom_level(options.zoom)
     min_zoom_level: int = min(zoom_levels)
 
+    scheme: Scheme = Scheme.from_file(
+        workspace.find_scheme_path(options.scheme)
+    )
+
     if options.input_file_name:
         osm_data: OSMData = OSMData()
         osm_data.parse_osm_file(Path(options.input_file_name))
@@ -487,7 +489,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
 
         for zoom_level in zoom_levels:
             configuration: MapConfiguration = MapConfiguration.from_options(
-                options, zoom_level
+                scheme, options, zoom_level
             )
             tiles: Tiles = Tiles.from_boundary_box(boundary_box, zoom_level)
             tiles.draw(directory, Path(options.cache), configuration, osm_data)
@@ -510,7 +512,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
             )
             try:
                 configuration: MapConfiguration = MapConfiguration.from_options(
-                    options, zoom_level
+                    scheme, options, zoom_level
                 )
                 tile.draw_with_osm_data(osm_data, directory, configuration)
             except NetworkError as error:
@@ -520,7 +522,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
         zoom_level, x, y = map(int, options.tile.split("/"))
         tile: Tile = Tile(x, y, zoom_level)
         configuration: MapConfiguration = MapConfiguration.from_options(
-            options, zoom_level
+            scheme, options, zoom_level
         )
         tile.draw(directory, Path(options.cache), configuration)
 
@@ -544,7 +546,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
             else:
                 tiles: Tiles = Tiles.from_boundary_box(boundary_box, zoom_level)
             configuration: MapConfiguration = MapConfiguration.from_options(
-                options, zoom_level
+                scheme, options, zoom_level
             )
             tiles.draw(directory, Path(options.cache), configuration, osm_data)
 

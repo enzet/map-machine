@@ -58,11 +58,10 @@ class WikiTable:
                             text += f"{{{{Tag|{key}|{value}}}}}<br />"
                     text = text[:-6]
                 text += "\n"
-                icon, _ = SCHEME.get_icon(
-                    EXTRACTOR,
-                    current_tags | self.collection.tags,
-                    set(),
-                    MapConfiguration(ignore_level_matching=True),
+                icon, _ = MapConfiguration(
+                    SCHEME, ignore_level_matching=True
+                ).get_icon(
+                    EXTRACTOR, current_tags | self.collection.tags, set()
                 )
                 icons.append(icon.main_icon)
                 text += (
@@ -103,7 +102,9 @@ class WikiTable:
                 }
                 if column_value:
                     current_tags |= {self.collection.column_key: column_value}
-                icon, _ = SCHEME.get_icon(EXTRACTOR, current_tags, set())
+                icon, _ = MapConfiguration(SCHEME).get_icon(
+                    EXTRACTOR, current_tags, set()
+                )
                 if not icon:
                     print("Icon was not constructed.")
                 text += (
@@ -135,8 +136,8 @@ def generate_new_text(
         wiki_text, icons = table.generate_wiki_table()
     else:
         processed = set()
-        icon, _ = SCHEME.get_icon(
-            EXTRACTOR, table.collection.tags, processed, MapConfiguration()
+        icon, _ = MapConfiguration(SCHEME).get_icon(
+            EXTRACTOR, table.collection.tags, processed
         )
         if not icon.main_icon.is_default():
             wiki_text = (
