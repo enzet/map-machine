@@ -130,7 +130,8 @@ class Map:
                     self.svg, occupied, self.configuration.label_mode
                 )
 
-        self.draw_credits(constructor.flinger.size)
+        if self.configuration.show_credit:
+            self.draw_credits(constructor.flinger.size)
 
     def draw_buildings(self, constructor: Constructor) -> None:
         """Draw buildings: shade, walls, and roof."""

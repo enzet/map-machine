@@ -60,6 +60,7 @@ class MapConfiguration:
     use_building_colors: bool = False
     show_overlapped: bool = False
     credit: Optional[str] = "© OpenStreetMap contributors"
+    show_credit: bool = True
 
     @classmethod
     def from_options(
