@@ -34,9 +34,17 @@ DEFAULT_ZOOM: float = 18.0
 class Grid:
     """Creating map with elements ordered in grid."""
 
-    def __init__(self, x_step: float = 0.0002, y_step: float = 0.0003):
+    def __init__(
+        self,
+        x_step: float = 0.0002,
+        y_step: float = 0.0003,
+        show_credit: bool = True,
+        margin: float = 1.5,
+    ) -> None:
         self.x_step: float = x_step
         self.y_step: float = y_step
+        self.show_credit: bool = show_credit
+        self.margin: float = margin
 
         self.index: int = 0
         self.nodes: dict[OSMNode, tuple[int, int]] = {}
@@ -85,16 +93,16 @@ class Grid:
     def get_boundary_box(self) -> BoundaryBox:
         """Compute resulting boundary box with margin of one grid step."""
         return BoundaryBox(
-            -self.x_step * 1.5,
-            -self.max_i - self.y_step * 1.5,
-            self.max_j + self.x_step * 1.5,
-            self.y_step * 1.5,
+            -self.x_step * self.margin,
+            -self.max_i - self.y_step * self.margin,
+            self.max_j + self.x_step * self.margin,
+            self.y_step * self.margin,
         )
 
     def draw(self, output_path: Path, zoom: float = DEFAULT_ZOOM) -> None:
         """Draw grid."""
         configuration: MapConfiguration = MapConfiguration(
-            SCHEME, level="all", credit=None
+            SCHEME, level="all", credit=None, show_credit=self.show_credit
         )
         flinger: Flinger = Flinger(
             self.get_boundary_box(), zoom, self.osm_data.equator_length
