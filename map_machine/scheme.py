@@ -27,6 +27,8 @@ __email__ = "me@enzet.ru"
 
 IconDescription = list[Union[str, dict[str, str]]]
 
+DEFAULT_COLOR: Color = Color("black")
+
 
 @dataclass
 class LineStyle:
@@ -397,7 +399,9 @@ class Scheme:
             return Color(color)
         except (ValueError, AttributeError):
             logging.debug(f"Unknown color `{color}`.")
-            return Color(self.colors["default"])
+            if "default" in self.colors:
+                return Color(self.colors["default"])
+            return DEFAULT_COLOR
 
     def get_default_color(self) -> Color:
         """Get default color for a main icon."""

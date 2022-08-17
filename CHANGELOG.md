@@ -1,12 +1,16 @@
-# Unreleased
+# 0.1.7
 
-- Redraw diving tower icons.
+_17 August 2022_
+
 - Add icons for:
   - `shop=car_parts`, `shop=variety_store` (#48),
   - `natural=spring` (#55),
   - `tomb=pyramid`.
 - Reuse icon for `shop=department_store` (#48).
-- Redraw fountain icons.
+- Fix style for `indoor=room` (#139).
+- Redraw diving tower and fountain icons.
+- Add `--scheme` option (#140).
+- Rename `element` command to `draw` and change format.
 
 # 0.1.6
 
