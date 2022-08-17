@@ -18,7 +18,7 @@ COMMAND_LINES: dict[str, list[str]] = {
     ],
     "icons": ["icons"],
     "mapcss": ["mapcss"],
-    "element": ["element", "--node", "amenity=bench,material=wood"],
+    "draw": ["draw", "node", "amenity=bench,material=wood"],
     "tile": ["tile", "--coordinates", "50.000,40.000"],
 }
 COMMANDS: list[str] = [
@@ -85,9 +85,9 @@ def parse_arguments(args: list[str]) -> argparse.Namespace:
             help="run tile server",
         )
     )
-    add_element_arguments(
+    add_draw_arguments(
         subparser.add_parser(
-            "element",
+            "draw",
             description="Draw map element separately.",
             help="draw OSM element: node, way, relation",
         )
@@ -274,11 +274,11 @@ def add_server_arguments(parser: argparse.ArgumentParser) -> None:
     )
 
 
-def add_element_arguments(parser: argparse.ArgumentParser) -> None:
+def add_draw_arguments(parser: argparse.ArgumentParser) -> None:
     """Add arguments for element command."""
-    parser.add_argument("-n", "--node")
-    parser.add_argument("-w", "--way")
-    parser.add_argument("-r", "--relation")
+    parser.add_argument("type")
+    parser.add_argument("tags")
+    parser.add_argument("-o", "--output-file", default="out/element.svg")
 
 
 def add_render_arguments(parser: argparse.ArgumentParser) -> None:

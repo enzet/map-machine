@@ -111,21 +111,21 @@ def test_mapcss() -> None:
     assert (out_path / "icons" / "LICENSE").is_file()
 
 
-def test_element() -> None:
-    """Test `element` command."""
+def test_draw() -> None:
+    """Test `draw` command."""
     run(
-        COMMAND_LINES["element"],
-        b"INFO Element is written to out/element.svg.\n",
+        COMMAND_LINES["draw"],
+        LOG + b"INFO Map is drawn to out/element.svg.\n",
     )
     assert (OUTPUT_PATH / "element.svg").is_file()
 
 
-def test_unwrapped_element() -> None:
+def test_unwrapped_draw() -> None:
     """Test `element` command from inside the project."""
     arguments: argparse.Namespace = parse_arguments(
-        ["map_machine"] + COMMAND_LINES["element"]
+        ["map_machine"] + COMMAND_LINES["draw"]
     )
-    from map_machine.element.node import draw_element
+    from map_machine.element.element import draw_element
 
     draw_element(arguments)
 
