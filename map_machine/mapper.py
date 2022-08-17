@@ -263,9 +263,11 @@ def render_map(arguments: argparse.Namespace) -> None:
 
     :param arguments: command-line arguments
     """
-    scheme: Scheme = Scheme.from_file(
-        workspace.find_scheme_path(arguments.scheme)
-    )
+    scheme_path: Optional[Path] = workspace.find_scheme_path(arguments.scheme)
+    if scheme_path is None:
+        fatal(f"Scheme `{arguments.scheme}` not found.")
+
+    scheme: Scheme = Scheme.from_file(scheme_path)
 
     configuration: MapConfiguration = MapConfiguration.from_options(
         scheme, arguments, float(arguments.zoom)
