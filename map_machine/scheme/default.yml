@@ -2144,9 +2144,9 @@ ways:
     priority: 12.0
   - tags: {indoor: column}
     style:
-      stroke: indoor_color
+      stroke: indoor_wall_color
       stroke-width: 1.0
-      fill: indoor_color
+      fill: indoor_wall_color
     priority: 13.0
 
   - tags: {power: line}
