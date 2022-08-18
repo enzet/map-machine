@@ -1,3 +1,7 @@
+# Unreleased
+
+- Change indoor colors, make columns visible (#139).
+
 # 0.1.7
 
 _17 August 2022_

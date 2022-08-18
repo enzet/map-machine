@@ -16,6 +16,7 @@ cache/
 
 # Work files
 
+diffs
 work
 precommit.py
 

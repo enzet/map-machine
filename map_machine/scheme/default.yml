@@ -59,8 +59,9 @@ colors:
   grass_border_color: "#BFD098"
   grass_color: "#CFE0A8"
   hidden_color: "#000000"
-  indoor_border_color: "#C0B8B0"
+  indoor_border_color: "#A0A890"
   indoor_color: "#E8E4E0"
+  indoor_column_color: {color: indoor_border_color, darken: 0.5}
   meadow_border_color: "#BFD078"
   meadow_color: "#CFE088"
   orchard_color: "#B8DCA4"
@@ -2116,7 +2117,7 @@ ways:
     priority: 10.0
   - tags: {indoor: corridor}
     style:
-      stroke: indoor_color
+      stroke: indoor_border_color
       stroke-width: 1.0
       fill: indoor_color
     priority: 11.0
@@ -2133,7 +2134,7 @@ ways:
     priority: 12.0
   - tags: {indoor: room}
     style:
-      stroke: "#AAAAAA"
+      stroke: indoor_border_color
       stroke-width: 1.0
     priority: 12.0
   - tags: {indoor: elevator, area: "yes"}
@@ -2144,9 +2145,9 @@ ways:
     priority: 12.0
   - tags: {indoor: column}
     style:
-      stroke: indoor_wall_color
+      stroke: indoor_column_color
       stroke-width: 1.0
-      fill: indoor_wall_color
+      fill: indoor_column_color
     priority: 13.0
 
   - tags: {power: line}
