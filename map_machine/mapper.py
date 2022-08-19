@@ -267,7 +267,9 @@ def render_map(arguments: argparse.Namespace) -> None:
     if scheme_path is None:
         fatal(f"Scheme `{arguments.scheme}` not found.")
 
-    scheme: Scheme = Scheme.from_file(scheme_path)
+    scheme: Optional[Scheme] = Scheme.from_file(scheme_path)
+    if scheme is None:
+        fatal(f"Failed to load scheme from `{arguments.scheme}`.")
 
     configuration: MapConfiguration = MapConfiguration.from_options(
         scheme, arguments, float(arguments.zoom)

@@ -363,15 +363,20 @@ class Scheme:
         self.cache: dict[str, tuple[IconSet, int]] = {}
 
     @classmethod
-    def from_file(cls, file_name: Path) -> "Scheme":
+    def from_file(cls, file_name: Path) -> Optional["Scheme"]:
         """
         :param file_name: name of the scheme file with tags, colors, and tag key
             specification
         """
         with file_name.open(encoding="utf-8") as input_file:
-            content: dict[str, Any] = yaml.load(
-                input_file.read(), Loader=yaml.FullLoader
-            )
+            try:
+                content: dict[str, Any] = yaml.load(
+                    input_file.read(), Loader=yaml.FullLoader
+                )
+            except yaml.YAMLError:
+                return None
+            if not content:
+                return cls({})
             return cls(content)
 
     def get_color(self, color: str) -> Color:
