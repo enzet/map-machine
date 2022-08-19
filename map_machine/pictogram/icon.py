@@ -310,10 +310,12 @@ class ShapeExtractor:
         id_: str = node.attrib["id"]
         if STANDARD_INKSCAPE_ID_MATCHER.match(id_) is not None:
             if not verify_sketch_element(node, id_):
-                logging.warning(
-                    f"Not verified SVG element `{id_}`, "
-                    f"{node.attrib['d'].split(' ')[:3]}."
-                )
+                path_part = ""
+                try:
+                    path_part = f", {node.attrib['d'].split(' ')[:3]}."
+                except (KeyError, ValueError):
+                    pass
+                logging.warning(f"Not verified SVG element `{id_}`{path_part}")
             return
 
         if "d" in node.attrib and node.attrib["d"]:
