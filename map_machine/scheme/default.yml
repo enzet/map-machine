@@ -1413,6 +1413,15 @@ node_icons:
       - {shape: wave_left, offset: [-4, -3]}
       - {shape: wave_right, offset: [3, -3]}
 
+    - tags: {man_made: flagpole, country: US}
+      shapes: [flag_usa]
+    - tags: {man_made: flagpole, country: Tanzania}
+      shapes: [flag_bend_sinister]
+    - tags: {man_made: flagpole, country: PH}
+      shapes: [flag_triangle_flanche]
+    - tags: {man_made: flagpole, country: FR}
+      shapes: [flag_vertical_triband]
+
       # Diving towers.
 
     - tags: {man_made: tower, tower:type: diving}

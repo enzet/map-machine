@@ -467,6 +467,12 @@
     "two_people_together": {"emoji": "🧑‍🤝‍🧑", "name": "two people together"},
     "woman_and_man": {"emoji": "🚻", "name": "woman and man"}
   },
+  "flag": {
+    "flag_usa": {"name": "flag of USA"},
+    "flag_bend_sinister": {"name": "flag with sinister bend"},
+    "flag_triangle_flanche": {"name": "flag with triangle on the left side"},
+    "flag_vertical_triband": {"name": "flag with three vertical bands"}
+  },
   "tower": {
     "city_gate": {"name": "city gate"},
     "diving_1_platforms": {"name": "diving tower with 1 platform"},
