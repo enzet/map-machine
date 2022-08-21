@@ -33,3 +33,22 @@ _6 June 2022_
 - Fix `placement` tag processing ([#128](https://github.com/enzet/map-machine/issues/128)).
 - Split way priority ([#125](https://github.com/enzet/map-machine/issues/125)).
 - Fix typo in `motorcar=yes` ([#133](https://github.com/enzet/map-machine/issues/133)).
+
+# 0.1.4
+
+- Fix vending machine priority ([#132](https://github.com/enzet/map-machine/issues/132)).
+- Allow duplicate ids in OSM data (Andrew Klofas, [#131](https://github.com/enzet/map-machine/issues/131)).
+
+# 0.1.3
+
+_2022.4_
+
+- Add style for
+  - `greenhouse_horticulture`,
+  - `recreation_ground`,
+  - `landuse=village_green` ([#129](https://github.com/enzet/map-machine/issues/129)).
+- Add style for `railway=construction` ([#125](https://github.com/enzet/map-machine/issues/125)).
+- Fix electricity shape.
+- Support color for default icon.
+- Fix waterways priority ([#126](https://github.com/enzet/map-machine/issues/126)).
+- Show small dot for overlapped icons ([#121](https://github.com/enzet/map-machine/issues/121)).
