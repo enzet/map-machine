@@ -55,7 +55,7 @@ TIME_COLOR_SCALE: list[Color] = [
 
 def line_center(
     nodes: list[OSMNode], flinger: Flinger
-) -> (np.ndarray, np.ndarray):
+) -> tuple[np.ndarray, np.ndarray]:
     """
     Get geometric center of nodes set.
 

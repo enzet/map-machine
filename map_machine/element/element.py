@@ -6,7 +6,7 @@ from map_machine.osm.osm_reader import Tags, OSMNode
 
 
 def draw_node(tags: Tags, path: Path):
-    grid: Grid = Grid(x_step=0.0003, show_credit=False, margin=0.5)
+    grid: Grid = Grid(show_credit=False, margin=0.5)
     grid.add_node(tags, 0, 0)
     grid.draw(path)
 
@@ -16,7 +16,7 @@ def draw_way():
 
 
 def draw_area(tags: Tags, path: Path):
-    grid: Grid = Grid(x_step=0.0003, show_credit=False, margin=0.5)
+    grid: Grid = Grid(show_credit=False, margin=0.5)
     node: OSMNode = grid.add_node({}, 0, 0)
     nodes: list[OSMNode] = [
         node,

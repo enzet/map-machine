@@ -9,7 +9,7 @@ import svgwrite
 
 from map_machine.constructor import Constructor
 from map_machine.geometry.boundary_box import BoundaryBox
-from map_machine.geometry.flinger import Flinger
+from map_machine.geometry.flinger import MercatorFlinger
 from map_machine.map_configuration import (
     BuildingMode,
     DrawingMode,
@@ -21,16 +21,16 @@ from map_machine.osm.osm_getter import get_osm
 from map_machine.osm.osm_reader import OSMData
 from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.scheme import Scheme
+from map_machine.workspace import workspace
 
 doc_path: Path = Path("doc")
 
 cache: Path = Path("cache")
 cache.mkdir(exist_ok=True)
 
-SCHEME: Scheme = Scheme.from_file(Path("map_machine/scheme/default.yml"))
+SCHEME: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
 EXTRACTOR: ShapeExtractor = ShapeExtractor(
-    Path("map_machine/icons/icons.svg"),
-    Path("map_machine/icons/config.json"),
+    workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
 )
 
 
@@ -46,7 +46,7 @@ def draw(
 
     osm_data: OSMData = OSMData()
     osm_data.parse_osm_file(input_file_name)
-    flinger: Flinger = Flinger(
+    flinger: MercatorFlinger = MercatorFlinger(
         boundary_box, configuration.zoom_level, osm_data.equator_length
     )
     constructor: Constructor = Constructor(

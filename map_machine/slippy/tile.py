@@ -17,7 +17,7 @@ from PIL import Image
 
 from map_machine.constructor import Constructor
 from map_machine.geometry.boundary_box import BoundaryBox
-from map_machine.geometry.flinger import Flinger
+from map_machine.geometry.flinger import MercatorFlinger
 from map_machine.map_configuration import MapConfiguration
 from map_machine.mapper import Map
 from map_machine.osm.osm_getter import NetworkError, get_osm
@@ -158,7 +158,7 @@ class Tile:
             self.x + 1, self.y + 1, self.zoom_level
         ).get_coordinates()
 
-        flinger: Flinger = Flinger(
+        flinger: MercatorFlinger = MercatorFlinger(
             BoundaryBox(left, bottom, right, top),
             self.zoom_level,
             osm_data.equator_length,
@@ -381,7 +381,7 @@ class Tiles:
                 self.zoom_level,
             ).get_coordinates()
 
-            flinger: Flinger = Flinger(
+            flinger: MercatorFlinger = MercatorFlinger(
                 BoundaryBox(left, bottom, right, top),
                 self.zoom_level,
                 osm_data.equator_length,

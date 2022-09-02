@@ -67,17 +67,17 @@ def draw_overlapped_ways(types: list[dict[str, str]], path: Path) -> None:
 
     The goal is to show check priority.
     """
-    grid: Grid = Grid(0.00012, 0.00012)
+    grid: Grid = Grid()
 
     for index, tags in enumerate(types):
-        node_1: OSMNode = grid.add_node({}, index + 1, 8)
-        node_2: OSMNode = grid.add_node({}, index + 1, len(types) + 9)
+        node_1: OSMNode = grid.add_node({}, 8, index + 1)
+        node_2: OSMNode = grid.add_node({}, len(types) + 9, index + 1)
         grid.add_way(tags, [node_1, node_2])
-        grid.add_text(", ".join(f"{k}={tags[k]}" for k in tags), index + 1, 0)
+        grid.add_text(", ".join(f"{k}={tags[k]}" for k in tags), 0, index + 1)
 
     for index, tags in enumerate(types):
-        node_1: OSMNode = grid.add_node({}, 0, index + 9)
-        node_2: OSMNode = grid.add_node({}, len(types) + 1, index + 9)
+        node_1: OSMNode = grid.add_node({}, index + 9, 0)
+        node_2: OSMNode = grid.add_node({}, index + 9, len(types) + 1)
         grid.add_way(tags, [node_1, node_2])
 
     grid.draw(path)
@@ -106,7 +106,7 @@ def draw_road_features(
 
 def draw_multipolygon(path: Path) -> None:
     """Draw simple multipolygon with one outer and one inner way."""
-    grid: Grid = Grid(y_step=0.0002)
+    grid: Grid = Grid()
 
     outer_node: OSMNode = grid.add_node({}, 0, 0)
     outer_nodes: list[OSMNode] = [

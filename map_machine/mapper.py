@@ -19,7 +19,7 @@ from map_machine.feature.building import Building, draw_walls, BUILDING_SCALE
 from map_machine.feature.road import Intersection, Road, RoadPart
 from map_machine.figure import StyledFigure
 from map_machine.geometry.boundary_box import BoundaryBox
-from map_machine.geometry.flinger import Flinger
+from map_machine.geometry.flinger import Flinger, MercatorFlinger
 from map_machine.geometry.vector import Segment
 from map_machine.map_configuration import LabelMode, MapConfiguration
 from map_machine.osm.osm_getter import NetworkError, get_osm
@@ -345,7 +345,7 @@ def render_map(arguments: argparse.Namespace) -> None:
 
     # Render the map.
 
-    flinger: Flinger = Flinger(
+    flinger: MercatorFlinger = MercatorFlinger(
         boundary_box, arguments.zoom, osm_data.equator_length
     )
     size: np.ndarray = flinger.size

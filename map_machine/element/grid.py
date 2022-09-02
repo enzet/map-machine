@@ -6,8 +6,7 @@ from svgwrite import Drawing
 from svgwrite.text import Text
 
 from map_machine.constructor import Constructor
-from map_machine.geometry.boundary_box import BoundaryBox
-from map_machine.geometry.flinger import Flinger
+from map_machine.geometry.flinger import Flinger, TranslateFlinger
 from map_machine.map_configuration import MapConfiguration
 from map_machine.mapper import Map
 from map_machine.osm.osm_reader import (
@@ -36,8 +35,8 @@ class Grid:
 
     def __init__(
         self,
-        x_step: float = 0.0002,
-        y_step: float = 0.0003,
+        x_step: float = 20.0,
+        y_step: float = 20.0,
         show_credit: bool = True,
         margin: float = 1.5,
     ) -> None:
@@ -49,8 +48,8 @@ class Grid:
         self.index: int = 0
         self.nodes: dict[OSMNode, tuple[int, int]] = {}
 
-        self.max_j: float = 0
-        self.max_i: float = 0
+        self.max_j: float = 0.0
+        self.max_i: float = 0.0
 
         self.way_id: int = 0
         self.relation_id: int = 0
@@ -61,15 +60,11 @@ class Grid:
     def add_node(self, tags: Tags, i: int, j: int) -> OSMNode:
         """Add OSM node to the grid."""
         self.index += 1
-        node: OSMNode = OSMNode(
-            tags,
-            self.index,
-            np.array((-i * self.y_step, j * self.x_step)),
-        )
+        node: OSMNode = OSMNode(tags, self.index, np.array((i, j)))
         self.nodes[node] = (j, i)
         self.osm_data.add_node(node)
-        self.max_j = max(self.max_j, j * self.x_step)
-        self.max_i = max(self.max_i, i * self.y_step)
+        self.max_j = max(self.max_j, j)
+        self.max_i = max(self.max_i, i)
         return node
 
     def add_way(self, tags: Tags, nodes: list[OSMNode]) -> OSMWay:
@@ -90,24 +85,22 @@ class Grid:
         """Add simple text label to the grid."""
         self.texts.append((text, i, j))
 
-    def get_boundary_box(self) -> BoundaryBox:
-        """Compute resulting boundary box with margin of one grid step."""
-        return BoundaryBox(
-            -self.x_step * self.margin,
-            -self.max_i - self.y_step * self.margin,
-            self.max_j + self.x_step * self.margin,
-            self.y_step * self.margin,
-        )
-
-    def draw(self, output_path: Path, zoom: float = DEFAULT_ZOOM) -> None:
+    def draw(self, output_path: Path) -> None:
         """Draw grid."""
         configuration: MapConfiguration = MapConfiguration(
             SCHEME, level="all", credit=None, show_credit=self.show_credit
         )
-        flinger: Flinger = Flinger(
-            self.get_boundary_box(), zoom, self.osm_data.equator_length
+        size = (
+            (self.max_i + self.margin * 2.0) * self.x_step,
+            (self.max_j + self.margin * 2.0) * self.y_step,
         )
-        svg: Drawing = Drawing(output_path.name, flinger.size)
+
+        flinger: Flinger = TranslateFlinger(
+            size,
+            np.array((self.x_step, self.y_step)),
+            np.array((self.margin, self.margin)),
+        )
+        svg: Drawing = Drawing(output_path.name, size)
         constructor: Constructor = Constructor(
             self.osm_data, flinger, SHAPE_EXTRACTOR, configuration
         )
@@ -119,7 +112,7 @@ class Grid:
             svg.add(
                 Text(
                     text,
-                    flinger.fling((-i * self.y_step, j * self.x_step)) + (0, 3),
+                    flinger.fling((i, j)) + (0, 3),
                     font_family="JetBrains Mono",
                     font_size=12,
                 )
