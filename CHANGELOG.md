@@ -1,6 +1,6 @@
 # Unreleased
 
-- Change indoor colors, make columns visible (#139).
+- Change indoor colors, make columns visible ([#139](https://github.com/enzet/map-machine/issues/139)).
 - Add 4 icons for `man_made=flagpole` + `country=*`.
 
 # 0.1.7
