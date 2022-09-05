@@ -1,3 +1,4 @@
+"""Entry point for element drawing: nodes, ways, and relations."""
 import argparse
 from pathlib import Path
 
@@ -6,16 +7,19 @@ from map_machine.osm.osm_reader import Tags, OSMNode
 
 
 def draw_node(tags: Tags, path: Path):
-    grid: Grid = Grid(show_credit=False, margin=0.5)
+    """Draw separate node."""
+    grid: Grid = Grid(show_credit=False, margin=3.5)
     grid.add_node(tags, 0, 0)
     grid.draw(path)
 
 
 def draw_way():
+    """Draw way."""
     pass
 
 
 def draw_area(tags: Tags, path: Path):
+    """Draw closed way that should be interpreted as an area."""
     grid: Grid = Grid(show_credit=False, margin=0.5)
     node: OSMNode = grid.add_node({}, 0, 0)
     nodes: list[OSMNode] = [
@@ -30,7 +34,7 @@ def draw_area(tags: Tags, path: Path):
 
 
 def draw_element(options: argparse.Namespace):
-
+    """Entry point for element drawing."""
     tags_description: Tags = {
         x.split("=")[0]: x.split("=")[1] for x in options.tags.split(",")
     }
