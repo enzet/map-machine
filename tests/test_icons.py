@@ -11,6 +11,7 @@ from typing import Optional
 
 from colour import Color
 
+from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import Tags
 from map_machine.pictogram.icon import IconSet, ShapeSpecification, Icon
 from map_machine.pictogram.icon_collection import IconCollection
@@ -20,6 +21,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
+CONFIGURATION: MapConfiguration = MapConfiguration(SCHEME)
 COLLECTION: IconCollection = IconCollection.from_scheme(SCHEME, SHAPE_EXTRACTOR)
 DEFAULT_COLOR: Color = SCHEME.get_default_color()
 EXTRA_COLOR: Color = SCHEME.get_extra_color()
@@ -50,14 +52,16 @@ def test_icons_by_name() -> None:
 def get_icon(tags: Tags) -> IconSet:
     """Construct icon from tags."""
     processed: Set[str] = set()
-    icon, _ = SCHEME.get_icon(SHAPE_EXTRACTOR, tags, processed)
+    icon, _ = CONFIGURATION.get_icon(SHAPE_EXTRACTOR, tags, processed)
     return icon
 
 
 def test_no_icons() -> None:
     """
-    Tags that has no description in scheme and should be visualized with default
-    shape.
+    Test icon creation for tags not described in the scheme.
+
+    Tags that has no description in the scheme and should be visualized with
+    default shape.
     """
     icon: IconSet = get_icon({"aaa": "bbb"})
     assert icon.main_icon.is_default()
@@ -66,6 +70,8 @@ def test_no_icons() -> None:
 
 def test_no_icons_but_color() -> None:
     """
+    Test icon creation for tags not described in the scheme and `colour` tag.
+
     Tags that has no description in scheme, but have `colour` tag and should be
     visualized with default shape with the given color.
     """
@@ -77,10 +83,13 @@ def test_no_icons_but_color() -> None:
 def check_icon_set(
     tags: Tags,
     main_specification: List[Tuple[str, Optional[Color]]],
-    extra_specifications: List[List[Tuple[str, Optional[Color]]]],
+    extra_specifications: List[List[Tuple[str, Optional[Color]]]] = None,
 ) -> None:
     """Check icon set using simple specification."""
     icon: IconSet = get_icon(tags)
+
+    if extra_specifications is None:
+        extra_specifications = []
 
     if not main_specification:
         assert icon.main_icon.is_default()
@@ -110,7 +119,7 @@ def test_icon() -> None:
     Tags that should be visualized with single main icon and without extra
     icons.
     """
-    check_icon_set({"natural": "tree"}, [("tree", Color("#98AC64"))], [])
+    check_icon_set({"natural": "tree"}, [("tree", Color("#98AC64"))])
 
 
 def test_icon_1_extra() -> None:
@@ -165,7 +174,6 @@ def test_icon_regex() -> None:
     check_icon_set(
         {"traffic_sign": "maxspeed", "maxspeed": "42"},
         [("circle_11", DEFAULT_COLOR), ("digit_4", WHITE), ("digit_2", WHITE)],
-        [],
     )
 
 
@@ -178,15 +186,30 @@ def test_vending_machine() -> None:
     check_icon_set(
         {"amenity": "vending_machine"},
         [("vending_machine", DEFAULT_COLOR)],
-        [],
     )
     check_icon_set(
         {"amenity": "vending_machine", "vending": "drinks"},
         [("vending_bottle", DEFAULT_COLOR)],
-        [],
     )
     check_icon_set(
         {"vending": "drinks"},
         [("vending_bottle", DEFAULT_COLOR)],
-        [],
+    )
+
+
+def test_diving_tower() -> None:
+    """
+    Check that diving towers are rendered as diving towers, not just
+    freestanding towers.
+
+    See https://github.com/enzet/map-machine/issues/138
+    """
+    check_icon_set(
+        {
+            "man_made": "tower",
+            "tower:type": "diving",
+            "tower:construction": "freestanding",
+            "tower:platforms": "4",
+        },
+        [("diving_4_platforms", DEFAULT_COLOR)],
     )

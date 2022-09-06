@@ -1,6 +1,4 @@
-"""
-Test command line commands.
-"""
+"""Test command line commands."""
 import argparse
 from pathlib import Path
 from subprocess import PIPE, Popen
@@ -46,8 +44,8 @@ def test_wrong_render_arguments() -> None:
     """Test `render` command with wrong arguments."""
     error_run(
         ["render", "-z", "17"],
-        b"CRITICAL Specify either --input, or --boundary-box, or --coordinates "
-        b"and --size.\n",
+        b"CRITICAL Specify either --input, or --boundary-box, or "
+        b"--coordinates.\n",
     )
 
 
@@ -115,20 +113,21 @@ def test_mapcss() -> None:
     assert (out_path / "icons" / "LICENSE").is_file()
 
 
-def test_element() -> None:
-    """Test `element` command."""
+def test_draw() -> None:
+    """Test `draw` command."""
     run(
-        COMMAND_LINES["element"],
-        b"INFO Element is written to out/element.svg.\n",
+        COMMAND_LINES["draw"],
+        LOG + b"INFO Map is drawn to out/element.svg.\n",
     )
     assert (OUTPUT_PATH / "element.svg").is_file()
 
 
-def test_unwrapped_element() -> None:
+def test_unwrapped_draw() -> None:
+    """Test `element` command from inside the project."""
     arguments: argparse.Namespace = parse_arguments(
-        ["map_machine"] + COMMAND_LINES["element"]
+        ["map_machine"] + COMMAND_LINES["draw"]
     )
-    from map_machine.element.single import draw_element
+    from map_machine.element.element import draw_element
 
     draw_element(arguments)
 

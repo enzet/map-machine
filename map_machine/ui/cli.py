@@ -1,6 +1,4 @@
-"""
-Command-line user interface.
-"""
+"""Command-line user interface."""
 import argparse
 from typing import Dict, List
 
@@ -21,7 +19,7 @@ COMMAND_LINES: Dict[str, List[str]] = {
     ],
     "icons": ["icons"],
     "mapcss": ["mapcss"],
-    "element": ["element", "--node", "amenity=bench,material=wood"],
+    "draw": ["draw", "node", "amenity=bench,material=wood"],
     "tile": ["tile", "--coordinates", "50.000,40.000"],
 }
 COMMANDS: List[str] = [
@@ -88,9 +86,9 @@ def parse_arguments(args: List[str]) -> argparse.Namespace:
             help="run tile server",
         )
     )
-    add_element_arguments(
+    add_draw_arguments(
         subparser.add_parser(
-            "element",
+            "draw",
             description="Draw map element separately.",
             help="draw OSM element: node, way, relation",
         )
@@ -123,6 +121,13 @@ def parse_arguments(args: List[str]) -> argparse.Namespace:
 
 def add_map_arguments(parser: argparse.ArgumentParser) -> None:
     """Add map-specific arguments."""
+    parser.add_argument(
+        "--scheme",
+        metavar="<id> or <path>",
+        default="default",
+        help="scheme identifier (look for `<id>.yml` file) or path to a YAML "
+        "scheme file",
+    )
     parser.add_argument(
         "--buildings",
         metavar="<mode>",
@@ -293,11 +298,11 @@ def add_server_arguments(parser: argparse.ArgumentParser) -> None:
     )
 
 
-def add_element_arguments(parser: argparse.ArgumentParser) -> None:
+def add_draw_arguments(parser: argparse.ArgumentParser) -> None:
     """Add arguments for element command."""
-    parser.add_argument("-n", "--node")
-    parser.add_argument("-w", "--way")
-    parser.add_argument("-r", "--relation")
+    parser.add_argument("type")
+    parser.add_argument("tags")
+    parser.add_argument("-o", "--output-file", default="out/element.svg")
 
 
 def add_render_arguments(parser: argparse.ArgumentParser) -> None:

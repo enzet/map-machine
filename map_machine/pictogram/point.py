@@ -1,6 +1,4 @@
-"""
-Point: node representation on the map.
-"""
+"""Point: node representation on the map."""
 import logging
 from typing import Dict, List, Optional, Set
 

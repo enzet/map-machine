@@ -59,8 +59,9 @@ colors:
   grass_border_color: "#BFD098"
   grass_color: "#CFE0A8"
   hidden_color: "#000000"
-  indoor_border_color: "#C0B8B0"
+  indoor_border_color: "#A0A890"
   indoor_color: "#E8E4E0"
+  indoor_column_color: {color: indoor_border_color, darken: 0.5}
   meadow_border_color: "#BFD078"
   meadow_color: "#CFE088"
   orchard_color: "#B8DCA4"
@@ -435,6 +436,8 @@ node_icons:
       shapes: [fort]
     - tags: {shop: mall}
       shapes: [bag]
+    - tags: {shop: department_store}
+      shapes: [bag]
     - tags: {shop: mall, building: "yes"}
       shapes: [bag]
     - tags: {leisure: water_park}
@@ -546,6 +549,8 @@ node_icons:
       shapes: [star_of_david]
     - tags: {historic: tomb, tomb: mausoleum}
       shapes: [mausoleum]
+    - tags: {historic: tomb, tomb: pyramid}
+      shapes: [pyramid]
     - tags: {historic: "*"}
       shapes: [japan_historic]
       replace_shapes: no
@@ -556,6 +561,8 @@ node_icons:
     tags:
     - tags: {shop: supermarket}
       shapes: [supermarket_cart]
+    - tags: {shop: variety_store}
+      shapes: [bag_with_percent]
     - tags: {shop: general}
       shapes: [bag]
     - tags: {amenity: arts_centre}
@@ -670,6 +677,8 @@ node_icons:
       shapes: [knives]
     - tags: {shop: car}
       shapes: [{shape: car, color: sell_color}]
+    - tags: {shop: car_parts}
+      shapes: [shape: engine]
     - tags: {shop: chocolate}
       shapes: [cupcake]
     - tags: {shop: coffee}
@@ -717,7 +726,7 @@ node_icons:
     - tags: {shop: mobile_phone}
       shapes: [{shape: phone, color: sell_color}]
     - tags: {shop: newsagent}
-      shapes: [sheets]
+      shapes: [gazette]
     - tags: {shop: optician}
       shapes: [glasses]
     - tags: {shop: pastry}
@@ -771,9 +780,9 @@ node_icons:
     - tags: {amenity: nightclub}
       shapes: [cocktail_glass_with_straw]
     - tags: {amenity: restaurant}
-      shapes: [restaurant]
+      shapes: [fork_and_knife]
     - tags: {amenity: restaurant;bar}
-      shapes: [restaurant]
+      shapes: [fork_and_knife]
       add_shapes: [cocktail_glass]
     - tags: {shop: ice_cream}
       shapes: [ice_cream]
@@ -1140,6 +1149,10 @@ node_icons:
       shapes: [power_pole_triangle_armless]
     - tags: {power: pole, design: delta}
       shapes: [power_pole_delta]
+    - tags: {power: pole, design: delta_two-level}
+      shapes: [power_pole_delta]  # power_pole_delta_2_level
+    - tags: {power: pole, design: delta_three-level}
+      shapes: [power_pole_delta]  # power_pole_delta_3_level
 
     - tags: {man_made: chimney}
       shapes: [chimney]
@@ -1147,16 +1160,6 @@ node_icons:
       shapes: [tower_cooling]
     - tags: {man_made: tower, tower:type: defensive}
       shapes: [tower_defensive]
-    - tags: {man_made: tower, tower:type: diving}
-      shapes: [diving_platform]
-    - tags: {man_made: tower, tower:type: diving, tower:platforms: "1"}
-      shapes: [diving_platform]
-    - tags: {man_made: tower, tower:type: diving, tower:platforms: "2"}
-      shapes: [diving_2_platforms]
-    - tags: {man_made: tower, tower:type: diving, tower:platforms: "3"}
-      shapes: [diving_3_platforms]
-    - tags: {man_made: tower, tower:type: diving, tower:platforms: "4"}
-      shapes: [diving_4_platforms]
     - tags: {man_made: tower, tower:type: pagoda}
       shapes: [pagoda]
     - tags: {man_made: tower, tower:type: observation}
@@ -1410,6 +1413,28 @@ node_icons:
       - {shape: wave_left, offset: [-4, -3]}
       - {shape: wave_right, offset: [3, -3]}
 
+    - tags: {man_made: flagpole, country: US}
+      shapes: [flag_usa]
+    - tags: {man_made: flagpole, country: Tanzania}
+      shapes: [flag_bend_sinister]
+    - tags: {man_made: flagpole, country: PH}
+      shapes: [flag_triangle_flanche]
+    - tags: {man_made: flagpole, country: FR}
+      shapes: [flag_vertical_triband]
+
+      # Diving towers.
+
+    - tags: {man_made: tower, tower:type: diving}
+      shapes: [diving_1_platforms]
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "1"}
+      shapes: [diving_1_platforms]
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "2"}
+      shapes: [diving_2_platforms]
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "3"}
+      shapes: [diving_3_platforms]
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "4"}
+      shapes: [diving_4_platforms]
+
     - tags: {communication:mobile_phone: "yes"}
       add_shapes: [phone]
 
@@ -1470,6 +1495,8 @@ node_icons:
   - group: "Important small objects"
     start_zoom_level: 17.0
     tags:
+    - tags: {natural: spring}
+      shapes: [{shape: spring, color: water_border_color}]
     - tags: {highway: elevator}
       shapes: [elevator]
     - tags: {historic: cannon}
@@ -1495,7 +1522,7 @@ node_icons:
     - tags: {historic: tomb}
       shapes: [tomb]
     - tags: {tomb: "*"}
-      exception: {tomb: mausoleum}
+      exception: {tomb: mausoleum}  # TODO: add exception "tomb: pyramid"
       shapes: [tomb]
     - tags: {barrier: toll_booth}
       shapes: [toll_booth]
@@ -1653,6 +1680,8 @@ node_icons:
       shapes: [hopscotch]
     - tags: {playground: slide}
       shapes: [slide]
+    - tags: {attraction: water_slide}
+      shapes: [slide_and_water]
     - tags: {playground: roundabout}
       shapes: [roundabout]
     - tags: {playground: sandpit}
@@ -1669,6 +1698,8 @@ node_icons:
       shapes: [golf_pin]
     - tags: {highway: traffic_mirror}
       shapes: [side_mirror]
+    - tags: {amenity: dressing_room}
+      shapes: [hanger]
 
   - group: "Entrances"
     start_zoom_level: 18.0
@@ -1961,7 +1992,7 @@ node_icons:
     - tags: {recycling:glass_bottles: "yes"}
       add_shapes: [bottle]
     - tags: {recycling:paper: "yes"}
-      add_shapes: [sheets]
+      add_shapes: [gazette]
     - tags: {recycling:glass: "yes"}
       add_shapes: [bottle_and_wine_glass]
     - tags: {recycling:clothes: "yes"}
@@ -1971,11 +2002,11 @@ node_icons:
     - tags: {recycling:green_waste: "yes"}
       add_shapes: [apple]
     - tags: {recycling:paper_packaging: "yes"}
-      add_shapes: [sheets]
+      add_shapes: [gazette]
     - tags: {recycling:newspaper: "yes"}
-      add_shapes: [sheets]
+      add_shapes: [gazette]
     - tags: {recycling:magazines: "yes"}
-      add_shapes: [sheets]
+      add_shapes: [gazette]
     - tags: {recycling:books: "yes"}
       add_shapes: [book]
     - tags: {recycling:wood: "yes"}
@@ -2095,7 +2126,7 @@ ways:
     priority: 10.0
   - tags: {indoor: corridor}
     style:
-      stroke: indoor_color
+      stroke: indoor_border_color
       stroke-width: 1.0
       fill: indoor_color
     priority: 11.0
@@ -2110,11 +2141,10 @@ ways:
       stroke-width: 1.0
       fill: indoor_color
     priority: 12.0
-  - tags: {indoor: room, area: "yes"}
+  - tags: {indoor: room}
     style:
-      stroke: indoor_color
+      stroke: indoor_border_color
       stroke-width: 1.0
-      fill: indoor_color
     priority: 12.0
   - tags: {indoor: elevator, area: "yes"}
     style:
@@ -2124,9 +2154,9 @@ ways:
     priority: 12.0
   - tags: {indoor: column}
     style:
-      stroke: indoor_color
+      stroke: indoor_column_color
       stroke-width: 1.0
-      fill: indoor_color
+      fill: indoor_column_color
     priority: 13.0
 
   - tags: {power: line}
@@ -2158,6 +2188,17 @@ ways:
       stroke: "#888888"
       stroke-width: 3.0
       stroke-dasharray: "1.0,10.0,1.0,1.5"
+    priority: 80.0
+
+  - tags: {attraction: water_slide}
+    style:
+      stroke: "#FFFFFF"
+      stroke-width: 2.0
+    priority: 81
+  - tags: {attraction: water_slide}
+    style:
+      stroke: "#888888"
+      stroke-width: 4.0
     priority: 80.0
 
   - tags: {highway: track}

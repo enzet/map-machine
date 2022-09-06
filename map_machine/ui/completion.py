@@ -70,7 +70,7 @@ def completion_commands() -> str:
             cli.add_tile_arguments(parser)
             cli.add_map_arguments(parser)
         elif command == "element":
-            cli.add_element_arguments(parser)
+            cli.add_draw_arguments(parser)
         elif command == "mapcss":
             cli.add_mapcss_arguments(parser)
         else:

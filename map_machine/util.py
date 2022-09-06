@@ -1,6 +1,4 @@
-"""
-Utility file.
-"""
+"""Utility file."""
 from dataclasses import dataclass
 from typing import Any
 

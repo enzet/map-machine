@@ -1,6 +1,4 @@
-"""
-Extract icons from SVG file.
-"""
+"""Extract icons from SVG file."""
 import json
 import logging
 import re
@@ -33,6 +31,9 @@ STANDARD_INKSCAPE_ID_MATCHER: re.Pattern = re.compile(
 PATH_MATCHER: re.Pattern = re.compile("[Mm] ([0-9.e-]*)[, ]([0-9.e-]*)")
 
 GRID_STEP: int = 16
+
+USED_ICON_COLOR: str = "#000000"
+UNUSED_ICON_COLORS: List[str] = ["#0000ff", "#ff0000"]
 
 
 @dataclass
@@ -168,9 +169,10 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
     """
     Verify sketch SVG element from icon file.
 
-    :param element: SVG element
+    :param element: sketch SVG element (element with standard Inkscape
+        identifier)
     :param id_: element `id` attribute
-    :return: True iff SVG element has right style
+    :return: True iff SVG element has valid style
     """
     if "style" not in element.attrib or not element.attrib["style"]:
         return True
@@ -180,7 +182,7 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
         for x in element.attrib["style"].split(";")
     )
 
-    # Sketch stroke element (black 0.1 px stroke, no fill).
+    # Sketch element (black 0.1 px stroke, no fill).
 
     if (
         style["fill"] == "none"
@@ -190,20 +192,27 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
     ):
         return True
 
-    # Sketch fill element (black fill, no stroke, 20% opacity).
+    # Sketch element (black 1 px stroke, no fill, 20% opacity).
 
     if (
         style["fill"] == "none"
         and style["stroke"] == "#000000"
         and "opacity" in style
         and np.allclose(float(style["opacity"]), 0.2)
+        and (
+            "stroke-width" not in style
+            or np.allclose(parse_length(style["stroke-width"]), 0.7)
+            or np.allclose(parse_length(style["stroke-width"]), 1)
+            or np.allclose(parse_length(style["stroke-width"]), 2)
+            or np.allclose(parse_length(style["stroke-width"]), 3)
+        )
     ):
         return True
 
-    # Experimental shape (blue fill, no stroke).
+    # Experimental shape (blue or red fill, no stroke).
 
     if (
-        style["fill"] == "#0000ff"
+        style["fill"] in UNUSED_ICON_COLORS
         and "stroke" in style
         and style["stroke"] == "none"
     ):
@@ -302,7 +311,12 @@ class ShapeExtractor:
         id_: str = node.attrib["id"]
         if STANDARD_INKSCAPE_ID_MATCHER.match(id_) is not None:
             if not verify_sketch_element(node, id_):
-                logging.warning(f"Not verified SVG element `{id_}`.")
+                path_part = ""
+                try:
+                    path_part = f", {node.attrib['d'].split(' ')[:3]}."
+                except (KeyError, ValueError):
+                    pass
+                logging.warning(f"Not verified SVG element `{id_}`{path_part}")
             return
 
         if "d" in node.attrib and node.attrib["d"]:

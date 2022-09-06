@@ -1,6 +1,4 @@
-"""
-Map Machine drawing scheme.
-"""
+"""Map Machine drawing scheme."""
 import logging
 import re
 from dataclasses import dataclass
@@ -13,7 +11,6 @@ import yaml
 from colour import Color
 
 from map_machine.feature.direction import DirectionSet
-from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import Tagged, Tags
 from map_machine.pictogram.icon import (
     DEFAULT_SHAPE_ID,
@@ -29,6 +26,8 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 IconDescription = List[Union[str, Dict[str, str]]]
+
+DEFAULT_COLOR: Color = Color("black")
 
 
 @dataclass
@@ -136,22 +135,21 @@ class Matcher(Tagged):
         )
 
     def is_matched(
-        self, tags: Tags, configuration: Optional[MapConfiguration] = None
+        self, tags: Tags, country: Optional[str] = None
     ) -> Tuple[bool, Dict[str, str]]:
         """
         Check whether element tags matches tag matcher.
 
         :param tags: element tags to be matched
-        :param configuration: current map configuration to be matched
+        :param country: country of the element (to match location restrictions
+            if any)
         """
         groups: Dict[str, str] = {}
 
         if (
-            configuration is not None
+            country is not None
             and self.location_restrictions
-            and not match_location(
-                self.location_restrictions, configuration.country
-            )
+            and not match_location(self.location_restrictions, country)
         ):
             return False, {}
 
@@ -365,15 +363,20 @@ class Scheme:
         self.cache: Dict[str, Tuple[IconSet, int]] = {}
 
     @classmethod
-    def from_file(cls, file_name: Path) -> "Scheme":
+    def from_file(cls, file_name: Path) -> Optional["Scheme"]:
         """
         :param file_name: name of the scheme file with tags, colors, and tag key
             specification
         """
         with file_name.open(encoding="utf-8") as input_file:
-            content: Dict[str, Any] = yaml.load(
-                input_file.read(), Loader=yaml.FullLoader
-            )
+            try:
+                content: Dict[str, Any] = yaml.load(
+                    input_file.read(), Loader=yaml.FullLoader
+                )
+            except yaml.YAMLError:
+                return None
+            if not content:
+                return cls({})
             return cls(content)
 
     def get_color(self, color: str) -> Color:
@@ -401,7 +404,9 @@ class Scheme:
             return Color(color)
         except (ValueError, AttributeError):
             logging.debug(f"Unknown color `{color}`.")
-            return Color(self.colors["default"])
+            if "default" in self.colors:
+                return Color(self.colors["default"])
+            return DEFAULT_COLOR
 
     def get_default_color(self) -> Color:
         """Get default color for a main icon."""
@@ -413,6 +418,8 @@ class Scheme:
 
     def get(self, variable_name: str):
         """
+        Get value of variable.
+
         FIXME: colors should be variables.
         """
         if variable_name in self.colors:
@@ -476,7 +483,10 @@ class Scheme:
         extractor: ShapeExtractor,
         tags: Dict[str, Any],
         processed: Set[str],
-        configuration: MapConfiguration = MapConfiguration(),
+        country: Optional[str] = None,
+        zoom_level: float = 18,
+        ignore_level_matching: bool = False,
+        show_overlapped: bool = False,
     ) -> Tuple[Optional[IconSet], int]:
         """
         Construct icon set.
@@ -484,7 +494,11 @@ class Scheme:
         :param extractor: extractor with icon specifications
         :param tags: OpenStreetMap element tags dictionary
         :param processed: set of already processed tag keys
-        :param configuration: current map configuration to be matched
+        :param country: country to match location restrictions
+        :param zoom_level: current map zoom level
+        :param ignore_level_matching: do not check level for the icon
+        :param show_overlapped: get small dot instead of icon if point is
+            overlapped by some other points
         :return (icon set, icon priority)
         """
         tags_hash: str = (
@@ -501,12 +515,11 @@ class Scheme:
         for index, matcher in enumerate(self.node_matchers):
             if not matcher.replace_shapes and main_icon:
                 continue
-            matching, groups = matcher.is_matched(tags, configuration)
+            matching, groups = matcher.is_matched(tags, country)
             if not matching:
                 continue
-            if (
-                not configuration.ignore_level_matching
-                and not matcher.check_zoom_level(configuration.zoom_level)
+            if not ignore_level_matching and not matcher.check_zoom_level(
+                zoom_level
             ):
                 return None, 0
             matcher_tags: Set[str] = set(matcher.tags.keys())
@@ -567,7 +580,7 @@ class Scheme:
             main_icon.recolor(color)
 
         default_icon: Optional[Icon] = None
-        if configuration.show_overlapped:
+        if show_overlapped:
             small_dot_spec: ShapeSpecification = ShapeSpecification(
                 extractor.get_shape(DEFAULT_SMALL_SHAPE_ID),
                 color if color else self.get_color("default"),

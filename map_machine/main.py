@@ -1,9 +1,18 @@
-"""
-Map Machine entry point.
-"""
+"""Map Machine entry point."""
+import sys
+
+if sys.version_info.major < 3 or sys.version_info.minor < 8:
+    print(
+        "FATAL Python "
+        + str(sys.version_info.major)
+        + "."
+        + str(sys.version_info.minor)
+        + " is not supported. Please, use at least Python 3.8."
+    )
+    sys.exit(1)
+
 import argparse
 import logging
-import sys
 from pathlib import Path
 
 from map_machine.ui.cli import parse_arguments
@@ -46,8 +55,8 @@ def main() -> None:
 
         mapcss.generate_mapcss(arguments)
 
-    elif arguments.command == "element":
-        from map_machine.element.single import draw_element
+    elif arguments.command == "draw":
+        from map_machine.element.element import draw_element
 
         draw_element(arguments)
 

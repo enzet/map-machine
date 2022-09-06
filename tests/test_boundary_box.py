@@ -1,6 +1,4 @@
-"""
-Test boundary box.
-"""
+"""Test boundary box."""
 from map_machine.geometry.boundary_box import BoundaryBox
 
 __author__ = "Sergey Vartanov"

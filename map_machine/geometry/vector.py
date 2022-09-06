@@ -1,6 +1,6 @@
-"""
-Vector utility.
-"""
+"""Vector utility."""
+from typing import Optional
+
 import numpy as np
 
 __author__ = "Sergey Vartanov"
@@ -12,8 +12,9 @@ from shapely.geometry import LineString
 
 def compute_angle(vector: np.ndarray) -> float:
     """
-    For the given vector compute an angle between it and (1, 0) vector.  The
-    result is in [0, 2π].
+    For the given vector compute an angle between it and (1, 0) vector.
+
+    The result is in [0, 2π].
     """
     if vector[0] == 0.0:
         if vector[1] > 0.0:
@@ -50,6 +51,7 @@ class Polyline:
     def get_path(self, parallel_offset: float = 0.0) -> str:
         """Construct SVG path commands."""
         points: List[np.ndarray]
+
         if np.allclose(parallel_offset, 0.0):
             points = self.points
         else:
@@ -135,14 +137,22 @@ class Segment:
             np.arccos(np.dot(vector, np.array((0.0, 1.0)))) / np.pi
         )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """Get simple string representation."""
         return f"{self.point_1} -- {self.point_2}"
 
     def __lt__(self, other: "Segment") -> bool:
+        """Compare central y coordinates of segments."""
         return self.y < other.y
 
-    def intersection(self, other: "Segment"):
-        divisor = (self.point_1[0] - self.point_2[0]) * (
+    def intersection(self, other: "Segment") -> Optional[List[float]]:
+        """
+        Find and intersection point between two segments.
+
+        :return: `None` if segments don't intersect, [x, y] coordinates of
+            the resulting point otherwise.
+        """
+        divisor: float = (self.point_1[0] - self.point_2[0]) * (
             other.point_1[1] - other.point_2[1]
         ) - (self.point_1[1] - self.point_2[1]) * (
             other.point_1[0] - other.point_2[0]
@@ -165,7 +175,6 @@ class Segment:
         ) / divisor
 
         if 0 <= t <= 1 and 0 <= u <= 1:
-            print(t)
             return [
                 self.point_1[0] + t * (self.point_2[0] - self.point_1[0]),
                 self.point_1[1] + t * (self.point_2[1] - self.point_1[1]),

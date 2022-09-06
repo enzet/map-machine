@@ -1,6 +1,4 @@
-"""
-Icon grids for documentation.
-"""
+"""Icon grids for documentation."""
 from pathlib import Path
 from typing import Iterable
 

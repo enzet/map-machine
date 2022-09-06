@@ -1,6 +1,4 @@
-"""
-Test MapCSS generation.
-"""
+"""Test MapCSS generation."""
 from map_machine.mapcss import MapCSSWriter
 from map_machine.scheme import NodeMatcher
 from tests import SCHEME

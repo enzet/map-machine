@@ -1,6 +1,4 @@
-"""
-OSM address tag processing.
-"""
+"""OSM address tag processing."""
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Set
 

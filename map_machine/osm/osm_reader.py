@@ -1,6 +1,4 @@
-"""
-Parse OSM XML file.
-"""
+"""Parse OSM XML file."""
 import json
 import logging
 import re

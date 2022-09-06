@@ -1,12 +1,13 @@
-"""
-Map drawing configuration.
-"""
+"""Map drawing configuration."""
 import argparse
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
+from typing import Optional, Any, Dict, Set, Tuple
 
 from colour import Color
+
+from map_machine.pictogram.icon import ShapeExtractor, IconSet
+from map_machine.scheme import Scheme
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -44,6 +45,7 @@ class BuildingMode(Enum):
 class MapConfiguration:
     """Map drawing configuration."""
 
+    scheme: Scheme
     drawing_mode: DrawingMode = DrawingMode.NORMAL
     building_mode: BuildingMode = BuildingMode.FLAT
     label_mode: LabelMode = LabelMode.MAIN
@@ -58,13 +60,15 @@ class MapConfiguration:
     use_building_colors: bool = False
     show_overlapped: bool = False
     credit: Optional[str] = "© OpenStreetMap contributors"
+    show_credit: bool = True
 
     @classmethod
     def from_options(
-        cls, options: argparse.Namespace, zoom_level: float
+        cls, scheme: Scheme, options: argparse.Namespace, zoom_level: float
     ) -> "MapConfiguration":
         """Initialize from command-line options."""
         return cls(
+            scheme,
             DrawingMode(options.mode),
             BuildingMode(options.buildings),
             LabelMode(options.label_mode),
@@ -89,3 +93,19 @@ class MapConfiguration:
         if self.drawing_mode not in (DrawingMode.NORMAL, DrawingMode.BLACK):
             return Color("#111111")
         return None
+
+    def get_icon(
+        self,
+        extractor: ShapeExtractor,
+        tags: Dict[str, Any],
+        processed: Set[str],
+    ) -> Tuple[Optional[IconSet], int]:
+        return self.scheme.get_icon(
+            extractor,
+            tags,
+            processed,
+            self.country,
+            self.zoom_level,
+            self.ignore_level_matching,
+            self.show_overlapped,
+        )

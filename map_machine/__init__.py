@@ -1,6 +1,4 @@
-"""
-Map Machine project: simple Python map renderer for OpenStreetMap and icon set.
-"""
+"""Map Machine: Python map renderer for OpenStreetMap with custom icon set."""
 
 __project__ = "Map Machine"
 __description__ = (
@@ -11,7 +9,7 @@ __url__ = "https://github.com/enzet/map-machine"
 __doc_url__ = f"{__url__}/blob/main/README.md"
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
-__version__ = "0.1.5"
+__version__ = "0.1.7"
 
 REQUIREMENTS = [
     "CairoSVG>=2.5.0",

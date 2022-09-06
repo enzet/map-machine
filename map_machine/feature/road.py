@@ -1,6 +1,4 @@
-"""
-WIP: road shape drawing.
-"""
+"""WIP: road shape drawing."""
 import logging
 from collections import defaultdict
 from dataclasses import dataclass
@@ -67,6 +65,8 @@ class RoadPart:
         scale: float,
     ) -> None:
         """
+        Initialize road part with two end points.
+
         :param point_1: start point of the road part
         :param point_2: end point of the road part
         :param lanes: lane specification
@@ -284,8 +284,9 @@ class RoadPart:
 
 class Intersection:
     """
-    An intersection of the roads, that is described by its parts.  All first
-    points of the road parts should be the same.
+    An intersection of the roads, that is described by its parts.
+
+    All first points of the road parts should be the same.
     """
 
     def __init__(self, parts: List[RoadPart]) -> None:
@@ -612,6 +613,8 @@ def get_curve_points(
     is_end: bool,
 ) -> List[np.ndarray]:
     """
+    TODO: add description.
+
     :param road: road segment
     :param center: road intersection point
     :param road_end: end point of the road segment

@@ -1,6 +1,4 @@
-"""
-Test direction processing.
-"""
+"""Test direction processing."""
 import numpy as np
 
 from map_machine.feature.direction import DirectionSet, parse_vector, Sector

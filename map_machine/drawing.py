@@ -1,6 +1,4 @@
-"""
-Drawing utility.
-"""
+"""Drawing utility."""
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Union

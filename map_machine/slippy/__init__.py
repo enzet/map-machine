@@ -1,3 +1,1 @@
-"""
-Tiles generation for slippy maps.
-"""
+"""Tiles generation for slippy maps."""

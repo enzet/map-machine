@@ -1,6 +1,4 @@
-"""
-Tests for length tag parsing.
-"""
+"""Tests for length tag parsing."""
 from typing import Optional
 
 from map_machine.osm.osm_reader import Tagged

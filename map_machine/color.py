@@ -1,6 +1,4 @@
-"""
-Color utility.
-"""
+"""Color utility."""
 from typing import Any, List
 
 from colour import Color

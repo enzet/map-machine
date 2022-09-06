@@ -1,6 +1,4 @@
-"""
-Simple OpenStreetMap renderer.
-"""
+"""Simple OpenStreetMap renderer."""
 import argparse
 import logging
 import sys
@@ -21,7 +19,7 @@ from map_machine.feature.building import Building, draw_walls, BUILDING_SCALE
 from map_machine.feature.road import Intersection, Road, RoadPart
 from map_machine.figure import StyledFigure
 from map_machine.geometry.boundary_box import BoundaryBox
-from map_machine.geometry.flinger import Flinger
+from map_machine.geometry.flinger import Flinger, MercatorFlinger
 from map_machine.geometry.vector import Segment
 from map_machine.map_configuration import LabelMode, MapConfiguration
 from map_machine.osm.osm_getter import NetworkError, get_osm
@@ -36,6 +34,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 ROAD_PRIORITY: float = 40.0
+DEFAULT_SIZE = (800.0, 600.0)
 
 
 class Map:
@@ -45,12 +44,11 @@ class Map:
         self,
         flinger: Flinger,
         svg: svgwrite.Drawing,
-        scheme: Scheme,
         configuration: MapConfiguration,
     ) -> None:
         self.flinger: Flinger = flinger
         self.svg: svgwrite.Drawing = svg
-        self.scheme: Scheme = scheme
+        self.scheme: Scheme = configuration.scheme
         self.configuration = configuration
 
         self.background_color: Color = self.scheme.get_color("background_color")
@@ -132,7 +130,8 @@ class Map:
                     self.svg, occupied, self.configuration.label_mode
                 )
 
-        self.draw_credits(constructor.flinger.size)
+        if self.configuration.show_credit:
+            self.draw_credits(constructor.flinger.size)
 
     def draw_buildings(self, constructor: Constructor) -> None:
         """Draw buildings: shade, walls, and roof."""
@@ -264,20 +263,28 @@ def render_map(arguments: argparse.Namespace) -> None:
 
     :param arguments: command-line arguments
     """
+    scheme_path: Optional[Path] = workspace.find_scheme_path(arguments.scheme)
+    if scheme_path is None:
+        fatal(f"Scheme `{arguments.scheme}` not found.")
+
+    scheme: Optional[Scheme] = Scheme.from_file(scheme_path)
+    if scheme is None:
+        fatal(f"Failed to load scheme from `{arguments.scheme}`.")
+
     configuration: MapConfiguration = MapConfiguration.from_options(
-        arguments, float(arguments.zoom)
+        scheme, arguments, float(arguments.zoom)
     )
     cache_path: Path = Path(arguments.cache)
     cache_path.mkdir(parents=True, exist_ok=True)
 
-    # Compute boundary box
+    # Compute boundary box.
 
     boundary_box: Optional[BoundaryBox] = None
 
     if arguments.boundary_box:
         boundary_box = BoundaryBox.from_text(arguments.boundary_box)
 
-    elif arguments.coordinates and arguments.size:
+    elif arguments.coordinates:
         coordinates: Optional[np.ndarray] = None
 
         for delimiter in ",", "/":
@@ -289,13 +296,20 @@ def render_map(arguments: argparse.Namespace) -> None:
         if coordinates is None or len(coordinates) != 2:
             fatal("Wrong coordinates format.")
 
-        width, height = np.array(list(map(float, arguments.size.split(","))))
+        if arguments.size:
+            width, height = np.array(
+                list(map(float, arguments.size.split(",")))
+            )
+        else:
+            width, height = DEFAULT_SIZE
+
         boundary_box = BoundaryBox.from_coordinates(
             coordinates, configuration.zoom_level, width, height
         )
 
-    # Determine files
+    # Determine files.
 
+    input_file_names: Optional[list[Path]] = None
     if arguments.input_file_names:
         input_file_names = list(map(Path, arguments.input_file_names))
     elif boundary_box:
@@ -309,12 +323,9 @@ def render_map(arguments: argparse.Namespace) -> None:
             logging.fatal(error.message)
             sys.exit(1)
     else:
-        fatal(
-            "Specify either --input, or --boundary-box, or --coordinates and "
-            "--size."
-        )
+        fatal("Specify either --input, or --boundary-box, or --coordinates.")
 
-    # Get OpenStreetMap data
+    # Get OpenStreetMap data.
 
     osm_data: OSMData = OSMData()
     for input_file_name in input_file_names:
@@ -332,9 +343,9 @@ def render_map(arguments: argparse.Namespace) -> None:
     if not boundary_box:
         boundary_box = osm_data.boundary_box
 
-    # Render
+    # Render the map.
 
-    flinger: Flinger = Flinger(
+    flinger: MercatorFlinger = MercatorFlinger(
         boundary_box, arguments.zoom, osm_data.equator_length
     )
     size: np.ndarray = flinger.size
@@ -344,19 +355,15 @@ def render_map(arguments: argparse.Namespace) -> None:
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
 
-    scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
     constructor: Constructor = Constructor(
         osm_data=osm_data,
         flinger=flinger,
-        scheme=scheme,
         extractor=icon_extractor,
         configuration=configuration,
     )
     constructor.construct()
 
-    map_: Map = Map(
-        flinger=flinger, svg=svg, scheme=scheme, configuration=configuration
-    )
+    map_: Map = Map(flinger=flinger, svg=svg, configuration=configuration)
     map_.draw(constructor)
 
     logging.info(f"Writing output SVG to {arguments.output_file_name}...")

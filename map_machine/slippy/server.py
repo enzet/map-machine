@@ -1,6 +1,4 @@
-"""
-Map Machine tile server for slippy maps.
-"""
+"""Map Machine tile server for slippy maps."""
 import argparse
 import logging
 from http.server import HTTPServer, SimpleHTTPRequestHandler
@@ -77,7 +75,7 @@ def run_server(options: argparse.Namespace) -> None:
         handler = TileServerHandler
         handler.cache = Path(options.cache)
         handler.options = options
-        server: HTTPServer = HTTPServer(("", options.port), handler)
+        server = HTTPServer(("", options.port), handler)
         logging.info(f"Server started on port {options.port}.")
         server.serve_forever()
     finally:

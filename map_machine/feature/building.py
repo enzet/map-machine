@@ -1,7 +1,6 @@
-"""
-Buildings on the map.
-"""
+"""Buildings on the map."""
 import numpy as np
+import svgwrite
 from colour import Color
 from svgwrite import Drawing
 from svgwrite.container import Group
@@ -170,32 +169,44 @@ class Building(Figure):
         svg.add(path)
 
 
-def draw_walls(svg, building: Building, segment, height, shift_1, shift_2):
-    fill: str
+def draw_walls(
+    svg: svgwrite.Drawing,
+    building: Building,
+    segment: Segment,
+    height: float,
+    shift_1: np.ndarray,
+    shift_2: np.ndarray,
+):
+    """
+    Draw walls for buildings as a quadrangle.
+
+    Color of the wall is based on illumination.
+    """
+    color: Color
     if building.is_construction:
         color_part: float = segment.angle * 0.2
-        fill = Color(
+        color = Color(
             rgb=(
                 building.wall_color.get_red() + color_part,
                 building.wall_color.get_green() + color_part,
                 building.wall_color.get_blue() + color_part,
             )
-        ).hex
+        )
     elif height <= 0.25 / BUILDING_SCALE:
-        fill = building.wall_bottom_color_1.hex
+        color = building.wall_bottom_color_1
     elif height <= 0.5 / BUILDING_SCALE:
-        fill = building.wall_bottom_color_2.hex
+        color = building.wall_bottom_color_2
     else:
         color_part: float = segment.angle * 0.2 - 0.1
-        fill = Color(
+        color = Color(
             rgb=(
                 max(min(building.wall_color.get_red() + color_part, 1), 0),
                 max(min(building.wall_color.get_green() + color_part, 1), 0),
                 max(min(building.wall_color.get_blue() + color_part, 1), 0),
             )
-        ).hex
+        )
 
-    command = (
+    command: PathCommands = [
         "M",
         segment.point_1 + shift_1,
         "L",
@@ -204,11 +215,11 @@ def draw_walls(svg, building: Building, segment, height, shift_1, shift_2):
         segment.point_1 + shift_2,
         segment.point_1 + shift_1,
         "Z",
-    )
+    ]
     path: Path = Path(
         d=command,
-        fill=fill,
-        stroke=fill,
+        fill=color.hex,
+        stroke=color.hex,
         stroke_width=1,
         stroke_linejoin="round",
     )

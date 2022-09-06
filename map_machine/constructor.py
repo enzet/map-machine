@@ -1,6 +1,4 @@
-"""
-Construct Map Machine nodes and ways.
-"""
+"""Construct Map Machine nodes and ways."""
 import logging
 import sys
 from datetime import datetime
@@ -57,7 +55,7 @@ TIME_COLOR_SCALE: List[Color] = [
 
 def line_center(
     nodes: List[OSMNode], flinger: Flinger
-) -> (np.ndarray, np.ndarray):
+) -> Tuple[np.ndarray, np.ndarray]:
     """
     Get geometric center of nodes set.
 
@@ -76,9 +74,7 @@ def line_center(
 
 
 def get_user_color(text: str, seed: str) -> Color:
-    """
-    Generate random color based on text.
-    """
+    """Generate random color based on text."""
     if text == "":
         return Color("black")
     return Color("#" + sha256((seed + text).encode("utf-8")).hexdigest()[-6:])
@@ -160,13 +156,12 @@ class Constructor:
         self,
         osm_data: OSMData,
         flinger: Flinger,
-        scheme: Scheme,
         extractor: ShapeExtractor,
         configuration: MapConfiguration,
     ) -> None:
         self.osm_data: OSMData = osm_data
         self.flinger: Flinger = flinger
-        self.scheme: Scheme = scheme
+        self.scheme: Scheme = configuration.scheme
         self.extractor: ShapeExtractor = extractor
         self.configuration: MapConfiguration = configuration
         self.text_constructor: TextConstructor = TextConstructor(self.scheme)
@@ -310,8 +305,8 @@ class Constructor:
 
             priority: int
             icon_set: IconSet
-            icon_set, priority = self.scheme.get_icon(
-                self.extractor, line.tags, processed, self.configuration
+            icon_set, priority = self.configuration.get_icon(
+                self.extractor, line.tags, processed
             )
             if icon_set is not None:
                 labels: List[Label] = self.text_constructor.construct_text(
@@ -331,9 +326,8 @@ class Constructor:
                 )
                 self.points.append(point)
 
-        if line_styles:
-            return
-
+        # TODO: probably we may want to skip the next part if `line_styles`
+        # are not empty.
         self.add_point_for_line(center_point, inners, line, outers)
 
     def add_point_for_line(self, center_point, inners, line, outers) -> None:
@@ -352,8 +346,8 @@ class Constructor:
         processed: Set[str] = set()
         priority: int
         icon_set: IconSet
-        icon_set, priority = self.scheme.get_icon(
-            self.extractor, line.tags, processed, self.configuration
+        icon_set, priority = self.configuration.get_icon(
+            self.extractor, line.tags, processed
         )
         if icon_set is not None:
             labels: List[Label] = self.text_constructor.construct_text(
@@ -418,6 +412,8 @@ class Constructor:
         """Draw nodes."""
         logging.info("Constructing nodes...")
 
+        # Sort node vertically (using latitude values) to draw them from top to
+        # bottom.
         sorted_node_ids: Iterator[int] = sorted(
             self.osm_data.nodes.keys(),
             key=lambda x: -self.osm_data.nodes[x].coordinates[0],
@@ -428,6 +424,7 @@ class Constructor:
     def construct_node(self, node: OSMNode) -> None:
         """Draw one node."""
         tags: Dict[str, str] = node.tags
+
         if not tags:
             return
         if not self.check_level(tags):
@@ -477,8 +474,8 @@ class Constructor:
                 color = Color("#CCCCCC")
             if self.configuration.drawing_mode == DrawingMode.BLACK:
                 color = Color("#444444")
-            icon_set, priority = self.scheme.get_icon(
-                self.extractor, tags, processed, self.configuration
+            icon_set, priority = self.configuration.get_icon(
+                self.extractor, tags, processed
             )
             icon_set.main_icon.recolor(color)
             point: Point = Point(
@@ -492,8 +489,8 @@ class Constructor:
             self.points.append(point)
             return
 
-        icon_set, priority = self.scheme.get_icon(
-            self.extractor, tags, processed, self.configuration
+        icon_set, priority = self.configuration.get_icon(
+            self.extractor, tags, processed
         )
         if icon_set is None:
             return
@@ -529,7 +526,7 @@ class Constructor:
 
     def get_sorted_figures(self) -> List[StyledFigure]:
         """Get all figures sorted by priority."""
-        return sorted(self.figures, key=lambda x: x.line_style.priority)
+        return sorted(self.figures)
 
 
 def check_level_number(tags: Tags, level: float) -> bool:

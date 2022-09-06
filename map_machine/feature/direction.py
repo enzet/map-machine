@@ -1,7 +1,5 @@
-"""
-Direction tag support.
-"""
-from typing import Iterator, List, Optional, Dict
+"""Direction tag support."""
+from typing import Iterator, Optional, List, Dict
 
 import numpy as np
 from colour import Color
@@ -23,8 +21,9 @@ DEFAULT_ANGLE: float = np.pi / 30.0
 
 def parse_vector(text: str) -> Optional[np.ndarray]:
     """
-    Parse vector from text representation: compass points or 360-degree
-    notation.  E.g. "NW", "270".
+    Parse vector from text representation.
+
+    Compass points or 360-degree notation.  E.g. "NW", "270".
 
     :param text: vector text representation
     :return: parsed normalized vector
@@ -60,6 +59,8 @@ class Sector:
 
     def __init__(self, text: str, angle: Optional[float] = None) -> None:
         """
+        Construct sector from text representation.
+
         :param text: sector text representation (e.g. "70-210", "N-NW")
         :param angle: angle in degrees
         """
@@ -127,6 +128,8 @@ class DirectionSet:
 
     def __init__(self, text: str) -> None:
         """
+        Construct direction set from text representation.
+
         :param text: direction tag value
         """
         self.sectors: Iterator[Optional[Sector]] = map(Sector, text.split(";"))

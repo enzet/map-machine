@@ -1,6 +1,4 @@
-"""
-Drawing separate map elements.
-"""
+"""Drawing separate map elements."""
 import argparse
 import logging
 from pathlib import Path
@@ -10,7 +8,9 @@ import numpy as np
 import svgwrite
 from svgwrite.path import Path as SVGPath
 
-from map_machine.map_configuration import LabelMode
+from map_machine.element.grid import Grid
+from map_machine.map_configuration import LabelMode, MapConfiguration
+from map_machine.osm.osm_reader import Tags
 from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.pictogram.point import Point
 from map_machine.scheme import LineStyle, Scheme
@@ -19,6 +19,12 @@ from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
+
+
+def draw_node(tags: Tags) -> None:
+    grid: Grid = Grid()
+    grid.add_node(tags, 0, 0)
+    grid.draw(Path("out.svg"))
 
 
 def draw_element(options: argparse.Namespace) -> None:
@@ -44,7 +50,7 @@ def draw_element(options: argparse.Namespace) -> None:
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
     )
     processed: Set[str] = set()
-    icon, _ = scheme.get_icon(extractor, tags, processed)
+    icon, _ = MapConfiguration(scheme).get_icon(extractor, tags, processed)
     is_for_node: bool = target == "node"
     text_constructor: TextConstructor = TextConstructor(scheme)
     labels: List[Label] = text_constructor.construct_text(

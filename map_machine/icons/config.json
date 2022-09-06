@@ -24,10 +24,15 @@
       "mausoleum": {"name": "mausoleum", "categories": ["building"]},
       "minaret": {"name": "minaret", "categories": ["building"]},
       "pagoda": {"name": "pagoda", "categories": ["building"]},
-      "townhall": {"name": "town hall", "categories": ["building"]}
+      "pyramid": {"name": "pyramid", "categories": ["building"]},
+      "townhall": {"name": "town hall", "categories": ["building"]},
+      "food_court": {"name": "food court"}
     },
-    "small": {
+    "building_part": {
+      "main_entrance": {"name": "main entrance"},
       "pillar": {"name": "pillar"},
+      "roof": {"is_part": true, "name": "roof"},
+      "roof_and_walls": {"is_part": true, "name": "roof and wall"},
       "wayside_shrine": {"name": "wayside shrine"}
     }
   },
@@ -207,6 +212,7 @@
     "shield_volcano": {"name": "shield volcano", "categories": ["natural"], "emoji": "🌋"},
     "smoke": {"name": "smoke"},
     "smoke_2": {"name": "clouds"},
+    "spring": {"name": "spring", "categories": ["natural"]},
     "stone": {"emoji": "🪨", "categories": ["natural"], "name": "stone"},
     "stone_with_inscription": {"categories": ["natural"], "name": "stone with inscription"},
     "stratovolcano": {"name": "stratovolcano", "categories": ["natural"], "emoji": "🌋"},
@@ -300,6 +306,7 @@
   },
   "hand_items": {
     "bag": {"name": "bag"},
+    "bag_with_percent": {"name": "bag with percent"},
     "book": {"emoji": "📕", "name": "book"},
     "books": {"emoji": "📚", "name": "books"}
   },
@@ -335,12 +342,11 @@
     "fire_pit": {"name": "fire pit"},
     "fishing_angle": {"name": "fishing angle"},
     "flagpole": {"emoji": "🏴", "name": "flagpole"},
-    "food_court": {"name": "food court"},
-    "foot": {"emoji": "👣", "name": "footprint"},
     "frame": {"name": "picture frame"},
     "fuel_station": {"emoji": "⛽️", "name": "fuel station"},
     "garages": {"name": "car under roof"},
     "gavel": {"name": "gavel"},
+    "gazette": {"name": "gazette"},
     "gift": {"emoji": "🎁", "name": "gift box"},
     "globe": {"name": "globe"},
     "government": {"name": "building with dome and flag"},
@@ -358,7 +364,6 @@
     "lock_unlocked": {"name": "opened lock"},
     "lock_with_keyhole": {"emoji": "🔒", "name": "closed lock with keyhole"},
     "lowered_kerb": {"name": "lowered kerb"},
-    "main_entrance": {"name": "main entrance"},
     "manhole_drain": {"name": "drain manhole cover"},
     "marketplace": {"name": "marketplace"},
     "medicine_bottle": {"name": "medicine bottle"},
@@ -377,9 +382,7 @@
     "pole": {"name": "pole"},
     "power_generator": {"name": "power generator"},
     "prison": {"name": "bars"},
-    "restaurant": {"emoji": "🍴", "name": "fork and knife"},
-    "roof": {"is_part": true, "name": "roof"},
-    "roof_and_walls": {"is_part": true, "name": "roof and wall"},
+    "fork_and_knife": {"emoji": "🍴", "name": "fork and knife"},
     "sheets": {"name": "two sheets"},
     "shelter": {"name": "shelter"},
     "shop_convenience": {"name": "convenience store"},
@@ -391,7 +394,7 @@
     "stained_glass": {"name": "stained glass"},
     "staircase": {"name": "door with stairs"},
     "statue_exhibit": {"name": "indoor statue"},
-    "supermarket_cart": {"name": "supermarket cart"},
+    "supermarket_cart": {"name": "supermarket cart", "emoji": "🛒"},
     "support_column": {"is_part": true, "name": "support column"},
     "support_pole": {"is_part": true, "name": "support pole"},
     "support_wall": {"is_part": true, "name": "support wall"},
@@ -412,21 +415,23 @@
     "urban_tree_pot": {"is_part": true, "name": "tree pot"},
     "vanity_mirror": {"name": "vanity mirror"},
     "ventilation": {"name": "ventilation shaft"},
-    "waving_flag": {"name": "waving flag"},
+    "waving_flag": {"name": "waving flag", "emoji": "🏳"},
     "wretch_and_hammer": {"name": "wretch and hammer"}
   },
   "body_part": {
+    "foot": {"emoji": "👣", "name": "footprint"},
     "tooth": {"name": "tooth", "emoji": "🦷"}
   },
   "clothes": {
     "glasses": {"name": "glasses"},
+    "hanger": {"name": "hanger"},
     "shoe": {"name": "shoe"},
-    "t_shirt": {"name": "T-shirt"},
+    "t_shirt": {"name": "T-shirt", "emoji": "👕"},
     "t_shirt_and_scissors": {"name": "T-shirt and scissors"},
-    "watches": {"name": "hand watch"}
+    "watches": {"name": "hand watch", "emoji": "⌚️"}
   },
   "sport": {
-    "bowling_ball": {"categories": ["sport"], "name": "bowling ball"},
+    "bowling_ball": {"categories": ["sport"], "name": "bowling ball", "emoji": "🎳"},
     "golf_club_and_ball": {"categories": ["sport"], "name": "golf club and ball"},
     "golf_pin": {"categories": ["sport"], "name": "golf pin"},
     "golf_tee": {"categories": ["sport"], "name": "golf tee"},
@@ -439,31 +444,38 @@
   },
   "recycling": {
     "recycling_container": {"name": "recycling container with wheel"},
-    "waste_basket": {"name": "waste basket"},
-    "waste_disposal": {"name": "recycling container"}
+    "waste_basket": {"name": "waste basket", "emoji": "🗑"},
+    "waste_disposal": {"name": "recycling container", "emoji": "♻️"}
   },
   "electronic_device": {
     "cctv": {"directed": "right", "name": "wall CCTV camera"},
     "cctv_dome_wall": {"directed": "right", "name": "wall dome CCTV camera"},
     "cctv_dome_ceiling": {"directed": "right", "name": "ceiling dome CCTV camera"},
-    "phone": {"name": "mobile phone"},
+    "phone": {"name": "mobile phone", "emoji": "📱"},
     "photo_camera": {"emoji": "📷", "name": "photo camera"},
     "telephone": {"emoji": "☎️", "name": "telephone"},
-    "tv": {"name": "monitor"}
+    "tv": {"name": "monitor", "emoji": "🖥"}
   },
   "car_part": {
+    "engine": {"name": "engine"},
     "tyre": {"name": "tyre"}
   },
   "human": {
     "massage": {"name": "massage"},
     "pole_dancer": {"name": "pole dancer"},
-    "sauna": {"name": "sauna"},
+    "sauna": {"name": "sauna", "emoji": "🧖"},
     "two_people_together": {"emoji": "🧑‍🤝‍🧑", "name": "two people together"},
     "woman_and_man": {"emoji": "🚻", "name": "woman and man"}
   },
+  "flag": {
+    "flag_usa": {"name": "flag of USA"},
+    "flag_bend_sinister": {"name": "flag with sinister bend"},
+    "flag_triangle_flanche": {"name": "flag with triangle on the left side"},
+    "flag_vertical_triband": {"name": "flag with three vertical bands"}
+  },
   "tower": {
     "city_gate": {"name": "city gate"},
-    "diving_platform": {"name": "diving platform"},
+    "diving_1_platforms": {"name": "diving tower with 1 platform"},
     "diving_2_platforms": {"name": "diving tower with 2 platforms"},
     "diving_3_platforms": {"name": "diving tower with 3 platforms"},
     "diving_4_platforms": {"name": "diving tower with 4 platforms"},

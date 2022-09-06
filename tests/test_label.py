@@ -1,6 +1,4 @@
-"""
-Test label generation for nodes.
-"""
+"""Test label generation for nodes."""
 from typing import Dict, List, Set
 
 from map_machine.map_configuration import LabelMode
