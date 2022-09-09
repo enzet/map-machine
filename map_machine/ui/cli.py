@@ -19,12 +19,9 @@ COMMAND_LINES: dict[str, list[str]] = {
     "icons": ["icons"],
     "mapcss": ["mapcss"],
     "draw": ["draw", "node", "amenity=bench,material=wood"],
-    "tile": ["tile", "--coordinates", "50.000,40.000"],
 }
 COMMANDS: list[str] = [
     "render",
-    "server",
-    "tile",
     "element",
     "mapcss",
     "icons",
@@ -67,24 +64,6 @@ def parse_arguments(args: list[str]) -> argparse.Namespace:
     add_render_arguments(render_parser)
     add_map_arguments(render_parser)
 
-    tile_parser = subparser.add_parser(
-        "tile",
-        description="Generate SVG and PNG 256 × 256 px tiles for slippy maps.  "
-        "You can use server command to run server in order to display "
-        "generated tiles as a map (e.g. with Leaflet).",
-        help="generate SVG and PNG tiles for slippy maps",
-    )
-    add_tile_arguments(tile_parser)
-    add_map_arguments(tile_parser)
-
-    add_server_arguments(
-        subparser.add_parser(
-            "server",
-            description="Run in order to display generated tiles as a map "
-            "(e.g. with Leaflet).",
-            help="run tile server",
-        )
-    )
     add_draw_arguments(
         subparser.add_parser(
             "draw",
@@ -207,70 +186,6 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         help="show hidden nodes with a dot",
         action=argparse.BooleanOptionalAction,
         default=False,
-    )
-
-
-def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
-    """Add arguments for tile command."""
-    parser.add_argument(
-        "-c",
-        "--coordinates",
-        metavar="<latitude>,<longitude>",
-        help="coordinates of any location inside the tile; "
-        + COORDINATES_WARNING,
-    )
-    parser.add_argument(
-        "-t",
-        "--tile",
-        metavar="<zoom level>/<x>/<y>",
-        help="tile specification",
-    )
-    parser.add_argument(
-        "--cache",
-        help="path for temporary OSM files",
-        default="cache",
-        metavar="<path>",
-    )
-    parser.add_argument(
-        "-b",
-        "--boundary-box",
-        help="construct the minimum amount of tiles that cover the requested "
-        "boundary box; " + BOUNDARY_BOX_WARNING,
-        metavar="<lon1>,<lat1>,<lon2>,<lat2>",
-    )
-    parser.add_argument(
-        "-z",
-        "--zoom",
-        type=str,
-        metavar="<range>",
-        help="OSM zoom levels; can be list of numbers or ranges, e.g. `16-18`, "
-        "`16,17,18`, or `16,18-20`",
-        default="18",
-    )
-    parser.add_argument(
-        "-i",
-        "--input",
-        dest="input_file_name",
-        metavar="<path>",
-        help="input OSM XML file name (if not specified, the file will be "
-        "downloaded using OpenStreetMap API)",
-    )
-
-
-def add_server_arguments(parser: argparse.ArgumentParser) -> None:
-    """Add arguments for server command."""
-    parser.add_argument(
-        "--cache",
-        help="path for temporary OSM files",
-        default="cache",
-        metavar="<path>",
-    )
-    parser.add_argument(
-        "--port",
-        help="port number",
-        default=8080,
-        type=int,
-        metavar="<integer>",
     )
 
 

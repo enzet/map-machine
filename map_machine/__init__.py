@@ -12,12 +12,10 @@ __email__ = "me@enzet.ru"
 __version__ = "0.1.7"
 
 REQUIREMENTS: list[str] = [
-    "CairoSVG>=2.5.0",
     "colour>=0.1.5",
     "numpy>=1.18.1",
     "Pillow>=8.2.0",
     "portolan>=1.0.1",
-    "pycairo>=1.20.1",
     "pytest>=6.2.2",
     "PyYAML>=4.2b1",
     "setuptools>=51.0.0",

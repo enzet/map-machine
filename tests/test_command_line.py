@@ -128,15 +128,3 @@ def test_unwrapped_draw() -> None:
     from map_machine.element.element import draw_element
 
     draw_element(arguments)
-
-
-def test_tile() -> None:
-    """Test `tile` command."""
-    run(
-        COMMAND_LINES["tile"] + ["--cache", "tests/data"],
-        LOG + b"INFO Tile is drawn to out/tiles/tile_18_160199_88904.svg.\n"
-        b"INFO SVG file is rasterized to out/tiles/tile_18_160199_88904.png.\n",
-    )
-
-    assert (OUTPUT_PATH / "tiles" / "tile_18_160199_88904.svg").is_file()
-    assert (OUTPUT_PATH / "tiles" / "tile_18_160199_88904.png").is_file()

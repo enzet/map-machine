@@ -147,10 +147,6 @@ class MapMachineMoire(Default, ABC):
         command: str = self.clear(arg[0])
         if command == "render":
             cli.add_render_arguments(parser)
-        elif command == "server":
-            cli.add_server_arguments(parser)
-        elif command == "tile":
-            cli.add_tile_arguments(parser)
         elif command == "map":
             cli.add_map_arguments(parser)
         elif command == "element":

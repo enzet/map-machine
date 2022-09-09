@@ -43,11 +43,6 @@ def main() -> None:
 
         mapper.render_map(arguments)
 
-    elif arguments.command == "tile":
-        from map_machine.slippy import tile
-
-        tile.generate_tiles(arguments)
-
     elif arguments.command == "icons":
         from map_machine.pictogram.icon_collection import draw_icons
 
@@ -62,11 +57,6 @@ def main() -> None:
         from map_machine.element.element import draw_element
 
         draw_element(arguments)
-
-    elif arguments.command == "server":
-        from map_machine.slippy import server
-
-        server.run_server(arguments)
 
     elif arguments.command == "taginfo":
         from map_machine.scheme import Scheme

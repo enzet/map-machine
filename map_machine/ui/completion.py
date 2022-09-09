@@ -62,11 +62,6 @@ def completion_commands() -> str:
         if command == "render":
             cli.add_render_arguments(parser)
             cli.add_map_arguments(parser)
-        elif command == "server":
-            cli.add_server_arguments(parser)
-        elif command == "tile":
-            cli.add_tile_arguments(parser)
-            cli.add_map_arguments(parser)
         elif command == "element":
             cli.add_draw_arguments(parser)
         elif command == "mapcss":

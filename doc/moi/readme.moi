@@ -1,12 +1,13 @@
 \title {Map Machine}
 
+❗ This is special version of Map Machine without cairo dependency. ❗
+
+This means, there is no PNG tile generation in this version of Map Machine (no \m {tile} and \m {server} commands are supported).
+
 \b {Map Machine} project consists of
 
 \list
-    {Python \ref {http://openstreetmap.org} {OpenStreetMap} renderer:
-    \list
-        {SVG \ref {#map-generation} {map generation},}
-        {SVG and PNG \ref {#tile-generation} {tile generation},}}
+    {Python \ref {http://openstreetmap.org} {OpenStreetMap} renderer: SVG \ref {#map-generation} {map generation},
     {\ref {#röntgen-icon-set} {Röntgen} icon set\: unique CC-BY 4.0 map icons.}
 
 The idea behind the Map Machine project is to \b {show all the richness of the OpenStreetMap data}\: to have a possibility to display any map feature represented by OpenStreetMap data tags by means of colors, shapes, and icons.  Map Machine is created both for map contributors\: to display all changes one made on the map even if they are small, and for map users\: to dig down into the map and find every detail that was mapped.
@@ -26,10 +27,6 @@ See
 \code {map-machine render -b=2.284,48.860,2.290,48.865} {bash}
 
 will automatically download OSM data and write output SVG map of the specified area to \m {out/map.svg}.  See \ref {#map-generation} {Map generation}.
-
-\code {map-machine tile -b=2.361,48.871,2.368,48.875} {bash}
-
-will automatically download OSM data and write output PNG tiles that cover the specified area to the \m {out/tiles} directory.  See \ref {#tile-generation} {Tile generation}.
 
 \2 {Röntgen icon set} {röntgen-icon-set}
 
@@ -198,7 +195,7 @@ Requirements\: Python 3.9/* or higher*/.
     {install \ref {https://libgeos.org} {GEOS library},}
     {install Python packages with the command\:}
 
-\code {pip install git+https://github.com/enzet/map-machine} {shell}
+\code {pip install git+https://github.com/enzet/map-machine@no-cairo} {shell}
 
 For more detailed instructions, see \ref {doc/INSTALL.md} {instructions}.
 
@@ -226,92 +223,9 @@ will download OSM data to \m {cache/2.284,48.860,2.290,48.865.osm} and write an 
 
 plus \ref {#map-options} {map configuration options}
 
-\2 {Tile generation} {tile-generation}
-
-Command \m {tile} is used to generate PNG tiles for \ref {https://wiki.openstreetmap.org/wiki/Slippy_Map} {slippy maps}.  To use them, run \ref {#tile-server} {Map Machine tile server}.
-
-\options {tile}
-
-plus \ref {#map-options} {map configuration options}
-
-\3 {Generate one tile} {generate-one-tile}
-
-Specify tile coordinates\:
-
-\code {map-machine tile --tile \formal {OSM zoom level}/\formal {x}/\formal {y}} {bash}
-
-or specify any geographical coordinates inside a tile\:
-
-\code {map-machine tile \\
-    --coordinates=\formal {latitude},\formal {longitude} \\
-    --zoom=\formal {OSM zoom levels}} {bash}
-
-Tile will be stored as SVG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.  \m {--zoom} option will be ignored if it is used with \m {--tile} option.
-
-Example\:
-
-\code {map-machine tile -c=55.7510637,37.6270761 -z=18} {bash}
-
-will generate SVG file \m {out/tiles/tile_18_158471_81953.svg} and PNG file \m {out/tiles/tile_18_158471_81953.png}.
-
-\3 {Generate a set of tiles} {generate-a-set-of-tiles}
-
-Specify boundary box to get the minimal set of tiles that covers the area\:
-
-\code {map-machine tile \\
-    --boundary-box=\formal {min longitude},\formal {min latitude},\formal {max longitude},\formal {max latitude} \\
-    --zoom=\formal {OSM zoom levels}} {bash}
-
-The boundary box will be extended to the boundaries of the minimal tileset that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point.  Map with new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.
-
-Example\:
-
-\code {map-machine tile -b=2.361,48.871,2.368,48.875} {bash}
-
-will generate 36 PNG tiles at zoom level 18 from tile 18/132791/90164 all the way to 18/132796/90169 and two cached files \m {cache/2.360,48.869,2.370,48.877_18.svg} and \m {cache/2.360,48.869,2.370,48.877_18.png}.
-
-\2 {Tile server} {tile-server}
-
-Command \m {server} is used to run tile server for slippy maps.
-
-\code {map-machine server}
-
-Stop server interrupting the process with \kbd {Ctrl} + \kbd {C}.
-
-\options {server}
-
-\3 {Example} {example-2}
-
-Create a minimal amount of tiles that cover specified boundary box for zoom levels 16, 17, 18, and 19\:
-
-\code {map-machine tile -b=2.364,48.854,2.367,48.857 -z=16-19} {bash}
-
-Run tile server on 127.0.0.1\:8080\:
-
-\code {map-machine server} {bash}
-
-Use JavaScript code for \ref {https://leafletjs.com/} {Leaflet}\:
-
-\code {var map = L.map('mapid').setView([48.8555, 2.3655], 18);
-
-L.tileLayer('http://127.0.0.1:8080/tiles/\{z\}/\{x\}/\{y\}', \{
-    maxZoom: 19,
-    attribution: 'Map data &copy; ' +
-        '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ' +
-        'contributors, imagery &copy; ' +
-        '<a href="https:/github.com/enzet/map-machine">Map Machine</a>',
-    id: 'map_machine',
-    tileSize: 256,
-    zoomOffset: 0
-\}).addTo(map);} {js}
-
-HTML code\:
-
-\code {<div id="mapid" style="width: 1000px; height: 600px;"></div>} {html}
-
 \2 {Map options} {map-options}
 
-Map configuration options used by \m {render} and \m {tile} commands\:
+Map configuration options used by \m {render}\:
 
 \options {map}
 
