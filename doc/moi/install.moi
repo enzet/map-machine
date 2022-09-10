@@ -10,14 +10,14 @@ Map Machine requires \ref {https://www.python.org} {Python} 3.9, \ref {https://p
 
 \3 {Ubuntu} {ubuntu}
 
-\code {
+\code {shell} {
 apt install libcairo2-dev libgeos-dev
 pip install git+https://github.com/enzet/map-machine
-} {shell}
+}
 
 \3 {macOS} {macos}
 
-\code {
+\code {shell} {
 brew install cairo geos
 pip install git+https://github.com/enzet/map-machine
-} {shell}
+}

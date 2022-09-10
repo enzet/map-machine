@@ -23,13 +23,13 @@ See
 Usage example
 -------------
 
-```bash
+```shell
 map-machine render -b=2.284,48.860,2.290,48.865
 ```
 
 will automatically download OSM data and write output SVG map of the specified area to `out/map.svg`. See [Map generation](#map-generation).
 
-```bash
+```shell
 map-machine tile -b=2.361,48.871,2.368,48.875
 ```
 
@@ -157,7 +157,7 @@ Map generation
 
 Command `render` is used to generate SVG map from OpenStreetMap data. You can run it using:
 
-```bash
+```shell
 map-machine render \
     -b=<min longitude>,<min latitude>,<max longitude>,<max latitude> \
     -o=<output file name> \
@@ -167,7 +167,7 @@ map-machine render \
 
 ### Example ###
 
-```bash
+```shell
 map-machine render \
     --boundary-box=2.284,48.860,2.290,48.865 \
     --output=out/esplanade_du_trocadéro.svg
@@ -209,13 +209,13 @@ plus [map configuration options](#map-options)
 
 Specify tile coordinates:
 
-```bash
+```shell
 map-machine tile --tile <OSM zoom level>/<x>/<y>
 ```
 
 or specify any geographical coordinates inside a tile:
 
-```bash
+```shell
 map-machine tile \
     --coordinates=<latitude>,<longitude> \
     --zoom=<OSM zoom levels>
@@ -225,7 +225,7 @@ Tile will be stored as SVG file `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PN
 
 Example:
 
-```bash
+```shell
 map-machine tile -c=55.7510637,37.6270761 -z=18
 ```
 
@@ -235,7 +235,7 @@ will generate SVG file `out/tiles/tile_18_158471_81953.svg` and PNG file `out/ti
 
 Specify boundary box to get the minimal set of tiles that covers the area:
 
-```bash
+```shell
 map-machine tile \
     --boundary-box=<min longitude>,<min latitude>,<max longitude>,<max latitude> \
     --zoom=<OSM zoom levels>
@@ -245,7 +245,7 @@ The boundary box will be extended to the boundaries of the minimal tileset that 
 
 Example:
 
-```bash
+```shell
 map-machine tile -b=2.361,48.871,2.368,48.875
 ```
 
@@ -256,7 +256,7 @@ Tile server
 
 Command `server` is used to run tile server for slippy maps.
 
-```
+```shell
 map-machine server
 ```
 
@@ -271,19 +271,19 @@ Stop server interrupting the process with <kbd>Ctrl</kbd> + <kbd>C</kbd>.
 
 Create a minimal amount of tiles that cover specified boundary box for zoom levels 16, 17, 18, and 19:
 
-```bash
+```shell
 map-machine tile -b=2.364,48.854,2.367,48.857 -z=16-19
 ```
 
 Run tile server on 127.0.0.1:8080:
 
-```bash
+```shell
 map-machine server
 ```
 
 Use JavaScript code for [Leaflet](https://leafletjs.com/):
 
-```js
+```javascript
 var map = L.map('mapid').setView([48.8555, 2.3655], 18);
 
 L.tileLayer('http://127.0.0.1:8080/tiles/{z}/{x}/{y}', {
@@ -311,6 +311,7 @@ Map configuration options used by `render` and `tile` commands:
 
 | Option | Description |
 |---|---|
+| <span style="white-space: nowrap;">`--scheme`</span> `<id> or <path>` | scheme identifier (look for `<id>.yml` file) or path to a YAML scheme file, default value: `default` |
 | <span style="white-space: nowrap;">`--buildings`</span> `<mode>` | building drawing mode: no, flat, isometric, isometric-no-parts, default value: `flat` |
 | <span style="white-space: nowrap;">`--mode`</span> `<string>` | map drawing mode: normal, author, time, white, black, default value: `normal` |
 | <span style="white-space: nowrap;">`--overlap`</span> `<integer>` | how many pixels should be left around icons and text, default value: 12 |

@@ -23,11 +23,11 @@ See
 
 \2 {Usage example} {usage-example}
 
-\code {map-machine render -b=2.284,48.860,2.290,48.865} {bash}
+\code {shell} {map-machine render -b=2.284,48.860,2.290,48.865}
 
 will automatically download OSM data and write output SVG map of the specified area to \m {out/map.svg}.  See \ref {#map-generation} {Map generation}.
 
-\code {map-machine tile -b=2.361,48.871,2.368,48.875} {bash}
+\code {shell} {map-machine tile -b=2.361,48.871,2.368,48.875}
 
 will automatically download OSM data and write output PNG tiles that cover the specified area to the \m {out/tiles} directory.  See \ref {#tile-generation} {Tile generation}.
 
@@ -198,7 +198,7 @@ Requirements\: Python 3.9/* or higher*/.
     {install \ref {https://libgeos.org} {GEOS library},}
     {install Python packages with the command\:}
 
-\code {pip install git+https://github.com/enzet/map-machine} {shell}
+\code {shell} {pip install git+https://github.com/enzet/map-machine}
 
 For more detailed instructions, see \ref {doc/INSTALL.md} {instructions}.
 
@@ -206,17 +206,17 @@ For more detailed instructions, see \ref {doc/INSTALL.md} {instructions}.
 
 Command \m {render} is used to generate SVG map from OpenStreetMap data.  You can run it using\:
 
-\code {map-machine render \\
+\code {shell} {map-machine render \\
     -b=\formal {min longitude},\formal {min latitude},\formal {max longitude},\formal {max latitude} \\
     -o=\formal {output file name} \\
     -z=\formal {OSM zoom level} \\
-    \formal {other arguments}} {bash}
+    \formal {other arguments}}
 
 \3 {Example} {example}
 
-\code {map-machine render \\
+\code {shell} {map-machine render \\
     --boundary-box=2.284,48.860,2.290,48.865 \\
-    --output=out/esplanade_du_trocadéro.svg} {bash}
+    --output=out/esplanade_du_trocadéro.svg}
 
 will download OSM data to \m {cache/2.284,48.860,2.290,48.865.osm} and write an output SVG map of the specified area to \m {out/esplanade_du_trocadéro.svg}.
 
@@ -238,19 +238,19 @@ plus \ref {#map-options} {map configuration options}
 
 Specify tile coordinates\:
 
-\code {map-machine tile --tile \formal {OSM zoom level}/\formal {x}/\formal {y}} {bash}
+\code {shell} {map-machine tile --tile \formal {OSM zoom level}/\formal {x}/\formal {y}}
 
 or specify any geographical coordinates inside a tile\:
 
-\code {map-machine tile \\
+\code {shell} {map-machine tile \\
     --coordinates=\formal {latitude},\formal {longitude} \\
-    --zoom=\formal {OSM zoom levels}} {bash}
+    --zoom=\formal {OSM zoom levels}}
 
 Tile will be stored as SVG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.  \m {--zoom} option will be ignored if it is used with \m {--tile} option.
 
 Example\:
 
-\code {map-machine tile -c=55.7510637,37.6270761 -z=18} {bash}
+\code {shell} {map-machine tile -c=55.7510637,37.6270761 -z=18}
 
 will generate SVG file \m {out/tiles/tile_18_158471_81953.svg} and PNG file \m {out/tiles/tile_18_158471_81953.png}.
 
@@ -258,15 +258,15 @@ will generate SVG file \m {out/tiles/tile_18_158471_81953.svg} and PNG file \m {
 
 Specify boundary box to get the minimal set of tiles that covers the area\:
 
-\code {map-machine tile \\
+\code {shell} {map-machine tile \\
     --boundary-box=\formal {min longitude},\formal {min latitude},\formal {max longitude},\formal {max latitude} \\
-    --zoom=\formal {OSM zoom levels}} {bash}
+    --zoom=\formal {OSM zoom levels}}
 
 The boundary box will be extended to the boundaries of the minimal tileset that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point.  Map with new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.
 
 Example\:
 
-\code {map-machine tile -b=2.361,48.871,2.368,48.875} {bash}
+\code {shell} {map-machine tile -b=2.361,48.871,2.368,48.875}
 
 will generate 36 PNG tiles at zoom level 18 from tile 18/132791/90164 all the way to 18/132796/90169 and two cached files \m {cache/2.360,48.869,2.370,48.877_18.svg} and \m {cache/2.360,48.869,2.370,48.877_18.png}.
 
@@ -274,7 +274,7 @@ will generate 36 PNG tiles at zoom level 18 from tile 18/132791/90164 all the wa
 
 Command \m {server} is used to run tile server for slippy maps.
 
-\code {map-machine server}
+\code {shell} {map-machine server}
 
 Stop server interrupting the process with \kbd {Ctrl} + \kbd {C}.
 
@@ -284,15 +284,15 @@ Stop server interrupting the process with \kbd {Ctrl} + \kbd {C}.
 
 Create a minimal amount of tiles that cover specified boundary box for zoom levels 16, 17, 18, and 19\:
 
-\code {map-machine tile -b=2.364,48.854,2.367,48.857 -z=16-19} {bash}
+\code {shell} {map-machine tile -b=2.364,48.854,2.367,48.857 -z=16-19}
 
 Run tile server on 127.0.0.1\:8080\:
 
-\code {map-machine server} {bash}
+\code {shell} {map-machine server}
 
 Use JavaScript code for \ref {https://leafletjs.com/} {Leaflet}\:
 
-\code {var map = L.map('mapid').setView([48.8555, 2.3655], 18);
+\code {javascript} {var map = L.map('mapid').setView([48.8555, 2.3655], 18);
 
 L.tileLayer('http://127.0.0.1:8080/tiles/\{z\}/\{x\}/\{y\}', \{
     maxZoom: 19,
@@ -303,11 +303,11 @@ L.tileLayer('http://127.0.0.1:8080/tiles/\{z\}/\{x\}/\{y\}', \{
     id: 'map_machine',
     tileSize: 256,
     zoomOffset: 0
-\}).addTo(map);} {js}
+\}).addTo(map);}
 
 HTML code\:
 
-\code {<div id="mapid" style="width: 1000px; height: 600px;"></div>} {html}
+\code {html} {<div id="mapid" style="width: 1000px; height: 600px;"></div>}
 
 \2 {Map options} {map-options}
 
