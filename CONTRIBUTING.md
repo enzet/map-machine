@@ -8,8 +8,8 @@ Modify the code
 
 ❗ **IMPORTANT** ❗ Before committing please enable Git hooks:
 
-```git config --local core.hooksPath data/githooks
-shell
+```shell
+git config --local core.hooksPath data/githooks
 ```
 
 This will allow you to automatically check your commit message and code before committing and pushing changes. This will crucially speed up pull request merging and make Git history neat and uniform.
@@ -22,8 +22,8 @@ Activate virtual environment. E.g. for fish shell, run `source venv/bin/activate
 
 Install the project in editable mode:
 
-```pip install -e .
-shell
+```shell
+pip install -e .
 ```
 
 Install formatter, linter and test system: `pip install black flake8 mypy pytest pytest-cov`.

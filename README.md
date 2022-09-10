@@ -25,8 +25,8 @@ See
 Usage example
 -------------
 
-```map-machine render -b=2.284,48.860,2.290,48.865
-bash
+```shell
+map-machine render -b=2.284,48.860,2.290,48.865
 ```
 
 will automatically download OSM data and write output SVG map of the specified area to `out/map.svg`. See [Map generation](#map-generation).
@@ -142,8 +142,8 @@ Requirements: Python 3.9.
   * install [GEOS library](https://libgeos.org),
   * install Python packages with the command:
 
-```pip install git+https://github.com/enzet/map-machine@no-cairo
-shell
+```shell
+pip install git+https://github.com/enzet/map-machine@no-cairo
 ```
 
 For more detailed instructions, see [instructions](doc/INSTALL.md).
@@ -153,20 +153,20 @@ Map generation
 
 Command `render` is used to generate SVG map from OpenStreetMap data. You can run it using:
 
-```map-machine render \
-    -b=,,, \
-    -o= \
-    -z= \
-    
-bash
+```shell
+map-machine render \
+    -b=<min longitude>,<min latitude>,<max longitude>,<max latitude> \
+    -o=<output file name> \
+    -z=<OSM zoom level> \
+    <other arguments>
 ```
 
 ### Example ###
 
-```map-machine render \
+```shell
+map-machine render \
     --boundary-box=2.284,48.860,2.290,48.865 \
     --output=out/esplanade_du_trocadéro.svg
-bash
 ```
 
 will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and write an output SVG map of the specified area to `out/esplanade_du_trocadéro.svg`.

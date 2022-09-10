@@ -6,14 +6,14 @@ Map Machine requires \ref {https://www.python.org} {Python} 3.9, \ref {https://p
 
 \3 {Ubuntu} {ubuntu}
 
-\code {
+\code {shell} {
 apt install libgeos-dev
 pip install git+https://github.com/enzet/map-machine@no-cairo
-} {shell}
+}
 
 \3 {macOS} {macos}
 
-\code {
+\code {shell} {
 brew install geos
 pip install git+https://github.com/enzet/map-machine@no-cairo
-} {shell}
+}

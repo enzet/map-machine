@@ -6,7 +6,7 @@ Thank you for your interest in the Map Machine project.  Since the primary goal 
 
 ❗ \b {IMPORTANT} ❗ Before committing please enable Git hooks:
 
-\code {git config --local core.hooksPath data/githooks} {shell}
+\code {shell} {git config --local core.hooksPath data/githooks}
 
 This will allow you to automatically check your commit message and code before committing and pushing changes.  This will crucially speed up pull request merging and make Git history neat and uniform.
 
@@ -18,7 +18,7 @@ Activate virtual environment.  E.g. for fish shell, run \m {source venv/bin/acti
 
 Install the project in editable mode:
 
-\code {pip install -e .} {shell}
+\code {shell} {pip install -e .}
 
 Install formatter, linter and test system\: \m {pip install black flake8 mypy pytest pytest-cov}.
 

@@ -8,18 +8,15 @@ Installation examples
 
 ### Ubuntu ###
 
-```
+```shell
 apt install libgeos-dev
 pip install git+https://github.com/enzet/map-machine@no-cairo
-
-shell
 ```
 
 ### macOS ###
 
-```
+```shell
 brew install geos
 pip install git+https://github.com/enzet/map-machine@no-cairo
-
-shell
 ```
+

@@ -24,7 +24,7 @@ See
 
 \2 {Usage example} {usage-example}
 
-\code {map-machine render -b=2.284,48.860,2.290,48.865} {bash}
+\code {shell} {map-machine render -b=2.284,48.860,2.290,48.865}
 
 will automatically download OSM data and write output SVG map of the specified area to \m {out/map.svg}.  See \ref {#map-generation} {Map generation}.
 
@@ -195,7 +195,7 @@ Requirements\: Python 3.9/* or higher*/.
     {install \ref {https://libgeos.org} {GEOS library},}
     {install Python packages with the command\:}
 
-\code {pip install git+https://github.com/enzet/map-machine@no-cairo} {shell}
+\code {shell} {pip install git+https://github.com/enzet/map-machine@no-cairo}
 
 For more detailed instructions, see \ref {doc/INSTALL.md} {instructions}.
 
@@ -203,17 +203,17 @@ For more detailed instructions, see \ref {doc/INSTALL.md} {instructions}.
 
 Command \m {render} is used to generate SVG map from OpenStreetMap data.  You can run it using\:
 
-\code {map-machine render \\
+\code {shell} {map-machine render \\
     -b=\formal {min longitude},\formal {min latitude},\formal {max longitude},\formal {max latitude} \\
     -o=\formal {output file name} \\
     -z=\formal {OSM zoom level} \\
-    \formal {other arguments}} {bash}
+    \formal {other arguments}}
 
 \3 {Example} {example}
 
-\code {map-machine render \\
+\code {shell} {map-machine render \\
     --boundary-box=2.284,48.860,2.290,48.865 \\
-    --output=out/esplanade_du_trocadéro.svg} {bash}
+    --output=out/esplanade_du_trocadéro.svg}
 
 will download OSM data to \m {cache/2.284,48.860,2.290,48.865.osm} and write an output SVG map of the specified area to \m {out/esplanade_du_trocadéro.svg}.
 
