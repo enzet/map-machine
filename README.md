@@ -83,7 +83,7 @@ Visualization of tree leaf types (broadleaved or needle-leaved) and genus or tax
 
 ### Power tower design ###
 
-Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used with [`power`](https://wiki.openstreetmap.org/wiki/Key:power) = [`tower`](https://wiki.openstreetmap.org/wiki/Tag:power=tower) tag.
+Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used with [`power`](https://wiki.openstreetmap.org/wiki/Key:power) = [`tower`](https://wiki.openstreetmap.org/wiki/Tag:power=tower) and [`power`](https://wiki.openstreetmap.org/wiki/Key:power) = [`pole`](https://wiki.openstreetmap.org/wiki/Tag:power=pole) tags. `design` has more than 1 million usages in OpenStreetMap.
 
 ![Power tower design](doc/icons_power.svg)
 

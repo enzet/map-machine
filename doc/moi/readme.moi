@@ -95,7 +95,7 @@ Visualization of tree \icon {tree} leaf types (broadleaved \icon {tree_with_leaf
 
 \3 {Power tower design} {power-tower-design}
 
-Visualize \osm {design} values used with \osm {power=tower} tag.
+Visualize \osm {design} values used with \osm {power=tower} and \osm {power=pole} tags.  \m {design} has more than 1 million usages in OpenStreetMap.
 
 \image {doc/icons_power.svg} {Power tower design}
 
