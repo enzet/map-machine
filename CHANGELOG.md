@@ -70,3 +70,42 @@ _2022.2.2_
 - Add `--building-colors` option.
 - More precise area detection.
 - Support `area=yes` for roads.
+
+## 0.1.0
+
+_2022.2.1_
+
+- Add icons for:
+  - `tourism=apartment`,
+  - `tourism=guest_house`,
+  - `amenity=courthouse`,
+  - `barrier=chain`,
+  - mazes,
+  - `leisure=escape_game`.
+- Reuse icon for `craft=jeweller`.
+- Redraw icon for swimming area.
+- Add support for Docker (Sven Fischer).
+- Fix bed shape.
+- Remove wildcard matching for `tourism=*`.
+- For buildings:
+  - Support roof and walls colors.
+  - Fix walls order.
+
+## 0.0.35
+
+_2022.1.2_
+
+- Add icons for:
+  - `advertising=column`,
+  - `building=houseboat`,
+  - `building=container`,
+  - `building=construction`.
+- Enhance style for `man_made=embankment`, `natural=cliff` ([#107](https://github.com/enzet/map-machine/issues/107)).
+- Reuse icon for `amenity=gym`.
+- Fix placement offset ([#83](https://github.com/enzet/map-machine/issues/83)).
+- Add color for grass.
+- Support roof drawing.
+- Change bus shape.
+- Fix outers and inners computing for areas.
+- Add credits to the map ([#103](https://github.com/enzet/map-machine/issues/103)).
+- For buildings under construction: fix detection and representation ([#105](https://github.com/enzet/map-machine/issues/105)).
