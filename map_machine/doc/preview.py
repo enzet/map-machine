@@ -201,6 +201,13 @@ def main(id_: str) -> None:
     if id_ is None or id_ == "lanes":
         draw_around_point(np.array((47.61224, -122.33866)), "lanes")
 
+    if id_ is None or id_ == "indoor":
+        draw_around_point(
+            np.array((4.5977848, -74.0750941)),
+            "indoor",
+            configuration=MapConfiguration(SCHEME, zoom_level=19.5, level="0"),
+        )
+
 
 if __name__ == "__main__":
     logging.basicConfig(format="%(levelname)s %(message)s", level=logging.DEBUG)

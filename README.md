@@ -105,6 +105,14 @@ Japanese maps usually use [special symbols](https://en.wikipedia.org/wiki/List_o
 
 ![Japanese map symbols](doc/icons_japanese.svg)
 
+### Indoor features ###
+
+```shell
+map-machine render -c 4.5977848,-74.0750941 -s 600,400 -z 19.5 --level 0
+```
+
+![Indoor](doc/indoor.svg)
+
 ### Shape combination ###
 
 One of the key features of Map Machine is constructing icons from the several shapes.

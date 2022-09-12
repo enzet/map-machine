@@ -117,6 +117,12 @@ Japanese maps usually use \ref {https://en.wikipedia.org/wiki/List_of_Japanese_m
 
 \image {doc/icons_japanese.svg} {Japanese map symbols}
 
+\3 {Indoor features} {indoor-features}
+
+\code {shell} {map-machine render -c 4.5977848,-74.0750941 -s 600,400 -z 19.5 --level 0}
+
+\image {doc/indoor.svg} {Indoor}
+
 \3 {Shape combination} {shape-combination}
 
 One of the key features of Map Machine is constructing icons from the several shapes.
