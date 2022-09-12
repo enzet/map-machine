@@ -109,3 +109,40 @@ _2022.1.2_
 - Fix outers and inners computing for areas.
 - Add credits to the map ([#103](https://github.com/enzet/map-machine/issues/103)).
 - For buildings under construction: fix detection and representation ([#105](https://github.com/enzet/map-machine/issues/105)).
+
+## 0.0.34
+
+_2022.1.1_
+
+- Add icons for normal, gabled, and skillion roof for one-story, two-story, three-story, four-story, and five-story apartments,
+  - circles.
+- Reuse icons for
+  - `office=yes`,
+  - `railway=railway_crossing`,
+  - `shop=medical_supply`,
+  - `craft=shoemaker`,
+  - `amenity=social_facility`,
+  - `diplomatic=embassy`,
+  - `shop=farm`, portals.
+  - deprecated `building=entrance`.
+- Fix shapes for anchor, building, apartments, fix shape positions, charging station.
+- Support wall colors.
+
+## 0.0.33
+
+_2021.12.2_
+
+- Add icons for:
+  - `shop=travel_agency`,
+  - `shop=optician`,
+  - `tank_trap=dragon_teeth`,
+  - `tank_trap=czech_hedgehog`,
+  - washing machine ([#48](https://github.com/enzet/map-machine/issues/48)),
+  - bench with sculpture.
+- Reuse icon for:
+  - cupcake ([#48](https://github.com/enzet/map-machine/issues/48)),
+  - `tank_trap=toblerone`,
+  - `artwork_type=stone`,
+  - `shop=photography`.
+- Fix tyre, wind turbine, buoy, diving tower shape.
+- Fix icon positions.
