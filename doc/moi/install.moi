@@ -6,6 +6,18 @@ Map Machine requires \ref {https://www.python.org} {Python} 3.9, \ref {https://p
     {\ref {https://www.cairographics.org/download/} {cairo 2D graphic library},}
     {\ref {https://libgeos.org} {GEOS library}.}
 
+\3 {Python 3.8 support}
+
+If you want to use Python 3.8, there is a special branch \m {python3.8}.  It has support for all features, but is likely to be updated less frequently than the \m {main}. Installation command is
+
+\code {shell} {pip install git+https://github.com/enzet/map-machine@python3.8}
+
+\3 {Without cairo}
+
+If you have any problems installing cairo library or cairo-related Python dependencies, but do not plan to generate PNG tiles (only SVG images), you may try special Map Machine branch \m {no-cairo} without cairo dependency.  Installation command is
+
+\code {shell} {pip install git+https://github.com/enzet/map-machine@no-cairo}
+
 \2 {Installation examples} {installation-examples}
 
 \3 {Ubuntu} {ubuntu}
