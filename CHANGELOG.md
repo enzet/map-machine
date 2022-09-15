@@ -2,7 +2,7 @@
 
 _17 August 2022_
 
-- __Add icons__ for:
+- Add icons for:
   - `shop=car_parts`, `shop=variety_store` ([#48](https://github.com/enzet/map-machine/issues/48)),
   - `natural=spring` ([#55](https://github.com/enzet/map-machine/issues/55)),
   - `tomb=pyramid`.
@@ -146,3 +146,35 @@ _2021.12.2_
   - `shop=photography`.
 - Fix tyre, wind turbine, buoy, diving tower shape.
 - Fix icon positions.
+
+## 0.0.32
+
+_2021.12.1_
+
+- Add icons for:
+  - `memorial=bench`,
+  - `shop=`: `florist`, `furniture`,
+  - `amenity=marketplace`,
+  - `tower:type=minaret`,
+  - `historic=`: `fort`, `wayside_shrine`, `archeological_site` ([#50](https://github.com/enzet/map-machine/issues/50)),
+  - `natural=saddle`,
+  - dome wall CCTV and dome ceiling CCTV.
+- Reuse icons for:
+  - `tower:type=watchtower` ([#57](https://github.com/enzet/map-machine/issues/57)),
+  - dish towers ([#57](https://github.com/enzet/map-machine/issues/57)).
+- Redraw CCTV, diving platform, Pac-Man, rocking horse shape.
+- Add style for `landuse=farmyard`.
+
+## 0.0.31
+
+_2021.11.3_
+
+- Reuse icons for
+  - `shop=bag`, `shop=tyres` ([#48](https://github.com/enzet/map-machine/issues/48)).
+  - `barrier=log` ([#54](https://github.com/enzet/map-machine/issues/54)).
+- Add icons for
+  - `historic=monument` ([#50](https://github.com/enzet/map-machine/issues/50)).
+  - `man_made=stupa`.
+  - `man_made=tower` + `tower:type=diving`, and for + `tower:platforms=`: `2`, `3`, `4`.
+- Fix icon shape for eruption, recycling container.
+- Fix icon vertical positions.
