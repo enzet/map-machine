@@ -28,7 +28,6 @@ setup(
         "map_machine.geometry",
         "map_machine.osm",
         "map_machine.pictogram",
-        "map_machine.slippy",
         "map_machine.ui",
     ],
     url=__url__,
