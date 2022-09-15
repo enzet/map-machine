@@ -203,7 +203,7 @@ def main(id_: str) -> None:
 
     if id_ is None or id_ == "indoor":
         draw_around_point(
-            np.array((4.597, -74.075)),
+            np.array((4.5978, -74.07507)),
             "indoor",
             configuration=MapConfiguration(SCHEME, zoom_level=19.5, level="0"),
         )

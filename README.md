@@ -110,7 +110,7 @@ Japanese maps usually use [special symbols](https://en.wikipedia.org/wiki/List_o
 Draw indoor features specifying level with `--level` option. Possible values are numbers (e.g. `1`, `0.5`), lists of number separated by `;` (e.g. `1;2;4;4.5`), `all`, `overground`, and `underground`. Default value is not `all`, but `overground`, so underground objects are not shown on the map if `--level` option is not specified.
 
 ```shell
-map-machine render -c 4.597,-74.075 -s 600,400 -z 19.5 --level 0
+map-machine render -c 4.5978,-74.07507 -s 600,400 -z 19.5 --level 0
 ```
 
 ![Indoor](doc/indoor.svg)
