@@ -6,7 +6,7 @@ COPY . /app/
 
 RUN \
   apt update && \
-  apt install -y --no-install-recommends gcc libcairo2-dev libgeos-dev && \
+  apt install -y --no-install-recommends gcc libgeos-dev && \
   pip install --upgrade pip && \
   pip install . && \
   mkdir -p /maps/cache
