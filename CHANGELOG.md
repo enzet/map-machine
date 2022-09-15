@@ -178,3 +178,39 @@ _2021.11.3_
   - `man_made=tower` + `tower:type=diving`, and for + `tower:platforms=`: `2`, `3`, `4`.
 - Fix icon shape for eruption, recycling container.
 - Fix icon vertical positions.
+
+## 0.0.30
+
+_2021.11.2_
+
+- Add icons for:
+  - `historic=wayside_cross` ([#57](https://github.com/enzet/map-machine/issues/57)).
+  - `man_made=obelisk` ([#50](https://github.com/enzet/map-machine/issues/50)).
+  - `crane:type=travel_lift`.
+  - `crane:type=portal_crane`.
+  - `crane:type=gantry_crane`.
+  - communication tower ([#57](https://github.com/enzet/map-machine/issues/57)).
+  - `tower:type=`: `siren`, `monitoring`.
+- Reuse icons for
+  - `power=heliostat`,
+  - `recycling:`:
+    - `green_waste`, `books`, `wood`, `organic`, `tyres`, `toys`, `glass`, `glass_bottles:colour`,
+    - `cartons`, `beverage_cartons`, `tetrapak`, `verre`,
+    - `clothes`, `shoes`, `bags`, `paper`, `paper_packaging`, `newspaper`, `magazines`.
+  - `shop=`: `cosmetics`, `greengrocer`, `newsagent`, `toys`.
+  - `man_made=crane` + `crane:type=floor-mounted_crane`, `tower_crane`.
+- Add white and black modes.
+
+## 0.0.29
+
+_2021.11.1_
+
+- Add icons for:
+  - `telescope:type=optical` ([#57](https://github.com/enzet/map-machine/issues/57)).
+  - `man_made=crane` ([#57](https://github.com/enzet/map-machine/issues/57)).
+- Fix waste shapes.
+- Split exchange icon.
+- Support `placement` tag ([#83](https://github.com/enzet/map-machine/issues/83)):
+  - add initial support,
+  - display transition as connection,
+- Fix address processing ([#67](https://github.com/enzet/map-machine/issues/67)).
