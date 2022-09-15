@@ -92,13 +92,13 @@ def draw_around_point(
 
 def main(id_: str) -> None:
     """Entry point."""
-    if id_ is None or id_ == "fitness":
-        draw_around_point(
-            np.array((55.75277, 37.40856)),
-            "fitness",
-            MapConfiguration(SCHEME, zoom_level=20.2),
-            np.array((300, 200)),
-        )
+    # if id_ is None or id_ == "fitness":
+    #     draw_around_point(
+    #         np.array((55.75277, 37.40856)),
+    #         "fitness",
+    #         MapConfiguration(SCHEME, zoom_level=20.2),
+    #         np.array((300, 200)),
+    #     )
 
     if id_ is None or id_ == "power":
         draw_around_point(
@@ -107,12 +107,12 @@ def main(id_: str) -> None:
             configuration=MapConfiguration(SCHEME, zoom_level=15),
         )
 
-    if id_ is None or id_ == "playground":
-        draw_around_point(
-            np.array((52.47388, 13.43826)),
-            "playground",
-            configuration=MapConfiguration(SCHEME, zoom_level=19),
-        )
+    # if id_ is None or id_ == "playground":
+    #     draw_around_point(
+    #         np.array((52.47388, 13.43826)),
+    #         "playground",
+    #         configuration=MapConfiguration(SCHEME, zoom_level=19),
+    #     )
 
     # Playground: (59.91991/10.85535), (59.83627/10.83017), Oslo
     # (52.47604/13.43701), (52.47388/13.43826)*, Berlin
@@ -203,7 +203,7 @@ def main(id_: str) -> None:
 
     if id_ is None or id_ == "indoor":
         draw_around_point(
-            np.array((4.5977848, -74.0750941)),
+            np.array((4.597, -74.075)),
             "indoor",
             configuration=MapConfiguration(SCHEME, zoom_level=19.5, level="0"),
         )

@@ -119,7 +119,9 @@ Japanese maps usually use \ref {https://en.wikipedia.org/wiki/List_of_Japanese_m
 
 \3 {Indoor features} {indoor-features}
 
-\code {shell} {map-machine render -c 4.5977848,-74.0750941 -s 600,400 -z 19.5 --level 0}
+Draw indoor features specifying level with \m {--level} option. Possible values are numbers (e.g. \m {1}, \m {0.5}), lists of number separated by \m {;} (e.g. \m {1;2;4;4.5}), \m {all}, \m {overground}, and \m {underground}. Default value is not \m {all}, but \m {overground}, so underground objects are not shown on the map if \m {--level} option is not specified.
+
+\code {shell} {map-machine render -c 4.597,-74.075 -s 600,400 -z 19.5 --level 0}
 
 \image {doc/indoor.svg} {Indoor}
 
