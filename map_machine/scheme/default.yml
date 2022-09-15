@@ -2741,6 +2741,11 @@ ways:
       stroke: water_border_color
       stroke-width: 1.0
 
+  - tags: {tourism: artwork}
+    style:
+      stroke: "#888888"
+      stroke-width: 1.0
+    priority: 10.0
   - tags: {barrier: hedge}
     style:
       fill: none
