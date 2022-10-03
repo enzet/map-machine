@@ -147,7 +147,7 @@ def test_icon_2_extra() -> None:
 
 def test_no_icon_1_extra() -> None:
     """
-    Tags that should be visualized with default main icon and single extra icon.
+    Tags that should be visualized without main icon and with single extra icon.
     """
     check_icon_set(
         {"access": "private"}, [], [[("lock_with_keyhole", EXTRA_COLOR)]]
@@ -166,9 +166,7 @@ def test_no_icon_2_extra() -> None:
 
 
 def test_icon_regex() -> None:
-    """
-    Tags that should be visualized with default main icon and single extra icon.
-    """
+    """Check that simple regular expressions work properly."""
     check_icon_set(
         {"traffic_sign": "maxspeed", "maxspeed": "42"},
         [("circle_11", DEFAULT_COLOR), ("digit_4", WHITE), ("digit_2", WHITE)],
