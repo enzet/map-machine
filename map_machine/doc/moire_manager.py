@@ -58,10 +58,7 @@ class ArgumentParser(argparse.ArgumentParser):
         self.arguments.append(argument)
 
     def get_moire_help(self) -> Tag:
-        """
-        Return Moire table with "Option" and "Description" columns filled with
-        arguments.
-        """
+        """Return Moire table with "Option" and "Description" columns."""
         table: Code = [[["Option"], ["Description"]]]
 
         for option in self.arguments:

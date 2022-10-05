@@ -109,14 +109,13 @@ class Grid:
         map_.draw(constructor)
 
         for text, i, j in self.texts:
-            svg.add(
-                Text(
-                    text,
-                    flinger.fling((i, j)) + (0, 3),
-                    font_family="JetBrains Mono",
-                    font_size=12,
-                )
+            text_element: Text = Text(
+                text,
+                flinger.fling((i, j)) + np.array((0, 3)),
+                font_family="JetBrains Mono",
+                font_size=12,
             )
+            svg.add(text_element)
 
         with output_path.open("w") as output_file:
             svg.write(output_file)

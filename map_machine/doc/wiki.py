@@ -29,7 +29,11 @@ ROENTGEN_HEADER_PATTERN: re.Pattern = re.compile("===.*Röntgen.*===")
 
 
 class WikiTable:
-    """SVG table with icon combinations."""
+    """
+    Trivial wiki table constructor.
+
+    Creates table with icon combinations.
+    """
 
     def __init__(self, collection: Collection, page_name: str):
         self.collection: Collection = collection

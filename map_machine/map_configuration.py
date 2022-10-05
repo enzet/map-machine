@@ -12,6 +12,8 @@ from map_machine.scheme import Scheme
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+DARK_BACKGROUND: Color = Color("#111111")
+
 
 class DrawingMode(Enum):
     """Map drawing mode."""
@@ -91,7 +93,7 @@ class MapConfiguration:
     def background_color(self) -> Optional[Color]:
         """Get background map color based on drawing mode."""
         if self.drawing_mode not in (DrawingMode.NORMAL, DrawingMode.BLACK):
-            return Color("#111111")
+            return DARK_BACKGROUND
         return None
 
     def get_icon(
