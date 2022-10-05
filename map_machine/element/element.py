@@ -1,5 +1,6 @@
 """Entry point for element drawing: nodes, ways, and relations."""
 import argparse
+import logging
 from pathlib import Path
 
 from map_machine.element.grid import Grid
@@ -48,3 +49,9 @@ def draw_element(options: argparse.Namespace):
         draw_way(tags_description, Path(options.output_file))
     elif options.type == "area":
         draw_area(tags_description, Path(options.output_file))
+    else:
+        logging.fatal(
+            f"Unknown element type `{options.type}`, please choose from "
+            f"`node`, `way`, and `area`."
+        )
+        exit(1)
