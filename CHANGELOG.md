@@ -1,3 +1,9 @@
+## Unreleased
+
+- Improve colors for indoor features ([#139](https://github.com/enzet/map-machine/issues/139)).
+- Support empty scheme file ([#140](https://github.com/enzet/map-machine/issues/140)).
+- Add icons for flags.
+
 ## 0.1.7
 
 _17 August 2022_
