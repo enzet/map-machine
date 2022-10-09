@@ -265,6 +265,18 @@ class MapMachineMarkdown(MapMachineMoire, DefaultMarkdown):
 
     images = {}
 
+    def body(self, arg: Arguments) -> str:
+        """Remove redundant new lines and add a warning."""
+        return (
+            "<!--\n"
+            "    This is generated file.\n"
+            "    Do not edit it manually, edit the Moire source file instead.\n"
+            "-->\n\n"
+            + self.parse(arg[0], in_block=True)
+            .replace("\n\n\n", "\n\n")
+            .replace("\n\n\n", "\n\n")
+        )
+
     def color(self, arg: Arguments) -> str:
         """Ignore colors in Markdown."""
         return self.clear(arg[0])

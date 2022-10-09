@@ -1,4 +1,7 @@
-
+<!--
+    This is generated file.
+    Do not edit it manually, edit the Moire source file instead.
+-->
 
 The **Map Machine** project consists of
 

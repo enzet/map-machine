@@ -1,3 +1,8 @@
+<!--
+    This is generated file.
+    Do not edit it manually, edit the Moire source file instead.
+-->
+
 Contributing
 ============
 
