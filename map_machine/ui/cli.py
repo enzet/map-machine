@@ -32,14 +32,15 @@ COMMANDS: list[str] = [
 ]
 
 BOUNDARY_BOX_WARNING: str = (
-    "if the first value is negative, use `=` sign or enclose the value with "
-    "quotes and use space before `-`, e.g. `-b=-84.752,39.504,-84.749,39.508` "
-    'or `-b " -84.752,39.504,-84.749,39.508"`'
+    "if the first value is negative, use the `=` sign or enclose the value "
+    "with quotes and prefix a space before `-`, e.g. "
+    "`-b=-84.752,39.504,-84.749,39.508` or `-b "
+    '" -84.752,39.504,-84.749,39.508"`'
 )
 COORDINATES_WARNING: str = (
-    "if the first value is negative, use `=` sign or enclose the value with "
-    "quotes and use space before `-`, e.g. `-c=-84.752,39.504` or `-c "
-    '" -84.752,39.504"`'
+    "if the first value is negative, use the `=` sign or enclose the value "
+    "with quotes and prefix a space before `-`, e.g. `-c=-84.752,39.504` or "
+    '`-c " -84.752,39.504"`'
 )
 
 
@@ -253,7 +254,7 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         dest="input_file_name",
         metavar="<path>",
         help="input OSM XML file name (if not specified, the file will be "
-        "downloaded using OpenStreetMap API)",
+        "downloaded using the OpenStreetMap API)",
     )
 
 
@@ -290,7 +291,7 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         metavar="<path>",
         nargs="*",
         help="input XML file name or names (if not specified, file will be "
-        "downloaded using OpenStreetMap API)",
+        "downloaded using the OpenStreetMap API)",
     )
     parser.add_argument(
         "-o",
