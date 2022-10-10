@@ -283,6 +283,8 @@ def render_map(arguments: argparse.Namespace) -> None:
 
     if arguments.boundary_box:
         boundary_box = BoundaryBox.from_text(arguments.boundary_box)
+        if not boundary_box:
+            fatal("Invalid boundary box.")
 
     elif arguments.coordinates:
         coordinates: Optional[np.ndarray] = None
