@@ -2177,9 +2177,9 @@ ways:
     priority: 80.0
   - tags: {golf: hole}
     style:
-      stroke: "#000000"
+      stroke: "#44AA33"
       stroke-width: 1.0
-      opacity: 0.3
+      opacity: 0.6
     priority: 80.0
   - tags: {man_made: pipeline}
     style:
