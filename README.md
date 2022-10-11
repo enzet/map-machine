@@ -62,6 +62,12 @@ Map Machine uses icons to visualize tags for nodes and areas. But unlike other r
 
 With `--buildings isometric` or `--buildings isometric-no-parts` (not set by default), buildings are drawn using isometric shapes for walls and shade in proportion to [`building:levels`](https://wiki.openstreetmap.org/wiki/Key:building:levels), [`building:min_level`](https://wiki.openstreetmap.org/wiki/Key:building:min_level), [`height`](https://wiki.openstreetmap.org/wiki/Key:height), and [`min_height`](https://wiki.openstreetmap.org/wiki/Key:min_height) values.
 
+#### Example ####
+
+```shell
+map-machine render -c=-26.19049,28.05605 --buildings isometric
+```
+
 ![3D buildings](doc/buildings.svg)
 
 ### Road lanes ###
@@ -111,6 +117,8 @@ Japanese maps usually use [special symbols](https://en.wikipedia.org/wiki/List_o
 ### Indoor features ###
 
 Draw indoor features specifying level with `--level` option. Possible values are numbers (e.g. `1`, `0.5`), lists of number separated by `;` (e.g. `1;2;4;4.5`), `all`, `overground`, and `underground`. The default value is not `all`, but `overground`, so underground objects are not shown on the map if `--level` option is not specified.
+
+#### Example ####
 
 ```shell
 map-machine render -c 4.5978,-74.07507 -s 600,400 -z 19.5 --level 0
