@@ -1492,6 +1492,14 @@ node_icons:
       shapes: [lander]
       set_opacity: 0.5
 
+  - group: "Golf objects"
+    start_zoom_level: 16.0
+    tags:
+      - tags: {golf: tee}
+        shapes: [golf_tee]
+      - tags: {golf: pin}
+        shapes: [golf_pin]
+
   - group: "Important small objects"
     start_zoom_level: 17.0
     tags:
@@ -1692,10 +1700,6 @@ node_icons:
       shapes: [horizontal_bar]
     - tags: {leisure: picnic_table}
       shapes: [table]
-    - tags: {golf: tee}
-      shapes: [golf_tee]
-    - tags: {golf: pin}
-      shapes: [golf_pin]
     - tags: {highway: traffic_mirror}
       shapes: [side_mirror]
     - tags: {amenity: dressing_room}
