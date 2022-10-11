@@ -65,7 +65,7 @@ With `--buildings isometric` or `--buildings isometric-no-parts` (not set by def
 #### Example ####
 
 ```shell
-map-machine render -c=-26.19049,28.05605 --buildings isometric
+map-machine render -c=-26.19049,28.05605 -s 600,400 --buildings isometric
 ```
 
 ![3D buildings](doc/buildings.svg)
@@ -74,17 +74,31 @@ map-machine render -c=-26.19049,28.05605 --buildings isometric
 
 To determine the road width Map Machine uses the [`width`](https://wiki.openstreetmap.org/wiki/Key:width) tag value or estimates it based on the [`lanes`](https://wiki.openstreetmap.org/wiki/Key:lanes) value. If lane value is specified, it also draws lane separators. This map style is highly inspired by Christoph Hormann's post [Navigating the Maze](http://blog.imagico.de/navigating-the-maze-part-2/).
 
+#### Example ####
+
+```shell
+map-machine render -c 47.61224,-122.33866 -s 600,400
+```
+
 ![Road lanes](doc/lanes.svg)
 
 ### Trees ###
 
 Visualization of tree leaf types (broadleaved or needle-leaved) and genus or taxon by means of icon shapes and leaf cycles (deciduous or evergreen) by means of color.
 
+#### Example ####
+
 ![Trees](doc/trees.svg)
 
 ### Viewpoint and camera direction ###
 
 [`direction`](https://wiki.openstreetmap.org/wiki/Key:direction) tag values for [`tourism`](https://wiki.openstreetmap.org/wiki/Key:tourism) = [`viewpoint`](https://wiki.openstreetmap.org/wiki/Tag:tourism=viewpoint) and [`camera:direction`](https://wiki.openstreetmap.org/wiki/Key:camera:direction) for [`man_made`](https://wiki.openstreetmap.org/wiki/Key:man_made) = [`surveillance`](https://wiki.openstreetmap.org/wiki/Tag:man_made=surveillance) are rendered with sectors displaying the direction and angle (15º if angle is not specified) or the whole circle for panorama view. Radial gradient is used for surveillance and inverted radial gradient is used for viewpoints.
+
+#### Example ####
+
+```shell
+map-machine render -c 52.50892,13.3244 -s 600,400 -z 18.5
+```
 
 ![Surveillance](doc/surveillance.svg)
 

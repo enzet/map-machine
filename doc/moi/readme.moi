@@ -53,13 +53,17 @@ With \m {--buildings isometric} or \m {--buildings isometric-no-parts} (not set 
 
 \4 {Example}
 
-\code {shell} {map-machine render -c=-26.19049,28.05605 --buildings isometric}
+\code {shell} {map-machine render -c=-26.19049,28.05605 -s 600,400 --buildings isometric}
 
 \image {doc/buildings.svg} {3D buildings}
 
 \3 {Road lanes} {road-lanes}
 
 To determine the road width Map Machine uses the \osm {width} tag value or estimates it based on the \osm {lanes} value. If lane value is specified, it also draws lane separators.  This map style is highly inspired by Christoph Hormann's post \ref {http://blog.imagico.de/navigating-the-maze-part-2/} {Navigating the Maze}.
+
+\4 {Example}
+
+\code {shell} {map-machine render -c 47.61224,-122.33866 -s 600,400}
 
 \image {doc/lanes.svg} {Road lanes}
 
@@ -85,11 +89,21 @@ Visualization of tree \icon {tree} leaf types (broadleaved \icon {tree_with_leaf
 
 */
 
+\4 {Example}
+
+/*
+\code {shell} {map-machine render -c 55.751,37.628 -s 600,400}
+*/
+
 \image {doc/trees.svg} {Trees}
 
 \3 {Viewpoint and camera direction} {viewpoint-and-camera-direction}
 
 \osm {direction} tag values for \osm {tourism=viewpoint} and \osm {camera:direction} for \osm {man_made=surveillance} are rendered with sectors displaying the direction and angle (15º if angle is not specified) or the whole circle for panorama view.  Radial gradient is used for surveillance and inverted radial gradient is used for viewpoints.
+
+\4 {Example}
+
+\code {shell} {map-machine render -c 52.50892,13.3244 -s 600,400 -z 18.5}
 
 \image {doc/surveillance.svg} {Surveillance}
 
