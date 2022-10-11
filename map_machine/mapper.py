@@ -281,10 +281,16 @@ def render_map(arguments: argparse.Namespace) -> None:
 
     boundary_box: Optional[BoundaryBox] = None
 
+    # If boundary box is specified explicitly, use it or stop the rendering
+    # process if the box is invalid.
     if arguments.boundary_box:
         boundary_box = BoundaryBox.from_text(arguments.boundary_box)
         if not boundary_box:
             fatal("Invalid boundary box.")
+        if arguments.coordinates:
+            logging.warning(
+                "Boundary box is explicitly specified. Coordinates are ignored."
+            )
 
     elif arguments.coordinates:
         coordinates: Optional[np.ndarray] = None
