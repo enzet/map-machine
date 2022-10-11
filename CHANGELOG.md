@@ -3,6 +3,10 @@
 - Improve colors for indoor features ([#139](https://github.com/enzet/map-machine/issues/139)).
 - Support empty scheme file ([#140](https://github.com/enzet/map-machine/issues/140)).
 - Add icons for flags.
+- Support `tourism=artwork` for ways.
+- Enhance argument processing ([#100](https://github.com/enzet/map-machine/issues/100)).
+- Reuse icon for `traffic_sign=*`.
+- Fix style for golf features.
 
 ## 0.1.7
 
