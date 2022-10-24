@@ -1,4 +1,4 @@
-"""OSM address tag processing."""
+"""Text processing for map element."""
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -138,6 +138,10 @@ class TextConstructor:
                 name = tags["name:en"]
                 processed.add("name:en")
             processed.add("name:en")
+        elif "ref" in tags:
+            name = tags["ref"]
+            processed.add("ref")
+
         if "alt_name" in tags:
             if alternative_name:
                 alternative_name += ", "
