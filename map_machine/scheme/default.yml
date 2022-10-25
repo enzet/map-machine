@@ -2049,6 +2049,8 @@ node_icons:
 
     - tags: {parking: "yes"}
       add_shapes: [p]
+    - tags: {drinking_water: "yes"}
+      add_shapes: [drinking_water]
 
     # For tourism=camp_pitch
 
