@@ -2047,6 +2047,9 @@ node_icons:
     - tags: {crossing:island: "no"}
       add_shapes: [rectangle_vertical_rounded_crossed]
 
+    - tags: {parking: "yes"}
+      add_shapes: [p]
+
     # For tourism=camp_pitch
 
     - tags: {caravans: "yes"}
