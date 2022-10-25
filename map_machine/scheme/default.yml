@@ -2047,6 +2047,13 @@ node_icons:
     - tags: {crossing:island: "no"}
       add_shapes: [rectangle_vertical_rounded_crossed]
 
+    # For tourism=camp_pitch
+
+    - tags: {caravans: "yes"}
+      add_shapes: [caravan]
+    - tags: {tents: "yes"}
+      add_shapes: [camp]
+
 roads:
   - tags: {highway: motorway}
     default_width: 7.0
