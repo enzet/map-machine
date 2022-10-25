@@ -2496,6 +2496,11 @@ ways:
       fill: meadow_color
       stroke: meadow_border_color
     priority: 20.0
+  - tags: {tourism: camp_pitch}
+    style:
+      stroke: "#000000"
+      opacity: 0.1
+    priority: 100.0
 
     # Hidden land use
 
