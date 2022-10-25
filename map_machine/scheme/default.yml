@@ -2053,6 +2053,10 @@ node_icons:
       add_shapes: [caravan]
     - tags: {tents: "yes"}
       add_shapes: [camp]
+    - tags: {fireplace: "yes"}
+      add_shapes: [fireplace]
+    - tags: {openfire: "yes"}
+      add_shapes: [fire_pit]
 
 roads:
   - tags: {highway: motorway}
