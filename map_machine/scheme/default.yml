@@ -1920,6 +1920,12 @@ node_icons:
     - tags: {indoor: pillar}
       shapes: [pillar]
 
+  - group: "Mass objects"
+    start_zoom_level: 18.0
+    tags:
+      - tags: {tourism: camp_pitch}
+        shapes: [camp]
+
   - group: "Add and over"
     tags:
     - tags: {support: pole}
