@@ -1921,7 +1921,7 @@ node_icons:
       shapes: [pillar]
 
   - group: "Mass objects"
-    start_zoom_level: 18.0
+    start_zoom_level: 19.0
     tags:
       - tags: {tourism: camp_pitch}
         shapes: [camp]
