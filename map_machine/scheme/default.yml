@@ -2062,6 +2062,8 @@ node_icons:
       add_shapes: [fireplace]
     - tags: {openfire: "yes"}
       add_shapes: [fire_pit]
+    - tags: {bbq: "yes"}
+      add_shapes: [bbq]
 
 roads:
   - tags: {highway: motorway}
