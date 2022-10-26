@@ -2051,6 +2051,8 @@ node_icons:
       add_shapes: [p]
     - tags: {drinking_water: "yes"}
       add_shapes: [drinking_water]
+    - tags: {toilets: "yes"}
+      add_shapes: [woman_and_man]
 
     # For tourism=camp_pitch
 
