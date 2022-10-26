@@ -2053,6 +2053,8 @@ node_icons:
       add_shapes: [drinking_water]
     - tags: {toilets: "yes"}
       add_shapes: [woman_and_man]
+    - tags: {washing_machine: "yes"}
+      add_shapes: [washing_machine]
 
     # For tourism=camp_pitch
 

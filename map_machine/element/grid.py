@@ -94,9 +94,11 @@ class Grid:
             show_credit=self.show_credit,
             zoom_level=19.0,
         )
-        size = (
-            (self.max_i + self.margin * 2.0) * self.x_step,
-            (self.max_j + self.margin * 2.0) * self.y_step,
+        size: np.ndarray = np.array(
+            (
+                (self.max_i + self.margin * 2.0) * self.x_step,
+                (self.max_j + self.margin * 2.0) * self.y_step,
+            )
         )
 
         flinger: Flinger = TranslateFlinger(
