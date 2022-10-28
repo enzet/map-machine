@@ -2057,6 +2057,8 @@ node_icons:
       add_shapes: [washing_machine]
     - tags: {shower: "yes"}
       add_shapes: [shower]
+    - tags: {dog: "yes"}
+      add_shapes: [dog]
 
     # For tourism=camp_pitch
 
