@@ -21,11 +21,11 @@ See
 
 \2 {Usage example} {usage-example}
 
-\code {shell} {map-machine render -b=2.284,48.860,2.290,48.865}
+\code {shell} {map-machine render -b 2.284,48.860,2.290,48.865}
 
 will automatically download OSM data and render an SVG map of the specified area to \m {out/map.svg}.  See \ref {#map-generation} {Map generation}.
 
-\code {shell} {map-machine tile -b=2.361,48.871,2.368,48.875}
+\code {shell} {map-machine tile -b 2.361,48.871,2.368,48.875}
 
 will automatically download OSM data and render PNG tiles that cover the specified area to the \m {out/tiles} directory.  See \ref {#tile-generation} {Tile generation}.
 
@@ -53,7 +53,7 @@ With \m {--buildings isometric} or \m {--buildings isometric-no-parts} (not set 
 
 \4 {Example}
 
-\code {shell} {map-machine render -c=-26.19049,28.05605 -s 600,400 --buildings isometric}
+\code {shell} {map-machine render -c -26.19049,28.05605 -s 600,400 --buildings isometric}
 
 \image {doc/buildings.svg} {3D buildings}
 
@@ -233,16 +233,16 @@ For more detailed instructions, see \ref {doc/INSTALL.md} {instructions}.
 The \m {render} command is used to generate an SVG map from OpenStreetMap data.  You can run it using\:
 
 \code {shell} {map-machine render \\
-    -b=\formal {min longitude},\formal {min latitude},\formal {max longitude},\formal {max latitude} \\
-    -o=\formal {output file name} \\
-    -z=\formal {OSM zoom level} \\
+    -b \formal {min longitude},\formal {min latitude},\formal {max longitude},\formal {max latitude} \\
+    -o \formal {output file name} \\
+    -z \formal {OSM zoom level} \\
     \formal {other arguments}}
 
 \3 {Example} {example}
 
 \code {shell} {map-machine render \\
-    --boundary-box=2.284,48.860,2.290,48.865 \\
-    --output=out/esplanade_du_trocadéro.svg}
+    --boundary-box 2.284,48.860,2.290,48.865 \\
+    --output out/esplanade_du_trocadéro.svg}
 
 will download OSM data to \m {cache/2.284,48.860,2.290,48.865.osm} and render an SVG map of the specified area to \m {out/esplanade_du_trocadéro.svg}.
 
@@ -269,14 +269,14 @@ Specify the tile coordinates\:
 or specify any geographical coordinates inside a tile\:
 
 \code {shell} {map-machine tile \\
-    --coordinates=\formal {latitude},\formal {longitude} \\
-    --zoom=\formal {OSM zoom levels}}
+    --coordinates \formal {latitude},\formal {longitude} \\
+    --zoom \formal {OSM zoom levels}}
 
 The tile will be stored as an SVG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and a PNG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.  The \m {--zoom} option will be ignored if it is used with the \m {--tile} option.
 
 Example\:
 
-\code {shell} {map-machine tile -c=55.7510637,37.6270761 -z=18}
+\code {shell} {map-machine tile -c 55.7510637,37.6270761 -z 18}
 
 will generate an SVG file \m {out/tiles/tile_18_158471_81953.svg} and a PNG file \m {out/tiles/tile_18_158471_81953.png}.
 
@@ -285,14 +285,14 @@ will generate an SVG file \m {out/tiles/tile_18_158471_81953.svg} and a PNG file
 Specify the boundary box to get the minimal set of tiles that covers the area\:
 
 \code {shell} {map-machine tile \\
-    --boundary-box=\formal {min longitude},\formal {min latitude},\formal {max longitude},\formal {max latitude} \\
-    --zoom=\formal {OSM zoom levels}}
+    --boundary-box \formal {min longitude},\formal {min latitude},\formal {max longitude},\formal {max latitude} \\
+    --zoom \formal {OSM zoom levels}}
 
 The boundary box will be extended to the boundaries of the minimal tileset that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point.  The map with the new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.
 
 Example\:
 
-\code {shell} {map-machine tile -b=2.361,48.871,2.368,48.875}
+\code {shell} {map-machine tile -b 2.361,48.871,2.368,48.875}
 
 will generate 36 PNG tiles at zoom level 18 from tile 18/132791/90164 all the way to 18/132796/90169 and two cached files \m {cache/2.360,48.869,2.370,48.877_18.svg} and \m {cache/2.360,48.869,2.370,48.877_18.png}.
 
@@ -310,7 +310,7 @@ Stop server interrupting the process with \kbd {Ctrl} + \kbd {C}.
 
 Create a minimal amount of tiles that cover specified boundary box for zoom levels 16, 17, 18, and 19\:
 
-\code {shell} {map-machine tile -b=2.364,48.854,2.367,48.857 -z=16-19}
+\code {shell} {map-machine tile -b 2.364,48.854,2.367,48.857 -z 16-19}
 
 Run tile server on 127.0.0.1\:8080\:
 
