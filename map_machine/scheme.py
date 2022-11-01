@@ -321,11 +321,9 @@ class Scheme:
                 for element in group["tags"]:
                     self.node_matchers.append(NodeMatcher(element, group))
 
-        self.colors: dict[str, str] = (
-            content["colors"] if "colors" in content else {}
-        )
-        self.material_colors: dict[str, str] = (
-            content["material_colors"] if "material_colors" in content else {}
+        self.colors: dict[str, str] = content.get("colors", {})
+        self.material_colors: dict[str, str] = content.get(
+            "material_colors", {}
         )
 
         self.way_matchers: list[WayMatcher] = (
@@ -343,21 +341,11 @@ class Scheme:
             if "area_tags" in content
             else []
         )
-        self.keys_to_write: list[str] = (
-            content["keys_to_write"] if "keys_to_write" in content else []
-        )
-        self.prefix_to_write: list[str] = (
-            content["prefix_to_write"] if "prefix_to_write" in content else []
-        )
-        self.keys_to_skip: list[str] = (
-            content["keys_to_skip"] if "keys_to_skip" in content else []
-        )
-        self.prefix_to_skip: list[str] = (
-            content["prefix_to_skip"] if "prefix_to_skip" in content else []
-        )
-        self.tags_to_skip: dict[str, str] = (
-            content["tags_to_skip"] if "tags_to_skip" in content else {}
-        )
+        self.keys_to_write: list[str] = content.get("keys_to_write", [])
+        self.prefix_to_write: list[str] = content.get("prefix_to_write", [])
+        self.keys_to_skip: list[str] = content.get("keys_to_skip", [])
+        self.prefix_to_skip: list[str] = content.get("prefix_to_skip", [])
+        self.tags_to_skip: dict[str, str] = content.get("tags_to_skip", {})
 
         # Storage for created icon sets.
         self.cache: dict[str, tuple[IconSet, int]] = {}
