@@ -147,13 +147,13 @@ class OSMNode(Tagged):
             tags,
             int(attributes["id"]),
             np.array((float(attributes["lat"]), float(attributes["lon"]))),
-            attributes["visible"] if "visible" in attributes else None,
-            attributes["changeset"] if "changeset" in attributes else None,
+            attributes.get("visible", None),
+            attributes.get("changeset", None),
             datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
             if "timestamp" in attributes
             else None,
-            attributes["user"] if "user" in attributes else None,
-            attributes["uid"] if "uid" in attributes else None,
+            attributes.get("user", None),
+            attributes.get("uid", None),
         )
 
     @classmethod
@@ -164,7 +164,7 @@ class OSMNode(Tagged):
         :param structure: input structure
         """
         return cls(
-            structure["tags"] if "tags" in structure else {},
+            structure.get("tags", {}),
             structure["id"],
             coordinates=np.array((structure["lat"], structure["lon"])),
         )
@@ -223,13 +223,13 @@ class OSMWay(Tagged):
             tags,
             int(element.attrib["id"]),
             [nodes[int(x.attrib["ref"])] for x in element if x.tag == "nd"],
-            attributes["visible"] if "visible" in attributes else None,
-            attributes["changeset"] if "changeset" in attributes else None,
+            attributes.get("visible", None),
+            attributes.get("changeset", None),
             datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
             if "timestamp" in attributes
             else None,
-            attributes["user"] if "user" in attributes else None,
-            attributes["uid"] if "uid" in attributes else None,
+            attributes.get("user", None),
+            attributes.get("uid", None),
         )
 
     @classmethod
@@ -243,7 +243,7 @@ class OSMWay(Tagged):
         :param nodes: node structure
         """
         return cls(
-            structure["tags"] if "tags" in structure else {},
+            structure.get("tags", {}),
             structure["id"],
             [nodes[x] for x in structure["nodes"]],
         )
@@ -306,13 +306,13 @@ class OSMRelation(Tagged):
             tags,
             int(attributes["id"]),
             members,
-            attributes["visible"] if "visible" in attributes else None,
-            attributes["changeset"] if "changeset" in attributes else None,
+            attributes.get("visible", None),
+            attributes.get("changeset", None),
             datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
             if "timestamp" in attributes
             else None,
-            attributes["user"] if "user" in attributes else None,
-            attributes["uid"] if "uid" in attributes else None,
+            attributes.get("user", None),
+            attributes.get("uid", None),
         )
 
     @classmethod
