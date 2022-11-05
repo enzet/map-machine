@@ -108,11 +108,8 @@ class Shape:
             emojis = structure["emoji"]
             shape.emojis = [emojis] if isinstance(emojis, str) else emojis
 
-        if "is_part" in structure:
-            shape.is_part = structure["is_part"]
-
-        if "group" in structure:
-            shape.group = structure["group"]
+        shape.is_part = structure.get("is_part", False)
+        shape.group = structure.get("group", "")
 
         if "categories" in structure:
             shape.categories = set(structure["categories"])
