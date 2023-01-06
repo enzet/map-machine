@@ -65,6 +65,9 @@ class Polyline:
             except (ValueError, NotImplementedError):
                 points = self.points
 
+        if len(points) < 2: # Deal with malformed paths
+            return None
+
         return (
             "M "
             + " L ".join(f"{point[0]},{point[1]}" for point in points)

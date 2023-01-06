@@ -568,8 +568,13 @@ class Road(Tagged):
             lane_offset: float = self.scale * (
                 -self.width / 2.0 + index * self.width / len(self.lanes)
             )
+
+            tmp_d=self.line.get_path(self.placement_offset + lane_offset)
+            if tmp_d == None:
+                return
+
             path: Path = Path(
-                d=self.line.get_path(self.placement_offset + lane_offset)
+                d=tmp_d
             )
             style: dict[str, Any] = {
                 "fill": "none",
