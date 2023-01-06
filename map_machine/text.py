@@ -158,13 +158,14 @@ class TextConstructor:
 
         address: list[str] = get_address(tags, processed, label_mode)
 
-        if name:
-            texts.append(Label(name, self.main_color, self.default_out_color))
-        if alternative_name:
-            texts.append(self.label(f"({alternative_name})"))
-        if address:
-            texts.append(self.label(", ".join(address)))
+        # if name:
+        #    texts.append(Label(name, self.main_color, self.default_out_color))
+        # if alternative_name:
+        #     texts.append(self.label(f"({alternative_name})"))
+        # if address:
+        #     texts.append(self.label(", ".join(address)))
 
+        
         if label_mode == LabelMode.MAIN:
             return texts
 

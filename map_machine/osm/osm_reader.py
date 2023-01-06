@@ -50,12 +50,12 @@ def parse_float(string: str) -> Optional[float]:
 
 def parse_levels(string: str) -> list[float]:
     """Parse string representation of level sequence value."""
-    # TODO: add `-` parsing
+    # TODO: add `-` parsing    
     try:
         return list(map(float, string.replace(",", ".").split(";")))
     except ValueError:
         logging.warning(f"Cannot parse level description from `{string}`.")
-        return []
+        return [0.0]
 
 
 @dataclass

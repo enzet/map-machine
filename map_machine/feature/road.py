@@ -531,7 +531,12 @@ class Road(Tagged):
         filter_: Filter = self.get_filter(svg, is_border)
 
         style: dict[str, Union[int, float, str]] = self.get_style(is_border)
-        path_commands: str = self.line.get_path(self.placement_offset)
+
+        tmp_path = self.line.get_path(self.placement_offset)
+        if tmp_path == None:
+            return
+
+        path_commands: str = tmp_path
         path: Path
         if filter_:
             path = Path(d=path_commands, filter=filter_.get_funciri())
@@ -592,8 +597,12 @@ class Road(Tagged):
         if not name:
             return
 
+        tmp_d =self.line.get_path(self.placement_offset + 3.0)
+        if tmp_d == None:
+            return
+
         path: Path = svg.path(
-            d=self.line.get_path(self.placement_offset + 3.0), fill="none"
+            d=tmp_d, fill="none"
         )
         svg.add(path)
 

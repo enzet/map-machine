@@ -89,6 +89,7 @@ class Point(Tagged):
     def draw_main_shapes(
         self, svg: svgwrite.Drawing, occupied: Optional[Occupied] = None
     ) -> None:
+
         """Draw main shape for one node."""
         keys_left = [x for x in self.tags.keys() if x not in self.processed]
         if (
@@ -96,6 +97,9 @@ class Point(Tagged):
             and not self.icon_set.extra_icons
             and (not keys_left or not self.is_for_node)
         ):
+            return
+
+        if self.icon_set.main_icon.is_default(): # Draw only custom icons
             return
 
         position: np.ndarray = self.point + np.array((0.0, self.y))

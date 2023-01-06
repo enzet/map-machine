@@ -104,8 +104,13 @@ class Building(Figure):
 
     def draw(self, svg: Drawing, flinger: Flinger) -> None:
         """Draw simple building shape."""
+
+        tmp_d = self.get_path(flinger)
+        if tmp_d == None:
+            return
+
         path: Path = Path(
-            d=self.get_path(flinger),
+            d=tmp_d,
             stroke=self.stroke.hex,
             fill=self.fill.hex,
             stroke_linejoin="round",
@@ -117,7 +122,12 @@ class Building(Figure):
         scale: float = flinger.get_scale() * SHADE_SCALE
         shift_1: np.ndarray = np.array((scale * self.min_height, 0.0))
         shift_2: np.ndarray = np.array((scale * self.height, 0.0))
-        commands: str = self.get_path(flinger, shift_1)
+
+        tmp_commands = self.get_path(flinger, shift_1)
+        if tmp_commands == None:
+            return
+
+        commands: str = tmp_commands
         path: Path = Path(
             commands, fill="#000000", stroke="#000000", stroke_width=1.0
         )
@@ -157,10 +167,14 @@ class Building(Figure):
 
     def draw_roof(self, svg: Drawing, flinger: Flinger, scale: float) -> None:
         """Draw building roof."""
-        path: Path = Path(
-            d=self.get_path(
+        tmp_d = self.get_path(
                 flinger, np.array([0.0, -self.height * scale * BUILDING_SCALE])
-            ),
+            )
+        if tmp_d == None:
+            return            
+
+        path: Path = Path(
+            d=tmp_d,
             stroke=self.stroke,
             fill="none" if self.is_construction else self.fill.hex,
             stroke_linejoin="round",

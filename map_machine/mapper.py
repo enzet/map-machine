@@ -73,6 +73,10 @@ class Map:
 
         for figure in bottom_figures:
             path_commands: str = figure.get_path(self.flinger)
+
+            if 'M' not in path_commands: # Deal with malformed paths
+                continue
+                
             if path_commands:
                 path: SVGPath = SVGPath(d=path_commands)
                 path.update(figure.line_style.style)
@@ -82,6 +86,10 @@ class Map:
 
         for figure in top_figures:
             path_commands: str = figure.get_path(self.flinger)
+
+            if 'M' not in path_commands: # Deal with malformed paths
+                continue
+
             if path_commands:
                 path: SVGPath = SVGPath(d=path_commands)
                 path.update(figure.line_style.style)
