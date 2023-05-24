@@ -208,6 +208,12 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         action=argparse.BooleanOptionalAction,
         default=False,
     )
+    parser.add_argument(
+        "--hide-credit",
+        help="hide credit",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+    )
 
 
 def add_tile_arguments(parser: argparse.ArgumentParser) -> None:

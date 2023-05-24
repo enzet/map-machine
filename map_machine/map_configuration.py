@@ -84,6 +84,7 @@ class MapConfiguration:
             options.roofs,
             options.building_colors,
             options.show_overlapped,
+            show_credit=not options.hide_credit,
         )
 
     def is_wireframe(self) -> bool:
