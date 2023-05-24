@@ -1810,6 +1810,8 @@ node_icons:
       shapes: [billboard]
     - tags: {advertising: column}
       shapes: [advertising_column]
+    - tags: {natural: human}
+      shapes: [human]
     - tags: {natural: rock}
       shapes: [stone]
     - tags: {natural: stone}
