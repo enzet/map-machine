@@ -35,6 +35,10 @@ colors:
   tertiary_border_color: "#CCAA22"
   tertiary_color: "#FFFF88"
 
+  bridge_color: "#666666"
+  ford_color: "#88BBFF"
+  embankment_color_color: "#666666"
+
   allotments_color: "#D0E0D0"
   beach_color: "#F0E0C0"
   boundary_color: "#880088"

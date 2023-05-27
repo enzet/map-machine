@@ -387,7 +387,8 @@ class Road(Tagged):
 
         self.scale: float = flinger.get_scale(self.nodes[0].coordinates)
 
-        self.is_area = scheme.is_area(tags) and nodes[0] == nodes[-1]
+        self.scheme: Scheme = scheme
+        self.is_area: bool = scheme.is_area(tags) and nodes[0] == nodes[-1]
 
         if "lanes" in tags:
             try:
@@ -552,11 +553,11 @@ class Road(Tagged):
         """Get road border color."""
         color: Color = self.matcher.border_color
         if self.tags.get("bridge") == "yes":
-            color = Color("#666666")
+            color = self.scheme.get_color("bridge_color")
         if self.tags.get("ford") == "yes":
-            color = Color("#88BBFF")
+            color = self.scheme.get_color("ford_color")
         if self.tags.get("embankment") == "yes":
-            color = Color("#666666")
+            color = self.scheme.get_color("embankment_color")
         return color
 
     def draw_lanes(self, svg: Drawing, color: Color) -> None:
