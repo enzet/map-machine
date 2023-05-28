@@ -92,7 +92,7 @@ class Map:
         for crater in constructor.craters:
             crater.draw(self.svg, self.flinger)
 
-        self.draw_buildings(constructor)
+        self.draw_buildings(constructor, self.configuration.use_building_colors)
 
         for direction_sector in constructor.direction_sectors:
             direction_sector.draw(self.svg, self.scheme)
@@ -133,16 +133,18 @@ class Map:
         if self.configuration.show_credit:
             self.draw_credits(constructor.flinger.size)
 
-    def draw_buildings(self, constructor: Constructor) -> None:
+    def draw_buildings(
+        self, constructor: Constructor, use_building_colors: bool
+    ) -> None:
         """Draw buildings: shade, walls, and roof."""
         if self.configuration.building_mode == BuildingMode.NO:
             return
         if self.configuration.building_mode == BuildingMode.FLAT:
             for building in constructor.buildings:
-                building.draw(self.svg, self.flinger)
+                building.draw(self.svg, self.flinger, use_building_colors)
             return
 
-        logging.info("Drawing buildings...")
+        logging.info("Drawing isometric buildings...")
 
         scale: float = self.flinger.get_scale()
         building_shade: Group = Group(opacity=0.1)
@@ -171,12 +173,22 @@ class Map:
                 if building.height < height or building.min_height >= height:
                     continue
 
-                draw_walls(self.svg, building, wall, height, shift_1, shift_2)
+                draw_walls(
+                    self.svg,
+                    building,
+                    wall,
+                    height,
+                    shift_1,
+                    shift_2,
+                    use_building_colors,
+                )
 
             if self.configuration.draw_roofs:
                 for building in constructor.buildings:
                     if building.height == height:
-                        building.draw_roof(self.svg, self.flinger, scale)
+                        building.draw_roof(
+                            self.svg, self.flinger, scale, use_building_colors
+                        )
 
             previous_height = height
 
