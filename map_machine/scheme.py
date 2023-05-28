@@ -321,6 +321,16 @@ class Scheme:
                 for element in group["tags"]:
                     self.node_matchers.append(NodeMatcher(element, group))
 
+        options = content.get("options", {})
+
+        self.draw_nodes: bool = options.get("draw_nodes", False)
+
+        # Map features.
+        self.draw_buildings: bool = options.get("draw_buildings", False)
+        self.draw_trees: bool = options.get("draw_trees", False)
+        self.draw_craters: bool = options.get("draw_craters", False)
+        self.draw_directions: bool = options.get("draw_directions", False)
+
         self.colors: dict[str, str] = content.get("colors", {})
         self.material_colors: dict[str, str] = content.get(
             "material_colors", {}

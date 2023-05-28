@@ -87,48 +87,56 @@ class Map:
                 path.update(figure.line_style.style)
                 self.svg.add(path)
 
-        for tree in constructor.trees:
-            tree.draw(self.svg, self.flinger, self.scheme)
-        for crater in constructor.craters:
-            crater.draw(self.svg, self.flinger)
+        if self.scheme.draw_trees:
+            for tree in constructor.trees:
+                tree.draw(self.svg, self.flinger, self.scheme)
 
-        self.draw_buildings(constructor, self.configuration.use_building_colors)
+        if self.scheme.draw_craters:
+            for crater in constructor.craters:
+                crater.draw(self.svg, self.flinger)
 
-        for direction_sector in constructor.direction_sectors:
-            direction_sector.draw(self.svg, self.scheme)
+        if self.scheme.draw_buildings:
+            self.draw_buildings(
+                constructor, self.configuration.use_building_colors
+            )
+
+        if self.scheme.draw_directions:
+            for direction_sector in constructor.direction_sectors:
+                direction_sector.draw(self.svg, self.scheme)
 
         # All other points
 
-        occupied: Optional[Occupied]
-        if self.configuration.overlap == 0:
-            occupied = None
-        else:
-            occupied = Occupied(
-                self.flinger.size[0],
-                self.flinger.size[1],
-                self.configuration.overlap,
-            )
-
-        nodes: list[Point] = sorted(
-            constructor.points, key=lambda x: -x.priority
-        )
-        logging.info("Drawing main icons...")
-        for node in nodes:
-            node.draw_main_shapes(self.svg, occupied)
-
-        logging.info("Drawing extra icons...")
-        for point in nodes:
-            point.draw_extra_shapes(self.svg, occupied)
-
-        logging.info("Drawing texts...")
-        for point in nodes:
-            if (
-                not self.configuration.is_wireframe()
-                and self.configuration.label_mode != LabelMode.NO
-            ):
-                point.draw_texts(
-                    self.svg, occupied, self.configuration.label_mode
+        if self.scheme.draw_nodes:
+            occupied: Optional[Occupied]
+            if self.configuration.overlap == 0:
+                occupied = None
+            else:
+                occupied = Occupied(
+                    self.flinger.size[0],
+                    self.flinger.size[1],
+                    self.configuration.overlap,
                 )
+
+            nodes: list[Point] = sorted(
+                constructor.points, key=lambda x: -x.priority
+            )
+            logging.info("Drawing main icons...")
+            for node in nodes:
+                node.draw_main_shapes(self.svg, occupied)
+
+            logging.info("Drawing extra icons...")
+            for point in nodes:
+                point.draw_extra_shapes(self.svg, occupied)
+
+            logging.info("Drawing texts...")
+            for point in nodes:
+                if (
+                    not self.configuration.is_wireframe()
+                    and self.configuration.label_mode != LabelMode.NO
+                ):
+                    point.draw_texts(
+                        self.svg, occupied, self.configuration.label_mode
+                    )
 
         if self.configuration.show_credit:
             self.draw_credits(constructor.flinger.size)
