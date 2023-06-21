@@ -370,7 +370,7 @@ class ShapeSpecification:
 
     shape: Shape
     color: Color
-    offset: np.ndarray = np.array((0.0, 0.0))
+    offset: np.ndarray = field(default_factory=lambda: np.array((0.0, 0.0)))
     flip_horizontally: bool = False
     flip_vertically: bool = False
     use_outline: bool = True
