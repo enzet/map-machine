@@ -1,3 +1,10 @@
+## 0.1.9
+
+- Fix a problem with a mutable field (Philipp, [#153](https://github.com/enzet/map-machine/issues/153)).
+- Add icon for `natural=human`.
+- Add `--hide-credit` option.
+- Make colors more configurable.
+
 ## 0.1.8
 
 - Improve colors for indoor features ([#139](https://github.com/enzet/map-machine/issues/139)).
