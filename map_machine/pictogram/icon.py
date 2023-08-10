@@ -541,15 +541,16 @@ class Icon:
         """
         svg: Drawing = Drawing(str(file_name), (16, 16))
 
-        for shape_specification in self.shape_specifications:
-            if color:
-                shape_specification.color = color
-            shape_specification.draw(
-                svg,
-                np.array((8.0, 8.0)),
-                outline=outline,
-                outline_opacity=outline_opacity,
-            )
+        if outline:
+            for shape_specification in self.shape_specifications:
+                if color:
+                    shape_specification.color = color
+                shape_specification.draw(
+                    svg,
+                    np.array((8.0, 8.0)),
+                    outline=outline,
+                    outline_opacity=outline_opacity,
+                )
 
         for shape_specification in self.shape_specifications:
             if color:
