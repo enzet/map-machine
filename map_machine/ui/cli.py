@@ -77,14 +77,15 @@ def parse_arguments(args: list[str]) -> argparse.Namespace:
     add_tile_arguments(tile_parser)
     add_map_arguments(tile_parser)
 
-    add_server_arguments(
-        subparser.add_parser(
-            "server",
-            description="Run in order to display generated tiles as a map "
-            "(e.g. with Leaflet).",
-            help="run tile server",
-        )
+    server_parser = subparser.add_parser(
+        "server",
+        description="Run in order to display generated tiles as a map "
+        "(e.g. with Leaflet).",
+        help="run tile server",
     )
+    add_server_arguments(server_parser)
+    add_map_arguments(server_parser)
+
     add_draw_arguments(
         subparser.add_parser(
             "draw",
