@@ -271,6 +271,12 @@ def add_server_arguments(parser: argparse.ArgumentParser) -> None:
         metavar="<path>",
     )
     parser.add_argument(
+        "--update-cache",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="allow writing to cache",
+    )
+    parser.add_argument(
         "--port",
         help="port number",
         default=8080,

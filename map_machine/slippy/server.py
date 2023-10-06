@@ -74,6 +74,7 @@ def run_server(options: argparse.Namespace) -> None:
     try:
         handler = TileServerHandler
         handler.cache = Path(options.cache)
+        handler.update_cache = options.update_cache
         handler.options = options
         server = HTTPServer(("", options.port), handler)
         logging.info(f"Server started on port {options.port}.")
