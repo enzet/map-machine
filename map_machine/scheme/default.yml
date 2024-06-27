@@ -1903,6 +1903,8 @@ node_icons:
       set_main_color: evergreen_color
     - tags: {natural: bush}
       shapes: [{shape: bush, color: tree_color}]
+    - tags: {natural: shrub}
+      shapes: [{shape: bush, color: tree_color}]      
 
     - tags: {natural: tree, genus: Betula}
       shapes: [{shape: betula, color: tree_color}]
