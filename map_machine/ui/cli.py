@@ -214,6 +214,12 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         action=argparse.BooleanOptionalAction,
         default=False,
     )
+    parser.add_argument(
+        "--background",
+        help="enable or disable the background e.g. to use it as layer",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
 
 
 def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
