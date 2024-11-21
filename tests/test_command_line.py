@@ -1,4 +1,5 @@
 """Test command line commands."""
+
 import argparse
 from pathlib import Path
 from subprocess import PIPE, Popen

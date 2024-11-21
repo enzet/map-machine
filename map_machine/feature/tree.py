@@ -4,6 +4,7 @@ Drawing tree features on the map.
 If radius of trunk or crown are specified they are displayed with simple
 circles.
 """
+
 import numpy as np
 from colour import Color
 from svgwrite import Drawing

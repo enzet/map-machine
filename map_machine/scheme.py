@@ -1,4 +1,5 @@
 """Map Machine drawing scheme."""
+
 import logging
 import re
 from dataclasses import dataclass

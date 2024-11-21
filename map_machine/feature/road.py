@@ -1,4 +1,5 @@
 """WIP: road shape drawing."""
+
 import logging
 from collections import defaultdict
 from dataclasses import dataclass

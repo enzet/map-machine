@@ -3,6 +3,7 @@ Tile generation.
 
 See https://wiki.openstreetmap.org/wiki/Tiles
 """
+
 import argparse
 import logging
 import sys

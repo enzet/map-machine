@@ -1,4 +1,5 @@
 """Test vector operations."""
+
 import numpy as np
 
 from map_machine.geometry.vector import compute_angle, turn_by_angle

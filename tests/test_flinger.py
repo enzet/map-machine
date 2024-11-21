@@ -1,4 +1,5 @@
 """Test coordinates computation."""
+
 import numpy as np
 
 from map_machine.geometry.flinger import (

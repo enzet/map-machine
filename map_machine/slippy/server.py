@@ -1,4 +1,5 @@
 """Map Machine tile server for slippy maps."""
+
 import argparse
 import logging
 from http.server import HTTPServer, SimpleHTTPRequestHandler

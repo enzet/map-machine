@@ -1,4 +1,5 @@
 """Icon grid drawing."""
+
 import logging
 import shutil
 from dataclasses import dataclass

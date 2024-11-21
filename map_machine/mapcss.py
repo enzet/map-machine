@@ -1,4 +1,5 @@
 """MapCSS scheme creation."""
+
 import argparse
 import logging
 from pathlib import Path

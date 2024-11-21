@@ -1,4 +1,5 @@
 """Map Machine entry point."""
+
 from map_machine.main import main
 
 __author__ = "Sergey Vartanov"

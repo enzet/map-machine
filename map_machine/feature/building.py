@@ -1,4 +1,5 @@
 """Buildings on the map."""
+
 import numpy as np
 import svgwrite
 from colour import Color
@@ -107,12 +108,14 @@ class Building(Figure):
         """Draw simple building shape."""
         path: Path = Path(
             d=self.get_path(flinger),
-            stroke=self.stroke.hex
-            if use_building_colors
-            else self.default_stroke.hex,
-            fill=self.fill.hex
-            if use_building_colors
-            else self.default_fill.hex,
+            stroke=(
+                self.stroke.hex
+                if use_building_colors
+                else self.default_stroke.hex
+            ),
+            fill=(
+                self.fill.hex if use_building_colors else self.default_fill.hex
+            ),
             stroke_linejoin="round",
         )
         svg.add(path)

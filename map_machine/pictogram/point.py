@@ -1,4 +1,5 @@
 """Point: node representation on the map."""
+
 import logging
 from typing import Optional
 

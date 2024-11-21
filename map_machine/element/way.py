@@ -1,4 +1,5 @@
 """Draw test nodes, ways, and relations."""
+
 import logging
 from pathlib import Path
 from typing import Optional

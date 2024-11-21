@@ -4,6 +4,7 @@ Test icon generation for nodes.
 Tests check that for the given node described by tags, Map Machine generates
 expected icons with expected colors.
 """
+
 from pathlib import Path
 from typing import Optional
 

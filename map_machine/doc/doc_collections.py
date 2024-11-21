@@ -1,4 +1,5 @@
 """Special icon collections for documentation."""
+
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -90,17 +91,21 @@ class SVGTable:
         self.font_width: float = self.font_size * 0.7
 
         self.size: list[float] = [
-            max(
-                max(map(len, self.collection.row_values)) * self.font_width,
-                len(self.collection.row_key) * self.font_width
-                + (self.offset if self.collection.column_values else 0),
-                170.0,
-            )
-            if self.collection.row_values
-            else 0.0,
-            max(map(len, self.collection.column_values)) * self.font_width
-            if self.collection.column_values
-            else 0.0,
+            (
+                max(
+                    max(map(len, self.collection.row_values)) * self.font_width,
+                    len(self.collection.row_key) * self.font_width
+                    + (self.offset if self.collection.column_values else 0),
+                    170.0,
+                )
+                if self.collection.row_values
+                else 0.0
+            ),
+            (
+                max(map(len, self.collection.column_values)) * self.font_width
+                if self.collection.column_values
+                else 0.0
+            ),
         ]
         self.start_point: np.ndarray = (
             2 * self.border + np.array(self.size) + self.half_step

@@ -1,4 +1,5 @@
 """Getting OpenStreetMap data from the web."""
+
 import logging
 import time
 from dataclasses import dataclass

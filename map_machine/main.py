@@ -1,4 +1,5 @@
 """Map Machine entry point."""
+
 import sys
 
 if sys.version_info.major < 3 or sys.version_info.minor < 9:

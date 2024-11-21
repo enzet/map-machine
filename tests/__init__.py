@@ -1,6 +1,7 @@
 """
 Tests for Map Machine project.
 """
+
 from pathlib import Path
 
 from map_machine.pictogram.icon import ShapeExtractor

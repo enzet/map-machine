@@ -1,4 +1,5 @@
 """Text processing for map element."""
+
 from dataclasses import dataclass
 from typing import Any, Optional
 

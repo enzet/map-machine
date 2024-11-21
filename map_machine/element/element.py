@@ -1,4 +1,5 @@
 """Entry point for element drawing: nodes, ways, and relations."""
+
 import argparse
 import logging
 from pathlib import Path

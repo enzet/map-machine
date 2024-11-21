@@ -4,6 +4,7 @@ Test map generation for ways.
 Tests check that for the given ways described by tags, Map Machine generates
 expected figures in the expected order.
 """
+
 import numpy as np
 
 from map_machine.constructor import Constructor
