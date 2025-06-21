@@ -1,6 +1,8 @@
 """Getting OpenStreetMap data from the web."""
 import logging
 import time
+import gzip
+from io import BytesIO
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -40,6 +42,13 @@ def get_osm(
         {"bbox": boundary_box.get_format()},
     )
 
+    # Try to decompress gzip content if needed
+    try:
+        if content.startswith(b"\x1f\x8b"):  # gzip magic header
+            content = gzip.decompress(content)
+    except Exception:
+        pass  # If decompression fails, continue with original content
+
     if not content.startswith(b"<"):
         if content == (
             b"You requested too many nodes (limit is 50000). Either request a "
@@ -67,11 +76,20 @@ def get_data(address: str, parameters: dict[str, str]) -> bytes:
     :return: connection descriptor
     """
     logging.info(f"Getting {address}...")
+    headers = {
+        "User-Agent": "map-machine/1.0",
+        "Accept-Encoding": "identity"  # Disable compression to avoid gzip issues
+    }
     pool_manager: urllib3.PoolManager = urllib3.PoolManager()
     urllib3.disable_warnings()
 
     try:
-        result = pool_manager.request("GET", address, parameters)
+        result = pool_manager.request(
+            "GET", 
+            address, 
+            fields=parameters,
+            headers=headers
+        )
     except urllib3.exceptions.MaxRetryError:
         raise NetworkError("Cannot download data: too many attempts.")
 
