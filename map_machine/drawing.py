@@ -3,7 +3,14 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, Union
 
-import cairo
+try:
+    import cairo
+except Exception:
+    import cairocffi
+
+    # Install cairocffi under the `cairo` module name for compatibility.
+    cairocffi.install_as_pycairo()
+    import cairo
 import numpy as np
 import svgwrite
 from cairo import Context, ImageSurface
