@@ -17,7 +17,6 @@ REQUIREMENTS: list[str] = [
     "numpy~=1.26.0",
     "Pillow~=8.2.0",
     "portolan~=1.0.1",
-    "cairocffi~=1.6.0",
     "pytest~=6.2.2",
     "PyYAML~=6.0.1",
     "setuptools~=51.0.0",
