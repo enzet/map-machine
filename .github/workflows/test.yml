@@ -18,7 +18,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install black flake8 pytest
+        pip install black~=22.6 flake8~=4.0.1 pytest~=7.4.0
         pip install -r requirements.txt
         pip install .
     - name: Check code style with Black
@@ -41,7 +41,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install black flake8 pytest
+        pip install black~=22.6 flake8~=4.0.1 pytest~=7.4.0
         pip install -r requirements.txt
         pip install .
     - name: Check code style with Black
