@@ -1,6 +1,6 @@
 CairoSVG~=2.5.0
 colour~=0.1.5
-numpy~=1.18.1
+numpy~=1.26.0
 Pillow~=8.2.0
 portolan~=1.0.1
 cairocffi~=1.6.0
