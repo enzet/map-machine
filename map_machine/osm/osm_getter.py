@@ -71,7 +71,7 @@ def get_data(address: str, parameters: dict[str, str]) -> bytes:
     urllib3.disable_warnings()
 
     try:
-        result = pool_manager.request("GET", address, parameters)
+        result = pool_manager.request("GET", address, fields=parameters)
     except urllib3.exceptions.MaxRetryError:
         raise NetworkError("Cannot download data: too many attempts.")
 
