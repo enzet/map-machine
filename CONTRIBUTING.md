@@ -31,7 +31,7 @@ Install the project in editable mode:
 pip install -e .
 ```
 
-Install formatter, linter and test system: `pip install black flake8 mypy pytest pytest-cov`.
+Install formatter, linter and test system: `pip install black~=22.6 flake8~=4.0.1 pytest~=7.4.0`.
 
 If you are using PyCharm, you may want to set up user dictionary as well:
 
@@ -42,7 +42,7 @@ If you are using PyCharm, you may want to set up user dictionary as well:
 
 ### Code style ###
 
-We use [Black](http://github.com/psf/black) code formatter with maximum 80 characters line length for all Python files within the project. Reformat a file is as simple as `black -l 80 <file name>`. Reformat everything with `black -l 80 map_machine tests`.
+We use [Black](http://github.com/psf/black) code formatter version 22.6 with maximum 80 characters line length for all Python files within the project. Reformat a file is as simple as `black -l 80 <file name>`. Reformat everything with `black -l 80 map_machine tests`.
 
 If you create new Python file, make sure you add `__author__ = "<first name> <second name>"` and `__email__ = "<author e-mail>"` string variables.
 
