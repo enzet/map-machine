@@ -55,7 +55,7 @@ class Tile:
         :param zoom_level: zoom level in OpenStreetMap terminology
         """
         lat_rad: np.ndarray = np.radians(coordinates[0])
-        scale: float = 2.0**zoom_level
+        scale: float = 2.0 ** zoom_level
         x: int = int((coordinates[1] + 180.0) / 360.0 * scale)
         y: int = int((1.0 - np.arcsinh(np.tan(lat_rad)) / np.pi) / 2.0 * scale)
         return cls(x, y, zoom_level)
@@ -66,7 +66,7 @@ class Tile:
 
         Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
         """
-        scale: float = 2.0**self.zoom_level
+        scale: float = 2.0 ** self.zoom_level
         lon_deg: float = self.x / scale * 360.0 - 180.0
         lat_rad: float = np.arctan(np.sinh(np.pi * (1 - 2 * self.y / scale)))
         lat_deg: np.ndarray = np.degrees(lat_rad)
