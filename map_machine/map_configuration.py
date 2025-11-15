@@ -63,6 +63,7 @@ class MapConfiguration:
     show_overlapped: bool = False
     credit: Optional[str] = "© OpenStreetMap contributors"
     show_credit: bool = True
+    draw_background: bool = True
 
     @classmethod
     def from_options(
@@ -85,6 +86,7 @@ class MapConfiguration:
             options.building_colors,
             options.show_overlapped,
             show_credit=not options.hide_credit,
+            draw_background=options.background,
         )
 
     def is_wireframe(self) -> bool:

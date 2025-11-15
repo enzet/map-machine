@@ -57,9 +57,14 @@ class Map:
 
     def draw(self, constructor: Constructor) -> None:
         """Draw map."""
-        self.svg.add(
-            Rect((0.0, 0.0), self.flinger.size, fill=self.background_color)
-        )
+        if self.configuration.draw_background:
+            logging.info("Drawing background...")
+            self.svg.add(
+                Rect((0.0, 0.0), self.flinger.size, fill=self.background_color)
+            )
+        else:
+            logging.info("Drawing no background")
+
         logging.info("Drawing ways...")
 
         figures: list[StyledFigure] = constructor.get_sorted_figures()
