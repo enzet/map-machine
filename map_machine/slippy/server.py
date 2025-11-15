@@ -64,7 +64,9 @@ class TileServerHandler(SimpleHTTPRequestHandler):
                         ),
                     )
                 with svg_path.open(encoding="utf-8") as input_file:
-                    cairosvg.svg2png(file_obj=input_file, write_to=str(png_path))
+                    cairosvg.svg2png(
+                        file_obj=input_file, write_to=str(png_path)
+                    )
                 logging.info(f"SVG file is rasterized to {png_path}.")
 
         if png_path.exists():
