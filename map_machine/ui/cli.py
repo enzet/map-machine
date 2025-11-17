@@ -77,14 +77,15 @@ def parse_arguments(args: list[str]) -> argparse.Namespace:
     add_tile_arguments(tile_parser)
     add_map_arguments(tile_parser)
 
-    add_server_arguments(
-        subparser.add_parser(
-            "server",
-            description="Run in order to display generated tiles as a map "
-            "(e.g. with Leaflet).",
-            help="run tile server",
-        )
+    server_parser = subparser.add_parser(
+        "server",
+        description="Run in order to display generated tiles as a map "
+        "(e.g. with Leaflet).",
+        help="run tile server",
     )
+    add_server_arguments(server_parser)
+    add_map_arguments(server_parser)
+
     add_draw_arguments(
         subparser.add_parser(
             "draw",
@@ -214,6 +215,12 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         action=argparse.BooleanOptionalAction,
         default=False,
     )
+    parser.add_argument(
+        "--background",
+        help="enable or disable the background e.g. to use it as layer",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
 
 
 def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
@@ -269,6 +276,12 @@ def add_server_arguments(parser: argparse.ArgumentParser) -> None:
         help="path for temporary OSM files",
         default="cache",
         metavar="<path>",
+    )
+    parser.add_argument(
+        "--update-cache",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="allow writing to cache",
     )
     parser.add_argument(
         "--port",

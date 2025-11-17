@@ -8,6 +8,7 @@ from typing import Optional
 import cairosvg
 
 from map_machine.map_configuration import MapConfiguration
+from map_machine.scheme import Scheme
 from map_machine.slippy.tile import Tile
 from map_machine.workspace import workspace
 
@@ -48,10 +49,19 @@ class TileServerHandler(SimpleHTTPRequestHandler):
         if self.update_cache:
             if not png_path.exists():
                 if not svg_path.exists():
+                    scheme = Scheme.from_file(
+                        workspace.DEFAULT_SCHEME_PATH
+                        if self.options.scheme == "default"
+                        else Path(self.options.scheme)
+                    )
                     tile.draw(
                         tile_path,
                         self.cache,
-                        MapConfiguration(zoom_level=zoom_level),
+                        MapConfiguration.from_options(
+                            scheme,
+                            self.options,
+                            zoom_level,
+                        ),
                     )
                 with svg_path.open(encoding="utf-8") as input_file:
                     cairosvg.svg2png(
@@ -74,6 +84,7 @@ def run_server(options: argparse.Namespace) -> None:
     try:
         handler = TileServerHandler
         handler.cache = Path(options.cache)
+        handler.update_cache = options.update_cache
         handler.options = options
         server = HTTPServer(("", options.port), handler)
         logging.info(f"Server started on port {options.port}.")
