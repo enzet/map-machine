@@ -1,3 +1,11 @@
+options:
+
+  draw_nodes: yes
+  draw_trees: yes
+  draw_craters: yes
+  draw_buildings: yes
+  draw_directions: yes
+
 colors:
 
   # Entity
@@ -34,6 +42,10 @@ colors:
   secondary_color: "#FFEE77"
   tertiary_border_color: "#CCAA22"
   tertiary_color: "#FFFF88"
+
+  bridge_color: "#666666"
+  ford_color: "#88BBFF"
+  embankment_color_color: "#666666"
 
   allotments_color: "#D0E0D0"
   beach_color: "#F0E0C0"
@@ -1810,6 +1822,8 @@ node_icons:
       shapes: [billboard]
     - tags: {advertising: column}
       shapes: [advertising_column]
+    - tags: {natural: human}
+      shapes: [human]
     - tags: {natural: rock}
       shapes: [stone]
     - tags: {natural: stone}
@@ -1888,6 +1902,8 @@ node_icons:
     - tags: {natural: tree, leaf_cycle: evergreen}
       set_main_color: evergreen_color
     - tags: {natural: bush}
+      shapes: [{shape: bush, color: tree_color}]
+    - tags: {natural: shrub}
       shapes: [{shape: bush, color: tree_color}]
 
     - tags: {natural: tree, genus: Betula}
@@ -2055,6 +2071,10 @@ node_icons:
       add_shapes: [woman_and_man]
     - tags: {washing_machine: "yes"}
       add_shapes: [washing_machine]
+    - tags: {shower: "yes"}
+      add_shapes: [shower]
+    - tags: {dog: "yes"}
+      add_shapes: [dog]
 
     # For tourism=camp_pitch
 

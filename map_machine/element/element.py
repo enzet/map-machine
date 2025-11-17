@@ -9,7 +9,7 @@ from map_machine.osm.osm_reader import Tags, OSMNode
 
 def draw_node(tags: Tags, path: Path):
     """Draw separate node."""
-    grid: Grid = Grid(show_credit=False, margin=3.5)
+    grid: Grid = Grid(show_credit=False, margin=7.5)
     grid.add_node(tags, 0, 0)
     grid.draw(path)
 

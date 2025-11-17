@@ -358,6 +358,7 @@
     "guidepost": {"directed": "right", "name": "guidepost"},
     "guys": {"name": "guys"},
     "human_on_ferry": {"name": "human over water"},
+    "human": {"name": "human"},
     "hunting_stand": {"name": "hunting stand"},
     "key": {"is_part": true, "name": "key"},
     "kiosk": {"name": "kiosk"},

@@ -31,21 +31,20 @@ COMMANDS: list[str] = [
     "taginfo",
 ]
 
-BOUNDARY_BOX_WARNING: str = (
-    "if the first value is negative, use the `=` sign or enclose the value "
-    "with quotes and prefix a space before `-`, e.g. "
-    "`-b=-84.752,39.504,-84.749,39.508` or `-b "
-    '" -84.752,39.504,-84.749,39.508"`'
-)
-COORDINATES_WARNING: str = (
-    "if the first value is negative, use the `=` sign or enclose the value "
-    "with quotes and prefix a space before `-`, e.g. `-c=-84.752,39.504` or "
-    '`-c " -84.752,39.504"`'
-)
-
 
 def parse_arguments(args: list[str]) -> argparse.Namespace:
     """Parse Map Machine command-line arguments."""
+
+    # Preparse arguments adding space before coordinates and boundary box if the
+    # first value is negative.  In that case `argparse` interprets in as an
+    # option name.
+    for argument in "-c", "--coordinates", "-b", "--boundary-box":
+        if argument in args:
+            index: int = args.index(argument) + 1
+            if args[index].startswith("-"):
+                args[index] = " " + args[index]
+            break
+
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description="Map Machine. OpenStreetMap renderer with custom icon set"
     )
@@ -78,14 +77,15 @@ def parse_arguments(args: list[str]) -> argparse.Namespace:
     add_tile_arguments(tile_parser)
     add_map_arguments(tile_parser)
 
-    add_server_arguments(
-        subparser.add_parser(
-            "server",
-            description="Run in order to display generated tiles as a map "
-            "(e.g. with Leaflet).",
-            help="run tile server",
-        )
+    server_parser = subparser.add_parser(
+        "server",
+        description="Run in order to display generated tiles as a map "
+        "(e.g. with Leaflet).",
+        help="run tile server",
     )
+    add_server_arguments(server_parser)
+    add_map_arguments(server_parser)
+
     add_draw_arguments(
         subparser.add_parser(
             "draw",
@@ -209,6 +209,18 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         action=argparse.BooleanOptionalAction,
         default=False,
     )
+    parser.add_argument(
+        "--hide-credit",
+        help="hide credit",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+    )
+    parser.add_argument(
+        "--background",
+        help="enable or disable the background e.g. to use it as layer",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
 
 
 def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
@@ -217,8 +229,7 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         "-c",
         "--coordinates",
         metavar="<latitude>,<longitude>",
-        help="coordinates of any location inside the tile; "
-        + COORDINATES_WARNING,
+        help="coordinates of any location inside the tile",
     )
     parser.add_argument(
         "-t",
@@ -236,7 +247,7 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         "-b",
         "--boundary-box",
         help="construct the minimum amount of tiles that cover the requested "
-        "boundary box; " + BOUNDARY_BOX_WARNING,
+        "boundary box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
     )
     parser.add_argument(
@@ -265,6 +276,12 @@ def add_server_arguments(parser: argparse.ArgumentParser) -> None:
         help="path for temporary OSM files",
         default="cache",
         metavar="<path>",
+    )
+    parser.add_argument(
+        "--update-cache",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="allow writing to cache",
     )
     parser.add_argument(
         "--port",
@@ -305,7 +322,7 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         "-b",
         "--boundary-box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
-        help="geo boundary box; " + BOUNDARY_BOX_WARNING,
+        help="geo boundary box",
     )
     parser.add_argument(
         "--cache",
@@ -325,8 +342,7 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         "-c",
         "--coordinates",
         metavar="<latitude>,<longitude>",
-        help="coordinates of any location inside the tile; "
-        + COORDINATES_WARNING,
+        help="coordinates of any location inside the tile",
     )
     parser.add_argument(
         "-s",

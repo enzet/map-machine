@@ -1,12 +1,28 @@
-## Unreleased
+## 0.1.9
+
+- Fix a problem with a mutable field (Philipp, [#153](https://github.com/enzet/map-machine/issues/153)).
+- Add icon for `natural=human`.
+- Add `--hide-credit` option.
+- Make colors more configurable.
+
+## 0.1.8
 
 - Improve colors for indoor features ([#139](https://github.com/enzet/map-machine/issues/139)).
 - Support empty scheme file ([#140](https://github.com/enzet/map-machine/issues/140)).
-- Add icons for flags.
+- Add icons for:
+  - flags,
+  - camp, fire, `tourism=camp_pitch` ([#144](https://github.com/enzet/map-machine/issues/144)).
 - Support `tourism=artwork` for ways.
 - Enhance argument processing ([#100](https://github.com/enzet/map-machine/issues/100)).
-- Reuse icon for `traffic_sign=*`.
+- Reuse icon for:
+  - `traffic_sign=*`,
+  - `parking=yes`,
+  - `drinking_water=yes`,
+  - `dog=yes`,
+  - `shower=yes`,
+  - `washing_machine=yes`.
 - Fix style for golf features.
+- Fix leading `-` issue in argument parsing.
 
 ## 0.1.7
 

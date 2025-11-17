@@ -38,4 +38,7 @@ class Tree(Tagged):
 
         if (circumference := self.get_float("circumference")) is not None:
             radius: float = circumference / 2.0 / np.pi
-            svg.add(svg.circle(self.point, radius * scale, fill="#B89A74"))
+            circle = svg.circle(
+                self.point, radius * scale, fill=scheme.get_color("trunk_color")
+            )
+            svg.add(circle)

@@ -61,28 +61,13 @@ class Collection:
     @classmethod
     def deserialize(cls, structure: dict[str, Any]):
         """Deserialize icon collection from structure."""
-        row_key: Optional[str] = (
-            structure["row_key"] if "row_key" in structure else None
-        )
-        row_values: list[str] = (
-            structure["row_values"] if "row_values" in structure else []
-        )
-        column_key: Optional[str] = (
-            structure["column_key"] if "column_key" in structure else None
-        )
-        column_values: list[str] = (
-            structure["column_values"] if "column_values" in structure else []
-        )
-        row_tags: list[Tags] = (
-            structure["row_tags"] if "row_tags" in structure else []
-        )
         return cls(
             structure["tags"],
-            row_key,
-            row_values,
-            column_key,
-            column_values,
-            row_tags,
+            structure.get("row_key", None),
+            structure.get("row_values", []),
+            structure.get("column_key", None),
+            structure.get("column_values", []),
+            structure.get("row_tags", []),
         )
 
 

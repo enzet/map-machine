@@ -175,8 +175,6 @@ class DirectionSector(Tagged):
     def draw(self, svg: Drawing, scheme) -> None:
         """Draw gradient sector."""
 
-        return
-
         angle: Optional[float] = None
         is_revert_gradient: bool = False
         direction: str

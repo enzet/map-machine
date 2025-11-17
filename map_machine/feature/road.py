@@ -387,7 +387,8 @@ class Road(Tagged):
 
         self.scale: float = flinger.get_scale(self.nodes[0].coordinates)
 
-        self.is_area = scheme.is_area(tags) and nodes[0] == nodes[-1]
+        self.scheme: Scheme = scheme
+        self.is_area: bool = scheme.is_area(tags) and nodes[0] == nodes[-1]
 
         if "lanes" in tags:
             try:
@@ -532,11 +533,9 @@ class Road(Tagged):
 
         style: dict[str, Union[int, float, str]] = self.get_style(is_border)
 
-        tmp_path = self.line.get_path(self.placement_offset)
-        if tmp_path == None:
+        if (path_commands := self.line.get_path(self.placement_offset)) is None:
             return
 
-        path_commands: str = tmp_path
         path: Path
         if filter_:
             path = Path(d=path_commands, filter=filter_.get_funciri())
@@ -557,11 +556,11 @@ class Road(Tagged):
         """Get road border color."""
         color: Color = self.matcher.border_color
         if self.tags.get("bridge") == "yes":
-            color = Color("#666666")
+            color = self.scheme.get_color("bridge_color")
         if self.tags.get("ford") == "yes":
-            color = Color("#88BBFF")
+            color = self.scheme.get_color("ford_color")
         if self.tags.get("embankment") == "yes":
-            color = Color("#666666")
+            color = self.scheme.get_color("embankment_color")
         return color
 
     def draw_lanes(self, svg: Drawing, color: Color) -> None:
@@ -574,13 +573,14 @@ class Road(Tagged):
                 -self.width / 2.0 + index * self.width / len(self.lanes)
             )
 
-            tmp_d=self.line.get_path(self.placement_offset + lane_offset)
-            if tmp_d == None:
+            if (
+                path_commands := self.line.get_path(
+                    self.placement_offset + lane_offset
+                )
+            ) is None:
                 return
 
-            path: Path = Path(
-                d=tmp_d
-            )
+            path: Path = Path(d=path_commands)
             style: dict[str, Any] = {
                 "fill": "none",
                 "stroke": color.hex,
@@ -597,13 +597,12 @@ class Road(Tagged):
         if not name:
             return
 
-        tmp_d =self.line.get_path(self.placement_offset + 3.0)
-        if tmp_d == None:
+        if (
+            path_commands := self.line.get_path(self.placement_offset + 3.0)
+        ) is None:
             return
 
-        path: Path = svg.path(
-            d=tmp_d, fill="none"
-        )
+        path: Path = svg.path(d=path_commands, fill="none")
         svg.add(path)
 
         text = svg.add(svg.text.Text(""))
