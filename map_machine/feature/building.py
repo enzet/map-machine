@@ -105,8 +105,12 @@ class Building(Figure):
         self, svg: Drawing, flinger: Flinger, use_building_colors: bool
     ) -> None:
         """Draw simple building shape."""
+
+        if (path_commands := self.get_path(flinger)) is None:
+            return
+
         path: Path = Path(
-            d=self.get_path(flinger),
+            d=path_commands,
             stroke=self.stroke.hex
             if use_building_colors
             else self.default_stroke.hex,
@@ -122,9 +126,12 @@ class Building(Figure):
         scale: float = flinger.get_scale() * SHADE_SCALE
         shift_1: np.ndarray = np.array((scale * self.min_height, 0.0))
         shift_2: np.ndarray = np.array((scale * self.height, 0.0))
-        commands: str = self.get_path(flinger, shift_1)
+
+        if (path_commands := self.get_path(flinger, shift_1)) is None:
+            return
+
         path: Path = Path(
-            commands, fill="#000000", stroke="#000000", stroke_width=1.0
+            path_commands, fill="#000000", stroke="#000000", stroke_width=1.0
         )
         building_shade.add(path)
         for nodes in self.inners + self.outers:
@@ -182,15 +189,20 @@ class Building(Figure):
     ) -> None:
         """Draw building roof."""
 
+        if (
+            path_commands := self.get_path(
+                flinger, np.array([0.0, -self.height * scale * BUILDING_SCALE])
+            )
+        ) is None:
+            return
+
         fill: Color = self.fill if use_building_colors else self.default_fill
         stroke: Color = (
             self.stroke if use_building_colors else self.default_stroke
         )
 
         path: Path = Path(
-            d=self.get_path(
-                flinger, np.array([0.0, -self.height * scale * BUILDING_SCALE])
-            ),
+            d=path_commands,
             stroke=stroke,
             fill="none" if self.is_construction else fill.hex,
             stroke_linejoin="round",

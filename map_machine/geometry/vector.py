@@ -47,7 +47,7 @@ class Polyline:
     def __init__(self, points: list[np.ndarray]) -> None:
         self.points: list[np.ndarray] = points
 
-    def get_path(self, parallel_offset: float = 0.0) -> str:
+    def get_path(self, parallel_offset: float = 0.0) -> Optional[str]:
         """Construct SVG path commands."""
         points: list[np.ndarray]
 
@@ -64,6 +64,9 @@ class Polyline:
                 )
             except (ValueError, NotImplementedError):
                 points = self.points
+
+        if len(points) < 2:  # Deal with malformed paths.
+            return None
 
         return (
             "M "

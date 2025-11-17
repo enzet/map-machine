@@ -532,7 +532,10 @@ class Road(Tagged):
         filter_: Filter = self.get_filter(svg, is_border)
 
         style: dict[str, Union[int, float, str]] = self.get_style(is_border)
-        path_commands: str = self.line.get_path(self.placement_offset)
+
+        if (path_commands := self.line.get_path(self.placement_offset)) is None:
+            return
+
         path: Path
         if filter_:
             path = Path(d=path_commands, filter=filter_.get_funciri())
@@ -569,9 +572,15 @@ class Road(Tagged):
             lane_offset: float = self.scale * (
                 -self.width / 2.0 + index * self.width / len(self.lanes)
             )
-            path: Path = Path(
-                d=self.line.get_path(self.placement_offset + lane_offset)
-            )
+
+            if (
+                path_commands := self.line.get_path(
+                    self.placement_offset + lane_offset
+                )
+            ) is None:
+                return
+
+            path: Path = Path(d=path_commands)
             style: dict[str, Any] = {
                 "fill": "none",
                 "stroke": color.hex,
@@ -588,9 +597,12 @@ class Road(Tagged):
         if not name:
             return
 
-        path: Path = svg.path(
-            d=self.line.get_path(self.placement_offset + 3.0), fill="none"
-        )
+        if (
+            path_commands := self.line.get_path(self.placement_offset + 3.0)
+        ) is None:
+            return
+
+        path: Path = svg.path(d=path_commands, fill="none")
         svg.add(path)
 
         text = svg.add(svg.text.Text(""))

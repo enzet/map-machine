@@ -55,7 +55,7 @@ def parse_levels(string: str) -> list[float]:
         return list(map(float, string.replace(",", ".").split(";")))
     except ValueError:
         logging.warning(f"Cannot parse level description from `{string}`.")
-        return []
+        return [0.0]
 
 
 @dataclass
