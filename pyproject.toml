@@ -28,7 +28,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest~=6.2.2"]
+dev = [
+    "black~=22.6",
+    "flake8~=4.0.1",
+    "pytest~=7.4.0",
+]
 
 [project.scripts]
 map-machine = "map_machine.main:main"
