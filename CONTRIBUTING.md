@@ -28,10 +28,8 @@ Activate virtual environment. E.g. for fish shell, run `source venv/bin/activate
 Install the project in editable mode:
 
 ```shell
-pip install -e .
+pip install -e .[dev]
 ```
-
-Install formatter, linter and test system: `pip install black~=22.6 flake8~=4.0.1 pytest~=7.4.0`.
 
 If you are using PyCharm, you may want to set up user dictionary as well:
 

@@ -18,9 +18,7 @@ Activate virtual environment.  E.g. for fish shell, run \m {source venv/bin/acti
 
 Install the project in editable mode:
 
-\code {shell} {pip install -e .}
-
-Install formatter, linter and test system\: \m {pip install black~=22.6 flake8~=4.0.1 pytest~=7.4.0}.
+\code {shell} {pip install -e .[dev]}
 
 If you are using PyCharm, you may want to set up user dictionary as well:
 
