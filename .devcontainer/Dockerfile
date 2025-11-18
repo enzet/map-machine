@@ -24,9 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Switch back to dialog for any ad-hoc use of apt
 ENV DEBIAN_FRONTEND=dialog
 
-# Install Python dependencies
-COPY requirements.txt /tmp/
-RUN pip install --no-cache-dir -r /tmp/requirements.txt
+RUN python -m pip install --upgrade pip
 
 # Create a non-root user
 ARG USERNAME=vscode

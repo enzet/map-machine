@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-python_files="map_machine setup.py tests data/githooks/commit-msg"
+python_files="map_machine tests data/githooks/commit-msg"
 
 echo "Checking code format with Black..."
 if ! black -l 80 --check ${python_files}; then
