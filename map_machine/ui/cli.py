@@ -280,7 +280,7 @@ def add_server_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--update-cache",
         action=argparse.BooleanOptionalAction,
-        default=True,
+        default=False,
         help="allow writing to cache",
     )
     parser.add_argument(
