@@ -339,6 +339,8 @@ HTML code:
 <div id="mapid" style="width: 1000px; height: 600px;"></div>
 ```
 
+See full HTML example in `doc/leaflet.html`.
+
 Map options
 -----------
 
