@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source .venv/bin/activate
+
 echo "Looking for changes..."
 files=`git status --porcelain | wc -l`
 if [ ${files} == 0 ] ; then

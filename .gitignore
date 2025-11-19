@@ -23,6 +23,6 @@ precommit.py
 .idea
 build
 temp
-venv*
+.venv*
 
 taginfo
