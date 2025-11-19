@@ -335,6 +335,8 @@ HTML code\:
 
 \code {html} {<div id="mapid" style="width: 1000px; height: 600px;"></div>}
 
+See full HTML example in \m {doc/leaflet.html}.
+
 \2 {Map options} {map-options}
 
 Map configuration options used by \m {render} and \m {tile} commands\:
