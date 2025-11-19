@@ -43,3 +43,10 @@ def test_boundary_box_parsing() -> None:
 
     # Too big boundary box.
     assert BoundaryBox.from_text("-20,-20,20,20") is None
+
+
+def test_boundary_box_parsing_scientific() -> None:
+    """Test parsing boundary box from text in scientific notation."""
+    assert BoundaryBox.from_text(
+        "1.23e-03,4.56e-04,7.89e-02,1.01e-03"
+    ) == BoundaryBox(0.00123, 0.000456, 0.0789, 0.00101)

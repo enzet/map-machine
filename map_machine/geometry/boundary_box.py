@@ -12,6 +12,14 @@ __email__ = "me@enzet.ru"
 LATITUDE_MAX_DIFFERENCE: float = 0.5
 LONGITUDE_MAX_DIFFERENCE: float = 0.5
 
+FLOAT_PATTERN: str = r"[+-]?(?:\d+\.\d*|\.\d+|\d+)(?:[eE][+-]?\d+)?"
+BOUNDARY_BOX_PATTERN: re.Pattern = re.compile(
+    rf"(?P<left>{FLOAT_PATTERN}),"
+    rf"(?P<bottom>{FLOAT_PATTERN}),"
+    rf"(?P<right>{FLOAT_PATTERN}),"
+    rf"(?P<top>{FLOAT_PATTERN})"
+)
+
 
 @dataclass
 class BoundaryBox:
@@ -38,11 +46,7 @@ class BoundaryBox:
         """
         boundary_box = boundary_box.replace(" ", "")
 
-        matcher: Optional[re.Match] = re.match(
-            "(?P<left>[0-9.-]*),(?P<bottom>[0-9.-]*),"
-            + "(?P<right>[0-9.-]*),(?P<top>[0-9.-]*)",
-            boundary_box,
-        )
+        matcher: Optional[re.Match] = BOUNDARY_BOX_PATTERN.match(boundary_box)
 
         if not matcher:
             logging.fatal("Invalid boundary box.")
