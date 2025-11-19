@@ -1,6 +1,7 @@
 """Map Machine tile server for slippy maps."""
 import argparse
 import logging
+import sys
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 from typing import Optional
@@ -29,8 +30,15 @@ class TileServerHandler(SimpleHTTPRequestHandler):
         client_address: tuple[str, int],
         server: HTTPServer,
     ) -> None:
-        # TODO: delete?
         super().__init__(request, client_address, server)
+
+        if not self.cache.exists():
+            message: str = (
+                f"Cache directory `{self.cache}` for server does not exist, "
+                "please create it."
+            )
+            logging.fatal(message)
+            sys.exit(1)
 
     def do_GET(self) -> None:
         """Serve a GET request."""

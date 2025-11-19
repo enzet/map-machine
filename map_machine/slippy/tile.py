@@ -263,37 +263,6 @@ class Tiles:
 
         return osm_data
 
-    def draw_separately(
-        self, directory: Path, cache_path: Path, configuration: MapConfiguration
-    ) -> None:
-        """
-        Draw set of tiles as SVG file separately and rasterize them into a set
-        of PNG files with cairosvg.
-
-        :param directory: directory for tiles
-        :param cache_path: directory for temporary OSM files
-        :param configuration: drawing configuration
-        """
-        osm_data: OSMData = self.load_osm_data(cache_path)
-
-        for tile in self.tiles:
-            file_path: Path = tile.get_file_name(directory)
-            if not file_path.exists():
-                tile.draw_with_osm_data(osm_data, directory, configuration)
-            else:
-                logging.debug(f"File {file_path} already exists.")
-
-            output_path: Path = file_path.with_suffix(".png")
-
-            if not output_path.exists():
-                with file_path.open(encoding="utf-8") as input_file:
-                    cairosvg.svg2png(
-                        file_obj=input_file, write_to=str(output_path)
-                    )
-                logging.info(f"SVG file is rasterized to {output_path}.")
-            else:
-                logging.debug(f"File {output_path} already exists.")
-
     def tiles_exist(self, directory_name: Path) -> bool:
         """Check whether all tiles are drawn."""
         return all(x.exists(directory_name) for x in self.tiles)
@@ -473,6 +442,13 @@ def generate_tiles(options: argparse.Namespace) -> None:
     scheme: Scheme = Scheme.from_file(
         workspace.find_scheme_path(options.scheme)
     )
+    cache_path: Path = Path(options.cache)
+    if not cache_path.exists():
+        message: str = (
+            f"Cache directory `{cache_path}` does not exist, please create it."
+        )
+        logging.fatal(message)
+        sys.exit(1)
 
     if options.input_file_name:
         osm_data: OSMData = OSMData()
@@ -492,7 +468,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
                 scheme, options, zoom_level
             )
             tiles: Tiles = Tiles.from_boundary_box(boundary_box, zoom_level)
-            tiles.draw(directory, Path(options.cache), configuration, osm_data)
+            tiles.draw(directory, cache_path, configuration, osm_data)
 
     elif options.coordinates:
         coordinates: list[float] = list(
@@ -502,7 +478,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
             np.array(coordinates), min_zoom_level
         )
         try:
-            osm_data: OSMData = min_tile.load_osm_data(Path(options.cache))
+            osm_data: OSMData = min_tile.load_osm_data(cache_path)
         except NetworkError as error:
             raise NetworkError(f"Map is not loaded. {error.message}")
 
@@ -524,7 +500,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
         configuration: MapConfiguration = MapConfiguration.from_options(
             scheme, options, zoom_level
         )
-        tile.draw(directory, Path(options.cache), configuration)
+        tile.draw(directory, cache_path, configuration)
 
     elif options.boundary_box:
         boundary_box: Optional[BoundaryBox] = BoundaryBox.from_text(
@@ -536,7 +512,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
 
         min_tiles: Tiles = Tiles.from_boundary_box(boundary_box, min_zoom_level)
         try:
-            osm_data: OSMData = min_tiles.load_osm_data(Path(options.cache))
+            osm_data: OSMData = min_tiles.load_osm_data(cache_path)
         except NetworkError as error:
             raise NetworkError(f"Map is not loaded. {error.message}")
 
@@ -548,7 +524,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
             configuration: MapConfiguration = MapConfiguration.from_options(
                 scheme, options, zoom_level
             )
-            tiles.draw(directory, Path(options.cache), configuration, osm_data)
+            tiles.draw(directory, cache_path, configuration, osm_data)
 
     else:
         logging.fatal(
