@@ -19,9 +19,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install ".[dev]"
-    - name: Check code style with Black
+    - name: Check code style
       run: |
-        black -l 80 --check map_machine tests
+        ruff format --check
     - name: Lint with Flake8
       run: |
         flake8 --max-line-length=80 --ignore=E203,W503
@@ -43,9 +43,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install ".[dev]"
-    - name: Check code style with Black
+    - name: Check code style
       run: |
-        black -l 80 --check map_machine tests
+        ruff format --check
     - name: Lint with Flake8
       run: |
         flake8 --max-line-length=80 --ignore=E203,W503
