@@ -1,4 +1,5 @@
 """Map Machine drawing scheme."""
+
 import logging
 import re
 from dataclasses import dataclass
@@ -14,12 +15,12 @@ from map_machine.feature.direction import DirectionSet
 from map_machine.osm.osm_reader import Tagged, Tags
 from map_machine.pictogram.icon import (
     DEFAULT_SHAPE_ID,
+    DEFAULT_SMALL_SHAPE_ID,
     Icon,
     IconSet,
     Shape,
     ShapeExtractor,
     ShapeSpecification,
-    DEFAULT_SMALL_SHAPE_ID,
 )
 
 __author__ = "Sergey Vartanov"
@@ -54,8 +55,7 @@ def is_matched_tag(
     matcher_tag_value: Union[str, list],
     tags: Tags,
 ) -> tuple[MatchingType, list[str]]:
-    """
-    Check whether element tags contradict tag matcher.
+    """Check whether element tags contradict tag matcher.
 
     :param matcher_tag_key: tag key
     :param matcher_tag_value: tag value, tag value list, or "*"
@@ -137,8 +137,7 @@ class Matcher(Tagged):
     def is_matched(
         self, tags: Tags, country: Optional[str] = None
     ) -> tuple[bool, dict[str, str]]:
-        """
-        Check whether element tags matches tag matcher.
+        """Check whether element tags matches tag matcher.
 
         :param tags: element tags to be matched
         :param country: country of the element (to match location restrictions
@@ -177,8 +176,7 @@ class Matcher(Tagged):
         return True, groups
 
     def get_mapcss_selector(self, prefix: str = "") -> str:
-        """
-        Construct MapCSS 0.2 selector from the node matcher.
+        """Construct MapCSS 0.2 selector from the node matcher.
 
         See https://wiki.openstreetmap.org/wiki/MapCSS/0.2
         """
@@ -196,7 +194,7 @@ class Matcher(Tagged):
 
 
 def get_shape_specifications(
-    structure: list[Union[str, dict[str, Any]]]
+    structure: list[Union[str, dict[str, Any]]],
 ) -> list[dict]:
     """Parse shape specification from scheme."""
     shapes: list[dict] = []
@@ -308,8 +306,7 @@ class RoadMatcher(Matcher):
 
 
 class Scheme:
-    """
-    Map style.
+    """Map style.
 
     Specifies map colors and rules to draw icons for OpenStreetMap tags.
     """
@@ -362,9 +359,8 @@ class Scheme:
 
     @classmethod
     def from_file(cls, file_name: Path) -> Optional["Scheme"]:
-        """
-        :param file_name: name of the scheme file with tags, colors, and tag key
-            specification
+        """:param file_name: name of the scheme file with tags, colors, and tag key
+        specification
         """
         with file_name.open(encoding="utf-8") as input_file:
             try:
@@ -378,8 +374,7 @@ class Scheme:
             return cls(content)
 
     def get_color(self, color: str) -> Color:
-        """
-        Return color if the color is in scheme, otherwise return default color.
+        """Return color if the color is in scheme, otherwise return default color.
 
         :param color: input color string representation
         :return: color specification
@@ -415,8 +410,7 @@ class Scheme:
         return self.get_color("extra")
 
     def get(self, variable_name: str):
-        """
-        Get value of variable.
+        """Get value of variable.
 
         FIXME: colors should be variables.
         """
@@ -425,17 +419,14 @@ class Scheme:
         return 0.0
 
     def is_no_drawable(self, key: str, value: str) -> bool:
-        """
-        Return true if key is specified as no drawable (should not be
+        """Return true if key is specified as no drawable (should not be
         represented on the map as icon set or as text) by the scheme.
 
         :param key: OpenStreetMap tag key
         :param value: OpenStreetMap tag value
         """
-        if (
-            key in self.keys_to_write + self.keys_to_skip
-            or key in self.tags_to_skip
-            and self.tags_to_skip[key] == value
+        if key in self.keys_to_write + self.keys_to_skip or (
+            key in self.tags_to_skip and self.tags_to_skip[key] == value
         ):
             return True
 
@@ -447,17 +438,14 @@ class Scheme:
         return False
 
     def is_writable(self, key: str, value: str) -> bool:
-        """
-        Return true if key is specified as writable (should be represented on
+        """Return true if key is specified as writable (should be represented on
         the map as text) by the scheme.
 
         :param key: OpenStreetMap tag key
         :param value: OpenStreetMap tag value
         """
-        if (
-            key in self.keys_to_skip
-            or key in self.tags_to_skip
-            and self.tags_to_skip[key] == value
+        if key in self.keys_to_skip or (
+            key in self.tags_to_skip and self.tags_to_skip[key] == value
         ):
             return False
 
@@ -486,8 +474,7 @@ class Scheme:
         ignore_level_matching: bool = False,
         show_overlapped: bool = False,
     ) -> tuple[Optional[IconSet], int]:
-        """
-        Construct icon set.
+        """Construct icon set.
 
         :param extractor: extractor with icon specifications
         :param tags: OpenStreetMap element tags dictionary
@@ -637,8 +624,7 @@ class Scheme:
         return False
 
     def process_ignored(self, tags: Tags, processed: set[str]) -> None:
-        """
-        Mark all ignored tag as processed.
+        """Mark all ignored tag as processed.
 
         :param tags: input tag dictionary
         :param processed: processed set
@@ -654,8 +640,7 @@ class Scheme:
         groups: dict[str, str] = None,
         color: Optional[Color] = None,
     ) -> ShapeSpecification:
-        """
-        Parse shape specification from structure, that is just shape string
+        """Parse shape specification from structure, that is just shape string
         identifier or dictionary with keys: shape (required), color (optional),
         and offset (optional).
         """

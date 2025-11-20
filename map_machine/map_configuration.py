@@ -1,12 +1,13 @@
 """Map drawing configuration."""
+
 import argparse
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional, Any
+from typing import Any, Optional
 
 from colour import Color
 
-from map_machine.pictogram.icon import ShapeExtractor, IconSet
+from map_machine.pictogram.icon import IconSet, ShapeExtractor
 from map_machine.scheme import Scheme
 
 __author__ = "Sergey Vartanov"

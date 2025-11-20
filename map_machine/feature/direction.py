@@ -1,5 +1,7 @@
 """Direction tag support."""
-from typing import Iterator, Optional
+
+from collections.abc import Iterator
+from typing import Optional
 
 import numpy as np
 from colour import Color
@@ -20,8 +22,7 @@ DEFAULT_ANGLE: float = np.pi / 30.0
 
 
 def parse_vector(text: str) -> Optional[np.ndarray]:
-    """
-    Parse vector from text representation.
+    """Parse vector from text representation.
 
     Compass points or 360-degree notation.  E.g. "NW", "270".
 
@@ -44,8 +45,7 @@ def parse_vector(text: str) -> Optional[np.ndarray]:
 
 
 def rotation_matrix(angle: float) -> np.ndarray:
-    """
-    Get a matrix to rotate 2D vector by the angle.
+    """Get a matrix to rotate 2D vector by the angle.
 
     :param angle: angle in radians
     """
@@ -58,8 +58,7 @@ class Sector:
     """Sector described by two vectors."""
 
     def __init__(self, text: str, angle: Optional[float] = None) -> None:
-        """
-        Construct sector from text representation.
+        """Construct sector from text representation.
 
         :param text: sector text representation (e.g. "70-210", "N-NW")
         :param angle: angle in degrees
@@ -88,8 +87,7 @@ class Sector:
                 self.end = np.dot(rotation_matrix(-result_angle), vector)
 
     def draw(self, center: np.ndarray, radius: float) -> Optional[PathCommands]:
-        """
-        Construct SVG path commands for arc element.
+        """Construct SVG path commands for arc element.
 
         :param center: arc center point
         :param radius: arc radius
@@ -104,8 +102,7 @@ class Sector:
         return ["L", start, "A", radius, radius, 0, "0", 0, end]
 
     def is_right(self) -> Optional[bool]:
-        """
-        Check if main direction of the sector is right.
+        """Check if main direction of the sector is right.
 
         :return: true if direction is right, false if direction is left, and
             None otherwise.
@@ -127,8 +124,7 @@ class DirectionSet:
     """Describes direction, set of directions."""
 
     def __init__(self, text: str) -> None:
-        """
-        Construct direction set from text representation.
+        """Construct direction set from text representation.
 
         :param text: direction tag value
         """
@@ -138,8 +134,7 @@ class DirectionSet:
         return ", ".join(map(str, self.sectors))
 
     def draw(self, center: np.ndarray, radius: float) -> Iterator[PathCommands]:
-        """
-        Construct SVG "d" for arc elements.
+        """Construct SVG "d" for arc elements.
 
         :param center: center point of all arcs
         :param radius: radius of all arcs
@@ -151,8 +146,7 @@ class DirectionSet:
         )
 
     def is_right(self) -> Optional[bool]:
-        """
-        Check if main direction of the sector is right.
+        """Check if main direction of the sector is right.
 
         :return: true if direction is right, false if direction is left, and
             None otherwise.

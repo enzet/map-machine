@@ -1,9 +1,9 @@
-"""
-Test icon generation for nodes.
+"""Test icon generation for nodes.
 
 Tests check that for the given node described by tags, Map Machine generates
 expected icons with expected colors.
 """
+
 from pathlib import Path
 from typing import Optional
 
@@ -11,7 +11,7 @@ from colour import Color
 
 from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import Tags
-from map_machine.pictogram.icon import IconSet, ShapeSpecification, Icon
+from map_machine.pictogram.icon import Icon, IconSet, ShapeSpecification
 from map_machine.pictogram.icon_collection import IconCollection
 from tests import SCHEME, SHAPE_EXTRACTOR, workspace
 
@@ -55,8 +55,7 @@ def get_icon(tags: Tags) -> IconSet:
 
 
 def test_no_icons() -> None:
-    """
-    Test icon creation for tags not described in the scheme.
+    """Test icon creation for tags not described in the scheme.
 
     Tags that has no description in the scheme and should be visualized with
     default shape.
@@ -67,8 +66,7 @@ def test_no_icons() -> None:
 
 
 def test_no_icons_but_color() -> None:
-    """
-    Test icon creation for tags not described in the scheme and `colour` tag.
+    """Test icon creation for tags not described in the scheme and `colour` tag.
 
     Tags that has no description in scheme, but have `colour` tag and should be
     visualized with default shape with the given color.
@@ -113,7 +111,8 @@ def check_icon_set(
 
 
 def test_icon() -> None:
-    """
+    """Test tags for one main icon.
+
     Tags that should be visualized with single main icon and without extra
     icons.
     """
@@ -121,8 +120,10 @@ def test_icon() -> None:
 
 
 def test_icon_1_extra() -> None:
-    """
-    Tags that should be visualized with single main icon and single extra icon.
+    """Test tags for one main and one extra icon.
+
+    Tags that should be visualized with single main icon and single extra
+    icon.
     """
     check_icon_set(
         {"barrier": "gate", "access": "private"},
@@ -132,7 +133,8 @@ def test_icon_1_extra() -> None:
 
 
 def test_icon_2_extra() -> None:
-    """
+    """Test tags for one main icon and two extra icons.
+
     Tags that should be visualized with single main icon and two extra icons.
     """
     check_icon_set(
@@ -146,7 +148,8 @@ def test_icon_2_extra() -> None:
 
 
 def test_no_icon_1_extra() -> None:
-    """
+    """Test tags for only one extra icon.
+
     Tags that should be visualized without main icon and with single extra icon.
     """
     check_icon_set(
@@ -155,7 +158,8 @@ def test_no_icon_1_extra() -> None:
 
 
 def test_no_icon_2_extra() -> None:
-    """
+    """Test tags for only two extra icons.
+
     Tags that should be visualized with default main icon and two extra icons.
     """
     check_icon_set(
@@ -174,8 +178,7 @@ def test_icon_regex() -> None:
 
 
 def test_vending_machine() -> None:
-    """
-    Check that specific vending machines aren't rendered with generic icon.
+    """Check that specific vending machines aren't rendered with generic icon.
 
     See https://github.com/enzet/map-machine/issues/132
     """
@@ -194,7 +197,8 @@ def test_vending_machine() -> None:
 
 
 def test_diving_tower() -> None:
-    """
+    """Test diving tower icons.
+
     Check that diving towers are rendered as diving towers, not just
     freestanding towers.
 

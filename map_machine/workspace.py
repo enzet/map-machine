@@ -1,4 +1,5 @@
 """File and directory path in the project."""
+
 from pathlib import Path
 
 __author__ = "Sergey Vartanov"
@@ -43,8 +44,7 @@ class Workspace:
         self._tile_path: Path = output_path / "tiles"
 
     def find_scheme_path(self, identifier: str) -> Optional[Path]:
-        """
-        Find map scheme file by its identifier.
+        """Find map scheme file by its identifier.
 
         :param identifier: scheme identifier or file path.
         :returns:

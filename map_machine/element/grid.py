@@ -10,12 +10,12 @@ from map_machine.geometry.flinger import Flinger, TranslateFlinger
 from map_machine.map_configuration import MapConfiguration
 from map_machine.mapper import Map
 from map_machine.osm.osm_reader import (
-    OSMNode,
     OSMData,
-    Tags,
-    OSMWay,
     OSMMember,
+    OSMNode,
     OSMRelation,
+    OSMWay,
+    Tags,
 )
 from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.scheme import Scheme

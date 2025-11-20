@@ -1,4 +1,5 @@
 """Test Taginfo project generation."""
+
 from pathlib import Path
 
 from map_machine.doc.taginfo import TaginfoProjectFile

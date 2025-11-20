@@ -1,4 +1,5 @@
 """Color utility."""
+
 from typing import Any
 
 from colour import Color
@@ -10,8 +11,9 @@ __email__ = "me@enzet.ru"
 
 
 def is_bright(color: Color) -> bool:
-    """
-    Check whether color is bright enough to have black outline instead of white.
+    """Check whether color is bright enough to have black outline.
+
+    Otherwise it should have white outline.
     """
     return (
         0.2126 * color.red + 0.7152 * color.green + 0.0722 * color.blue
@@ -22,8 +24,7 @@ def is_bright(color: Color) -> bool:
 def get_gradient_color(
     value: Any, bounds: MinMax, colors: list[Color]
 ) -> Color:
-    """
-    Get color from the color scale for the value.
+    """Get color from the color scale for the value.
 
     :param value: given value (should be in bounds)
     :param bounds: maximum and minimum values

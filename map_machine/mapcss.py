@@ -1,4 +1,5 @@
 """MapCSS scheme creation."""
+
 import argparse
 import logging
 from pathlib import Path
@@ -90,8 +91,7 @@ class MapCSSWriter:
         prefix: str = "",
         opacity: Optional[float] = None,
     ) -> str:
-        """
-        Add MapCSS 0.2 selector for node, way, relation, or area.
+        """Add MapCSS 0.2 selector for node, way, relation, or area.
 
         :param target: `node`, `way`, `relation`, or `area`
         :param matcher: tag matcher of Map Machine scheme
@@ -152,13 +152,17 @@ class MapCSSWriter:
 
         if self.add_icons:
             for matcher in self.point_matchers:
-                for target in ["node", "area"]:
-                    output_file.write(self.add_selector(target, matcher))
+                output_file.writelines(
+                    self.add_selector(target, matcher)
+                    for target in ["node", "area"]
+                )
 
         if self.add_ways:
             for line_matcher in self.line_matchers:
-                for target in ["way", "relation"]:
-                    output_file.write(self.add_selector(target, line_matcher))
+                output_file.writelines(
+                    self.add_selector(target, line_matcher)
+                    for target in ["way", "relation"]
+                )
 
         if not self.add_icons_for_lifecycle:
             return
@@ -168,12 +172,10 @@ class MapCSSWriter:
             for matcher in self.point_matchers:
                 if len(matcher.tags) > 1:
                     continue
-                for target in ["node", "area"]:
-                    output_file.write(
-                        self.add_selector(
-                            target, matcher, stage_of_decay, opacity
-                        )
-                    )
+                output_file.writelines(
+                    self.add_selector(target, matcher, stage_of_decay, opacity)
+                    for target in ["node", "area"]
+                )
 
 
 def generate_mapcss(options: argparse.Namespace) -> None:

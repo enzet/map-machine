@@ -1,4 +1,5 @@
 """Map Machine tile server for slippy maps."""
+
 import argparse
 import logging
 import sys

@@ -1,4 +1,5 @@
 """Parse OSM XML file."""
+
 import json
 import logging
 import re
@@ -65,8 +66,7 @@ class Tagged:
     tags: Tags
 
     def get_tag(self, key: str) -> Optional[str]:
-        """
-        Get tag value or None if it doesn't exist.
+        """Get tag value or None if it doesn't exist.
 
         :param key: tag key
         :return: tag value or None
@@ -122,8 +122,7 @@ class Tagged:
 
 @dataclass(eq=False)
 class OSMNode(Tagged):
-    """
-    OpenStreetMap node.
+    """OpenStreetMap node.
 
     See https://wiki.openstreetmap.org/wiki/Node
     """
@@ -149,17 +148,18 @@ class OSMNode(Tagged):
             np.array((float(attributes["lat"]), float(attributes["lon"]))),
             attributes.get("visible", None),
             attributes.get("changeset", None),
-            datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
-            if "timestamp" in attributes
-            else None,
+            (
+                datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
+                if "timestamp" in attributes
+                else None
+            ),
             attributes.get("user", None),
             attributes.get("uid", None),
         )
 
     @classmethod
     def parse_from_structure(cls, structure: dict[str, Any]) -> "OSMNode":
-        """
-        Parse node from Overpass-like structure.
+        """Parse node from Overpass-like structure.
 
         :param structure: input structure
         """
@@ -196,8 +196,7 @@ class OSMNode(Tagged):
 
 @dataclass
 class OSMWay(Tagged):
-    """
-    OpenStreetMap way.
+    """OpenStreetMap way.
 
     See https://wiki.openstreetmap.org/wiki/Way
     """
@@ -225,9 +224,11 @@ class OSMWay(Tagged):
             [nodes[int(x.attrib["ref"])] for x in element if x.tag == "nd"],
             attributes.get("visible", None),
             attributes.get("changeset", None),
-            datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
-            if "timestamp" in attributes
-            else None,
+            (
+                datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
+                if "timestamp" in attributes
+                else None
+            ),
             attributes.get("user", None),
             attributes.get("uid", None),
         )
@@ -236,8 +237,7 @@ class OSMWay(Tagged):
     def parse_from_structure(
         cls, structure: dict[str, Any], nodes: dict[int, OSMNode]
     ) -> "OSMWay":
-        """
-        Parse way from Overpass-like structure.
+        """Parse way from Overpass-like structure.
 
         :param structure: input structure
         :param nodes: node structure
@@ -270,8 +270,7 @@ class OSMMember:
 
 @dataclass
 class OSMRelation(Tagged):
-    """
-    OpenStreetMap relation.
+    """OpenStreetMap relation.
 
     See https://wiki.openstreetmap.org/wiki/Relation
     """
@@ -308,17 +307,18 @@ class OSMRelation(Tagged):
             members,
             attributes.get("visible", None),
             attributes.get("changeset", None),
-            datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
-            if "timestamp" in attributes
-            else None,
+            (
+                datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
+                if "timestamp" in attributes
+                else None
+            ),
             attributes.get("user", None),
             attributes.get("uid", None),
         )
 
     @classmethod
     def parse_from_structure(cls, structure: dict[str, Any]) -> "OSMRelation":
-        """
-        Parse relation from Overpass-like structure.
+        """Parse relation from Overpass-like structure.
 
         :param structure: input structure
         """
@@ -397,8 +397,7 @@ class OSMData:
         self.relations[relation.id_] = relation
 
     def parse_overpass(self, file_name: Path) -> None:
-        """
-        Parse JSON structure extracted from Overpass API.
+        """Parse JSON structure extracted from Overpass API.
 
         See https://wiki.openstreetmap.org/wiki/Overpass_API
         """
@@ -434,8 +433,7 @@ class OSMData:
                 self.add_relation(relation)
 
     def parse_osm_file(self, file_name: Path) -> None:
-        """
-        Parse OSM XML file.
+        """Parse OSM XML file.
 
         See https://wiki.openstreetmap.org/wiki/OSM_XML
 
@@ -445,8 +443,7 @@ class OSMData:
         self.parse_osm(ElementTree.parse(file_name).getroot())
 
     def parse_osm_text(self, text: str) -> None:
-        """
-        Parse OSM XML data from text representation.
+        """Parse OSM XML data from text representation.
 
         :param text: XML text representation
         :return: parsed map
@@ -460,8 +457,7 @@ class OSMData:
         parse_ways: bool = True,
         parse_relations: bool = True,
     ) -> None:
-        """
-        Parse OSM XML data.
+        """Parse OSM XML data.
 
         :param root: top element of XML data
         :param parse_nodes: whether nodes should be parsed

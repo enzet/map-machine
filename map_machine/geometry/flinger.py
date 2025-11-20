@@ -1,4 +1,5 @@
 """Geo projection."""
+
 from typing import Optional
 
 import numpy as np
@@ -10,8 +11,7 @@ __email__ = "me@enzet.ru"
 
 
 def pseudo_mercator(coordinates: np.ndarray) -> np.ndarray:
-    """
-    Use spherical pseudo-Mercator projection to convert geo coordinates.
+    """Use spherical pseudo-Mercator projection to convert geo coordinates.
 
     The result is (x, y), where x is a longitude value, so x is in [-180, 180],
     and y is a stretched latitude and may have any real value:
@@ -31,8 +31,7 @@ def pseudo_mercator(coordinates: np.ndarray) -> np.ndarray:
 def osm_zoom_level_to_pixels_per_meter(
     zoom_level: float, equator_length: float
 ) -> float:
-    """
-    Convert OSM zoom level to pixels per meter on Equator.
+    """Convert OSM zoom level to pixels per meter on Equator.
 
     See https://wiki.openstreetmap.org/wiki/Zoom_levels
 
@@ -66,8 +65,7 @@ class MercatorFlinger(Flinger):
         zoom_level: float,
         equator_length: float,
     ) -> None:
-        """
-        Initialize flinger with geo bounding box and zoom level.
+        """Initialize flinger with geo bounding box and zoom level.
 
         :param geo_boundaries: minimum and maximum latitude and longitude
         :param zoom_level: zoom level in OpenStreetMap terminology
@@ -89,8 +87,7 @@ class MercatorFlinger(Flinger):
         self.min_ = self.ratio * pseudo_mercator(self.geo_boundaries.min_())
 
     def fling(self, coordinates: np.ndarray) -> np.ndarray:
-        """
-        Convert geo coordinates into (x, y) position points on the plane.
+        """Convert geo coordinates into (x, y) position points on the plane.
 
         :param coordinates: geographical coordinates to fling in the form of
             (latitude, longitude)
@@ -105,8 +102,7 @@ class MercatorFlinger(Flinger):
         return result
 
     def get_scale(self, coordinates: Optional[np.ndarray] = None) -> float:
-        """
-        Return pixels per meter ratio for the given geo coordinates.
+        """Return pixels per meter ratio for the given geo coordinates.
 
         :param coordinates: geographical coordinates in the form of
             (latitude, longitude)

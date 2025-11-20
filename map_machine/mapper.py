@@ -1,9 +1,11 @@
 """Simple OpenStreetMap renderer."""
+
 import argparse
 import logging
 import sys
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Iterator, Optional
+from typing import Optional
 
 import numpy as np
 import svgwrite
@@ -15,7 +17,7 @@ from svgwrite.shapes import Rect
 from map_machine import __project__
 from map_machine.constructor import Constructor
 from map_machine.drawing import draw_text
-from map_machine.feature.building import Building, draw_walls, BUILDING_SCALE
+from map_machine.feature.building import BUILDING_SCALE, Building, draw_walls
 from map_machine.feature.road import Intersection, Road, RoadPart
 from map_machine.figure import StyledFigure
 from map_machine.geometry.bounding_box import BoundingBox
@@ -239,8 +241,7 @@ class Map:
             intersection.draw(self.svg, True)
 
     def draw_credits(self, size: np.ndarray):
-        """
-        Add OpenStreetMap credit and the link to the project itself.
+        """Add OpenStreetMap credit and the link to the project itself.
         OpenStreetMap requires to use the credit “© OpenStreetMap contributors”.
 
         See https://www.openstreetmap.org/copyright
@@ -288,8 +289,7 @@ def fatal(message: str) -> None:
 
 
 def render_map(arguments: argparse.Namespace) -> None:
-    """
-    Map rendering entry point.
+    """Map rendering entry point.
 
     :param arguments: command-line arguments
     """

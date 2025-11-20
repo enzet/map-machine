@@ -1,10 +1,11 @@
 """Entry point for element drawing: nodes, ways, and relations."""
+
 import argparse
 import logging
 from pathlib import Path
 
 from map_machine.element.grid import Grid
-from map_machine.osm.osm_reader import Tags, OSMNode
+from map_machine.osm.osm_reader import OSMNode, Tags
 
 
 def draw_node(tags: Tags, path: Path):

@@ -1,8 +1,8 @@
-"""
-Creating fish shell autocompletion commands.
+"""Creating fish shell autocompletion commands.
 
 See https://fishshell.com/docs/current/completions.html
 """
+
 import argparse
 from pathlib import Path
 from typing import Any

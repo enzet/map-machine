@@ -1,4 +1,5 @@
 """Vector utility."""
+
 from typing import Optional
 
 import numpy as np
@@ -10,8 +11,7 @@ from shapely.geometry import LineString
 
 
 def compute_angle(vector: np.ndarray) -> float:
-    """
-    For the given vector compute an angle between it and (1, 0) vector.
+    """For the given vector compute an angle between it and (1, 0) vector.
 
     The result is in [0, 2π].
     """
@@ -94,8 +94,7 @@ class Line:
         self.c: float = start[0] * end[1] - end[0] * start[1]
 
     def parallel_shift(self, shift: np.ndarray) -> None:
-        """
-        Shift current vector according with shift.
+        """Shift current vector according with shift.
 
         :param shift: shift vector
         """
@@ -148,8 +147,7 @@ class Segment:
         return self.y < other.y
 
     def intersection(self, other: "Segment") -> Optional[list[float]]:
-        """
-        Find and intersection point between two segments.
+        """Find and intersection point between two segments.
 
         :return: `None` if segments don't intersect, [x, y] coordinates of
             the resulting point otherwise.
@@ -181,5 +179,4 @@ class Segment:
                 self.point_1[0] + t * (self.point_2[0] - self.point_1[0]),
                 self.point_1[1] + t * (self.point_2[1] - self.point_1[1]),
             ]
-        else:
-            return None
+        return None

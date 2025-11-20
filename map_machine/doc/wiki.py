@@ -1,10 +1,10 @@
 """Automate OpenStreetMap wiki editing."""
+
 import re
 from pathlib import Path
 from typing import Optional
 
 from map_machine.doc.doc_collections import Collection
-
 from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import Tags
 from map_machine.pictogram.icon import Icon, ShapeExtractor
@@ -29,8 +29,7 @@ ROENTGEN_HEADER_PATTERN: re.Pattern = re.compile("===.*Röntgen.*===")
 
 
 class WikiTable:
-    """
-    Trivial wiki table constructor.
+    """Trivial wiki table constructor.
 
     Creates table with icon combinations.
     """
@@ -126,8 +125,7 @@ def generate_new_text(
     old_text: str,
     table: WikiTable,
 ) -> tuple[Optional[str], list[Icon]]:
-    """
-    Generate Röntgen icon table for the OpenStreetMap wiki page.
+    """Generate Röntgen icon table for the OpenStreetMap wiki page.
 
     :param old_text: previous wiki page text
     :param table: wiki table generator
