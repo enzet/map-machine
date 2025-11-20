@@ -204,7 +204,7 @@ map-machine render \
 
 ```shell
 map-machine render \
-    --boundary-box 2.284,48.860,2.290,48.865 \
+    --bounding-box 2.284,48.860,2.290,48.865 \
     --output out/esplanade_du_trocadéro.svg
 ```
 
@@ -216,7 +216,7 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and render an SV
 |---|---|
 | <span style="white-space: nowrap;">`-i`</span>, <span style="white-space: nowrap;">`--input`</span> `<path>` | input XML file name or names (if not specified, file will be downloaded using the OpenStreetMap API) |
 | <span style="white-space: nowrap;">`-o`</span>, <span style="white-space: nowrap;">`--output`</span> `<path>` | output SVG file name, default value: `out/map.svg` |
-| <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | geo boundary box |
+| <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--bounding-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | geo bounding box |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
 | <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<float>` | OSM zoom level, default value: 18.0 |
 | <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location inside the tile |
@@ -234,7 +234,7 @@ Command `tile` is used to generate PNG tiles for [slippy maps](https://wiki.open
 | <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location inside the tile |
 | <span style="white-space: nowrap;">`-t`</span>, <span style="white-space: nowrap;">`--tile`</span> `<zoom level>/<x>/<y>` | tile specification |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | path for temporary OSM files, default value: `cache` |
-| <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | construct the minimum amount of tiles that cover the requested boundary box |
+| <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--bounding-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | construct the minimum amount of tiles that cover the requested bounding box |
 | <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<range>` | OSM zoom levels; can be list of numbers or ranges, e.g. `16-18`, `16,17,18`, or `16,18-20`, default value: `18` |
 | <span style="white-space: nowrap;">`-i`</span>, <span style="white-space: nowrap;">`--input`</span> `<path>` | input OSM XML file name (if not specified, the file will be downloaded using the OpenStreetMap API) |
 
@@ -268,15 +268,15 @@ will generate an SVG file `out/tiles/tile_18_158471_81953.svg` and a PNG file `o
 
 ### Generate a set of tiles ###
 
-Specify the boundary box to get the minimal set of tiles that covers the area:
+Specify the bounding box to get the minimal set of tiles that covers the area:
 
 ```shell
 map-machine tile \
-    --boundary-box <min longitude>,<min latitude>,<max longitude>,<max latitude> \
+    --bounding-box <min longitude>,<min latitude>,<max longitude>,<max latitude> \
     --zoom <OSM zoom levels>
 ```
 
-The boundary box will be extended to the boundaries of the minimal tileset that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point. The map with the new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG files `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates.
+The bounding box will be extended to the boundaries of the minimal tileset that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point. The map with the new bounding box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files `out/tiles/tile_<zoom level>_<x>_<y>.svg` and PNG files `out/tiles/tile_<zoom level>_<x>_<y>.svg`, where `x` and `y` are tile coordinates.
 
 Example:
 
@@ -304,7 +304,7 @@ Stop server interrupting the process with <kbd>Ctrl</kbd> + <kbd>C</kbd>.
 
 ### Example ###
 
-Create a minimal amount of tiles that cover specified boundary box for zoom levels 16, 17, 18, and 19:
+Create a minimal amount of tiles that cover specified bounding box for zoom levels 16, 17, 18, and 19:
 
 ```shell
 map-machine tile -b 2.364,48.854,2.367,48.857 -z 16-19

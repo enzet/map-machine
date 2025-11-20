@@ -7,7 +7,7 @@ from pathlib import Path
 
 import urllib3
 
-from map_machine.geometry.boundary_box import BoundaryBox
+from map_machine.geometry.bounding_box import BoundingBox
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -23,12 +23,12 @@ class NetworkError(Exception):
 
 
 def get_osm(
-    boundary_box: BoundaryBox, cache_file_path: Path, to_update: bool = False
+    bounding_box: BoundingBox, cache_file_path: Path, to_update: bool = False
 ) -> str:
     """
     Download OSM data from the web or get if from the cache.
 
-    :param boundary_box: borders of the map part to download
+    :param bounding_box: borders of the map part to download
     :param cache_file_path: cache file to store downloaded OSM data
     :param to_update: update cache files
     """
@@ -38,7 +38,7 @@ def get_osm(
 
     content: bytes = get_data(
         "https://api.openstreetmap.org/api/0.6/map",
-        {"bbox": boundary_box.get_format()},
+        {"bbox": bounding_box.get_format()},
     )
 
     # Try to decompress gzip content if needed.

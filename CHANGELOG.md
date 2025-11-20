@@ -1,3 +1,17 @@
+## Not released
+
+### Improvements
+
+- **Breaking change**: disable `--update-cache` by default for `server` command.
+- Add Leaflet example
+  ([#164](https://github.com/enzet/map-machine/issues/164)).
+- Rename `--boundary-box` to `--bounding-box`. `--boundary-box` is still
+  supported for backward compatibility.
+- Migrate to `pyproject.toml`
+  ([#178](https://github.com/enzet/map-machine/issues/178)).
+- Support scientific notation
+  ([#167](https://github.com/enzet/map-machine/issues/167)).
+
 ## 0.2.0
 
 ### Fixes

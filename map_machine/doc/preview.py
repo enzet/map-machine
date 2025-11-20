@@ -8,7 +8,7 @@ import numpy as np
 import svgwrite
 
 from map_machine.constructor import Constructor
-from map_machine.geometry.boundary_box import BoundaryBox
+from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.geometry.flinger import MercatorFlinger
 from map_machine.map_configuration import (
     BuildingMode,
@@ -37,7 +37,7 @@ EXTRACTOR: ShapeExtractor = ShapeExtractor(
 def draw(
     input_file_name: Path,
     output_file_name: Path,
-    boundary_box: BoundaryBox,
+    bounding_box: BoundingBox,
     configuration: Optional[MapConfiguration] = None,
 ) -> None:
     """Draw file."""
@@ -47,7 +47,7 @@ def draw(
     osm_data: OSMData = OSMData()
     osm_data.parse_osm_file(input_file_name)
     flinger: MercatorFlinger = MercatorFlinger(
-        boundary_box, configuration.zoom_level, osm_data.equator_length
+        bounding_box, configuration.zoom_level, osm_data.equator_length
     )
     constructor: Constructor = Constructor(
         osm_data, flinger, EXTRACTOR, configuration
@@ -68,7 +68,7 @@ def draw_around_point(
     name: str,
     configuration: Optional[MapConfiguration] = None,
     size: np.ndarray = np.array((600, 400)),
-    get: Optional[BoundaryBox] = None,
+    get: Optional[BoundingBox] = None,
 ) -> None:
     """Draw around point."""
     if configuration is None:
@@ -76,16 +76,16 @@ def draw_around_point(
 
     input_path: Path = doc_path / f"{name}.svg"
 
-    boundary_box: BoundaryBox = BoundaryBox.from_coordinates(
+    bounding_box: BoundingBox = BoundingBox.from_coordinates(
         point, configuration.zoom_level, size[0], size[1]
     )
-    get_boundary_box = get if get else boundary_box
+    get_bounding_box = get if get else bounding_box
 
-    get_osm(get_boundary_box, cache / f"{get_boundary_box.get_format()}.osm")
+    get_osm(get_bounding_box, cache / f"{get_bounding_box.get_format()}.osm")
     draw(
-        cache / f"{get_boundary_box.get_format()}.osm",
+        cache / f"{get_bounding_box.get_format()}.osm",
         input_path,
-        boundary_box,
+        bounding_box,
         configuration,
     )
 
@@ -154,7 +154,7 @@ def main(id_: str) -> None:
             MapConfiguration(
                 SCHEME, label_mode=LabelMode(LabelMode.ALL), zoom_level=18.1
             ),
-            get=BoundaryBox(37.624, 55.749, 37.633, 55.753),
+            get=BoundingBox(37.624, 55.749, 37.633, 55.753),
         )
 
     # if id_ is None or id_ == "golf":

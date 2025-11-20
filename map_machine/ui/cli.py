@@ -9,10 +9,10 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 COMMAND_LINES: dict[str, list[str]] = {
-    "render": ["render", "-b", "10.000,20.000,10.001,20.001"],
+    "render": ["render", "--bounding-box", "10.000,20.000,10.001,20.001"],
     "render_with_tooltips": [
         "render",
-        "-b",
+        "--bounding-box",
         "10.000,20.000,10.001,20.001",
         "--tooltips",
     ],
@@ -35,10 +35,16 @@ COMMANDS: list[str] = [
 def parse_arguments(args: list[str]) -> argparse.Namespace:
     """Parse Map Machine command-line arguments."""
 
-    # Preparse arguments adding space before coordinates and boundary box if the
+    # Preparse arguments adding space before coordinates and bounding box if the
     # first value is negative.  In that case `argparse` interprets in as an
     # option name.
-    for argument in "-c", "--coordinates", "-b", "--boundary-box":
+    for argument in (
+        "-c",
+        "--coordinates",
+        "-b",
+        "--bounding-box",
+        "--boundary-box",
+    ):
         if argument in args:
             index: int = args.index(argument) + 1
             if args[index].startswith("-"):
@@ -58,10 +64,10 @@ def parse_arguments(args: list[str]) -> argparse.Namespace:
 
     render_parser = subparser.add_parser(
         "render",
-        description="Render SVG map.  Use --boundary-box to specify geo "
-        "boundaries, --input to specify OSM XML or JSON input file, or "
-        "--coordinates and --size to specify central point and resulting image "
-        "size.",
+        description="Render SVG map.  Use `--bounding-box` to specify geo "
+        "boundaries, `--input` to specify OSM XML or JSON input file, or "
+        "`--coordinates` and `--size` to specify central point and resulting "
+        "image size.",
         help="draw SVG map",
     )
     add_render_arguments(render_parser)
@@ -245,9 +251,10 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument(
         "-b",
-        "--boundary-box",
+        "--bounding-box",
+        "--boundary-box",  # Legacy old name.
         help="construct the minimum amount of tiles that cover the requested "
-        "boundary box",
+        "bounding box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
     )
     parser.add_argument(
@@ -320,9 +327,10 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument(
         "-b",
-        "--boundary-box",
+        "--bounding-box",
+        "--boundary-box",  # Legacy old name.
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
-        help="geo boundary box",
+        help="geo bounding box",
     )
     parser.add_argument(
         "--cache",

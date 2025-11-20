@@ -18,7 +18,7 @@ from map_machine.drawing import draw_text
 from map_machine.feature.building import Building, draw_walls, BUILDING_SCALE
 from map_machine.feature.road import Intersection, Road, RoadPart
 from map_machine.figure import StyledFigure
-from map_machine.geometry.boundary_box import BoundaryBox
+from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.geometry.flinger import Flinger, MercatorFlinger
 from map_machine.geometry.vector import Segment
 from map_machine.map_configuration import LabelMode, MapConfiguration
@@ -307,19 +307,19 @@ def render_map(arguments: argparse.Namespace) -> None:
     cache_path: Path = Path(arguments.cache)
     cache_path.mkdir(parents=True, exist_ok=True)
 
-    # Compute boundary box.
+    # Compute bounding box.
 
-    boundary_box: Optional[BoundaryBox] = None
+    bounding_box: Optional[BoundingBox] = None
 
-    # If boundary box is specified explicitly, use it or stop the rendering
+    # If bounding box is specified explicitly, use it or stop the rendering
     # process if the box is invalid.
-    if arguments.boundary_box:
-        boundary_box = BoundaryBox.from_text(arguments.boundary_box)
-        if not boundary_box:
-            fatal("Invalid boundary box.")
+    if arguments.bounding_box:
+        bounding_box = BoundingBox.from_text(arguments.bounding_box)
+        if not bounding_box:
+            fatal("Invalid bounding box.")
         if arguments.coordinates:
             logging.warning(
-                "Boundary box is explicitly specified. Coordinates are ignored."
+                "Bounding box is explicitly specified. Coordinates are ignored."
             )
 
     elif arguments.coordinates:
@@ -341,7 +341,7 @@ def render_map(arguments: argparse.Namespace) -> None:
         else:
             width, height = DEFAULT_SIZE
 
-        boundary_box = BoundaryBox.from_coordinates(
+        bounding_box = BoundingBox.from_coordinates(
             coordinates, configuration.zoom_level, width, height
         )
 
@@ -350,18 +350,18 @@ def render_map(arguments: argparse.Namespace) -> None:
     input_file_names: Optional[list[Path]] = None
     if arguments.input_file_names:
         input_file_names = list(map(Path, arguments.input_file_names))
-    elif boundary_box:
+    elif bounding_box:
         try:
             cache_file_path: Path = (
-                cache_path / f"{boundary_box.get_format()}.osm"
+                cache_path / f"{bounding_box.get_format()}.osm"
             )
-            get_osm(boundary_box, cache_file_path)
+            get_osm(bounding_box, cache_file_path)
             input_file_names = [cache_file_path]
         except NetworkError as error:
             logging.fatal(error.message)
             sys.exit(1)
     else:
-        fatal("Specify either --input, or --boundary-box, or --coordinates.")
+        fatal("Specify either --input, or --bounding-box, or --coordinates.")
 
     # Get OpenStreetMap data.
 
@@ -376,15 +376,15 @@ def render_map(arguments: argparse.Namespace) -> None:
         else:
             osm_data.parse_osm_file(input_file_name)
 
-    if not boundary_box:
-        boundary_box = osm_data.view_box
-    if not boundary_box:
-        boundary_box = osm_data.boundary_box
+    if not bounding_box:
+        bounding_box = osm_data.view_box
+    if not bounding_box:
+        bounding_box = osm_data.bounding_box
 
     # Render the map.
 
     flinger: MercatorFlinger = MercatorFlinger(
-        boundary_box, arguments.zoom, osm_data.equator_length
+        bounding_box, arguments.zoom, osm_data.equator_length
     )
     size: np.ndarray = flinger.size
 
