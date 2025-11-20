@@ -1,15 +1,17 @@
 """Construct Map Machine nodes and ways."""
+
 import logging
 import sys
+from collections.abc import Iterator
 from datetime import datetime
 from hashlib import sha256
-from typing import Any, Iterator, Optional, Union
+from typing import Any, Optional, Union
 
 import numpy as np
 from colour import Color
 
 from map_machine.color import get_gradient_color
-from map_machine.feature.building import Building, BUILDING_SCALE
+from map_machine.feature.building import BUILDING_SCALE, Building
 from map_machine.feature.crater import Crater
 from map_machine.feature.direction import DirectionSector
 from map_machine.feature.road import Road, Roads
@@ -22,8 +24,8 @@ from map_machine.osm.osm_reader import (
     OSMNode,
     OSMRelation,
     OSMWay,
-    parse_levels,
     Tags,
+    parse_levels,
 )
 from map_machine.pictogram.icon import (
     DEFAULT_SMALL_SHAPE_ID,
@@ -56,8 +58,7 @@ TIME_COLOR_SCALE: list[Color] = [
 def line_center(
     nodes: list[OSMNode], flinger: Flinger
 ) -> tuple[np.ndarray, np.ndarray]:
-    """
-    Get geometric center of nodes set.
+    """Get geometric center of nodes set.
 
     :param nodes: node list
     :param flinger: flinger that remap geo positions
@@ -81,8 +82,7 @@ def get_user_color(text: str, seed: str) -> Color:
 
 
 def get_time_color(time: Optional[datetime], boundaries: MinMax) -> Color:
-    """
-    Generate color based on time.
+    """Generate color based on time.
 
     :param time: current element creation time
     :param boundaries: minimum and maximum element creation time on the map
@@ -93,8 +93,7 @@ def get_time_color(time: Optional[datetime], boundaries: MinMax) -> Color:
 
 
 def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
-    """
-    Try to glue ways that share nodes.
+    """Try to glue ways that share nodes.
 
     :param ways: ways to glue
     """
@@ -212,8 +211,7 @@ class Constructor:
         inners: list[list[OSMNode]],
         outers: list[list[OSMNode]],
     ) -> None:
-        """
-        Construct way or relation.
+        """Construct way or relation.
 
         :param line: OpenStreetMap way or relation
         :param inners: list of polygons that compose inner boundary
@@ -299,9 +297,11 @@ class Constructor:
             if not (
                 line.get_tag("area") == "yes"
                 or line.get_tag("type") == "multipolygon"
-                or is_cycle(outers[0])
-                and line.get_tag("area") != "no"
-                and self.scheme.is_area(line.tags)
+                or (
+                    is_cycle(outers[0])
+                    and line.get_tag("area") != "no"
+                    and self.scheme.is_area(line.tags)
+                )
             ):
                 continue
 

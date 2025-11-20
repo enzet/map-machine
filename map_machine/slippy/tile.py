@@ -1,8 +1,8 @@
-"""
-Tile generation.
+"""Tile generation.
 
 See https://wiki.openstreetmap.org/wiki/Tiles
 """
+
 import argparse
 import logging
 import sys
@@ -35,8 +35,7 @@ EXTEND_TO_BIGGER_TILE: bool = False
 
 @dataclass
 class Tile:
-    """
-    OpenStreetMap tile, square bitmap graphics displayed in a grid arrangement
+    """OpenStreetMap tile, square bitmap graphics displayed in a grid arrangement
     to show a map.
     """
 
@@ -48,8 +47,7 @@ class Tile:
     def from_coordinates(
         cls, coordinates: np.ndarray, zoom_level: int
     ) -> "Tile":
-        """
-        Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
+        """Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
 
         :param coordinates: any coordinates inside tile, (latitude, longitude)
         :param zoom_level: zoom level in OpenStreetMap terminology
@@ -61,8 +59,7 @@ class Tile:
         return cls(x, y, zoom_level)
 
     def get_coordinates(self) -> np.ndarray:
-        """
-        Return geo coordinates of the north-west corner of the tile.
+        """Return geo coordinates of the north-west corner of the tile.
 
         Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
         """
@@ -73,8 +70,7 @@ class Tile:
         return np.array((lat_deg, lon_deg))
 
     def get_bounding_box(self) -> BoundingBox:
-        """
-        Get geographical bounding box of the tile: north-west and south-east
+        """Get geographical bounding box of the tile: north-west and south-east
         points.
         """
         point_1: np.ndarray = self.get_coordinates()
@@ -96,8 +92,7 @@ class Tile:
         ).round()
 
     def load_osm_data(self, cache_path: Path) -> OSMData:
-        """
-        Construct map data from extended bounding box.
+        """Construct map data from extended bounding box.
 
         :param cache_path: directory to store OSM data files
         """
@@ -132,8 +127,7 @@ class Tile:
         cache_path: Path,
         configuration: MapConfiguration,
     ) -> None:
-        """
-        Draw tile to SVG and PNG files.
+        """Draw tile to SVG and PNG files.
 
         :param directory_name: output directory to storing tiles
         :param cache_path: directory to store SVG and PNG tiles
@@ -196,7 +190,7 @@ class Tile:
         """Get subtiles of the tile."""
         assert zoom_level >= self.zoom_level
 
-        tiles: list["Tile"] = []
+        tiles: list[Tile] = []
         scale: int = 2 ** (zoom_level - self.zoom_level)
         for i in range(scale):
             for j in range(scale):
@@ -221,8 +215,7 @@ class Tiles:
     def from_bounding_box(
         cls, bounding_box: BoundingBox, zoom_level: int
     ) -> "Tiles":
-        """
-        Create minimal set of tiles that covers bounding box.
+        """Create minimal set of tiles that covers bounding box.
 
         :param bounding_box: area to be covered by tiles
         :param zoom_level: zoom level in OpenStreetMap terminology
@@ -275,8 +268,7 @@ class Tiles:
         osm_data: OSMData,
         redraw: bool = False,
     ) -> None:
-        """
-        Draw one PNG image with all tiles and split it into a set of separate
+        """Draw one PNG image with all tiles and split it into a set of separate
         PNG file with Pillow.
 
         :param directory: directory for tiles
@@ -323,8 +315,7 @@ class Tiles:
     def draw_image(
         self, cache_path: Path, configuration: MapConfiguration
     ) -> None:
-        """
-        Draw all tiles as one picture.
+        """Draw all tiles as one picture.
 
         :param cache_path: directory for temporary SVG file and OSM files
         :param configuration: drawing configuration

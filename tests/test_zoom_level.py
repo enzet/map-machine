@@ -1,4 +1,5 @@
 """Test zoom level specification parsing."""
+
 from map_machine.slippy.tile import (
     ScaleConfigurationException,
     parse_zoom_level,

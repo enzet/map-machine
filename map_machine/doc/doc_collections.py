@@ -1,20 +1,23 @@
 """Special icon collections for documentation."""
+
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
 import numpy as np
 import svgwrite
 from svgwrite import Drawing
-from svgwrite.shapes import Line, Rect
-from svgwrite.text import Text
 
 from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import Tags
-from map_machine.pictogram.icon import ShapeExtractor, IconSet
+from map_machine.pictogram.icon import IconSet, ShapeExtractor
 from map_machine.scheme import Scheme
 from map_machine.workspace import Workspace
+
+if TYPE_CHECKING:
+    from svgwrite.shapes import Line, Rect
+    from svgwrite.text import Text
 
 WORKSPACE: Workspace = Workspace(Path("temp"))
 
@@ -63,9 +66,9 @@ class Collection:
         """Deserialize icon collection from structure."""
         return cls(
             structure["tags"],
-            structure.get("row_key", None),
+            structure.get("row_key"),
             structure.get("row_values", []),
-            structure.get("column_key", None),
+            structure.get("column_key"),
             structure.get("column_values", []),
             structure.get("row_tags", []),
         )
@@ -90,17 +93,21 @@ class SVGTable:
         self.font_width: float = self.font_size * 0.7
 
         self.size: list[float] = [
-            max(
-                max(map(len, self.collection.row_values)) * self.font_width,
-                len(self.collection.row_key) * self.font_width
-                + (self.offset if self.collection.column_values else 0),
-                170.0,
-            )
-            if self.collection.row_values
-            else 0.0,
-            max(map(len, self.collection.column_values)) * self.font_width
-            if self.collection.column_values
-            else 0.0,
+            (
+                max(
+                    max(map(len, self.collection.row_values)) * self.font_width,
+                    len(self.collection.row_key) * self.font_width
+                    + (self.offset if self.collection.column_values else 0),
+                    170.0,
+                )
+                if self.collection.row_values
+                else 0.0
+            ),
+            (
+                max(map(len, self.collection.column_values)) * self.font_width
+                if self.collection.column_values
+                else 0.0
+            ),
         ]
         self.start_point: np.ndarray = (
             2 * self.border + np.array(self.size) + self.half_step
@@ -115,11 +122,9 @@ class SVGTable:
 
         for i, row_value in enumerate(self.collection.row_values):
             for j, column_value in enumerate(
-                (
-                    self.collection.column_values
-                    if self.collection.column_values
-                    else [""]
-                )
+                self.collection.column_values
+                if self.collection.column_values
+                else [""]
             ):
                 current_tags: Tags = dict(self.collection.tags) | {
                     self.collection.row_key: row_value

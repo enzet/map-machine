@@ -1,4 +1,5 @@
 """Test color functions."""
+
 from colour import Color
 
 from map_machine.color import get_gradient_color, is_bright

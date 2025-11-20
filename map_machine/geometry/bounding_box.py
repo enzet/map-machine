@@ -1,4 +1,5 @@
 """Rectangle that limit space on the map."""
+
 import logging
 import re
 from dataclasses import dataclass
@@ -32,8 +33,7 @@ class BoundingBox:
 
     @classmethod
     def from_text(cls, bounding_box: str) -> Optional["BoundingBox"]:
-        """
-        Parse bounding box string representation.
+        """Parse bounding box string representation.
 
         Note, that:
             left < right
@@ -84,8 +84,7 @@ class BoundingBox:
         width: float,
         height: float,
     ) -> "BoundingBox":
-        """
-        Compute bounding box from center coordinates, zoom level and image size.
+        """Compute bounding box from center coordinates, zoom level and image size.
 
         :param coordinates: bounding box central coordinates
         :param zoom_level: resulting image zoom level
@@ -146,8 +145,7 @@ class BoundingBox:
         )
 
     def get_format(self) -> str:
-        """
-        Get text representation of the bounding box.
+        """Get text representation of the bounding box.
 
         Bounding box format is
         <longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>.  Coordinates are

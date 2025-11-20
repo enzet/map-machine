@@ -1,4 +1,5 @@
 """Drawing utility."""
+
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, Union
@@ -131,13 +132,12 @@ def parse_path(path: str) -> PathCommands:
             command = part
         elif command in "VvHh":
             result.append(float(part))
+        elif "," in part:
+            elements: list[str] = part.split(",")
+            result.append(np.array(list(map(float, elements))))
         else:
-            if "," in part:
-                elements: list[str] = part.split(",")
-                result.append(np.array(list(map(float, elements))))
-            else:
-                result.append(np.array((float(part), float(parts[index + 1]))))
-                index += 1
+            result.append(np.array((float(part), float(parts[index + 1]))))
+            index += 1
         index += 1
 
     return result

@@ -1,4 +1,5 @@
 """Figures displayed on the map."""
+
 import numpy as np
 
 from map_machine.geometry.flinger import Flinger
@@ -34,8 +35,7 @@ class Figure(Tagged):
     def get_path(
         self, flinger: Flinger, offset: np.ndarray = np.array((0.0, 0.0))
     ) -> str:
-        """
-        Get SVG path commands.
+        """Get SVG path commands.
 
         :param flinger: converter for geo coordinates
         :param offset: offset vector
@@ -69,8 +69,7 @@ class StyledFigure(Figure):
         flinger: Flinger,
         offset: np.ndarray = np.array((0.0, 0.0)),
     ) -> str:
-        """
-        Get SVG path commands.
+        """Get SVG path commands.
 
         :param flinger: converter for geo coordinates
         :param offset: offset vector
@@ -92,8 +91,7 @@ class StyledFigure(Figure):
         return path
 
     def get_layer(self) -> float:
-        """
-        Get figure layer value or 0 if it is not specified.
+        """Get figure layer value or 0 if it is not specified.
 
         TODO: support values separated by "," or ";".
         """
@@ -113,8 +111,7 @@ class StyledFigure(Figure):
 
 
 def is_clockwise(polygon: list[OSMNode]) -> bool:
-    """
-    Return true if polygon nodes are in clockwise order.
+    """Return true if polygon nodes are in clockwise order.
 
     :param polygon: list of OpenStreetMap nodes
     """
@@ -128,8 +125,7 @@ def is_clockwise(polygon: list[OSMNode]) -> bool:
 
 
 def make_clockwise(polygon: list[OSMNode]) -> list[OSMNode]:
-    """
-    Make polygon nodes clockwise.
+    """Make polygon nodes clockwise.
 
     :param polygon: list of OpenStreetMap nodes
     """
@@ -137,8 +133,7 @@ def make_clockwise(polygon: list[OSMNode]) -> list[OSMNode]:
 
 
 def make_counter_clockwise(polygon: list[OSMNode]) -> list[OSMNode]:
-    """
-    Make polygon nodes counter-clockwise.
+    """Make polygon nodes counter-clockwise.
 
     :param polygon: list of OpenStreetMap nodes
     """

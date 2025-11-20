@@ -1,4 +1,5 @@
 """Test style constructing for ways and areas."""
+
 from tests import SCHEME
 
 __author__ = "Sergey Vartanov"

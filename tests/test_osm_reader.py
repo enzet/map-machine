@@ -1,4 +1,5 @@
 """Test OSM XML parsing."""
+
 import numpy as np
 
 from map_machine.osm.osm_reader import (

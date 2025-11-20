@@ -1,4 +1,5 @@
 """Crater on the map."""
+
 import numpy as np
 from colour import Color
 from svgwrite import Drawing

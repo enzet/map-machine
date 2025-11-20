@@ -1,8 +1,8 @@
-"""
-Creating Taginfo project file.
+"""Creating Taginfo project file.
 
 See https://wiki.openstreetmap.org/wiki/Taginfo/Projects
 """
+
 import json
 import logging
 from datetime import datetime

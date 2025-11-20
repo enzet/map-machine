@@ -1,4 +1,5 @@
 """Moire markup extension for Map Machine."""
+
 import argparse
 from abc import ABC
 from pathlib import Path
@@ -226,8 +227,7 @@ class MapMachineHTML(MapMachineMoire, DefaultHTML):
 
 
 class MapMachineOSMWiki(MapMachineMoire, DefaultWiki):
-    """
-    Moire convertor to OpenStreetMap wiki markup.
+    """Moire convertor to OpenStreetMap wiki markup.
 
     See https://wiki.openstreetmap.org/wiki/Main_Page
     """

@@ -1,4 +1,5 @@
 """Test bounding box."""
+
 from map_machine.geometry.bounding_box import BoundingBox
 
 __author__ = "Sergey Vartanov"

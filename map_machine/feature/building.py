@@ -1,4 +1,5 @@
 """Buildings on the map."""
+
 import numpy as np
 import svgwrite
 from colour import Color
@@ -111,12 +112,14 @@ class Building(Figure):
 
         path: Path = Path(
             d=path_commands,
-            stroke=self.stroke.hex
-            if use_building_colors
-            else self.default_stroke.hex,
-            fill=self.fill.hex
-            if use_building_colors
-            else self.default_fill.hex,
+            stroke=(
+                self.stroke.hex
+                if use_building_colors
+                else self.default_stroke.hex
+            ),
+            fill=(
+                self.fill.hex if use_building_colors else self.default_fill.hex
+            ),
             stroke_linejoin="round",
         )
         svg.add(path)
@@ -219,8 +222,7 @@ def draw_walls(
     shift_2: np.ndarray,
     use_building_colors: bool,
 ) -> None:
-    """
-    Draw walls for buildings as a quadrangle.
+    """Draw walls for buildings as a quadrangle.
 
     Color of the wall is based on illumination.
     """

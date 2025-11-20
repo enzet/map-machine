@@ -1,4 +1,5 @@
 """Map Machine entry point."""
+
 import sys
 
 if sys.version_info.major < 3 or sys.version_info.minor < 9:
@@ -69,8 +70,8 @@ def main() -> None:
         server.run_server(arguments)
 
     elif arguments.command == "taginfo":
-        from map_machine.scheme import Scheme
         from map_machine.doc.taginfo import write_taginfo_project_file
+        from map_machine.scheme import Scheme
 
         write_taginfo_project_file(
             Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)

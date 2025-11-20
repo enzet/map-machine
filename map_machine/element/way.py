@@ -1,13 +1,14 @@
 """Draw test nodes, ways, and relations."""
+
 import logging
 from pathlib import Path
 from typing import Optional
 
 from map_machine.element.grid import Grid
-from map_machine.osm.osm_reader import OSMNode, OSMMember
+from map_machine.osm.osm_reader import OSMMember, OSMNode
 from map_machine.osm.tags import (
-    HIGHWAY_VALUES,
     AEROWAY_VALUES,
+    HIGHWAY_VALUES,
     RAILWAY_VALUES,
     ROAD_VALUES,
 )
@@ -62,8 +63,7 @@ PLACEMENT_FEATURES_2: list[dict[str, str]] = [
 
 
 def draw_overlapped_ways(types: list[dict[str, str]], path: Path) -> None:
-    """
-    Draw two sets of ways intersecting each other.
+    """Draw two sets of ways intersecting each other.
 
     The goal is to show check priority.
     """

@@ -1,4 +1,5 @@
 """Text processing for map element."""
+
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -27,8 +28,7 @@ class Label:
 def get_address(
     tags: dict[str, Any], processed: set[str], label_mode: LabelMode
 ) -> list[str]:
-    """
-    Construct address text list from the tags.
+    """Construct address text list from the tags.
 
     :param tags: OSM node, way or relation tags
     :param processed: set of processed tag keys
@@ -50,8 +50,7 @@ def get_address(
 
 
 def format_voltage(value: str) -> str:
-    """
-    Format voltage value to more human-readable form.
+    """Format voltage value to more human-readable form.
 
     :param value: presumably string representation of integer, in Volts
     """

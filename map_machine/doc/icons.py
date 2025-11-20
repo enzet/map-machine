@@ -1,14 +1,15 @@
 """Icon grids for documentation."""
+
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable
 
 from colour import Color
 
 from map_machine.pictogram.icon import (
-    Shape,
     Icon,
-    ShapeSpecification,
+    Shape,
     ShapeExtractor,
+    ShapeSpecification,
 )
 from map_machine.pictogram.icon_collection import IconCollection
 from map_machine.workspace import workspace

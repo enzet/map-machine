@@ -1,9 +1,9 @@
-"""
-Test map generation for ways.
+"""Test map generation for ways.
 
 Tests check that for the given ways described by tags, Map Machine generates
 expected figures in the expected order.
 """
+
 import numpy as np
 
 from map_machine.constructor import Constructor
@@ -11,15 +11,14 @@ from map_machine.figure import Figure
 from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.geometry.flinger import MercatorFlinger
 from map_machine.map_configuration import MapConfiguration
-from map_machine.osm.osm_reader import OSMData, OSMWay, OSMNode, Tags
+from map_machine.osm.osm_reader import OSMData, OSMNode, OSMWay, Tags
 from tests import SCHEME, SHAPE_EXTRACTOR
 
 CONFIGURATION: MapConfiguration = MapConfiguration(SCHEME)
 
 
 def get_constructor(osm_data: OSMData) -> Constructor:
-    """
-    Get custom constructor for bounds (-0.01, -0.01, 0.01, 0.01) and zoom level
+    """Get custom constructor for bounds (-0.01, -0.01, 0.01, 0.01) and zoom level
     18.
     """
     flinger: MercatorFlinger = MercatorFlinger(
@@ -44,8 +43,7 @@ def create_way(osm_data: OSMData, tags: Tags, index: int) -> None:
 
 
 def test_river_and_wood() -> None:
-    """
-    Check that river is above the wood.
+    """Check that river is above the wood.
 
     See https://github.com/enzet/map-machine/issues/126
     """
@@ -61,8 +59,7 @@ def test_river_and_wood() -> None:
 
 
 def test_placement_and_lanes() -> None:
-    """
-    Check that `placement` tag is processed correctly when `lanes` tag is not
+    """Check that `placement` tag is processed correctly when `lanes` tag is not
     specified.
 
     See https://github.com/enzet/map-machine/issues/128

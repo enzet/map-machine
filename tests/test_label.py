@@ -1,4 +1,5 @@
 """Test label generation for nodes."""
+
 from map_machine.map_configuration import LabelMode
 from map_machine.text import Label, TextConstructor
 from tests import SCHEME
@@ -22,9 +23,7 @@ def test_1_label() -> None:
 
 
 def test_1_label_unknown_tags() -> None:
-    """
-    Test tags with some unknown tags that should be converted into single label.
-    """
+    """Test tags with some unknown tags."""
     labels = construct_labels({"name": "Name", "aaa": "bbb"})
     assert len(labels) == 1
     assert labels[0].text == "Name"

@@ -1,4 +1,5 @@
 """Extract icons from SVG file."""
+
 import json
 import logging
 import re
@@ -84,8 +85,7 @@ class Shape:
         id_: str,
         name: Optional[str] = None,
     ) -> "Shape":
-        """
-        Parse shape description from structure.
+        """Parse shape description from structure.
 
         :param structure: input structure
         :param path: SVG path commands in string form
@@ -93,7 +93,7 @@ class Shape:
         :param id_: shape unique identifier
         :param name: shape text description
         """
-        shape: "Shape" = cls(path, offset, id_, name)
+        shape: Shape = cls(path, offset, id_, name)
 
         if "name" in structure:
             shape.name = structure["name"]
@@ -117,8 +117,7 @@ class Shape:
         return shape
 
     def is_default(self) -> bool:
-        """
-        Return true if icon is has a default shape that doesn't represent
+        """Return true if icon is has a default shape that doesn't represent
         anything.
         """
         return self.id_ in [DEFAULT_SHAPE_ID, DEFAULT_SMALL_SHAPE_ID]
@@ -129,8 +128,7 @@ class Shape:
         offset: np.ndarray = np.array((0.0, 0.0)),
         scale: np.ndarray = np.array((1.0, 1.0)),
     ) -> SVGPath:
-        """
-        Draw icon into SVG file.
+        """Draw icon into SVG file.
 
         :param point: icon position
         :param offset: additional offset
@@ -157,14 +155,12 @@ class Shape:
 
 def parse_length(text: str) -> float:
     """Parse length from SVG attribute."""
-    if text.endswith("px"):
-        text = text[:-2]
+    text = text.removesuffix("px")
     return float(text)
 
 
 def verify_sketch_element(element: Element, id_: str) -> bool:
-    """
-    Verify sketch SVG element from icon file.
+    """Verify sketch SVG element from icon file.
 
     :param element: sketch SVG element (element with standard Inkscape
         identifier)
@@ -222,8 +218,7 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
 
 
 def parse_configuration(root: dict, configuration: dict, group: str) -> None:
-    """
-    Shape description is a probably empty dictionary with optional fields
+    """Shape description is a probably empty dictionary with optional fields
     `name`, `emoji`, `is_part`, `directed`, and `categories`.  Shape
     configuration is a dictionary that contains shape descriptions.  Shape
     descriptions may be grouped and the nesting level may be arbitrary:
@@ -258,8 +253,7 @@ def parse_configuration(root: dict, configuration: dict, group: str) -> None:
 
 
 class ShapeExtractor:
-    """
-    Extract shapes from SVG file.
+    """Extract shapes from SVG file.
 
     Shape is a single path with "id" attribute that aligned to 16×16 grid.
     """
@@ -267,8 +261,7 @@ class ShapeExtractor:
     def __init__(
         self, svg_file_name: Path, configuration_file_name: Path
     ) -> None:
-        """
-        :param svg_file_name: input SVG file name with icons.  File may contain
+        """:param svg_file_name: input SVG file name with icons.  File may contain
             any other irrelevant graphics.
         :param configuration_file_name: JSON file with grouped shape
             descriptions
@@ -291,8 +284,7 @@ class ShapeExtractor:
                 )
 
     def parse(self, node: Element) -> None:
-        """
-        Extract icon paths into a map.
+        """Extract icon paths into a map.
 
         :param node: XML node that contains icon
         """
@@ -315,7 +307,7 @@ class ShapeExtractor:
                 logging.warning(f"Not verified SVG element `{id_}`{path_part}")
             return
 
-        if "d" in node.attrib and node.attrib["d"]:
+        if node.attrib.get("d"):
             path: str = node.attrib["d"]
             matcher = PATH_MATCHER.match(path)
             if not matcher:
@@ -353,8 +345,7 @@ class ShapeExtractor:
             logging.error(f"Not standard ID {id_}.")
 
     def get_shape(self, id_: str) -> Shape:
-        """
-        Get shape or None if there is no shape with such identifier.
+        """Get shape or None if there is no shape with such identifier.
 
         :param id_: string icon identifier
         """
@@ -388,8 +379,7 @@ class ShapeSpecification:
         outline_opacity: float = 1.0,
         scale: float = 1.0,
     ) -> None:
-        """
-        Draw icon shape into SVG file.
+        """Draw icon shape into SVG file.
 
         :param svg: output SVG file
         :param point: 2D position of the shape centre
@@ -500,8 +490,7 @@ class Icon:
         outline: bool = False,
         scale: float = 1.0,
     ) -> None:
-        """
-        Draw icon to SVG.
+        """Draw icon to SVG.
 
         :param svg: output SVG file
         :param point: 2D position of the icon centre
@@ -531,8 +520,7 @@ class Icon:
         outline: bool = False,
         outline_opacity: float = 1.0,
     ) -> None:
-        """
-        Draw icon to the SVG file.
+        """Draw icon to the SVG file.
 
         :param file_name: output SVG file name
         :param color: fill color

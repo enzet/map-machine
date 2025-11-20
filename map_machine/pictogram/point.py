@@ -1,4 +1,5 @@
 """Point: node representation on the map."""
+
 import logging
 from typing import Optional
 
@@ -17,8 +18,7 @@ __email__ = "me@enzet.ru"
 
 
 class Occupied:
-    """
-    Structure that remembers places of the canvas occupied by elements (icons,
+    """Structure that remembers places of the canvas occupied by elements (icons,
     texts, shapes).
     """
 
@@ -51,8 +51,7 @@ class Occupied:
 
 
 class Point(Tagged):
-    """
-    Object on the map with no dimensional attributes.
+    """Object on the map with no dimensional attributes.
 
     It may have icons and labels.
     """
@@ -225,8 +224,7 @@ class Point(Tagged):
         out_opacity_2: float = 1.0,
         is_debug: bool = False,
     ) -> None:
-        """
-        Drawing text.
+        """Drawing text.
 
           ######     ###  outline 2
          #------#    ---  outline 1
@@ -284,8 +282,7 @@ class Point(Tagged):
         self.y += 11
 
     def get_size(self) -> np.ndarray:
-        """
-        Get width and height of the point visual representation if there is
+        """Get width and height of the point visual representation if there is
         space for all elements.
         """
         icon_size: int = 16

@@ -1,4 +1,5 @@
 """Icon grid drawing."""
+
 import logging
 import shutil
 from dataclasses import dataclass
@@ -38,8 +39,7 @@ class IconCollection:
         add_unused: bool = False,
         add_all: bool = False,
     ) -> "IconCollection":
-        """
-        Collect all possible icon combinations.
+        """Collect all possible icon combinations.
 
         This collection won't contain icons for tags matched with regular
         expressions. E.g. traffic_sign=maxspeed; maxspeed=42.
@@ -132,8 +132,7 @@ class IconCollection:
         outline: bool = False,
         outline_opacity: float = 1.0,
     ) -> None:
-        """
-        :param output_directory: path to the directory to store individual SVG
+        """:param output_directory: path to the directory to store individual SVG
             files for icons
         :param license_path: path to the file with license
         :param by_name: use names instead of identifiers
@@ -171,8 +170,7 @@ class IconCollection:
         background_color: Optional[Color] = Color("white"),
         scale: float = 1.0,
     ) -> None:
-        """
-        Draw icons in the form of table.
+        """Draw icons in the form of table.
 
         :param file_name: output SVG file name
         :param columns: number of columns in grid
@@ -210,8 +208,7 @@ class IconCollection:
 
 
 def draw_icons() -> None:
-    """
-    Draw all possible icon shapes combinations as grid in one SVG file and as
+    """Draw all possible icon shapes combinations as grid in one SVG file and as
     individual SVG files.
     """
     scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
