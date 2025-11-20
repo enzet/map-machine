@@ -1,14 +1,18 @@
 """Map drawing configuration."""
 
-import argparse
+from __future__ import annotations
+
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from colour import Color
 
-from map_machine.pictogram.icon import IconSet, ShapeExtractor
-from map_machine.scheme import Scheme
+if TYPE_CHECKING:
+    import argparse
+
+    from map_machine.pictogram.icon import IconSet, ShapeExtractor
+    from map_machine.scheme import Scheme
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -62,14 +66,14 @@ class MapConfiguration:
     draw_roofs: bool = True
     use_building_colors: bool = False
     show_overlapped: bool = False
-    credit: Optional[str] = "© OpenStreetMap contributors"
+    credit: str | None = "© OpenStreetMap contributors"
     show_credit: bool = True
     draw_background: bool = True
 
     @classmethod
     def from_options(
         cls, scheme: Scheme, options: argparse.Namespace, zoom_level: float
-    ) -> "MapConfiguration":
+    ) -> MapConfiguration:
         """Initialize from command-line options."""
         return cls(
             scheme,
@@ -94,7 +98,7 @@ class MapConfiguration:
         """Whether drawing mode is special."""
         return self.drawing_mode != DrawingMode.NORMAL
 
-    def background_color(self) -> Optional[Color]:
+    def background_color(self) -> Color | None:
         """Get background map color based on drawing mode."""
         if self.drawing_mode not in (DrawingMode.NORMAL, DrawingMode.BLACK):
             return DARK_BACKGROUND
@@ -105,7 +109,7 @@ class MapConfiguration:
         extractor: ShapeExtractor,
         tags: dict[str, Any],
         processed: set[str],
-    ) -> tuple[Optional[IconSet], int]:
+    ) -> tuple[IconSet | None, int]:
         return self.scheme.get_icon(
             extractor,
             tags,

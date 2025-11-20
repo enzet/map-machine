@@ -1,11 +1,11 @@
 """Construct Map Machine nodes and ways."""
 
+from __future__ import annotations
+
 import logging
 import sys
-from collections.abc import Iterator
-from datetime import datetime
 from hashlib import sha256
-from typing import Any, Optional, Union
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 from colour import Color
@@ -17,7 +17,6 @@ from map_machine.feature.direction import DirectionSector
 from map_machine.feature.road import Road, Roads
 from map_machine.feature.tree import Tree
 from map_machine.figure import StyledFigure
-from map_machine.geometry.flinger import Flinger
 from map_machine.map_configuration import DrawingMode, MapConfiguration
 from map_machine.osm.osm_reader import (
     OSMData,
@@ -40,6 +39,12 @@ from map_machine.scheme import LineStyle, RoadMatcher, Scheme
 from map_machine.text import Label, TextConstructor
 from map_machine.ui.cli import BuildingMode
 from map_machine.util import MinMax
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+    from datetime import datetime
+
+    from map_machine.geometry.flinger import Flinger
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -81,7 +86,7 @@ def get_user_color(text: str, seed: str) -> Color:
     return Color("#" + sha256((seed + text).encode("utf-8")).hexdigest()[-6:])
 
 
-def get_time_color(time: Optional[datetime], boundaries: MinMax) -> Color:
+def get_time_color(time: datetime | None, boundaries: MinMax) -> Color:
     """Generate color based on time.
 
     :param time: current element creation time
@@ -108,8 +113,8 @@ def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
 
     while to_process:
         nodes: list[OSMNode] = list(to_process.pop())
-        glued: Optional[list[OSMNode]] = None
-        other_nodes: Optional[tuple[OSMNode]] = None
+        glued: list[OSMNode] | None = None
+        other_nodes: tuple[OSMNode] | None = None
 
         for other_nodes in to_process:
             glued = try_to_glue(nodes, list(other_nodes))
@@ -135,7 +140,7 @@ def is_cycle(nodes: list[OSMNode]) -> bool:
 
 def try_to_glue(
     nodes: list[OSMNode], other: list[OSMNode]
-) -> Optional[list[OSMNode]]:
+) -> list[OSMNode] | None:
     """Create new combined way if ways share endpoints."""
     if nodes[0] == other[0]:
         return list(reversed(other[1:])) + nodes
@@ -207,7 +212,7 @@ class Constructor:
 
     def construct_line(
         self,
-        line: Union[OSMWay, OSMRelation],
+        line: OSMWay | OSMRelation,
         inners: list[list[OSMNode]],
         outers: list[list[OSMNode]],
     ) -> None:
@@ -271,7 +276,7 @@ class Constructor:
 
         processed: set[str] = set()
 
-        recolor: Optional[Color] = None
+        recolor: Color | None = None
 
         if line.tags.get("railway") == "subway":
             for color_tag_key in ["color", "colour"]:
@@ -283,9 +288,7 @@ class Constructor:
 
         for line_style in line_styles:
             if recolor is not None:
-                new_style: dict[str, Union[float, int, str]] = dict(
-                    line_style.style
-                )
+                new_style: dict[str, float | int | str] = dict(line_style.style)
                 new_style["stroke"] = recolor.hex
                 line_style = LineStyle(
                     new_style, line_style.parallel_offset, line_style.priority
@@ -369,7 +372,7 @@ class Constructor:
 
     def draw_special_mode(
         self,
-        line: Union[OSMWay, OSMRelation],
+        line: OSMWay | OSMRelation,
         inners: list[list[OSMNode]],
         outers: list[list[OSMNode]],
         color: Color,

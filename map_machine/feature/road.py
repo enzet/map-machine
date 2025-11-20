@@ -1,20 +1,17 @@
 """WIP: road shape drawing."""
 
+from __future__ import annotations
+
+import contextlib
 import logging
 from collections import defaultdict
 from dataclasses import dataclass
-from typing import Any, Optional, Union
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
-import svgwrite
 from colour import Color
-from svgwrite import Drawing
-from svgwrite.filters import Filter
 from svgwrite.path import Path
-from svgwrite.shapes import Circle
 
-from map_machine.drawing import PathCommands
-from map_machine.geometry.flinger import Flinger
 from map_machine.geometry.vector import (
     Line,
     Polyline,
@@ -23,7 +20,16 @@ from map_machine.geometry.vector import (
     turn_by_angle,
 )
 from map_machine.osm.osm_reader import OSMNode, Tagged
-from map_machine.scheme import RoadMatcher, Scheme
+
+if TYPE_CHECKING:
+    import svgwrite
+    from svgwrite import Drawing
+    from svgwrite.filters import Filter
+    from svgwrite.shapes import Circle
+
+    from map_machine.drawing import PathCommands
+    from map_machine.geometry.flinger import Flinger
+    from map_machine.scheme import RoadMatcher, Scheme
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -36,13 +42,13 @@ USE_BLUR: bool = False
 class Lane:
     """Road lane specification."""
 
-    width: Optional[float] = None  # Width in meters
-    is_forward: Optional[bool] = None  # Whether lane is forward or backward
-    min_speed: Optional[float] = None  # Minimal speed on the lane
+    width: float | None = None  # Width in meters
+    is_forward: bool | None = None  # Whether lane is forward or backward
+    min_speed: float | None = None  # Minimal speed on the lane
     # "none", "merge_to_left", "slight_left", "slight_right"
-    turn: Optional[str] = None
-    change: Optional[str] = None  # "not_left", "not_right"
-    destination: Optional[str] = None  # Lane destination
+    turn: str | None = None
+    change: str | None = None  # "not_left", "not_right"
+    destination: str | None = None  # Lane destination
 
     def set_forward(self, is_forward: bool) -> None:
         """If true, lane is forward, otherwise it's backward."""
@@ -77,7 +83,7 @@ class RoadPart:
 
         self.width: float
         if lanes:
-            self.width = sum(map(lambda x: x.get_width(scale), lanes))
+            self.width = sum(x.get_width(scale) for x in lanes)
         else:
             self.width = 1.0
 
@@ -90,15 +96,15 @@ class RoadPart:
         self.right_vector: np.ndarray = self.turned * self.right_offset
         self.left_vector: np.ndarray = -self.turned * self.left_offset
 
-        self.right_connection: Optional[np.ndarray] = None
-        self.left_connection: Optional[np.ndarray] = None
-        self.right_projection: Optional[np.ndarray] = None
-        self.left_projection: Optional[np.ndarray] = None
+        self.right_connection: np.ndarray | None = None
+        self.left_connection: np.ndarray | None = None
+        self.right_projection: np.ndarray | None = None
+        self.left_projection: np.ndarray | None = None
 
-        self.left_outer: Optional[np.ndarray] = None
-        self.right_outer: Optional[np.ndarray] = None
-        self.point_a: Optional[np.ndarray] = None
-        self.point_middle: Optional[np.ndarray] = None
+        self.left_outer: np.ndarray | None = None
+        self.right_outer: np.ndarray | None = None
+        self.point_a: np.ndarray | None = None
+        self.point_middle: np.ndarray | None = None
 
     def update(self) -> None:
         """Compute additional points."""
@@ -381,7 +387,7 @@ class Road(Tagged):
         self.line: Polyline = Polyline(
             [flinger.fling(node.coordinates) for node in self.nodes]
         )
-        self.width: Optional[float] = matcher.default_width
+        self.width: float | None = matcher.default_width
         self.lanes: list[Lane] = []
 
         self.scale: float = flinger.get_scale(self.nodes[0].coordinates)
@@ -417,16 +423,14 @@ class Road(Tagged):
         number: int
         if "lanes:forward" in tags:
             number = int(tags["lanes:forward"])
-            map(lambda x: x.set_forward(True), self.lanes[-number:])
+            (x.set_forward(True) for x in self.lanes[-number:])
         if "lanes:backward" in tags:
             number = int(tags["lanes:backward"])
-            map(lambda x: x.set_forward(False), self.lanes[:number])
+            (x.set_forward(False) for x in self.lanes[:number])
 
         if "width" in tags:
-            try:
+            with contextlib.suppress(ValueError):
                 self.width = float(tags["width"])
-            except ValueError:
-                pass
 
         self.layer: float = 0.0
         if "layer" in tags:
@@ -468,7 +472,7 @@ class Road(Tagged):
 
     def get_style(
         self, is_border: bool, is_for_stroke: bool = False
-    ) -> dict[str, Union[int, float, str]]:
+    ) -> dict[str, int | float | str]:
         """Get road SVG style."""
         width: float
         if self.width is not None:
@@ -497,7 +501,7 @@ class Road(Tagged):
         if self.is_area:
             fill = color.hex
 
-        style: dict[str, Union[int, float, str]] = {
+        style: dict[str, int | float | str] = {
             "fill": fill,
             "stroke": color.hex,
             "stroke-linecap": "butt",
@@ -508,13 +512,12 @@ class Road(Tagged):
             style["stroke-width"] = 2.0 + extra_width
         if is_border and self.tags.get("embankment") == "yes":
             style["stroke-dasharray"] = "1,3"
-        if self.tags.get("tunnel") == "yes":
-            if is_border:
-                style["stroke-dasharray"] = "3,3"
+        if self.tags.get("tunnel") == "yes" and is_border:
+            style["stroke-dasharray"] = "3,3"
 
         return style
 
-    def get_filter(self, svg: Drawing, is_border: bool) -> Optional[Filter]:
+    def get_filter(self, svg: Drawing, is_border: bool) -> Filter | None:
         """Get blurring filter."""
         if not USE_BLUR:
             return None
@@ -530,7 +533,7 @@ class Road(Tagged):
         """Draw road as simple SVG path."""
         filter_: Filter = self.get_filter(svg, is_border)
 
-        style: dict[str, Union[int, float, str]] = self.get_style(is_border)
+        style: dict[str, int | float | str] = self.get_style(is_border)
 
         if (path_commands := self.line.get_path(self.placement_offset)) is None:
             return
@@ -592,7 +595,7 @@ class Road(Tagged):
 
     def draw_caption(self, svg: Drawing) -> None:
         """Draw road name along its path."""
-        name: Optional[str] = self.tags.get("name")
+        name: str | None = self.tags.get("name")
         if not name:
             return
 
@@ -767,7 +770,7 @@ class ComplexConnector(Connector):
     def draw(self, svg: Drawing) -> None:
         """Draw connection fill."""
         path: Path = svg.path(
-            d=["M"] + self.curve_1 + ["L"] + self.curve_2 + ["Z"],
+            d=["M", *self.curve_1, "L", *self.curve_2, "Z"],
             fill=self.road_1.get_color(),
         )
         svg.add(path)
@@ -778,11 +781,11 @@ class ComplexConnector(Connector):
 
         if filter_:
             path: Path = svg.path(
-                d=["M"] + self.curve_1 + ["M"] + self.curve_2,
+                d=["M", *self.curve_1, "M", *self.curve_2],
                 filter=filter_.get_funciri(),
             )
         else:
-            path: Path = svg.path(d=["M"] + self.curve_1 + ["M"] + self.curve_2)
+            path: Path = svg.path(d=["M", *self.curve_1, "M", *self.curve_2])
         path.update(self.road_1.get_style(True, True))
         svg.add(path)
 

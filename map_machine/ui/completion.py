@@ -72,9 +72,10 @@ def completion_commands() -> str:
         elif command == "mapcss":
             cli.add_mapcss_arguments(parser)
         else:
-            raise NotImplementedError(
+            message: str = (
                 f"no separate function for parser creation for {command}"
             )
+            raise NotImplementedError(message)
         result += parser.get_complete(command) + "\n"
 
     return result

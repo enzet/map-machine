@@ -1,16 +1,19 @@
 """Test command line commands."""
 
-import argparse
 from pathlib import Path
 from subprocess import PIPE, Popen
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-from xml.etree import ElementTree
-from xml.etree.ElementTree import Element
+from typing import TYPE_CHECKING
+from xml.etree import ElementTree as ET
 
 from map_machine.ui.cli import COMMAND_LINES, parse_arguments
+
+if TYPE_CHECKING:
+    import argparse
+    from xml.etree.ElementTree import Element
 
 LOG: bytes = (
     b"INFO Constructing ways...\n"
@@ -25,7 +28,7 @@ OUTPUT_PATH: Path = Path("out")
 
 def error_run(arguments: list[str], message: bytes) -> None:
     """Run command that should fail and check error message."""
-    with Popen(["map-machine"] + arguments, stderr=PIPE) as pipe:
+    with Popen(["map-machine", *arguments], stderr=PIPE) as pipe:
         _, output = pipe.communicate()
         assert output == message
         assert pipe.returncode != 0
@@ -33,7 +36,7 @@ def error_run(arguments: list[str], message: bytes) -> None:
 
 def run(arguments: list[str], message: bytes) -> None:
     """Run command that should not fail and check output."""
-    with Popen(["map-machine"] + arguments, stderr=PIPE) as pipe:
+    with Popen(["map-machine", *arguments], stderr=PIPE) as pipe:
         _, output = pipe.communicate()
         assert output == message
         assert pipe.returncode == 0
@@ -55,7 +58,7 @@ def test_render() -> None:
         LOG + b"INFO Writing output SVG to out/map.svg...\n",
     )
     with (OUTPUT_PATH / "map.svg").open(encoding="utf-8") as output_file:
-        root: Element = ElementTree.parse(output_file).getroot()
+        root: Element = ET.parse(output_file).getroot()
 
     # 8 expected elements: `defs`, `rect` (background), `g` (outline),
     # `g` (icon), 4 `text` elements (credits).
@@ -72,7 +75,7 @@ def test_render_with_tooltips() -> None:
         LOG + b"INFO Writing output SVG to out/map.svg...\n",
     )
     with (OUTPUT_PATH / "map.svg").open(encoding="utf-8") as output_file:
-        root: Element = ElementTree.parse(output_file).getroot()
+        root: Element = ET.parse(output_file).getroot()
 
     # 8 expected elements: `defs`, `rect` (background), `g` (outline),
     # `g` (icon), 4 `text` elements (credits).

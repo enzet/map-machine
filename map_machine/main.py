@@ -15,12 +15,15 @@ if sys.version_info.major < 3 or sys.version_info.minor < 9:
     )
     sys.exit(1)
 
-import argparse
 import logging
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from map_machine.ui.cli import parse_arguments
 from map_machine.workspace import Workspace
+
+if TYPE_CHECKING:
+    import argparse
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

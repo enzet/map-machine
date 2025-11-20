@@ -1,11 +1,11 @@
 """Simple OpenStreetMap renderer."""
 
-import argparse
+from __future__ import annotations
+
 import logging
 import sys
-from collections.abc import Iterator
 from pathlib import Path
-from typing import Optional
+from typing import TYPE_CHECKING
 
 import numpy as np
 import svgwrite
@@ -19,10 +19,8 @@ from map_machine.constructor import Constructor
 from map_machine.drawing import draw_text
 from map_machine.feature.building import BUILDING_SCALE, Building, draw_walls
 from map_machine.feature.road import Intersection, Road, RoadPart
-from map_machine.figure import StyledFigure
 from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.geometry.flinger import Flinger, MercatorFlinger
-from map_machine.geometry.vector import Segment
 from map_machine.map_configuration import LabelMode, MapConfiguration
 from map_machine.osm.osm_getter import NetworkError, get_osm
 from map_machine.osm.osm_reader import OSMData, OSMNode
@@ -31,6 +29,13 @@ from map_machine.pictogram.point import Occupied, Point
 from map_machine.scheme import Scheme
 from map_machine.ui.cli import BuildingMode
 from map_machine.workspace import workspace
+
+if TYPE_CHECKING:
+    import argparse
+    from collections.abc import Iterator
+
+    from map_machine.figure import StyledFigure
+    from map_machine.geometry.vector import Segment
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -119,7 +124,7 @@ class Map:
         # All other points
 
         if self.scheme.draw_nodes:
-            occupied: Optional[Occupied]
+            occupied: Occupied | None
             if self.configuration.overlap == 0:
                 occupied = None
             else:
@@ -240,7 +245,7 @@ class Map:
             intersection: Intersection = Intersection(list(parts))
             intersection.draw(self.svg, True)
 
-    def draw_credits(self, size: np.ndarray):
+    def draw_credits(self, size: np.ndarray) -> None:
         """Add OpenStreetMap credit and the link to the project itself.
         OpenStreetMap requires to use the credit “© OpenStreetMap contributors”.
 
@@ -293,11 +298,11 @@ def render_map(arguments: argparse.Namespace) -> None:
 
     :param arguments: command-line arguments
     """
-    scheme_path: Optional[Path] = workspace.find_scheme_path(arguments.scheme)
+    scheme_path: Path | None = workspace.find_scheme_path(arguments.scheme)
     if scheme_path is None:
         fatal(f"Scheme `{arguments.scheme}` not found.")
 
-    scheme: Optional[Scheme] = Scheme.from_file(scheme_path)
+    scheme: Scheme | None = Scheme.from_file(scheme_path)
     if scheme is None:
         fatal(f"Failed to load scheme from `{arguments.scheme}`.")
 
@@ -309,7 +314,7 @@ def render_map(arguments: argparse.Namespace) -> None:
 
     # Compute bounding box.
 
-    bounding_box: Optional[BoundingBox] = None
+    bounding_box: BoundingBox | None = None
 
     # If bounding box is specified explicitly, use it or stop the rendering
     # process if the box is invalid.
@@ -323,7 +328,7 @@ def render_map(arguments: argparse.Namespace) -> None:
             )
 
     elif arguments.coordinates:
-        coordinates: Optional[np.ndarray] = None
+        coordinates: np.ndarray | None = None
 
         for delimiter in ",", "/":
             if delimiter in arguments.coordinates:
@@ -347,7 +352,7 @@ def render_map(arguments: argparse.Namespace) -> None:
 
     # Determine files.
 
-    input_file_names: Optional[list[Path]] = None
+    input_file_names: list[Path] | None = None
     if arguments.input_file_names:
         input_file_names = list(map(Path, arguments.input_file_names))
     elif bounding_box:

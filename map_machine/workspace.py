@@ -1,11 +1,12 @@
 """File and directory path in the project."""
 
+from __future__ import annotations
+
 from pathlib import Path
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-from typing import Optional
 
 HERE: Path = Path(__file__).parent
 
@@ -43,7 +44,7 @@ class Workspace:
         self._mapcss_path: Path = output_path / "map_machine_mapcss"
         self._tile_path: Path = output_path / "tiles"
 
-    def find_scheme_path(self, identifier: str) -> Optional[Path]:
+    def find_scheme_path(self, identifier: str) -> Path | None:
         """Find map scheme file by its identifier.
 
         :param identifier: scheme identifier or file path.

@@ -2,20 +2,21 @@
 
 import argparse
 import logging
+import sys
 from pathlib import Path
 
 from map_machine.element.grid import Grid
 from map_machine.osm.osm_reader import OSMNode, Tags
 
 
-def draw_node(tags: Tags, path: Path):
+def draw_node(tags: Tags, path: Path) -> None:
     """Draw separate node."""
     grid: Grid = Grid(show_credit=False, margin=7.5)
     grid.add_node(tags, 0, 0)
     grid.draw(path)
 
 
-def draw_way(tags: Tags, path: Path):
+def draw_way(tags: Tags, path: Path) -> None:
     """Draw way."""
     grid: Grid = Grid(show_credit=False, margin=3.5)
     node_1: OSMNode = grid.add_node({}, 0, 0)
@@ -24,7 +25,7 @@ def draw_way(tags: Tags, path: Path):
     grid.draw(path)
 
 
-def draw_area(tags: Tags, path: Path):
+def draw_area(tags: Tags, path: Path) -> None:
     """Draw closed way that should be interpreted as an area."""
     grid: Grid = Grid(show_credit=False, margin=0.5)
     node: OSMNode = grid.add_node({}, 0, 0)
@@ -39,7 +40,7 @@ def draw_area(tags: Tags, path: Path):
     grid.draw(path)
 
 
-def draw_element(options: argparse.Namespace):
+def draw_element(options: argparse.Namespace) -> None:
     """Entry point for element drawing."""
     tags_description: Tags = {
         x.split("=")[0]: x.split("=")[1] for x in options.tags.split(",")
@@ -55,4 +56,4 @@ def draw_element(options: argparse.Namespace):
             f"Unknown element type `{options.type}`, please choose from "
             f"`node`, `way`, and `area`."
         )
-        exit(1)
+        sys.exit(1)

@@ -1,9 +1,10 @@
 """Actions to perform before commit: generate PNG images for documentation."""
 
+from __future__ import annotations
+
 import logging
 import sys
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 import svgwrite
@@ -39,7 +40,7 @@ def draw(
     input_file_name: Path,
     output_file_name: Path,
     bounding_box: BoundingBox,
-    configuration: Optional[MapConfiguration] = None,
+    configuration: MapConfiguration | None = None,
 ) -> None:
     """Draw file."""
     if configuration is None:
@@ -67,9 +68,9 @@ def draw(
 def draw_around_point(
     point: np.ndarray,
     name: str,
-    configuration: Optional[MapConfiguration] = None,
+    configuration: MapConfiguration | None = None,
     size: np.ndarray = np.array((600, 400)),
-    get: Optional[BoundingBox] = None,
+    get: BoundingBox | None = None,
 ) -> None:
     """Draw around point."""
     if configuration is None:

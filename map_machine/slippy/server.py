@@ -1,11 +1,12 @@
 """Map Machine tile server for slippy maps."""
 
-import argparse
+from __future__ import annotations
+
 import logging
 import sys
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
-from typing import Optional
+from typing import TYPE_CHECKING
 
 import cairosvg
 
@@ -13,6 +14,9 @@ from map_machine.map_configuration import MapConfiguration
 from map_machine.scheme import Scheme
 from map_machine.slippy.tile import Tile
 from map_machine.workspace import workspace
+
+if TYPE_CHECKING:
+    import argparse
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -23,7 +27,7 @@ class TileServerHandler(SimpleHTTPRequestHandler):
 
     cache: Path = Path("cache")
     update_cache: bool = False
-    options: Optional[argparse.Namespace] = None
+    options: argparse.Namespace | None = None
 
     def __init__(
         self,
@@ -55,28 +59,25 @@ class TileServerHandler(SimpleHTTPRequestHandler):
         svg_path: Path = tile.get_file_name(tile_path)
         png_path: Path = svg_path.with_suffix(".png")
 
-        if self.update_cache:
-            if not png_path.exists():
-                if not svg_path.exists():
-                    scheme = Scheme.from_file(
-                        workspace.DEFAULT_SCHEME_PATH
-                        if self.options.scheme == "default"
-                        else Path(self.options.scheme)
-                    )
-                    tile.draw(
-                        tile_path,
-                        self.cache,
-                        MapConfiguration.from_options(
-                            scheme,
-                            self.options,
-                            zoom_level,
-                        ),
-                    )
-                with svg_path.open(encoding="utf-8") as input_file:
-                    cairosvg.svg2png(
-                        file_obj=input_file, write_to=str(png_path)
-                    )
-                logging.info(f"SVG file is rasterized to {png_path}.")
+        if self.update_cache and not png_path.exists():
+            if not svg_path.exists():
+                scheme = Scheme.from_file(
+                    workspace.DEFAULT_SCHEME_PATH
+                    if self.options.scheme == "default"
+                    else Path(self.options.scheme)
+                )
+                tile.draw(
+                    tile_path,
+                    self.cache,
+                    MapConfiguration.from_options(
+                        scheme,
+                        self.options,
+                        zoom_level,
+                    ),
+                )
+            with svg_path.open(encoding="utf-8") as input_file:
+                cairosvg.svg2png(file_obj=input_file, write_to=str(png_path))
+            logging.info(f"SVG file is rasterized to {png_path}.")
 
         if png_path.exists():
             with png_path.open("rb") as input_file:
@@ -89,7 +90,7 @@ class TileServerHandler(SimpleHTTPRequestHandler):
 
 def run_server(options: argparse.Namespace) -> None:
     """Command-line interface for tile server."""
-    server: Optional[HTTPServer] = None
+    server: HTTPServer | None = None
     try:
         handler = TileServerHandler
         handler.cache = Path(options.cache)

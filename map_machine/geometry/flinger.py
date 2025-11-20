@@ -1,10 +1,13 @@
 """Geo projection."""
 
-from typing import Optional
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import numpy as np
 
-from map_machine.geometry.bounding_box import BoundingBox
+if TYPE_CHECKING:
+    from map_machine.geometry.bounding_box import BoundingBox
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -52,7 +55,7 @@ class Flinger:
         """Do nothing but return coordinates unchanged."""
         return coordinates
 
-    def get_scale(self, coordinates: Optional[np.ndarray] = None) -> float:
+    def get_scale(self, coordinates: np.ndarray | None = None) -> float:
         return 1.0
 
 
@@ -101,7 +104,7 @@ class MercatorFlinger(Flinger):
 
         return result
 
-    def get_scale(self, coordinates: Optional[np.ndarray] = None) -> float:
+    def get_scale(self, coordinates: np.ndarray | None = None) -> float:
         """Return pixels per meter ratio for the given geo coordinates.
 
         :param coordinates: geographical coordinates in the form of

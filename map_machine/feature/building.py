@@ -1,5 +1,7 @@
 """Buildings on the map."""
 
+from typing import TYPE_CHECKING
+
 import numpy as np
 import svgwrite
 from colour import Color
@@ -7,12 +9,14 @@ from svgwrite import Drawing
 from svgwrite.container import Group
 from svgwrite.path import Path
 
-from map_machine.drawing import PathCommands
 from map_machine.figure import Figure
 from map_machine.geometry.flinger import Flinger
 from map_machine.geometry.vector import Segment
 from map_machine.osm.osm_reader import OSMNode
 from map_machine.scheme import Scheme
+
+if TYPE_CHECKING:
+    from map_machine.drawing import PathCommands
 
 BUILDING_MINIMAL_HEIGHT: float = 8.0
 BUILDING_SCALE: float = 0.33

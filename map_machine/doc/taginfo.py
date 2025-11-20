@@ -50,7 +50,7 @@ class TaginfoProjectFile:
                 and len(matcher.tags) == 1
                 and not matcher.add_shapes
             ):
-                key: str = list(matcher.tags.keys())[0]
+                key: str = next(iter(matcher.tags.keys()))
                 value: str = matcher.tags[key]
                 ids: list[str] = [
                     (shape if isinstance(shape, str) else shape["shape"])

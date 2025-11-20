@@ -1,9 +1,9 @@
 """MapCSS scheme creation."""
 
-import argparse
+from __future__ import annotations
+
 import logging
-from pathlib import Path
-from typing import Optional, TextIO
+from typing import TYPE_CHECKING, TextIO
 
 from colour import Color
 
@@ -13,6 +13,10 @@ from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.pictogram.icon_collection import IconCollection
 from map_machine.scheme import Matcher, Scheme
 from map_machine.workspace import workspace
+
+if TYPE_CHECKING:
+    import argparse
+    from pathlib import Path
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -89,7 +93,7 @@ class MapCSSWriter:
         target: str,
         matcher: Matcher,
         prefix: str = "",
-        opacity: Optional[float] = None,
+        opacity: float | None = None,
     ) -> str:
         """Add MapCSS 0.2 selector for node, way, relation, or area.
 

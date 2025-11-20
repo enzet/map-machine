@@ -1,6 +1,6 @@
 """Vector utility."""
 
-from typing import Optional
+from __future__ import annotations
 
 import numpy as np
 
@@ -47,7 +47,7 @@ class Polyline:
     def __init__(self, points: list[np.ndarray]) -> None:
         self.points: list[np.ndarray] = points
 
-    def get_path(self, parallel_offset: float = 0.0) -> Optional[str]:
+    def get_path(self, parallel_offset: float = 0.0) -> str | None:
         """Construct SVG path commands."""
         points: list[np.ndarray]
 
@@ -100,11 +100,11 @@ class Line:
         """
         self.c -= self.a * shift[0] + self.b * shift[1]
 
-    def is_parallel(self, other: "Line") -> bool:
+    def is_parallel(self, other: Line) -> bool:
         """If lines are parallel or equal."""
         return np.allclose(other.a * self.b - self.a * other.b, 0.0)
 
-    def get_intersection_point(self, other: "Line") -> np.ndarray:
+    def get_intersection_point(self, other: Line) -> np.ndarray:
         """Get point of intersection current line with other."""
         if other.a * self.b - self.a * other.b == 0.0:
             return np.array((0.0, 0.0))
@@ -142,11 +142,11 @@ class Segment:
         """Get simple string representation."""
         return f"{self.point_1} -- {self.point_2}"
 
-    def __lt__(self, other: "Segment") -> bool:
+    def __lt__(self, other: Segment) -> bool:
         """Compare central y coordinates of segments."""
         return self.y < other.y
 
-    def intersection(self, other: "Segment") -> Optional[list[float]]:
+    def intersection(self, other: Segment) -> list[float] | None:
         """Find and intersection point between two segments.
 
         :return: `None` if segments don't intersect, [x, y] coordinates of

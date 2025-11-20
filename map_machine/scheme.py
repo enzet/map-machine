@@ -1,11 +1,12 @@
 """Map Machine drawing scheme."""
 
+from __future__ import annotations
+
 import logging
 import re
 from dataclasses import dataclass
 from enum import Enum
-from pathlib import Path
-from typing import Any, Optional, Union
+from typing import TYPE_CHECKING, Any, Union
 
 import numpy as np
 import yaml
@@ -23,6 +24,9 @@ from map_machine.pictogram.icon import (
     ShapeSpecification,
 )
 
+if TYPE_CHECKING:
+    from pathlib import Path
+
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
@@ -35,7 +39,7 @@ DEFAULT_COLOR: Color = Color("black")
 class LineStyle:
     """SVG line style and its priority."""
 
-    style: dict[str, Union[int, float, str]]
+    style: dict[str, int | float | str]
     parallel_offset: float = 0.0
     priority: float = 0.0
 
@@ -52,7 +56,7 @@ class MatchingType(Enum):
 
 def is_matched_tag(
     matcher_tag_key: str,
-    matcher_tag_value: Union[str, list],
+    matcher_tag_value: str | list,
     tags: Tags,
 ) -> tuple[MatchingType, list[str]]:
     """Check whether element tags contradict tag matcher.
@@ -69,7 +73,7 @@ def is_matched_tag(
     if tags[matcher_tag_key] == matcher_tag_value:
         return MatchingType.MATCHED, []
     if matcher_tag_value.startswith("^"):
-        matcher: Optional[re.Match] = re.match(
+        matcher: re.Match | None = re.match(
             matcher_tag_value, tags[matcher_tag_key]
         )
         if matcher:
@@ -93,20 +97,18 @@ def match_location(restrictions: dict[str, str], country: str) -> bool:
     """Check whether country is matched by location restrictions."""
     if "exclude" in restrictions and country in restrictions["exclude"]:
         return False
-    if (
+    return not (
         "include" in restrictions
         and restrictions["include"] != "world"
         and country not in restrictions["include"]
-    ):
-        return False
-    return True
+    )
 
 
 class Matcher(Tagged):
     """Tag matching."""
 
     def __init__(
-        self, structure: dict[str, Any], group: Optional[dict[str, Any]] = None
+        self, structure: dict[str, Any], group: dict[str, Any] | None = None
     ) -> None:
         super().__init__(structure["tags"])
 
@@ -114,7 +116,7 @@ class Matcher(Tagged):
         if "exception" in structure:
             self.exception = structure["exception"]
 
-        self.start_zoom_level: Optional[int] = None
+        self.start_zoom_level: int | None = None
         if group is not None and "start_zoom_level" in group:
             self.start_zoom_level = group["start_zoom_level"]
 
@@ -135,7 +137,7 @@ class Matcher(Tagged):
         )
 
     def is_matched(
-        self, tags: Tags, country: Optional[str] = None
+        self, tags: Tags, country: str | None = None
     ) -> tuple[bool, dict[str, str]]:
         """Check whether element tags matches tag matcher.
 
@@ -184,7 +186,7 @@ class Matcher(Tagged):
             [get_selector(x, y, prefix) for (x, y) in self.tags.items()]
         )
 
-    def get_clean_shapes(self) -> Optional[list[str]]:
+    def get_clean_shapes(self) -> list[str] | None:
         """Get list of shape identifiers for shapes."""
         return None
 
@@ -194,7 +196,7 @@ class Matcher(Tagged):
 
 
 def get_shape_specifications(
-    structure: list[Union[str, dict[str, Any]]],
+    structure: list[str | dict[str, Any]],
 ) -> list[dict]:
     """Parse shape specification from scheme."""
     shapes: list[dict] = []
@@ -219,35 +221,35 @@ class NodeMatcher(Matcher):
         if "draw" in structure:
             self.draw = structure["draw"]
 
-        self.shapes: Optional[IconDescription] = None
+        self.shapes: IconDescription | None = None
         if "shapes" in structure:
             self.shapes = get_shape_specifications(structure["shapes"])
 
-        self.over_icon: Optional[IconDescription] = None
+        self.over_icon: IconDescription | None = None
         if "over_icon" in structure:
             self.over_icon = get_shape_specifications(structure["over_icon"])
 
-        self.add_shapes: Optional[IconDescription] = None
+        self.add_shapes: IconDescription | None = None
         if "add_shapes" in structure:
             self.add_shapes = get_shape_specifications(structure["add_shapes"])
 
-        self.set_main_color: Optional[str] = None
+        self.set_main_color: str | None = None
         if "set_main_color" in structure:
             self.set_main_color = structure["set_main_color"]
 
-        self.set_opacity: Optional[float] = None
+        self.set_opacity: float | None = None
         if "set_opacity" in structure:
             self.set_opacity = structure["set_opacity"]
 
-        self.under_icon: Optional[IconDescription] = None
+        self.under_icon: IconDescription | None = None
         if "under_icon" in structure:
             self.under_icon = get_shape_specifications(structure["under_icon"])
 
-        self.with_icon: Optional[IconDescription] = None
+        self.with_icon: IconDescription | None = None
         if "with_icon" in structure:
             self.with_icon = get_shape_specifications(structure["with_icon"])
 
-    def get_clean_shapes(self) -> Optional[list[str]]:
+    def get_clean_shapes(self) -> list[str] | None:
         """Get list of shape identifiers for shapes."""
         if not self.shapes:
             return None
@@ -257,7 +259,7 @@ class NodeMatcher(Matcher):
 class WayMatcher(Matcher):
     """Special tag matcher for ways."""
 
-    def __init__(self, structure: dict[str, Any], scheme: "Scheme") -> None:
+    def __init__(self, structure: dict[str, Any], scheme: Scheme) -> None:
         super().__init__(structure)
         self.style: dict[str, Any] = {"fill": "none"}
         if "style" in structure:
@@ -284,7 +286,7 @@ class WayMatcher(Matcher):
 class RoadMatcher(Matcher):
     """Special tag matcher for highways."""
 
-    def __init__(self, structure: dict[str, Any], scheme: "Scheme") -> None:
+    def __init__(self, structure: dict[str, Any], scheme: Scheme) -> None:
         super().__init__(structure)
         self.border_color: Color = Color(
             scheme.get_color(structure["border_color"])
@@ -358,7 +360,7 @@ class Scheme:
         self.cache: dict[str, tuple[IconSet, int]] = {}
 
     @classmethod
-    def from_file(cls, file_name: Path) -> Optional["Scheme"]:
+    def from_file(cls, file_name: Path) -> Scheme | None:
         """:param file_name: name of the scheme file with tags, colors, and tag key
         specification
         """
@@ -380,7 +382,7 @@ class Scheme:
         :return: color specification
         """
         if color in self.colors:
-            specification: Union[str, dict] = self.colors[color]
+            specification: str | dict = self.colors[color]
             if isinstance(specification, str):
                 return Color(self.colors[color])
 
@@ -452,28 +454,25 @@ class Scheme:
         if key in self.keys_to_write:
             return True
 
-        prefix: Optional[str] = None
+        prefix: str | None = None
         if ":" in key:
             prefix = key.split(":")[0]
 
         if prefix in self.prefix_to_skip:
             return False
 
-        if prefix in self.prefix_to_write:
-            return True
-
-        return False
+        return prefix in self.prefix_to_write
 
     def get_icon(
         self,
         extractor: ShapeExtractor,
         tags: dict[str, Any],
         processed: set[str],
-        country: Optional[str] = None,
+        country: str | None = None,
         zoom_level: float = 18,
         ignore_level_matching: bool = False,
         show_overlapped: bool = False,
-    ) -> tuple[Optional[IconSet], int]:
+    ) -> tuple[IconSet | None, int]:
         """Construct icon set.
 
         :param extractor: extractor with icon specifications
@@ -492,10 +491,10 @@ class Scheme:
         if tags_hash in self.cache:
             return self.cache[tags_hash]
 
-        main_icon: Optional[Icon] = None
+        main_icon: Icon | None = None
         extra_icons: list[Icon] = []
         priority: int = 0
-        color: Optional[Color] = None
+        color: Color | None = None
 
         for index, matcher in enumerate(self.node_matchers):
             if not matcher.replace_shapes and main_icon:
@@ -546,7 +545,7 @@ class Scheme:
                 processed.add("material")
 
         for tag_key in tags:
-            if tag_key.endswith(":color") or tag_key.endswith(":colour"):
+            if tag_key.endswith((":color", ":colour")):
                 color = self.get_color(tags[tag_key])
                 processed.add(tag_key)
 
@@ -564,7 +563,7 @@ class Scheme:
         if main_icon and color:
             main_icon.recolor(color)
 
-        default_icon: Optional[Icon] = None
+        default_icon: Icon | None = None
         if show_overlapped:
             small_dot_spec: ShapeSpecification = ShapeSpecification(
                 extractor.get_shape(DEFAULT_SMALL_SHAPE_ID),
@@ -606,7 +605,7 @@ class Scheme:
 
         return line_styles
 
-    def get_road(self, tags: dict[str, Any]) -> Optional[RoadMatcher]:
+    def get_road(self, tags: dict[str, Any]) -> RoadMatcher | None:
         """Get road matcher if tags are matched."""
         for matcher in self.road_matchers:
             matching, _ = matcher.is_matched(tags)
@@ -630,15 +629,15 @@ class Scheme:
         :param processed: processed set
         """
         processed.update(
-            set(tag for tag in tags if self.is_no_drawable(tag, tags[tag]))
+            {tag for tag in tags if self.is_no_drawable(tag, tags[tag])}
         )
 
     def get_shape_specification(
         self,
-        structure: Union[str, dict[str, Any]],
+        structure: str | dict[str, Any],
         extractor: ShapeExtractor,
-        groups: dict[str, str] = None,
-        color: Optional[Color] = None,
+        groups: dict[str, str] | None = None,
+        color: Color | None = None,
     ) -> ShapeSpecification:
         """Parse shape specification from structure, that is just shape string
         identifier or dictionary with keys: shape (required), color (optional),

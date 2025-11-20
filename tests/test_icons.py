@@ -4,16 +4,21 @@ Tests check that for the given node described by tags, Map Machine generates
 expected icons with expected colors.
 """
 
-from pathlib import Path
-from typing import Optional
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from colour import Color
 
 from map_machine.map_configuration import MapConfiguration
-from map_machine.osm.osm_reader import Tags
-from map_machine.pictogram.icon import Icon, IconSet, ShapeSpecification
 from map_machine.pictogram.icon_collection import IconCollection
 from tests import SCHEME, SHAPE_EXTRACTOR, workspace
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    from map_machine.osm.osm_reader import Tags
+    from map_machine.pictogram.icon import Icon, IconSet, ShapeSpecification
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -78,8 +83,8 @@ def test_no_icons_but_color() -> None:
 
 def check_icon_set(
     tags: Tags,
-    main_specification: list[tuple[str, Optional[Color]]],
-    extra_specifications: list[list[tuple[str, Optional[Color]]]] = None,
+    main_specification: list[tuple[str, Color | None]],
+    extra_specifications: list[list[tuple[str, Color | None]]] | None = None,
 ) -> None:
     """Check icon set using simple specification."""
     icon: IconSet = get_icon(tags)

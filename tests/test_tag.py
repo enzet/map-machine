@@ -1,6 +1,6 @@
 """Tests for length tag parsing."""
 
-from typing import Optional
+from __future__ import annotations
 
 from map_machine.osm.osm_reader import Tagged
 
@@ -8,7 +8,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
-def check_length(value: str, expected: Optional[float]) -> None:
+def check_length(value: str, expected: float | None) -> None:
     """Assert that constructed value is equals to an expected one."""
     tagged = Tagged({"a": value})
     assert tagged.get_length("a") == expected

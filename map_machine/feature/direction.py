@@ -1,17 +1,23 @@
 """Direction tag support."""
 
-from collections.abc import Iterator
-from typing import Optional
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import numpy as np
 from colour import Color
 from portolan import middle
-from svgwrite import Drawing
-from svgwrite.gradients import RadialGradient
-from svgwrite.path import Path
 
-from map_machine.drawing import PathCommands
 from map_machine.osm.osm_reader import Tagged
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from svgwrite import Drawing
+    from svgwrite.gradients import RadialGradient
+    from svgwrite.path import Path
+
+    from map_machine.drawing import PathCommands
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -21,7 +27,7 @@ SMALLEST_ANGLE: float = np.pi / 15.0
 DEFAULT_ANGLE: float = np.pi / 30.0
 
 
-def parse_vector(text: str) -> Optional[np.ndarray]:
+def parse_vector(text: str) -> np.ndarray | None:
     """Parse vector from text representation.
 
     Compass points or 360-degree notation.  E.g. "NW", "270".
@@ -57,15 +63,15 @@ def rotation_matrix(angle: float) -> np.ndarray:
 class Sector:
     """Sector described by two vectors."""
 
-    def __init__(self, text: str, angle: Optional[float] = None) -> None:
+    def __init__(self, text: str, angle: float | None = None) -> None:
         """Construct sector from text representation.
 
         :param text: sector text representation (e.g. "70-210", "N-NW")
         :param angle: angle in degrees
         """
-        self.start: Optional[np.ndarray] = None
-        self.end: Optional[np.ndarray] = None
-        self.main_direction: Optional[np.ndarray] = None
+        self.start: np.ndarray | None = None
+        self.end: np.ndarray | None = None
+        self.main_direction: np.ndarray | None = None
 
         if "-" in text and not text.startswith("-"):
             parts: list[str] = text.split("-")
@@ -79,14 +85,14 @@ class Sector:
             else:
                 result_angle = max(SMALLEST_ANGLE, np.radians(angle) / 2.0)
 
-            vector: Optional[np.ndarray] = parse_vector(text)
+            vector: np.ndarray | None = parse_vector(text)
             self.main_direction = vector
 
             if vector is not None:
                 self.start = np.dot(rotation_matrix(result_angle), vector)
                 self.end = np.dot(rotation_matrix(-result_angle), vector)
 
-    def draw(self, center: np.ndarray, radius: float) -> Optional[PathCommands]:
+    def draw(self, center: np.ndarray, radius: float) -> PathCommands | None:
         """Construct SVG path commands for arc element.
 
         :param center: arc center point
@@ -101,7 +107,7 @@ class Sector:
 
         return ["L", start, "A", radius, radius, 0, "0", 0, end]
 
-    def is_right(self) -> Optional[bool]:
+    def is_right(self) -> bool | None:
         """Check if main direction of the sector is right.
 
         :return: true if direction is right, false if direction is left, and
@@ -110,9 +116,7 @@ class Sector:
         if self.main_direction is not None:
             if np.allclose(self.main_direction[0], 0.0):
                 return None
-            if self.main_direction[0] > 0.0:
-                return True
-            return False
+            return self.main_direction[0] > 0.0
 
         return None
 
@@ -128,7 +132,7 @@ class DirectionSet:
 
         :param text: direction tag value
         """
-        self.sectors: Iterator[Optional[Sector]] = map(Sector, text.split(";"))
+        self.sectors: Iterator[Sector | None] = map(Sector, text.split(";"))
 
     def __str__(self) -> str:
         return ", ".join(map(str, self.sectors))
@@ -142,10 +146,10 @@ class DirectionSet:
         """
         return filter(
             lambda x: x is not None,
-            map(lambda x: x.draw(center, radius), self.sectors),
+            (x.draw(center, radius) for x in self.sectors),
         )
 
-    def is_right(self) -> Optional[bool]:
+    def is_right(self) -> bool | None:
         """Check if main direction of the sector is right.
 
         :return: true if direction is right, false if direction is left, and
@@ -169,7 +173,7 @@ class DirectionSector(Tagged):
     def draw(self, svg: Drawing, scheme) -> None:
         """Draw gradient sector."""
 
-        angle: Optional[float] = None
+        angle: float | None = None
         is_revert_gradient: bool = False
         direction: str
         direction_radius: float
@@ -226,7 +230,7 @@ class DirectionSector(Tagged):
                 )  # fmt: skip
 
             path_element: Path = svg.path(
-                d=["M", point] + path + ["L", point, "Z"],
+                d=["M", point, *path, "L", point, "Z"],
                 fill=gradient.get_funciri(),
             )
             svg.add(path_element)

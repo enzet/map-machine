@@ -1,13 +1,17 @@
 """Text processing for map element."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from colour import Color
 
 from map_machine.map_configuration import LabelMode
-from map_machine.osm.osm_reader import Tags
-from map_machine.scheme import Scheme
+
+if TYPE_CHECKING:
+    from map_machine.osm.osm_reader import Tags
+    from map_machine.scheme import Scheme
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -126,8 +130,8 @@ class TextConstructor:
 
         texts: list[Label] = []
 
-        name: Optional[str] = None
-        alternative_name: Optional[str] = None
+        name: str | None = None
+        alternative_name: str | None = None
 
         if "name" in tags:
             name = tags["name"]

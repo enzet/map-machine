@@ -1,16 +1,17 @@
 """Special icon collections for documentation."""
 
+from __future__ import annotations
+
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import svgwrite
 from svgwrite import Drawing
 
 from map_machine.map_configuration import MapConfiguration
-from map_machine.osm.osm_reader import Tags
 from map_machine.pictogram.icon import IconSet, ShapeExtractor
 from map_machine.scheme import Scheme
 from map_machine.workspace import Workspace
@@ -18,6 +19,8 @@ from map_machine.workspace import Workspace
 if TYPE_CHECKING:
     from svgwrite.shapes import Line, Rect
     from svgwrite.text import Text
+
+    from map_machine.osm.osm_reader import Tags
 
 WORKSPACE: Workspace = Workspace(Path("temp"))
 
@@ -47,13 +50,13 @@ class Collection:
     tags: Tags
 
     # Tag key to be used in rows.
-    row_key: Optional[str] = None
+    row_key: str | None = None
 
     # List of tag values to be used in rows.
     row_values: list[str] = field(default_factory=list)
 
     # Tag key to be used in columns.
-    column_key: Optional[str] = None
+    column_key: str | None = None
 
     # List of tag values to be used in columns.
     column_values: list[str] = field(default_factory=list)
@@ -77,7 +80,7 @@ class Collection:
 class SVGTable:
     """SVG table with icon combinations."""
 
-    def __init__(self, collection: Collection, svg: svgwrite.Drawing):
+    def __init__(self, collection: Collection, svg: svgwrite.Drawing) -> None:
         self.collection: Collection = collection
         self.svg: svgwrite.Drawing = svg
 

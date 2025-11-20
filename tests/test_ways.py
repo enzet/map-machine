@@ -4,15 +4,19 @@ Tests check that for the given ways described by tags, Map Machine generates
 expected figures in the expected order.
 """
 
+from typing import TYPE_CHECKING
+
 import numpy as np
 
 from map_machine.constructor import Constructor
-from map_machine.figure import Figure
 from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.geometry.flinger import MercatorFlinger
 from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import OSMData, OSMNode, OSMWay, Tags
 from tests import SCHEME, SHAPE_EXTRACTOR
+
+if TYPE_CHECKING:
+    from map_machine.figure import Figure
 
 CONFIGURATION: MapConfiguration = MapConfiguration(SCHEME)
 

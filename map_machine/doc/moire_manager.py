@@ -125,7 +125,8 @@ class MapMachineMoire(Default, ABC):
 
     def color(self, arg: Arguments) -> str:
         """Simple color sample."""
-        raise NotImplementedError("color")
+        message: str = "color"
+        raise NotImplementedError(message)
 
     def page_icon(self, arg: Arguments) -> str:
         """HTML page icon."""
@@ -137,7 +138,8 @@ class MapMachineMoire(Default, ABC):
 
     def icon(self, arg: Arguments) -> str:
         """Image with Röntgen icon."""
-        raise NotImplementedError("icon")
+        message: str = "icon"
+        raise NotImplementedError(message)
 
     def options(self, arg: Arguments) -> str:
         """Table with option descriptions."""
@@ -156,9 +158,8 @@ class MapMachineMoire(Default, ABC):
         elif command == "mapcss":
             cli.add_mapcss_arguments(parser)
         else:
-            raise NotImplementedError(
-                "no separate function for parser creation"
-            )
+            message: str = "no separate function for parser creation"
+            raise NotImplementedError(message)
         return self.parse(parser.get_moire_help())
 
     def kbd(self, arg: Arguments) -> str:

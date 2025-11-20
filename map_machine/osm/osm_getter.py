@@ -53,12 +53,14 @@ def get_osm(
             b"You requested too many nodes (limit is 50000). Either request a "
             b"smaller area, or use planet.osm"
         ):
-            raise NetworkError(
+            message: str = (
                 "Cannot download data: too many nodes (limit is 50000). Try "
                 "to request smaller area."
             )
+            raise NetworkError(message)
 
-        raise NetworkError("Cannot download data.")
+        message: str = "Cannot download data."
+        raise NetworkError(message)
 
     with cache_file_path.open("bw+") as output_file:
         output_file.write(content)
@@ -87,7 +89,8 @@ def get_data(address: str, parameters: dict[str, str]) -> bytes:
             "GET", address, fields=parameters, headers=headers
         )
     except urllib3.exceptions.MaxRetryError:
-        raise NetworkError("Cannot download data: too many attempts.")
+        message: str = "Cannot download data: too many attempts."
+        raise NetworkError(message)
 
     pool_manager.clear()
     time.sleep(SLEEP_TIME_BETWEEN_REQUESTS)
