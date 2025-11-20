@@ -113,7 +113,7 @@ class WikiTable:
                     EXTRACTOR, current_tags, set()
                 )
                 if not icon:
-                    print("Icon was not constructed.")
+                    pass
                 text += (
                     "| "
                     f"[[Image:Röntgen {icon.main_icon.get_name()}.svg|32px]]\n"

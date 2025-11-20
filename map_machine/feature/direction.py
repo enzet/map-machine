@@ -18,6 +18,7 @@ if TYPE_CHECKING:
     from svgwrite.path import Path
 
     from map_machine.drawing import PathCommands
+    from map_machine.scheme import Scheme
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -170,7 +171,7 @@ class DirectionSector(Tagged):
         super().__init__(tags)
         self.point: np.ndarray = point
 
-    def draw(self, svg: Drawing, scheme) -> None:
+    def draw(self, svg: Drawing, scheme: Scheme) -> None:
         """Draw gradient sector."""
 
         angle: float | None = None

@@ -8,6 +8,8 @@ from pathlib import Path
 from map_machine.element.grid import Grid
 from map_machine.osm.osm_reader import OSMNode, Tags
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 
 def draw_node(tags: Tags, path: Path) -> None:
     """Draw separate node."""
@@ -52,7 +54,7 @@ def draw_element(options: argparse.Namespace) -> None:
     elif options.type == "area":
         draw_area(tags_description, Path(options.output_file))
     else:
-        logging.fatal(
+        logger.fatal(
             f"Unknown element type `{options.type}`, please choose from "
             f"`node`, `way`, and `area`."
         )

@@ -21,6 +21,8 @@ if TYPE_CHECKING:
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 
 class TileServerHandler(SimpleHTTPRequestHandler):
     """HTTP request handler that process sloppy map tile requests."""
@@ -42,7 +44,7 @@ class TileServerHandler(SimpleHTTPRequestHandler):
                 f"Cache directory `{self.cache}` for server does not exist, "
                 "please create it."
             )
-            logging.fatal(message)
+            logger.fatal(message)
             sys.exit(1)
 
     def do_GET(self) -> None:
@@ -77,7 +79,7 @@ class TileServerHandler(SimpleHTTPRequestHandler):
                 )
             with svg_path.open(encoding="utf-8") as input_file:
                 cairosvg.svg2png(file_obj=input_file, write_to=str(png_path))
-            logging.info(f"SVG file is rasterized to {png_path}.")
+            logger.info("SVG file is rasterized to `%s`.", png_path)
 
         if png_path.exists():
             with png_path.open("rb") as input_file:
@@ -97,7 +99,7 @@ def run_server(options: argparse.Namespace) -> None:
         handler.update_cache = options.update_cache
         handler.options = options
         server = HTTPServer(("", options.port), handler)
-        logging.info(f"Server started on port {options.port}.")
+        logger.info("Server started on port %s.", options.port)
         server.serve_forever()
     finally:
         if server:

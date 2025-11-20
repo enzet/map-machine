@@ -46,11 +46,15 @@ def parse_text(text: str, margins: str, tag_id: str) -> Code:
 class ArgumentParser(argparse.ArgumentParser):
     """Parser that stores arguments and creates help in Moire markup."""
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(
+        self, *args: tuple[Any, ...], **kwargs: dict[str, Any]
+    ) -> None:
         self.arguments: list[dict[str, Any]] = []
         super().__init__(*args, **kwargs)
 
-    def add_argument(self, *args, **kwargs) -> None:
+    def add_argument(
+        self, *args: tuple[Any, ...], **kwargs: dict[str, Any]
+    ) -> None:
         """Just store argument with options."""
         super().add_argument(*args, **kwargs)
         argument: dict[str, Any] = {"arguments": args}

@@ -49,6 +49,8 @@ if TYPE_CHECKING:
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 DEBUG: bool = False
 TIME_COLOR_SCALE: list[Color] = [
     Color("#581845"),
@@ -205,7 +207,7 @@ class Constructor:
 
     def construct_ways(self) -> None:
         """Construct Map Machine ways."""
-        logging.info("Constructing ways...")
+        logger.info("Constructing ways...")
         for way_id in self.osm_data.ways:
             way: OSMWay = self.osm_data.ways[way_id]
             self.construct_line(way, [], [way.nodes])
@@ -246,9 +248,9 @@ class Constructor:
             elif self.configuration.drawing_mode == DrawingMode.BLACK:
                 color = Color("#BBBBBB")
             elif self.configuration.drawing_mode != DrawingMode.NORMAL:
-                logging.fatal(
-                    f"Drawing mode {self.configuration.drawing_mode} is not "
-                    f"supported."
+                logger.fatal(
+                    f"Drawing mode `{self.configuration.drawing_mode}` is not "
+                    "supported."
                 )
                 sys.exit(1)
             self.draw_special_mode(line, inners, outers, color)
@@ -407,7 +409,7 @@ class Constructor:
                         if member.ref in self.osm_data.ways:
                             outer_ways.append(self.osm_data.ways[member.ref])
                     else:
-                        logging.warning(f'Unknown member role "{member.role}".')
+                        logger.warning("Unknown member role `%s`.", member.role)
             if outer_ways:
                 inners_path: list[list[OSMNode]] = glue(inner_ways)
                 outers_path: list[list[OSMNode]] = glue(outer_ways)
@@ -415,7 +417,7 @@ class Constructor:
 
     def construct_nodes(self) -> None:
         """Construct point and add them to the collection."""
-        logging.info("Constructing nodes...")
+        logger.info("Constructing nodes...")
 
         # Sort node vertically (using latitude values) to draw them from top to
         # bottom.

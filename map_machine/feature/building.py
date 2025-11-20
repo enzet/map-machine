@@ -107,7 +107,7 @@ class Building(Figure):
             self.min_height = BUILDING_MINIMAL_HEIGHT + height
 
     def draw(
-        self, svg: Drawing, flinger: Flinger, use_building_colors: bool
+        self, svg: Drawing, flinger: Flinger, *, use_building_colors: bool
     ) -> None:
         """Draw simple building shape."""
 
@@ -165,6 +165,7 @@ class Building(Figure):
         height: float,
         previous_height: float,
         scale: float,
+        *,
         use_building_colors: bool,
     ) -> None:
         """Draw building walls."""
@@ -192,6 +193,7 @@ class Building(Figure):
         svg: Drawing,
         flinger: Flinger,
         scale: float,
+        *,
         use_building_colors: bool,
     ) -> None:
         """Draw building roof."""
@@ -224,6 +226,7 @@ def draw_walls(
     height: float,
     shift_1: np.ndarray,
     shift_2: np.ndarray,
+    *,
     use_building_colors: bool,
 ) -> None:
     """Draw walls for buildings as a quadrangle.

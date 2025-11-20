@@ -22,6 +22,8 @@ if TYPE_CHECKING:
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 
 class Occupied:
     """Structure that remembers places of the canvas occupied by elements (icons,
@@ -33,7 +35,7 @@ class Occupied:
         try:
             self.matrix = np.full((int(width), int(height)), False, dtype=bool)
         except Exception:
-            logging.fatal(
+            logger.fatal(
                 "Failed to allocate a matrix required by overlap algorithm. "
                 "Try to use smallest area or try --overlap=0 options."
             )

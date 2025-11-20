@@ -22,6 +22,8 @@ if TYPE_CHECKING:
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 OSM_TIME_PATTERN: str = "%Y-%m-%dT%H:%M:%SZ"
 
 METERS_PATTERN: re.Pattern = re.compile("^(?P<value>\\d*\\.?\\d*)\\s*m$")
@@ -59,7 +61,7 @@ def parse_levels(string: str) -> list[float]:
     try:
         return list(map(float, string.replace(",", ".").split(";")))
     except ValueError:
-        logging.warning(f"Cannot parse level description from `{string}`.")
+        logger.warning("Cannot parse level description from `%s`.", string)
         return [0.0]
 
 
@@ -115,10 +117,10 @@ class Tagged:
 
         for value, key in self.tags.items():
             if not isinstance(key, str):
-                logging.warning(f"Not string key {key}.")
+                logger.warning("Not string key %s.", key)
                 is_well_formed = False
             if not isinstance(value, str):
-                logging.warning(f"Not string value {value}.")
+                logger.warning("Not string value %s.", value)
                 is_well_formed = False
 
         return is_well_formed
@@ -174,6 +176,7 @@ class OSMNode(Tagged):
         )
 
     def get_bounding_box(self) -> BoundingBox:
+        """Get bounding box for the node."""
         return BoundingBox(
             self.coordinates[1],
             self.coordinates[0],
@@ -184,7 +187,7 @@ class OSMNode(Tagged):
     def __hash__(self) -> int:
         return self.id_
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, OSMNode):
             return False
         return (
@@ -454,6 +457,7 @@ class OSMData:
     def parse_osm(
         self,
         root: Element,
+        *,
         parse_nodes: bool = True,
         parse_ways: bool = True,
         parse_relations: bool = True,
