@@ -4,9 +4,9 @@ python_files="map_machine tests data/githooks/commit-msg"
 
 source .venv/bin/activate
 
-echo "Checking code format with Black..."
-if ! black -l 80 --check ${python_files}; then
-    black -l 80 --diff --color ${python_files}
+echo "Checking code format..."
+if ! ruff format --check; then
+    ruff format --diff
     echo "FAIL"
     exit 1
 fi
