@@ -40,6 +40,8 @@ if TYPE_CHECKING:
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 ROAD_PRIORITY: float = 40.0
 DEFAULT_SIZE: tuple[float, float] = (800.0, 600.0)
 
@@ -69,7 +71,7 @@ class Map:
                 Rect((0.0, 0.0), self.flinger.size, fill=self.background_color)
             )
 
-        logging.info("Drawing ways...")
+        logger.info("Drawing ways...")
 
         figures: list[StyledFigure] = constructor.get_sorted_figures()
 
@@ -137,15 +139,15 @@ class Map:
             nodes: list[Point] = sorted(
                 constructor.points, key=lambda x: -x.priority
             )
-            logging.info("Drawing main icons...")
+            logger.info("Drawing main icons...")
             for node in nodes:
                 node.draw_main_shapes(self.svg, occupied)
 
-            logging.info("Drawing extra icons...")
+            logger.info("Drawing extra icons...")
             for point in nodes:
                 point.draw_extra_shapes(self.svg, occupied)
 
-            logging.info("Drawing texts...")
+            logger.info("Drawing texts...")
             for point in nodes:
                 if (
                     not self.configuration.is_wireframe()
@@ -169,7 +171,7 @@ class Map:
                 building.draw(self.svg, self.flinger, use_building_colors)
             return
 
-        logging.info("Drawing isometric buildings...")
+        logger.info("Drawing isometric buildings...")
 
         scale: float = self.flinger.get_scale()
         building_shade: Group = Group(opacity=0.1)
@@ -289,7 +291,7 @@ class Map:
 
 def fatal(message: str) -> None:
     """Print error message and exit with non-zero exit code."""
-    logging.fatal(message)
+    logger.fatal(message)
     sys.exit(1)
 
 
@@ -323,7 +325,7 @@ def render_map(arguments: argparse.Namespace) -> None:
         if not bounding_box:
             fatal("Invalid bounding box.")
         if arguments.coordinates:
-            logging.warning(
+            logger.warning(
                 "Bounding box is explicitly specified. Coordinates are ignored."
             )
 
@@ -363,7 +365,7 @@ def render_map(arguments: argparse.Namespace) -> None:
             get_osm(bounding_box, cache_file_path)
             input_file_names = [cache_file_path]
         except NetworkError as error:
-            logging.fatal(error.message)
+            logger.fatal(error.message)
             sys.exit(1)
     else:
         fatal("Specify either --input, or --bounding-box, or --coordinates.")
@@ -373,7 +375,7 @@ def render_map(arguments: argparse.Namespace) -> None:
     osm_data: OSMData = OSMData()
     for input_file_name in input_file_names:
         if not input_file_name.is_file():
-            logging.fatal(f"No such file: {input_file_name}.")
+            logger.fatal(f"No such file: {input_file_name}.")
             sys.exit(1)
 
         if input_file_name.name.endswith(".json"):
@@ -409,6 +411,6 @@ def render_map(arguments: argparse.Namespace) -> None:
     map_: Map = Map(flinger=flinger, svg=svg, configuration=configuration)
     map_.draw(constructor)
 
-    logging.info(f"Writing output SVG to {arguments.output_file_name}...")
-    with open(arguments.output_file_name, "w", encoding="utf-8") as output_file:
+    logger.info("Writing output SVG to %s...", arguments.output_file_name)
+    with arguments.output_file_name.open("w", encoding="utf-8") as output_file:
         svg.write(output_file)

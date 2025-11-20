@@ -21,6 +21,8 @@ if TYPE_CHECKING:
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 NODE_CONFIG: str = """
 node {
     symbol-shape: circle;
@@ -76,6 +78,7 @@ class MapCSSWriter:
         self,
         scheme: Scheme,
         icon_directory_name: str,
+        *,
         add_icons: bool = True,
         add_ways: bool = True,
         add_icons_for_lifecycle: bool = True,
@@ -211,4 +214,4 @@ def generate_mapcss(options: argparse.Namespace) -> None:
     ) as output_file:
         mapcss_writer.write(output_file)
 
-    logging.info(f"MapCSS 0.2 scheme is written to {directory}.")
+    logger.info("MapCSS 0.2 scheme is written to `%s`.", directory)

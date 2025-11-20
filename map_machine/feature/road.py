@@ -34,6 +34,8 @@ if TYPE_CHECKING:
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 DEFAULT_LANE_WIDTH: float = 3.7
 USE_BLUR: bool = False
 
@@ -50,7 +52,7 @@ class Lane:
     change: str | None = None  # "not_left", "not_right"
     destination: str | None = None  # Lane destination
 
-    def set_forward(self, is_forward: bool) -> None:
+    def set_forward(self, *, is_forward: bool) -> None:
         """If true, lane is forward, otherwise it's backward."""
         self.is_forward = is_forward
 
@@ -249,7 +251,7 @@ class RoadPart:
             drawing.add(drawing.path(path_commands, fill="#CCCCCC"))
 
     def draw_entrance(
-        self, drawing: svgwrite.Drawing, is_debug: bool = False
+        self, drawing: svgwrite.Drawing, *, is_debug: bool = False
     ) -> None:
         """Draw intersection entrance part."""
         if (
@@ -333,7 +335,9 @@ class Intersection:
             part_1.update()
             part_2.update()
 
-    def draw(self, drawing: svgwrite.Drawing, is_debug: bool = False) -> None:
+    def draw(
+        self, drawing: svgwrite.Drawing, *, is_debug: bool = False
+    ) -> None:
         """Draw all road parts and intersection."""
         inner_commands = ["M"]
         for part in self.parts:
@@ -468,7 +472,7 @@ class Road(Tagged):
                         self.scale
                     )
                 else:
-                    logging.error(f"Unknown placement `{place}`.")
+                    logger.error("Unknown placement `%s`.", place)
 
     def get_style(
         self, is_border: bool, is_for_stroke: bool = False
@@ -517,7 +521,7 @@ class Road(Tagged):
 
         return style
 
-    def get_filter(self, svg: Drawing, is_border: bool) -> Filter | None:
+    def get_filter(self, svg: Drawing, *, is_border: bool) -> Filter | None:
         """Get blurring filter."""
         if not USE_BLUR:
             return None
@@ -529,7 +533,7 @@ class Road(Tagged):
 
         return None
 
-    def draw(self, svg: Drawing, is_border: bool) -> None:
+    def draw(self, svg: Drawing, *, is_border: bool) -> None:
         """Draw road as simple SVG path."""
         filter_: Filter = self.get_filter(svg, is_border)
 
@@ -625,6 +629,7 @@ def get_curve_points(
     center: np.ndarray,
     road_end: np.ndarray,
     placement_offset: float,
+    *,
     is_end: bool,
 ) -> list[np.ndarray]:
     """TODO: add description.
@@ -777,7 +782,7 @@ class ComplexConnector(Connector):
 
     def draw_border(self, svg: Drawing) -> None:
         """Draw connection outline."""
-        filter_: Filter = self.road_1.get_filter(svg, True)
+        filter_: Filter = self.road_1.get_filter(svg, is_border=True)
 
         if filter_:
             path: Path = svg.path(
@@ -786,7 +791,7 @@ class ComplexConnector(Connector):
             )
         else:
             path: Path = svg.path(d=["M", *self.curve_1, "M", *self.curve_2])
-        path.update(self.road_1.get_style(True, True))
+        path.update(self.road_1.get_style(is_border=True, is_for_stroke=True))
         svg.add(path)
 
 
@@ -900,7 +905,7 @@ class Roads:
             # Draw borders.
 
             for road in roads:
-                road.draw(svg, True)
+                road.draw(svg, is_border=True)
             if connectors:
                 for connector in connectors:
                     if connector.min_layer == layer:
@@ -909,7 +914,7 @@ class Roads:
             # Draw inner parts.
 
             for road in roads:
-                road.draw(svg, False)
+                road.draw(svg, is_border=False)
             if connectors:
                 for connector in connectors:
                     if connector.max_layer == layer:

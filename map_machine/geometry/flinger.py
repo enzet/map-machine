@@ -55,7 +55,8 @@ class Flinger:
         """Do nothing but return coordinates unchanged."""
         return coordinates
 
-    def get_scale(self, coordinates: np.ndarray | None = None) -> float:
+    def get_scale(self, _: np.ndarray | None = None) -> float:
+        """Return pixels per meter ratio for the given geo coordinates."""
         return 1.0
 
 
@@ -119,6 +120,8 @@ class MercatorFlinger(Flinger):
 
 
 class TranslateFlinger(Flinger):
+    """Translate coordinates by a given scale and offset."""
+
     def __init__(
         self, size: np.ndarray, scale: np.ndarray, offset: np.ndarray
     ) -> None:
@@ -127,4 +130,5 @@ class TranslateFlinger(Flinger):
         self.offset: np.ndarray = offset
 
     def fling(self, coordinates: np.ndarray) -> np.ndarray:
+        """Translate coordinates by a given scale and offset."""
         return self.scale * (coordinates + self.offset)

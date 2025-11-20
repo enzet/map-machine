@@ -33,6 +33,8 @@ if TYPE_CHECKING:
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 TILE_WIDTH, TILE_HEIGHT = 256, 256
 EXTEND_TO_BIGGER_TILE: bool = False
 
@@ -182,12 +184,12 @@ class Tile:
 
         with output_file_name.open("w", encoding="utf-8") as output_file:
             svg.write(output_file)
-        logging.info(f"Tile is drawn to {output_file_name}.")
+        logger.info("Tile is drawn to `%s`.", output_file_name)
 
         output_path: Path = output_file_name.with_suffix(".png")
         with output_file_name.open(encoding="utf-8") as input_file:
             cairosvg.svg2png(file_obj=input_file, write_to=str(output_path))
-        logging.info(f"SVG file is rasterized to {output_path}.")
+        logger.info("SVG file is rasterized to `%s`.", output_path)
 
     def subdivide(self, zoom_level: int) -> list[Tile]:
         """Get subtiles of the tile."""
@@ -304,8 +306,11 @@ class Tiles:
                 cropped.crop((0, 0, TILE_WIDTH, TILE_HEIGHT)).save(
                     tile.get_file_name(directory).with_suffix(".png")
                 )
-                logging.info(
-                    f"Tile {tile.zoom_level}/{tile.x}/{tile.y} is created."
+                logger.info(
+                    "Tile `%s/%s/%s` is created.",
+                    tile.zoom_level,
+                    tile.x,
+                    tile.y,
                 )
 
     def get_file_path(self, cache_path: Path) -> Path:
@@ -363,20 +368,20 @@ class Tiles:
             map_: Map = Map(flinger, svg, configuration)
             map_.draw(constructor)
 
-            logging.info(f"Writing output SVG {output_path}...")
+            logger.info("Writing output SVG `%s`...", output_path)
             with output_path.open("w+", encoding="utf-8") as output_file:
                 svg.write(output_file)
         else:
-            logging.debug(f"File {output_path} already exists.")
+            logger.debug("File `%s` already exists.", output_path)
 
         png_path: Path = self.get_file_path(cache_path).with_suffix(".png")
 
         if not png_path.exists() or redraw:
             with output_path.open(encoding="utf-8") as input_file:
                 cairosvg.svg2png(file_obj=input_file, write_to=str(png_path))
-            logging.info(f"SVG file is rasterized to {png_path}.")
+            logger.info("SVG file is rasterized to `%s`.", png_path)
         else:
-            logging.debug(f"File {png_path} already exists.")
+            logger.debug("File `%s` already exists.", png_path)
 
     def subdivide(self, zoom_level: int) -> Tiles:
         """Get subtiles from tiles."""
@@ -443,7 +448,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
         message: str = (
             f"Cache directory `{cache_path}` does not exist, please create it."
         )
-        logging.fatal(message)
+        logger.fatal(message)
         sys.exit(1)
 
     if options.input_file_name:
@@ -451,7 +456,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
         osm_data.parse_osm_file(Path(options.input_file_name))
 
         if osm_data.view_box is None:
-            logging.fatal(
+            logger.fatal(
                 "Failed to parse bounding box input file "
                 f"{options.input_file_name}."
             )
@@ -489,7 +494,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
                 )
                 tile.draw_with_osm_data(osm_data, directory, configuration)
             except NetworkError as error:
-                logging.fatal(error.message)
+                logger.fatal(error.message)
 
     elif options.tile:
         zoom_level, x, y = map(int, options.tile.split("/"))
@@ -504,7 +509,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
             options.bounding_box
         )
         if bounding_box is None:
-            logging.fatal("Failed to parse bounding box.")
+            logger.fatal("Failed to parse bounding box.")
             sys.exit(1)
 
         min_tiles: Tiles = Tiles.from_bounding_box(bounding_box, min_zoom_level)
@@ -525,7 +530,8 @@ def generate_tiles(options: argparse.Namespace) -> None:
             tiles.draw(directory, cache_path, configuration, osm_data)
 
     else:
-        logging.fatal(
-            "Specify either --coordinates, --bounding-box, --tile, or --input."
+        logger.fatal(
+            "Specify either `--coordinates`, `--bounding-box`, `--tile`, or "
+            "`--input`."
         )
         sys.exit(1)

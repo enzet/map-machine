@@ -11,6 +11,8 @@ import numpy as np
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 LATITUDE_MAX_DIFFERENCE: float = 0.5
 LONGITUDE_MAX_DIFFERENCE: float = 0.5
 
@@ -50,7 +52,7 @@ class BoundingBox:
         matcher: re.Match | None = BOUNDING_BOX_PATTERN.match(bounding_box)
 
         if not matcher:
-            logging.fatal("Invalid bounding box.")
+            logger.fatal("Invalid bounding box.")
             return None
 
         try:
@@ -59,20 +61,20 @@ class BoundingBox:
             right: float = float(matcher.group("right"))
             top: float = float(matcher.group("top"))
         except ValueError:
-            logging.fatal("Invalid bounding box.")
+            logger.fatal("Invalid bounding box.")
             return None
 
         if left >= right:
-            logging.fatal("Negative horizontal boundary.")
+            logger.fatal("Negative horizontal boundary.")
             return None
         if bottom >= top:
-            logging.error("Negative vertical boundary.")
+            logger.error("Negative vertical boundary.")
             return None
         if (
             right - left > LONGITUDE_MAX_DIFFERENCE
             or top - bottom > LATITUDE_MAX_DIFFERENCE
         ):
-            logging.error("Bounding box is too big.")
+            logger.error("Bounding box is too big.")
             return None
 
         return cls(left, bottom, right, top)

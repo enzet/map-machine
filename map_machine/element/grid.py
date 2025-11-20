@@ -1,3 +1,5 @@
+"""Creating map with elements ordered in grid."""
+
 import logging
 from pathlib import Path
 
@@ -21,6 +23,8 @@ from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.scheme import Scheme
 from map_machine.workspace import Workspace
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 workspace: Workspace = Workspace(Path("temp"))
 
 SCHEME: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
@@ -37,6 +41,7 @@ class Grid:
         self,
         x_step: float = 20.0,
         y_step: float = 20.0,
+        *,
         show_credit: bool = True,
         margin: float = 1.5,
     ) -> None:
@@ -125,4 +130,4 @@ class Grid:
 
         with output_path.open("w") as output_file:
             svg.write(output_file)
-            logging.info(f"Map is drawn to {output_path}.")
+            logger.info("Map is drawn to %s.", output_path)

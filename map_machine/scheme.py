@@ -30,6 +30,8 @@ if TYPE_CHECKING:
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 IconDescription = list[Union[str, dict[str, str]]]
 
 DEFAULT_COLOR: Color = Color("black")
@@ -264,11 +266,11 @@ class WayMatcher(Matcher):
         self.style: dict[str, Any] = {"fill": "none"}
         if "style" in structure:
             style: dict[str, Any] = structure["style"]
-            for key in style:
-                if str(style[key]).endswith("_color"):
-                    self.style[key] = scheme.get_color(style[key]).hex.upper()
+            for key, value in style.items():
+                if str(value).endswith("_color"):
+                    self.style[key] = scheme.get_color(value).hex.upper()
                 else:
-                    self.style[key] = style[key]
+                    self.style[key] = value
 
         self.priority: float = 0.0
         if "priority" in structure:
@@ -361,8 +363,10 @@ class Scheme:
 
     @classmethod
     def from_file(cls, file_name: Path) -> Scheme | None:
-        """:param file_name: name of the scheme file with tags, colors, and tag key
-        specification
+        """Get scheme from file.
+
+        :param file_name: name of the scheme file with tags, colors, and tag key
+            specification
         """
         with file_name.open(encoding="utf-8") as input_file:
             try:
@@ -398,7 +402,7 @@ class Scheme:
         try:
             return Color(color)
         except (ValueError, AttributeError):
-            logging.debug(f"Unknown color `{color}`.")
+            logger.debug("Unknown color `%s`.", color)
             if "default" in self.colors:
                 return Color(self.colors["default"])
             return DEFAULT_COLOR

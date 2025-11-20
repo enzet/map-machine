@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Self
 
 import numpy as np
 import svgwrite
@@ -65,7 +65,7 @@ class Collection:
     row_tags: list[Tags] = field(default_factory=list)
 
     @classmethod
-    def deserialize(cls, structure: dict[str, Any]):
+    def deserialize(cls, structure: dict[str, Any]) -> Self:
         """Deserialize icon collection from structure."""
         return cls(
             structure["tags"],
@@ -140,7 +140,7 @@ class SVGTable:
                 )
                 processed = icon.processed
                 if not icon:
-                    print("Icon was not constructed.")
+                    pass
 
                 if (
                     icon.main_icon
@@ -255,6 +255,7 @@ class SVGTable:
         point: np.ndarray,
         anchor: str = "start",
         weight: str = "normal",
+        *,
         rotate: bool = False,
     ) -> None:
         """Draw text on the table."""

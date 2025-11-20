@@ -26,6 +26,8 @@ if TYPE_CHECKING:
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 
 @dataclass
 class IconCollection:
@@ -40,6 +42,7 @@ class IconCollection:
         extractor: ShapeExtractor,
         background_color: Color = Color("white"),
         color: Color = Color("black"),
+        *,
         add_unused: bool = False,
         add_all: bool = False,
     ) -> IconCollection:
@@ -132,12 +135,15 @@ class IconCollection:
         self,
         output_directory: Path,
         license_path: Path,
+        *,
         by_name: bool = False,
         color: Color | None = None,
         outline: bool = False,
         outline_opacity: float = 1.0,
     ) -> None:
-        """:param output_directory: path to the directory to store individual SVG
+        """Draw individual icons.
+
+        :param output_directory: path to the directory to store individual SVG
             files for icons
         :param license_path: path to the file with license
         :param by_name: use names instead of identifiers
@@ -213,8 +219,10 @@ class IconCollection:
 
 
 def draw_icons() -> None:
-    """Draw all possible icon shapes combinations as grid in one SVG file and as
-    individual SVG files.
+    """Draw all possible icon shapes combinations.
+
+    This includes drawing icons as grid in one SVG file and as individual SVG
+    files.
     """
     scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
     extractor: ShapeExtractor = ShapeExtractor(
@@ -233,8 +241,10 @@ def draw_icons() -> None:
         icons_by_name_path, workspace.ICONS_LICENSE_PATH, by_name=True
     )
 
-    logging.info(
-        f"Icons are written to {icons_by_name_path} and {icons_by_id_path}."
+    logger.info(
+        "Icons are written to `%s` and `%s`.",
+        icons_by_name_path,
+        icons_by_id_path,
     )
 
     # Draw grid.
@@ -247,4 +257,4 @@ def draw_icons() -> None:
         (workspace.GRID_PATH, 2.0),
     ):
         collection.draw_grid(path, scale=scale)
-        logging.info(f"Icon grid is written to {path}.")
+        logger.info("Icon grid is written to `%s`.", path)

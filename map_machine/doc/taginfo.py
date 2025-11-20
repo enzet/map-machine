@@ -5,7 +5,7 @@ See https://wiki.openstreetmap.org/wiki/Taginfo/Projects
 
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from map_machine import (
@@ -19,6 +19,8 @@ from map_machine import (
 from map_machine.scheme import Scheme
 from map_machine.workspace import workspace
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 
 class TaginfoProjectFile:
     """JSON structure with OpenStreetMap tag usage."""
@@ -29,7 +31,9 @@ class TaginfoProjectFile:
         self.structure = {
             "data_format": 1,
             "data_url": __url__ + "/" + str(path),
-            "data_updated": datetime.now().strftime("%Y%m%dT%H%M%SZ"),
+            "data_updated": datetime.now(timezone.utc).strftime(
+                "%Y%m%dT%H%M%SZ"
+            ),
             "project": {
                 "name": __project__,
                 "description": __description__,
@@ -78,7 +82,7 @@ class TaginfoProjectFile:
 def write_taginfo_project_file(scheme: Scheme) -> None:
     """Write Taginfo JSON file."""
     out_file: Path = workspace.get_taginfo_file_path()
-    logging.info(f"Write Map Machine project file for Taginfo to {out_file}...")
+    logger.info("Write Map Machine project file for Taginfo to %s...", out_file)
     taginfo_project_file: TaginfoProjectFile = TaginfoProjectFile(
         out_file, scheme
     )

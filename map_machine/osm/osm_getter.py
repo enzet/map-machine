@@ -13,6 +13,8 @@ from map_machine.geometry.bounding_box import BoundingBox
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 SLEEP_TIME_BETWEEN_REQUESTS: float = 2.0
 
 
@@ -24,7 +26,7 @@ class NetworkError(Exception):
 
 
 def get_osm(
-    bounding_box: BoundingBox, cache_file_path: Path, to_update: bool = False
+    bounding_box: BoundingBox, cache_file_path: Path, *, to_update: bool = False
 ) -> str:
     """Download OSM data from the web or get if from the cache.
 
@@ -75,7 +77,7 @@ def get_data(address: str, parameters: dict[str, str]) -> bytes:
     :param parameters: URL parameters
     :return: connection descriptor
     """
-    logging.info(f"Getting {address}...")
+    logger.info("Getting %s...", address)
     headers = {
         "User-Agent": "map-machine/1.0",
         # Disable compression to avoid gzip issues.
@@ -88,9 +90,9 @@ def get_data(address: str, parameters: dict[str, str]) -> bytes:
         result = pool_manager.request(
             "GET", address, fields=parameters, headers=headers
         )
-    except urllib3.exceptions.MaxRetryError:
+    except urllib3.exceptions.MaxRetryError as error:
         message: str = "Cannot download data: too many attempts."
-        raise NetworkError(message)
+        raise NetworkError(message) from error
 
     pool_manager.clear()
     time.sleep(SLEEP_TIME_BETWEEN_REQUESTS)

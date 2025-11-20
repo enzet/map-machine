@@ -9,6 +9,8 @@ __email__ = "me@enzet.ru"
 
 from shapely.geometry import LineString
 
+MINIMAL_NUMBER_OF_POINTS: int = 2
+
 
 def compute_angle(vector: np.ndarray) -> float:
     """For the given vector compute an angle between it and (1, 0) vector.
@@ -65,7 +67,7 @@ class Polyline:
             except (ValueError, NotImplementedError):
                 points = self.points
 
-        if len(points) < 2:  # Deal with malformed paths.
+        if len(points) < MINIMAL_NUMBER_OF_POINTS:  # Deal with malformed paths.
             return None
 
         return (

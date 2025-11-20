@@ -28,6 +28,8 @@ if TYPE_CHECKING:
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 DEFAULT_SHAPE_ID: str = "default"
 DEFAULT_SMALL_SHAPE_ID: str = "default_small"
 
@@ -221,7 +223,9 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
 
 
 def parse_configuration(root: dict, configuration: dict, group: str) -> None:
-    """Shape description is a probably empty dictionary with optional fields
+    """Parse shape configuration.
+
+    Shape description is a probably empty dictionary with optional fields
     `name`, `emoji`, `is_part`, `directed`, and `categories`.  Shape
     configuration is a dictionary that contains shape descriptions.  Shape
     descriptions may be grouped and the nesting level may be arbitrary:
@@ -264,7 +268,9 @@ class ShapeExtractor:
     def __init__(
         self, svg_file_name: Path, configuration_file_name: Path
     ) -> None:
-        """:param svg_file_name: input SVG file name with icons.  File may contain
+        """Initialize shape extractor.
+
+        :param svg_file_name: input SVG file name with icons.  File may contain
             any other irrelevant graphics.
         :param configuration_file_name: JSON file with grouped shape
             descriptions
@@ -282,8 +288,9 @@ class ShapeExtractor:
 
         for shape_id in self.configuration:
             if shape_id not in self.shapes:
-                logging.warning(
-                    f"Configuration for unknown shape `{shape_id}`."
+                logger.warning(
+                    "Configuration for unknown shape `%s`.",
+                    shape_id,
                 )
 
     def parse(self, node: Element) -> None:
@@ -305,7 +312,9 @@ class ShapeExtractor:
                 path_part = ""
                 with contextlib.suppress(KeyError, ValueError):
                     path_part = f", {node.attrib['d'].split(' ')[:3]}."
-                logging.warning(f"Not verified SVG element `{id_}`{path_part}")
+                logger.warning(
+                    "Not verified SVG element `%s`%s.", id_, path_part
+                )
             return
 
         if node.attrib.get("d"):
@@ -335,15 +344,15 @@ class ShapeExtractor:
             if id_ in self.configuration:
                 configuration = self.configuration[id_]
                 if "name" not in configuration:
-                    logging.warning(f"Shape `{id_}` doesn't have name.")
+                    logger.warning("Shape `%s` doesn't have name.", id_)
             else:
-                logging.warning(f"Shape `{id_}` doesn't have configuration.")
+                logger.warning("Shape `%s` doesn't have configuration.", id_)
 
             self.shapes[id_] = Shape.from_structure(
                 configuration, path, point, id_, name
             )
         else:
-            logging.error(f"Not standard ID {id_}.")
+            logger.error("Not standard ID %s.", id_)
 
     def get_shape(self, id_: str) -> Shape:
         """Get shape or None if there is no shape with such identifier.
@@ -377,6 +386,7 @@ class ShapeSpecification:
         svg: BaseElement,
         point: np.ndarray,
         tags: dict[str, Any] | None = None,
+        *,
         outline: bool = False,
         outline_opacity: float = 1.0,
         scale: float = 1.0,
@@ -489,6 +499,7 @@ class Icon:
         svg: svgwrite.Drawing,
         point: np.ndarray,
         tags: dict[str, Any] | None = None,
+        *,
         outline: bool = False,
         scale: float = 1.0,
     ) -> None:
@@ -519,6 +530,7 @@ class Icon:
         self,
         file_name: Path,
         color: Color | None = None,
+        *,
         outline: bool = False,
         outline_opacity: float = 1.0,
     ) -> None:

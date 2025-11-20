@@ -1,7 +1,9 @@
 """Icon grids for documentation."""
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable
 
 from colour import Color
 
@@ -20,7 +22,12 @@ if TYPE_CHECKING:
 SKIP: bool = True
 
 
-def draw_special_grid(all_shapes, function, path, color=None) -> None:
+def draw_special_grid(
+    all_shapes: Iterable[Shape],
+    function: Callable[[Shape], bool],
+    path: Path,
+    color: Color | None = None,
+) -> None:
     """Draw special icon grid to illustrate map feature."""
     icons = [
         Icon([ShapeSpecification(shape)])
