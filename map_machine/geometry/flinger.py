@@ -3,7 +3,7 @@ from typing import Optional
 
 import numpy as np
 
-from map_machine.geometry.boundary_box import BoundaryBox
+from map_machine.geometry.bounding_box import BoundingBox
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -62,18 +62,18 @@ class MercatorFlinger(Flinger):
 
     def __init__(
         self,
-        geo_boundaries: BoundaryBox,
+        geo_boundaries: BoundingBox,
         zoom_level: float,
         equator_length: float,
     ) -> None:
         """
-        Initialize flinger with geo boundary box and zoom level.
+        Initialize flinger with geo bounding box and zoom level.
 
         :param geo_boundaries: minimum and maximum latitude and longitude
         :param zoom_level: zoom level in OpenStreetMap terminology
         :param equator_length: celestial body equator length in meters
         """
-        self.geo_boundaries: BoundaryBox = geo_boundaries
+        self.geo_boundaries: BoundingBox = geo_boundaries
         self.ratio: float = 2.0**zoom_level * 256.0 / 360.0
         size: np.ndarray = self.ratio * (
             pseudo_mercator(self.geo_boundaries.max_())
@@ -112,7 +112,7 @@ class MercatorFlinger(Flinger):
             (latitude, longitude)
         """
         if coordinates is None:
-            # Get pixels per meter ratio for the center of the boundary box.
+            # Get pixels per meter ratio for the center of the bounding box.
             coordinates = self.geo_boundaries.center()
 
         scale_factor: float = abs(1.0 / np.cos(coordinates[0] / 180.0 * np.pi))
