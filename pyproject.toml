@@ -1,12 +1,12 @@
 [build-system]
-requires = ["setuptools>=61", "wheel"]
+requires = ["setuptools>=40,<61", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "map-machine"
 description = "Map Machine: Python map renderer for OpenStreetMap with custom icon set."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.8"
 license = "MIT"
 authors = [{ name = "Sergey Vartanov", email = "me@enzet.ru" }]
 urls = { Homepage = "https://github.com/enzet/map-machine", "Bug Tracker" = "https://github.com/enzet/map-machine/issues" }
@@ -18,7 +18,7 @@ dynamic = ["version"]
 dependencies = [
     "CairoSVG~=2.5.0",
     "colour~=0.1.5",
-    "numpy~=1.26.0",
+    "numpy~=1.24.4",
     "Pillow~=8.2.0",
     "portolan~=1.0.1",
     "PyYAML~=6.0.1",

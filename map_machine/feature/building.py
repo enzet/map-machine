@@ -112,12 +112,14 @@ class Building(Figure):
 
         path: Path = Path(
             d=path_commands,
-            stroke=self.stroke.hex
-            if use_building_colors
-            else self.default_stroke.hex,
-            fill=self.fill.hex
-            if use_building_colors
-            else self.default_fill.hex,
+            stroke=(
+                self.stroke.hex
+                if use_building_colors
+                else self.default_stroke.hex
+            ),
+            fill=(
+                self.fill.hex if use_building_colors else self.default_fill.hex
+            ),
             stroke_linejoin="round",
         )
         svg.add(path)

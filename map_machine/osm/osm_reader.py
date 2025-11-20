@@ -149,9 +149,11 @@ class OSMNode(Tagged):
             np.array((float(attributes["lat"]), float(attributes["lon"]))),
             attributes.get("visible", None),
             attributes.get("changeset", None),
-            datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
-            if "timestamp" in attributes
-            else None,
+            (
+                datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
+                if "timestamp" in attributes
+                else None
+            ),
             attributes.get("user", None),
             attributes.get("uid", None),
         )
@@ -225,9 +227,11 @@ class OSMWay(Tagged):
             [nodes[int(x.attrib["ref"])] for x in element if x.tag == "nd"],
             attributes.get("visible", None),
             attributes.get("changeset", None),
-            datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
-            if "timestamp" in attributes
-            else None,
+            (
+                datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
+                if "timestamp" in attributes
+                else None
+            ),
             attributes.get("user", None),
             attributes.get("uid", None),
         )
@@ -308,9 +312,11 @@ class OSMRelation(Tagged):
             members,
             attributes.get("visible", None),
             attributes.get("changeset", None),
-            datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
-            if "timestamp" in attributes
-            else None,
+            (
+                datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
+                if "timestamp" in attributes
+                else None
+            ),
             attributes.get("user", None),
             attributes.get("uid", None),
         )

@@ -323,9 +323,14 @@ def add_server_arguments(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument(
         "--update-cache",
-        action=argparse.BooleanOptionalAction,
+        action="store_true",
         default=False,
         help="allow writing to cache",
+    )
+    parser.add_argument(
+        "--no-update-cache",
+        action="store_false",
+        help="disallow writing to cache",
     )
     parser.add_argument(
         "--port",

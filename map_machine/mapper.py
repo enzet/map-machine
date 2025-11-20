@@ -3,7 +3,7 @@ import argparse
 import logging
 import sys
 from pathlib import Path
-from typing import Dict, Iterator, Optional, Set
+from typing import Dict, Iterator, Optional, Set, Tuple
 
 import numpy as np
 import svgwrite
@@ -34,7 +34,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 ROAD_PRIORITY: float = 40.0
-DEFAULT_SIZE: tuple[float, float] = (800.0, 600.0)
+DEFAULT_SIZE: Tuple[float, float] = (800.0, 600.0)
 
 
 class Map:

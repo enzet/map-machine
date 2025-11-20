@@ -10,7 +10,7 @@ from svgwrite import Drawing
 from svgwrite.text import Text
 
 from map_machine.constructor import Constructor
-from map_machine.geometry.boundary_box import BoundaryBox
+from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.geometry.flinger import Flinger
 from map_machine.map_configuration import MapConfiguration
 from map_machine.mapper import Map
@@ -118,9 +118,9 @@ class Grid:
     def add_text(self, text: str, i: int, j: int) -> None:
         self.texts.append((text, i, j))
 
-    def get_boundary_box(self) -> BoundaryBox:
-        """Compute resulting boundary box with margin of one grid step."""
-        return BoundaryBox(
+    def get_bounding_box(self) -> BoundingBox:
+        """Compute resulting bounding box with margin of one grid step."""
+        return BoundingBox(
             -self.x_step * 1.5,
             -self.max_i - self.y_step * 1.5,
             self.max_j + self.x_step * 1.5,
@@ -133,7 +133,7 @@ class Grid:
             level="all", credit=None
         )
         flinger: Flinger = Flinger(
-            self.get_boundary_box(), zoom, self.osm_data.equator_length
+            self.get_bounding_box(), zoom, self.osm_data.equator_length
         )
         svg: Drawing = Drawing(output_path.name, flinger.size)
         constructor: Constructor = Constructor(

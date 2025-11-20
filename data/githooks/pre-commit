@@ -2,7 +2,7 @@
 
 python_files="map_machine tests data/githooks/commit-msg"
 
-source .venv/bin/activate
+source .venv3.8/bin/activate
 
 echo "Checking code format with Black..."
 if ! black -l 80 --check ${python_files}; then

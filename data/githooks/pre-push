@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source .venv/bin/activate
+source .venv3.8/bin/activate
 
 echo "Looking for changes..."
 files=`git status --porcelain | wc -l`
