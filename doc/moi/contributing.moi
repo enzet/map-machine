@@ -6,7 +6,7 @@ Thank you for your interest in the Map Machine project.  Since the primary goal 
 
 ❗ \b {IMPORTANT} ❗ Before committing please enable Git hooks:
 
-\code {git config --local core.hooksPath data/githooks} {shell}
+\code {shell} {git config --local core.hooksPath data/githooks}
 
 This will allow you to automatically check your commit message and code before committing and pushing changes.  This will crucially speed up pull request merging and make Git history neat and uniform.
 
@@ -18,9 +18,7 @@ Activate virtual environment.  E.g. for fish shell, run \m {source venv/bin/acti
 
 Install the project in editable mode:
 
-\code {pip install -e .} {shell}
-
-Install formatter, linter and test system\: \m {pip install black flake8 mypy pytest pytest-cov}.
+\code {shell} {pip install -e .[dev]}
 
 If you are using PyCharm, you may want to set up user dictionary as well:
 
@@ -31,7 +29,7 @@ If you are using PyCharm, you may want to set up user dictionary as well:
 
 \3 {Code style} {code-style}
 
-We use \ref {http://github.com/psf/black} {Black} code formatter with maximum 80 characters line length for all Python files within the project.  Reformat a file is as simple as \m {black -l 80 \formal {file name}}.  Reformat everything with \m {black -l 80 map_machine tests}.
+We use \ref {http://github.com/psf/black} {Black} code formatter version 22.6 with maximum 80 characters line length for all Python files within the project.  Reformat a file is as simple as \m {black -l 80 \formal {file name}}.  Reformat everything with \m {black -l 80 map_machine tests}.
 
 If you create new Python file, make sure you add \m {__author__ = "\formal {first name} \formal {second name}"} and \m {__email__ = "\formal {author e-mail}"} string variables.
 

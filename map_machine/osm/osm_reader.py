@@ -11,7 +11,7 @@ from xml.etree.ElementTree import Element
 
 import numpy as np
 
-from map_machine.geometry.boundary_box import BoundaryBox
+from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.util import MinMax
 
 __author__ = "Sergey Vartanov"
@@ -55,7 +55,7 @@ def parse_levels(string: str) -> List[float]:
         return list(map(float, string.replace(",", ".").split(";")))
     except ValueError:
         logging.warning(f"Cannot parse level description from `{string}`.")
-        return []
+        return [0.0]
 
 
 @dataclass
@@ -147,13 +147,13 @@ class OSMNode(Tagged):
             tags,
             int(attributes["id"]),
             np.array((float(attributes["lat"]), float(attributes["lon"]))),
-            attributes["visible"] if "visible" in attributes else None,
-            attributes["changeset"] if "changeset" in attributes else None,
+            attributes.get("visible", None),
+            attributes.get("changeset", None),
             datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
             if "timestamp" in attributes
             else None,
-            attributes["user"] if "user" in attributes else None,
-            attributes["uid"] if "uid" in attributes else None,
+            attributes.get("user", None),
+            attributes.get("uid", None),
         )
 
     @classmethod
@@ -164,13 +164,13 @@ class OSMNode(Tagged):
         :param structure: input structure
         """
         return cls(
-            structure["tags"] if "tags" in structure else {},
+            structure.get("tags", {}),
             structure["id"],
             coordinates=np.array((structure["lat"], structure["lon"])),
         )
 
-    def get_boundary_box(self) -> BoundaryBox:
-        return BoundaryBox(
+    def get_bounding_box(self) -> BoundingBox:
+        return BoundingBox(
             self.coordinates[1],
             self.coordinates[0],
             self.coordinates[1],
@@ -223,13 +223,13 @@ class OSMWay(Tagged):
             tags,
             int(element.attrib["id"]),
             [nodes[int(x.attrib["ref"])] for x in element if x.tag == "nd"],
-            attributes["visible"] if "visible" in attributes else None,
-            attributes["changeset"] if "changeset" in attributes else None,
+            attributes.get("visible", None),
+            attributes.get("changeset", None),
             datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
             if "timestamp" in attributes
             else None,
-            attributes["user"] if "user" in attributes else None,
-            attributes["uid"] if "uid" in attributes else None,
+            attributes.get("user", None),
+            attributes.get("uid", None),
         )
 
     @classmethod
@@ -243,7 +243,7 @@ class OSMWay(Tagged):
         :param nodes: node structure
         """
         return cls(
-            structure["tags"] if "tags" in structure else {},
+            structure.get("tags", {}),
             structure["id"],
             [nodes[x] for x in structure["nodes"]],
         )
@@ -306,13 +306,13 @@ class OSMRelation(Tagged):
             tags,
             int(attributes["id"]),
             members,
-            attributes["visible"] if "visible" in attributes else None,
-            attributes["changeset"] if "changeset" in attributes else None,
+            attributes.get("visible", None),
+            attributes.get("changeset", None),
             datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
             if "timestamp" in attributes
             else None,
-            attributes["user"] if "user" in attributes else None,
-            attributes["uid"] if "uid" in attributes else None,
+            attributes.get("user", None),
+            attributes.get("uid", None),
         )
 
     @classmethod
@@ -347,8 +347,8 @@ class OSMData:
         self.authors: Set[str] = set()
         self.levels: Set[float] = set()
         self.time: MinMax = MinMax()
-        self.view_box: Optional[BoundaryBox] = None
-        self.boundary_box: Optional[BoundaryBox] = None
+        self.view_box: Optional[BoundingBox] = None
+        self.bounding_box: Optional[BoundingBox] = None
         self.equator_length: float = EARTH_EQUATOR_LENGTH
 
     def add_node(self, node: OSMNode) -> None:
@@ -366,9 +366,9 @@ class OSMData:
             self.levels.union(parse_levels(node.tags["level"]))
         self.time.update(node.timestamp)
 
-        if not self.boundary_box:
-            self.boundary_box = node.get_boundary_box()
-        self.boundary_box.update(node.coordinates)
+        if not self.bounding_box:
+            self.bounding_box = node.get_bounding_box()
+        self.bounding_box.update(node.coordinates)
 
     def add_way(self, way: OSMWay) -> None:
         """Add way and update map parameters."""
@@ -414,7 +414,7 @@ class OSMData:
                 node_map[node.id_] = node
                 self.add_node(node)
                 if not self.view_box:
-                    self.view_box = BoundaryBox(
+                    self.view_box = BoundingBox(
                         node.coordinates[1],
                         node.coordinates[0],
                         node.coordinates[1],
@@ -484,16 +484,16 @@ class OSMData:
     def parse_bounds(self, element: Element) -> None:
         """Parse view box from XML element."""
         attributes = element.attrib
-        boundary_box: BoundaryBox = BoundaryBox(
+        bounding_box: BoundingBox = BoundingBox(
             float(attributes["minlon"]),
             float(attributes["minlat"]),
             float(attributes["maxlon"]),
             float(attributes["maxlat"]),
         )
         if self.view_box:
-            self.view_box.combine(boundary_box)
+            self.view_box.combine(bounding_box)
         else:
-            self.view_box = boundary_box
+            self.view_box = bounding_box
 
     def parse_object(self, element: Element) -> None:
         """Parse astronomical object properties from XML element."""

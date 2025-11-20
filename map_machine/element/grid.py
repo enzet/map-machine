@@ -89,11 +89,17 @@ class Grid:
     def draw(self, output_path: Path) -> None:
         """Draw grid."""
         configuration: MapConfiguration = MapConfiguration(
-            SCHEME, level="all", credit=None, show_credit=self.show_credit
+            SCHEME,
+            level="all",
+            credit=None,
+            show_credit=self.show_credit,
+            zoom_level=19.0,
         )
-        size = (
-            (self.max_i + self.margin * 2.0) * self.x_step,
-            (self.max_j + self.margin * 2.0) * self.y_step,
+        size: np.ndarray = np.array(
+            (
+                (self.max_i + self.margin * 2.0) * self.x_step,
+                (self.max_j + self.margin * 2.0) * self.y_step,
+            )
         )
 
         flinger: Flinger = TranslateFlinger(
@@ -110,14 +116,13 @@ class Grid:
         map_.draw(constructor)
 
         for text, i, j in self.texts:
-            svg.add(
-                Text(
-                    text,
-                    flinger.fling((i, j)) + (0, 3),
-                    font_family="JetBrains Mono",
-                    font_size=12,
-                )
+            text_element: Text = Text(
+                text,
+                flinger.fling((i, j)) + np.array((0, 3)),
+                font_family="JetBrains Mono",
+                font_size=12,
             )
+            svg.add(text_element)
 
         with output_path.open("w") as output_file:
             svg.write(output_file)

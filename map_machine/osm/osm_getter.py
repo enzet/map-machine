@@ -1,13 +1,14 @@
 """Getting OpenStreetMap data from the web."""
 import logging
 import time
+import gzip
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict
 
 import urllib3
 
-from map_machine.geometry.boundary_box import BoundaryBox
+from map_machine.geometry.bounding_box import BoundingBox
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -23,12 +24,12 @@ class NetworkError(Exception):
 
 
 def get_osm(
-    boundary_box: BoundaryBox, cache_file_path: Path, to_update: bool = False
+    bounding_box: BoundingBox, cache_file_path: Path, to_update: bool = False
 ) -> str:
     """
     Download OSM data from the web or get if from the cache.
 
-    :param boundary_box: borders of the map part to download
+    :param bounding_box: borders of the map part to download
     :param cache_file_path: cache file to store downloaded OSM data
     :param to_update: update cache files
     """
@@ -38,8 +39,15 @@ def get_osm(
 
     content: bytes = get_data(
         "https://api.openstreetmap.org/api/0.6/map",
-        {"bbox": boundary_box.get_format()},
+        {"bbox": bounding_box.get_format()},
     )
+
+    # Try to decompress gzip content if needed.
+    try:
+        if content.startswith(b"\x1f\x8b"):  # gzip magic header.
+            content = gzip.decompress(content)
+    except Exception:
+        pass  # If decompression fails, continue with original content.
 
     if not content.startswith(b"<"):
         if content == (
@@ -68,11 +76,18 @@ def get_data(address: str, parameters: Dict[str, str]) -> bytes:
     :return: connection descriptor
     """
     logging.info(f"Getting {address}...")
+    headers = {
+        "User-Agent": "map-machine/1.0",
+        # Disable compression to avoid gzip issues.
+        "Accept-Encoding": "identity",
+    }
     pool_manager: urllib3.PoolManager = urllib3.PoolManager()
     urllib3.disable_warnings()
 
     try:
-        result = pool_manager.request("GET", address, parameters)
+        result = pool_manager.request(
+            "GET", address, fields=parameters, headers=headers
+        )
     except urllib3.exceptions.MaxRetryError:
         raise NetworkError("Cannot download data: too many attempts.")
 

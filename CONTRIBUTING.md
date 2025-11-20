@@ -1,3 +1,8 @@
+<!--
+    This is generated file.
+    Do not edit it manually, edit the Moire source file instead.
+-->
+
 Contributing
 ============
 
@@ -23,10 +28,8 @@ Activate virtual environment. E.g. for fish shell, run `source venv/bin/activate
 Install the project in editable mode:
 
 ```shell
-pip install -e .
+pip install -e .[dev]
 ```
-
-Install formatter, linter and test system: `pip install black flake8 mypy pytest pytest-cov`.
 
 If you are using PyCharm, you may want to set up user dictionary as well:
 
@@ -37,7 +40,7 @@ If you are using PyCharm, you may want to set up user dictionary as well:
 
 ### Code style ###
 
-We use [Black](http://github.com/psf/black) code formatter with maximum 80 characters line length for all Python files within the project. Reformat a file is as simple as `black -l 80 <file name>`. Reformat everything with `black -l 80 map_machine tests`.
+We use [Black](http://github.com/psf/black) code formatter version 22.6 with maximum 80 characters line length for all Python files within the project. Reformat a file is as simple as `black -l 80 <file name>`. Reformat everything with `black -l 80 map_machine tests`.
 
 If you create new Python file, make sure you add `__author__ = "<first name> <second name>"` and `__email__ = "<author e-mail>"` string variables.
 

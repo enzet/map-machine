@@ -3,7 +3,7 @@ import argparse
 import logging
 import sys
 from pathlib import Path
-from typing import Dict, Iterator, List, Optional, Set
+from typing import Dict, Iterator, Optional, Set
 
 import numpy as np
 import svgwrite
@@ -18,7 +18,7 @@ from map_machine.drawing import draw_text
 from map_machine.feature.building import Building, draw_walls, BUILDING_SCALE
 from map_machine.feature.road import Intersection, Road, RoadPart
 from map_machine.figure import StyledFigure
-from map_machine.geometry.boundary_box import BoundaryBox
+from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.geometry.flinger import Flinger, MercatorFlinger
 from map_machine.geometry.vector import Segment
 from map_machine.map_configuration import LabelMode, MapConfiguration
@@ -34,7 +34,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 ROAD_PRIORITY: float = 40.0
-DEFAULT_SIZE = (800.0, 600.0)
+DEFAULT_SIZE: tuple[float, float] = (800.0, 600.0)
 
 
 class Map:
@@ -57,9 +57,11 @@ class Map:
 
     def draw(self, constructor: Constructor) -> None:
         """Draw map."""
-        self.svg.add(
-            Rect((0.0, 0.0), self.flinger.size, fill=self.background_color)
-        )
+        if self.configuration.draw_background:
+            self.svg.add(
+                Rect((0.0, 0.0), self.flinger.size, fill=self.background_color)
+            )
+
         logging.info("Drawing ways...")
 
         figures: list[StyledFigure] = constructor.get_sorted_figures()
@@ -73,6 +75,10 @@ class Map:
 
         for figure in bottom_figures:
             path_commands: str = figure.get_path(self.flinger)
+
+            if "M" not in path_commands:  # Deal with malformed paths.
+                continue
+
             if path_commands:
                 path: SVGPath = SVGPath(d=path_commands)
                 path.update(figure.line_style.style)
@@ -82,67 +88,81 @@ class Map:
 
         for figure in top_figures:
             path_commands: str = figure.get_path(self.flinger)
+
+            if "M" not in path_commands:  # Deal with malformed paths.
+                continue
+
             if path_commands:
                 path: SVGPath = SVGPath(d=path_commands)
                 path.update(figure.line_style.style)
                 self.svg.add(path)
 
-        for tree in constructor.trees:
-            tree.draw(self.svg, self.flinger, self.scheme)
-        for crater in constructor.craters:
-            crater.draw(self.svg, self.flinger)
+        if self.scheme.draw_trees:
+            for tree in constructor.trees:
+                tree.draw(self.svg, self.flinger, self.scheme)
 
-        self.draw_buildings(constructor)
+        if self.scheme.draw_craters:
+            for crater in constructor.craters:
+                crater.draw(self.svg, self.flinger)
 
-        for direction_sector in constructor.direction_sectors:
-            direction_sector.draw(self.svg, self.scheme)
+        if self.scheme.draw_buildings:
+            self.draw_buildings(
+                constructor, self.configuration.use_building_colors
+            )
+
+        if self.scheme.draw_directions:
+            for direction_sector in constructor.direction_sectors:
+                direction_sector.draw(self.svg, self.scheme)
 
         # All other points
 
-        occupied: Optional[Occupied]
-        if self.configuration.overlap == 0:
-            occupied = None
-        else:
-            occupied = Occupied(
-                self.flinger.size[0],
-                self.flinger.size[1],
-                self.configuration.overlap,
-            )
-
-        nodes: List[Point] = sorted(
-            constructor.points, key=lambda x: -x.priority
-        )
-        logging.info("Drawing main icons...")
-        for node in nodes:
-            node.draw_main_shapes(self.svg, occupied)
-
-        logging.info("Drawing extra icons...")
-        for point in nodes:
-            point.draw_extra_shapes(self.svg, occupied)
-
-        logging.info("Drawing texts...")
-        for point in nodes:
-            if (
-                not self.configuration.is_wireframe()
-                and self.configuration.label_mode != LabelMode.NO
-            ):
-                point.draw_texts(
-                    self.svg, occupied, self.configuration.label_mode
+        if self.scheme.draw_nodes:
+            occupied: Optional[Occupied]
+            if self.configuration.overlap == 0:
+                occupied = None
+            else:
+                occupied = Occupied(
+                    self.flinger.size[0],
+                    self.flinger.size[1],
+                    self.configuration.overlap,
                 )
+
+            nodes: list[Point] = sorted(
+                constructor.points, key=lambda x: -x.priority
+            )
+            logging.info("Drawing main icons...")
+            for node in nodes:
+                node.draw_main_shapes(self.svg, occupied)
+
+            logging.info("Drawing extra icons...")
+            for point in nodes:
+                point.draw_extra_shapes(self.svg, occupied)
+
+            logging.info("Drawing texts...")
+            for point in nodes:
+                if (
+                    not self.configuration.is_wireframe()
+                    and self.configuration.label_mode != LabelMode.NO
+                ):
+                    point.draw_texts(
+                        self.svg, occupied, self.configuration.label_mode
+                    )
 
         if self.configuration.show_credit:
             self.draw_credits(constructor.flinger.size)
 
-    def draw_buildings(self, constructor: Constructor) -> None:
+    def draw_buildings(
+        self, constructor: Constructor, use_building_colors: bool
+    ) -> None:
         """Draw buildings: shade, walls, and roof."""
         if self.configuration.building_mode == BuildingMode.NO:
             return
         if self.configuration.building_mode == BuildingMode.FLAT:
             for building in constructor.buildings:
-                building.draw(self.svg, self.flinger)
+                building.draw(self.svg, self.flinger, use_building_colors)
             return
 
-        logging.info("Drawing buildings...")
+        logging.info("Drawing isometric buildings...")
 
         scale: float = self.flinger.get_scale()
         building_shade: Group = Group(opacity=0.1)
@@ -171,12 +191,22 @@ class Map:
                 if building.height < height or building.min_height >= height:
                     continue
 
-                draw_walls(self.svg, building, wall, height, shift_1, shift_2)
+                draw_walls(
+                    self.svg,
+                    building,
+                    wall,
+                    height,
+                    shift_1,
+                    shift_2,
+                    use_building_colors,
+                )
 
             if self.configuration.draw_roofs:
                 for building in constructor.buildings:
                     if building.height == height:
-                        building.draw_roof(self.svg, self.flinger, scale)
+                        building.draw_roof(
+                            self.svg, self.flinger, scale, use_building_colors
+                        )
 
             previous_height = height
 
@@ -277,12 +307,20 @@ def render_map(arguments: argparse.Namespace) -> None:
     cache_path: Path = Path(arguments.cache)
     cache_path.mkdir(parents=True, exist_ok=True)
 
-    # Compute boundary box.
+    # Compute bounding box.
 
-    boundary_box: Optional[BoundaryBox] = None
+    bounding_box: Optional[BoundingBox] = None
 
-    if arguments.boundary_box:
-        boundary_box = BoundaryBox.from_text(arguments.boundary_box)
+    # If bounding box is specified explicitly, use it or stop the rendering
+    # process if the box is invalid.
+    if arguments.bounding_box:
+        bounding_box = BoundingBox.from_text(arguments.bounding_box)
+        if not bounding_box:
+            fatal("Invalid bounding box.")
+        if arguments.coordinates:
+            logging.warning(
+                "Bounding box is explicitly specified. Coordinates are ignored."
+            )
 
     elif arguments.coordinates:
         coordinates: Optional[np.ndarray] = None
@@ -303,7 +341,7 @@ def render_map(arguments: argparse.Namespace) -> None:
         else:
             width, height = DEFAULT_SIZE
 
-        boundary_box = BoundaryBox.from_coordinates(
+        bounding_box = BoundingBox.from_coordinates(
             coordinates, configuration.zoom_level, width, height
         )
 
@@ -312,18 +350,18 @@ def render_map(arguments: argparse.Namespace) -> None:
     input_file_names: Optional[list[Path]] = None
     if arguments.input_file_names:
         input_file_names = list(map(Path, arguments.input_file_names))
-    elif boundary_box:
+    elif bounding_box:
         try:
             cache_file_path: Path = (
-                cache_path / f"{boundary_box.get_format()}.osm"
+                cache_path / f"{bounding_box.get_format()}.osm"
             )
-            get_osm(boundary_box, cache_file_path)
+            get_osm(bounding_box, cache_file_path)
             input_file_names = [cache_file_path]
         except NetworkError as error:
             logging.fatal(error.message)
             sys.exit(1)
     else:
-        fatal("Specify either --input, or --boundary-box, or --coordinates.")
+        fatal("Specify either --input, or --bounding-box, or --coordinates.")
 
     # Get OpenStreetMap data.
 
@@ -338,15 +376,15 @@ def render_map(arguments: argparse.Namespace) -> None:
         else:
             osm_data.parse_osm_file(input_file_name)
 
-    if not boundary_box:
-        boundary_box = osm_data.view_box
-    if not boundary_box:
-        boundary_box = osm_data.boundary_box
+    if not bounding_box:
+        bounding_box = osm_data.view_box
+    if not bounding_box:
+        bounding_box = osm_data.bounding_box
 
     # Render the map.
 
     flinger: MercatorFlinger = MercatorFlinger(
-        boundary_box, arguments.zoom, osm_data.equator_length
+        bounding_box, arguments.zoom, osm_data.equator_length
     )
     size: np.ndarray = flinger.size
 

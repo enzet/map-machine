@@ -10,10 +10,10 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 COMMAND_LINES: Dict[str, List[str]] = {
-    "render": ["render", "-b", "10.000,20.000,10.001,20.001"],
+    "render": ["render", "--bounding-box", "10.000,20.000,10.001,20.001"],
     "render_with_tooltips": [
         "render",
-        "-b",
+        "--bounding-box",
         "10.000,20.000,10.001,20.001",
         "--tooltips",
     ],
@@ -32,20 +32,26 @@ COMMANDS: List[str] = [
     "taginfo",
 ]
 
-BOUNDARY_BOX_WARNING: str = (
-    "if the first value is negative, use `=` sign or enclose the value with "
-    "quotes and use space before `-`, e.g. `-b=-84.752,39.504,-84.749,39.508` "
-    'or `-b " -84.752,39.504,-84.749,39.508"`'
-)
-COORDINATES_WARNING: str = (
-    "if the first value is negative, use `=` sign or enclose the value with "
-    "quotes and use space before `-`, e.g. `-c=-84.752,39.504` or `-c "
-    '" -84.752,39.504"`'
-)
-
 
 def parse_arguments(args: List[str]) -> argparse.Namespace:
     """Parse Map Machine command-line arguments."""
+
+    # Preparse arguments adding space before coordinates and bounding box if the
+    # first value is negative.  In that case `argparse` interprets in as an
+    # option name.
+    for argument in (
+        "-c",
+        "--coordinates",
+        "-b",
+        "--bounding-box",
+        "--boundary-box",
+    ):
+        if argument in args:
+            index: int = args.index(argument) + 1
+            if args[index].startswith("-"):
+                args[index] = " " + args[index]
+            break
+
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description="Map Machine. OpenStreetMap renderer with custom icon set"
     )
@@ -59,10 +65,10 @@ def parse_arguments(args: List[str]) -> argparse.Namespace:
 
     render_parser = subparser.add_parser(
         "render",
-        description="Render SVG map.  Use --boundary-box to specify geo "
-        "boundaries, --input to specify OSM XML or JSON input file, or "
-        "--coordinates and --size to specify central point and resulting image "
-        "size.",
+        description="Render SVG map.  Use `--bounding-box` to specify geo "
+        "boundaries, `--input` to specify OSM XML or JSON input file, or "
+        "`--coordinates` and `--size` to specify central point and resulting "
+        "image size.",
         help="draw SVG map",
     )
     add_render_arguments(render_parser)
@@ -78,14 +84,15 @@ def parse_arguments(args: List[str]) -> argparse.Namespace:
     add_tile_arguments(tile_parser)
     add_map_arguments(tile_parser)
 
-    add_server_arguments(
-        subparser.add_parser(
-            "server",
-            description="Run in order to display generated tiles as a map "
-            "(e.g. with Leaflet).",
-            help="run tile server",
-        )
+    server_parser = subparser.add_parser(
+        "server",
+        description="Run in order to display generated tiles as a map "
+        "(e.g. with Leaflet).",
+        help="run tile server",
     )
+    add_server_arguments(server_parser)
+    add_map_arguments(server_parser)
+
     add_draw_arguments(
         subparser.add_parser(
             "draw",
@@ -232,6 +239,31 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         help="don't show hidden nodes with a dot",
         action="store_false",
     )
+    parser.add_argument(
+        "--hide-credit",
+        help="hide credit",
+        action="store_true",
+        default=False,
+    )
+    parser.add_argument(
+        "--no-hide-credit",
+        dest="hide_credit",
+        help="show credit",
+        action="store_false",
+    )
+    parser.add_argument(
+        "--background",
+        help="enable the background e.g. to use it as layer",
+        dest="background",
+        action="store_true",
+        default=True,
+    )
+    parser.add_argument(
+        "--no-background",
+        help="don't enable the background e.g. to use it as layer",
+        dest="background",
+        action="store_false",
+    )
 
 
 def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
@@ -240,8 +272,7 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         "-c",
         "--coordinates",
         metavar="<latitude>,<longitude>",
-        help="coordinates of any location inside the tile; "
-        + COORDINATES_WARNING,
+        help="coordinates of any location inside the tile",
     )
     parser.add_argument(
         "-t",
@@ -257,9 +288,10 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument(
         "-b",
-        "--boundary-box",
+        "--bounding-box",
+        "--boundary-box",  # Legacy old name.
         help="construct the minimum amount of tiles that cover the requested "
-        "boundary box; " + BOUNDARY_BOX_WARNING,
+        "bounding box",
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
     )
     parser.add_argument(
@@ -277,7 +309,7 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         dest="input_file_name",
         metavar="<path>",
         help="input OSM XML file name (if not specified, the file will be "
-        "downloaded using OpenStreetMap API)",
+        "downloaded using the OpenStreetMap API)",
     )
 
 
@@ -288,6 +320,12 @@ def add_server_arguments(parser: argparse.ArgumentParser) -> None:
         help="path for temporary OSM files",
         default="cache",
         metavar="<path>",
+    )
+    parser.add_argument(
+        "--update-cache",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="allow writing to cache",
     )
     parser.add_argument(
         "--port",
@@ -314,7 +352,7 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         metavar="<path>",
         nargs="*",
         help="input XML file name or names (if not specified, file will be "
-        "downloaded using OpenStreetMap API)",
+        "downloaded using the OpenStreetMap API)",
     )
     parser.add_argument(
         "-o",
@@ -326,9 +364,10 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument(
         "-b",
-        "--boundary-box",
+        "--bounding-box",
+        "--boundary-box",  # Legacy old name.
         metavar="<lon1>,<lat1>,<lon2>,<lat2>",
-        help="geo boundary box; " + BOUNDARY_BOX_WARNING,
+        help="geo bounding box",
     )
     parser.add_argument(
         "--cache",
@@ -348,8 +387,7 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         "-c",
         "--coordinates",
         metavar="<latitude>,<longitude>",
-        help="coordinates of any location inside the tile; "
-        + COORDINATES_WARNING,
+        help="coordinates of any location inside the tile",
     )
     parser.add_argument(
         "-s",

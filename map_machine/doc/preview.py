@@ -8,7 +8,7 @@ import numpy as np
 import svgwrite
 
 from map_machine.constructor import Constructor
-from map_machine.geometry.boundary_box import BoundaryBox
+from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.geometry.flinger import MercatorFlinger
 from map_machine.map_configuration import (
     BuildingMode,
@@ -37,7 +37,7 @@ EXTRACTOR: ShapeExtractor = ShapeExtractor(
 def draw(
     input_file_name: Path,
     output_file_name: Path,
-    boundary_box: BoundaryBox,
+    bounding_box: BoundingBox,
     configuration: Optional[MapConfiguration] = None,
 ) -> None:
     """Draw file."""
@@ -47,7 +47,7 @@ def draw(
     osm_data: OSMData = OSMData()
     osm_data.parse_osm_file(input_file_name)
     flinger: MercatorFlinger = MercatorFlinger(
-        boundary_box, configuration.zoom_level, osm_data.equator_length
+        bounding_box, configuration.zoom_level, osm_data.equator_length
     )
     constructor: Constructor = Constructor(
         osm_data, flinger, EXTRACTOR, configuration
@@ -68,7 +68,7 @@ def draw_around_point(
     name: str,
     configuration: Optional[MapConfiguration] = None,
     size: np.ndarray = np.array((600, 400)),
-    get: Optional[BoundaryBox] = None,
+    get: Optional[BoundingBox] = None,
 ) -> None:
     """Draw around point."""
     if configuration is None:
@@ -76,29 +76,29 @@ def draw_around_point(
 
     input_path: Path = doc_path / f"{name}.svg"
 
-    boundary_box: BoundaryBox = BoundaryBox.from_coordinates(
+    bounding_box: BoundingBox = BoundingBox.from_coordinates(
         point, configuration.zoom_level, size[0], size[1]
     )
-    get_boundary_box = get if get else boundary_box
+    get_bounding_box = get if get else bounding_box
 
-    get_osm(get_boundary_box, cache / f"{get_boundary_box.get_format()}.osm")
+    get_osm(get_bounding_box, cache / f"{get_bounding_box.get_format()}.osm")
     draw(
-        cache / f"{get_boundary_box.get_format()}.osm",
+        cache / f"{get_bounding_box.get_format()}.osm",
         input_path,
-        boundary_box,
+        bounding_box,
         configuration,
     )
 
 
 def main(id_: str) -> None:
     """Entry point."""
-    if id_ is None or id_ == "fitness":
-        draw_around_point(
-            np.array((55.75277, 37.40856)),
-            "fitness",
-            MapConfiguration(SCHEME, zoom_level=20.2),
-            np.array((300, 200)),
-        )
+    # if id_ is None or id_ == "fitness":
+    #     draw_around_point(
+    #         np.array((55.75277, 37.40856)),
+    #         "fitness",
+    #         MapConfiguration(SCHEME, zoom_level=20.2),
+    #         np.array((300, 200)),
+    #     )
 
     if id_ is None or id_ == "power":
         draw_around_point(
@@ -107,12 +107,12 @@ def main(id_: str) -> None:
             configuration=MapConfiguration(SCHEME, zoom_level=15),
         )
 
-    if id_ is None or id_ == "playground":
-        draw_around_point(
-            np.array((52.47388, 13.43826)),
-            "playground",
-            configuration=MapConfiguration(SCHEME, zoom_level=19),
-        )
+    # if id_ is None or id_ == "playground":
+    #     draw_around_point(
+    #         np.array((52.47388, 13.43826)),
+    #         "playground",
+    #         configuration=MapConfiguration(SCHEME, zoom_level=19),
+    #     )
 
     # Playground: (59.91991/10.85535), (59.83627/10.83017), Oslo
     # (52.47604/13.43701), (52.47388/13.43826)*, Berlin
@@ -154,7 +154,7 @@ def main(id_: str) -> None:
             MapConfiguration(
                 SCHEME, label_mode=LabelMode(LabelMode.ALL), zoom_level=18.1
             ),
-            get=BoundaryBox(37.624, 55.749, 37.633, 55.753),
+            get=BoundingBox(37.624, 55.749, 37.633, 55.753),
         )
 
     # if id_ is None or id_ == "golf":
@@ -200,6 +200,13 @@ def main(id_: str) -> None:
 
     if id_ is None or id_ == "lanes":
         draw_around_point(np.array((47.61224, -122.33866)), "lanes")
+
+    if id_ is None or id_ == "indoor":
+        draw_around_point(
+            np.array((4.5978, -74.07507)),
+            "indoor",
+            configuration=MapConfiguration(SCHEME, zoom_level=19.5, level="0"),
+        )
 
 
 if __name__ == "__main__":

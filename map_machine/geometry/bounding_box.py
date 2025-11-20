@@ -12,9 +12,17 @@ __email__ = "me@enzet.ru"
 LATITUDE_MAX_DIFFERENCE: float = 0.5
 LONGITUDE_MAX_DIFFERENCE: float = 0.5
 
+FLOAT_PATTERN: str = r"[+-]?(?:\d+\.\d*|\.\d+|\d+)(?:[eE][+-]?\d+)?"
+BOUNDING_BOX_PATTERN: re.Pattern = re.compile(
+    rf"(?P<left>{FLOAT_PATTERN}),"
+    rf"(?P<bottom>{FLOAT_PATTERN}),"
+    rf"(?P<right>{FLOAT_PATTERN}),"
+    rf"(?P<top>{FLOAT_PATTERN})"
+)
+
 
 @dataclass
-class BoundaryBox:
+class BoundingBox:
     """Rectangle that limit space on the map."""
 
     left: float  # Minimum longitude.
@@ -23,29 +31,25 @@ class BoundaryBox:
     top: float  # Maximum latitude.
 
     @classmethod
-    def from_text(cls, boundary_box: str) -> Optional["BoundaryBox"]:
+    def from_text(cls, bounding_box: str) -> Optional["BoundingBox"]:
         """
-        Parse boundary box string representation.
+        Parse bounding box string representation.
 
         Note, that:
             left < right
             bottom < top
 
-        :param boundary_box: boundary box string representation in the form of
+        :param bounding_box: bounding box string representation in the form of
             <minimum longitude>,<minimum latitude>,
             <maximum longitude>,<maximum latitude> or simply
             <left>,<bottom>,<right>,<top>.
         """
-        boundary_box = boundary_box.replace(" ", "")
+        bounding_box = bounding_box.replace(" ", "")
 
-        matcher: Optional[re.Match] = re.match(
-            "(?P<left>[0-9.-]*),(?P<bottom>[0-9.-]*),"
-            + "(?P<right>[0-9.-]*),(?P<top>[0-9.-]*)",
-            boundary_box,
-        )
+        matcher: Optional[re.Match] = BOUNDING_BOX_PATTERN.match(bounding_box)
 
         if not matcher:
-            logging.fatal("Invalid boundary box.")
+            logging.fatal("Invalid bounding box.")
             return None
 
         try:
@@ -54,7 +58,7 @@ class BoundaryBox:
             right: float = float(matcher.group("right"))
             top: float = float(matcher.group("top"))
         except ValueError:
-            logging.fatal("Invalid boundary box.")
+            logging.fatal("Invalid bounding box.")
             return None
 
         if left >= right:
@@ -67,7 +71,7 @@ class BoundaryBox:
             right - left > LONGITUDE_MAX_DIFFERENCE
             or top - bottom > LATITUDE_MAX_DIFFERENCE
         ):
-            logging.error("Boundary box is too big.")
+            logging.error("Bounding box is too big.")
             return None
 
         return cls(left, bottom, right, top)
@@ -79,11 +83,11 @@ class BoundaryBox:
         zoom_level: float,
         width: float,
         height: float,
-    ) -> "BoundaryBox":
+    ) -> "BoundingBox":
         """
-        Compute boundary box from center coordinates, zoom level and image size.
+        Compute bounding box from center coordinates, zoom level and image size.
 
-        :param coordinates: boundary box central coordinates
+        :param coordinates: bounding box central coordinates
         :param zoom_level: resulting image zoom level
         :param width: resulting image width
         :param height: resulting image height
@@ -119,15 +123,15 @@ class BoundaryBox:
         return np.array((self.top, self.right))
 
     def get_left_top(self) -> np.ndarray:
-        """Get left top corner of the boundary box."""
+        """Get left top corner of the bounding box."""
         return np.array((self.top, self.left))
 
     def get_right_bottom(self) -> np.ndarray:
-        """Get right bottom corner of the boundary box."""
+        """Get right bottom corner of the bounding box."""
         return np.array((self.bottom, self.right))
 
-    def round(self) -> "BoundaryBox":
-        """Round boundary box."""
+    def round(self) -> "BoundingBox":
+        """Round bounding box."""
         self.left = round(self.left * 1000.0) / 1000.0 - 0.001
         self.bottom = round(self.bottom * 1000.0) / 1000.0 - 0.001
         self.right = round(self.right * 1000.0) / 1000.0 + 0.001
@@ -136,16 +140,16 @@ class BoundaryBox:
         return self
 
     def center(self) -> np.ndarray:
-        """Return center point of boundary box."""
+        """Return center point of bounding box."""
         return np.array(
             ((self.top + self.bottom) / 2.0, (self.left + self.right) / 2.0)
         )
 
     def get_format(self) -> str:
         """
-        Get text representation of the boundary box.
+        Get text representation of the bounding box.
 
-        Boundary box format is
+        Bounding box format is
         <longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>.  Coordinates are
         rounded to three digits after comma.
         """
@@ -157,14 +161,14 @@ class BoundaryBox:
         return f"{left:.3f},{bottom:.3f},{right:.3f},{top:.3f}"
 
     def update(self, coordinates: np.ndarray) -> None:
-        """Make the boundary box cover coordinates."""
+        """Make the bounding box cover coordinates."""
         self.left = min(self.left, coordinates[1])
         self.bottom = min(self.bottom, coordinates[0])
         self.right = max(self.right, coordinates[1])
         self.top = max(self.top, coordinates[0])
 
-    def combine(self, other: "BoundaryBox") -> None:
-        """Combine with another boundary box."""
+    def combine(self, other: "BoundingBox") -> None:
+        """Combine with another bounding box."""
         self.left = min(self.left, other.left)
         self.bottom = min(self.bottom, other.bottom)
         self.right = max(self.right, other.right)

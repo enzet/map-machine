@@ -1,6 +1,7 @@
 """Map Machine tile server for slippy maps."""
 import argparse
 import logging
+import sys
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 from typing import List, Optional, Tuple
@@ -8,6 +9,7 @@ from typing import List, Optional, Tuple
 import cairosvg
 
 from map_machine.map_configuration import MapConfiguration
+from map_machine.scheme import Scheme
 from map_machine.slippy.tile import Tile
 from map_machine.workspace import workspace
 
@@ -28,8 +30,15 @@ class TileServerHandler(SimpleHTTPRequestHandler):
         client_address: Tuple[str, int],
         server: HTTPServer,
     ) -> None:
-        # TODO: delete?
         super().__init__(request, client_address, server)
+
+        if not self.cache.exists():
+            message: str = (
+                f"Cache directory `{self.cache}` for server does not exist, "
+                "please create it."
+            )
+            logging.fatal(message)
+            sys.exit(1)
 
     def do_GET(self) -> None:
         """Serve a GET request."""
@@ -48,10 +57,19 @@ class TileServerHandler(SimpleHTTPRequestHandler):
         if self.update_cache:
             if not png_path.exists():
                 if not svg_path.exists():
+                    scheme = Scheme.from_file(
+                        workspace.DEFAULT_SCHEME_PATH
+                        if self.options.scheme == "default"
+                        else Path(self.options.scheme)
+                    )
                     tile.draw(
                         tile_path,
                         self.cache,
-                        MapConfiguration(zoom_level=zoom_level),
+                        MapConfiguration.from_options(
+                            scheme,
+                            self.options,
+                            zoom_level,
+                        ),
                     )
                 with svg_path.open(encoding="utf-8") as input_file:
                     cairosvg.svg2png(
@@ -74,6 +92,7 @@ def run_server(options: argparse.Namespace) -> None:
     try:
         handler = TileServerHandler
         handler.cache = Path(options.cache)
+        handler.update_cache = options.update_cache
         handler.options = options
         server = HTTPServer(("", options.port), handler)
         logging.info(f"Server started on port {options.port}.")

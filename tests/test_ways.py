@@ -8,7 +8,7 @@ import numpy as np
 
 from map_machine.constructor import Constructor
 from map_machine.figure import Figure
-from map_machine.geometry.boundary_box import BoundaryBox
+from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.geometry.flinger import MercatorFlinger
 from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import OSMData, OSMWay, OSMNode, Tags
@@ -23,7 +23,7 @@ def get_constructor(osm_data: OSMData) -> Constructor:
     18.
     """
     flinger: MercatorFlinger = MercatorFlinger(
-        BoundaryBox(-0.01, -0.01, 0.01, 0.01), 18, osm_data.equator_length
+        BoundingBox(-0.01, -0.01, 0.01, 0.01), 18, osm_data.equator_length
     )
     constructor: Constructor = Constructor(
         osm_data, flinger, SHAPE_EXTRACTOR, CONFIGURATION

@@ -39,19 +39,26 @@ class Building(Figure):
         )
         self.has_walls: bool = tags.get("building") != "roof"
 
+        self.default_fill: Color
+        self.default_stroke: Color
         if self.is_construction:
-            self.fill: Color = scheme.get_color("building_construction_color")
-            self.stroke: Color = scheme.get_color(
+            self.default_fill = scheme.get_color("building_construction_color")
+            self.default_stroke = scheme.get_color(
                 "building_construction_border_color"
             )
         else:
-            if color := tags.get("roof:colour"):
-                self.fill = scheme.get_color(color)
-                self.stroke: Color = Color(self.fill)
-                self.stroke.set_luminance(self.fill.get_luminance() * 0.85)
-            else:
-                self.fill: Color = scheme.get_color("building_color")
-                self.stroke: Color = scheme.get_color("building_border_color")
+            self.default_fill = scheme.get_color("building_color")
+            self.default_stroke = scheme.get_color("building_border_color")
+
+        self.fill: Color
+        self.stroke: Color
+        if color := tags.get("roof:colour"):
+            self.fill = scheme.get_color(color)
+            self.stroke = Color(self.fill)
+            self.stroke.set_luminance(self.fill.get_luminance() * 0.85)
+        else:
+            self.fill = scheme.get_color("building_color")
+            self.stroke = scheme.get_color("building_border_color")
 
         self.parts: List[Segment] = []
 
@@ -66,30 +73,22 @@ class Building(Figure):
         self.height: float = BUILDING_MINIMAL_HEIGHT
         self.min_height: float = 0.0
 
-        self.wall_color: Color
+        self.wall_default_color: Color
         if self.is_construction:
-            self.wall_color = scheme.get_color("wall_construction_color")
+            self.wall_default_color = scheme.get_color(
+                "wall_construction_color"
+            )
         else:
-            self.wall_color = scheme.get_color("wall_color")
+            self.wall_default_color = scheme.get_color("wall_color")
 
+        self.wall_color: Color = self.wall_default_color
         if material := tags.get("building:material"):
             if material in scheme.material_colors:
                 self.wall_color = Color(scheme.material_colors[material])
-
         if color := tags.get("building:colour"):
             self.wall_color = scheme.get_color(color)
-
         if color := tags.get("colour"):
             self.wall_color = scheme.get_color(color)
-
-        self.wall_bottom_color_1: Color = Color(self.wall_color)
-        self.wall_bottom_color_1.set_luminance(
-            self.wall_color.get_luminance() * 0.70
-        )
-        self.wall_bottom_color_2: Color = Color(self.wall_color)
-        self.wall_bottom_color_2.set_luminance(
-            self.wall_color.get_luminance() * 0.85
-        )
 
         if levels := self.get_float("building:levels"):
             self.height = BUILDING_MINIMAL_HEIGHT + levels * LEVEL_HEIGHT
@@ -103,24 +102,37 @@ class Building(Figure):
         if height := self.get_length("min_height"):
             self.min_height = BUILDING_MINIMAL_HEIGHT + height
 
-    def draw(self, svg: Drawing, flinger: Flinger) -> None:
+    def draw(
+        self, svg: Drawing, flinger: Flinger, use_building_colors: bool
+    ) -> None:
         """Draw simple building shape."""
+
+        if (path_commands := self.get_path(flinger)) is None:
+            return
+
         path: Path = Path(
-            d=self.get_path(flinger),
-            stroke=self.stroke.hex,
-            fill=self.fill.hex,
+            d=path_commands,
+            stroke=self.stroke.hex
+            if use_building_colors
+            else self.default_stroke.hex,
+            fill=self.fill.hex
+            if use_building_colors
+            else self.default_fill.hex,
             stroke_linejoin="round",
         )
         svg.add(path)
 
     def draw_shade(self, building_shade: Group, flinger: Flinger) -> None:
-        """Draw shade casted by the building."""
+        """Draw shade cast by the building."""
         scale: float = flinger.get_scale() * SHADE_SCALE
         shift_1: np.ndarray = np.array((scale * self.min_height, 0.0))
         shift_2: np.ndarray = np.array((scale * self.height, 0.0))
-        commands: str = self.get_path(flinger, shift_1)
+
+        if (path_commands := self.get_path(flinger, shift_1)) is None:
+            return
+
         path: Path = Path(
-            commands, fill="#000000", stroke="#000000", stroke_width=1.0
+            path_commands, fill="#000000", stroke="#000000", stroke_width=1.0
         )
         building_shade.add(path)
         for nodes in self.inners + self.outers:
@@ -142,7 +154,12 @@ class Building(Figure):
                 building_shade.add(path)
 
     def draw_walls(
-        self, svg: Drawing, height: float, previous_height: float, scale: float
+        self,
+        svg: Drawing,
+        height: float,
+        previous_height: float,
+        scale: float,
+        use_building_colors: bool,
     ) -> None:
         """Draw building walls."""
         if not self.has_walls:
@@ -154,16 +171,41 @@ class Building(Figure):
         shift_2: np.ndarray = np.array((0.0, -height * scale * BUILDING_SCALE))
 
         for segment in self.parts:
-            draw_walls(svg, self, segment, height, shift_1, shift_2)
+            draw_walls(
+                svg,
+                self,
+                segment,
+                height,
+                shift_1,
+                shift_2,
+                use_building_colors,
+            )
 
-    def draw_roof(self, svg: Drawing, flinger: Flinger, scale: float) -> None:
+    def draw_roof(
+        self,
+        svg: Drawing,
+        flinger: Flinger,
+        scale: float,
+        use_building_colors: bool,
+    ) -> None:
         """Draw building roof."""
-        path: Path = Path(
-            d=self.get_path(
+
+        if (
+            path_commands := self.get_path(
                 flinger, np.array([0.0, -self.height * scale * BUILDING_SCALE])
-            ),
-            stroke=self.stroke,
-            fill="none" if self.is_construction else self.fill.hex,
+            )
+        ) is None:
+            return
+
+        fill: Color = self.fill if use_building_colors else self.default_fill
+        stroke: Color = (
+            self.stroke if use_building_colors else self.default_stroke
+        )
+
+        path: Path = Path(
+            d=path_commands,
+            stroke=stroke,
+            fill="none" if self.is_construction else fill.hex,
             stroke_linejoin="round",
         )
         svg.add(path)
@@ -176,33 +218,42 @@ def draw_walls(
     height: float,
     shift_1: np.ndarray,
     shift_2: np.ndarray,
-):
+    use_building_colors: bool,
+) -> None:
     """
     Draw walls for buildings as a quadrangle.
 
     Color of the wall is based on illumination.
     """
+    color: Color = (
+        building.wall_color
+        if use_building_colors
+        else building.wall_default_color
+    )
+
     color: Color
     if building.is_construction:
         color_part: float = segment.angle * 0.2
         color = Color(
             rgb=(
-                building.wall_color.get_red() + color_part,
-                building.wall_color.get_green() + color_part,
-                building.wall_color.get_blue() + color_part,
+                color.get_red() + color_part,
+                color.get_green() + color_part,
+                color.get_blue() + color_part,
             )
         )
     elif height <= 0.25 / BUILDING_SCALE:
-        color = building.wall_bottom_color_1
+        color = Color(color)
+        color.set_luminance(color.get_luminance() * 0.70)
     elif height <= 0.5 / BUILDING_SCALE:
-        color = building.wall_bottom_color_2
+        color = Color(color)
+        color.set_luminance(color.get_luminance() * 0.85)
     else:
         color_part: float = segment.angle * 0.2 - 0.1
         color = Color(
             rgb=(
-                max(min(building.wall_color.get_red() + color_part, 1), 0),
-                max(min(building.wall_color.get_green() + color_part, 1), 0),
-                max(min(building.wall_color.get_blue() + color_part, 1), 0),
+                max(min(color.get_red() + color_part, 1), 0),
+                max(min(color.get_green() + color_part, 1), 0),
+                max(min(color.get_blue() + color_part, 1), 0),
             )
         )
 

@@ -229,7 +229,9 @@ class Constructor:
 
         center_point, _ = line_center(outers[0], self.flinger)
         if self.configuration.is_wireframe():
-            color: Color
+            # Dead code to make insensitive static analysis happy.
+            color: Color = self.scheme.get_default_color()
+
             if self.configuration.drawing_mode == DrawingMode.AUTHOR:
                 color = get_user_color(
                     line.user if line.user else "", self.configuration.seed
@@ -409,7 +411,7 @@ class Constructor:
                 self.construct_line(relation, inners_path, outers_path)
 
     def construct_nodes(self) -> None:
-        """Draw nodes."""
+        """Construct point and add them to the collection."""
         logging.info("Constructing nodes...")
 
         # Sort node vertically (using latitude values) to draw them from top to
@@ -422,7 +424,7 @@ class Constructor:
             self.construct_node(self.osm_data.nodes[node_id])
 
     def construct_node(self, node: OSMNode) -> None:
-        """Draw one node."""
+        """Create new point if needed and add it to the point collection."""
         tags: Dict[str, str] = node.tags
 
         if not tags:
@@ -442,11 +444,14 @@ class Constructor:
             DrawingMode.AUTHOR,
             DrawingMode.TIME,
         ):
-            color: Color = self.scheme.get_color("default")
+            # Dead code to make insensitive static analysis happy.
+            color: Color = self.scheme.get_default_color()
+
             if self.configuration.drawing_mode == DrawingMode.AUTHOR:
                 color = get_user_color(node.user, self.configuration.seed)
             if self.configuration.drawing_mode == DrawingMode.TIME:
                 color = get_time_color(node.timestamp, self.osm_data.time)
+
             dot: Shape = self.extractor.get_shape(DEFAULT_SMALL_SHAPE_ID)
             icon_set: IconSet = IconSet(
                 Icon([ShapeSpecification(dot, color)]),
@@ -470,6 +475,9 @@ class Constructor:
             DrawingMode.WHITE,
             DrawingMode.BLACK,
         ):
+            # Dead code to make insensitive static analysis happy.
+            color: Color = self.scheme.get_default_color()
+
             if self.configuration.drawing_mode == DrawingMode.WHITE:
                 color = Color("#CCCCCC")
             if self.configuration.drawing_mode == DrawingMode.BLACK:

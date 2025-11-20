@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "map-machine"
+description = "Map Machine: Python map renderer for OpenStreetMap with custom icon set."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [{ name = "Sergey Vartanov", email = "me@enzet.ru" }]
+urls = { Homepage = "https://github.com/enzet/map-machine", "Bug Tracker" = "https://github.com/enzet/map-machine/issues" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dynamic = ["version"]
+dependencies = [
+    "CairoSVG~=2.5.0",
+    "colour~=0.1.5",
+    "numpy~=1.26.0",
+    "Pillow~=8.2.0",
+    "portolan~=1.0.1",
+    "PyYAML~=6.0.1",
+    "Shapely~=1.7.1",
+    "svgwrite~=1.4",
+    "urllib3~=1.25.6",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black~=22.6",
+    "flake8~=4.0.1",
+    "pytest~=7.4.0",
+]
+
+[project.scripts]
+map-machine = "map_machine.main:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["map_machine*"]
+
+[tool.setuptools.package-data]
+map_machine = [
+    "icons/icons.svg",
+    "icons/config.json",
+    "icons/LICENSE",
+    "scheme/default.yml",
+]
+
+[tool.setuptools.dynamic]
+version = { attr = "map_machine.__version__" }

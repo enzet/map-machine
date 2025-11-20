@@ -321,11 +321,19 @@ class Scheme:
                 for element in group["tags"]:
                     self.node_matchers.append(NodeMatcher(element, group))
 
-        self.colors: Dict[str, str] = (
-            content["colors"] if "colors" in content else {}
-        )
-        self.material_colors: Dict[str, str] = (
-            content["material_colors"] if "material_colors" in content else {}
+        options = content.get("options", {})
+
+        self.draw_nodes: bool = options.get("draw_nodes", False)
+
+        # Map features.
+        self.draw_buildings: bool = options.get("draw_buildings", False)
+        self.draw_trees: bool = options.get("draw_trees", False)
+        self.draw_craters: bool = options.get("draw_craters", False)
+        self.draw_directions: bool = options.get("draw_directions", False)
+
+        self.colors: Dict[str, str] = content.get("colors", {})
+        self.material_colors: Dict[str, str] = content.get(
+            "material_colors", {}
         )
 
         self.way_matchers: List[WayMatcher] = (
@@ -343,21 +351,11 @@ class Scheme:
             if "area_tags" in content
             else []
         )
-        self.keys_to_write: List[str] = (
-            content["keys_to_write"] if "keys_to_write" in content else []
-        )
-        self.prefix_to_write: List[str] = (
-            content["prefix_to_write"] if "prefix_to_write" in content else []
-        )
-        self.keys_to_skip: List[str] = (
-            content["keys_to_skip"] if "keys_to_skip" in content else []
-        )
-        self.prefix_to_skip: List[str] = (
-            content["prefix_to_skip"] if "prefix_to_skip" in content else []
-        )
-        self.tags_to_skip: Dict[str, str] = (
-            content["tags_to_skip"] if "tags_to_skip" in content else {}
-        )
+        self.keys_to_write: List[str] = content.get("keys_to_write", [])
+        self.prefix_to_write: List[str] = content.get("prefix_to_write", [])
+        self.keys_to_skip: List[str] = content.get("keys_to_skip", [])
+        self.prefix_to_skip: List[str] = content.get("prefix_to_skip", [])
+        self.tags_to_skip: Dict[str, str] = content.get("tags_to_skip", {})
 
         # Storage for created icon sets.
         self.cache: Dict[str, Tuple[IconSet, int]] = {}

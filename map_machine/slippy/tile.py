@@ -16,7 +16,7 @@ import svgwrite
 from PIL import Image
 
 from map_machine.constructor import Constructor
-from map_machine.geometry.boundary_box import BoundaryBox
+from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.geometry.flinger import MercatorFlinger
 from map_machine.map_configuration import MapConfiguration
 from map_machine.mapper import Map
@@ -72,9 +72,9 @@ class Tile:
         lat_deg: np.ndarray = np.degrees(lat_rad)
         return np.array((lat_deg, lon_deg))
 
-    def get_boundary_box(self) -> BoundaryBox:
+    def get_bounding_box(self) -> BoundingBox:
         """
-        Get geographical boundary box of the tile: north-west and south-east
+        Get geographical bounding box of the tile: north-west and south-east
         points.
         """
         point_1: np.ndarray = self.get_coordinates()
@@ -82,29 +82,29 @@ class Tile:
             self.x + 1, self.y + 1, self.zoom_level
         ).get_coordinates()
 
-        return BoundaryBox(point_1[1], point_2[0], point_2[1], point_1[0])
+        return BoundingBox(point_1[1], point_2[0], point_2[1], point_1[0])
 
-    def get_extended_boundary_box(self) -> BoundaryBox:
-        """Same as get_boundary_box, but with extended boundaries."""
+    def get_extended_bounding_box(self) -> BoundingBox:
+        """Same as get_bounding_box, but with extended boundaries."""
         point_1: np.ndarray = self.get_coordinates()
         point_2: np.ndarray = Tile(
             self.x + 1, self.y + 1, self.zoom_level
         ).get_coordinates()
 
-        return BoundaryBox(
+        return BoundingBox(
             point_1[1], point_2[0], point_2[1], point_1[0]
         ).round()
 
     def load_osm_data(self, cache_path: Path) -> OSMData:
         """
-        Construct map data from extended boundary box.
+        Construct map data from extended bounding box.
 
         :param cache_path: directory to store OSM data files
         """
         cache_file_path: Path = (
-            cache_path / f"{self.get_extended_boundary_box().get_format()}.osm"
+            cache_path / f"{self.get_extended_bounding_box().get_format()}.osm"
         )
-        get_osm(self.get_extended_boundary_box(), cache_file_path)
+        get_osm(self.get_extended_bounding_box(), cache_file_path)
 
         osm_data: OSMData = OSMData()
         osm_data.parse_osm_file(cache_file_path)
@@ -159,7 +159,7 @@ class Tile:
         ).get_coordinates()
 
         flinger: MercatorFlinger = MercatorFlinger(
-            BoundaryBox(left, bottom, right, top),
+            BoundingBox(left, bottom, right, top),
             self.zoom_level,
             osm_data.equator_length,
         )
@@ -215,24 +215,24 @@ class Tiles:
     tile_1: Tile  # Left top tile.
     tile_2: Tile  # Right bottom tile.
     zoom_level: int  # OpenStreetMap zoom level.
-    boundary_box: BoundaryBox
+    bounding_box: BoundingBox
 
     @classmethod
-    def from_boundary_box(
-        cls, boundary_box: BoundaryBox, zoom_level: int
+    def from_bounding_box(
+        cls, bounding_box: BoundingBox, zoom_level: int
     ) -> "Tiles":
         """
-        Create minimal set of tiles that covers boundary box.
+        Create minimal set of tiles that covers bounding box.
 
-        :param boundary_box: area to be covered by tiles
+        :param bounding_box: area to be covered by tiles
         :param zoom_level: zoom level in OpenStreetMap terminology
         """
         tiles: List[Tile] = []
         tile_1: Tile = Tile.from_coordinates(
-            boundary_box.get_left_top(), zoom_level
+            bounding_box.get_left_top(), zoom_level
         )
         tile_2: Tile = Tile.from_coordinates(
-            boundary_box.get_right_bottom(), zoom_level
+            bounding_box.get_right_bottom(), zoom_level
         )
         for x in range(tile_1.x, tile_2.x + 1):
             for y in range(tile_1.y, tile_2.y + 1):
@@ -245,54 +245,23 @@ class Tiles:
         assert longitude_2 > longitude_1
         assert latitude_2 > latitude_1
 
-        extended_boundary_box: BoundaryBox = BoundaryBox(
+        extended_bounding_box: BoundingBox = BoundingBox(
             longitude_1, latitude_1, longitude_2, latitude_2
         ).round()
 
-        return cls(tiles, tile_1, tile_2, zoom_level, extended_boundary_box)
+        return cls(tiles, tile_1, tile_2, zoom_level, extended_bounding_box)
 
     def load_osm_data(self, cache_path: Path) -> OSMData:
         """Load OpenStreetMap data."""
         cache_file_path: Path = (
-            cache_path / f"{self.boundary_box.get_format()}.osm"
+            cache_path / f"{self.bounding_box.get_format()}.osm"
         )
-        get_osm(self.boundary_box, cache_file_path)
+        get_osm(self.bounding_box, cache_file_path)
 
         osm_data: OSMData = OSMData()
         osm_data.parse_osm_file(cache_file_path)
 
         return osm_data
-
-    def draw_separately(
-        self, directory: Path, cache_path: Path, configuration: MapConfiguration
-    ) -> None:
-        """
-        Draw set of tiles as SVG file separately and rasterize them into a set
-        of PNG files with cairosvg.
-
-        :param directory: directory for tiles
-        :param cache_path: directory for temporary OSM files
-        :param configuration: drawing configuration
-        """
-        osm_data: OSMData = self.load_osm_data(cache_path)
-
-        for tile in self.tiles:
-            file_path: Path = tile.get_file_name(directory)
-            if not file_path.exists():
-                tile.draw_with_osm_data(osm_data, directory, configuration)
-            else:
-                logging.debug(f"File {file_path} already exists.")
-
-            output_path: Path = file_path.with_suffix(".png")
-
-            if not output_path.exists():
-                with file_path.open(encoding="utf-8") as input_file:
-                    cairosvg.svg2png(
-                        file_obj=input_file, write_to=str(output_path)
-                    )
-                logging.info(f"SVG file is rasterized to {output_path}.")
-            else:
-                logging.debug(f"File {output_path} already exists.")
 
     def tiles_exist(self, directory_name: Path) -> bool:
         """Check whether all tiles are drawn."""
@@ -348,7 +317,7 @@ class Tiles:
         """Get path of the output SVG file."""
         return (
             cache_path
-            / f"{self.boundary_box.get_format()}_{self.zoom_level}.svg"
+            / f"{self.bounding_box.get_format()}_{self.zoom_level}.svg"
         )
 
     def draw_image(
@@ -382,7 +351,7 @@ class Tiles:
             ).get_coordinates()
 
             flinger: MercatorFlinger = MercatorFlinger(
-                BoundaryBox(left, bottom, right, top),
+                BoundingBox(left, bottom, right, top),
                 self.zoom_level,
                 osm_data.equator_length,
             )
@@ -425,7 +394,7 @@ class Tiles:
             tiles[0],
             tiles[-1],
             zoom_level,
-            self.boundary_box,
+            self.bounding_box,
         )
 
 
@@ -473,6 +442,13 @@ def generate_tiles(options: argparse.Namespace) -> None:
     scheme: Scheme = Scheme.from_file(
         workspace.find_scheme_path(options.scheme)
     )
+    cache_path: Path = Path(options.cache)
+    if not cache_path.exists():
+        message: str = (
+            f"Cache directory `{cache_path}` does not exist, please create it."
+        )
+        logging.fatal(message)
+        sys.exit(1)
 
     if options.input_file_name:
         osm_data: OSMData = OSMData()
@@ -480,19 +456,19 @@ def generate_tiles(options: argparse.Namespace) -> None:
 
         if osm_data.view_box is None:
             logging.fatal(
-                "Failed to parse boundary box input file "
+                "Failed to parse bounding box input file "
                 f"{options.input_file_name}."
             )
             sys.exit(1)
 
-        boundary_box: BoundaryBox = osm_data.view_box
+        bounding_box: BoundingBox = osm_data.view_box
 
         for zoom_level in zoom_levels:
             configuration: MapConfiguration = MapConfiguration.from_options(
                 scheme, options, zoom_level
             )
-            tiles: Tiles = Tiles.from_boundary_box(boundary_box, zoom_level)
-            tiles.draw(directory, Path(options.cache), configuration, osm_data)
+            tiles: Tiles = Tiles.from_bounding_box(bounding_box, zoom_level)
+            tiles.draw(directory, cache_path, configuration, osm_data)
 
     elif options.coordinates:
         coordinates: List[float] = list(
@@ -502,7 +478,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
             np.array(coordinates), min_zoom_level
         )
         try:
-            osm_data: OSMData = min_tile.load_osm_data(Path(options.cache))
+            osm_data: OSMData = min_tile.load_osm_data(cache_path)
         except NetworkError as error:
             raise NetworkError(f"Map is not loaded. {error.message}")
 
@@ -524,19 +500,19 @@ def generate_tiles(options: argparse.Namespace) -> None:
         configuration: MapConfiguration = MapConfiguration.from_options(
             scheme, options, zoom_level
         )
-        tile.draw(directory, Path(options.cache), configuration)
+        tile.draw(directory, cache_path, configuration)
 
-    elif options.boundary_box:
-        boundary_box: Optional[BoundaryBox] = BoundaryBox.from_text(
-            options.boundary_box
+    elif options.bounding_box:
+        bounding_box: Optional[BoundingBox] = BoundingBox.from_text(
+            options.bounding_box
         )
-        if boundary_box is None:
-            logging.fatal("Failed to parse boundary box.")
+        if bounding_box is None:
+            logging.fatal("Failed to parse bounding box.")
             sys.exit(1)
 
-        min_tiles: Tiles = Tiles.from_boundary_box(boundary_box, min_zoom_level)
+        min_tiles: Tiles = Tiles.from_bounding_box(bounding_box, min_zoom_level)
         try:
-            osm_data: OSMData = min_tiles.load_osm_data(Path(options.cache))
+            osm_data: OSMData = min_tiles.load_osm_data(cache_path)
         except NetworkError as error:
             raise NetworkError(f"Map is not loaded. {error.message}")
 
@@ -544,14 +520,14 @@ def generate_tiles(options: argparse.Namespace) -> None:
             if EXTEND_TO_BIGGER_TILE:
                 tiles: Tiles = min_tiles.subdivide(zoom_level)
             else:
-                tiles: Tiles = Tiles.from_boundary_box(boundary_box, zoom_level)
+                tiles: Tiles = Tiles.from_bounding_box(bounding_box, zoom_level)
             configuration: MapConfiguration = MapConfiguration.from_options(
                 scheme, options, zoom_level
             )
-            tiles.draw(directory, Path(options.cache), configuration, osm_data)
+            tiles.draw(directory, cache_path, configuration, osm_data)
 
     else:
         logging.fatal(
-            "Specify either --coordinates, --boundary-box, --tile, or --input."
+            "Specify either --coordinates, --bounding-box, --tile, or --input."
         )
         sys.exit(1)

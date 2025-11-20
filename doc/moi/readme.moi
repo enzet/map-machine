@@ -1,13 +1,11 @@
-\title {Map Machine}
-
-\b {Map Machine} project consists of
+The \b {Map Machine} project consists of
 
 \list
-    {Python \ref {http://openstreetmap.org} {OpenStreetMap} renderer:
+    {a Python \ref {http://openstreetmap.org} {OpenStreetMap} renderer:
     \list
         {SVG \ref {#map-generation} {map generation},}
         {SVG and PNG \ref {#tile-generation} {tile generation},}}
-    {\ref {#röntgen-icon-set} {Röntgen} icon set\: unique CC-BY 4.0 map icons.}
+    {the \ref {#röntgen-icon-set} {Röntgen} icon set\: unique CC-BY 4.0 map icons.}
 
 The idea behind the Map Machine project is to \b {show all the richness of the OpenStreetMap data}\: to have a possibility to display any map feature represented by OpenStreetMap data tags by means of colors, shapes, and icons.  Map Machine is created both for map contributors\: to display all changes one made on the map even if they are small, and for map users\: to dig down into the map and find every detail that was mapped.
 
@@ -23,17 +21,17 @@ See
 
 \2 {Usage example} {usage-example}
 
-\code {map-machine render -b=2.284,48.860,2.290,48.865} {bash}
+\code {shell} {map-machine render -b 2.284,48.860,2.290,48.865}
 
-will automatically download OSM data and write output SVG map of the specified area to \m {out/map.svg}.  See \ref {#map-generation} {Map generation}.
+will automatically download OSM data and render an SVG map of the specified area to \m {out/map.svg}.  See \ref {#map-generation} {Map generation}.
 
-\code {map-machine tile -b=2.361,48.871,2.368,48.875} {bash}
+\code {shell} {map-machine tile -b 2.361,48.871,2.368,48.875}
 
-will automatically download OSM data and write output PNG tiles that cover the specified area to the \m {out/tiles} directory.  See \ref {#tile-generation} {Tile generation}.
+will automatically download OSM data and render PNG tiles that cover the specified area to the \m {out/tiles} directory.  See \ref {#tile-generation} {Tile generation}.
 
 \2 {Röntgen icon set} {röntgen-icon-set}
 
-The central feature of the project is Röntgen icon set.  It is a set of monochrome 14 × 14 px pixel-aligned icons specially created for Map Machine project.  Unlike the Map Machine source code, which is under MIT license, all icons are under \ref {http://creativecommons.org/licenses/by/4.0/} {CC BY} license.  So, with the appropriate credit icon set can be used outside the project.  Some icons can be used as emoji symbols.
+The central feature of the project is the Röntgen icon set.  It is a set of monochrome 14 × 14 px pixel-aligned icons specially created for the Map Machine project.  Unlike the Map Machine source code, which is under the MIT license, all icons are under the \ref {http://creativecommons.org/licenses/by/4.0/} {CC BY} license.  So, with the appropriate credit the icon set can be used outside the project.  Some icons can be used as emoji symbols.
 
 All icons tend to support a common design style, which is heavily inspired by \ref {https://github.com/mapbox/maki} {Maki}, \ref {https://github.com/gmgeo/osmic} {Osmic}, and \ref {https://github.com/ideditor/temaki} {Temaki}.
 
@@ -41,23 +39,31 @@ All icons tend to support a common design style, which is heavily inspired by \r
 
 Feel free to request new icons via issues for whatever you want to see on the map.  No matter how frequently the tag is used in OpenStreetMap since the final goal is to cover all tags.  However, commonly used tags have priority, other things being equal.
 
-Generate icon grid and sets of individual icons with \m {\command {icons}}.  It will update \m {doc/grid.svg} file, and create SVG files in \m {out/icons_by_id} directory where files are named using shape identifiers (e.g. \m {power_tower_portal_2_level.svg}) and in \m {icons_by_name} directory where files are named using shape names (e.g. \m {Röntgen portal two-level transmission tower.svg}).  Files from the last directory are used in OpenStreetMap wiki (e.g. \ref {https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg} {\m {File:Röntgen_portal_two-level_transmission_tower.svg}}).
+Generate an icon grid and sets of individual icons with \m {\command {icons}}.  It will update the \m {doc/grid.svg} file, and create SVG files in the \m {out/icons_by_id} directory where files are named using shape identifiers (e.g. \m {power_tower_portal_2_level.svg}) and in the \m {icons_by_name} directory where files are named using shape names (e.g. \m {Röntgen portal two-level transmission tower.svg}).  Files from the last directory are used in the OpenStreetMap wiki (e.g. \ref {https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg} {\m {File:Röntgen_portal_two-level_transmission_tower.svg}}).
 
 \2 {Map features} {map-features}
 
 \3 {Extra icons} {extra-icons}
 
-Map Machine uses icons to visualize tags for nodes and areas.  But unlike other renderers, Map Machine can use more than one icon to visualize an entity and use colors to visualize \osm {colour} value or other entity properties (like \osm {material} or \osm {genus}).
+Map Machine uses icons to visualize tags for nodes and areas.  But unlike other renderers, Map Machine can use more than one icon to visualize an entity and can use colors to visualize \osm {colour} value or other entity properties (like \osm {material} or \osm {genus}).
 
 \3 {Isometric building shapes} {isometric-building-shapes}
 
 With \m {--buildings isometric} or \m {--buildings isometric-no-parts} (not set by default), buildings are drawn using isometric shapes for walls and shade in proportion to \osm {building:levels}, \osm {building:min_level}, \osm {height}, and \osm {min_height} values.
 
+\4 {Example}
+
+\code {shell} {map-machine render -c -26.19049,28.05605 -s 600,400 --buildings isometric}
+
 \image {doc/buildings.svg} {3D buildings}
 
 \3 {Road lanes} {road-lanes}
 
-To determine road width Map Machine uses the \osm {width} tag value or estimates it based on the \osm {lanes} value. If lane value is specified, it also draws lane separators.  This map style is highly inspired by Christoph Hormann's post \ref {http://blog.imagico.de/navigating-the-maze-part-2/} {Navigating the Maze}.
+To determine the road width Map Machine uses the \osm {width} tag value or estimates it based on the \osm {lanes} value. If lane value is specified, it also draws lane separators.  This map style is highly inspired by Christoph Hormann's post \ref {http://blog.imagico.de/navigating-the-maze-part-2/} {Navigating the Maze}.
+
+\4 {Example}
+
+\code {shell} {map-machine render -c 47.61224,-122.33866 -s 600,400}
 
 \image {doc/lanes.svg} {Road lanes}
 
@@ -83,11 +89,21 @@ Visualization of tree \icon {tree} leaf types (broadleaved \icon {tree_with_leaf
 
 */
 
+\4 {Example}
+
+/*
+\code {shell} {map-machine render -c 55.751,37.628 -s 600,400}
+*/
+
 \image {doc/trees.svg} {Trees}
 
 \3 {Viewpoint and camera direction} {viewpoint-and-camera-direction}
 
 \osm {direction} tag values for \osm {tourism=viewpoint} and \osm {camera:direction} for \osm {man_made=surveillance} are rendered with sectors displaying the direction and angle (15º if angle is not specified) or the whole circle for panorama view.  Radial gradient is used for surveillance and inverted radial gradient is used for viewpoints.
+
+\4 {Example}
+
+\code {shell} {map-machine render -c 52.50892,13.3244 -s 600,400 -z 18.5}
 
 \image {doc/surveillance.svg} {Surveillance}
 
@@ -95,7 +111,7 @@ Visualization of tree \icon {tree} leaf types (broadleaved \icon {tree_with_leaf
 
 \3 {Power tower design} {power-tower-design}
 
-Visualize \osm {design} values used with \osm {power=tower} tag.
+Visualize \osm {design} values used with \osm {power=tower} and \osm {power=pole} tags.  \m {design} has more than 1 million usages in OpenStreetMap.
 
 \image {doc/icons_power.svg} {Power tower design}
 
@@ -103,7 +119,7 @@ Visualize \osm {design} values used with \osm {power=tower} tag.
 
 \3 {Colors} {colors}
 
-Map icons have \osm {colour} tag value if it is present, otherwise, icons are displayed with dark grey color by default, purple color for shop nodes, red color for emergency features, and special colors for natural features.  Map Machine also takes into account \osm {building:colour}, \osm {roof:colour} and other \m {*:colour} tags, and uses \osm {colour} tag value to paint subway lines.
+Map icons have \osm {colour} tag value if it is present, otherwise, icons are displayed with dark grey color by default, purple color for shop nodes, red color for emergency features, and special colors for natural features.  Map Machine also takes into account \osm {building:colour}, \osm {roof:colour} and other \m {*:colour} tags, and uses the \osm {colour} tag value to paint subway lines.
 
 \image {doc/colors.svg} {Building colors}
 
@@ -117,9 +133,19 @@ Japanese maps usually use \ref {https://en.wikipedia.org/wiki/List_of_Japanese_m
 
 \image {doc/icons_japanese.svg} {Japanese map symbols}
 
+\3 {Indoor features} {indoor-features}
+
+Draw indoor features specifying level with \m {--level} option. Possible values are numbers (e.g. \m {1}, \m {0.5}), lists of number separated by \m {;} (e.g. \m {1;2;4;4.5}), \m {all}, \m {overground}, and \m {underground}. The default value is not \m {all}, but \m {overground}, so underground objects are not shown on the map if \m {--level} option is not specified.
+
+\4 {Example}
+
+\code {shell} {map-machine render -c 4.5978,-74.07507 -s 600,400 -z 19.5 --level 0}
+
+\image {doc/indoor.svg} {Indoor}
+
 \3 {Shape combination} {shape-combination}
 
-One of the key features of Map Machine is constructing icons from the several shapes.
+One of the key features of Map Machine is constructing icons from several shapes.
 
 /* Some icons consist of just one shape, to construct others it may be necessary to combine two or more shapes. */
 
@@ -194,31 +220,31 @@ Every way and node displayed with the random color picked for each author with \
 Requirements\: Python 3.8/* or higher*/.
 
 \list
-    {Install \ref {https://www.cairographics.org/download/} {cairo 2D graphic library},}
-    {install \ref {https://libgeos.org} {GEOS library},}
-    {install Python packages with the command\:}
+    {Install the \ref {https://www.cairographics.org/download/} {cairo 2D graphic library},}
+    {install the \ref {https://libgeos.org} {GEOS library},}
+    {install the Python packages with the command\:}
 
-\code {pip install git+https://github.com/enzet/map-machine@python3.8} {shell}
+\code {shell} {pip install git+https://github.com/enzet/map-machine@python3.8}
 
 For more detailed instructions, see \ref {doc/INSTALL.md} {instructions}.
 
 \2 {Map generation} {map-generation}
 
-Command \m {render} is used to generate SVG map from OpenStreetMap data.  You can run it using\:
+The \m {render} command is used to generate an SVG map from OpenStreetMap data.  You can run it using\:
 
-\code {map-machine render \\
-    -b=\formal {min longitude},\formal {min latitude},\formal {max longitude},\formal {max latitude} \\
-    -o=\formal {output file name} \\
-    -z=\formal {OSM zoom level} \\
-    \formal {other arguments}} {bash}
+\code {shell} {map-machine render \\
+    -b \formal {min longitude},\formal {min latitude},\formal {max longitude},\formal {max latitude} \\
+    -o \formal {output file name} \\
+    -z \formal {OSM zoom level} \\
+    \formal {other arguments}}
 
 \3 {Example} {example}
 
-\code {map-machine render \\
-    --boundary-box=2.284,48.860,2.290,48.865 \\
-    --output=out/esplanade_du_trocadéro.svg} {bash}
+\code {shell} {map-machine render \\
+    --bounding-box 2.284,48.860,2.290,48.865 \\
+    --output out/esplanade_du_trocadéro.svg}
 
-will download OSM data to \m {cache/2.284,48.860,2.290,48.865.osm} and write an output SVG map of the specified area to \m {out/esplanade_du_trocadéro.svg}.
+will download OSM data to \m {cache/2.284,48.860,2.290,48.865.osm} and render an SVG map of the specified area to \m {out/esplanade_du_trocadéro.svg}.
 
 \3 {Arguments} {arguments}
 
@@ -236,45 +262,45 @@ plus \ref {#map-options} {map configuration options}
 
 \3 {Generate one tile} {generate-one-tile}
 
-Specify tile coordinates\:
+Specify the tile coordinates\:
 
-\code {map-machine tile --tile \formal {OSM zoom level}/\formal {x}/\formal {y}} {bash}
+\code {shell} {map-machine tile --tile \formal {OSM zoom level}/\formal {x}/\formal {y}}
 
 or specify any geographical coordinates inside a tile\:
 
-\code {map-machine tile \\
-    --coordinates=\formal {latitude},\formal {longitude} \\
-    --zoom=\formal {OSM zoom levels}} {bash}
+\code {shell} {map-machine tile \\
+    --coordinates \formal {latitude},\formal {longitude} \\
+    --zoom \formal {OSM zoom levels}}
 
-Tile will be stored as SVG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.  \m {--zoom} option will be ignored if it is used with \m {--tile} option.
+The tile will be stored as an SVG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and a PNG file \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.  The \m {--zoom} option will be ignored if it is used with the \m {--tile} option.
 
 Example\:
 
-\code {map-machine tile -c=55.7510637,37.6270761 -z=18} {bash}
+\code {shell} {map-machine tile -c 55.7510637,37.6270761 -z 18}
 
-will generate SVG file \m {out/tiles/tile_18_158471_81953.svg} and PNG file \m {out/tiles/tile_18_158471_81953.png}.
+will generate an SVG file \m {out/tiles/tile_18_158471_81953.svg} and a PNG file \m {out/tiles/tile_18_158471_81953.png}.
 
 \3 {Generate a set of tiles} {generate-a-set-of-tiles}
 
-Specify boundary box to get the minimal set of tiles that covers the area\:
+Specify the bounding box to get the minimal set of tiles that covers the area\:
 
-\code {map-machine tile \\
-    --boundary-box=\formal {min longitude},\formal {min latitude},\formal {max longitude},\formal {max latitude} \\
-    --zoom=\formal {OSM zoom levels}} {bash}
+\code {shell} {map-machine tile \\
+    --bounding-box \formal {min longitude},\formal {min latitude},\formal {max longitude},\formal {max latitude} \\
+    --zoom \formal {OSM zoom levels}}
 
-The boundary box will be extended to the boundaries of the minimal tileset that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point.  Map with new boundary box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.
+The bounding box will be extended to the boundaries of the minimal tileset that covers the area, then it will be extended a bit more to avoid some artifacts on the edges rounded to 3 digits after the decimal point.  The map with the new bounding box coordinates will be written to the cache directory as SVG and PNG files. All tiles will be stored as SVG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG files \m {out/tiles/tile_<zoom level>_<x>_<y>.svg}, where \m {x} and \m {y} are tile coordinates.
 
 Example\:
 
-\code {map-machine tile -b=2.361,48.871,2.368,48.875} {bash}
+\code {shell} {map-machine tile -b 2.361,48.871,2.368,48.875}
 
 will generate 36 PNG tiles at zoom level 18 from tile 18/132791/90164 all the way to 18/132796/90169 and two cached files \m {cache/2.360,48.869,2.370,48.877_18.svg} and \m {cache/2.360,48.869,2.370,48.877_18.png}.
 
 \2 {Tile server} {tile-server}
 
-Command \m {server} is used to run tile server for slippy maps.
+The \m {server} command is used to run a tile server for slippy maps.
 
-\code {map-machine server}
+\code {shell} {map-machine server}
 
 Stop server interrupting the process with \kbd {Ctrl} + \kbd {C}.
 
@@ -282,17 +308,17 @@ Stop server interrupting the process with \kbd {Ctrl} + \kbd {C}.
 
 \3 {Example} {example-2}
 
-Create a minimal amount of tiles that cover specified boundary box for zoom levels 16, 17, 18, and 19\:
+Create a minimal amount of tiles that cover specified bounding box for zoom levels 16, 17, 18, and 19\:
 
-\code {map-machine tile -b=2.364,48.854,2.367,48.857 -z=16-19} {bash}
+\code {shell} {map-machine tile -b 2.364,48.854,2.367,48.857 -z 16-19}
 
 Run tile server on 127.0.0.1\:8080\:
 
-\code {map-machine server} {bash}
+\code {shell} {map-machine server}
 
 Use JavaScript code for \ref {https://leafletjs.com/} {Leaflet}\:
 
-\code {var map = L.map('mapid').setView([48.8555, 2.3655], 18);
+\code {javascript} {var map = L.map('mapid').setView([48.8555, 2.3655], 18);
 
 L.tileLayer('http://127.0.0.1:8080/tiles/\{z\}/\{x\}/\{y\}', \{
     maxZoom: 19,
@@ -303,11 +329,13 @@ L.tileLayer('http://127.0.0.1:8080/tiles/\{z\}/\{x\}/\{y\}', \{
     id: 'map_machine',
     tileSize: 256,
     zoomOffset: 0
-\}).addTo(map);} {js}
+\}).addTo(map);}
 
 HTML code\:
 
-\code {<div id="mapid" style="width: 1000px; height: 600px;"></div>} {html}
+\code {html} {<div id="mapid" style="width: 1000px; height: 600px;"></div>}
+
+See full HTML example in \m {doc/leaflet.html}.
 
 \2 {Map options} {map-options}
 
@@ -317,9 +345,9 @@ Map configuration options used by \m {render} and \m {tile} commands\:
 
 \2 {MapCSS 0.2 generation} {mapcss-0-2-generation}
 
-Command \m {mapcss} is used to generate MapCSS scheme.  \m {\command {mapcss}} will create \m {out/map_machine_mapcss} directory with simple MapCSS 0.2 scheme adding icons from Röntgen icon set to nodes and areas\: \m {.mapcss} file and directory with icons.
+The \m {mapcss} command can be used to generate a MapCSS scheme.  \m {\command {mapcss}} will create an \m {out/map_machine_mapcss} directory with simple MapCSS 0.2 scheme adding icons from the Röntgen icon set to nodes and areas\: \m {.mapcss} file and directory with icons.
 
-To create MapCSS with Map Machine style also for ways and relations, run \m {map-machine mapcss --ways}.
+To create a MapCSS style with Map Machine style also for ways and relations, run \m {map-machine mapcss --ways}.
 
 \options {mapcss}
 
@@ -332,13 +360,13 @@ To create MapCSS with Map Machine style also for ways and relations, run \m {map
     {Active styles: press \kbd {+}.}
     {URL / File: set path to \m {out/map_machine_mapcss/map_machine.mapcss}.}
 
-To enable/disable Map Machine map paint style go to \kbd {View} → \kbd {Map Paint Styles} → \kbd {Map Machine}.
+To enable/disable the Map Machine map paint style go to \kbd {View} → \kbd {Map Paint Styles} → \kbd {Map Machine}.
 
 \4 {Example} {example-3}
 
 \image {doc/josm.png} {JOSM example}
 
-Example of using Röntgen icons on top of Mapnik style in JOSM.  Map Paint Styles look like this\:
+Example of using Röntgen icons on top of the Mapnik style in JOSM.  Map Paint Styles look like this\:
 \list
     {✓ Mapnik (true)}
     {✓ Map Machine}

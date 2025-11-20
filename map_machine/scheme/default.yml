@@ -1,3 +1,11 @@
+options:
+
+  draw_nodes: yes
+  draw_trees: yes
+  draw_craters: yes
+  draw_buildings: yes
+  draw_directions: yes
+
 colors:
 
   # Entity
@@ -34,6 +42,10 @@ colors:
   secondary_color: "#FFEE77"
   tertiary_border_color: "#CCAA22"
   tertiary_color: "#FFFF88"
+
+  bridge_color: "#666666"
+  ford_color: "#88BBFF"
+  embankment_color_color: "#666666"
 
   allotments_color: "#D0E0D0"
   beach_color: "#F0E0C0"
@@ -1492,6 +1504,14 @@ node_icons:
       shapes: [lander]
       set_opacity: 0.5
 
+  - group: "Golf objects"
+    start_zoom_level: 16.0
+    tags:
+      - tags: {golf: tee}
+        shapes: [golf_tee]
+      - tags: {golf: pin}
+        shapes: [golf_pin]
+
   - group: "Important small objects"
     start_zoom_level: 17.0
     tags:
@@ -1692,10 +1712,6 @@ node_icons:
       shapes: [horizontal_bar]
     - tags: {leisure: picnic_table}
       shapes: [table]
-    - tags: {golf: tee}
-      shapes: [golf_tee]
-    - tags: {golf: pin}
-      shapes: [golf_pin]
     - tags: {highway: traffic_mirror}
       shapes: [side_mirror]
     - tags: {amenity: dressing_room}
@@ -1806,6 +1822,8 @@ node_icons:
       shapes: [billboard]
     - tags: {advertising: column}
       shapes: [advertising_column]
+    - tags: {natural: human}
+      shapes: [human]
     - tags: {natural: rock}
       shapes: [stone]
     - tags: {natural: stone}
@@ -1817,6 +1835,8 @@ node_icons:
 
     - tags: {railway: buffer_stop}
       shapes: [buffer_stop]
+    - tags: {traffic_sign: "*"}
+      shapes: [guidepost]
     - tags: {traffic_sign: city_limit}
       shapes: [city_limit_sign]
     - tags: {traffic_sign: maxspeed, maxspeed: "^(\\d)(\\d)$"}
@@ -1883,6 +1903,8 @@ node_icons:
       set_main_color: evergreen_color
     - tags: {natural: bush}
       shapes: [{shape: bush, color: tree_color}]
+    - tags: {natural: shrub}
+      shapes: [{shape: bush, color: tree_color}]
 
     - tags: {natural: tree, genus: Betula}
       shapes: [{shape: betula, color: tree_color}]
@@ -1913,6 +1935,12 @@ node_icons:
       shapes: [entrance]
     - tags: {indoor: pillar}
       shapes: [pillar]
+
+  - group: "Mass objects"
+    start_zoom_level: 19.0
+    tags:
+      - tags: {tourism: camp_pitch}
+        shapes: [camp]
 
   - group: "Add and over"
     tags:
@@ -2034,6 +2062,32 @@ node_icons:
       add_shapes: [rectangle_vertical_rounded]
     - tags: {crossing:island: "no"}
       add_shapes: [rectangle_vertical_rounded_crossed]
+
+    - tags: {parking: "yes"}
+      add_shapes: [p]
+    - tags: {drinking_water: "yes"}
+      add_shapes: [drinking_water]
+    - tags: {toilets: "yes"}
+      add_shapes: [woman_and_man]
+    - tags: {washing_machine: "yes"}
+      add_shapes: [washing_machine]
+    - tags: {shower: "yes"}
+      add_shapes: [shower]
+    - tags: {dog: "yes"}
+      add_shapes: [dog]
+
+    # For tourism=camp_pitch
+
+    - tags: {caravans: "yes"}
+      add_shapes: [caravan]
+    - tags: {tents: "yes"}
+      add_shapes: [camp]
+    - tags: {fireplace: "yes"}
+      add_shapes: [fireplace]
+    - tags: {openfire: "yes"}
+      add_shapes: [fire_pit]
+    - tags: {bbq: "yes"}
+      add_shapes: [bbq]
 
 roads:
   - tags: {highway: motorway}
@@ -2173,9 +2227,9 @@ ways:
     priority: 80.0
   - tags: {golf: hole}
     style:
-      stroke: "#000000"
+      stroke: "#44AA33"
       stroke-width: 1.0
-      opacity: 0.3
+      opacity: 0.6
     priority: 80.0
   - tags: {man_made: pipeline}
     style:
@@ -2490,6 +2544,11 @@ ways:
       fill: meadow_color
       stroke: meadow_border_color
     priority: 20.0
+  - tags: {tourism: camp_pitch}
+    style:
+      stroke: "#000000"
+      opacity: 0.1
+    priority: 100.0
 
     # Hidden land use
 
@@ -2741,6 +2800,11 @@ ways:
       stroke: water_border_color
       stroke-width: 1.0
 
+  - tags: {tourism: artwork}
+    style:
+      stroke: "#888888"
+      stroke-width: 1.0
+    priority: 10.0
   - tags: {barrier: hedge}
     style:
       fill: none

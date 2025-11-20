@@ -12,6 +12,8 @@ from map_machine.scheme import Scheme
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+DARK_BACKGROUND: Color = Color("#111111")
+
 
 class DrawingMode(Enum):
     """Map drawing mode."""
@@ -61,6 +63,7 @@ class MapConfiguration:
     show_overlapped: bool = False
     credit: Optional[str] = "© OpenStreetMap contributors"
     show_credit: bool = True
+    draw_background: bool = True
 
     @classmethod
     def from_options(
@@ -82,6 +85,8 @@ class MapConfiguration:
             options.roofs,
             options.building_colors,
             options.show_overlapped,
+            show_credit=not options.hide_credit,
+            draw_background=options.background,
         )
 
     def is_wireframe(self) -> bool:
@@ -91,7 +96,7 @@ class MapConfiguration:
     def background_color(self) -> Optional[Color]:
         """Get background map color based on drawing mode."""
         if self.drawing_mode not in (DrawingMode.NORMAL, DrawingMode.BLACK):
-            return Color("#111111")
+            return DARK_BACKGROUND
         return None
 
     def get_icon(

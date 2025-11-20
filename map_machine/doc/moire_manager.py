@@ -60,10 +60,7 @@ class ArgumentParser(argparse.ArgumentParser):
         self.arguments.append(argument)
 
     def get_moire_help(self) -> Tag:
-        """
-        Return Moire table with "Option" and "Description" columns filled with
-        arguments.
-        """
+        """Return Moire table with "Option" and "Description" columns."""
         table: Code = [[["Option"], ["Description"]]]
 
         for option in self.arguments:
@@ -269,6 +266,18 @@ class MapMachineMarkdown(MapMachineMoire, DefaultMarkdown):
     """GitHub flavored markdown."""
 
     images = {}
+
+    def body(self, arg: Arguments) -> str:
+        """Remove redundant new lines and add a warning."""
+        return (
+            "<!--\n"
+            "    This is generated file.\n"
+            "    Do not edit it manually, edit the Moire source file instead.\n"
+            "-->\n\n"
+            + self.parse(arg[0], in_block=True)
+            .replace("\n\n\n", "\n\n")
+            .replace("\n\n\n", "\n\n")
+        )
 
     def color(self, arg: Arguments) -> str:
         """Ignore colors in Markdown."""
