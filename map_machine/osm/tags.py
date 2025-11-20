@@ -8,7 +8,8 @@ ROAD_VALUES: list[str] = [
     "residential",
     "service",
 ]
-HIGHWAY_VALUES: list[str] = ROAD_VALUES + [
+HIGHWAY_VALUES: list[str] = [
+    *ROAD_VALUES,
     "service_minor",
     "road",
     "pedestrian",

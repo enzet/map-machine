@@ -1,9 +1,10 @@
 """Rectangle that limit space on the map."""
 
+from __future__ import annotations
+
 import logging
 import re
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 
@@ -32,7 +33,7 @@ class BoundingBox:
     top: float  # Maximum latitude.
 
     @classmethod
-    def from_text(cls, bounding_box: str) -> Optional["BoundingBox"]:
+    def from_text(cls, bounding_box: str) -> BoundingBox | None:
         """Parse bounding box string representation.
 
         Note, that:
@@ -46,7 +47,7 @@ class BoundingBox:
         """
         bounding_box = bounding_box.replace(" ", "")
 
-        matcher: Optional[re.Match] = BOUNDING_BOX_PATTERN.match(bounding_box)
+        matcher: re.Match | None = BOUNDING_BOX_PATTERN.match(bounding_box)
 
         if not matcher:
             logging.fatal("Invalid bounding box.")
@@ -83,7 +84,7 @@ class BoundingBox:
         zoom_level: float,
         width: float,
         height: float,
-    ) -> "BoundingBox":
+    ) -> BoundingBox:
         """Compute bounding box from center coordinates, zoom level and image size.
 
         :param coordinates: bounding box central coordinates
@@ -129,7 +130,7 @@ class BoundingBox:
         """Get right bottom corner of the bounding box."""
         return np.array((self.bottom, self.right))
 
-    def round(self) -> "BoundingBox":
+    def round(self) -> BoundingBox:
         """Round bounding box."""
         self.left = round(self.left * 1000.0) / 1000.0 - 0.001
         self.bottom = round(self.bottom * 1000.0) / 1000.0 - 0.001
@@ -165,7 +166,7 @@ class BoundingBox:
         self.right = max(self.right, coordinates[1])
         self.top = max(self.top, coordinates[0])
 
-    def combine(self, other: "BoundingBox") -> None:
+    def combine(self, other: BoundingBox) -> None:
         """Combine with another bounding box."""
         self.left = min(self.left, other.left)
         self.bottom = min(self.bottom, other.bottom)

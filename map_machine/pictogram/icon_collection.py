@@ -1,10 +1,11 @@
 """Icon grid drawing."""
 
+from __future__ import annotations
+
 import logging
 import shutil
 from dataclasses import dataclass
-from pathlib import Path
-from typing import Optional
+from typing import TYPE_CHECKING
 
 import numpy as np
 from colour import Color
@@ -18,6 +19,9 @@ from map_machine.pictogram.icon import (
 )
 from map_machine.scheme import NodeMatcher, Scheme
 from map_machine.workspace import workspace
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -38,7 +42,7 @@ class IconCollection:
         color: Color = Color("black"),
         add_unused: bool = False,
         add_all: bool = False,
-    ) -> "IconCollection":
+    ) -> IconCollection:
         """Collect all possible icon combinations.
 
         This collection won't contain icons for tags matched with regular
@@ -80,24 +84,25 @@ class IconCollection:
                 continue
             if matcher.under_icon:
                 for icon_id in matcher.under_icon:
-                    add([icon_id] + matcher.over_icon)
+                    add([icon_id, *matcher.over_icon])
             if not (matcher.under_icon and matcher.with_icon):
                 continue
             for icon_id in matcher.under_icon:
                 for icon_2_id in matcher.with_icon:
-                    add([icon_id] + [icon_2_id] + matcher.over_icon)
+                    add([icon_id, icon_2_id, *matcher.over_icon])
                 for icon_2_id in matcher.with_icon:
                     for icon_3_id in matcher.with_icon:
                         if (
-                            icon_2_id != icon_3_id
-                            and icon_2_id != icon_id
+                            icon_2_id not in (icon_3_id, icon_id)
                             and icon_3_id != icon_id
                         ):
                             add(
-                                [icon_id]
-                                + [icon_2_id]
-                                + [icon_3_id]
-                                + matcher.over_icon
+                                [
+                                    icon_id,
+                                    icon_2_id,
+                                    icon_3_id,
+                                    *matcher.over_icon,
+                                ]
                             )
 
         specified_ids: set[str] = set()
@@ -115,7 +120,7 @@ class IconCollection:
                 icons.append(icon)
 
         if add_all:
-            for shape_id in extractor.shapes.keys():
+            for shape_id in extractor.shapes:
                 shape: Shape = extractor.get_shape(shape_id)
                 icon: Icon = Icon([ShapeSpecification(shape, color)])
                 icon.recolor(color, white=background_color)
@@ -128,7 +133,7 @@ class IconCollection:
         output_directory: Path,
         license_path: Path,
         by_name: bool = False,
-        color: Optional[Color] = None,
+        color: Color | None = None,
         outline: bool = False,
         outline_opacity: float = 1.0,
     ) -> None:
@@ -167,7 +172,7 @@ class IconCollection:
         file_name: Path,
         columns: int = 16,
         step: float = 24.0,
-        background_color: Optional[Color] = Color("white"),
+        background_color: Color | None = Color("white"),
         scale: float = 1.0,
     ) -> None:
         """Draw icons in the form of table.

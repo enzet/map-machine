@@ -39,7 +39,7 @@ def test_zoom_level_too_big() -> None:
     except ScaleConfigurationException:
         return
 
-    assert False
+    raise AssertionError
 
 
 def test_zoom_level_negative() -> None:
@@ -49,7 +49,7 @@ def test_zoom_level_negative() -> None:
     except ValueError:
         return
 
-    assert False
+    raise AssertionError
 
 
 def test_zoom_level_wrong() -> None:
@@ -59,4 +59,4 @@ def test_zoom_level_wrong() -> None:
     except ValueError:
         return
 
-    assert False
+    raise AssertionError

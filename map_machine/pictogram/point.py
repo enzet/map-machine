@@ -1,17 +1,23 @@
 """Point: node representation on the map."""
 
+from __future__ import annotations
+
 import logging
-from typing import Optional
+import sys
+from typing import TYPE_CHECKING
 
 import numpy as np
-import svgwrite
-from colour import Color
 
 from map_machine.drawing import draw_text
 from map_machine.map_configuration import LabelMode
 from map_machine.osm.osm_reader import Tagged
-from map_machine.pictogram.icon import Icon, IconSet
-from map_machine.text import Label
+
+if TYPE_CHECKING:
+    import svgwrite
+    from colour import Color
+
+    from map_machine.pictogram.icon import Icon, IconSet
+    from map_machine.text import Label
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -31,7 +37,7 @@ class Occupied:
                 "Failed to allocate a matrix required by overlap algorithm. "
                 "Try to use smallest area or try --overlap=0 options."
             )
-            exit(1)
+            sys.exit(1)
 
         self.width: float = width
         self.height: float = height
@@ -86,10 +92,10 @@ class Point(Tagged):
         self.main_icon_painted: bool = False
 
     def draw_main_shapes(
-        self, svg: svgwrite.Drawing, occupied: Optional[Occupied] = None
+        self, svg: svgwrite.Drawing, occupied: Occupied | None = None
     ) -> None:
         """Draw main shape for one node."""
-        keys_left = [x for x in self.tags.keys() if x not in self.processed]
+        keys_left = [x for x in self.tags if x not in self.processed]
         if (
             self.icon_set.main_icon.is_default()
             and not self.icon_set.extra_icons
@@ -98,9 +104,7 @@ class Point(Tagged):
             return
 
         position: np.ndarray = self.point + np.array((0.0, self.y))
-        tags: Optional[dict[str, str]] = (
-            self.tags if self.add_tooltips else None
-        )
+        tags: dict[str, str] | None = self.tags if self.add_tooltips else None
         self.main_icon_painted: bool = self.draw_point_shape(
             svg,
             self.icon_set.main_icon,
@@ -113,7 +117,7 @@ class Point(Tagged):
             self.y += 16.0
 
     def draw_extra_shapes(
-        self, svg: svgwrite.Drawing, occupied: Optional[Occupied] = None
+        self, svg: svgwrite.Drawing, occupied: Occupied | None = None
     ) -> None:
         """Draw secondary shapes."""
         if not self.icon_set.extra_icons or not self.main_icon_painted:
@@ -144,10 +148,10 @@ class Point(Tagged):
         self,
         svg: svgwrite.Drawing,
         icon: Icon,
-        default_icon: Optional[Icon],
+        default_icon: Icon | None,
         position: np.ndarray,
-        occupied: Optional[Occupied],
-        tags: Optional[dict[str, str]] = None,
+        occupied: Occupied | None,
+        tags: dict[str, str] | None = None,
     ) -> bool:
         """Draw one combined icon and its outline."""
         # Down-cast floats to integers to make icons pixel-perfect.
@@ -181,7 +185,7 @@ class Point(Tagged):
     def draw_texts(
         self,
         svg: svgwrite.Drawing,
-        occupied: Optional[Occupied] = None,
+        occupied: Occupied | None = None,
         label_mode: LabelMode = LabelMode.MAIN,
     ) -> None:
         """Draw all labels."""
@@ -215,12 +219,12 @@ class Point(Tagged):
         svg: svgwrite.Drawing,
         text: str,
         point: np.ndarray,
-        occupied: Optional[Occupied],
+        occupied: Occupied | None,
         fill: Color,
         size: float,
         out_fill: Color,
         out_opacity: float = 0.5,
-        out_fill_2: Optional[Color] = None,
+        out_fill_2: Color | None = None,
         out_opacity_2: float = 1.0,
         is_debug: bool = False,
     ) -> None:

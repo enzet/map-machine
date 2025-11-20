@@ -1,15 +1,19 @@
 """Automate OpenStreetMap wiki editing."""
 
+from __future__ import annotations
+
 import re
 from pathlib import Path
-from typing import Optional
+from typing import TYPE_CHECKING
 
-from map_machine.doc.doc_collections import Collection
 from map_machine.map_configuration import MapConfiguration
-from map_machine.osm.osm_reader import Tags
 from map_machine.pictogram.icon import Icon, ShapeExtractor
 from map_machine.scheme import Scheme
 from map_machine.workspace import Workspace
+
+if TYPE_CHECKING:
+    from map_machine.doc.doc_collections import Collection
+    from map_machine.osm.osm_reader import Tags
 
 WORKSPACE: Workspace = Workspace(Path("temp"))
 
@@ -34,7 +38,7 @@ class WikiTable:
     Creates table with icon combinations.
     """
 
-    def __init__(self, collection: Collection, page_name: str):
+    def __init__(self, collection: Collection, page_name: str) -> None:
         self.collection: Collection = collection
         self.page_name: str = page_name
 
@@ -124,7 +128,7 @@ class WikiTable:
 def generate_new_text(
     old_text: str,
     table: WikiTable,
-) -> tuple[Optional[str], list[Icon]]:
+) -> tuple[str | None, list[Icon]]:
     """Generate Röntgen icon table for the OpenStreetMap wiki page.
 
     :param old_text: previous wiki page text
@@ -160,14 +164,13 @@ def generate_new_text(
 
     # If rendering section already exists.
 
-    start: Optional[int] = None
+    start: int | None = None
     end: int = -1
 
     for index, line in enumerate(lines):
-        if HEADER_2_PATTERN.match(line):
-            if start is not None:
-                end = index
-                break
+        if HEADER_2_PATTERN.match(line) and start is not None:
+            end = index
+            break
         if RENDERING_HEADER_PATTERN.match(line):
             start = index
 
@@ -181,14 +184,13 @@ def generate_new_text(
 
     # If Röntgen rendering section already exists.
 
-    start: Optional[int] = None
+    start: int | None = None
     end: int = -1
 
     for index, line in enumerate(lines):
-        if HEADER_PATTERN.match(line):
-            if start is not None:
-                end = index
-                break
+        if HEADER_PATTERN.match(line) and start is not None:
+            end = index
+            break
         if ROENTGEN_HEADER_PATTERN.match(line):
             start = index
 
@@ -201,7 +203,7 @@ def generate_new_text(
 
     # Otherwise.
 
-    headers: list[Optional[int]] = [None, None]
+    headers: list[int | None] = [None, None]
 
     for index, line in enumerate(lines):
         for i, pattern in enumerate(HEADER_PATTERNS):

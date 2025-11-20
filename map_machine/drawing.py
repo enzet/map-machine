@@ -1,16 +1,21 @@
 """Drawing utility."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from pathlib import Path
-from typing import Optional, Union
+from typing import TYPE_CHECKING, Union
 
 import numpy as np
 import svgwrite
 from colour import Color
-from svgwrite.base import BaseElement
 from svgwrite.path import Path as SVGPath
 from svgwrite.shapes import Rect
 from svgwrite.text import Text
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    from svgwrite.base import BaseElement
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -24,8 +29,8 @@ DEFAULT_FONT: str = "Helvetica"
 class Style:
     """Drawing element style."""
 
-    fill: Optional[Color] = None
-    stroke: Optional[Color] = None
+    fill: Color | None = None
+    stroke: Color | None = None
     width: float = 1.0
 
     def update_svg_element(self, element: BaseElement) -> None:
@@ -152,9 +157,9 @@ def draw_text(
     anchor: str = "middle",
     stroke_linejoin: str = "round",
     stroke_width: float = 1.0,
-    stroke: Optional[Color] = None,
+    stroke: Color | None = None,
     opacity: float = 1.0,
-):
+) -> None:
     """Add text element to the canvas."""
     text_element = svg.text(
         text,

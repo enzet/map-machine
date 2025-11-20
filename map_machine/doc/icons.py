@@ -1,7 +1,7 @@
 """Icon grids for documentation."""
 
-from collections.abc import Iterable
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from colour import Color
 
@@ -14,10 +14,13 @@ from map_machine.pictogram.icon import (
 from map_machine.pictogram.icon_collection import IconCollection
 from map_machine.workspace import workspace
 
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
 SKIP: bool = True
 
 
-def draw_special_grid(all_shapes, function, path, color=None):
+def draw_special_grid(all_shapes, function, path, color=None) -> None:
     """Draw special icon grid to illustrate map feature."""
     icons = [
         Icon([ShapeSpecification(shape)])
@@ -33,7 +36,7 @@ def draw_special_grid(all_shapes, function, path, color=None):
     IconCollection(icons).draw_grid(path, 8, scale=4.0)
 
 
-def draw_special_grids():
+def draw_special_grids() -> None:
     """Draw special icon grids."""
     extractor: ShapeExtractor = ShapeExtractor(
         workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH

@@ -3,12 +3,13 @@
 See https://wiki.openstreetmap.org/wiki/Tiles
 """
 
-import argparse
+from __future__ import annotations
+
 import logging
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
+from typing import TYPE_CHECKING
 
 import cairosvg
 import numpy as np
@@ -25,6 +26,9 @@ from map_machine.osm.osm_reader import OSMData
 from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.scheme import Scheme
 from map_machine.workspace import workspace
+
+if TYPE_CHECKING:
+    import argparse
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -44,10 +48,8 @@ class Tile:
     zoom_level: int
 
     @classmethod
-    def from_coordinates(
-        cls, coordinates: np.ndarray, zoom_level: int
-    ) -> "Tile":
-        """Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
+    def from_coordinates(cls, coordinates: np.ndarray, zoom_level: int) -> Tile:
+        """Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames.
 
         :param coordinates: any coordinates inside tile, (latitude, longitude)
         :param zoom_level: zoom level in OpenStreetMap terminology
@@ -136,7 +138,8 @@ class Tile:
         try:
             osm_data: OSMData = self.load_osm_data(cache_path)
         except NetworkError as error:
-            raise NetworkError(f"Map is not loaded. {error.message}")
+            msg = f"Map is not loaded. {error.message}"
+            raise NetworkError(msg)
 
         self.draw_with_osm_data(osm_data, directory_name, configuration)
 
@@ -186,7 +189,7 @@ class Tile:
             cairosvg.svg2png(file_obj=input_file, write_to=str(output_path))
         logging.info(f"SVG file is rasterized to {output_path}.")
 
-    def subdivide(self, zoom_level: int) -> list["Tile"]:
+    def subdivide(self, zoom_level: int) -> list[Tile]:
         """Get subtiles of the tile."""
         assert zoom_level >= self.zoom_level
 
@@ -214,7 +217,7 @@ class Tiles:
     @classmethod
     def from_bounding_box(
         cls, bounding_box: BoundingBox, zoom_level: int
-    ) -> "Tiles":
+    ) -> Tiles:
         """Create minimal set of tiles that covers bounding box.
 
         :param bounding_box: area to be covered by tiles
@@ -375,7 +378,7 @@ class Tiles:
         else:
             logging.debug(f"File {png_path} already exists.")
 
-    def subdivide(self, zoom_level: int) -> "Tiles":
+    def subdivide(self, zoom_level: int) -> Tiles:
         """Get subtiles from tiles."""
         tiles: list[Tile] = []
         for tile in self.tiles:
@@ -405,7 +408,8 @@ def parse_zoom_level(zoom_level_specification: str) -> list[int]:
         """Parse zoom level."""
         parsed_zoom_level: int = int(zoom_level)
         if parsed_zoom_level > 20:
-            raise ScaleConfigurationException("Scale is too big.")
+            message: str = "Scale is too big."
+            raise ScaleConfigurationException(message)
         return parsed_zoom_level
 
     result: list[int] = []
@@ -415,7 +419,8 @@ def parse_zoom_level(zoom_level_specification: str) -> list[int]:
             from_zoom_level: int = parse(start)
             to_zoom_level: int = parse(end)
             if from_zoom_level > to_zoom_level:
-                raise ScaleConfigurationException("Wrong range.")
+                message: str = "Wrong range."
+                raise ScaleConfigurationException(message)
             result += range(from_zoom_level, to_zoom_level + 1)
         else:
             result.append(parse(part))
@@ -471,7 +476,8 @@ def generate_tiles(options: argparse.Namespace) -> None:
         try:
             osm_data: OSMData = min_tile.load_osm_data(cache_path)
         except NetworkError as error:
-            raise NetworkError(f"Map is not loaded. {error.message}")
+            message: str = f"Map is not loaded. {error.message}"
+            raise NetworkError(message)
 
         for zoom_level in zoom_levels:
             tile: Tile = Tile.from_coordinates(
@@ -494,7 +500,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
         tile.draw(directory, cache_path, configuration)
 
     elif options.bounding_box:
-        bounding_box: Optional[BoundingBox] = BoundingBox.from_text(
+        bounding_box: BoundingBox | None = BoundingBox.from_text(
             options.bounding_box
         )
         if bounding_box is None:
@@ -505,7 +511,8 @@ def generate_tiles(options: argparse.Namespace) -> None:
         try:
             osm_data: OSMData = min_tiles.load_osm_data(cache_path)
         except NetworkError as error:
-            raise NetworkError(f"Map is not loaded. {error.message}")
+            message: str = f"Map is not loaded. {error.message}"
+            raise NetworkError(message)
 
         for zoom_level in zoom_levels:
             if EXTEND_TO_BIGGER_TILE:

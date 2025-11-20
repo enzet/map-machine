@@ -1,23 +1,29 @@
 """Extract icons from SVG file."""
 
+from __future__ import annotations
+
+import contextlib
 import json
 import logging
 import re
 from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Any, Optional
-from xml.etree import ElementTree
+from typing import TYPE_CHECKING, Any
+from xml.etree import ElementTree as ET
 from xml.etree.ElementTree import Element
 
 import numpy as np
 import svgwrite
 from colour import Color
 from svgwrite import Drawing
-from svgwrite.base import BaseElement
 from svgwrite.container import Group
-from svgwrite.path import Path as SVGPath
 
 from map_machine.color import is_bright
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    from svgwrite.base import BaseElement
+    from svgwrite.path import Path as SVGPath
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -51,7 +57,7 @@ class Shape:
     id_: str
 
     # Shape human-readable description.
-    name: Optional[str] = None
+    name: str | None = None
 
     # If value is `None`, shape doesn't have distinct direction or its
     # direction doesn't make sense.  Shape is directed to the right if value is
@@ -60,7 +66,7 @@ class Shape:
     # E.g. CCTV camera shape has direction and may be flipped horizontally to
     # follow surveillance direction, whereas car shape has direction but
     # flipping icon doesn't make any sense.
-    is_right_directed: Optional[bool] = None
+    is_right_directed: bool | None = None
 
     # Set of emojis that represent the same entity.  E.g. 🍐 (pear) for `pear`;
     # 🍏 (green apple) and 🍎 (red apple) for `apple`.
@@ -83,8 +89,8 @@ class Shape:
         path: str,
         offset: np.ndarray,
         id_: str,
-        name: Optional[str] = None,
-    ) -> "Shape":
+        name: str | None = None,
+    ) -> Shape:
         """Parse shape description from structure.
 
         :param structure: input structure
@@ -170,10 +176,10 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
     if "style" not in element.attrib or not element.attrib["style"]:
         return True
 
-    style: dict[str, str] = dict(
-        (x.split(":")[0], x.split(":")[1])
+    style: dict[str, str] = {
+        x.split(":")[0]: x.split(":")[1]
         for x in element.attrib["style"].split(";")
-    )
+    }
 
     # Sketch element (black 0.1 px stroke, no fill).
 
@@ -211,10 +217,7 @@ def verify_sketch_element(element: Element, id_: str) -> bool:
     ):
         return True
 
-    if style and not id_.startswith("use"):
-        return False
-
-    return True
+    return not (style and not id_.startswith("use"))
 
 
 def parse_configuration(root: dict, configuration: dict, group: str) -> None:
@@ -274,7 +277,7 @@ class ShapeExtractor:
             self.configuration,
             "root",
         )
-        root: Element = ElementTree.parse(svg_file_name).getroot()
+        root: Element = ET.parse(svg_file_name).getroot()
         self.parse(root)
 
         for shape_id in self.configuration:
@@ -300,10 +303,8 @@ class ShapeExtractor:
         if STANDARD_INKSCAPE_ID_MATCHER.match(id_) is not None:
             if not verify_sketch_element(node, id_):
                 path_part = ""
-                try:
+                with contextlib.suppress(KeyError, ValueError):
                     path_part = f", {node.attrib['d'].split(' ')[:3]}."
-                except (KeyError, ValueError):
-                    pass
                 logging.warning(f"Not verified SVG element `{id_}`{path_part}")
             return
 
@@ -313,7 +314,7 @@ class ShapeExtractor:
             if not matcher:
                 return
 
-            name: Optional[str] = None
+            name: str | None = None
 
             def get_offset(value: str) -> float:
                 """Get negated icon offset from the origin."""
@@ -352,7 +353,8 @@ class ShapeExtractor:
         if id_ in self.shapes:
             return self.shapes[id_]
 
-        assert False, f"no shape with id {id_} in icons file"
+        message: str = f"no shape with id {id_} in icons file"
+        raise AssertionError(message)
 
 
 @dataclass
@@ -374,7 +376,7 @@ class ShapeSpecification:
         self,
         svg: BaseElement,
         point: np.ndarray,
-        tags: dict[str, Any] = None,
+        tags: dict[str, Any] | None = None,
         outline: bool = False,
         outline_opacity: float = 1.0,
         scale: float = 1.0,
@@ -414,19 +416,19 @@ class ShapeSpecification:
             }
             path.update(style)
         if tags:
-            title: str = "\n".join(map(lambda x: x + ": " + tags[x], tags))
+            title: str = "\n".join(x + ": " + tags[x] for x in tags)
             path.set_desc(title=title)
 
         svg.add(path)
 
-    def __eq__(self, other: "ShapeSpecification") -> bool:
+    def __eq__(self, other: ShapeSpecification) -> bool:
         return (
             self.shape == other.shape
             and self.color == other.color
             and np.allclose(self.offset, other.offset)
         )
 
-    def __lt__(self, other: "ShapeSpecification") -> bool:
+    def __lt__(self, other: ShapeSpecification) -> bool:
         return self.shape.id_ < other.shape.id_
 
 
@@ -486,7 +488,7 @@ class Icon:
         self,
         svg: svgwrite.Drawing,
         point: np.ndarray,
-        tags: dict[str, Any] = None,
+        tags: dict[str, Any] | None = None,
         outline: bool = False,
         scale: float = 1.0,
     ) -> None:
@@ -516,7 +518,7 @@ class Icon:
     def draw_to_file(
         self,
         file_name: Path,
-        color: Optional[Color] = None,
+        color: Color | None = None,
         outline: bool = False,
         outline_opacity: float = 1.0,
     ) -> None:
@@ -555,7 +557,7 @@ class Icon:
             and self.shape_specifications[0].is_default()
         )
 
-    def recolor(self, color: Color, white: Optional[Color] = None) -> None:
+    def recolor(self, color: Color, white: Color | None = None) -> None:
         """Paint all shapes in the color."""
         for shape_specification in self.shape_specifications:
             if shape_specification.color == Color("white") and white:
@@ -569,12 +571,12 @@ class Icon:
         """Add shape specifications to the icon."""
         self.shape_specifications += specifications
 
-    def __eq__(self, other: "Icon") -> bool:
+    def __eq__(self, other: Icon) -> bool:
         return sorted(self.shape_specifications) == sorted(
             other.shape_specifications
         )
 
-    def __lt__(self, other: "Icon") -> bool:
+    def __lt__(self, other: Icon) -> bool:
         return "".join(
             [x.shape.get_full_id() for x in self.shape_specifications]
         ) < "".join([x.shape.get_full_id() for x in other.shape_specifications])
@@ -589,7 +591,7 @@ class IconSet:
 
     # Icon to use if the point is hidden by overlapped icons but still need to
     # be shown.
-    default_icon: Optional[Icon]
+    default_icon: Icon | None
 
     # Tag keys that were processed to create icon set (other tag keys should be
     # displayed by text or ignored)

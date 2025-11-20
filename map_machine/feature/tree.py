@@ -4,13 +4,17 @@ If radius of trunk or crown are specified they are displayed with simple
 circles.
 """
 
+from typing import TYPE_CHECKING
+
 import numpy as np
-from colour import Color
 from svgwrite import Drawing
 
 from map_machine.geometry.flinger import Flinger
 from map_machine.osm.osm_reader import Tagged
 from map_machine.scheme import Scheme
+
+if TYPE_CHECKING:
+    from colour import Color
 
 
 class Tree(Tagged):

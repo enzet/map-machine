@@ -1,8 +1,9 @@
 """Draw test nodes, ways, and relations."""
 
+from __future__ import annotations
+
 import logging
 from pathlib import Path
-from typing import Optional
 
 from map_machine.element.grid import Grid
 from map_machine.osm.osm_reader import OSMMember, OSMNode
@@ -90,7 +91,7 @@ def draw_road_features(
     grid: Grid = Grid()
 
     for i, type_ in enumerate(types):
-        previous: Optional[OSMNode] = None
+        previous: OSMNode | None = None
 
         for j in range(len(features) + 1):
             node: OSMNode = grid.add_node({}, i, j)
@@ -164,7 +165,7 @@ if __name__ == "__main__":
     )
     draw_road_features(
         highway_tags,
-        PLACEMENT_FEATURES_1 + [{"highway": "none"}] + PLACEMENT_FEATURES_2,
+        [*PLACEMENT_FEATURES_1, {"highway": "none"}, *PLACEMENT_FEATURES_2],
         out_path / "placement.svg",
     )
     draw_overlapped_ways(road_tags + railway_tags, out_path / "overlap.svg")

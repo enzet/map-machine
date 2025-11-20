@@ -31,7 +31,7 @@ def get_gradient_color(
     :param colors: color scale
     """
     color_length: int = len(colors) - 1
-    scale: list[Color] = colors + [Color("black")]
+    scale: list[Color] = [*colors, Color("black")]
 
     range_coefficient: float = (
         0.0 if bounds.is_empty() else (value - bounds.min_) / bounds.delta()

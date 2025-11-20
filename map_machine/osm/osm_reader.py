@@ -1,19 +1,23 @@
 """Parse OSM XML file."""
 
+from __future__ import annotations
+
 import json
 import logging
 import re
 from dataclasses import dataclass, field
 from datetime import datetime
-from pathlib import Path
-from typing import Any, Optional
-from xml.etree import ElementTree
-from xml.etree.ElementTree import Element
+from typing import TYPE_CHECKING, Any
+from xml.etree import ElementTree as ET
 
 import numpy as np
 
 from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.util import MinMax
+
+if TYPE_CHECKING:
+    from pathlib import Path
+    from xml.etree.ElementTree import Element
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -41,7 +45,7 @@ STAGES_OF_DECAY: list[str] = [
 ]
 
 
-def parse_float(string: str) -> Optional[float]:
+def parse_float(string: str) -> float | None:
     """Parse string representation of a float or integer value."""
     try:
         return float(string)
@@ -65,7 +69,7 @@ class Tagged:
 
     tags: Tags
 
-    def get_tag(self, key: str) -> Optional[str]:
+    def get_tag(self, key: str) -> str | None:
         """Get tag value or None if it doesn't exist.
 
         :param key: tag key
@@ -75,13 +79,13 @@ class Tagged:
             return self.tags[key]
         return None
 
-    def get_float(self, key: str) -> Optional[float]:
+    def get_float(self, key: str) -> float | None:
         """Parse float from tag value."""
         if key in self.tags:
             return parse_float(self.tags[key])
         return None
 
-    def get_length(self, key: str) -> Optional[float]:
+    def get_length(self, key: str) -> float | None:
         """Get length in meters."""
         if key not in self.tags:
             return None
@@ -129,14 +133,14 @@ class OSMNode(Tagged):
 
     id_: int
     coordinates: np.ndarray
-    visible: Optional[str] = None
-    changeset: Optional[str] = None
-    timestamp: Optional[datetime] = None
-    user: Optional[str] = None
-    uid: Optional[str] = None
+    visible: str | None = None
+    changeset: str | None = None
+    timestamp: datetime | None = None
+    user: str | None = None
+    uid: str | None = None
 
     @classmethod
-    def from_xml_structure(cls, element: Element) -> "OSMNode":
+    def from_xml_structure(cls, element: Element) -> OSMNode:
         """Parse node from OSM XML `<node>` element."""
         attributes = element.attrib
         tags: Tags = {
@@ -158,7 +162,7 @@ class OSMNode(Tagged):
         )
 
     @classmethod
-    def parse_from_structure(cls, structure: dict[str, Any]) -> "OSMNode":
+    def parse_from_structure(cls, structure: dict[str, Any]) -> OSMNode:
         """Parse node from Overpass-like structure.
 
         :param structure: input structure
@@ -202,17 +206,17 @@ class OSMWay(Tagged):
     """
 
     id_: int
-    nodes: Optional[list[OSMNode]] = field(default_factory=list)
-    visible: Optional[str] = None
-    changeset: Optional[str] = None
-    timestamp: Optional[datetime] = None
-    user: Optional[str] = None
-    uid: Optional[str] = None
+    nodes: list[OSMNode] | None = field(default_factory=list)
+    visible: str | None = None
+    changeset: str | None = None
+    timestamp: datetime | None = None
+    user: str | None = None
+    uid: str | None = None
 
     @classmethod
     def from_xml_structure(
         cls, element: Element, nodes: dict[int, OSMNode]
-    ) -> "OSMWay":
+    ) -> OSMWay:
         """Parse way from OSM XML `<way>` element."""
         attributes = element.attrib
         tags: Tags = {
@@ -236,7 +240,7 @@ class OSMWay(Tagged):
     @classmethod
     def parse_from_structure(
         cls, structure: dict[str, Any], nodes: dict[int, OSMNode]
-    ) -> "OSMWay":
+    ) -> OSMWay:
         """Parse way from Overpass-like structure.
 
         :param structure: input structure
@@ -276,15 +280,15 @@ class OSMRelation(Tagged):
     """
 
     id_: int
-    members: Optional[list[OSMMember]]
-    visible: Optional[str] = None
-    changeset: Optional[str] = None
-    timestamp: Optional[datetime] = None
-    user: Optional[str] = None
-    uid: Optional[str] = None
+    members: list[OSMMember] | None
+    visible: str | None = None
+    changeset: str | None = None
+    timestamp: datetime | None = None
+    user: str | None = None
+    uid: str | None = None
 
     @classmethod
-    def from_xml_structure(cls, element: Element) -> "OSMRelation":
+    def from_xml_structure(cls, element: Element) -> OSMRelation:
         """Parse relation from OSM XML `<relation>` element."""
         attributes = element.attrib
         members: list[OSMMember] = []
@@ -317,7 +321,7 @@ class OSMRelation(Tagged):
         )
 
     @classmethod
-    def parse_from_structure(cls, structure: dict[str, Any]) -> "OSMRelation":
+    def parse_from_structure(cls, structure: dict[str, Any]) -> OSMRelation:
         """Parse relation from Overpass-like structure.
 
         :param structure: input structure
@@ -347,17 +351,16 @@ class OSMData:
         self.authors: set[str] = set()
         self.levels: set[float] = set()
         self.time: MinMax = MinMax()
-        self.view_box: Optional[BoundingBox] = None
-        self.bounding_box: Optional[BoundingBox] = None
+        self.view_box: BoundingBox | None = None
+        self.bounding_box: BoundingBox | None = None
         self.equator_length: float = EARTH_EQUATOR_LENGTH
 
     def add_node(self, node: OSMNode) -> None:
         """Add node and update map parameters."""
         if node.id_ in self.nodes:
             if node != self.nodes[node.id_]:
-                raise NotWellFormedOSMDataException(
-                    f"Node with duplicate id {node.id_}."
-                )
+                message: str = f"Node with duplicate id {node.id_}."
+                raise NotWellFormedOSMDataException(message)
             return
         self.nodes[node.id_] = node
         if node.user:
@@ -374,9 +377,8 @@ class OSMData:
         """Add way and update map parameters."""
         if way.id_ in self.ways:
             if way != self.ways[way.id_]:
-                raise NotWellFormedOSMDataException(
-                    f"Way with duplicate id {way.id_}."
-                )
+                message: str = f"Way with duplicate id {way.id_}."
+                raise NotWellFormedOSMDataException(message)
             return
         self.ways[way.id_] = way
         if way.user:
@@ -390,9 +392,8 @@ class OSMData:
         """Add relation and update map parameters."""
         if relation.id_ in self.relations:
             if relation != self.relations[relation.id_]:
-                raise NotWellFormedOSMDataException(
-                    f"Relation with duplicate id {relation.id_}."
-                )
+                message: str = f"Relation with duplicate id {relation.id_}."
+                raise NotWellFormedOSMDataException(message)
             return
         self.relations[relation.id_] = relation
 
@@ -440,7 +441,7 @@ class OSMData:
         :param file_name: input XML file
         :return: parsed map
         """
-        self.parse_osm(ElementTree.parse(file_name).getroot())
+        self.parse_osm(ET.parse(file_name).getroot())
 
     def parse_osm_text(self, text: str) -> None:
         """Parse OSM XML data from text representation.
@@ -448,7 +449,7 @@ class OSMData:
         :param text: XML text representation
         :return: parsed map
         """
-        self.parse_osm(ElementTree.fromstring(text))
+        self.parse_osm(ET.fromstring(text))
 
     def parse_osm(
         self,
