@@ -9,7 +9,6 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
 authors = [{ name = "Sergey Vartanov", email = "me@enzet.ru" }]
-urls = { Homepage = "https://github.com/enzet/map-machine", "Bug Tracker" = "https://github.com/enzet/map-machine/issues" }
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
@@ -32,7 +31,12 @@ dev = [
     "black~=22.6",
     "flake8~=4.0.1",
     "pytest~=7.4.0",
+    "ruff~=0.14.5",
 ]
+
+[project.urls]
+Homepage = "https://github.com/enzet/map-machine"
+"Bug Tracker" = "https://github.com/enzet/map-machine/issues"
 
 [project.scripts]
 map-machine = "map_machine.main:main"
@@ -53,3 +57,25 @@ map_machine = [
 
 [tool.setuptools.dynamic]
 version = { attr = "map_machine.__version__" }
+
+[tool.ruff]
+lint.select = ["ALL"]
+lint.ignore = [
+    "C901",  # Too complex functions are allowed.
+    "COM812",  # Trailing comma not in Black style.
+    "D105",  # Missing docstring in magic method is allowed.
+    "D107",  # Missing docstring in `__init__` method is allowed.
+    "D202",  # No blank line after function docstring is allowed.
+    "D203",  # Blank line is not required before class docstring.
+    "D213",  # New line after `"""` is not needed.
+    "FIX002",  # Todo markers are allowed.
+    "PLR0911",  # Too many return statements are allowed.
+    "PLR0912",  # Too many branches are allowed.
+    "PLR0913",  # Too many arguments are allowed.
+    "PLR0915",  # Too many statements are allowed.
+    "RUF001",  # Ambiguous symbols are allowed.
+    "RUF002",  # Ambiguous symbols are allowed.
+    "S101",  # Asserts are allowed in tests.
+    "TD003",  # Issues for todos are not required.
+]
+line-length = 80
