@@ -1,9 +1,6 @@
 """Test zoom level specification parsing."""
 
-from map_machine.slippy.tile import (
-    ScaleConfigurationException,
-    parse_zoom_level,
-)
+from map_machine.slippy.tile import ScaleConfigurationError, parse_zoom_level
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -36,7 +33,7 @@ def test_zoom_level_too_big() -> None:
     """Test too big zoom level."""
     try:
         parse_zoom_level("21")
-    except ScaleConfigurationException:
+    except ScaleConfigurationError:
         return
 
     raise AssertionError

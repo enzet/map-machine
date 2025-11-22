@@ -9,6 +9,7 @@ __email__ = "me@enzet.ru"
 from typing import TYPE_CHECKING
 from xml.etree import ElementTree as ET
 
+from map_machine.element.element import draw_element
 from map_machine.ui.cli import COMMAND_LINES, parse_arguments
 
 if TYPE_CHECKING:
@@ -55,14 +56,16 @@ def test_render() -> None:
     """Test `render` command."""
     run(
         COMMAND_LINES["render"] + ["--cache", "tests/data"],
-        LOG + b"INFO Writing output SVG to out/map.svg...\n",
+        LOG + b"INFO Writing output SVG to `out/map.svg`...\n",
     )
     with (OUTPUT_PATH / "map.svg").open(encoding="utf-8") as output_file:
         root: Element = ET.parse(output_file).getroot()
 
     # 8 expected elements: `defs`, `rect` (background), `g` (outline),
     # `g` (icon), 4 `text` elements (credits).
-    assert len(root) == 8
+    expected_elements: int = 8
+
+    assert len(root) == expected_elements
     assert len(root[3][0]) == 0
     assert root.get("width") == "186.0"
     assert root.get("height") == "198.0"
@@ -72,14 +75,16 @@ def test_render_with_tooltips() -> None:
     """Test `render` command."""
     run(
         COMMAND_LINES["render_with_tooltips"] + ["--cache", "tests/data"],
-        LOG + b"INFO Writing output SVG to out/map.svg...\n",
+        LOG + b"INFO Writing output SVG to `out/map.svg`...\n",
     )
     with (OUTPUT_PATH / "map.svg").open(encoding="utf-8") as output_file:
         root: Element = ET.parse(output_file).getroot()
 
     # 8 expected elements: `defs`, `rect` (background), `g` (outline),
     # `g` (icon), 4 `text` elements (credits).
-    assert len(root) == 8
+    expected_elements: int = 8
+
+    assert len(root) == expected_elements
     assert len(root[3][0]) == 1
     assert root[3][0][0].text == "natural: tree"
     assert root.get("width") == "186.0"
@@ -90,9 +95,10 @@ def test_icons() -> None:
     """Test `icons` command."""
     run(
         COMMAND_LINES["icons"],
-        b"INFO Icons are written to out/icons_by_name and out/icons_by_id.\n"
-        b"INFO Icon grid is written to out/icon_grid.svg.\n"
-        b"INFO Icon grid is written to doc/grid.svg.\n",
+        b"INFO Icons are written to `out/icons_by_name` and "
+        b"`out/icons_by_id`.\n"
+        b"INFO Icon grid is written to `out/icon_grid.svg`.\n"
+        b"INFO Icon grid is written to `doc/grid.svg`.\n",
     )
     assert (OUTPUT_PATH / "icon_grid.svg").is_file()
     assert (OUTPUT_PATH / "icons_by_name").is_dir()
@@ -105,7 +111,7 @@ def test_mapcss() -> None:
     """Test `mapcss` command."""
     run(
         COMMAND_LINES["mapcss"],
-        b"INFO MapCSS 0.2 scheme is written to out/map_machine_mapcss.\n",
+        b"INFO MapCSS 0.2 scheme is written to `out/map_machine_mapcss`.\n",
     )
     out_path: Path = OUTPUT_PATH / "map_machine_mapcss"
 
@@ -119,7 +125,7 @@ def test_draw() -> None:
     """Test `draw` command."""
     run(
         COMMAND_LINES["draw"],
-        LOG + b"INFO Map is drawn to out/element.svg.\n",
+        LOG + b"INFO Map is drawn to `out/element.svg`.\n",
     )
     assert (OUTPUT_PATH / "element.svg").is_file()
 
@@ -129,8 +135,6 @@ def test_unwrapped_draw() -> None:
     arguments: argparse.Namespace = parse_arguments(
         ["map_machine"] + COMMAND_LINES["draw"]
     )
-    from map_machine.element.element import draw_element
-
     draw_element(arguments)
 
 
@@ -138,8 +142,9 @@ def test_tile() -> None:
     """Test `tile` command."""
     run(
         COMMAND_LINES["tile"] + ["--cache", "tests/data"],
-        LOG + b"INFO Tile is drawn to out/tiles/tile_18_160199_88904.svg.\n"
-        b"INFO SVG file is rasterized to out/tiles/tile_18_160199_88904.png.\n",
+        LOG + b"INFO Tile is drawn to `out/tiles/tile_18_160199_88904.svg`.\n"
+        b"INFO SVG file is rasterized to "
+        b"`out/tiles/tile_18_160199_88904.png`.\n",
     )
 
     assert (OUTPUT_PATH / "tiles" / "tile_18_160199_88904.svg").is_file()

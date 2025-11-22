@@ -17,6 +17,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 DEFAULT_FONT_SIZE: float = 10.0
+MAX_LINK_LENGTH: int = 25
 
 
 @dataclass
@@ -84,7 +85,8 @@ class TextConstructor:
             "text_outline_color"
         )
 
-    def label(self, text: str, size: float = DEFAULT_FONT_SIZE):
+    def label(self, text: str, size: float = DEFAULT_FONT_SIZE) -> Label:
+        """Construct label."""
         return Label(
             text, self.default_color, self.default_out_color, size=size
         )
@@ -191,7 +193,9 @@ class TextConstructor:
                 link = link[4:]
             if link[-1] == "/":
                 link = link[:-1]
-            link = link[:25] + ("..." if len(tags["website"]) > 25 else "")
+            link = link[:MAX_LINK_LENGTH] + (
+                "..." if len(tags["website"]) > MAX_LINK_LENGTH else ""
+            )
             texts.append(Label(link, Color("#000088"), self.default_out_color))
             processed.add("website")
 

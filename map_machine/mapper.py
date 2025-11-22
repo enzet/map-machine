@@ -58,7 +58,7 @@ class Map:
         self.flinger: Flinger = flinger
         self.svg: svgwrite.Drawing = svg
         self.scheme: Scheme = configuration.scheme
-        self.configuration = configuration
+        self.configuration: MapConfiguration = configuration
 
         self.background_color: Color = self.scheme.get_color("background_color")
         if color := self.configuration.background_color():
@@ -411,6 +411,8 @@ def render_map(arguments: argparse.Namespace) -> None:
     map_: Map = Map(flinger=flinger, svg=svg, configuration=configuration)
     map_.draw(constructor)
 
-    logger.info("Writing output SVG to %s...", arguments.output_file_name)
-    with arguments.output_file_name.open("w", encoding="utf-8") as output_file:
+    logger.info("Writing output SVG to `%s`...", arguments.output_file_name)
+    with Path(arguments.output_file_name).open(
+        "w", encoding="utf-8"
+    ) as output_file:
         svg.write(output_file)

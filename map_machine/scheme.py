@@ -370,9 +370,7 @@ class Scheme:
         """
         with file_name.open(encoding="utf-8") as input_file:
             try:
-                content: dict[str, Any] = yaml.load(
-                    input_file.read(), Loader=yaml.FullLoader
-                )
+                content: dict[str, Any] = yaml.safe_load(input_file.read())
             except yaml.YAMLError:
                 return None
             if not content:
@@ -380,7 +378,9 @@ class Scheme:
             return cls(content)
 
     def get_color(self, color: str) -> Color:
-        """Return color if the color is in scheme, otherwise return default color.
+        """Get any color.
+
+        Return color if the color is in scheme, otherwise return default color.
 
         :param color: input color string representation
         :return: color specification
@@ -415,7 +415,7 @@ class Scheme:
         """Get default color for an extra icon."""
         return self.get_color("extra")
 
-    def get(self, variable_name: str):
+    def get(self, variable_name: str) -> str:
         """Get value of variable.
 
         FIXME: colors should be variables.
@@ -425,7 +425,9 @@ class Scheme:
         return 0.0
 
     def is_no_drawable(self, key: str, value: str) -> bool:
-        """Return true if key is specified as no drawable (should not be
+        """Check whether the tag is not drawable.
+
+        Return true if key is specified as no drawable (should not be
         represented on the map as icon set or as text) by the scheme.
 
         :param key: OpenStreetMap tag key
@@ -444,7 +446,9 @@ class Scheme:
         return False
 
     def is_writable(self, key: str, value: str) -> bool:
-        """Return true if key is specified as writable (should be represented on
+        """Check whether the tag is writable.
+
+        Return true if key is specified as writable (should be represented on
         the map as text) by the scheme.
 
         :param key: OpenStreetMap tag key
@@ -474,6 +478,7 @@ class Scheme:
         processed: set[str],
         country: str | None = None,
         zoom_level: float = 18,
+        *,
         ignore_level_matching: bool = False,
         show_overlapped: bool = False,
     ) -> tuple[IconSet | None, int]:
@@ -548,9 +553,9 @@ class Scheme:
                 color = self.get_color(self.material_colors[value])
                 processed.add("material")
 
-        for tag_key in tags:
+        for tag_key, tag_value in tags.items():
             if tag_key.endswith((":color", ":colour")):
-                color = self.get_color(tags[tag_key])
+                color = self.get_color(tag_value)
                 processed.add(tag_key)
 
         for color_tag_key in ["colour", "color", "building:colour"]:
@@ -643,9 +648,10 @@ class Scheme:
         groups: dict[str, str] | None = None,
         color: Color | None = None,
     ) -> ShapeSpecification:
-        """Parse shape specification from structure, that is just shape string
-        identifier or dictionary with keys: shape (required), color (optional),
-        and offset (optional).
+        """Parse shape specification from structure.
+
+        The structure is just shape string identifier or dictionary with keys:
+        shape (required), color (optional), and offset (optional).
         """
         shape: Shape = extractor.get_shape(DEFAULT_SHAPE_ID)
         color: Color = (
@@ -664,7 +670,7 @@ class Scheme:
                     shape_id = shape_id.replace(key, groups[key])
             shape = extractor.get_shape(shape_id)
         else:
-            logging.error("Invalid shape specification: `shape` key expected.")
+            logger.error("Invalid shape specification: `shape` key expected.")
         if "color" in structure:
             color = self.get_color(structure["color"])
         if "offset" in structure:

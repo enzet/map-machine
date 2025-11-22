@@ -205,9 +205,9 @@ def generate_mapcss(options: argparse.Namespace) -> None:
     mapcss_writer: MapCSSWriter = MapCSSWriter(
         scheme,
         workspace.MAPCSS_ICONS_DIRECTORY_NAME,
-        options.icons,
-        options.ways,
-        options.lifecycle,
+        add_icons=options.icons,
+        add_ways=options.ways,
+        add_icons_for_lifecycle=options.lifecycle,
     )
     with workspace.get_mapcss_file_path().open(
         "w+", encoding="utf-8"

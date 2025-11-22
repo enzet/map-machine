@@ -57,7 +57,7 @@ def parse_float(string: str) -> float | None:
 
 def parse_levels(string: str) -> list[float]:
     """Parse string representation of level sequence value."""
-    # TODO: add `-` parsing
+    # TODO(enzet): add `-` parsing
     try:
         return list(map(float, string.replace(",", ".").split(";")))
     except ValueError:
@@ -339,7 +339,7 @@ class OSMRelation(Tagged):
         )
 
 
-class NotWellFormedOSMDataException(Exception):
+class NotWellFormedOSMDataError(Exception):
     """OSM data structure is not well-formed."""
 
 
@@ -363,7 +363,7 @@ class OSMData:
         if node.id_ in self.nodes:
             if node != self.nodes[node.id_]:
                 message: str = f"Node with duplicate id {node.id_}."
-                raise NotWellFormedOSMDataException(message)
+                raise NotWellFormedOSMDataError(message)
             return
         self.nodes[node.id_] = node
         if node.user:
@@ -381,7 +381,7 @@ class OSMData:
         if way.id_ in self.ways:
             if way != self.ways[way.id_]:
                 message: str = f"Way with duplicate id {way.id_}."
-                raise NotWellFormedOSMDataException(message)
+                raise NotWellFormedOSMDataError(message)
             return
         self.ways[way.id_] = way
         if way.user:
@@ -396,7 +396,7 @@ class OSMData:
         if relation.id_ in self.relations:
             if relation != self.relations[relation.id_]:
                 message: str = f"Relation with duplicate id {relation.id_}."
-                raise NotWellFormedOSMDataException(message)
+                raise NotWellFormedOSMDataError(message)
             return
         self.relations[relation.id_] = relation
 
