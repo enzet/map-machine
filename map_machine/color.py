@@ -1,13 +1,13 @@
 """Color utility."""
 
-from typing import Any
-
 from colour import Color
 
-from map_machine.util import MinMax
+from map_machine.util import ElementType, MinMax
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
+
+BRIGHTNESS_THRESHOLD: float = 0.78125
 
 
 def is_bright(color: Color) -> bool:
@@ -17,12 +17,12 @@ def is_bright(color: Color) -> bool:
     """
     return (
         0.2126 * color.red + 0.7152 * color.green + 0.0722 * color.blue
-        > 0.78125
+        > BRIGHTNESS_THRESHOLD
     )
 
 
 def get_gradient_color(
-    value: Any, bounds: MinMax, colors: list[Color]
+    value: ElementType, bounds: MinMax, colors: list[Color]
 ) -> Color:
     """Get color from the color scale for the value.
 

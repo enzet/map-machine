@@ -89,8 +89,7 @@ class Line:
     """Infinity line: Ax + By + C = 0."""
 
     def __init__(self, start: np.ndarray, end: np.ndarray) -> None:
-        # if start.near(end):
-        #     util.error("cannot create line by one point")
+        # TODO(enzet): add check for `start.near(end)`.
         self.a: float = start[1] - end[1]
         self.b: float = end[0] - start[0]
         self.c: float = start[0] * end[1] - end[0] * start[1]

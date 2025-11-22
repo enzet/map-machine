@@ -236,7 +236,7 @@ class RoadPart:
             circle = drawing.circle(self.point_a, radius, fill="#000000")
             drawing.add(circle)
 
-        # self.draw_entrance(drawing, True)
+        self.draw_entrance(drawing, is_debug=True)
 
     def draw(self, drawing: svgwrite.Drawing) -> None:
         """Draw road part."""
@@ -351,10 +351,9 @@ class Intersection:
             outer_commands += [part.right_outer, "L"]
         outer_commands[-1] = "Z"
 
-        # for part in self.parts:
-        #     part.draw_normal(drawing)
-
         if is_debug:
+            for part in self.parts:
+                part.draw_normal(drawing)
             drawing.add(
                 drawing.path(outer_commands, fill="#0000FF", opacity=0.2)
             )
@@ -367,9 +366,10 @@ class Intersection:
                 part.draw_debug(drawing)
             else:
                 part.draw_entrance(drawing)
+        if is_debug:
+            for part in self.parts:
+                part.draw_lanes(drawing, self.scale)
         if not is_debug:
-            # for part in self.parts:
-            #     part.draw_lanes(drawing, scale)
             drawing.add(drawing.path(inner_commands, fill="#FF8888"))
 
 
@@ -406,9 +406,14 @@ class Road(Tagged):
             except ValueError:
                 pass
 
+        placement_parts: int = 2
+
         if "placement" in tags:
             value: str = tags["placement"]
-            if ":" in value and len(parts := value.split(":")) == 2:
+            if (
+                ":" in value
+                and len(parts := value.split(":")) == placement_parts
+            ):
                 _, lane_string = parts
                 if (lane_number := int(lane_string) - 1) >= len(self.lanes):
                     self.lanes += [Lane()] * (lane_number + 1 - len(self.lanes))
@@ -447,7 +452,10 @@ class Road(Tagged):
             value: str = tags["placement"]
             if value == "transition":
                 self.is_transition = True
-            elif ":" in value and len(parts := value.split(":")) == 2:
+            elif (
+                ":" in value
+                and len(parts := value.split(":")) == placement_parts
+            ):
                 place, lane_string = parts
                 lane_number: int = int(lane_string) - 1
                 self.placement_offset = -self.width * self.scale / 2.0
@@ -475,7 +483,7 @@ class Road(Tagged):
                     logger.error("Unknown placement `%s`.", place)
 
     def get_style(
-        self, is_border: bool, is_for_stroke: bool = False
+        self, *, is_border: bool, is_for_stroke: bool = False
     ) -> dict[str, int | float | str]:
         """Get road SVG style."""
         width: float
@@ -571,7 +579,7 @@ class Road(Tagged):
 
     def draw_lanes(self, svg: Drawing, color: Color) -> None:
         """Draw lane separators."""
-        if len(self.lanes) < 2:
+        if len(self.lanes) < 2:  # noqa: PLR2004
             return
 
         for index in range(1, len(self.lanes)):
@@ -841,7 +849,7 @@ class Roads:
             self.nodes[node.id_].append((road, index))
 
     def draw(
-        self, svg: Drawing, flinger: Flinger, draw_captions: bool = False
+        self, svg: Drawing, flinger: Flinger, *, draw_captions: bool = False
     ) -> None:
         """Draw whole road system."""
         if not self.roads:
@@ -854,15 +862,14 @@ class Roads:
             if not road.is_transition:
                 layered_roads[road.layer].append(road)
             else:
-                connections = []
-                for end in 0, -1:
-                    connections.append(
-                        [
-                            connection
-                            for connection in self.nodes[road.nodes[end].id_]
-                            if not connection[0].is_transition
-                        ]
-                    )
+                connections = [
+                    [
+                        connection
+                        for connection in self.nodes[road.nodes[end].id_]
+                        if not connection[0].is_transition
+                    ]
+                    for end in (0, -1)
+                ]
                 if len(connections[0]) == 1 and len(connections[1]) == 1:
                     connector: Connector = ComplexConnector(
                         [connections[0][0], connections[1][0]], flinger
@@ -875,7 +882,7 @@ class Roads:
             if len(connected) <= 1:
                 continue
 
-            if len(connected) == 2:
+            if len(connected) == 2:  # noqa: PLR2004
                 road_1, index_1 = connected[0]
                 road_2, index_2 = connected[1]
                 if (

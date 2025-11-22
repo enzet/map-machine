@@ -42,6 +42,7 @@ __email__ = "me@enzet.ru"
 
 logger: logging.Logger = logging.getLogger(__name__)
 
+DEBUG: bool = False
 ROAD_PRIORITY: float = 40.0
 DEFAULT_SIZE: tuple[float, float] = (800.0, 600.0)
 
@@ -116,7 +117,8 @@ class Map:
 
         if self.scheme.draw_buildings:
             self.draw_buildings(
-                constructor, self.configuration.use_building_colors
+                constructor,
+                use_building_colors=self.configuration.use_building_colors,
             )
 
         if self.scheme.draw_directions:
@@ -161,7 +163,7 @@ class Map:
             self.draw_credits(constructor.flinger.size)
 
     def draw_buildings(
-        self, constructor: Constructor, use_building_colors: bool
+        self, constructor: Constructor, *, use_building_colors: bool
     ) -> None:
         """Draw buildings: shade, walls, and roof."""
         if self.configuration.building_mode == BuildingMode.NO:
@@ -232,7 +234,8 @@ class Map:
                 scale: float = self.flinger.get_scale(node_1.coordinates)
                 part_1: RoadPart = RoadPart(point_1, point_2, road.lanes, scale)
                 part_2: RoadPart = RoadPart(point_2, point_1, road.lanes, scale)
-                # part_1.draw_normal(self.svg)
+                if DEBUG:
+                    part_1.draw_normal(self.svg)
 
                 for node in node_1, node_2:
                     if node not in nodes:
@@ -241,14 +244,16 @@ class Map:
                 nodes[node_1].add(part_1)
                 nodes[node_2].add(part_2)
 
-        for node, parts in nodes.items():
-            if len(parts) < 4:
+        for parts in nodes.values():
+            if len(parts) < 4:  # noqa: PLR2004
                 continue
-            intersection: Intersection = Intersection(list(parts))
-            intersection.draw(self.svg, True)
+            intersection: Intersection = Intersection(parts)
+            intersection.draw(self.svg, is_debug=DEBUG)
 
     def draw_credits(self, size: np.ndarray) -> None:
-        """Add OpenStreetMap credit and the link to the project itself.
+        """Draw credits.
+
+        Add OpenStreetMap credit and the link to the project itself.
         OpenStreetMap requires to use the credit “© OpenStreetMap contributors”.
 
         See https://www.openstreetmap.org/copyright
@@ -338,7 +343,7 @@ def render_map(arguments: argparse.Namespace) -> None:
                     list(map(float, arguments.coordinates.split(delimiter)))
                 )
 
-        if coordinates is None or len(coordinates) != 2:
+        if coordinates is None or len(coordinates) != 2:  # noqa: PLR2004
             fatal("Wrong coordinates format.")
 
         if arguments.size:

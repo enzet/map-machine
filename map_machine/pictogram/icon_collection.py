@@ -28,6 +28,9 @@ __email__ = "me@enzet.ru"
 
 logger: logging.Logger = logging.getLogger(__name__)
 
+WHITE: Color = Color("white")
+BLACK: Color = Color("black")
+
 
 @dataclass
 class IconCollection:
@@ -40,8 +43,8 @@ class IconCollection:
         cls,
         scheme: Scheme,
         extractor: ShapeExtractor,
-        background_color: Color = Color("white"),
-        color: Color = Color("black"),
+        background_color: Color = WHITE,
+        color: Color = BLACK,
         *,
         add_unused: bool = False,
         add_all: bool = False,
@@ -178,7 +181,7 @@ class IconCollection:
         file_name: Path,
         columns: int = 16,
         step: float = 24.0,
-        background_color: Color | None = Color("white"),
+        background_color: Color | None = WHITE,
         scale: float = 1.0,
     ) -> None:
         """Draw icons in the form of table.

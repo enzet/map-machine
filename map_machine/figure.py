@@ -1,10 +1,16 @@
 """Figures displayed on the map."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import numpy as np
 
-from map_machine.geometry.flinger import Flinger
 from map_machine.osm.osm_reader import OSMNode, Tagged
-from map_machine.scheme import LineStyle
+
+if TYPE_CHECKING:
+    from map_machine.geometry.flinger import Flinger
+    from map_machine.scheme import LineStyle
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -33,13 +39,15 @@ class Figure(Tagged):
             self.outers = outers
 
     def get_path(
-        self, flinger: Flinger, offset: np.ndarray = np.array((0.0, 0.0))
+        self, flinger: Flinger, offset: np.ndarray | None = None
     ) -> str:
         """Get SVG path commands.
 
         :param flinger: converter for geo coordinates
         :param offset: offset vector
         """
+        if offset is None:
+            offset = np.array((0.0, 0.0))
         path: str = ""
 
         for outer_nodes in self.outers:
@@ -67,13 +75,15 @@ class StyledFigure(Figure):
     def get_path(
         self,
         flinger: Flinger,
-        offset: np.ndarray = np.array((0.0, 0.0)),
+        offset: np.ndarray | None = None,
     ) -> str:
         """Get SVG path commands.
 
         :param flinger: converter for geo coordinates
         :param offset: offset vector
         """
+        if offset is None:
+            offset = np.array((0.0, 0.0))
         path: str = ""
 
         for outer_nodes in self.outers:
@@ -102,7 +112,7 @@ class StyledFigure(Figure):
             return 0.0
         return 0.0
 
-    def __lt__(self, other: "StyledFigure") -> bool:
+    def __lt__(self, other: StyledFigure) -> bool:
         """Compare figures based on priority and layer."""
         if self.get_layer() != other.get_layer():
             return self.get_layer() < other.get_layer()

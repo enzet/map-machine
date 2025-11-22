@@ -11,6 +11,10 @@
   ([#178](https://github.com/enzet/map-machine/issues/178)).
 - Support scientific notation
   ([#167](https://github.com/enzet/map-machine/issues/167)).
+- Migrate to [Ruff](https://github.com/astral-sh/ruff) from
+  [Black](https://github.com/psf/black) and
+  [Flake8](https://github.com/PyCQA/flake8)
+  ([#183](https://github.com/enzet/map-machine/issues/183)).
 
 ## 0.2.0
 

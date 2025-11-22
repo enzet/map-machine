@@ -8,12 +8,12 @@ import logging
 import re
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
-from xml.etree import ElementTree as ET
 from xml.etree.ElementTree import Element
 
 import numpy as np
 import svgwrite
 from colour import Color
+from defusedxml import ElementTree
 from svgwrite import Drawing
 from svgwrite.container import Group
 
@@ -135,8 +135,8 @@ class Shape:
     def get_path(
         self,
         point: np.ndarray,
-        offset: np.ndarray = np.array((0.0, 0.0)),
-        scale: np.ndarray = np.array((1.0, 1.0)),
+        offset: np.ndarray | None = None,
+        scale: np.ndarray | None = None,
     ) -> SVGPath:
         """Draw icon into SVG file.
 
@@ -144,6 +144,10 @@ class Shape:
         :param offset: additional offset
         :param scale: scale resulting image
         """
+        if offset is None:
+            offset = np.array((0.0, 0.0))
+        if scale is None:
+            scale = np.array((1.0, 1.0))
         transformations: list[str] = []
         shift: np.ndarray = point + offset
 
@@ -284,7 +288,7 @@ class ShapeExtractor:
             self.configuration,
             "root",
         )
-        root: Element = ET.parse(svg_file_name).getroot()
+        root: Element = ElementTree.parse(svg_file_name).getroot()
         self.parse(root)
 
         for shape_id in self.configuration:
@@ -439,6 +443,9 @@ class ShapeSpecification:
             and np.allclose(self.offset, other.offset)
         )
 
+    def __hash__(self) -> int:
+        return hash(self.shape.get_full_id())
+
     def __lt__(self, other: ShapeSpecification) -> bool:
         return self.shape.id_ < other.shape.id_
 
@@ -587,6 +594,11 @@ class Icon:
     def __eq__(self, other: Icon) -> bool:
         return sorted(self.shape_specifications) == sorted(
             other.shape_specifications
+        )
+
+    def __hash__(self) -> int:
+        return hash(
+            "".join([x.shape.get_full_id() for x in self.shape_specifications])
         )
 
     def __lt__(self, other: Icon) -> bool:

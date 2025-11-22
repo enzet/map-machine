@@ -19,12 +19,12 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install ".[dev]"
-    - name: Check code style
+    - name: Check code style with Ruff
       run: |
         ruff format --check
-    - name: Lint with Flake8
+    - name: Lint with Ruff
       run: |
-        flake8 --max-line-length=80 --ignore=E203,W503
+        ruff check
     - name: Test with pytest
       run: |
         pytest -v
@@ -43,12 +43,12 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install ".[dev]"
-    - name: Check code style
+    - name: Check code style with Ruff
       run: |
         ruff format --check
-    - name: Lint with Flake8
+    - name: Lint with Ruff
       run: |
-        flake8 --max-line-length=80 --ignore=E203,W503
+        ruff check
     - name: Test render
       run: |
         map-machine render -b 10.000,20.000,10.001,20.001 --cache tests/data

@@ -47,8 +47,8 @@ def get_osm(
     try:
         if content.startswith(b"\x1f\x8b"):  # gzip magic header.
             content = gzip.decompress(content)
-    except Exception:
-        pass  # If decompression fails, continue with original content.
+    except (gzip.BadGzipFile, OSError) as error:
+        logger.warning("Cannot decompress OSM data: %s.", error)
 
     if not content.startswith(b"<"):
         if content == (

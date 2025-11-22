@@ -233,16 +233,17 @@ class Tiles:
         :param bounding_box: area to be covered by tiles
         :param zoom_level: zoom level in OpenStreetMap terminology
         """
-        tiles: list[Tile] = []
         tile_1: Tile = Tile.from_coordinates(
             bounding_box.get_left_top(), zoom_level
         )
         tile_2: Tile = Tile.from_coordinates(
             bounding_box.get_right_bottom(), zoom_level
         )
-        for x in range(tile_1.x, tile_2.x + 1):
-            for y in range(tile_1.y, tile_2.y + 1):
-                tiles.append(Tile(x, y, zoom_level))
+        tiles: list[Tile] = [
+            Tile(x, y, zoom_level)
+            for x in range(tile_1.x, tile_2.x + 1)
+            for y in range(tile_1.y, tile_2.y + 1)
+        ]
 
         latitude_2, longitude_1 = tile_1.get_coordinates()
         latitude_1, longitude_2 = Tile(

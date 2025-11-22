@@ -173,7 +173,7 @@ class Constructor:
         self.text_constructor: TextConstructor = TextConstructor(self.scheme)
 
         if self.configuration.level == "all":
-            self.check_level = lambda x: True
+            self.check_level = lambda _: True
         elif self.configuration.level == "overground":
             self.check_level = check_level_overground
         elif self.configuration.level == "underground":
@@ -289,15 +289,18 @@ class Constructor:
         line_styles: list[LineStyle] = self.scheme.get_style(line.tags)
 
         for line_style in line_styles:
+            new_line_style: LineStyle = line_style
             if recolor is not None:
                 new_style: dict[str, float | int | str] = dict(line_style.style)
                 new_style["stroke"] = recolor.hex
-                line_style = LineStyle(
-                    new_style, line_style.parallel_offset, line_style.priority
+                new_line_style = LineStyle(
+                    new_style,
+                    line_style.parallel_offset,
+                    line_style.priority,
                 )
 
             self.figures.append(
-                StyledFigure(line.tags, inners, outers, line_style)
+                StyledFigure(line.tags, inners, outers, new_line_style)
             )
             if not (
                 line.get_tag("area") == "yes"
@@ -333,11 +336,17 @@ class Constructor:
                 )
                 self.points.append(point)
 
-        # TODO: probably we may want to skip the next part if `line_styles`
-        # are not empty.
+        # TODO(enzet): probably we may want to skip the next part if
+        # `line_styles` are not empty.
         self.add_point_for_line(center_point, inners, line, outers)
 
-    def add_point_for_line(self, center_point, inners, line, outers) -> None:
+    def add_point_for_line(
+        self,
+        center_point: np.ndarray,
+        inners: list[list[OSMNode]],
+        line: OSMWay | OSMRelation,
+        outers: list[list[OSMNode]],
+    ) -> None:
         """Add icon at the center point of the way or relation."""
         if DEBUG:
             style: dict[str, Any] = {
