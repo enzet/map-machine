@@ -14,11 +14,15 @@ from map_machine.ui.cli import COMMANDS
 class ArgumentParser(argparse.ArgumentParser):
     """Argument parser that generates fish shell autocompletion commands."""
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(
+        self, *args: tuple[Any, ...], **kwargs: dict[str, Any]
+    ) -> None:
         self.arguments: list[dict[str, Any]] = []
         super().__init__(*args, **kwargs)
 
-    def add_argument(self, *args, **kwargs) -> None:
+    def add_argument(
+        self, *args: tuple[Any, ...], **kwargs: dict[str, Any]
+    ) -> None:
         """Just store argument with options."""
         super().add_argument(*args, **kwargs)
         argument: dict[str, Any] = {"arguments": args}
@@ -33,7 +37,7 @@ class ArgumentParser(argparse.ArgumentParser):
         for argument in self.arguments:
             result += "complete -c map-machine"
             result += f' -n "__fish_seen_subcommand_from {command}"'
-            if len(argument["arguments"]) == 2:
+            if len(argument["arguments"]) > 1:
                 result += f" -s {argument['arguments'][0][1:]}"
                 result += f" -l {argument['arguments'][1][2:]}"
             else:

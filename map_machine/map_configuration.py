@@ -116,6 +116,6 @@ class MapConfiguration:
             processed,
             self.country,
             self.zoom_level,
-            self.ignore_level_matching,
-            self.show_overlapped,
+            ignore_level_matching=self.ignore_level_matching,
+            show_overlapped=self.show_overlapped,
         )

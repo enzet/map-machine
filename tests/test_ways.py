@@ -22,8 +22,9 @@ CONFIGURATION: MapConfiguration = MapConfiguration(SCHEME)
 
 
 def get_constructor(osm_data: OSMData) -> Constructor:
-    """Get custom constructor for bounds (-0.01, -0.01, 0.01, 0.01) and zoom level
-    18.
+    """Get custom constructor.
+
+    Bounds are (-0.01, -0.01, 0.01, 0.01) and zoom level is 18.
     """
     flinger: MercatorFlinger = MercatorFlinger(
         BoundingBox(-0.01, -0.01, 0.01, 0.01), 18, osm_data.equator_length
@@ -52,19 +53,22 @@ def test_river_and_wood() -> None:
     See https://github.com/enzet/map-machine/issues/126
     """
     osm_data: OSMData = OSMData()
-    create_way(osm_data, {"natural": "wood"}, 1)
-    create_way(osm_data, {"waterway": "river"}, 2)
+    index: int = 0
+
+    create_way(osm_data, {"natural": "wood"}, index + 1)
+    index += 1
+    create_way(osm_data, {"waterway": "river"}, index + 1)
+    index += 1
 
     figures: list[Figure] = get_constructor(osm_data).get_sorted_figures()
 
-    assert len(figures) == 2
+    assert len(figures) == index
     assert figures[0].tags["natural"] == "wood"
     assert figures[1].tags["waterway"] == "river"
 
 
 def test_placement_and_lanes() -> None:
-    """Check that `placement` tag is processed correctly when `lanes` tag is not
-    specified.
+    """Check `placement` tag processing without `lanes` tag.
 
     See https://github.com/enzet/map-machine/issues/128
     """

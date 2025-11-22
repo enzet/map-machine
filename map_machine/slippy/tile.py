@@ -37,12 +37,14 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 TILE_WIDTH, TILE_HEIGHT = 256, 256
 EXTEND_TO_BIGGER_TILE: bool = False
+MAX_ZOOM_LEVEL: int = 20
 
 
 @dataclass
 class Tile:
-    """OpenStreetMap tile, square bitmap graphics displayed in a grid arrangement
-    to show a map.
+    """OpenStreetMap tile.
+
+    Square bitmap graphics displayed in a grid arrangement to show a map.
     """
 
     x: int
@@ -65,17 +67,20 @@ class Tile:
     def get_coordinates(self) -> np.ndarray:
         """Return geo coordinates of the north-west corner of the tile.
 
-        Code from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
+        Code is from https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames.
         """
         scale: float = 2.0**self.zoom_level
-        lon_deg: float = self.x / scale * 360.0 - 180.0
-        lat_rad: float = np.arctan(np.sinh(np.pi * (1 - 2 * self.y / scale)))
-        lat_deg: np.ndarray = np.degrees(lat_rad)
-        return np.array((lat_deg, lon_deg))
+        longitude_degree: float = self.x / scale * 360.0 - 180.0
+        latitude_radians: float = np.arctan(
+            np.sinh(np.pi * (1 - 2 * self.y / scale))
+        )
+        latitude_degree: np.ndarray = np.degrees(latitude_radians)
+        return np.array((latitude_degree, longitude_degree))
 
     def get_bounding_box(self) -> BoundingBox:
-        """Get geographical bounding box of the tile: north-west and south-east
-        points.
+        """Get geographical bounding box of the tile.
+
+        North-west and south-east points.
         """
         point_1: np.ndarray = self.get_coordinates()
         point_2: np.ndarray = Tile(
@@ -85,7 +90,10 @@ class Tile:
         return BoundingBox(point_1[1], point_2[0], point_2[1], point_1[0])
 
     def get_extended_bounding_box(self) -> BoundingBox:
-        """Same as get_bounding_box, but with extended boundaries."""
+        """Get extended geographical bounding box of the tile.
+
+        North-west and south-east points.
+        """
         point_1: np.ndarray = self.get_coordinates()
         point_2: np.ndarray = Tile(
             self.x + 1, self.y + 1, self.zoom_level
@@ -141,7 +149,7 @@ class Tile:
             osm_data: OSMData = self.load_osm_data(cache_path)
         except NetworkError as error:
             msg = f"Map is not loaded. {error.message}"
-            raise NetworkError(msg)
+            raise NetworkError(msg) from error
 
         self.draw_with_osm_data(osm_data, directory_name, configuration)
 
@@ -271,9 +279,12 @@ class Tiles:
         cache_path: Path,
         configuration: MapConfiguration,
         osm_data: OSMData,
+        *,
         redraw: bool = False,
     ) -> None:
-        """Draw one PNG image with all tiles and split it into a set of separate
+        """Draw PNG images.
+
+        Draw one PNG image with all tiles and split it into a set of separate
         PNG file with Pillow.
 
         :param directory: directory for tiles
@@ -336,6 +347,7 @@ class Tiles:
         cache_path: Path,
         configuration: MapConfiguration,
         osm_data: OSMData,
+        *,
         redraw: bool = False,
     ) -> None:
         """Draw all tiles using OSM data."""
@@ -368,7 +380,7 @@ class Tiles:
             map_: Map = Map(flinger, svg, configuration)
             map_.draw(constructor)
 
-            logger.info("Writing output SVG `%s`...", output_path)
+            logger.info("Writing output SVG to `%s`...", output_path)
             with output_path.open("w+", encoding="utf-8") as output_file:
                 svg.write(output_file)
         else:
@@ -397,7 +409,7 @@ class Tiles:
         )
 
 
-class ScaleConfigurationException(Exception):
+class ScaleConfigurationError(Exception):
     """Wrong configuration format."""
 
 
@@ -412,9 +424,9 @@ def parse_zoom_level(zoom_level_specification: str) -> list[int]:
     def parse(zoom_level: str) -> int:
         """Parse zoom level."""
         parsed_zoom_level: int = int(zoom_level)
-        if parsed_zoom_level > 20:
+        if parsed_zoom_level > MAX_ZOOM_LEVEL:
             message: str = "Scale is too big."
-            raise ScaleConfigurationException(message)
+            raise ScaleConfigurationError(message)
         return parsed_zoom_level
 
     result: list[int] = []
@@ -425,7 +437,7 @@ def parse_zoom_level(zoom_level_specification: str) -> list[int]:
             to_zoom_level: int = parse(end)
             if from_zoom_level > to_zoom_level:
                 message: str = "Wrong range."
-                raise ScaleConfigurationException(message)
+                raise ScaleConfigurationError(message)
             result += range(from_zoom_level, to_zoom_level + 1)
         else:
             result.append(parse(part))
@@ -434,7 +446,7 @@ def parse_zoom_level(zoom_level_specification: str) -> list[int]:
 
 
 def generate_tiles(options: argparse.Namespace) -> None:
-    """Simple user interface for tile generation."""
+    """Generate tiles through simple user interface."""
     directory: Path = workspace.get_tile_path()
 
     zoom_levels: list[int] = parse_zoom_level(options.zoom)
@@ -482,7 +494,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
             osm_data: OSMData = min_tile.load_osm_data(cache_path)
         except NetworkError as error:
             message: str = f"Map is not loaded. {error.message}"
-            raise NetworkError(message)
+            raise NetworkError(message) from error
 
         for zoom_level in zoom_levels:
             tile: Tile = Tile.from_coordinates(
@@ -517,7 +529,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
             osm_data: OSMData = min_tiles.load_osm_data(cache_path)
         except NetworkError as error:
             message: str = f"Map is not loaded. {error.message}"
-            raise NetworkError(message)
+            raise NetworkError(message) from error
 
         for zoom_level in zoom_levels:
             if EXTEND_TO_BIGGER_TILE:

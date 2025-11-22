@@ -125,8 +125,10 @@ class Shape:
         return shape
 
     def is_default(self) -> bool:
-        """Return true if icon is has a default shape that doesn't represent
-        anything.
+        """Check if shape is default.
+
+        :return: true if icon is has a default shape that doesn't represent
+            anything.
         """
         return self.id_ in [DEFAULT_SHAPE_ID, DEFAULT_SMALL_SHAPE_ID]
 
@@ -158,13 +160,12 @@ class Shape:
 
     def get_full_id(self) -> str:
         """Compute full shape identifier with group for sorting."""
-        return self.group + "_" + self.id_
+        return f"{self.group}_{self.id_}"
 
 
 def parse_length(text: str) -> float:
     """Parse length from SVG attribute."""
-    text = text.removesuffix("px")
-    return float(text)
+    return float(text.removesuffix("px"))
 
 
 def verify_sketch_element(element: Element, id_: str) -> bool:
@@ -517,7 +518,7 @@ class Icon:
             outline_group: Group = Group(opacity=opacity)
             for shape_specification in self.shape_specifications:
                 shape_specification.draw(
-                    outline_group, point, tags, True, scale=scale
+                    outline_group, point, tags, outline=True, scale=scale
                 )
             svg.add(outline_group)
         else:

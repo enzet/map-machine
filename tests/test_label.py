@@ -32,6 +32,6 @@ def test_1_label_unknown_tags() -> None:
 def test_2_labels() -> None:
     """Test tags that should be converted into two labels."""
     labels = construct_labels({"name": "Name", "ref": "5"})
-    assert len(labels) == 2
+    assert len(labels) == 2  # noqa: PLR2004
     assert labels[0].text == "Name"
     assert labels[1].text == "5"

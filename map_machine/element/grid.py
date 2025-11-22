@@ -130,4 +130,4 @@ class Grid:
 
         with output_path.open("w") as output_file:
             svg.write(output_file)
-            logger.info("Map is drawn to %s.", output_path)
+            logger.info("Map is drawn to `%s`.", output_path)

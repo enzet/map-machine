@@ -24,20 +24,28 @@ __email__ = "me@enzet.ru"
 
 logger: logging.Logger = logging.getLogger(__name__)
 
+MAX_LABEL_LENGTH: int = 26
+
 
 class Occupied:
-    """Structure that remembers places of the canvas occupied by elements (icons,
+    """Occupied by elements (icons, texts, shapes).
+
+    Structure that remembers places of the canvas occupied by elements (icons,
     texts, shapes).
     """
 
     def __init__(self, width: int, height: int, overlap: int) -> None:
-        self.matrix = np.full((int(width), int(height)), False, dtype=bool)
+        self.matrix = np.full(
+            (int(width), int(height)), fill_value=False, dtype=bool
+        )
         try:
-            self.matrix = np.full((int(width), int(height)), False, dtype=bool)
+            self.matrix = np.full(
+                (int(width), int(height)), fill_value=False, dtype=bool
+            )
         except Exception:
             logger.fatal(
                 "Failed to allocate a matrix required by overlap algorithm. "
-                "Try to use smallest area or try --overlap=0 options."
+                "Try to use smallest area or try `--overlap=0` options."
             )
             sys.exit(1)
 
@@ -72,6 +80,7 @@ class Point(Tagged):
         processed: set[str],
         point: np.ndarray,
         priority: float = 0.0,
+        *,
         is_for_node: bool = True,
         draw_outline: bool = True,
         add_tooltips: bool = False,
@@ -204,7 +213,9 @@ class Point(Tagged):
             text = label.text
             text = text.replace("&quot;", '"')
             text = text.replace("&amp;", "&")
-            text = text[:26] + ("..." if len(text) > 26 else "")
+            text = text[:MAX_LABEL_LENGTH] + (
+                "..." if len(text) > MAX_LABEL_LENGTH else ""
+            )
             point = self.point + np.array((0.0, self.y + 2.0))
             self.draw_text(
                 svg,
@@ -228,6 +239,7 @@ class Point(Tagged):
         out_opacity: float = 0.5,
         out_fill_2: Color | None = None,
         out_opacity_2: float = 1.0,
+        *,
         is_debug: bool = False,
     ) -> None:
         """Drawing text.
@@ -238,7 +250,7 @@ class Point(Tagged):
          #------#
           ######
         """
-        length: int = len(text) * 6  # FIXME
+        length: int = len(text) * 6  # TODO(enzet): compute precise length.
 
         if occupied:
             is_occupied: bool = False
@@ -288,7 +300,9 @@ class Point(Tagged):
         self.y += 11
 
     def get_size(self) -> np.ndarray:
-        """Get width and height of the point visual representation if there is
+        """Get size of the point visual representation.
+
+        Get width and height of the point visual representation if there is
         space for all elements.
         """
         icon_size: int = 16

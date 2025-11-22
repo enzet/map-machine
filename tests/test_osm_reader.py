@@ -1,5 +1,7 @@
 """Test OSM XML parsing."""
 
+from textwrap import dedent
+
 import numpy as np
 
 from map_machine.osm.osm_reader import (
@@ -16,63 +18,84 @@ __email__ = "me@enzet.ru"
 
 def test_node() -> None:
     """Test OSM node parsing from XML."""
+    way_id: int = 42
+
     osm_data: OSMData = OSMData()
     osm_data.parse_osm_text(
-        """<?xml version="1.0"?>
-<osm>
-  <node id="42" lon="5" lat="10" />
-</osm>"""
+        dedent(
+            """
+            <?xml version="1.0"?>
+            <osm>
+              <node id="42" lon="5" lat="10" />
+            </osm>
+            """
+        ).strip()
     )
-    assert 42 in osm_data.nodes
-    node: OSMNode = osm_data.nodes[42]
-    assert node.id_ == 42
+    assert way_id in osm_data.nodes
+    node: OSMNode = osm_data.nodes[way_id]
+    assert node.id_ == way_id
     assert np.allclose(node.coordinates, np.array([10, 5]))
 
 
 def test_node_with_tag() -> None:
     """Test OSM node parsing from XML."""
+    way_id: int = 42
+
     osm_data: OSMData = OSMData()
     osm_data.parse_osm_text(
-        """<?xml version="1.0"?>
-<osm>
-  <node id="42" lon="5" lat="10">
-    <tag k="key" v="value" />
-  </node>
-</osm>"""
+        dedent(
+            f"""
+            <?xml version="1.0"?>
+            <osm>
+              <node id="{way_id}" lon="5" lat="10">
+                <tag k="key" v="value" />
+              </node>
+            </osm>
+            """
+        ).strip()
     )
-    assert 42 in osm_data.nodes
-    node: OSMNode = osm_data.nodes[42]
-    assert node.id_ == 42
+    assert way_id in osm_data.nodes
+    node: OSMNode = osm_data.nodes[way_id]
+    assert node.id_ == way_id
     assert np.allclose(node.coordinates, np.array([10, 5]))
     assert node.tags["key"] == "value"
 
 
 def test_way() -> None:
     """Test OSM way parsing from XML."""
+    way_id: int = 42
+
     osm_data: OSMData = OSMData()
     osm_data.parse_osm_text(
-        """<?xml version="1.0"?>
-<osm>
-  <way id="42" />
-</osm>"""
+        dedent(
+            f"""
+            <?xml version="1.0"?>
+            <osm>
+              <way id="{way_id}" />
+            </osm>
+            """
+        ).strip()
     )
-    assert 42 in osm_data.ways
-    way: OSMWay = osm_data.ways[42]
-    assert way.id_ == 42
+    assert way_id in osm_data.ways
+    assert osm_data.ways[way_id].id_ == way_id
 
 
 def test_nodes() -> None:
     """Test OSM node parsing from XML."""
     osm_data: OSMData = OSMData()
     osm_data.parse_osm_text(
-        """<?xml version="1.0"?>
-<osm>
-  <node id="1" lon="5" lat="10" />
-  <way id="2">
-    <nd ref="1" />
-    <tag k="key" v="value" />
-  </way>
-</osm>"""
+        dedent(
+            """
+            <?xml version="1.0"?>
+            <osm>
+              <node id="1" lon="5" lat="10" />
+              <way id="2">
+                <nd ref="1" />
+                <tag k="key" v="value" />
+              </way>
+            </osm>
+            """
+        ).strip()
     )
     way: OSMWay = osm_data.ways[2]
     assert len(way.nodes) == 1
@@ -82,27 +105,35 @@ def test_nodes() -> None:
 
 def test_relation() -> None:
     """Test OSM node parsing from XML."""
+
+    way_id: int = 2
+    relation_id: int = 3
+
     osm_data: OSMData = OSMData()
     osm_data.parse_osm_text(
-        """<?xml version="1.0"?>
-<osm>
-  <node id="1" lon="5" lat="10" />
-  <way id="2">
-    <nd ref="1" />
-  </way>
-  <relation id="3">
-    <member type="way" ref="2" role="outer" />
-    <tag k="key" v="value" />
-  </relation>
-</osm>"""
+        dedent(
+            f"""
+            <?xml version="1.0"?>
+            <osm>
+              <node id="1" lon="5" lat="10" />
+              <way id="{way_id}">
+                <nd ref="1" />
+              </way>
+              <relation id="{relation_id}">
+                <member type="way" ref="{way_id}" role="outer" />
+                <tag k="key" v="value" />
+              </relation>
+            </osm>
+            """
+        ).strip()
     )
-    assert 3 in osm_data.relations
+    assert relation_id in osm_data.relations
     relation: OSMRelation = osm_data.relations[3]
-    assert relation.id_ == 3
+    assert relation.id_ == relation_id
     assert relation.tags["key"] == "value"
     assert len(relation.members) == 1
     assert relation.members[0].type_ == "way"
-    assert relation.members[0].ref == 2
+    assert relation.members[0].ref == way_id
 
 
 def test_parse_levels() -> None:

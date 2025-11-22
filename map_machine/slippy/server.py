@@ -23,6 +23,8 @@ __email__ = "me@enzet.ru"
 
 logger: logging.Logger = logging.getLogger(__name__)
 
+GET_REQUEST_PARTS: list[str] = ["address", "tiles", "zoom_level", "x", "y"]
+
 
 class TileServerHandler(SimpleHTTPRequestHandler):
     """HTTP request handler that process sloppy map tile requests."""
@@ -50,12 +52,17 @@ class TileServerHandler(SimpleHTTPRequestHandler):
     def do_GET(self) -> None:
         """Serve a GET request."""
         parts: list[str] = self.path.split("/")
-        if not (len(parts) == 5 and not parts[0] and parts[1] == "tiles"):
+
+        if not (
+            len(parts) == len(GET_REQUEST_PARTS)
+            and not parts[GET_REQUEST_PARTS.index("request")]
+            and parts[GET_REQUEST_PARTS.index("tiles")] == "tiles"
+        ):
             return
 
-        zoom_level: int = int(parts[2])
-        x: int = int(parts[3])
-        y: int = int(parts[4])
+        zoom_level: int = int(parts[GET_REQUEST_PARTS.index("zoom_level")])
+        x: int = int(parts[GET_REQUEST_PARTS.index("x")])
+        y: int = int(parts[GET_REQUEST_PARTS.index("y")])
         tile: Tile = Tile(x, y, zoom_level)
         tile_path: Path = workspace.get_tile_path()
         svg_path: Path = tile.get_file_name(tile_path)

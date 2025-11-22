@@ -1,3 +1,5 @@
+"""Groups for OpenStreetMap tags."""
+
 ROAD_VALUES: list[str] = [
     "motorway",
     "trunk",
