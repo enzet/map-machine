@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Actions to perform before commit: generate PNG images for documentation."""
 
 from __future__ import annotations
@@ -23,6 +24,7 @@ from map_machine.osm.osm_getter import get_osm
 from map_machine.osm.osm_reader import OSMData
 from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.scheme import Scheme
+from map_machine.slippy.tile import Tiles
 from map_machine.workspace import workspace
 
 doc_path: Path = Path("doc")
@@ -34,6 +36,8 @@ SCHEME: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
 EXTRACTOR: ShapeExtractor = ShapeExtractor(
     workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
 )
+
+REMOVED: bool = True
 
 
 def draw(
@@ -69,12 +73,15 @@ def draw_around_point(
     point: np.ndarray,
     name: str,
     configuration: MapConfiguration | None = None,
-    size: np.ndarray = np.array((600, 400)),
+    size: np.ndarray | None = None,
     get: BoundingBox | None = None,
 ) -> None:
     """Draw around point."""
     if configuration is None:
         configuration = MapConfiguration(SCHEME)
+
+    if size is None:
+        size = np.array((600, 400))
 
     input_path: Path = doc_path / f"{name}.svg"
 
@@ -94,13 +101,13 @@ def draw_around_point(
 
 def main(id_: str) -> None:
     """Entry point."""
-    # if id_ is None or id_ == "fitness":
-    #     draw_around_point(
-    #         np.array((55.75277, 37.40856)),
-    #         "fitness",
-    #         MapConfiguration(SCHEME, zoom_level=20.2),
-    #         np.array((300, 200)),
-    #     )
+    if REMOVED and (id_ is None or id_ == "fitness"):
+        draw_around_point(
+            np.array((55.75277, 37.40856)),
+            "fitness",
+            MapConfiguration(SCHEME, zoom_level=20.2),
+            np.array((300, 200)),
+        )
 
     if id_ is None or id_ == "power":
         draw_around_point(
@@ -109,15 +116,16 @@ def main(id_: str) -> None:
             configuration=MapConfiguration(SCHEME, zoom_level=15),
         )
 
-    # if id_ is None or id_ == "playground":
-    #     draw_around_point(
-    #         np.array((52.47388, 13.43826)),
-    #         "playground",
-    #         configuration=MapConfiguration(SCHEME, zoom_level=19),
-    #     )
+    if REMOVED and (id_ is None or id_ == "playground"):
+        draw_around_point(
+            np.array((52.47388, 13.43826)),
+            "playground",
+            configuration=MapConfiguration(SCHEME, zoom_level=19),
+        )
 
-    # Playground: (59.91991/10.85535), (59.83627/10.83017), Oslo
-    # (52.47604/13.43701), (52.47388/13.43826)*, Berlin
+    # Playground:
+    #   - Oslo: (59.91991/10.85535), (59.83627/10.83017),
+    #   - Berlin: (52.47604/13.43701), (52.47388/13.43826)*,
 
     if id_ is None or id_ == "surveillance":
         draw_around_point(
@@ -159,9 +167,9 @@ def main(id_: str) -> None:
             get=BoundingBox(37.624, 55.749, 37.633, 55.753),
         )
 
-    # if id_ is None or id_ == "golf":
-    #     tiles = Tiles(np.array((52.5859, 13.4644)), 17, 2, 3)
-    #     tiles.draw()
+    if REMOVED and (id_ is None or id_ == "golf"):
+        tiles: Tiles = Tiles(np.array((52.5859, 13.4644)), 17, 2, 3)
+        tiles.draw()
 
     if id_ is None or id_ == "time":
         draw_around_point(
@@ -213,4 +221,4 @@ def main(id_: str) -> None:
 
 if __name__ == "__main__":
     logging.basicConfig(format="%(levelname)s %(message)s", level=logging.DEBUG)
-    main(None if len(sys.argv) < 2 else sys.argv[1])
+    main(None if len(sys.argv) <= 1 else sys.argv[1])

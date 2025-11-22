@@ -110,6 +110,7 @@ class MapConfiguration:
         tags: dict[str, Any],
         processed: set[str],
     ) -> tuple[IconSet | None, int]:
+        """Get icon set."""
         return self.scheme.get_icon(
             extractor,
             tags,

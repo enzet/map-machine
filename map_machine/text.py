@@ -59,13 +59,13 @@ def format_voltage(value: str) -> str:
 
     :param value: presumably string representation of integer, in Volts
     """
-    try:
+    if value.isdigit():
         int_value: int = int(value)
         if int_value % 1000 == 0:
             return f"{int(int_value / 1000)} kV"
         return f"{value} V"
-    except ValueError:
-        return value
+
+    return value
 
 
 def format_frequency(value: str) -> str:

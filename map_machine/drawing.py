@@ -22,6 +22,7 @@ __email__ = "me@enzet.ru"
 
 PathCommands = list[Union[float, str, np.ndarray]]
 
+BLACK: Color = Color("black")
 DEFAULT_FONT: str = "Helvetica"
 
 
@@ -65,9 +66,7 @@ class Drawing:
         """Draw path."""
         raise NotImplementedError
 
-    def text(
-        self, text: str, point: np.ndarray, color: Color = Color("black")
-    ) -> None:
+    def text(self, text: str, point: np.ndarray, color: Color = BLACK) -> None:
         """Draw text."""
         raise NotImplementedError
 
@@ -110,9 +109,7 @@ class SVGDrawing(Drawing):
         style.update_svg_element(path)
         self.image.add(path)
 
-    def text(
-        self, text: str, point: np.ndarray, color: Color = Color("black")
-    ) -> None:
+    def text(self, text: str, point: np.ndarray, color: Color = BLACK) -> None:
         """Draw text."""
         self.image.add(
             Text(text, (float(point[0]), float(point[1])), fill=color)

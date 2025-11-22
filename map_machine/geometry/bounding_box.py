@@ -87,7 +87,9 @@ class BoundingBox:
         width: float,
         height: float,
     ) -> BoundingBox:
-        """Compute bounding box from center coordinates, zoom level and image size.
+        """Compute bounding box.
+
+        From center coordinates, zoom level and image size.
 
         :param coordinates: bounding box central coordinates
         :param zoom_level: resulting image zoom level

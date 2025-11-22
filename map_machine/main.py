@@ -1,11 +1,7 @@
 """Map Machine entry point."""
 
-import sys
-
-if sys.version_info.major < 3 or sys.version_info.minor < 9:
-    sys.exit(1)
-
 import logging
+import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -33,38 +29,42 @@ def main() -> None:
         logging.fatal("No command provided. See --help.")
 
     elif arguments.command == "render":
-        from map_machine import mapper
+        from map_machine import mapper  # noqa: PLC0415
 
         mapper.render_map(arguments)
 
     elif arguments.command == "tile":
-        from map_machine.slippy import tile
+        from map_machine.slippy import tile  # noqa: PLC0415
 
         tile.generate_tiles(arguments)
 
     elif arguments.command == "icons":
-        from map_machine.pictogram.icon_collection import draw_icons
+        from map_machine.pictogram.icon_collection import (  # noqa: PLC0415
+            draw_icons,
+        )
 
         draw_icons()
 
     elif arguments.command == "mapcss":
-        from map_machine import mapcss
+        from map_machine import mapcss  # noqa: PLC0415
 
         mapcss.generate_mapcss(arguments)
 
     elif arguments.command == "draw":
-        from map_machine.element.element import draw_element
+        from map_machine.element.element import draw_element  # noqa: PLC0415
 
         draw_element(arguments)
 
     elif arguments.command == "server":
-        from map_machine.slippy import server
+        from map_machine.slippy import server  # noqa: PLC0415
 
         server.run_server(arguments)
 
     elif arguments.command == "taginfo":
-        from map_machine.doc.taginfo import write_taginfo_project_file
-        from map_machine.scheme import Scheme
+        from map_machine.doc.taginfo import (  # noqa: PLC0415
+            write_taginfo_project_file,
+        )
+        from map_machine.scheme import Scheme  # noqa: PLC0415
 
         write_taginfo_project_file(
             Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)

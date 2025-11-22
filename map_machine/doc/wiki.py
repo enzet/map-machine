@@ -83,7 +83,7 @@ class WikiTable:
         else:
             make_vertical: bool = False
             for column_value in self.collection.column_values:
-                if column_value and len(column_value) > 2:
+                if column_value and len(column_value) > 2:  # noqa: PLR2004
                     make_vertical = True
             for column_value in self.collection.column_values:
                 text += " ||"

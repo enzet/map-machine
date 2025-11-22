@@ -1,21 +1,13 @@
 #!/usr/bin/env bash
 
-python_files="map_machine tests data/githooks/commit-msg"
-
 source .venv/bin/activate
 
-echo "Checking code format..."
+echo "Checking code format with Ruff..."
 if ! ruff format --check; then
     ruff format --diff
     echo "FAIL"
     exit 1
 fi
 
-# Link with Flake8.
-
-echo "Lint with Flake8..."
-flake8 \
-    --max-line-length=80 \
-    --ignore=E203,W503,ANN002,ANN003,ANN101,ANN102 \
-    ${python_files} \
-    || { echo "FAIL"; exit 1; }
+echo "Lint with Ruff..."
+ruff check || { echo "FAIL"; exit 1; }

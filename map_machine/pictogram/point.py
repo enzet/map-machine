@@ -42,7 +42,7 @@ class Occupied:
             self.matrix = np.full(
                 (int(width), int(height)), fill_value=False, dtype=bool
             )
-        except Exception:
+        except (MemoryError, ValueError):
             logger.fatal(
                 "Failed to allocate a matrix required by overlap algorithm. "
                 "Try to use smallest area or try `--overlap=0` options."

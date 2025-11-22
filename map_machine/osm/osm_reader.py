@@ -6,11 +6,11 @@ import json
 import logging
 import re
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Any
-from xml.etree import ElementTree as ET
 
 import numpy as np
+from defusedxml import ElementTree
 
 from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.util import MinMax
@@ -155,7 +155,10 @@ class OSMNode(Tagged):
             attributes.get("visible", None),
             attributes.get("changeset", None),
             (
-                datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
+                datetime.strptime(
+                    attributes["timestamp"],
+                    OSM_TIME_PATTERN,
+                ).astimezone(timezone.utc)
                 if "timestamp" in attributes
                 else None
             ),
@@ -232,7 +235,10 @@ class OSMWay(Tagged):
             attributes.get("visible", None),
             attributes.get("changeset", None),
             (
-                datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
+                datetime.strptime(
+                    attributes["timestamp"],
+                    OSM_TIME_PATTERN,
+                ).astimezone(timezone.utc)
                 if "timestamp" in attributes
                 else None
             ),
@@ -315,7 +321,9 @@ class OSMRelation(Tagged):
             attributes.get("visible", None),
             attributes.get("changeset", None),
             (
-                datetime.strptime(attributes["timestamp"], OSM_TIME_PATTERN)
+                datetime.strptime(
+                    attributes["timestamp"], OSM_TIME_PATTERN
+                ).astimezone(timezone.utc)
                 if "timestamp" in attributes
                 else None
             ),
@@ -444,7 +452,7 @@ class OSMData:
         :param file_name: input XML file
         :return: parsed map
         """
-        self.parse_osm(ET.parse(file_name).getroot())
+        self.parse_osm(ElementTree.parse(file_name).getroot())
 
     def parse_osm_text(self, text: str) -> None:
         """Parse OSM XML data from text representation.
@@ -452,7 +460,7 @@ class OSMData:
         :param text: XML text representation
         :return: parsed map
         """
-        self.parse_osm(ET.fromstring(text))
+        self.parse_osm(ElementTree.fromstring(text))
 
     def parse_osm(
         self,

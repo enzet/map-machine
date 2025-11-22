@@ -13,7 +13,8 @@ MESSAGE_MAX_LENGTH: int = 72
 
 
 def check_file(file_name: str) -> Optional[str]:
-    """
+    """Check file with commit message.
+
     Exit program with exit code 1 if commit message does not conform the rules.
 
     :param file_name: commit message file name
@@ -100,8 +101,8 @@ def check_commit_message(parts: List[str]) -> Optional[str]:
             f"{wrong_verb} "
         ) or short_message.startswith(f"{first_letter_uppercase(wrong_verb)} "):
             return (
-                f"Commit message should start with the verb in infinitive "
-                f"form. Please, use "
+                "Commit message should start with the verb in infinitive "
+                "form. Please, use "
                 f'"{first_letter_uppercase(right_verb)} ..." instead of '
                 f'"{first_letter_uppercase(wrong_verb)} ...".'
             )

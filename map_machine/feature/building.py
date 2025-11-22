@@ -86,9 +86,9 @@ class Building(Figure):
             self.wall_default_color = scheme.get_color("wall_color")
 
         self.wall_color: Color = self.wall_default_color
-        if material := tags.get("building:material"):
-            if material in scheme.material_colors:
-                self.wall_color = Color(scheme.material_colors[material])
+        material: str | None = tags.get("building:material")
+        if material and material in scheme.material_colors:
+            self.wall_color = Color(scheme.material_colors[material])
         if color := tags.get("building:colour"):
             self.wall_color = scheme.get_color(color)
         if color := tags.get("colour"):

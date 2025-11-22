@@ -3,7 +3,7 @@
 import argparse
 from abc import ABC
 from pathlib import Path
-from typing import Any, Union
+from typing import Any, ClassVar, Union
 
 from moire.default import Default, DefaultHTML, DefaultMarkdown, DefaultWiki
 from moire.moire import Tag
@@ -127,12 +127,12 @@ class MapMachineMoire(Default, ABC):
 
         return self.get_ref_(f"{PREFIX}Key:{spec}", self.m([spec]))
 
-    def color(self, arg: Arguments) -> str:
-        """Simple color sample."""
+    def color(self, _: Arguments) -> str:
+        """Convert tag to a simple color sample."""
         message: str = "color"
         raise NotImplementedError(message)
 
-    def page_icon(self, arg: Arguments) -> str:
+    def page_icon(self, _: Arguments) -> str:
         """HTML page icon."""
         return ""
 
@@ -140,7 +140,7 @@ class MapMachineMoire(Default, ABC):
         """Bash command from integration tests."""
         return "map-machine " + " ".join(COMMAND_LINES[self.clear(arg[0])])
 
-    def icon(self, arg: Arguments) -> str:
+    def icon(self, _: Arguments) -> str:
         """Image with Röntgen icon."""
         message: str = "icon"
         raise NotImplementedError(message)
@@ -183,7 +183,10 @@ class MapMachineHTML(MapMachineMoire, DefaultHTML):
         self.images: dict = {}
 
     def table(self, arg: Arguments) -> str:
-        """Simple table.  First row is treated as header."""
+        """Convert tag to a simple table.
+
+        First row is treated as header.
+        """
         content: str = ""
         cell: str = "".join(
             ["<th>" + self.parse(td, in_block=True) + "</th>" for td in arg[0]]
@@ -197,7 +200,7 @@ class MapMachineHTML(MapMachineMoire, DefaultHTML):
         return f"<table>{content}</table>"
 
     def color(self, arg: Arguments) -> str:
-        """Simple color sample."""
+        """Convert tag to a simple color sample."""
         return (
             f'<span class="color" '
             f'style="background-color: {self.clear(arg[0])};"></span>'
@@ -268,7 +271,7 @@ class MapMachineOSMWiki(MapMachineMoire, DefaultWiki):
 class MapMachineMarkdown(MapMachineMoire, DefaultMarkdown):
     """GitHub flavored markdown."""
 
-    images = {}
+    images: ClassVar[dict[str, str]] = {}
 
     def body(self, arg: Arguments) -> str:
         """Remove redundant new lines and add a warning."""
@@ -305,9 +308,11 @@ class MapMachineMarkdown(MapMachineMoire, DefaultMarkdown):
 
 def convert(input_path: Path, output_path: Path) -> None:
     """Convert Moire file to Markdown."""
-    with input_path.open(encoding="utf-8") as input_file:
-        with output_path.open("w+", encoding="utf-8") as output_file:
-            output_file.write(MapMachineMarkdown().convert(input_file.read()))
+    with (
+        input_path.open(encoding="utf-8") as input_file,
+        output_path.open("w+", encoding="utf-8") as output_file,
+    ):
+        output_file.write(MapMachineMarkdown().convert(input_file.read()))
 
 
 if __name__ == "__main__":
