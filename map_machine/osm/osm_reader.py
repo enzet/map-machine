@@ -94,7 +94,7 @@ class Tagged:
 
         value: str = self.tags[key]
 
-        float_value: float = parse_float(value)
+        float_value: float | None = parse_float(value)
         if float_value is not None:
             return float_value
 
@@ -105,7 +105,7 @@ class Tagged:
         ]:
             matcher: re.Match = pattern.match(value)
             if matcher:
-                float_value: float = parse_float(matcher.group("value"))
+                float_value: float | None = parse_float(matcher.group("value"))
                 if float_value is not None:
                     return float_value * ratio
 
@@ -181,10 +181,10 @@ class OSMNode(Tagged):
     def get_bounding_box(self) -> BoundingBox:
         """Get bounding box for the node."""
         return BoundingBox(
-            self.coordinates[1],
-            self.coordinates[0],
-            self.coordinates[1],
-            self.coordinates[0],
+            float(self.coordinates[1]),
+            float(self.coordinates[0]),
+            float(self.coordinates[1]),
+            float(self.coordinates[0]),
         )
 
     def __hash__(self) -> int:

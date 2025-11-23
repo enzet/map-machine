@@ -16,7 +16,7 @@ from map_machine.osm.osm_reader import OSMData, OSMNode, OSMWay, Tags
 from tests import SCHEME, SHAPE_EXTRACTOR
 
 if TYPE_CHECKING:
-    from map_machine.figure import Figure
+    from map_machine.figure import StyledFigure
 
 CONFIGURATION: MapConfiguration = MapConfiguration(SCHEME)
 
@@ -60,7 +60,7 @@ def test_river_and_wood() -> None:
     create_way(osm_data, {"waterway": "river"}, index + 1)
     index += 1
 
-    figures: list[Figure] = get_constructor(osm_data).get_sorted_figures()
+    figures: list[StyledFigure] = get_constructor(osm_data).get_sorted_figures()
 
     assert len(figures) == index
     assert figures[0].tags["natural"] == "wood"

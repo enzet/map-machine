@@ -185,7 +185,7 @@ class Building(Figure):
                 height,
                 shift_1,
                 shift_2,
-                use_building_colors,
+                use_building_colors=use_building_colors,
             )
 
     def draw_roof(

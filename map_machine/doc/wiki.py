@@ -70,11 +70,12 @@ class WikiTable:
                 ).get_icon(
                     EXTRACTOR, current_tags | self.collection.tags, set()
                 )
-                icons.append(icon.main_icon)
-                text += (
-                    "| "
-                    f"[[Image:Röntgen {icon.main_icon.get_name()}.svg|32px]]\n"
-                )
+                if icon:
+                    icons.append(icon.main_icon)
+                    text += (
+                        "| [[Image:Röntgen "
+                        f"{icon.main_icon.get_name()}.svg|32px]]\n"
+                    )
             text += "|}\n"
             return text, icons
 
@@ -112,13 +113,12 @@ class WikiTable:
                 icon, _ = MapConfiguration(SCHEME).get_icon(
                     EXTRACTOR, current_tags, set()
                 )
-                if not icon:
-                    pass
-                text += (
-                    "| "
-                    f"[[Image:Röntgen {icon.main_icon.get_name()}.svg|32px]]\n"
-                )
-                icons.append(icon.main_icon)
+                if icon:
+                    text += (
+                        "| [[Image:Röntgen "
+                        f"{icon.main_icon.get_name()}.svg|32px]]\n"
+                    )
+                    icons.append(icon.main_icon)
 
         text += "|}\n"
 
@@ -145,12 +145,12 @@ def generate_new_text(
         icon, _ = MapConfiguration(SCHEME).get_icon(
             EXTRACTOR, table.collection.tags, processed
         )
-        if not icon.main_icon.is_default():
+        if icon and not icon.main_icon.is_default():
             wiki_text = (
                 f"[[Image:Röntgen {icon.main_icon.get_name()}.svg|32px]]\n"
             )
             icons.append(icon.main_icon)
-        elif icon.extra_icons:
+        elif icon and icon.extra_icons:
             wiki_text = (
                 f"Röntgen icon set has additional icon for the tag: "
                 f"[[Image:Röntgen {icon.extra_icons[0].get_name()}.svg|32px]]."

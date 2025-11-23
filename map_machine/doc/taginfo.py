@@ -43,9 +43,8 @@ class TaginfoProjectFile:
                 "contact_name": __author__,
                 "contact_email": __email__,
             },
-            "tags": [],
         }
-        tags = self.structure["tags"]
+        tags: list = []
 
         for matcher in scheme.node_matchers:
             if (
@@ -72,6 +71,8 @@ class TaginfoProjectFile:
                     f"roentgen_icons_mapcss/{icon_id}.svg",
                 }
                 tags.append(tag)
+
+        self.structure["tags"] = tags
 
     def write(self) -> None:
         """Write Taginfo JSON file."""

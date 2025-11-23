@@ -24,7 +24,6 @@ from map_machine.osm.osm_getter import get_osm
 from map_machine.osm.osm_reader import OSMData
 from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.scheme import Scheme
-from map_machine.slippy.tile import Tiles
 from map_machine.workspace import workspace
 
 doc_path: Path = Path("doc")
@@ -73,7 +72,7 @@ def draw_around_point(
     point: np.ndarray,
     name: str,
     configuration: MapConfiguration | None = None,
-    size: np.ndarray | None = None,
+    size: tuple[float, float] | None = None,
     get: BoundingBox | None = None,
 ) -> None:
     """Draw around point."""
@@ -81,7 +80,7 @@ def draw_around_point(
         configuration = MapConfiguration(SCHEME)
 
     if size is None:
-        size = np.array((600, 400))
+        size = 600.0, 400.0
 
     input_path: Path = doc_path / f"{name}.svg"
 
@@ -99,14 +98,18 @@ def draw_around_point(
     )
 
 
-def main(id_: str) -> None:
-    """Entry point."""
+def main(id_: str | None) -> None:
+    """Entry point.
+
+    :param id_: identifier of the preview to draw. If `None`, all previews will
+        be drawn.
+    """
     if REMOVED and (id_ is None or id_ == "fitness"):
         draw_around_point(
             np.array((55.75277, 37.40856)),
             "fitness",
             MapConfiguration(SCHEME, zoom_level=20.2),
-            np.array((300, 200)),
+            (300, 200),
         )
 
     if id_ is None or id_ == "power":
@@ -166,10 +169,6 @@ def main(id_: str) -> None:
             ),
             get=BoundingBox(37.624, 55.749, 37.633, 55.753),
         )
-
-    if REMOVED and (id_ is None or id_ == "golf"):
-        tiles: Tiles = Tiles(np.array((52.5859, 13.4644)), 17, 2, 3)
-        tiles.draw()
 
     if id_ is None or id_ == "time":
         draw_around_point(

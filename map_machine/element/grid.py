@@ -122,7 +122,7 @@ class Grid:
         for text, i, j in self.texts:
             text_element: Text = Text(
                 text,
-                flinger.fling((i, j)) + np.array((0, 3)),
+                flinger.fling(np.array((i, j))) + np.array((0, 3)),
                 font_family="JetBrains Mono",
                 font_size=12,
             )

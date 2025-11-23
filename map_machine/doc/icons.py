@@ -20,6 +20,7 @@ if TYPE_CHECKING:
     from collections.abc import Iterable
 
 SKIP: bool = True
+BLACK: Color = Color("black")
 
 
 def draw_special_grid(
@@ -29,12 +30,12 @@ def draw_special_grid(
     color: Color | None = None,
 ) -> None:
     """Draw special icon grid to illustrate map feature."""
-    icons = [
-        Icon([ShapeSpecification(shape)])
+    icons: list[Icon] = [
+        Icon([ShapeSpecification(shape, BLACK)])
         for shape in all_shapes
         if function(shape)
     ]
-    icons = sorted(icons)
+    icons.sort()
 
     if color:
         for icon in icons:

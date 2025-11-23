@@ -24,5 +24,6 @@ precommit.py
 build
 temp
 .venv*
+.vscode
 
 taginfo

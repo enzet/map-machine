@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Self
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import svgwrite
@@ -65,7 +65,7 @@ class Collection:
     row_tags: list[Tags] = field(default_factory=list)
 
     @classmethod
-    def deserialize(cls, structure: dict[str, Any]) -> Self:
+    def deserialize(cls, structure: dict[str, Any]) -> Collection:
         """Deserialize icon collection from structure."""
         return cls(
             structure["tags"],
@@ -94,6 +94,10 @@ class SVGTable:
         )
         self.font: str = ",".join(MONOSPACE_FONTS)
         self.font_width: float = self.font_size * 0.7
+
+        if not self.collection.row_key:
+            message: str = "Row key is required."
+            raise ValueError(message)
 
         self.size: list[float] = [
             (
@@ -138,10 +142,10 @@ class SVGTable:
                 icon, _ = MapConfiguration(SCHEME).get_icon(
                     EXTRACTOR, current_tags, processed
                 )
-                processed = icon.processed
                 if not icon:
-                    pass
+                    continue
 
+                processed = icon.processed
                 if (
                     icon.main_icon
                     and not icon.main_icon.is_default()
@@ -171,7 +175,7 @@ class SVGTable:
         point: np.ndarray = np.array(self.start_point) - np.array(
             (self.step / 2.0 + self.border[0], 0.0)
         )
-        shift: np.ndarray = (
+        shift: np.ndarray = np.array(
             -self.offset if self.collection.column_values else 0.9,
             2.0 - self.step / 2.0 - self.border[1],
         )

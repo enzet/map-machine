@@ -78,7 +78,11 @@ class Sector:
             parts: list[str] = text.split("-")
             self.start = parse_vector(parts[0])
             self.end = parse_vector(parts[1])
-            self.main_direction = (self.start + self.end) / 2.0
+
+            if self.start is None or self.end is None:
+                self.main_direction = None
+            else:
+                self.main_direction = (self.start + self.end) / 2.0
         else:
             result_angle: float
             if angle is None:
@@ -147,7 +151,7 @@ class DirectionSet:
         """
         return filter(
             lambda x: x is not None,
-            (x.draw(center, radius) for x in self.sectors),
+            (x.draw(center, radius) for x in self.sectors if x),
         )
 
     def is_right(self) -> bool | None:
@@ -156,8 +160,10 @@ class DirectionSet:
         :return: true if direction is right, false if direction is left, and
             None otherwise.
         """
-        result: list[bool] = [sector.is_right() for sector in self.sectors]
-        if result == [True] * len(result):
+        result: list[bool | None] = [
+            sector.is_right() for sector in self.sectors if sector
+        ]
+        if all(result):
             return True
         if result == [False] * len(result):
             return False
@@ -176,7 +182,7 @@ class DirectionSector(Tagged):
 
         angle: float | None = None
         is_revert_gradient: bool = False
-        direction: str
+        direction: str | None = None
         direction_radius: float
         direction_color: Color
 

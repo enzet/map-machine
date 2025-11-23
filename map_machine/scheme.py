@@ -74,7 +74,7 @@ def is_matched_tag(
         return MatchingType.MATCHED_BY_WILDCARD, []
     if tags[matcher_tag_key] == matcher_tag_value:
         return MatchingType.MATCHED, []
-    if matcher_tag_value.startswith("^"):
+    if isinstance(matcher_tag_value, str) and matcher_tag_value.startswith("^"):
         matcher: re.Match | None = re.match(
             matcher_tag_value, tags[matcher_tag_key]
         )
@@ -362,17 +362,14 @@ class Scheme:
         self.cache: dict[str, tuple[IconSet, int]] = {}
 
     @classmethod
-    def from_file(cls, file_name: Path) -> Scheme | None:
+    def from_file(cls, file_name: Path) -> Scheme:
         """Get scheme from file.
 
         :param file_name: name of the scheme file with tags, colors, and tag key
             specification
         """
         with file_name.open(encoding="utf-8") as input_file:
-            try:
-                content: dict[str, Any] = yaml.safe_load(input_file.read())
-            except yaml.YAMLError:
-                return None
+            content: dict[str, Any] = yaml.safe_load(input_file.read())
             if not content:
                 return cls({})
             return cls(content)
@@ -415,7 +412,7 @@ class Scheme:
         """Get default color for an extra icon."""
         return self.get_color("extra")
 
-    def get(self, variable_name: str) -> str:
+    def get(self, variable_name: str) -> str | float:
         """Get value of variable.
 
         FIXME: colors should be variables.
@@ -643,7 +640,7 @@ class Scheme:
 
     def get_shape_specification(
         self,
-        structure: str | dict[str, Any],
+        structure: dict[str, Any],
         extractor: ShapeExtractor,
         groups: dict[str, str] | None = None,
         color: Color | None = None,
@@ -662,7 +659,6 @@ class Scheme:
         flip_vertically: bool = False
         use_outline: bool = True
 
-        structure: dict[str, Any]
         if "shape" in structure:
             shape_id: str = structure["shape"]
             if groups:
