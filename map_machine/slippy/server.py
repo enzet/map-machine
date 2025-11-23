@@ -31,7 +31,7 @@ class TileServerHandler(SimpleHTTPRequestHandler):
 
     cache: Path = Path("cache")
     update_cache: bool = False
-    options: argparse.Namespace | None = None
+    options: argparse.Namespace
 
     def __init__(
         self,

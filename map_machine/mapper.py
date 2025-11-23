@@ -133,8 +133,8 @@ class Map:
                 occupied = None
             else:
                 occupied = Occupied(
-                    self.flinger.size[0],
-                    self.flinger.size[1],
+                    int(self.flinger.size[0]),
+                    int(self.flinger.size[1]),
                     self.configuration.overlap,
                 )
 
@@ -170,7 +170,11 @@ class Map:
             return
         if self.configuration.building_mode == BuildingMode.FLAT:
             for building in constructor.buildings:
-                building.draw(self.svg, self.flinger, use_building_colors)
+                building.draw(
+                    self.svg,
+                    self.flinger,
+                    use_building_colors=use_building_colors,
+                )
             return
 
         logger.info("Drawing isometric buildings...")
@@ -209,14 +213,17 @@ class Map:
                     height,
                     shift_1,
                     shift_2,
-                    use_building_colors,
+                    use_building_colors=use_building_colors,
                 )
 
             if self.configuration.draw_roofs:
                 for building in constructor.buildings:
                     if building.height == height:
                         building.draw_roof(
-                            self.svg, self.flinger, scale, use_building_colors
+                            self.svg,
+                            self.flinger,
+                            scale,
+                            use_building_colors=use_building_colors,
                         )
 
             previous_height = height
@@ -308,8 +315,9 @@ def render_map(arguments: argparse.Namespace) -> None:
     scheme_path: Path | None = workspace.find_scheme_path(arguments.scheme)
     if scheme_path is None:
         fatal(f"Scheme `{arguments.scheme}` not found.")
+        sys.exit(1)
 
-    scheme: Scheme | None = Scheme.from_file(scheme_path)
+    scheme: Scheme = Scheme.from_file(scheme_path)
     if scheme is None:
         fatal(f"Failed to load scheme from `{arguments.scheme}`.")
 
@@ -359,7 +367,7 @@ def render_map(arguments: argparse.Namespace) -> None:
 
     # Determine files.
 
-    input_file_names: list[Path] | None = None
+    input_file_names: list[Path]
     if arguments.input_file_names:
         input_file_names = list(map(Path, arguments.input_file_names))
     elif bounding_box:
@@ -392,6 +400,9 @@ def render_map(arguments: argparse.Namespace) -> None:
         bounding_box = osm_data.view_box
     if not bounding_box:
         bounding_box = osm_data.bounding_box
+    if not bounding_box:
+        fatal("Failed to compute bounding box.")
+        sys.exit(1)
 
     # Render the map.
 

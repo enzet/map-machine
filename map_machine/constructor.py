@@ -41,7 +41,6 @@ from map_machine.ui.cli import BuildingMode
 from map_machine.util import MinMax
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
     from datetime import datetime
 
     from map_machine.geometry.flinger import Flinger
@@ -105,7 +104,7 @@ def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
     :param ways: ways to glue
     """
     result: list[list[OSMNode]] = []
-    to_process: set[tuple[OSMNode]] = set()
+    to_process: set[tuple[OSMNode, ...]] = set()
 
     for way in ways:
         if way.is_cycle():
@@ -116,7 +115,7 @@ def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
     while to_process:
         nodes: list[OSMNode] = list(to_process.pop())
         glued: list[OSMNode] | None = None
-        other_nodes: tuple[OSMNode] | None = None
+        other_nodes: tuple[OSMNode, ...] | None = None
 
         for other_nodes in to_process:
             glued = try_to_glue(nodes, list(other_nodes))
@@ -124,7 +123,8 @@ def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
                 break
 
         if glued is not None:
-            to_process.remove(other_nodes)
+            if other_nodes is not None:
+                to_process.remove(other_nodes)
             if is_cycle(glued):
                 result.append(glued)
             else:
@@ -268,7 +268,7 @@ class Constructor:
                 Building(line.tags, inners, outers, self.flinger, self.scheme)
             )
 
-        road_matcher: RoadMatcher = self.scheme.get_road(line.tags)
+        road_matcher: RoadMatcher | None = self.scheme.get_road(line.tags)
         if road_matcher:
             road: Road = Road(
                 line.tags, outers[0], road_matcher, self.flinger, self.scheme
@@ -314,7 +314,7 @@ class Constructor:
                 continue
 
             priority: int
-            icon_set: IconSet
+            icon_set: IconSet | None
             icon_set, priority = self.configuration.get_icon(
                 self.extractor, line.tags, processed
             )
@@ -361,7 +361,7 @@ class Constructor:
 
         processed: set[str] = set()
         priority: int
-        icon_set: IconSet
+        icon_set: IconSet | None
         icon_set, priority = self.configuration.get_icon(
             self.extractor, line.tags, processed
         )
@@ -409,6 +409,8 @@ class Constructor:
                 continue
             inner_ways: list[OSMWay] = []
             outer_ways: list[OSMWay] = []
+            if not relation.members:
+                continue
             for member in relation.members:
                 if member.type_ == "way":
                     if member.role == "inner":
@@ -430,7 +432,7 @@ class Constructor:
 
         # Sort node vertically (using latitude values) to draw them from top to
         # bottom.
-        sorted_node_ids: Iterator[int] = sorted(
+        sorted_node_ids: list[int] = sorted(
             self.osm_data.nodes.keys(),
             key=lambda x: -self.osm_data.nodes[x].coordinates[0],
         )
@@ -451,7 +453,7 @@ class Constructor:
         flung: np.ndarray = self.flinger.fling(node.coordinates)
 
         priority: int
-        icon_set: IconSet
+        icon_set: IconSet | None
         draw_outline: bool = True
 
         if self.configuration.drawing_mode in (
@@ -461,13 +463,16 @@ class Constructor:
             # Dead code to make insensitive static analysis happy.
             color: Color = self.scheme.get_default_color()
 
-            if self.configuration.drawing_mode == DrawingMode.AUTHOR:
+            if (
+                self.configuration.drawing_mode == DrawingMode.AUTHOR
+                and node.user is not None
+            ):
                 color = get_user_color(node.user, self.configuration.seed)
             if self.configuration.drawing_mode == DrawingMode.TIME:
                 color = get_time_color(node.timestamp, self.osm_data.time)
 
             dot: Shape = self.extractor.get_shape(DEFAULT_SMALL_SHAPE_ID)
-            icon_set: IconSet = IconSet(
+            icon_set = IconSet(
                 Icon([ShapeSpecification(dot, color)]),
                 [],
                 Icon([ShapeSpecification(dot, color)]),
@@ -499,17 +504,18 @@ class Constructor:
             icon_set, priority = self.configuration.get_icon(
                 self.extractor, tags, processed
             )
-            icon_set.main_icon.recolor(color)
-            point: Point = Point(
-                icon_set,
-                [],
-                tags,
-                processed,
-                flung,
-                add_tooltips=self.configuration.show_tooltips,
-            )
-            self.points.append(point)
-            return
+            if icon_set is not None:
+                icon_set.main_icon.recolor(color)
+                point: Point = Point(
+                    icon_set,
+                    [],
+                    tags,
+                    processed,
+                    flung,
+                    add_tooltips=self.configuration.show_tooltips,
+                )
+                self.points.append(point)
+                return
 
         icon_set, priority = self.configuration.get_icon(
             self.extractor, tags, processed

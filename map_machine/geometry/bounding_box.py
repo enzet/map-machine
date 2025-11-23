@@ -35,7 +35,7 @@ class BoundingBox:
     top: float  # Maximum latitude.
 
     @classmethod
-    def from_text(cls, bounding_box: str) -> BoundingBox | None:
+    def from_text(cls, bounding_box: str) -> BoundingBox:
         """Parse bounding box string representation.
 
         Note, that:
@@ -50,32 +50,35 @@ class BoundingBox:
         bounding_box = bounding_box.replace(" ", "")
 
         matcher: re.Match | None = BOUNDING_BOX_PATTERN.match(bounding_box)
+        message: str
 
         if not matcher:
-            logger.fatal("Invalid bounding box.")
-            return None
+            message = "Invalid bounding box."
+            raise ValueError(message)
 
         try:
             left: float = float(matcher.group("left"))
             bottom: float = float(matcher.group("bottom"))
             right: float = float(matcher.group("right"))
             top: float = float(matcher.group("top"))
-        except ValueError:
-            logger.fatal("Invalid bounding box.")
-            return None
+        except ValueError as error:
+            message = "Invalid bounding box."
+            raise ValueError(message) from error
 
         if left >= right:
-            logger.fatal("Negative horizontal boundary.")
-            return None
+            message = "Negative horizontal boundary."
+            raise ValueError(message)
+
         if bottom >= top:
-            logger.error("Negative vertical boundary.")
-            return None
+            message = "Negative vertical boundary."
+            raise ValueError(message)
+
         if (
             right - left > LONGITUDE_MAX_DIFFERENCE
             or top - bottom > LATITUDE_MAX_DIFFERENCE
         ):
-            logger.error("Bounding box is too big.")
-            return None
+            message = "Bounding box is too big."
+            raise ValueError(message)
 
         return cls(left, bottom, right, top)
 
@@ -165,10 +168,10 @@ class BoundingBox:
 
     def update(self, coordinates: np.ndarray) -> None:
         """Make the bounding box cover coordinates."""
-        self.left = min(self.left, coordinates[1])
-        self.bottom = min(self.bottom, coordinates[0])
-        self.right = max(self.right, coordinates[1])
-        self.top = max(self.top, coordinates[0])
+        self.left = min(self.left, float(coordinates[1]))
+        self.bottom = min(self.bottom, float(coordinates[0]))
+        self.right = max(self.right, float(coordinates[1]))
+        self.top = max(self.top, float(coordinates[0]))
 
     def combine(self, other: BoundingBox) -> None:
         """Combine with another bounding box."""

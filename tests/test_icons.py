@@ -52,7 +52,7 @@ def test_icons_by_name() -> None:
     assert (path / "LICENSE").is_file()
 
 
-def get_icon(tags: Tags) -> IconSet:
+def get_icon(tags: Tags) -> IconSet | None:
     """Construct icon from tags."""
     processed: set[str] = set()
     icon, _ = CONFIGURATION.get_icon(SHAPE_EXTRACTOR, tags, processed)
@@ -65,7 +65,8 @@ def test_no_icons() -> None:
     Tags that has no description in the scheme and should be visualized with
     default shape.
     """
-    icon: IconSet = get_icon({"aaa": "bbb"})
+    icon: IconSet | None = get_icon({"aaa": "bbb"})
+    assert icon is not None
     assert icon.main_icon.is_default()
     assert icon.main_icon.shape_specifications[0].color == DEFAULT_COLOR
 
@@ -76,7 +77,8 @@ def test_no_icons_but_color() -> None:
     Tags that has no description in scheme, but have `colour` tag and should be
     visualized with default shape with the given color.
     """
-    icon: IconSet = get_icon({"aaa": "bbb", "colour": "#424242"})
+    icon: IconSet | None = get_icon({"aaa": "bbb", "colour": "#424242"})
+    assert icon is not None
     assert icon.main_icon.is_default()
     assert icon.main_icon.shape_specifications[0].color == Color("#424242")
 
@@ -87,7 +89,8 @@ def check_icon_set(
     extra_specifications: list[list[tuple[str, Color | None]]] | None = None,
 ) -> None:
     """Check icon set using simple specification."""
-    icon: IconSet = get_icon(tags)
+    icon: IconSet | None = get_icon(tags)
+    assert icon is not None
 
     if extra_specifications is None:
         extra_specifications = []

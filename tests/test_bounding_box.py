@@ -1,5 +1,7 @@
 """Test bounding box."""
 
+import pytest
+
 from map_machine.geometry.bounding_box import BoundingBox
 
 __author__ = "Sergey Vartanov"
@@ -32,22 +34,39 @@ def test_bounding_box_parsing() -> None:
         -0.1, -0.1, 0.1, 0.1
     )
 
-    # Negative horizontal boundary.
-    assert BoundingBox.from_text("0.1,-0.1,-0.1,0.1") is None
-
-    # Negative vertical boundary.
-    assert BoundingBox.from_text("-0.1,0.1,0.1,-0.1") is None
-
-    # Wrong format.
-    assert BoundingBox.from_text("wrong") is None
-    assert BoundingBox.from_text("-O.1,-0.1,0.1,0.1") is None
-
-    # Too big bounding box.
-    assert BoundingBox.from_text("-20,-20,20,20") is None
-
 
 def test_bounding_box_parsing_scientific() -> None:
     """Test parsing bounding box from text in scientific notation."""
     assert BoundingBox.from_text(
         "1.23e-03,4.56e-04,7.89e-02,1.01e-03"
     ) == BoundingBox(0.00123, 0.000456, 0.0789, 0.00101)
+
+
+def test_bounding_box_parsing_negative_horizontal_boundary() -> None:
+    """Test parsing bounding box with negative horizontal boundary."""
+    with pytest.raises(ValueError, match=r"Negative horizontal boundary\."):
+        BoundingBox.from_text("0.1,-0.1,-0.1,0.1")
+
+
+def test_bounding_box_parsing_negative_vertical_boundary() -> None:
+    """Test parsing bounding box with negative vertical boundary."""
+    with pytest.raises(ValueError, match=r"Negative vertical boundary\."):
+        BoundingBox.from_text("-0.1,0.1,0.1,-0.1")
+
+
+def test_bounding_box_parsing_wrong_format() -> None:
+    """Test parsing bounding box with wrong format."""
+    with pytest.raises(ValueError, match=r"Invalid bounding box\."):
+        BoundingBox.from_text("wrong")
+
+
+def test_bounding_box_parsing_wrong_format_2() -> None:
+    """Test parsing bounding box with wrong format."""
+    with pytest.raises(ValueError, match=r"Invalid bounding box\."):
+        BoundingBox.from_text("-O.1,-0.1,0.1,0.1")
+
+
+def test_bounding_box_parsing_too_big() -> None:
+    """Test parsing bounding box with too big bounding box."""
+    with pytest.raises(ValueError, match=r"Bounding box is too big\."):
+        BoundingBox.from_text("-20,-20,20,20")

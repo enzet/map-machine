@@ -371,7 +371,8 @@ class Scheme:
         with file_name.open(encoding="utf-8") as input_file:
             content: dict[str, Any] = yaml.safe_load(input_file.read())
             if not content:
-                return cls({})
+                message: str = "Scheme file is empty."
+                raise ValueError(message)
             return cls(content)
 
     def get_color(self, color: str) -> Color:

@@ -7,6 +7,7 @@ import json
 import logging
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 from map_machine import (
     __author__,
@@ -28,7 +29,7 @@ class TaginfoProjectFile:
     def __init__(self, path: Path, scheme: Scheme) -> None:
         self.path: Path = path
 
-        self.structure = {
+        self.structure: dict[str, Any] = {
             "data_format": 1,
             "data_url": __url__ + "/" + str(path),
             "data_updated": datetime.now(timezone.utc).strftime(

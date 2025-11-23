@@ -87,7 +87,12 @@ class Tile:
             self.x + 1, self.y + 1, self.zoom_level
         ).get_coordinates()
 
-        return BoundingBox(point_1[1], point_2[0], point_2[1], point_1[0])
+        return BoundingBox(
+            float(point_1[1]),
+            float(point_2[0]),
+            float(point_2[1]),
+            float(point_1[0]),
+        )
 
     def get_extended_bounding_box(self) -> BoundingBox:
         """Get extended geographical bounding box of the tile.
@@ -100,7 +105,10 @@ class Tile:
         ).get_coordinates()
 
         return BoundingBox(
-            point_1[1], point_2[0], point_2[1], point_1[0]
+            float(point_1[1]),
+            float(point_2[0]),
+            float(point_2[1]),
+            float(point_1[0]),
         ).round()
 
     def load_osm_data(self, cache_path: Path) -> OSMData:
@@ -298,12 +306,12 @@ class Tiles:
             return
 
         self.draw_image_from_osm_data(
-            cache_path, configuration, osm_data, redraw
+            cache_path, configuration, osm_data, redraw=redraw
         )
         input_path: Path = self.get_file_path(cache_path).with_suffix(".png")
 
         with input_path.open("rb") as input_file:
-            image: Image = Image.open(input_file)
+            image: Image.Image = Image.open(input_file)
 
             for tile in self.tiles:
                 x: int = tile.x - self.tile_1.x
@@ -314,7 +322,7 @@ class Tiles:
                     (x + 1) * TILE_WIDTH,
                     (y + 1) * TILE_HEIGHT,
                 )
-                cropped: Image = image.crop(area)
+                cropped: Image.Image = image.crop(area)
                 cropped.crop((0, 0, TILE_WIDTH, TILE_HEIGHT)).save(
                     tile.get_file_name(directory).with_suffix(".png")
                 )
@@ -464,6 +472,8 @@ def generate_tiles(options: argparse.Namespace) -> None:
         logger.fatal(message)
         sys.exit(1)
 
+    bounding_box: BoundingBox
+
     if options.input_file_name:
         osm_data: OSMData = OSMData()
         osm_data.parse_osm_file(Path(options.input_file_name))
@@ -474,8 +484,8 @@ def generate_tiles(options: argparse.Namespace) -> None:
                 f"{options.input_file_name}."
             )
             sys.exit(1)
-
-        bounding_box: BoundingBox = osm_data.view_box
+        else:
+            bounding_box = osm_data.view_box
 
         for zoom_level in zoom_levels:
             configuration: MapConfiguration = MapConfiguration.from_options(
@@ -518,11 +528,11 @@ def generate_tiles(options: argparse.Namespace) -> None:
         tile.draw(directory, cache_path, configuration)
 
     elif options.bounding_box:
-        bounding_box: BoundingBox | None = BoundingBox.from_text(
-            options.bounding_box
-        )
-        if bounding_box is None:
-            logger.fatal("Failed to parse bounding box.")
+        try:
+            bounding_box = BoundingBox.from_text(options.bounding_box)
+        except ValueError:
+            message: str = "Failed to parse bounding box."
+            logger.fatal(message)
             sys.exit(1)
 
         min_tiles: Tiles = Tiles.from_bounding_box(bounding_box, min_zoom_level)

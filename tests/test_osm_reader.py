@@ -98,6 +98,7 @@ def test_nodes() -> None:
         ).strip()
     )
     way: OSMWay = osm_data.ways[2]
+    assert way.nodes is not None
     assert len(way.nodes) == 1
     assert way.nodes[0].id_ == 1
     assert way.tags["key"] == "value"
@@ -131,6 +132,7 @@ def test_relation() -> None:
     relation: OSMRelation = osm_data.relations[3]
     assert relation.id_ == relation_id
     assert relation.tags["key"] == "value"
+    assert relation.members is not None
     assert len(relation.members) == 1
     assert relation.members[0].type_ == "way"
     assert relation.members[0].ref == way_id

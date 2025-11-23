@@ -212,7 +212,7 @@ class OSMWay(Tagged):
     """
 
     id_: int
-    nodes: list[OSMNode] | None = field(default_factory=list)
+    nodes: list[OSMNode] = field(default_factory=list)
     visible: str | None = None
     changeset: str | None = None
     timestamp: datetime | None = None
@@ -426,10 +426,10 @@ class OSMData:
                 self.add_node(node)
                 if not self.view_box:
                     self.view_box = BoundingBox(
-                        node.coordinates[1],
-                        node.coordinates[0],
-                        node.coordinates[1],
-                        node.coordinates[0],
+                        float(node.coordinates[1]),
+                        float(node.coordinates[0]),
+                        float(node.coordinates[1]),
+                        float(node.coordinates[0]),
                     )
                 self.view_box.update(node.coordinates)
 

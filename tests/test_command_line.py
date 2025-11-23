@@ -16,8 +16,6 @@ from map_machine.ui.cli import COMMAND_LINES, parse_arguments
 if TYPE_CHECKING:
     import argparse
 
-    from defusedxml.ElementTree import Element
-
 LOG: bytes = (
     b"INFO Constructing ways...\n"
     b"INFO Constructing nodes...\n"
@@ -63,7 +61,7 @@ def test_render() -> None:
         LOG + b"INFO Writing output SVG to `out/map.svg`...\n",
     )
     with (OUTPUT_PATH / "map.svg").open(encoding="utf-8") as output_file:
-        root: Element = ElementTree.parse(output_file).getroot()
+        root = ElementTree.parse(output_file).getroot()
 
     # 8 expected elements: `defs`, `rect` (background), `g` (outline),
     # `g` (icon), 4 `text` elements (credits).
@@ -82,7 +80,7 @@ def test_render_with_tooltips() -> None:
         LOG + b"INFO Writing output SVG to `out/map.svg`...\n",
     )
     with (OUTPUT_PATH / "map.svg").open(encoding="utf-8") as output_file:
-        root: Element = ElementTree.parse(output_file).getroot()
+        root = ElementTree.parse(output_file).getroot()
 
     # 8 expected elements: `defs`, `rect` (background), `g` (outline),
     # `g` (icon), 4 `text` elements (credits).
