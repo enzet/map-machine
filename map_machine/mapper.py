@@ -84,9 +84,10 @@ class Map:
         ]
 
         for figure in bottom_figures:
-            path_commands: str = figure.get_path(self.flinger)
+            path_commands: str | None = figure.get_path(self.flinger)
 
-            if "M" not in path_commands:  # Deal with malformed paths.
+            if not path_commands or "M" not in path_commands:
+                logger.warning("Malformed figure `%s`.", str(figure))
                 continue
 
             if path_commands:
@@ -97,9 +98,10 @@ class Map:
         constructor.roads.draw(self.svg, self.flinger)
 
         for figure in top_figures:
-            path_commands: str = figure.get_path(self.flinger)
+            path_commands: str | None = figure.get_path(self.flinger)
 
-            if "M" not in path_commands:  # Deal with malformed paths.
+            if not path_commands or "M" not in path_commands:
+                logger.warning("Malformed figure `%s`.", str(figure))
                 continue
 
             if path_commands:
@@ -254,8 +256,8 @@ class Map:
         for parts in nodes.values():
             if len(parts) < 4:  # noqa: PLR2004
                 continue
-            intersection: Intersection = Intersection(parts)
-            intersection.draw(self.svg, is_debug=DEBUG)
+            intersection: Intersection = Intersection(list(parts))
+            intersection.draw(self.svg, scale, is_debug=DEBUG)
 
     def draw_credits(self, size: np.ndarray) -> None:
         """Draw credits.
@@ -316,10 +318,11 @@ def render_map(arguments: argparse.Namespace) -> None:
     if scheme_path is None:
         fatal(f"Scheme `{arguments.scheme}` not found.")
         sys.exit(1)
-
-    scheme: Scheme = Scheme.from_file(scheme_path)
-    if scheme is None:
-        fatal(f"Failed to load scheme from `{arguments.scheme}`.")
+    else:
+        scheme: Scheme = Scheme.from_file(scheme_path)
+        if scheme is None:
+            fatal(f"Failed to load scheme from `{arguments.scheme}`.")
+            sys.exit(1)
 
     configuration: MapConfiguration = MapConfiguration.from_options(
         scheme, arguments, float(arguments.zoom)
@@ -353,17 +356,18 @@ def render_map(arguments: argparse.Namespace) -> None:
 
         if coordinates is None or len(coordinates) != 2:  # noqa: PLR2004
             fatal("Wrong coordinates format.")
-
-        if arguments.size:
-            width, height = np.array(
-                list(map(float, arguments.size.split(",")))
-            )
+            sys.exit(1)
         else:
-            width, height = DEFAULT_SIZE
+            if arguments.size:
+                width, height = np.array(
+                    list(map(float, arguments.size.split(",")))
+                )
+            else:
+                width, height = DEFAULT_SIZE
 
-        bounding_box = BoundingBox.from_coordinates(
-            coordinates, configuration.zoom_level, width, height
-        )
+            bounding_box = BoundingBox.from_coordinates(
+                coordinates, configuration.zoom_level, width, height
+            )
 
     # Determine files.
 
@@ -400,15 +404,17 @@ def render_map(arguments: argparse.Namespace) -> None:
         bounding_box = osm_data.view_box
     if not bounding_box:
         bounding_box = osm_data.bounding_box
-    if not bounding_box:
-        fatal("Failed to compute bounding box.")
-        sys.exit(1)
 
     # Render the map.
 
-    flinger: MercatorFlinger = MercatorFlinger(
-        bounding_box, arguments.zoom, osm_data.equator_length
-    )
+    if bounding_box:
+        flinger: MercatorFlinger = MercatorFlinger(
+            bounding_box, arguments.zoom, osm_data.equator_length
+        )
+    else:
+        fatal("Failed to compute bounding box.")
+        sys.exit(1)
+
     size: np.ndarray = flinger.size
 
     svg: svgwrite.Drawing = svgwrite.Drawing(arguments.output_file_name, size)

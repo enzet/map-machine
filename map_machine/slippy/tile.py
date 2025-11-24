@@ -461,9 +461,12 @@ def generate_tiles(options: argparse.Namespace) -> None:
     zoom_levels: list[int] = parse_zoom_level(options.zoom)
     min_zoom_level: int = min(zoom_levels)
 
-    scheme: Scheme = Scheme.from_file(
-        workspace.find_scheme_path(options.scheme)
-    )
+    scheme_path: Path | None = workspace.find_scheme_path(options.scheme)
+    if not scheme_path:
+        logger.fatal("Scheme `%s` not found.", options.scheme)
+        return
+
+    scheme: Scheme = Scheme.from_file(scheme_path)
     cache_path: Path = Path(options.cache)
     if not cache_path.exists():
         message: str = (

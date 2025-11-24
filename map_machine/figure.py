@@ -40,7 +40,7 @@ class Figure(Tagged):
 
     def get_path(
         self, flinger: Flinger, offset: np.ndarray | None = None
-    ) -> str:
+    ) -> str | None:
         """Get SVG path commands.
 
         :param flinger: converter for geo coordinates
@@ -48,13 +48,23 @@ class Figure(Tagged):
         """
         if offset is None:
             offset = np.array((0.0, 0.0))
+
         path: str = ""
+        commands: str | None
 
         for outer_nodes in self.outers:
-            path += f"{get_path(outer_nodes, offset, flinger)} "
+            commands: str | None = get_path(outer_nodes, offset, flinger)
+            if commands:
+                path += f"{commands} "
+            else:
+                return None
 
         for inner_nodes in self.inners:
-            path += f"{get_path(inner_nodes, offset, flinger)} "
+            commands: str | None = get_path(inner_nodes, offset, flinger)
+            if commands:
+                path += f"{commands} "
+            else:
+                return None
 
         return path
 
@@ -76,7 +86,7 @@ class StyledFigure(Figure):
         self,
         flinger: Flinger,
         offset: np.ndarray | None = None,
-    ) -> str:
+    ) -> str | None:
         """Get SVG path commands.
 
         :param flinger: converter for geo coordinates
@@ -87,16 +97,22 @@ class StyledFigure(Figure):
         path: str = ""
 
         for outer_nodes in self.outers:
-            commands: str = get_path(
+            commands: str | None = get_path(
                 outer_nodes, offset, flinger, self.line_style.parallel_offset
             )
-            path += f"{commands} "
+            if commands:
+                path += f"{commands} "
+            else:
+                return None
 
         for inner_nodes in self.inners:
-            commands: str = get_path(
+            commands: str | None = get_path(
                 inner_nodes, offset, flinger, self.line_style.parallel_offset
             )
-            path += f"{commands} "
+            if commands:
+                path += f"{commands} "
+            else:
+                return None
 
         return path
 
@@ -155,7 +171,7 @@ def get_path(
     shift: np.ndarray,
     flinger: Flinger,
     parallel_offset: float = 0.0,
-) -> str:
+) -> str | None:
     """Construct SVG path commands from nodes."""
     return Polyline(
         [flinger.fling(node.coordinates) + shift for node in nodes]

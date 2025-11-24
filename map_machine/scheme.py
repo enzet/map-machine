@@ -6,7 +6,7 @@ import logging
 import re
 from dataclasses import dataclass
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import yaml
@@ -32,7 +32,7 @@ __email__ = "me@enzet.ru"
 
 logger: logging.Logger = logging.getLogger(__name__)
 
-IconDescription = list[Union[str, dict[str, str]]]
+IconDescription = list[dict[str, str]]
 
 DEFAULT_COLOR: Color = Color("black")
 
@@ -199,7 +199,7 @@ class Matcher(Tagged):
 
 def get_shape_specifications(
     structure: list[str | dict[str, Any]],
-) -> list[dict]:
+) -> list[dict[str, Any]]:
     """Parse shape specification from scheme."""
     shapes: list[dict] = []
     for shape_specification in structure:

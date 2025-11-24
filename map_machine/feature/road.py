@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import contextlib
 import logging
-from collections import defaultdict
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
@@ -336,7 +335,7 @@ class Intersection:
             part_2.update()
 
     def draw(
-        self, drawing: svgwrite.Drawing, *, is_debug: bool = False
+        self, drawing: svgwrite.Drawing, scale: float, *, is_debug: bool = False
     ) -> None:
         """Draw all road parts and intersection."""
         inner_commands = ["M"]
@@ -368,7 +367,7 @@ class Intersection:
                 part.draw_entrance(drawing)
         if is_debug:
             for part in self.parts:
-                part.draw_lanes(drawing, self.scale)
+                part.draw_lanes(drawing, scale)
         if not is_debug:
             drawing.add(drawing.path(inner_commands, fill="#FF8888"))
 
@@ -391,7 +390,7 @@ class Road(Tagged):
         self.line: Polyline = Polyline(
             [flinger.fling(node.coordinates) for node in self.nodes]
         )
-        self.width: float | None = matcher.default_width
+        self.width: float = matcher.default_width
         self.lanes: list[Lane] = []
 
         self.scale: float = flinger.get_scale(self.nodes[0].coordinates)
@@ -432,10 +431,10 @@ class Road(Tagged):
         number: int
         if "lanes:forward" in tags:
             number = int(tags["lanes:forward"])
-            (x.set_forward(True) for x in self.lanes[-number:])
+            (x.set_forward(is_forward=True) for x in self.lanes[-number:])
         if "lanes:backward" in tags:
             number = int(tags["lanes:backward"])
-            (x.set_forward(False) for x in self.lanes[:number])
+            (x.set_forward(is_forward=False) for x in self.lanes[:number])
 
         if "width" in tags:
             with contextlib.suppress(ValueError):
@@ -543,9 +542,11 @@ class Road(Tagged):
 
     def draw(self, svg: Drawing, *, is_border: bool) -> None:
         """Draw road as simple SVG path."""
-        filter_: Filter = self.get_filter(svg, is_border)
+        filter_: Filter | None = self.get_filter(svg, is_border=is_border)
 
-        style: dict[str, int | float | str] = self.get_style(is_border)
+        style: dict[str, int | float | str] = self.get_style(
+            is_border=is_border
+        )
 
         if (path_commands := self.line.get_path(self.placement_offset)) is None:
             return
@@ -762,14 +763,14 @@ class ComplexConnector(Connector):
             point,
             self.road_1.line.points[self.index_1],
             self.road_1.placement_offset,
-            self.index_1 != 0,
+            is_end=self.index_1 != 0,
         )
         points_2: list[np.ndarray] = get_curve_points(
             self.road_2,
             point,
             self.road_2.line.points[self.index_2],
             self.road_2.placement_offset,
-            self.index_2 != 0,
+            is_end=self.index_2 != 0,
         )
         # fmt: off
         self.curve_1: PathCommands = [
@@ -790,7 +791,7 @@ class ComplexConnector(Connector):
 
     def draw_border(self, svg: Drawing) -> None:
         """Draw connection outline."""
-        filter_: Filter = self.road_1.get_filter(svg, is_border=True)
+        filter_: Filter | None = self.road_1.get_filter(svg, is_border=True)
 
         if filter_:
             path: Path = svg.path(
@@ -855,11 +856,13 @@ class Roads:
         if not self.roads:
             return
 
-        layered_roads: dict[float, list[Road]] = defaultdict(list)
-        layered_connectors: dict[float, list[Connector]] = defaultdict(list)
+        layered_roads: dict[float, list[Road]] = {}
+        layered_connectors: dict[float, list[Connector]] = {}
 
         for road in self.roads:
             if not road.is_transition:
+                if road.layer not in layered_roads:
+                    layered_roads[road.layer] = []
                 layered_roads[road.layer].append(road)
             else:
                 connections = [
@@ -874,6 +877,8 @@ class Roads:
                     connector: Connector = ComplexConnector(
                         [connections[0][0], connections[1][0]], flinger
                     )
+                    if road.layer not in layered_connectors:
+                        layered_connectors[road.layer] = []
                     layered_connectors[road.layer].append(connector)
 
         for connected in self.nodes.values():
@@ -896,8 +901,8 @@ class Roads:
                 else:
                     continue
             else:
-                # We can also use SimpleIntersection(connected, flinger, scale)
-                # here.
+                # We can also use
+                # `SimpleIntersection(connected, flinger, scale)` here.
                 continue
 
             layered_connectors[connector.min_layer].append(connector)
@@ -907,7 +912,7 @@ class Roads:
             roads: list[Road] = sorted(
                 layered_roads[layer], key=lambda x: x.matcher.priority
             )
-            connectors: list[Connector] = layered_connectors.get(layer)
+            connectors: list[Connector] | None = layered_connectors.get(layer)
 
             # Draw borders.
 

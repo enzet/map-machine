@@ -11,7 +11,7 @@ from portolan import middle
 from map_machine.osm.osm_reader import Tagged
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Iterable
 
     from svgwrite import Drawing
     from svgwrite.gradients import RadialGradient
@@ -137,12 +137,12 @@ class DirectionSet:
 
         :param text: direction tag value
         """
-        self.sectors: Iterator[Sector | None] = map(Sector, text.split(";"))
+        self.sectors: Iterable[Sector | None] = map(Sector, text.split(";"))
 
     def __str__(self) -> str:
         return ", ".join(map(str, self.sectors))
 
-    def draw(self, center: np.ndarray, radius: float) -> Iterator[PathCommands]:
+    def draw(self, center: np.ndarray, radius: float) -> Iterable[PathCommands]:
         """Construct SVG "d" for arc elements.
 
         :param center: center point of all arcs
@@ -209,9 +209,11 @@ class DirectionSector(Tagged):
 
         point: np.ndarray = (self.point.astype(int)).astype(float)
 
-        paths: Iterator[PathCommands]
+        paths: Iterable[PathCommands]
         if angle is not None:
-            paths = [Sector(direction, angle).draw(point, direction_radius)]
+            sector = Sector(direction, angle).draw(point, direction_radius)
+            if sector:
+                paths = [sector]
         else:
             paths = DirectionSet(direction).draw(point, direction_radius)
 

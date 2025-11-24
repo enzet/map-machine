@@ -3,13 +3,14 @@
 import logging
 import sys
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from map_machine.ui.cli import parse_arguments
 from map_machine.workspace import Workspace
 
 if TYPE_CHECKING:
     import argparse
+    import io
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -17,8 +18,10 @@ __email__ = "me@enzet.ru"
 
 def main() -> None:
     """Map Machine command-line entry point."""
-    sys.stdin.reconfigure(encoding="utf-8")
-    sys.stdout.reconfigure(encoding="utf-8")
+
+    # `cast` is here to make static analysis tools happy.
+    cast("io.TextIOWrapper", sys.stdin).reconfigure(encoding="utf-8")
+    cast("io.TextIOWrapper", sys.stdout).reconfigure(encoding="utf-8")
 
     logging.basicConfig(format="%(levelname)s %(message)s", level=logging.INFO)
     workspace: Workspace = Workspace(Path("out"))

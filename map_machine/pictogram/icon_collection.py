@@ -208,7 +208,7 @@ class IconCollection:
             if point[0] > width - 8.0:
                 point[0] = step / 2.0 * scale
                 point += np.array((0.0, step * scale))
-                height += step * scale
+                height += int(step * scale)
 
         with file_name.open("w", encoding="utf-8") as output_file:
             svg.write(output_file)

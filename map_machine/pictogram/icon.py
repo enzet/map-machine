@@ -16,6 +16,7 @@ from colour import Color
 from defusedxml import ElementTree
 from svgwrite import Drawing
 from svgwrite.container import Group
+from svgwrite.path import Path as SVGPath
 
 from map_machine.color import is_bright
 
@@ -23,7 +24,6 @@ if TYPE_CHECKING:
     from pathlib import Path
 
     from svgwrite.base import BaseElement
-    from svgwrite.path import Path as SVGPath
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -158,9 +158,7 @@ class Shape:
 
         transformations.append(f"translate({self.offset[0]},{self.offset[1]})")
 
-        return svgwrite.path.Path(
-            d=self.path, transform=" ".join(transformations)
-        )
+        return SVGPath(d=self.path, transform=" ".join(transformations))
 
     def get_full_id(self) -> str:
         """Compute full shape identifier with group for sorting."""

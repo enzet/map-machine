@@ -1,10 +1,10 @@
 """Color utility."""
 
-from typing import cast
+from typing import Any
 
 from colour import Color
 
-from map_machine.util import MinMax, T
+from map_machine.util import MinMax
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -24,7 +24,9 @@ def is_bright(color: Color) -> bool:
 
 
 def get_gradient_color(
-    value: T, bounds: MinMax[T], colors: list[Color]
+    value: Any,  # noqa: ANN401
+    bounds: MinMax,
+    colors: list[Color],
 ) -> Color:
     """Get color from the color scale for the value.
 
@@ -36,9 +38,7 @@ def get_gradient_color(
     scale: list[Color] = [*colors, Color("black")]
 
     range_coefficient: float = (
-        0.0
-        if bounds.is_empty()
-        else cast("float", cast("T", value - bounds.min_) / bounds.delta())
+        0.0 if bounds.is_empty() else (value - bounds.min_) / bounds.delta()
     )
     # If value is out of range, set it to boundary value.
     range_coefficient = min(1.0, max(0.0, range_coefficient))

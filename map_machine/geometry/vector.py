@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+import logging
+
 import numpy as np
+from shapely.geometry import LineString
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-from shapely.geometry import LineString
+logger: logging.Logger = logging.getLogger(__name__)
 
 MINIMAL_NUMBER_OF_POINTS: int = 2
 
@@ -51,6 +54,11 @@ class Polyline:
 
     def get_path(self, parallel_offset: float = 0.0) -> str | None:
         """Construct SVG path commands."""
+
+        if len(self.points) < MINIMAL_NUMBER_OF_POINTS:
+            logger.warning("Malformed polyline `%s`.", str(self.points))
+            return None
+
         points: list[np.ndarray]
 
         if np.allclose(parallel_offset, 0.0):
@@ -61,13 +69,15 @@ class Polyline:
                     LineString(self.points)
                     .parallel_offset(parallel_offset)
                     .coords
-                    if parallel_offset
-                    else self.points
                 )
             except (ValueError, NotImplementedError):
-                points = self.points
+                logger.warning(
+                    "Failed to offset polyline `%s`.", str(self.points)
+                )
+                return None
 
-        if len(points) < MINIMAL_NUMBER_OF_POINTS:  # Deal with malformed paths.
+        if len(points) < MINIMAL_NUMBER_OF_POINTS:
+            logger.warning("Failed to offset polyline `%s`.", str(self.points))
             return None
 
         return (
