@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "map-machine"
 description = "Map Machine: Python map renderer for OpenStreetMap with custom icon set."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = "MIT"
 authors = [{ name = "Sergey Vartanov", email = "me@enzet.ru" }]
 classifiers = [
