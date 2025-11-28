@@ -150,7 +150,7 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         "--buildings",
         metavar="<mode>",
         default="flat",
-        choices=(mode.value for mode in BuildingMode),
+        choices=[mode.value for mode in BuildingMode],
         help="building drawing mode: "
         + ", ".join(mode.value for mode in BuildingMode),
     )
@@ -158,7 +158,7 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         "--mode",
         default="normal",
         metavar="<string>",
-        choices=(mode.value for mode in DrawingMode),
+        choices=[mode.value for mode in DrawingMode],
         help="map drawing mode: "
         + ", ".join(mode.value for mode in DrawingMode),
     )
@@ -175,7 +175,7 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         dest="label_mode",
         default="main",
         metavar="<string>",
-        choices=(mode.value for mode in LabelMode),
+        choices=[mode.value for mode in LabelMode],
         help="label drawing mode: "
         + ", ".join(mode.value for mode in LabelMode),
     )
