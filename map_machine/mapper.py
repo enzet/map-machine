@@ -27,12 +27,12 @@ from map_machine.osm.osm_reader import OSMData, OSMNode
 from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.pictogram.point import Occupied, Point
 from map_machine.scheme import Scheme
-from map_machine.ui.cli import BuildingMode
+from map_machine.ui.cli import BuildingMode, RoadMode
 from map_machine.workspace import workspace
 
 if TYPE_CHECKING:
     import argparse
-    from collections.abc import Iterator
+    from collections.abc import Iterable
 
     from map_machine.figure import StyledFigure
     from map_machine.geometry.vector import Segment
@@ -76,9 +76,12 @@ class Map:
 
         figures: list[StyledFigure] = constructor.get_sorted_figures()
 
+        # Figures that should be drawn on top of roads.
         top_figures: list[StyledFigure] = [
             x for x in figures if x.line_style.priority >= ROAD_PRIORITY
         ]
+
+        # Figures that should be drawn below roads.
         bottom_figures: list[StyledFigure] = [
             x for x in figures if x.line_style.priority < ROAD_PRIORITY
         ]
@@ -98,7 +101,14 @@ class Map:
                 path.update(figure.line_style.style)
                 self.svg.add(path)
 
-        constructor.roads.draw(self.svg, self.flinger)
+        if self.configuration.road_mode == RoadMode.NO:
+            pass
+        elif self.configuration.road_mode == RoadMode.LANES:
+            constructor.roads.draw(self.svg, self.flinger)
+
+        # TODO(enzet): enable when finished.
+        # Experimental debug drawing:
+        # `self.draw_complex_roads(constructor.roads.roads)`.
 
         for figure in top_figures:
             path_commands = figure.get_path(self.flinger)
@@ -233,8 +243,8 @@ class Map:
 
             previous_height = height
 
-    def draw_simple_roads(self, roads: Iterator[Road]) -> None:
-        """Draw road as simple SVG path."""
+    def draw_complex_roads(self, roads: Iterable[Road]) -> None:
+        """Draw road as complex structures."""
         nodes: dict[OSMNode, set[RoadPart]] = {}
 
         for road in roads:

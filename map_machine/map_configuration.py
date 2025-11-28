@@ -48,6 +48,16 @@ class BuildingMode(Enum):
     ISOMETRIC_NO_PARTS = "isometric-no-parts"
 
 
+class RoadMode(Enum):
+    """Road drawing mode."""
+
+    """Don't draw any kinds of roads."""
+    NO = "no"
+
+    """Draw roads trying to display their actual width and lanes number."""
+    LANES = "lanes"
+
+
 @dataclass
 class MapConfiguration:
     """Map drawing configuration."""
@@ -55,6 +65,7 @@ class MapConfiguration:
     scheme: Scheme
     drawing_mode: DrawingMode = DrawingMode.NORMAL
     building_mode: BuildingMode = BuildingMode.FLAT
+    road_mode: RoadMode = RoadMode.LANES
     label_mode: LabelMode = LabelMode.MAIN
     zoom_level: float = 18.0
     overlap: int = 12
@@ -79,6 +90,7 @@ class MapConfiguration:
             scheme,
             DrawingMode(options.mode),
             BuildingMode(options.buildings),
+            RoadMode(options.roads),
             LabelMode(options.label_mode),
             zoom_level,
             options.overlap,

@@ -3,7 +3,12 @@
 import argparse
 
 from map_machine import __version__
-from map_machine.map_configuration import BuildingMode, DrawingMode, LabelMode
+from map_machine.map_configuration import (
+    BuildingMode,
+    DrawingMode,
+    LabelMode,
+    RoadMode,
+)
 from map_machine.osm.osm_reader import STAGES_OF_DECAY
 
 __author__ = "Sergey Vartanov"
@@ -149,14 +154,25 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--buildings",
         metavar="<mode>",
-        default="flat",
+        default=BuildingMode.FLAT,
         choices=[mode.value for mode in BuildingMode],
-        help="building drawing mode: "
-        + ", ".join(mode.value for mode in BuildingMode),
+        help=(
+            "building drawing mode: "
+            + ", ".join(mode.value for mode in BuildingMode)
+        ),
+    )
+    parser.add_argument(
+        "--roads",
+        metavar="<mode>",
+        default=RoadMode.LANES,
+        choices=[mode.value for mode in RoadMode],
+        help=(
+            "road drawing mode: " + ", ".join(mode.value for mode in RoadMode)
+        ),
     )
     parser.add_argument(
         "--mode",
-        default="normal",
+        default=DrawingMode.NORMAL,
         metavar="<string>",
         choices=[mode.value for mode in DrawingMode],
         help="map drawing mode: "
@@ -173,7 +189,7 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--labels",
         dest="label_mode",
-        default="main",
+        default=LabelMode.MAIN,
         metavar="<string>",
         choices=[mode.value for mode in LabelMode],
         help="label drawing mode: "

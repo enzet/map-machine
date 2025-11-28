@@ -15,6 +15,8 @@
   [Black](https://github.com/psf/black) and
   [Flake8](https://github.com/PyCQA/flake8)
   ([#183](https://github.com/enzet/map-machine/issues/183)).
+- Add `--roads` option with default value `lanes`, that keeps current road
+  drawing behavior.
 
 ## 0.2.0
 
