@@ -51,14 +51,8 @@ def get_osm(
         logger.warning("Cannot decompress OSM data: %s.", error)
 
     if not content.startswith(b"<"):
-        if content == (
-            b"You requested too many nodes (limit is 50000). Either request a "
-            b"smaller area, or use planet.osm"
-        ):
-            message: str = (
-                "Cannot download data: too many nodes (limit is 50000). Try "
-                "to request smaller area."
-            )
+        if len(content) < 500:
+            message = "Cannot download data: `" + content.decode("utf-8") + "`."
             raise NetworkError(message)
 
         message = "Cannot download data."
