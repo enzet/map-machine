@@ -497,11 +497,7 @@ class Road(Tagged):
         self, *, is_border: bool, is_for_stroke: bool = False
     ) -> dict[str, int | float | str]:
         """Get road SVG style."""
-        width: float
-        if self.width is not None:
-            width = self.width
-        else:
-            width = self.matcher.default_width
+        width: float = self.width if self.width else self.matcher.default_width
 
         border_width: float
         if is_border:
@@ -527,7 +523,7 @@ class Road(Tagged):
         style: dict[str, int | float | str] = {
             "fill": fill,
             "stroke": color.hex,
-            "stroke-linecap": "butt",
+            "stroke-linecap": "round",
             "stroke-linejoin": "round",
             "stroke-width": self.scale * width + extra_width + border_width,
         }
@@ -864,9 +860,10 @@ class Roads:
 
     def draw_simple(self, svg: Drawing) -> None:
         """Draw roads as styled figures, usually lines with outlines."""
-        for road in self.roads:
+        for road in sorted(self.roads, key=lambda x: x.matcher.priority):
             road.draw(svg, is_border=True)
-        for road in self.roads:
+
+        for road in sorted(self.roads, key=lambda x: x.matcher.priority):
             road.draw(svg, is_border=False)
 
     def draw_lanes(
