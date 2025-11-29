@@ -862,10 +862,17 @@ class Roads:
                 self.nodes[node.id_] = []
             self.nodes[node.id_].append((road, index))
 
-    def draw(
+    def draw_simple(self, svg: Drawing) -> None:
+        """Draw roads as styled figures, usually lines with outlines."""
+        for road in self.roads:
+            road.draw(svg, is_border=True)
+        for road in self.roads:
+            road.draw(svg, is_border=False)
+
+    def draw_lanes(
         self, svg: Drawing, flinger: Flinger, *, draw_captions: bool = False
     ) -> None:
-        """Draw whole road system."""
+        """Draw whole road system with lanes and width."""
         if not self.roads:
             return
 

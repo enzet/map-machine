@@ -164,7 +164,7 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--roads",
         metavar="<mode>",
-        default=RoadMode.LANES,
+        default=RoadMode.SIMPLE,
         choices=[mode.value for mode in RoadMode],
         help=(
             "road drawing mode: " + ", ".join(mode.value for mode in RoadMode)

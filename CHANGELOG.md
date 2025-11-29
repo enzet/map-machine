@@ -3,6 +3,9 @@
 ### Improvements
 
 - **Breaking change**: disable `--update-cache` by default for `server` command.
+- **Breaking change**: add `--roads` option with default value `simple`, that
+  means drawing roads as simple styled figures instead of complex structures
+  with lanes.
 - Add Leaflet example
   ([#164](https://github.com/enzet/map-machine/issues/164)).
 - Rename `--boundary-box` to `--bounding-box`. `--boundary-box` is still
@@ -15,8 +18,6 @@
   [Black](https://github.com/psf/black) and
   [Flake8](https://github.com/PyCQA/flake8)
   ([#183](https://github.com/enzet/map-machine/issues/183)).
-- Add `--roads` option with default value `lanes`, that keeps current road
-  drawing behavior.
 
 ## 0.2.0
 

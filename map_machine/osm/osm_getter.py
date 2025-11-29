@@ -16,6 +16,7 @@ __email__ = "me@enzet.ru"
 logger: logging.Logger = logging.getLogger(__name__)
 
 SLEEP_TIME_BETWEEN_REQUESTS: float = 2.0
+MAX_OSM_MESSAGE_LENGTH: int = 500
 
 
 @dataclass
@@ -51,7 +52,7 @@ def get_osm(
         logger.warning("Cannot decompress OSM data: %s.", error)
 
     if not content.startswith(b"<"):
-        if len(content) < 500:
+        if len(content) < MAX_OSM_MESSAGE_LENGTH:
             message = "Cannot download data: `" + content.decode("utf-8") + "`."
             raise NetworkError(message)
 

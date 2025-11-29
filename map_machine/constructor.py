@@ -37,7 +37,7 @@ from map_machine.pictogram.icon import (
 from map_machine.pictogram.point import Point
 from map_machine.scheme import LineStyle, RoadMatcher, Scheme
 from map_machine.text import Label, TextConstructor
-from map_machine.ui.cli import BuildingMode
+from map_machine.ui.cli import BuildingMode, RoadMode
 from map_machine.util import MinMax
 
 if TYPE_CHECKING:
@@ -270,6 +270,8 @@ class Constructor:
 
         road_matcher: RoadMatcher | None = self.scheme.get_road(line.tags)
         if road_matcher:
+            if self.configuration.road_mode == RoadMode.NO:
+                return
             road: Road = Road(
                 line.tags, outers[0], road_matcher, self.flinger, self.scheme
             )
@@ -302,6 +304,7 @@ class Constructor:
             self.figures.append(
                 StyledFigure(line.tags, inners, outers, new_line_style)
             )
+
             if not (
                 line.get_tag("area") == "yes"
                 or line.get_tag("type") == "multipolygon"

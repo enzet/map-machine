@@ -101,10 +101,10 @@ class Map:
                 path.update(figure.line_style.style)
                 self.svg.add(path)
 
-        if self.configuration.road_mode == RoadMode.NO:
-            pass
-        elif self.configuration.road_mode == RoadMode.LANES:
-            constructor.roads.draw(self.svg, self.flinger)
+        if self.configuration.road_mode == RoadMode.SIMPLE:
+            constructor.roads.draw_simple(self.svg)
+        if self.configuration.road_mode == RoadMode.LANES:
+            constructor.roads.draw_lanes(self.svg, self.flinger)
 
         # TODO(enzet): enable when finished.
         # Experimental debug drawing:

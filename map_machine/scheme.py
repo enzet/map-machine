@@ -271,13 +271,8 @@ class WayMatcher(Matcher):
                 else:
                     self.style[key] = value
 
-        self.priority: float = 0.0
-        if "priority" in structure:
-            self.priority = structure["priority"]
-
-        self.parallel_offset: float = 0.0
-        if parallel_offset := structure.get("parallel_offset"):
-            self.parallel_offset = parallel_offset
+        self.priority: float = structure.get("priority", 0.0)
+        self.parallel_offset: float = structure.get("parallel_offset", 0.0)
 
     def get_style(self) -> dict[str, Any]:
         """Return way SVG style."""

@@ -54,6 +54,9 @@ class RoadMode(Enum):
     """Don't draw any kinds of roads."""
     NO = "no"
 
+    """Draw roads as other styled lines."""
+    SIMPLE = "simple"
+
     """Draw roads trying to display their actual width and lanes number."""
     LANES = "lanes"
 
