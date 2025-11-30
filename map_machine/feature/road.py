@@ -408,7 +408,7 @@ class Road(Tagged):
         if "lanes" in tags:
             try:
                 self.width = int(tags["lanes"]) * DEFAULT_LANE_WIDTH
-                self.lanes = [Lane()] * int(tags["lanes"])
+                self.lanes = [Lane() for _ in range(int(tags["lanes"]))]
             except ValueError:
                 pass
 
@@ -423,7 +423,9 @@ class Road(Tagged):
             ):
                 _, lane_string = parts
                 if (lane_number := int(lane_string) - 1) >= len(self.lanes):
-                    self.lanes += [Lane()] * (lane_number + 1 - len(self.lanes))
+                    self.lanes += [
+                        Lane() for _ in range(lane_number + 1 - len(self.lanes))
+                    ]
 
         if "width:lanes" in tags:
             try:
