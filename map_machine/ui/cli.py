@@ -16,12 +16,6 @@ __email__ = "me@enzet.ru"
 
 COMMAND_LINES: dict[str, list[str]] = {
     "render": ["render", "--bounding-box", "10.000,20.000,10.001,20.001"],
-    "render_with_tooltips": [
-        "render",
-        "--bounding-box",
-        "10.000,20.000,10.001,20.001",
-        "--tooltips",
-    ],
     "icons": ["icons"],
     "mapcss": ["mapcss"],
     "draw": ["draw", "node", "amenity=bench,material=wood"],

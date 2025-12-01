@@ -45,6 +45,71 @@ def run(arguments: list[str], message: bytes) -> None:
         assert pipe.returncode == 0
 
 
+class TestOSMFile:
+    """Test OSM file."""
+
+    def __init__(self) -> None:
+        self.id_: int = 1
+        self.content: str = ""
+
+    def add_node(
+        self,
+        tags: dict[str, str],
+        latitude: float = 20.0005,
+        longitude: float = 10.0005,
+    ) -> "TestOSMFile":
+        """Add a test node with given tags."""
+        self.content += (
+            f' <node id="{self.id_}" visible="true" version="1" changeset="1" '
+            f'timestamp="2000-01-01T00:00:00Z" user="Temp" uid="{self.id_}" '
+            f'lat="{latitude}" lon="{longitude}">\n'
+        )
+        self.id_ += 1
+
+        for key, value in tags.items():
+            self.content += f'  <tag k="{key}" v="{value}"/>\n'
+
+        self.content += " </node>\n"
+
+        return self
+
+    def add_way(self, tags: dict[str, str]) -> "TestOSMFile":
+        """Add a test way with two arbitrary nodes."""
+
+        id_1: int = self.id_
+        self.add_node({}, 20.0, 10.0)
+
+        id_2: int = self.id_
+        self.add_node({}, 20.001, 10.001)
+
+        self.content += (
+            f' <way id="{self.id_}" visible="true" version="1" changeset="1" '
+            f'timestamp="2000-01-01T00:00:00Z" user="Temp" uid="{self.id_}">\n'
+        )
+        self.content += f'  <nd ref="{id_1}"/>\n'
+        self.content += f'  <nd ref="{id_2}"/>\n'
+
+        for key, value in tags.items():
+            self.content += f'  <tag k="{key}" v="{value}"/>\n'
+
+        self.content += " </way>\n"
+        self.id_ += 1
+
+        return self
+
+    def write(self, file_path: Path) -> None:
+        """Create a test OSM file."""
+        with file_path.open("w") as file:
+            file.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+            file.write('<osm version="0.6">\n')
+            file.write(
+                ' <bounds minlat="20.0000000" minlon="10.0000000" '
+                'maxlat="20.0010000" maxlon="10.0010000"/>\n'
+            )
+            file.write(self.content)
+            file.write("</osm>\n")
+
+
 def test_wrong_render_arguments() -> None:
     """Test `render` command with wrong arguments."""
     error_run(
@@ -54,10 +119,30 @@ def test_wrong_render_arguments() -> None:
     )
 
 
-def test_render() -> None:
-    """Test `render` command."""
+def test_render_coordinates() -> None:
+    """Test `render` command without input file."""
     run(
         COMMAND_LINES["render"] + ["--cache", "tests/data"],
+        LOG + b"INFO Writing output SVG to `out/map.svg`...\n",
+    )
+    with (OUTPUT_PATH / "map.svg").open(encoding="utf-8") as output_file:
+        root = ElementTree.parse(output_file).getroot()
+
+    # 8 expected elements: `defs`, `rect` (background), `g` (outline),
+    # `g` (icon), 4 `text` elements (credits).
+    expected_elements: int = 8
+
+    assert len(root) == expected_elements
+    assert len(root[3][0]) == 0
+    assert root.get("width") == "186.0"
+    assert root.get("height") == "198.0"
+
+
+def test_render_file() -> None:
+    """Test `render` command with input file."""
+    run(
+        COMMAND_LINES["render"]
+        + ["--cache", "tests/data", "--input", "tests/data/tree.osm"],
         LOG + b"INFO Writing output SVG to `out/map.svg`...\n",
     )
     with (OUTPUT_PATH / "map.svg").open(encoding="utf-8") as output_file:
@@ -76,7 +161,7 @@ def test_render() -> None:
 def test_render_with_tooltips() -> None:
     """Test `render` command."""
     run(
-        COMMAND_LINES["render_with_tooltips"] + ["--cache", "tests/data"],
+        COMMAND_LINES["render"] + ["--cache", "tests/data", "--tooltips"],
         LOG + b"INFO Writing output SVG to `out/map.svg`...\n",
     )
     with (OUTPUT_PATH / "map.svg").open(encoding="utf-8") as output_file:
@@ -91,6 +176,73 @@ def test_render_with_tooltips() -> None:
     assert root[3][0][0].text == "natural: tree"
     assert root.get("width") == "186.0"
     assert root.get("height") == "198.0"
+
+
+def test_render_with_simple_roads() -> None:
+    """Test `render` command with normal roads."""
+
+    temp_file_path: Path = OUTPUT_PATH / "temp.osm"
+
+    osm_file: TestOSMFile = TestOSMFile()
+    osm_file.add_way({"highway": "primary"})
+    osm_file.write(temp_file_path)
+
+    run(
+        COMMAND_LINES["render"]
+        + [
+            "--cache",
+            "tests/data",
+            "--roads",
+            "simple",
+            "--input",
+            str(temp_file_path),
+        ],
+        LOG + b"INFO Writing output SVG to `out/map.svg`...\n",
+    )
+    with (OUTPUT_PATH / "map.svg").open(encoding="utf-8") as output_file:
+        root = ElementTree.parse(output_file).getroot()
+
+    # 8 expected elements: `defs`, `rect` (background), `path` (outline),
+    # `path` (road), 4 `text` elements (credits).
+    expected_elements: int = 8
+
+    assert len(root) == expected_elements
+    assert root[2].tag == "{http://www.w3.org/2000/svg}path"
+    assert root[3].tag == "{http://www.w3.org/2000/svg}path"
+
+
+def test_render_with_lanes_roads() -> None:
+    """Test `render` command with lanes roads."""
+
+    temp_file_path: Path = OUTPUT_PATH / "temp.osm"
+
+    osm_file: TestOSMFile = TestOSMFile()
+    osm_file.add_way({"highway": "primary", "lanes": "2"})
+    osm_file.write(temp_file_path)
+
+    run(
+        COMMAND_LINES["render"]
+        + [
+            "--cache",
+            "tests/data",
+            "--roads",
+            "lanes",
+            "--input",
+            str(temp_file_path),
+        ],
+        LOG + b"INFO Writing output SVG to `out/map.svg`...\n",
+    )
+    with (OUTPUT_PATH / "map.svg").open(encoding="utf-8") as output_file:
+        root = ElementTree.parse(output_file).getroot()
+
+    # 8 expected elements: `defs`, `rect` (background), `path` (outline),
+    # `path` (road), `path` (lanes), 4 `text` elements (credits).
+    expected_elements: int = 9
+
+    assert len(root) == expected_elements
+    assert root[2].tag == "{http://www.w3.org/2000/svg}path"
+    assert root[3].tag == "{http://www.w3.org/2000/svg}path"
+    assert root[4].tag == "{http://www.w3.org/2000/svg}path"
 
 
 def test_icons() -> None:
