@@ -9,23 +9,25 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from colour import Color
+from roentgen import Roentgen, get_roentgen
 
 from map_machine.map_configuration import MapConfiguration
 from map_machine.pictogram.icon_collection import IconCollection
-from tests import SCHEME, SHAPE_EXTRACTOR, workspace
+from tests import SCHEME, workspace
 
 if TYPE_CHECKING:
-    from pathlib import Path
+    from roentgen.icon import IconSpecification, ShapeSpecification
 
     from map_machine.osm.osm_reader import Tags
-    from map_machine.pictogram.icon import Icon, IconSet, ShapeSpecification
+    from map_machine.pictogram.icon import IconSet
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+roentgen: Roentgen = get_roentgen()
 
 CONFIGURATION: MapConfiguration = MapConfiguration(SCHEME)
-COLLECTION: IconCollection = IconCollection.from_scheme(SCHEME, SHAPE_EXTRACTOR)
+COLLECTION: IconCollection = IconCollection.from_scheme(SCHEME)
 DEFAULT_COLOR: Color = SCHEME.get_default_color()
 EXTRA_COLOR: Color = SCHEME.get_extra_color()
 WHITE: Color = Color("white")
@@ -36,26 +38,10 @@ def test_grid() -> None:
     COLLECTION.draw_grid(workspace.output_path / "grid.svg")
 
 
-def test_icons_by_id() -> None:
-    """Test individual icons drawing."""
-    path: Path = workspace.get_icons_by_id_path()
-    COLLECTION.draw_icons(path, workspace.ICONS_LICENSE_PATH)
-    assert (path / "tree.svg").is_file()
-    assert (path / "LICENSE").is_file()
-
-
-def test_icons_by_name() -> None:
-    """Test drawing individual icons that have names."""
-    path: Path = workspace.get_icons_by_name_path()
-    COLLECTION.draw_icons(path, workspace.ICONS_LICENSE_PATH, by_name=True)
-    assert (path / "Röntgen tree.svg").is_file()
-    assert (path / "LICENSE").is_file()
-
-
 def get_icon(tags: Tags) -> IconSet | None:
     """Construct icon from tags."""
     processed: set[str] = set()
-    icon, _ = CONFIGURATION.get_icon(SHAPE_EXTRACTOR, tags, processed)
+    icon, _ = CONFIGURATION.get_icon(tags, processed)
     return icon
 
 
@@ -106,16 +92,16 @@ def check_icon_set(
             shape_specification: ShapeSpecification = (
                 icon.main_icon.shape_specifications[index]
             )
-            assert shape_specification.shape.id_ == shape[0]
-            assert shape_specification.color == Color(shape[1])
+            assert shape_specification.shape_id == shape[0]
+            assert shape_specification.color == shape[1]
 
     assert len(extra_specifications) == len(icon.extra_icons)
     for i, extra_specification in enumerate(extra_specifications):
-        extra_icon: Icon = icon.extra_icons[i]
+        extra_icon: IconSpecification = icon.extra_icons[i]
         assert len(extra_specification) == len(extra_icon.shape_specifications)
         for j, shape in enumerate(extra_specification):
-            assert extra_icon.shape_specifications[j].shape.id_ == shape[0]
-            assert extra_icon.shape_specifications[j].color == Color(shape[1])
+            assert extra_icon.shape_specifications[j].shape_id == shape[0]
+            assert extra_icon.shape_specifications[j].color == shape[1]
 
 
 def test_icon() -> None:

@@ -40,14 +40,6 @@ will automatically download OSM data and render PNG tiles that cover the specifi
 
 The central feature of the project is the Röntgen icon set. It is a set of monochrome 14 × 14 px pixel-aligned icons specially created for the Map Machine project. Unlike the Map Machine source code, which is under the MIT license, all icons are under the [CC BY](https://creativecommons.org/licenses/by/4.0/) license. So, with the appropriate credit the icon set can be used outside the project. Some icons can be used as emoji symbols.
 
-All icons tend to support a common design style, which is heavily inspired by [Maki](https://github.com/mapbox/maki), [Osmic](https://github.com/gmgeo/osmic), and [Temaki](https://github.com/ideditor/temaki).
-
-![Icons](doc/grid.svg)
-
-Feel free to request new icons via issues for whatever you want to see on the map. No matter how frequently the tag is used in OpenStreetMap since the final goal is to cover all tags. However, commonly used tags have priority, other things being equal.
-
-Generate an icon grid and sets of individual icons with `map-machine icons`. It will update the `doc/grid.svg` file, and create SVG files in the `out/icons_by_id` directory where files are named using shape identifiers (e.g. `power_tower_portal_2_level.svg`) and in the `icons_by_name` directory where files are named using shape names (e.g. `Röntgen portal two-level transmission tower.svg`). Files from the last directory are used in the OpenStreetMap wiki (e.g. [`File:Röntgen_portal_two-level_transmission_tower.svg`](https://wiki.openstreetmap.org/wiki/File:R%C3%B6ntgen_portal_two-level_transmission_tower.svg)).
-
 ## Map features
 
 ### Extra icons

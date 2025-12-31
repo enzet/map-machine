@@ -11,7 +11,7 @@ from colour import Color
 if TYPE_CHECKING:
     import argparse
 
-    from map_machine.pictogram.icon import IconSet, ShapeExtractor
+    from map_machine.pictogram.icon import IconSet
     from map_machine.scheme import Scheme
 
 __author__ = "Sergey Vartanov"
@@ -121,13 +121,14 @@ class MapConfiguration:
 
     def get_icon(
         self,
-        extractor: ShapeExtractor,
         tags: dict[str, Any],
         processed: set[str],
     ) -> tuple[IconSet | None, int]:
-        """Get icon set."""
+        """Get icon set.
+
+        :return: (icon set, priority)
+        """
         return self.scheme.get_icon(
-            extractor,
             tags,
             processed,
             self.country,

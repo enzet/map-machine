@@ -24,7 +24,6 @@ from map_machine.geometry.flinger import Flinger, MercatorFlinger
 from map_machine.map_configuration import LabelMode, MapConfiguration
 from map_machine.osm.osm_getter import NetworkError, get_osm
 from map_machine.osm.osm_reader import OSMData, OSMNode
-from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.pictogram.point import Occupied, Point
 from map_machine.scheme import Scheme
 from map_machine.ui.cli import BuildingMode, RoadMode
@@ -431,14 +430,10 @@ def render_map(arguments: argparse.Namespace) -> None:
     size: np.ndarray = flinger.size
 
     svg: svgwrite.Drawing = svgwrite.Drawing(arguments.output_file_name, size)
-    icon_extractor: ShapeExtractor = ShapeExtractor(
-        workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
-    )
 
     constructor: Constructor = Constructor(
         osm_data=osm_data,
         flinger=flinger,
-        extractor=icon_extractor,
         configuration=configuration,
     )
     constructor.construct()

@@ -5,24 +5,20 @@ from __future__ import annotations
 import contextlib
 import logging
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
-import numpy as np
 import yaml
 from colour import Color
+from roentgen.icon import IconSpecification, ShapeSpecification
 
 from map_machine.feature.direction import DirectionSet
 from map_machine.osm.osm_reader import Tagged, Tags
 from map_machine.pictogram.icon import (
     DEFAULT_SHAPE_ID,
     DEFAULT_SMALL_SHAPE_ID,
-    Icon,
     IconSet,
-    Shape,
-    ShapeExtractor,
-    ShapeSpecification,
 )
 
 if TYPE_CHECKING:
@@ -107,31 +103,35 @@ def match_location(restrictions: dict[str, str], country: str) -> bool:
     )
 
 
+@dataclass
 class Matcher(Tagged):
     """Tag matching."""
 
-    def __init__(
-        self, structure: dict[str, Any], group: dict[str, Any] | None = None
-    ) -> None:
-        super().__init__(structure["tags"])
+    exception: dict[str, str] = field(default_factory=dict)
+    start_zoom_level: int | None = None
+    replace_shapes: bool = True
+    location_restrictions: dict[str, str] = field(default_factory=dict)
 
-        self.exception: dict[str, str] = {}
-        if "exception" in structure:
-            self.exception = structure["exception"]
+    @classmethod
+    def from_structure(
+        cls,
+        structure: dict[str, Any],
+        scheme: Scheme,  # noqa: ARG003
+    ) -> Matcher:
+        """Initialize matcher from structure."""
 
-        self.start_zoom_level: int | None = None
-        if group is not None and "start_zoom_level" in group:
-            self.start_zoom_level = group["start_zoom_level"]
+        matcher = cls(tags=structure["tags"])
 
-        self.replace_shapes: bool = True
-        if "replace_shapes" in structure:
-            self.replace_shapes = structure["replace_shapes"]
+        matcher.exception = structure.get("exception", {})
+        matcher.start_zoom_level = structure.get("start_zoom_level")
+        matcher.replace_shapes = structure.get("replace_shapes", True)
+        matcher.location_restrictions = structure.get(
+            "location_restrictions", {}
+        )
 
-        self.location_restrictions: dict[str, str] = {}
-        if "location_restrictions" in structure:
-            self.location_restrictions = structure["location_restrictions"]
+        matcher.verify()
 
-        self.verify()
+        return matcher
 
     def check_zoom_level(self, zoom_level: float) -> bool:
         """Check whether zoom level is matching."""
@@ -209,46 +209,48 @@ def get_shape_specifications(
     return shapes
 
 
+@dataclass
 class NodeMatcher(Matcher):
     """Tag specification matcher."""
 
-    def __init__(
-        self, structure: dict[str, Any], group: dict[str, Any]
-    ) -> None:
-        # Dictionary with tag keys and values, value lists, or "*"
-        super().__init__(structure, group)
+    draw: bool = True
+    shapes: IconDescription | None = None
+    over_icon: IconDescription | None = None
+    under_icon: IconDescription | None = None
+    with_icon: IconDescription | None = None
+    add_shapes: IconDescription | None = None
+    set_main_color: str | None = None
 
-        self.draw: bool = True
-        if "draw" in structure:
-            self.draw = structure["draw"]
+    @classmethod
+    def from_structure(
+        cls, structure: dict[str, Any], scheme: Scheme
+    ) -> NodeMatcher:
+        """Initialize node matcher from structure."""
 
-        self.shapes: IconDescription | None = None
-        if "shapes" in structure:
-            self.shapes = get_shape_specifications(structure["shapes"])
+        node_matcher: NodeMatcher = cast(
+            "NodeMatcher", super().from_structure(structure, scheme)
+        )
 
-        self.over_icon: IconDescription | None = None
-        if "over_icon" in structure:
-            self.over_icon = get_shape_specifications(structure["over_icon"])
+        node_matcher.draw = structure.get("draw", True)
+        node_matcher.shapes = get_shape_specifications(
+            structure.get("shapes", [])
+        )
+        node_matcher.over_icon = get_shape_specifications(
+            structure.get("over_icon", [])
+        )
+        node_matcher.under_icon = get_shape_specifications(
+            structure.get("under_icon", [])
+        )
+        node_matcher.with_icon = get_shape_specifications(
+            structure.get("with_icon", [])
+        )
+        node_matcher.add_shapes = get_shape_specifications(
+            structure.get("add_shapes", [])
+        )
 
-        self.add_shapes: IconDescription | None = None
-        if "add_shapes" in structure:
-            self.add_shapes = get_shape_specifications(structure["add_shapes"])
+        node_matcher.set_main_color = structure.get("set_main_color")
 
-        self.set_main_color: str | None = None
-        if "set_main_color" in structure:
-            self.set_main_color = structure["set_main_color"]
-
-        self.set_opacity: float | None = None
-        if "set_opacity" in structure:
-            self.set_opacity = structure["set_opacity"]
-
-        self.under_icon: IconDescription | None = None
-        if "under_icon" in structure:
-            self.under_icon = get_shape_specifications(structure["under_icon"])
-
-        self.with_icon: IconDescription | None = None
-        if "with_icon" in structure:
-            self.with_icon = get_shape_specifications(structure["with_icon"])
+        return node_matcher
 
     def get_clean_shapes(self) -> list[str] | None:
         """Get list of shape identifiers for shapes."""
@@ -257,43 +259,69 @@ class NodeMatcher(Matcher):
         return [x["shape"] for x in self.shapes]
 
 
+@dataclass
 class WayMatcher(Matcher):
     """Special tag matcher for ways."""
 
-    def __init__(self, structure: dict[str, Any], scheme: Scheme) -> None:
-        super().__init__(structure)
-        self.style: dict[str, Any] = {"fill": "none"}
+    style: dict[str, Any] = field(default_factory=dict)
+    priority: float = 0.0
+    parallel_offset: float = 0.0
+
+    @classmethod
+    def from_structure(
+        cls, structure: dict[str, Any], scheme: Scheme
+    ) -> WayMatcher:
+        """Initialize way matcher from structure."""
+        way_matcher: WayMatcher = cast(
+            "WayMatcher", super().from_structure(structure, scheme)
+        )
+
+        way_matcher.style = {"fill": "none"}
         if "style" in structure:
             style: dict[str, Any] = structure["style"]
             for key, value in style.items():
                 if str(value).endswith("_color"):
-                    self.style[key] = scheme.get_color(value).hex.upper()
+                    way_matcher.style[key] = scheme.get_color(value).hex.upper()
                 else:
-                    self.style[key] = value
+                    way_matcher.style[key] = value
 
-        self.priority: float = structure.get("priority", 0.0)
-        self.parallel_offset: float = structure.get("parallel_offset", 0.0)
+        way_matcher.priority = structure.get("priority", 0.0)
+        way_matcher.parallel_offset = structure.get("parallel_offset", 0.0)
+
+        return way_matcher
 
     def get_style(self) -> dict[str, Any]:
         """Return way SVG style."""
         return self.style
 
 
+@dataclass
 class RoadMatcher(Matcher):
     """Special tag matcher for highways."""
 
-    def __init__(self, structure: dict[str, Any], scheme: Scheme) -> None:
-        super().__init__(structure)
-        self.border_color: Color = Color(
+    border_color: Color | None = None
+    color: Color | None = None
+    default_width: float | None = None
+    priority: float = 0.0
+
+    @classmethod
+    def from_structure(
+        cls, structure: dict[str, Any], scheme: Scheme
+    ) -> RoadMatcher:
+        """Initialize road matcher from structure."""
+        road_matcher: RoadMatcher = cast(
+            "RoadMatcher", super().from_structure(structure, scheme)
+        )
+
+        road_matcher.border_color = Color(
             scheme.get_color(structure["border_color"])
         )
-        self.color: Color = scheme.get_color("road_color")
+        road_matcher.color = scheme.get_color("road_color")
         if "color" in structure:
-            self.color = Color(scheme.get_color(structure["color"]))
-        self.default_width: float = structure["default_width"]
-        self.priority: float = 0.0
-        if "priority" in structure:
-            self.priority = structure["priority"]
+            road_matcher.color = Color(scheme.get_color(structure["color"]))
+        road_matcher.default_width = structure["default_width"]
+        road_matcher.priority = structure.get("priority", 0.0)
+        return road_matcher
 
     def get_priority(self, tags: Tags) -> float:
         """Get priority for drawing order."""
@@ -316,7 +344,9 @@ class Scheme:
         if "node_icons" in content:
             for group in content["node_icons"]:
                 for element in group["tags"]:
-                    self.node_matchers.append(NodeMatcher(element, group))
+                    self.node_matchers.append(
+                        NodeMatcher.from_structure(element, group)
+                    )
 
         options = content.get("options", {})
 
@@ -334,17 +364,17 @@ class Scheme:
         )
 
         self.way_matchers: list[WayMatcher] = (
-            [WayMatcher(x, self) for x in content["ways"]]
+            [WayMatcher.from_structure(x, self) for x in content["ways"]]
             if "ways" in content
             else []
         )
         self.road_matchers: list[RoadMatcher] = (
-            [RoadMatcher(x, self) for x in content["roads"]]
+            [RoadMatcher.from_structure(x, self) for x in content["roads"]]
             if "roads" in content
             else []
         )
         self.area_matchers: list[Matcher] = (
-            [Matcher(x) for x in content["area_tags"]]
+            [Matcher.from_structure(x, self) for x in content["area_tags"]]
             if "area_tags" in content
             else []
         )
@@ -467,7 +497,6 @@ class Scheme:
 
     def get_icon(
         self,
-        extractor: ShapeExtractor,
         tags: dict[str, Any],
         processed: set[str],
         country: str | None = None,
@@ -478,7 +507,7 @@ class Scheme:
     ) -> tuple[IconSet | None, int]:
         """Construct icon set.
 
-        :param extractor: extractor with icon specifications
+        :param roentgen: Röntgen instance with icon specifications
         :param tags: OpenStreetMap element tags dictionary
         :param processed: set of already processed tag keys
         :param country: country to match location restrictions
@@ -494,8 +523,8 @@ class Scheme:
         if tags_hash in self.cache:
             return self.cache[tags_hash]
 
-        main_icon: Icon | None = None
-        extra_icons: list[Icon] = []
+        main_icon: IconSpecification | None = None
+        extra_icons: list[IconSpecification] = []
         priority: int = 0
         color: Color | None = None
 
@@ -515,31 +544,28 @@ class Scheme:
                 processed |= matcher_tags
             if matcher.shapes:
                 specifications = [
-                    self.get_shape_specification(x, extractor, groups)
+                    self.get_shape_specification(x, groups)
                     for x in matcher.shapes
                 ]
-                main_icon = Icon(specifications)
+                main_icon = IconSpecification("", specifications, "")
                 processed |= matcher_tags
             if matcher.over_icon and main_icon:
                 specifications = [
-                    self.get_shape_specification(x, extractor)
-                    for x in matcher.over_icon
+                    self.get_shape_specification(x) for x in matcher.over_icon
                 ]
                 main_icon.add_specifications(specifications)
                 processed |= matcher_tags
             if matcher.add_shapes:
                 specifications = [
                     self.get_shape_specification(
-                        x, extractor, color=self.get_extra_color()
+                        x, color=self.get_extra_color()
                     )
                     for x in matcher.add_shapes
                 ]
-                extra_icons += [Icon(specifications)]
+                extra_icons += [IconSpecification("", specifications, "")]
                 processed |= matcher_tags
             if matcher.set_main_color and main_icon:
                 color = self.get_color(matcher.set_main_color)
-            if matcher.set_opacity and main_icon:
-                main_icon.opacity = matcher.set_opacity
 
         if "material" in tags:
             value: str = tags["material"]
@@ -559,20 +585,20 @@ class Scheme:
 
         if not main_icon:
             dot_spec: ShapeSpecification = ShapeSpecification(
-                extractor.get_shape(DEFAULT_SHAPE_ID), self.get_color("default")
+                DEFAULT_SHAPE_ID, color=self.get_color("default")
             )
-            main_icon = Icon([dot_spec])
+            main_icon = IconSpecification("", [dot_spec], "")
 
-        if main_icon and color:
+        if color:
             main_icon.recolor(color)
 
-        default_icon: Icon | None = None
+        default_icon: IconSpecification | None = None
         if show_overlapped:
             small_dot_spec: ShapeSpecification = ShapeSpecification(
-                extractor.get_shape(DEFAULT_SMALL_SHAPE_ID),
-                color if color else self.get_color("default"),
+                DEFAULT_SMALL_SHAPE_ID,
+                color=color if color else self.get_color("default"),
             )
-            default_icon = Icon([small_dot_spec])
+            default_icon = IconSpecification("", [small_dot_spec], "")
 
         returned: IconSet = IconSet(
             main_icon, extra_icons, default_icon, processed
@@ -584,9 +610,9 @@ class Scheme:
                 for specification in main_icon.shape_specifications:
                     if (
                         DirectionSet(tags[key]).is_right() is not None
-                        and specification.shape.is_right_directed is not None
+                        and main_icon.is_right_directed is not None
                         and DirectionSet(tags[key]).is_right()
-                        != specification.shape.is_right_directed
+                        != main_icon.is_right_directed
                     ):
                         specification.flip_horizontally = True
 
@@ -638,7 +664,6 @@ class Scheme:
     def get_shape_specification(
         self,
         structure: dict[str, Any],
-        extractor: ShapeExtractor,
         groups: dict[str, str] | None = None,
         color: Color | None = None,
     ) -> ShapeSpecification:
@@ -647,9 +672,8 @@ class Scheme:
         The structure is just shape string identifier or dictionary with keys:
         shape (required), color (optional), and offset (optional).
         """
-        shape: Shape = extractor.get_shape(DEFAULT_SHAPE_ID)
         color = color if color is not None else Color(self.colors["default"])
-        offset: np.ndarray = np.array((0.0, 0.0))
+        offset: tuple[float, float] = (0.0, 0.0)
         flip_horizontally: bool = False
         flip_vertically: bool = False
         use_outline: bool = True
@@ -659,13 +683,12 @@ class Scheme:
             if groups:
                 for key in groups:
                     shape_id = shape_id.replace(key, groups[key])
-            shape = extractor.get_shape(shape_id)
         else:
             logger.error("Invalid shape specification: `shape` key expected.")
         if "color" in structure:
             color = self.get_color(structure["color"])
         if "offset" in structure:
-            offset = np.array(structure["offset"])
+            offset = tuple(structure["offset"])
         if "flip_horizontally" in structure:
             flip_horizontally = structure["flip_horizontally"]
         if "flip_vertically" in structure:
@@ -674,10 +697,11 @@ class Scheme:
             use_outline = structure["outline"]
 
         return ShapeSpecification(
-            shape,
-            color,
+            shape_id,
+            "main",
             offset,
             flip_horizontally,
             flip_vertically,
             use_outline,
+            color,
         )

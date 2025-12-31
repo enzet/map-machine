@@ -22,7 +22,6 @@ from map_machine.map_configuration import (
 from map_machine.mapper import Map
 from map_machine.osm.osm_getter import get_osm
 from map_machine.osm.osm_reader import OSMData
-from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.scheme import Scheme
 from map_machine.workspace import workspace
 
@@ -32,9 +31,6 @@ cache: Path = Path("cache")
 cache.mkdir(exist_ok=True)
 
 SCHEME: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
-EXTRACTOR: ShapeExtractor = ShapeExtractor(
-    workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
-)
 
 REMOVED: bool = True
 
@@ -54,9 +50,7 @@ def draw(
     flinger: MercatorFlinger = MercatorFlinger(
         bounding_box, configuration.zoom_level, osm_data.equator_length
     )
-    constructor: Constructor = Constructor(
-        osm_data, flinger, EXTRACTOR, configuration
-    )
+    constructor: Constructor = Constructor(osm_data, flinger, configuration)
     constructor.construct()
 
     svg: svgwrite.Drawing = svgwrite.Drawing(

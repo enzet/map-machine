@@ -3,20 +3,15 @@
 from __future__ import annotations
 
 import logging
-import shutil
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 import numpy as np
 from colour import Color
+from roentgen import Roentgen, get_roentgen
+from roentgen.icon import IconSpecification, ShapeSpecification
 from svgwrite import Drawing
 
-from map_machine.pictogram.icon import (
-    Icon,
-    Shape,
-    ShapeExtractor,
-    ShapeSpecification,
-)
 from map_machine.scheme import Scheme
 from map_machine.workspace import workspace
 
@@ -28,6 +23,8 @@ __email__ = "me@enzet.ru"
 
 logger: logging.Logger = logging.getLogger(__name__)
 
+roentgen: Roentgen = get_roentgen()
+
 WHITE: Color = Color("white")
 BLACK: Color = Color("black")
 
@@ -36,13 +33,12 @@ BLACK: Color = Color("black")
 class IconCollection:
     """Collection of icons."""
 
-    icons: list[Icon]
+    icon_specifications: list[IconSpecification]
 
     @classmethod
     def from_scheme(
         cls,
         scheme: Scheme,
-        extractor: ShapeExtractor,
         background_color: Color = WHITE,
         color: Color = BLACK,
         *,
@@ -62,7 +58,7 @@ class IconCollection:
             tags
         :param add_all: create icons from all possible shapes including parts
         """
-        icons: list[Icon] = []
+        icon_specifications: list[IconSpecification] = []
 
         def add(current_set: list[dict[str, str]]) -> None:
             """Construct icon and add it to the list."""
@@ -71,14 +67,16 @@ class IconCollection:
                 if "#" in shape_specification["shape"]:
                     return
                 specifications.append(
-                    scheme.get_shape_specification(
-                        shape_specification, extractor
-                    )
+                    scheme.get_shape_specification(shape_specification)
                 )
-            constructed_icon: Icon = Icon(specifications)
-            constructed_icon.recolor(color, white=background_color)
-            if constructed_icon not in icons:
-                icons.append(constructed_icon)
+            constructed_icon_specification: IconSpecification = (
+                IconSpecification("", specifications, "")
+            )
+            constructed_icon_specification.recolor(
+                color, white=background_color
+            )
+            if constructed_icon_specification not in icon_specifications:
+                icon_specifications.append(constructed_icon_specification)
 
         for matcher in scheme.node_matchers:
             if matcher.shapes:
@@ -112,35 +110,34 @@ class IconCollection:
 
         specified_ids: set[str] = set()
 
-        for icon in icons:
-            specified_ids |= set(icon.get_shape_ids())
+        for icon_specification in icon_specifications:
+            specified_ids |= set(icon_specification.get_shape_ids())
 
-        shape: Shape
+        all_ids: list[str] = roentgen.get_ids()
 
         if add_unused:
-            for shape_id in extractor.shapes.keys() - specified_ids:
-                shape = extractor.get_shape(shape_id)
-                if shape.is_part:
-                    continue
-                icon = Icon([ShapeSpecification(shape, color)])
-                icon.recolor(color, white=background_color)
-                icons.append(icon)
+            for shape_id in set(all_ids) - specified_ids:
+                icon_specification = IconSpecification(
+                    "", [ShapeSpecification(shape_id)], ""
+                )
+                icon_specification.recolor(color, white=background_color)
+                icon_specifications.append(icon_specification)
 
         if add_all:
-            for shape_id in extractor.shapes:
-                shape = extractor.get_shape(shape_id)
-                icon = Icon([ShapeSpecification(shape, color)])
-                icon.recolor(color, white=background_color)
-                icons.append(icon)
+            for shape_id in all_ids:
+                icon_specification = IconSpecification(
+                    "", [ShapeSpecification(shape_id)], ""
+                )
+                icon_specification.recolor(color, white=background_color)
+                icon_specifications.append(icon_specification)
 
-        return cls(icons)
+        return cls(icon_specifications)
 
     def draw_icons(
         self,
         output_directory: Path,
-        license_path: Path,
+        license_text: str,
         *,
-        by_name: bool = False,
         color: Color | None = None,
         outline: bool = False,
         outline_opacity: float = 1.0,
@@ -149,33 +146,26 @@ class IconCollection:
 
         :param output_directory: path to the directory to store individual SVG
             files for icons
-        :param license_path: path to the file with license
+        :param license: license text
         :param by_name: use names instead of identifiers
         :param color: fill color
         :param outline: if true, draw outline beneath the icon
         :param outline_opacity: opacity of the outline
         """
-        if by_name:
-
-            def get_file_name(x: Icon) -> str:
-                """Generate human-readable file name."""
-                return f"Röntgen {x.get_name()}.svg"
-
-        else:
-
-            def get_file_name(x: Icon) -> str:
-                """Generate file name with unique identifier."""
-                return f"{'___'.join(x.get_shape_ids())}.svg"
-
-        for icon in self.icons:
-            icon.draw_to_file(
-                output_directory / get_file_name(icon),
+        for icon_specification in self.icon_specifications:
+            icon_specification.draw_to_file(
+                output_directory
+                / f"{'___'.join(icon_specification.get_shape_ids())}.svg",
+                roentgen.get_shapes(),
                 color=color,
                 outline=outline,
                 outline_opacity=outline_opacity,
             )
 
-        shutil.copy(license_path, output_directory / "LICENSE")
+        with (output_directory / "LICENSE").open(
+            "w", encoding="utf-8"
+        ) as output_file:
+            output_file.write(license_text)
 
     def draw_grid(
         self,
@@ -193,18 +183,22 @@ class IconCollection:
         :param background_color: background color
         :param scale: scale icon by the magnitude
         """
-        point: np.ndarray = np.array((step / 2.0 * scale, step / 2.0 * scale))
+        point: tuple[float, float] = (step / 2.0 * scale, step / 2.0 * scale)
         width: float = step * columns * scale
 
-        height: int = int(int(len(self.icons) / columns + 1.0) * step * scale)
+        height: int = int(
+            int(len(self.icon_specifications) / columns + 1.0) * step * scale
+        )
         svg: Drawing = Drawing(str(file_name), (width, height))
         if background_color is not None:
             svg.add(
                 svg.rect((0, 0), (width, height), fill=background_color.hex)
             )
 
-        for icon in self.icons:
-            icon.draw(svg, point, scale=scale)
+        for icon_specification in self.icon_specifications:
+            icon_specification.draw(
+                svg, roentgen.get_shapes(), point, scale=scale
+            )
             point += np.array((step * scale, 0.0))
             if point[0] > width - 8.0:
                 point[0] = step / 2.0 * scale
@@ -215,11 +209,11 @@ class IconCollection:
             svg.write(output_file)
 
     def __len__(self) -> int:
-        return len(self.icons)
+        return len(self.icon_specifications)
 
     def sort(self) -> None:
         """Sort icon list."""
-        self.icons = sorted(self.icons)
+        self.icon_specifications = sorted(self.icon_specifications)
 
 
 def draw_icons() -> None:
@@ -229,31 +223,19 @@ def draw_icons() -> None:
     files.
     """
     scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
-    extractor: ShapeExtractor = ShapeExtractor(
-        workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
-    )
-    collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
+    collection: IconCollection = IconCollection.from_scheme(scheme)
     collection.sort()
 
     # Draw individual icons.
 
     icons_by_id_path: Path = workspace.get_icons_by_id_path()
-    collection.draw_icons(icons_by_id_path, workspace.ICONS_LICENSE_PATH)
+    collection.draw_icons(icons_by_id_path, roentgen.get_license())
 
-    icons_by_name_path: Path = workspace.get_icons_by_name_path()
-    collection.draw_icons(
-        icons_by_name_path, workspace.ICONS_LICENSE_PATH, by_name=True
-    )
-
-    logger.info(
-        "Icons are written to `%s` and `%s`.",
-        icons_by_name_path,
-        icons_by_id_path,
-    )
+    logger.info("Icons are written to `%s`.", icons_by_id_path)
 
     # Draw grid.
 
-    for icon in collection.icons:
+    for icon in collection.icon_specifications:
         icon.recolor(Color("#444444"))
 
     for path, scale in (

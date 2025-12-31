@@ -48,9 +48,8 @@ def run(arguments: list[str], message: bytes) -> None:
 class TestOSMFile:
     """Test OSM file."""
 
-    def __init__(self) -> None:
-        self.id_: int = 1
-        self.content: str = ""
+    id_: int = 1
+    content: str = ""
 
     def add_node(
         self,
@@ -128,12 +127,20 @@ def test_render_coordinates() -> None:
     with (OUTPUT_PATH / "map.svg").open(encoding="utf-8") as output_file:
         root = ElementTree.parse(output_file).getroot()
 
-    # 8 expected elements: `defs`, `rect` (background), `g` (outline),
-    # `g` (icon), 4 `text` elements (credits).
-    expected_elements: int = 8
-
-    assert len(root) == expected_elements
-    assert len(root[3][0]) == 0
+    expected_elements: list[str] = [
+        "defs",  # Empty definitions.
+        "rect",  # Background.
+        "g",  # Outline.
+        "path",  # Icon.
+        "text",
+        "text",
+        "text",
+        "text",
+    ]
+    for element, expected_element in zip(root, expected_elements):
+        assert (
+            element.tag == f"{{http://www.w3.org/2000/svg}}{expected_element}"
+        )
     assert root.get("width") == "186.0"
     assert root.get("height") == "198.0"
 
@@ -148,12 +155,20 @@ def test_render_file() -> None:
     with (OUTPUT_PATH / "map.svg").open(encoding="utf-8") as output_file:
         root = ElementTree.parse(output_file).getroot()
 
-    # 8 expected elements: `defs`, `rect` (background), `g` (outline),
-    # `g` (icon), 4 `text` elements (credits).
-    expected_elements: int = 8
-
-    assert len(root) == expected_elements
-    assert len(root[3][0]) == 0
+    expected_elements: list[str] = [
+        "defs",  # Empty definitions.
+        "rect",  # Background.
+        "g",  # Outline.
+        "path",  # Icon.
+        "text",
+        "text",
+        "text",
+        "text",
+    ]
+    for element, expected_element in zip(root, expected_elements):
+        assert (
+            element.tag == f"{{http://www.w3.org/2000/svg}}{expected_element}"
+        )
     assert root.get("width") == "186.0"
     assert root.get("height") == "198.0"
 
@@ -167,13 +182,22 @@ def test_render_with_tooltips() -> None:
     with (OUTPUT_PATH / "map.svg").open(encoding="utf-8") as output_file:
         root = ElementTree.parse(output_file).getroot()
 
-    # 8 expected elements: `defs`, `rect` (background), `g` (outline),
-    # `g` (icon), 4 `text` elements (credits).
-    expected_elements: int = 8
+    expected_elements: list[str] = [
+        "defs",  # Empty definitions.
+        "rect",  # Background.
+        "g",  # Outline.
+        "path",  # Icon.
+        "text",
+        "text",
+        "text",
+        "text",
+    ]
+    for element, expected_element in zip(root, expected_elements):
+        assert (
+            element.tag == f"{{http://www.w3.org/2000/svg}}{expected_element}"
+        )
 
-    assert len(root) == expected_elements
-    assert len(root[3][0]) == 1
-    assert root[3][0][0].text == "natural: tree"
+    assert root[3][0].text == "natural: tree"  # Tooltip.
     assert root.get("width") == "186.0"
     assert root.get("height") == "198.0"
 
@@ -249,15 +273,12 @@ def test_icons() -> None:
     """Test `icons` command."""
     run(
         COMMAND_LINES["icons"],
-        b"INFO Icons are written to `out/icons_by_name` and "
-        b"`out/icons_by_id`.\n"
+        b"INFO Icons are written to `out/icons_by_id`.\n"
         b"INFO Icon grid is written to `out/icon_grid.svg`.\n"
         b"INFO Icon grid is written to `doc/grid.svg`.\n",
     )
     assert (OUTPUT_PATH / "icon_grid.svg").is_file()
-    assert (OUTPUT_PATH / "icons_by_name").is_dir()
     assert (OUTPUT_PATH / "icons_by_id").is_dir()
-    assert (OUTPUT_PATH / "icons_by_name" / "Röntgen apple.svg").is_file()
     assert (OUTPUT_PATH / "icons_by_id" / "apple.svg").is_file()
 
 

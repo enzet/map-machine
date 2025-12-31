@@ -7,6 +7,8 @@ import sys
 from typing import TYPE_CHECKING
 
 import numpy as np
+from colour import Color
+from roentgen import get_roentgen
 
 from map_machine.drawing import draw_text
 from map_machine.map_configuration import LabelMode
@@ -15,12 +17,15 @@ from map_machine.osm.osm_reader import Tagged
 if TYPE_CHECKING:
     import svgwrite
     from colour import Color
+    from roentgen import IconSpecification, Roentgen
 
-    from map_machine.pictogram.icon import Icon, IconSet
+    from map_machine.pictogram.icon import IconSet
     from map_machine.text import Label
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
+
+roentgen: Roentgen = get_roentgen()
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -161,8 +166,8 @@ class Point(Tagged):
     def draw_point_shape(
         self,
         svg: svgwrite.Drawing,
-        icon: Icon,
-        default_icon: Icon | None,
+        icon: IconSpecification,
+        default_icon: IconSpecification | None,
         position: np.ndarray,
         occupied: Occupied | None,
         tags: dict[str, str] | None = None,
@@ -171,8 +176,9 @@ class Point(Tagged):
 
         # Down-cast floats to integers to snap icons to pixel grid.
         position = np.array((int(position[0]), int(position[1])))
+        position_tuple: tuple[int, int] = (int(position[0]), int(position[1]))
 
-        icon_to_draw: Icon = icon
+        icon_to_draw: IconSpecification = icon
         is_painted: bool = True
 
         if occupied and occupied.check(position):
@@ -183,9 +189,19 @@ class Point(Tagged):
                 return False
 
         if self.draw_outline:
-            icon_to_draw.draw(svg, position, outline=True)
+            icon_to_draw.draw(
+                svg,
+                roentgen.get_shapes(),
+                position_tuple,
+                outline=True,
+            )
 
-        icon_to_draw.draw(svg, position, tags=tags)
+        icon_to_draw.draw(
+            svg,
+            roentgen.get_shapes(),
+            position_tuple,
+            tags=tags,
+        )
 
         if occupied and is_painted:
             overlap: int = occupied.overlap

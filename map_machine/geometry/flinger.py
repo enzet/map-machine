@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import numpy as np
+from typing_extensions import override
 
 if TYPE_CHECKING:
     from map_machine.geometry.bounding_box import BoundingBox
@@ -25,9 +26,7 @@ def pseudo_mercator(coordinates: np.ndarray) -> np.ndarray:
     """
     latitude, longitude = coordinates
 
-    y: float = (
-        180.0 / np.pi * np.log(np.tan(np.pi / 4.0 + latitude * np.pi / 360.0))
-    )
+    y: float = 180.0 / np.pi * np.log(np.tan(np.pi / 4.0 + latitude * np.pi / 360.0))
     return np.array((longitude, y))
 
 
@@ -93,21 +92,21 @@ class MercatorFlinger(Flinger):
 
         self.min_ = self.ratio * pseudo_mercator(self.geo_boundaries.min_())
 
+    @override
     def fling(self, coordinates: np.ndarray) -> np.ndarray:
         """Convert geo coordinates into (x, y) position points on the plane.
 
         :param coordinates: geographical coordinates to fling in the form of
             (latitude, longitude)
         """
-        result: np.ndarray = (
-            self.ratio * pseudo_mercator(coordinates) - self.min_
-        )
+        result: np.ndarray = self.ratio * pseudo_mercator(coordinates) - self.min_
 
         # Invert y axis on coordinate plane.
         result[1] = self.size[1] - result[1]
 
         return result
 
+    @override
     def get_scale(self, coordinates: np.ndarray | None = None) -> float:
         """Return pixels per meter ratio for the given geo coordinates.
 
@@ -125,13 +124,12 @@ class MercatorFlinger(Flinger):
 class TranslateFlinger(Flinger):
     """Translate coordinates by a given scale and offset."""
 
-    def __init__(
-        self, size: np.ndarray, scale: np.ndarray, offset: np.ndarray
-    ) -> None:
+    def __init__(self, size: np.ndarray, scale: np.ndarray, offset: np.ndarray) -> None:
         super().__init__(size)
         self.scale: np.ndarray = scale
         self.offset: np.ndarray = offset
 
+    @override
     def fling(self, coordinates: np.ndarray) -> np.ndarray:
         """Translate coordinates by a given scale and offset."""
         return self.scale * (coordinates + self.offset)

@@ -6,10 +6,10 @@ import logging
 from typing import TYPE_CHECKING, TextIO
 
 from colour import Color
+from roentgen import Roentgen, get_roentgen
 
 from map_machine import __project__, __url__
 from map_machine.osm.osm_reader import STAGES_OF_DECAY
-from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.pictogram.icon_collection import IconCollection
 from map_machine.scheme import Matcher, Scheme
 from map_machine.workspace import workspace
@@ -23,6 +23,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 logger: logging.Logger = logging.getLogger(__name__)
+roentgen: Roentgen = get_roentgen()
 
 NODE_CONFIG: str = """
 node {
@@ -192,13 +193,10 @@ def generate_mapcss(options: argparse.Namespace) -> None:
     icons_with_outline_path: Path = workspace.get_mapcss_icons_path()
 
     scheme: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
-    extractor: ShapeExtractor = ShapeExtractor(
-        workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
-    )
-    collection: IconCollection = IconCollection.from_scheme(scheme, extractor)
+    collection: IconCollection = IconCollection.from_scheme(scheme)
     collection.draw_icons(
         icons_with_outline_path,
-        workspace.ICONS_LICENSE_PATH,
+        license_text=roentgen.get_license(),
         color=Color("black"),
         outline=True,
         outline_opacity=0.5,

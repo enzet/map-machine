@@ -9,6 +9,8 @@ from typing import TYPE_CHECKING, Any
 
 import numpy as np
 from colour import Color
+from roentgen import IconSpecification
+from roentgen.icon import ShapeSpecification
 
 from map_machine.color import get_gradient_color
 from map_machine.feature.building import BUILDING_SCALE, Building
@@ -26,14 +28,7 @@ from map_machine.osm.osm_reader import (
     Tags,
     parse_levels,
 )
-from map_machine.pictogram.icon import (
-    DEFAULT_SMALL_SHAPE_ID,
-    Icon,
-    IconSet,
-    Shape,
-    ShapeExtractor,
-    ShapeSpecification,
-)
+from map_machine.pictogram.icon import IconSet
 from map_machine.pictogram.point import Point
 from map_machine.scheme import LineStyle, RoadMatcher, Scheme
 from map_machine.text import Label, TextConstructor
@@ -59,6 +54,8 @@ TIME_COLOR_SCALE: list[Color] = [
     Color("#FFC300"),
     Color("#DAF7A6"),
 ]
+DEFAULT_SHAPE_ID: str = "default"
+DEFAULT_SMALL_SHAPE_ID: str = "default_small"
 
 
 def line_center(
@@ -162,13 +159,11 @@ class Constructor:
         self,
         osm_data: OSMData,
         flinger: Flinger,
-        extractor: ShapeExtractor,
         configuration: MapConfiguration,
     ) -> None:
         self.osm_data: OSMData = osm_data
         self.flinger: Flinger = flinger
         self.scheme: Scheme = configuration.scheme
-        self.extractor: ShapeExtractor = extractor
         self.configuration: MapConfiguration = configuration
         self.text_constructor: TextConstructor = TextConstructor(self.scheme)
 
@@ -319,7 +314,7 @@ class Constructor:
             priority: int
             icon_set: IconSet | None
             icon_set, priority = self.configuration.get_icon(
-                self.extractor, line.tags, processed
+                line.tags, processed
             )
             if icon_set is not None:
                 labels: list[Label] = self.text_constructor.construct_text(
@@ -365,9 +360,7 @@ class Constructor:
         processed: set[str] = set()
         priority: int
         icon_set: IconSet | None
-        icon_set, priority = self.configuration.get_icon(
-            self.extractor, line.tags, processed
-        )
+        icon_set, priority = self.configuration.get_icon(line.tags, processed)
         if icon_set is not None:
             labels: list[Label] = self.text_constructor.construct_text(
                 line.tags, processed, self.configuration.label_mode
@@ -476,11 +469,14 @@ class Constructor:
             if self.configuration.drawing_mode == DrawingMode.TIME:
                 color = get_time_color(node.timestamp, self.osm_data.time)
 
-            dot: Shape = self.extractor.get_shape(DEFAULT_SMALL_SHAPE_ID)
             icon_set = IconSet(
-                Icon([ShapeSpecification(dot, color)]),
+                IconSpecification(
+                    "", [ShapeSpecification(DEFAULT_SHAPE_ID, color=color)], ""
+                ),
                 [],
-                Icon([ShapeSpecification(dot, color)]),
+                IconSpecification(
+                    "", [ShapeSpecification(DEFAULT_SHAPE_ID, color=color)], ""
+                ),
                 set(),
             )
             point = Point(
@@ -506,9 +502,7 @@ class Constructor:
                 color = Color("#CCCCCC")
             if self.configuration.drawing_mode == DrawingMode.BLACK:
                 color = Color("#444444")
-            icon_set, priority = self.configuration.get_icon(
-                self.extractor, tags, processed
-            )
+            icon_set, priority = self.configuration.get_icon(tags, processed)
             if icon_set is not None:
                 icon_set.main_icon.recolor(color)
                 point = Point(
@@ -522,9 +516,7 @@ class Constructor:
                 self.points.append(point)
                 return
 
-        icon_set, priority = self.configuration.get_icon(
-            self.extractor, tags, processed
-        )
+        icon_set, priority = self.configuration.get_icon(tags, processed)
         if icon_set is None:
             return
 

@@ -25,9 +25,7 @@ class Workspace:
 
     SCHEME_PATH: Path = HERE / "scheme"
     DEFAULT_SCHEME_PATH: Path = SCHEME_PATH / "default.yml"
-    ICONS_PATH: Path = HERE / "icons" / "icons.svg"
     ICONS_CONFIG_PATH: Path = HERE / "icons" / "config.json"
-    ICONS_LICENSE_PATH: Path = HERE / "icons" / "LICENSE"
 
     DOCUMENTATION_PATH: Path = Path("doc")
     GRID_PATH: Path = DOCUMENTATION_PATH / "grid.svg"

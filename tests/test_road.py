@@ -39,7 +39,7 @@ def create_test_road(
     road_matcher: RoadMatcher | None = SCHEME.get_road(tags)
     if road_matcher is None:
         # Create a default road matcher if none found.
-        road_matcher = RoadMatcher(
+        road_matcher = RoadMatcher.from_structure(
             {
                 "tags": {"highway": "*"},
                 "color": "road_color",
@@ -134,7 +134,8 @@ def test_road_tunnel_color() -> None:
     color: Color = road.get_color()
     assert color is not None
     # Tunnel should have increased luminance.
-    base_color: Color = road.matcher.color
+    base_color: Color | None = road.matcher.color
+    assert base_color is not None
     assert color.luminance >= base_color.luminance
 
 

@@ -21,17 +21,15 @@ dependencies = [
     "Pillow~=12.1.0",
     "portolan~=1.0.1",
     "PyYAML~=6.0.1",
+    "roentgen-icons~=0.10.0",
     "Shapely~=2.1.2",
     "svgwrite~=1.4",
+    "typing_extensions>=4.0.0",
     "urllib3~=1.25.6",
 ]
 
 [project.optional-dependencies]
-dev = [
-    "pytest~=7.4.0",
-    "ruff~=0.14.5",
-    "ty~=0.0.1a27",
-]
+dev = ["pytest~=7.4.0", "ruff~=0.14.5", "ty~=0.0.1a27"]
 
 [project.urls]
 Homepage = "https://github.com/enzet/map-machine"
@@ -60,22 +58,22 @@ version = { attr = "map_machine.__version__" }
 [tool.ruff]
 lint.select = ["ALL"]
 lint.ignore = [
-    "C901",  # Too complex functions are allowed.
+    "C901",    # Too complex functions are allowed.
     "COM812",  # Trailing comma not in Black style.
-    "D105",  # Missing docstring in magic method is allowed.
-    "D107",  # Missing docstring in `__init__` method is allowed.
-    "D202",  # No blank line after function docstring is allowed.
-    "D203",  # Blank line is not required before class docstring.
-    "D213",  # New line after `"""` is not needed.
+    "D105",    # Missing docstring in magic method is allowed.
+    "D107",    # Missing docstring in `__init__` method is allowed.
+    "D202",    # No blank line after function docstring is allowed.
+    "D203",    # Blank line is not required before class docstring.
+    "D213",    # New line after `"""` is not needed.
     "FIX002",  # Todo markers are allowed.
-    "PLR0911",  # Too many return statements are allowed.
-    "PLR0912",  # Too many branches are allowed.
-    "PLR0913",  # Too many arguments are allowed.
-    "PLR0915",  # Too many statements are allowed.
+    "PLR0911", # Too many return statements are allowed.
+    "PLR0912", # Too many branches are allowed.
+    "PLR0913", # Too many arguments are allowed.
+    "PLR0915", # Too many statements are allowed.
     "RUF001",  # Ambiguous symbols are allowed.
     "RUF002",  # Ambiguous symbols are allowed.
-    "S101",  # Asserts are allowed in tests.
-    "TD003",  # Issues for todos are not required.
+    "S101",    # Asserts are allowed in tests.
+    "TD003",   # Issues for todos are not required.
 ]
 line-length = 80
 

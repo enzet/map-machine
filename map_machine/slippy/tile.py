@@ -23,7 +23,6 @@ from map_machine.map_configuration import MapConfiguration
 from map_machine.mapper import Map
 from map_machine.osm.osm_getter import NetworkError, get_osm
 from map_machine.osm.osm_reader import OSMData
-from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.scheme import Scheme
 from map_machine.workspace import workspace
 
@@ -185,12 +184,7 @@ class Tile:
         svg: svgwrite.Drawing = svgwrite.Drawing(
             str(output_file_name), size=size
         )
-        icon_extractor: ShapeExtractor = ShapeExtractor(
-            workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
-        )
-        constructor: Constructor = Constructor(
-            osm_data, flinger, icon_extractor, configuration
-        )
+        constructor: Constructor = Constructor(osm_data, flinger, configuration)
         constructor.construct()
 
         painter: Map = Map(
@@ -375,11 +369,8 @@ class Tiles:
                 self.zoom_level,
                 osm_data.equator_length,
             )
-            extractor: ShapeExtractor = ShapeExtractor(
-                workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
-            )
             constructor: Constructor = Constructor(
-                osm_data, flinger, extractor, configuration
+                osm_data, flinger, configuration
             )
             constructor.construct()
 

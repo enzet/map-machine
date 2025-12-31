@@ -9,25 +9,26 @@ from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import svgwrite
+from roentgen import get_roentgen
 from svgwrite import Drawing
 
 from map_machine.map_configuration import MapConfiguration
-from map_machine.pictogram.icon import IconSet, ShapeExtractor
 from map_machine.scheme import Scheme
 from map_machine.workspace import Workspace
 
 if TYPE_CHECKING:
+    from roentgen import Roentgen
     from svgwrite.shapes import Line, Rect
     from svgwrite.text import Text
 
     from map_machine.osm.osm_reader import Tags
+    from map_machine.pictogram.icon import IconSet
+
+roentgen: Roentgen = get_roentgen()
 
 WORKSPACE: Workspace = Workspace(Path("temp"))
 
 SCHEME: Scheme = Scheme.from_file(WORKSPACE.DEFAULT_SCHEME_PATH)
-EXTRACTOR: ShapeExtractor = ShapeExtractor(
-    WORKSPACE.ICONS_PATH, WORKSPACE.ICONS_CONFIG_PATH
-)
 MONOSPACE_FONTS: list[str] = [
     "JetBrains Mono",
     "Fira Code",
@@ -140,7 +141,7 @@ class SVGTable:
                     current_tags |= {self.collection.column_key: column_value}
                 processed: set[str] = set()
                 icon, _ = MapConfiguration(SCHEME).get_icon(
-                    EXTRACTOR, current_tags, processed
+                    current_tags, processed
                 )
                 if not icon:
                     continue
@@ -251,7 +252,9 @@ class SVGTable:
         if not self.collection.column_values:
             self.collection.column_values = [""]
         point: np.ndarray = np.array(self.start_point) + position * self.step
-        icon.main_icon.draw(self.svg, point, scale=self.icon_size / 16.0)
+        icon.main_icon.draw(
+            self.svg, roentgen.get_shapes(), point, scale=self.icon_size / 16.0
+        )
 
     def draw_text(
         self,

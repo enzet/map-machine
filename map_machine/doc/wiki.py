@@ -7,19 +7,17 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from map_machine.map_configuration import MapConfiguration
-from map_machine.pictogram.icon import Icon, ShapeExtractor
 from map_machine.scheme import Scheme
 from map_machine.workspace import Workspace
 
 if TYPE_CHECKING:
+    from roentgen.icon import IconSpecification
+
     from map_machine.doc.doc_collections import Collection
 
 WORKSPACE: Workspace = Workspace(Path("temp"))
 
 SCHEME: Scheme = Scheme.from_file(WORKSPACE.DEFAULT_SCHEME_PATH)
-EXTRACTOR: ShapeExtractor = ShapeExtractor(
-    WORKSPACE.ICONS_PATH, WORKSPACE.ICONS_CONFIG_PATH
-)
 
 HEADER_PATTERN: re.Pattern = re.compile("==?=?.*==?=?")
 HEADER_2_PATTERN: re.Pattern = re.compile("== .* ==")
@@ -41,9 +39,9 @@ class WikiTable:
         self.collection: Collection = collection
         self.page_name: str = page_name
 
-    def generate_wiki_table(self) -> tuple[str, list[Icon]]:
+    def generate_wiki_table(self) -> tuple[str, list[IconSpecification]]:
         """Generate Röntgen icon table for the OpenStreetMap wiki page."""
-        icons: list[Icon] = []
+        icons: list[IconSpecification] = []
         text: str = '{| class="wikitable"\n'
 
         if self.collection.column_key is not None:
@@ -66,9 +64,7 @@ class WikiTable:
                 text += "\n"
                 icon, _ = MapConfiguration(
                     SCHEME, ignore_level_matching=True
-                ).get_icon(
-                    EXTRACTOR, current_tags | self.collection.tags, set()
-                )
+                ).get_icon(current_tags | self.collection.tags, set())
                 if icon:
                     icons.append(icon.main_icon)
                     text += (
@@ -109,9 +105,7 @@ class WikiTable:
                 }
                 if column_value and self.collection.column_key:
                     current_tags |= {self.collection.column_key: column_value}
-                icon, _ = MapConfiguration(SCHEME).get_icon(
-                    EXTRACTOR, current_tags, set()
-                )
+                icon, _ = MapConfiguration(SCHEME).get_icon(current_tags, set())
                 if icon:
                     text += (
                         "| [[Image:Röntgen "
@@ -127,7 +121,7 @@ class WikiTable:
 def generate_new_text(
     old_text: str,
     table: WikiTable,
-) -> tuple[str | None, list[Icon]]:
+) -> tuple[str | None, list[IconSpecification]]:
     """Generate Röntgen icon table for the OpenStreetMap wiki page.
 
     :param old_text: previous wiki page text
@@ -135,14 +129,14 @@ def generate_new_text(
     :return: new wiki page text
     """
     wiki_text: str
-    icons: list[Icon] = []
+    icons: list[IconSpecification] = []
 
     if table.collection.row_key or table.collection.row_tags:
         wiki_text, icons = table.generate_wiki_table()
     else:
         processed: set[str] = set()
         icon, _ = MapConfiguration(SCHEME).get_icon(
-            EXTRACTOR, table.collection.tags, processed
+            table.collection.tags, processed
         )
         if icon and not icon.main_icon.is_default():
             wiki_text = (

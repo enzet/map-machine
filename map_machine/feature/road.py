@@ -499,7 +499,12 @@ class Road(Tagged):
         self, *, is_border: bool, is_for_stroke: bool = False
     ) -> dict[str, int | float | str]:
         """Get road SVG style."""
-        width: float = self.width if self.width else self.matcher.default_width
+        width: float | None = (
+            self.width if self.width else self.matcher.default_width
+        )
+        if width is None:
+            message: str = "Road width is not set."
+            raise ValueError(message)
 
         border_width: float
         if is_border:
@@ -572,14 +577,20 @@ class Road(Tagged):
 
     def get_color(self) -> Color:
         """Get road main color."""
-        color: Color = self.matcher.color
+        color: Color | None = self.matcher.color
+        if color is None:
+            message: str = "Road color is not set."
+            raise ValueError(message)
         if self.tags.get("tunnel") == "yes":
             color = Color(color, luminance=min(1.0, color.luminance + 0.2))
         return color
 
     def get_border_color(self) -> Color:
         """Get road border color."""
-        color: Color = self.matcher.border_color
+        color: Color | None = self.matcher.border_color
+        if color is None:
+            message: str = "Road border color is not set."
+            raise ValueError(message)
         if self.tags.get("bridge") == "yes":
             color = self.scheme.get_color("bridge_color")
         if self.tags.get("ford") == "yes":
@@ -588,10 +599,13 @@ class Road(Tagged):
             color = self.scheme.get_color("embankment_color")
         return color
 
-    def draw_lanes(self, svg: Drawing, color: Color) -> None:
+    def draw_lanes(self, svg: Drawing, color: Color | None = None) -> None:
         """Draw lane separators."""
         if len(self.lanes) < 2:  # noqa: PLR2004
             return
+
+        if color is None:
+            color = Color("black")
 
         for index in range(1, len(self.lanes)):
             lane_offset: float = self.scale * (
@@ -735,10 +749,14 @@ class SimpleConnector(Connector):
 
     def draw_border(self, svg: Drawing) -> None:
         """Draw connection outline."""
+        border_color: Color | None = self.road_1.matcher.border_color
+        if border_color is None:
+            message: str = "Road border color is not set."
+            raise ValueError(message)
         circle: Circle = svg.circle(
             self.point,
             self.road_1.width * self.scale / 2.0 + 1.0,
-            fill=self.road_1.matcher.border_color.hex,
+            fill=border_color.hex,
         )
         svg.add(circle)
 
@@ -820,6 +838,10 @@ class SimpleIntersection(Connector):
 
     def draw(self, svg: Drawing) -> None:
         """Draw connection fill."""
+        color: Color | None = self.road_1.matcher.color
+        if color is None:
+            message: str = "Road color is not set."
+            raise ValueError(message)
         for road, _ in sorted(
             self.connections, key=lambda x: x[0].matcher.priority
         ):
@@ -828,19 +850,23 @@ class SimpleIntersection(Connector):
             circle: Circle = svg.circle(
                 point,
                 road.width * self.scale / 2.0,
-                fill=road.matcher.color.hex,
+                fill=color.hex,
             )
             svg.add(circle)
 
     def draw_border(self, svg: Drawing) -> None:
         """Draw connection outline."""
+        border_color: Color | None = self.road_1.matcher.border_color
+        if border_color is None:
+            message: str = "Road border color is not set."
+            raise ValueError(message)
         for road, _ in self.connections:
             node: OSMNode = self.road_1.nodes[self.index_1]
             point: np.ndarray = self.flinger.fling(node.coordinates)
             circle: Circle = svg.circle(
                 point,
                 road.width * self.scale / 2.0 + 1.0,
-                fill=road.matcher.border_color.hex,
+                fill=border_color.hex,
             )
             svg.add(circle)
 

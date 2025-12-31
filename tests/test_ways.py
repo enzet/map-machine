@@ -13,7 +13,7 @@ from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.geometry.flinger import MercatorFlinger
 from map_machine.map_configuration import MapConfiguration
 from map_machine.osm.osm_reader import OSMData, OSMNode, OSMWay, Tags
-from tests import SCHEME, SHAPE_EXTRACTOR
+from tests import SCHEME
 
 if TYPE_CHECKING:
     from map_machine.figure import StyledFigure
@@ -29,9 +29,7 @@ def get_constructor(osm_data: OSMData) -> Constructor:
     flinger: MercatorFlinger = MercatorFlinger(
         BoundingBox(-0.01, -0.01, 0.01, 0.01), 18, osm_data.equator_length
     )
-    constructor: Constructor = Constructor(
-        osm_data, flinger, SHAPE_EXTRACTOR, CONFIGURATION
-    )
+    constructor: Constructor = Constructor(osm_data, flinger, CONFIGURATION)
     constructor.construct_ways()
     return constructor
 

@@ -298,22 +298,18 @@ node_icons:
     - tags: {railway: tram_stop}
       shapes: [tram]
     - tags: {public_transport: platform}
-      shapes: [bus_stop_sign]
+      shapes: [bus_stop_sign___platform]
       with_icon: [bus_stop_bench, bus_stop_shelter]
-      over_icon: [platform]
     - tags: {highway: bus_stop, public_transport: platform}
-      shapes: [bus_stop_sign]
+      shapes: [bus_stop_sign___platform]
       with_icon: [bus_stop_bench, bus_stop_shelter]
-      over_icon: [platform]
     - tags: {highway: bus_stop, shelter: "yes"}
-      shapes: [bus_stop_sign]
+      shapes: [bus_stop_sign___bus_stop_shelter]
       under_icon: [bus_stop_sign]
       with_icon: [bus_stop_bench, platform]
-      over_icon: [bus_stop_shelter]
     - tags: {highway: bus_stop, bench: "yes"}
-      under_icon: [bus_stop_sign]
+      under_icon: [bus_stop_sign___bus_stop_bench]
       with_icon: [bus_stop_shelter, platform]
-      over_icon: [bus_stop_bench]
     - tags: {highway: stop}
       shapes: [stop]
     - tags: {amenity: taxi}
@@ -379,19 +375,19 @@ node_icons:
       shapes: [crater]
 
     - tags: {natural: volcano}
-      shapes: [stratovolcano, {shape: smoke_2, offset: [0, -3]}]
+      shapes: [stratovolcano___smoke_2]
 
     - tags: {natural: volcano, volcano:type: stratovolcano}
-      shapes: [stratovolcano, {shape: smoke_2, offset: [0, -3]}]
+      shapes: [stratovolcano___smoke_2]
     - tags: {natural: volcano, volcano:type: shield}
-      shapes: [shield_volcano, {shape: smoke_2, offset: [0, -1]}]
+      shapes: [shield_volcano___smoke_2]
     - tags: {natural: volcano, volcano:type: scoria}
-      shapes: [volcanic_cone, {shape: smoke_2, offset: [0, -2]}]
+      shapes: [volcanic_cone___smoke_2]
 
     - tags: {natural: volcano, volcano:status: active}
-      shapes: [stratovolcano, {shape: lava, offset: [0, -3]}]
+      shapes: [stratovolcano___lava]
     - tags: {natural: volcano, volcano:status: dormant}
-      shapes: [stratovolcano, {shape: smoke, offset: [1, -3]}]
+      shapes: [stratovolcano___smoke]
     - tags: {natural: volcano, volcano:status: extinct}
       shapes: [stratovolcano]
 
@@ -399,32 +395,32 @@ node_icons:
         natural: volcano
         volcano:type: stratovolcano
         volcano:status: active
-      shapes: [stratovolcano, {shape: lava, offset: [0, -3]}]
+      shapes: [stratovolcano___lava]
     - tags:
         natural: volcano
         volcano:type: shield
         volcano:status: active
-      shapes: [shield_volcano, {shape: lava, offset: [0, -1]}]
+      shapes: [shield_volcano___lava]
     - tags:
         natural: volcano
         volcano:type: scoria
         volcano:status: active
-      shapes: [volcanic_cone, {shape: lava, offset: [0, -2]}]
+      shapes: [volcanic_cone___lava]
     - tags:
         natural: volcano
         volcano:type: stratovolcano
         volcano:status: dormant
-      shapes: [stratovolcano, {shape: smoke, offset: [1, -3]}]
+      shapes: [stratovolcano___smoke]
     - tags:
         natural: volcano
         volcano:type: shield
         volcano:status: dormant
-      shapes: [shield_volcano, {shape: smoke, offset: [1, -1]}]
+      shapes: [shield_volcano___smoke]
     - tags:
         natural: volcano
         volcano:type: scoria
         volcano:status: dormant
-      shapes: [volcanic_cone, {shape: smoke, offset: [1, -2]}]
+      shapes: [volcanic_cone___smoke]
     - tags:
         natural: volcano
         volcano:type: stratovolcano
@@ -495,7 +491,7 @@ node_icons:
     - tags: {tourism: hostel}
       shapes: [two_beds]
     - tags: {tourism: motel}
-      shapes: [{shape: car, offset: [0, 4]}, {shape: bed, offset: [0, -2]}]
+      shapes: [car___bed]
     - tags: {tourism: guest_house}
       shapes: [bed_and_roof]
     - tags: {amenity: hospital}
@@ -517,15 +513,13 @@ node_icons:
       location_restrictions: {include: [jp]}
       shapes: [japan_post]
     - tags: {shop: car_repair}
-      shapes: [{shape: car, offset: [0, 3]}, {shape: wrench, offset: [0, -4]}]
+      shapes: [car___wrench]
     - tags: {amenity: car_rental}
-      shapes: [{shape: car, offset: [0, 3]}, {shape: key, offset: [1, -3]}]
+      shapes: [car___key]
     - tags: {amenity: car_sharing}
-      shapes: [{shape: car, offset: [0, 3]}, {shape: sharing, offset: [0, -4]}]
+      shapes: [car___sharing]
     - tags: {amenity: car_wash}
-      shapes: 
-      - {shape: car, offset: [0, 3]}
-      - {shape: shower_head, offset: [0, -4]}
+      shapes: [car___shower_head]
       # Place of worship
     - tags: {building: shrine, religion: shinto}
       shapes: [japan_shinto_shrine]
@@ -622,7 +616,7 @@ node_icons:
     - tags: {leisure: dog_park}
       shapes: [dog]
     - tags: {leisure: escape_game}
-      shapes: [{shape: maze, offset: [-2, 0]}, {shape: arrow_right_short, offset: [5, -1]}]
+      shapes: [maze___arrow_right_short]
     - tags: {leisure: maze}
       shapes: [maze]
     - tags: {attraction: maze}
@@ -636,17 +630,17 @@ node_icons:
     - tags: {leisure: sauna}
       shapes: [sauna]
     - tags: {leisure: outdoor_seating}
-      shapes: [table_and_two_chairs, umbrella]
+      shapes: [table_and_two_chairs___umbrella]
     - tags: {leisure: outdoor_seating, weather_protection: parasol}
-      shapes: [table_and_two_chairs, umbrella]
+      shapes: [table_and_two_chairs___umbrella]
     - tags: {leisure: outdoor_seating, weather_protection: roof}
-      shapes: [table_and_two_chairs, roof]
+      shapes: [table_and_two_chairs___roof]
     - tags: {leisure: outdoor_seating, weather_protection: awning}
-      shapes: [table_and_two_chairs, awning]
+      shapes: [table_and_two_chairs___awning]
     - tags: {leisure: outdoor_seating, weather_protection: pavilion}
-      shapes: [table_and_two_chairs, roof_and_walls]
+      shapes: [table_and_two_chairs___roof_and_walls]
     - tags: {leisure: outdoor_seating, weather_protection: pergola}
-      shapes: [table_and_two_chairs, pergola]
+      shapes: [table_and_two_chairs___pergola]
     - tags: {leisure: playground}
       shapes: [toy_horse]
     - tags: {amenity: theatre}
@@ -979,17 +973,15 @@ node_icons:
     - tags: {amenity: charging_station}
       shapes: [charging_station]
     - tags: {amenity: bicycle_repair_station}
-      shapes:
-      - {shape: bicycle, offset: [0, 2]}
-      - {shape: wrench, offset: [1, -5]}
+      shapes: [bicycle___wrench]
     - tags: {amenity: bicycle_rental}
-      shapes: [{shape: bicycle, offset: [0, 2]}, {shape: key, offset: [1, -4]}]
+      shapes: [bicycle___key]
     - tags: {amenity: fuel}
       shapes: [fuel_station]
     - tags: {amenity: parking}
       shapes: [p]
     - tags: {amenity: parking, parking: multi-storey}
-      shapes: [{shape: car, offset: [0, 4]}, {shape: car, offset: [0, -3]}]
+      shapes: [car___car]
     - tags: {highway: turning_circle}
       shapes: [circle_empty]
     - tags: {highway: turning_loop}
@@ -1062,10 +1054,7 @@ node_icons:
     - tags: {natural: cave_entrance}
       shapes: [cave]
     - tags: {amenity: bureau_de_change}
-      shapes:
-      - {shape: exchange}
-      - {shape: dollar, offset: [-4, 3]}
-      - {shape: pound, offset: [5, -2]}
+      shapes: [exchange___dollar___pound]
     - tags: {sport: skateboard}
       shapes: [skateboard]
     - tags: {pipeline: substation}
@@ -1194,153 +1183,93 @@ node_icons:
     - tags: {man_made: mast, tower:construction: guyed_lattice}
       shapes: [lattice_guyed]
     - tags: {man_made: mast, tower:type: lighting}
-      shapes:
-      - tube
-      - {shape: light_left, offset: [-3, -3]}
-      - {shape: light_right, offset: [3, -3]}
+      shapes: [tube___light_left___light_right]
     - tags: {man_made: mast, tower:type: communication}
-      shapes:
-      - tube
-      - {shape: wave_left, offset: [-3, -3]}
-      - {shape: wave_right, offset: [3, -3]}
+      shapes: [tube___wave_left___wave_right]
     - tags: {man_made: mast, tower:type: siren}
-      shapes:
-        - tube
-        - {shape: siren_left, offset: [-3, -3]}
-        - {shape: siren_right, offset: [3, -3]}
+      shapes: [tube___siren_left___siren_right]
     - tags: {man_made: mast, tower:type: monitoring}
-      shapes:
-        - tube
-        - {shape: dish_antenna_left, offset: [-3, -3]}
-        - {shape: dish_antenna_right, offset: [3, -3]}
+      shapes: [tube___dish_antenna_left___dish_antenna_right]
     - tags:
         man_made: mast
         tower:type: lighting
         tower:construction: guyed_tube
-      shapes:
-      - tube_guyed
-      - {shape: light_left, offset: [-3, -3]}
-      - {shape: light_right, offset: [3, -3]}
+      shapes: [tube_guyed___light_left___light_right]
     - tags:
         man_made: mast
         tower:type: communication
         tower:construction: guyed_tube
-      shapes:
-      - tube_guyed
-      - {shape: wave_left, offset: [-3, -3]}
-      - {shape: wave_right, offset: [3, -3]}
+      shapes: [tube_guyed___wave_left___wave_right]
     - tags:
         man_made: mast
         tower:type: siren
         tower:construction: guyed_tube
-      shapes:
-        - tube_guyed
-        - {shape: siren_left, offset: [-3, -3]}
-        - {shape: siren_right, offset: [3, -3]}
+      shapes: [tube_guyed___siren_left___siren_right]
     - tags:
         man_made: mast
         tower:type: monitoring
         tower:construction: guyed_tube
-      shapes:
-        - tube_guyed
-        - {shape: dish_antenna_left, offset: [-3, -3]}
-        - {shape: dish_antenna_right, offset: [3, -3]}
+      shapes: [tube_guyed___dish_antenna_left___dish_antenna_right]
     - tags:
         man_made: mast
         tower:type: lighting
         tower:construction: freestanding
-      shapes:
-      - tube
-      - {shape: light_left, offset: [-3, -3]}
-      - {shape: light_right, offset: [3, -3]}
+      shapes: [tube___light_left___light_right]
     - tags:
         man_made: mast
         tower:type: communication
         tower:construction: freestanding
-      shapes:
-      - tube
-      - {shape: wave_left, offset: [-3, -3]}
-      - {shape: wave_right, offset: [3, -3]}
+      shapes: [tube___wave_left___wave_right]
     - tags:
         man_made: mast
         tower:type: siren
         tower:construction: freestanding
-      shapes:
-        - tube
-        - {shape: siren_left, offset: [-3, -3]}
-        - {shape: siren_right, offset: [3, -3]}
+      shapes: [tube___siren_left___siren_right]
     - tags:
         man_made: mast
         tower:type: monitoring
         tower:construction: freestanding
-      shapes:
-        - tube
-        - {shape: dish_antenna_left, offset: [-3, -3]}
-        - {shape: dish_antenna_right, offset: [3, -3]}
+      shapes: [tube___dish_antenna_left___dish_antenna_right]
     - tags:
         man_made: mast
         tower:type: lighting
         tower:construction: guyed_lattice
-      shapes:
-      - lattice_guyed
-      - {shape: light_left, offset: [-4, -3]}
-      - {shape: light_right, offset: [3, -3]}
+      shapes: [lattice_guyed___light_left___light_right]
     - tags:
         man_made: mast
         tower:type: communication
         tower:construction: guyed_lattice
-      shapes:
-      - lattice_guyed
-      - {shape: wave_left, offset: [-4, -3]}
-      - {shape: wave_right, offset: [3, -3]}
+      shapes: [lattice_guyed___wave_left___wave_right]
     - tags:
         man_made: mast
         tower:type: siren
         tower:construction: guyed_lattice
-      shapes:
-        - lattice_guyed
-        - {shape: siren_left, offset: [-4, -3]}
-        - {shape: siren_right, offset: [3, -3]}
+      shapes: [lattice_guyed___siren_left___siren_right]
     - tags:
         man_made: mast
         tower:type: monitoring
         tower:construction: guyed_lattice
-      shapes:
-        - lattice_guyed
-        - {shape: dish_antenna_left, offset: [-4, -3]}
-        - {shape: dish_antenna_right, offset: [3, -3]}
+      shapes: [lattice_guyed___dish_antenna_left___dish_antenna_right]
     - tags:
         man_made: mast
         tower:type: lighting
         tower:construction: lattice
-      shapes:
-      - lattice
-      - {shape: light_left, offset: [-4, -3]}
-      - {shape: light_right, offset: [3, -3]}
+      shapes: [lattice___light_left___light_right]
     - tags:
         man_made: mast
         tower:type: communication
         tower:construction: lattice
-      shapes:
-      - lattice
-      - {shape: wave_left, offset: [-4, -3]}
-      - {shape: wave_right, offset: [3, -3]}
+      shapes: [lattice___wave_left___wave_right]
     - tags:
         man_made: mast
         tower:type: siren
         tower:construction: lattice
-      shapes:
-        - lattice
-        - {shape: siren_left, offset: [-4, -3]}
-        - {shape: siren_right, offset: [3, -3]}
+      shapes: [lattice___siren_left___siren_right]
     - tags:
         man_made: mast
         tower:type: monitoring
         tower:construction: lattice
-      shapes:
-        - lattice
-        - {shape: dish_antenna_left, offset: [-4, -3]}
-        - {shape: dish_antenna_right, offset: [3, -3]}
+      shapes: [lattice___dish_antenna_left___dish_antenna_right]
 
     - tags: {man_made: tower, tower:construction: guyed_tube}
       shapes: [tube_guyed]
@@ -1351,88 +1280,49 @@ node_icons:
     - tags: {man_made: tower, tower:construction: lattice_guyed}
       shapes: [lattice_guyed]
     - tags: {man_made: tower, tower:type: lighting}
-      shapes:
-      - tube
-      - {shape: light_left, offset: [-3, -3]}
-      - {shape: light_right, offset: [3, -3]}
+      shapes: [tube___light_left___light_right]
     - tags: {man_made: tower, tower:type: communication}
-      shapes:
-      - tube
-      - {shape: wave_left, offset: [-3, -3]}
-      - {shape: wave_right, offset: [3, -3]}
+      shapes: [tube___wave_left___wave_right]
     - tags:
         man_made: tower
         tower:type: lighting
         tower:construction: guyed_tube
-      shapes:
-      - tube_guyed
-      - {shape: light_left, offset: [-3, -3]}
-      - {shape: light_right, offset: [3, -3]}
+      shapes: [tube_guyed___light_left___light_right]
     - tags:
         man_made: tower
         tower:type: communication
         tower:construction: guyed_tube
-      shapes:
-      - tube_guyed
-      - {shape: wave_left, offset: [-3, -3]}
-      - {shape: wave_right, offset: [3, -3]}
+      shapes: [tube_guyed___wave_left___wave_right]
     - tags:
         man_made: tower
         tower:type: lighting
         tower:construction: freestanding
-      shapes:
-      - tube
-      - {shape: light_left, offset: [-3, -3]}
-      - {shape: light_right, offset: [3, -3]}
+      shapes: [tube___light_left___light_right]
     - tags:
         man_made: tower
         tower:type: communication
         tower:construction: freestanding
-      shapes:
-      - tube
-      - {shape: wave_left, offset: [-3, -3]}
-      - {shape: wave_right, offset: [3, -3]}
+      shapes: [tube___wave_left___wave_right]
     - tags:
         man_made: tower
         tower:type: lighting
         tower:construction: guyed_lattice
-      shapes:
-      - lattice_guyed
-      - {shape: light_left, offset: [-4, -3]}
-      - {shape: light_right, offset: [3, -3]}
+      shapes: [lattice_guyed___light_left___light_right]
     - tags:
         man_made: tower
         tower:type: communication
         tower:construction: guyed_lattice
-      shapes:
-      - lattice_guyed
-      - {shape: wave_left, offset: [-4, -3]}
-      - {shape: wave_right, offset: [3, -3]}
+      shapes: [lattice_guyed___wave_left___wave_right]
     - tags:
         man_made: tower
         tower:type: lighting
         tower:construction: lattice
-      shapes:
-      - lattice
-      - {shape: light_left, offset: [-4, -3]}
-      - {shape: light_right, offset: [3, -3]}
+      shapes: [lattice___light_left___light_right]
     - tags:
         man_made: tower
         tower:type: communication
         tower:construction: lattice
-      shapes:
-      - lattice
-      - {shape: wave_left, offset: [-4, -3]}
-      - {shape: wave_right, offset: [3, -3]}
-
-    - tags: {man_made: flagpole, country: US}
-      shapes: [flag_usa]
-    - tags: {man_made: flagpole, country: Tanzania}
-      shapes: [flag_bend_sinister]
-    - tags: {man_made: flagpole, country: PH}
-      shapes: [flag_triangle_flanche]
-    - tags: {man_made: flagpole, country: FR}
-      shapes: [flag_vertical_triband]
+      shapes: [lattice___wave_left___wave_right]
 
       # Diving towers.
 
@@ -1467,42 +1357,30 @@ node_icons:
       shapes: [lander]
 
     - tags: {man_made: rover, condition: landed}
-      shapes: [lunokhod]
-      set_opacity: 0.8
+      shapes: [{shape: lunokhod, color: "#555555"}]
     - tags: {man_made: probe, condition: landed}
-      shapes: [probe]
-      set_opacity: 0.8
+      shapes: [{shape: probe, color: "#555555"}]
     - tags: {man_made: orbiter, condition: landed}
-      shapes: [orbiter]
-      set_opacity: 0.8
+      shapes: [{shape: orbiter, color: "#555555"}]
     - tags: {man_made: descent_stage, condition: landed}
-      shapes: [descent_stage]
-      set_opacity: 0.8
+      shapes: [{shape: descent_stage, color: "#555555"}]
     - tags: {man_made: third_stage, condition: landed}
-      shapes: [third_stage]
-      set_opacity: 0.8
+      shapes: [{shape: third_stage, color: "#555555"}]
     - tags: {man_made: lander, condition: landed}
-      shapes: [lander]
-      set_opacity: 0.8
+      shapes: [{shape: lander, color: "#555555"}]
 
     - tags: {man_made: rover, condition: crashed}
-      shapes: [lunokhod]
-      set_opacity: 0.5
+      shapes: [{shape: lunokhod, color: "#888888"}]
     - tags: {man_made: probe, condition: crashed}
-      shapes: [probe]
-      set_opacity: 0.5
+      shapes: [{shape: probe, color: "#888888"}]
     - tags: {man_made: orbiter, condition: crashed}
-      shapes: [orbiter]
-      set_opacity: 0.5
+      shapes: [{shape: orbiter, color: "#888888"}]
     - tags: {man_made: descent_stage, condition: crashed}
-      shapes: [descent_stage]
-      set_opacity: 0.5
+      shapes: [{shape: descent_stage, color: "#888888"}]
     - tags: {man_made: third_stage, condition: crashed}
-      shapes: [third_stage]
-      set_opacity: 0.5
+      shapes: [{shape: third_stage, color: "#888888"}]
     - tags: {man_made: lander, condition: crashed}
-      shapes: [lander]
-      set_opacity: 0.5
+      shapes: [{shape: lander, color: "#888888"}]
 
   - group: "Golf objects"
     start_zoom_level: 16.0
@@ -1565,21 +1443,13 @@ node_icons:
     - tags: {amenity: atm}
       shapes: [atm]
     - tags: {amenity: bicycle_parking}
-      shapes:
-      - {shape: bicycle, offset: [0, 2]}
-      - {shape: p_small, offset: [-6, -3]}
+      shapes: [bicycle___p_small]
     - tags: {amenity: bicycle_parking, bicycle_parking: stands}
-      shapes:
-      - {shape: p_small, offset: [-5, -3]}
-      - bicycle_parking_stand
+      shapes: [p_small___bicycle_parking_stand]
     - tags: {amenity: bicycle_parking, bicycle_parking: wall_loops}
-      shapes:
-      - {shape: p_small, offset: [-5, -3]}
-      - bicycle_parking_wall_loops
+      shapes: [p_small___bicycle_parking_wall_loops]
     - tags: {amenity: bicycle_parking, bicycle_parking: rack}
-      shapes:
-      - {shape: p_small, offset: [-5, -3]}
-      - bicycle_parking_rack
+      shapes: [p_small___bicycle_parking_rack]
     - tags: {amenity: telephone}
       shapes: [telephone]
     - tags: {information: "*"}
@@ -1596,6 +1466,12 @@ node_icons:
       shapes: [binoculars]
     - tags: {information: board}
       shapes: [i_in_square]
+    - tags: {information: board, support: pole}
+      shapes: [i_in_square___support_pole]
+    - tags: {information: board, support: wall_mounted}
+      shapes: [i_in_square___support_wall]
+    - tags: {information: board, support: column}
+      shapes: [i_in_square___support_column]
     - tags: {buoy: "*"}
       shapes: [buoy]
     - tags: {"seamark:type": "*"}
@@ -1721,13 +1597,11 @@ node_icons:
     start_zoom_level: 18.0
     tags:
     - tags: {amenity: parking_entrance}
-      shapes:
-      - {shape: p, offset: [-1, 0]}
-      - {shape: arrow_right, offset: [4, 5]}
+      shapes: [p___arrow_right]
     - tags: {amenity: parking_entrance, parking: underground}
-      shapes: [{shape: p, offset: [-1, 0]}, {shape: arrow_down, offset: [4, 5]}]
+      shapes: [p___arrow_down]
     - tags: {amenity: parking_entrance, parking: multi-storey}
-      shapes: [{shape: p, offset: [-1, 0]}, {shape: arrow_up, offset: [4, 5]}]
+      shapes: [p___arrow_up]
     - tags: {entrance: gate}
       shapes: [gate]
     - tags: {barrier: gate}
@@ -1776,6 +1650,12 @@ node_icons:
       shapes: [bench_with_inscription]
     - tags: {amenity: clock}
       shapes: [clock]
+    - tags: {amenity: clock, support: pole}
+      shapes: [i_in_square___support_pole]
+    - tags: {amenity: clock, support: wall_mounted}
+      shapes: [i_in_square___support_wall]
+    - tags: {amenity: clock, support: column}
+      shapes: [i_in_square___support_column]
     - tags: {amenity: fountain}
       shapes: [{shape: fountain, color: water_border_color}]
     - tags: {fountain: bubbler}
@@ -1798,6 +1678,14 @@ node_icons:
       shapes: [latin_cross]
     - tags: {man_made: flagpole}
       shapes: [flagpole]
+    - tags: {man_made: flagpole, country: US}
+      shapes: [flag_usa]
+    - tags: {man_made: flagpole, country: Tanzania}
+      shapes: [flag_bend_sinister]
+    - tags: {man_made: flagpole, country: PH}
+      shapes: [flag_triangle_flanche]
+    - tags: {man_made: flagpole, country: FR}
+      shapes: [flag_vertical_triband]
     - tags: {man_made: manhole}
       shapes: [circle_9]
     - tags: {manhole: drain}
@@ -1879,6 +1767,12 @@ node_icons:
     tags:
     - tags: {natural: tree}
       shapes: [{shape: tree, color: tree_color, outline: no}]
+    - tags: {natural: tree, denotation: urban}
+      shapes: [tree___urban_tree_pot]
+      under_icon: [tree, tree_with_leaf, needleleaved_tree, betula, palm]
+    - tags: {natural: tree, denotation: avenue}
+      shapes: [tree___bottom_right_horizontal_line]
+      under_icon: [tree, tree_with_leaf, needleleaved_tree, betula, palm]
     - tags: {leaf_type: broadleaved}
       shapes: [{shape: tree_with_leaf, color: tree_color}]
     - tags: {leaf_type: needleleaved}
@@ -1944,25 +1838,10 @@ node_icons:
 
   - group: "Add and over"
     tags:
-    - tags: {support: pole}
-      over_icon: [support_pole]
-      under_icon: [clock, i_in_square]
-    - tags: {support: wall_mounted}
-      over_icon: [support_wall]
-      under_icon: [clock, i_in_square]
-    - tags: {support: column}
-      over_icon: [support_column]
-      under_icon: [clock, i_in_square]
     - tags: {amenity: "*", karaoke: "yes"}
       add_shapes: [microphone]
     - tags: {building: "*", "roof:shape": onion}
       add_shapes: [onion_roof_shape]
-    - tags: {natural: tree, denotation: urban}
-      over_icon: [urban_tree_pot]
-      under_icon: [tree, tree_with_leaf, needleleaved_tree, betula, palm]
-    - tags: {natural: tree, denotation: avenue}
-      over_icon: [bottom_right_horizontal_line]
-      under_icon: [tree, tree_with_leaf, needleleaved_tree, betula, palm]
 
     - tags: {wheelchair: "yes"}
       add_shapes: [wheelchair]
@@ -1975,13 +1854,9 @@ node_icons:
     - tags: {bicycle: "yes"}
       add_shapes: [bicycle]
     - tags: {bicycle: "no"}
-      shapes:
-      - {shape: bicycle, offset: [0, 2]}
-      - {shape: x_4, offset: [-5, -4]}
+      shapes: [bicycle___x_4]
     - tags: {internet_access: wlan, "internet_access:fee": "no"}
-      add_shapes:
-      - {shape: wlan, offset: [0, -3]}
-      - {shape: free, offset: [0, 5]}
+      add_shapes: [wlan___free]
     - tags: {internet_access: wlan}
       exception: {"internet_access:fee": "*"}
       add_shapes: [wlan]
@@ -2000,9 +1875,7 @@ node_icons:
     - tags: {tactile_paving: "yes"}
       add_shapes: [tactile_paving]
     - tags: {tactile_paving: "no"}
-      add_shapes:
-      - {shape: tactile_paving, offset: [0, 2]}
-      - {shape: x_5, offset: [0, -3]}
+      add_shapes: [tactile_paving___x_5]
     - tags: {"payment:credit_cards": "yes"}
       add_shapes: [credit_card]
 

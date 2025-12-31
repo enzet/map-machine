@@ -19,7 +19,6 @@ from map_machine.osm.osm_reader import (
     OSMWay,
     Tags,
 )
-from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.scheme import Scheme
 from map_machine.workspace import Workspace
 
@@ -28,9 +27,6 @@ logger: logging.Logger = logging.getLogger(__name__)
 workspace: Workspace = Workspace(Path("temp"))
 
 SCHEME: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)
-SHAPE_EXTRACTOR: ShapeExtractor = ShapeExtractor(
-    workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
-)
 DEFAULT_ZOOM: float = 18.0
 
 
@@ -113,7 +109,7 @@ class Grid:
         )
         svg: Drawing = Drawing(output_path.name, size)
         constructor: Constructor = Constructor(
-            self.osm_data, flinger, SHAPE_EXTRACTOR, configuration
+            self.osm_data, flinger, configuration
         )
         constructor.construct()
         map_: Map = Map(flinger, svg, configuration)

@@ -6,33 +6,31 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from colour import Color
+from roentgen import Roentgen, get_roentgen
+from roentgen.icon import IconSpecification, Shape, ShapeSpecification
 
-from map_machine.pictogram.icon import (
-    Icon,
-    Shape,
-    ShapeExtractor,
-    ShapeSpecification,
-)
 from map_machine.pictogram.icon_collection import IconCollection
-from map_machine.workspace import workspace
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Iterable
+    from collections.abc import Callable
 
 SKIP: bool = True
 BLACK: Color = Color("black")
 
 
+roentgen: Roentgen = get_roentgen()
+
+
 def draw_special_grid(
-    all_shapes: Iterable[Shape],
+    all_shapes: dict[str, Shape],
     function: Callable[[Shape], bool],
     path: Path,
     color: Color | None = None,
 ) -> None:
     """Draw special icon grid to illustrate map feature."""
-    icons: list[Icon] = [
-        Icon([ShapeSpecification(shape, BLACK)])
-        for shape in all_shapes
+    icons: list[IconSpecification] = [
+        IconSpecification("", [ShapeSpecification(shape_id)], "")
+        for shape_id, shape in all_shapes.items()
         if function(shape)
     ]
     icons.sort()
@@ -46,10 +44,7 @@ def draw_special_grid(
 
 def draw_special_grids() -> None:
     """Draw special icon grids."""
-    extractor: ShapeExtractor = ShapeExtractor(
-        workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
-    )
-    all_shapes: Iterable[Shape] = extractor.shapes.values()
+    all_shapes: dict[str, Shape] = roentgen.get_shapes().shapes
 
     draw_special_grid(
         all_shapes,

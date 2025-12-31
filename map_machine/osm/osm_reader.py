@@ -351,20 +351,19 @@ class NotWellFormedOSMDataError(Exception):
     """OSM data structure is not well-formed."""
 
 
+@dataclass
 class OSMData:
     """The whole OpenStreetMap information about nodes, ways, and relations."""
 
-    def __init__(self) -> None:
-        self.nodes: dict[int, OSMNode] = {}
-        self.ways: dict[int, OSMWay] = {}
-        self.relations: dict[int, OSMRelation] = {}
-
-        self.authors: set[str] = set()
-        self.levels: set[float] = set()
-        self.time: MinMax = MinMax()
-        self.view_box: BoundingBox | None = None
-        self.bounding_box: BoundingBox | None = None
-        self.equator_length: float = EARTH_EQUATOR_LENGTH
+    nodes: dict[int, OSMNode] = field(default_factory=dict)
+    ways: dict[int, OSMWay] = field(default_factory=dict)
+    relations: dict[int, OSMRelation] = field(default_factory=dict)
+    authors: set[str] = field(default_factory=set)
+    levels: set[float] = field(default_factory=set)
+    time: MinMax = field(default_factory=MinMax)
+    view_box: BoundingBox | None = None
+    bounding_box: BoundingBox | None = None
+    equator_length: float = EARTH_EQUATOR_LENGTH
 
     def add_node(self, node: OSMNode) -> None:
         """Add node and update map parameters."""
