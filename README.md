@@ -168,7 +168,7 @@ Every way and node displayed with the random color picked for each author with `
 
 ## Installation
 
-Requirements: Python 3.9.
+Requirements: Python 3.10.
 
   * Install the [cairo 2D graphic library](https://www.cairographics.org/download/),
   * install the [GEOS library](https://libgeos.org),

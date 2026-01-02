@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING
 
 import numpy as np
 import svgwrite
@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-PathCommands = list[Union[float, str, np.ndarray]]
+PathCommands = list[float | str | np.ndarray]
 
 BLACK: Color = Color("black")
 DEFAULT_FONT: str = "Helvetica"

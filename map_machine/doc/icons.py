@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING
 
 from colour import Color
 
@@ -17,7 +17,7 @@ from map_machine.pictogram.icon_collection import IconCollection
 from map_machine.workspace import workspace
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
+    from collections.abc import Callable, Iterable
 
 SKIP: bool = True
 BLACK: Color = Color("black")

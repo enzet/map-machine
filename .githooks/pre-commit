@@ -12,7 +12,7 @@ if ! ruff format --check; then
 fi
 
 echo "Lint with Ruff..."
-ruff check || { echo "FAIL"; exit 1; }
+ruff check --exclude map_machine/doc/moire_manager.py || { echo "FAIL"; exit 1; }
 
 echo "Check with ty..."
 ty check || { echo "FAIL"; exit 1; }

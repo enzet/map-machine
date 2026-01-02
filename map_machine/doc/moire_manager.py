@@ -3,7 +3,7 @@
 import argparse
 from abc import ABC
 from pathlib import Path
-from typing import Any, ClassVar, Union
+from typing import Any, ClassVar
 
 from moire.default import Default, DefaultHTML, DefaultMarkdown, DefaultWiki
 from moire.moire import Tag
@@ -17,7 +17,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 Arguments = list[Any]
-Code = Union[str, Tag, list]
+Code = str | Tag | list
 
 PREFIX: str = "https://wiki.openstreetmap.org/wiki/"
 
