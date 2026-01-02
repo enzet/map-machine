@@ -137,7 +137,7 @@ def test_render_coordinates() -> None:
         "text",
         "text",
     ]
-    for element, expected_element in zip(root, expected_elements):
+    for element, expected_element in zip(root, expected_elements, strict=False):
         assert (
             element.tag == f"{{http://www.w3.org/2000/svg}}{expected_element}"
         )
@@ -165,7 +165,7 @@ def test_render_file() -> None:
         "text",
         "text",
     ]
-    for element, expected_element in zip(root, expected_elements):
+    for element, expected_element in zip(root, expected_elements, strict=False):
         assert (
             element.tag == f"{{http://www.w3.org/2000/svg}}{expected_element}"
         )
@@ -192,7 +192,7 @@ def test_render_with_tooltips() -> None:
         "text",
         "text",
     ]
-    for element, expected_element in zip(root, expected_elements):
+    for element, expected_element in zip(root, expected_elements, strict=False):
         assert (
             element.tag == f"{{http://www.w3.org/2000/svg}}{expected_element}"
         )

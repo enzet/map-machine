@@ -26,7 +26,9 @@ def pseudo_mercator(coordinates: np.ndarray) -> np.ndarray:
     """
     latitude, longitude = coordinates
 
-    y: float = 180.0 / np.pi * np.log(np.tan(np.pi / 4.0 + latitude * np.pi / 360.0))
+    y: float = (
+        180.0 / np.pi * np.log(np.tan(np.pi / 4.0 + latitude * np.pi / 360.0))
+    )
     return np.array((longitude, y))
 
 
@@ -99,7 +101,9 @@ class MercatorFlinger(Flinger):
         :param coordinates: geographical coordinates to fling in the form of
             (latitude, longitude)
         """
-        result: np.ndarray = self.ratio * pseudo_mercator(coordinates) - self.min_
+        result: np.ndarray = (
+            self.ratio * pseudo_mercator(coordinates) - self.min_
+        )
 
         # Invert y axis on coordinate plane.
         result[1] = self.size[1] - result[1]
@@ -124,7 +128,9 @@ class MercatorFlinger(Flinger):
 class TranslateFlinger(Flinger):
     """Translate coordinates by a given scale and offset."""
 
-    def __init__(self, size: np.ndarray, scale: np.ndarray, offset: np.ndarray) -> None:
+    def __init__(
+        self, size: np.ndarray, scale: np.ndarray, offset: np.ndarray
+    ) -> None:
         super().__init__(size)
         self.scale: np.ndarray = scale
         self.offset: np.ndarray = offset
