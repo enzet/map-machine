@@ -18,10 +18,10 @@ dependencies = [
     "CairoSVG~=2.5.0",
     "colour~=0.1.5",
     "numpy~=1.26.0",
-    "Pillow~=8.2.0",
+    "Pillow~=12.1.0",
     "portolan~=1.0.1",
     "PyYAML~=6.0.1",
-    "Shapely~=1.7.1",
+    "Shapely~=2.1.2",
     "svgwrite~=1.4",
     "urllib3~=1.25.6",
 ]
