@@ -8,10 +8,8 @@ from typing import Any, ClassVar
 from moire.default import Default, DefaultHTML, DefaultMarkdown, DefaultWiki
 from moire.moire import Tag
 
-from map_machine.pictogram.icon import ShapeExtractor
 from map_machine.ui import cli
 from map_machine.ui.cli import COMMAND_LINES
-from map_machine.workspace import workspace
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -243,9 +241,6 @@ class MapMachineOSMWiki(MapMachineMoire, DefaultWiki):
     def __init__(self) -> None:
         super().__init__()
         self.images: dict = {}
-        self.extractor: ShapeExtractor = ShapeExtractor(
-            workspace.ICONS_PATH, workspace.ICONS_CONFIG_PATH
-        )
 
     def osm(self, arg: Arguments) -> str:
         """Add special OSM tag key or key–value pair of tag."""

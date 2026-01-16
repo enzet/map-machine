@@ -3,16 +3,11 @@
     Do not edit it manually, edit the Moire source file instead.
 -->
 
-The **Map Machine** project consists of
+**Map Machine** is a Python OpenStreetMap renderer that **can easily create static SVG maps** out of OpenStreetMap data. It also can generate PNG tiles for [slippy maps](https://wiki.openstreetmap.org/wiki/Slippy_Map) and run a tile server for them. It uses the Röntgen icon set ([site](https://enzet.ru/roentgen), [GitHub](https://github.com/enzet/Roentgen)) to display map features.
 
-  * a Python [OpenStreetMap](https://openstreetmap.org) renderer:
-    * SVG [map generation](#map-generation),
-    * SVG and PNG [tile generation](#tile-generation),
-  * the Röntgen ([site](https://enzet.ru/roentgen), [GitHub](https://github.com/enzet/Roentgen)) icon set: unique CC-BY 4.0 map icons.
+The idea behind the combination of the Röntgen icon set and the Map Machine project is to have a possibility to **show all the richness of the OpenStreetMap data**: to display any map feature represented by OpenStreetMap data tags by means of colors, shapes, and icons. For contributors it means possibility to display all changes even if they are small. And map users can dig down into the map and find every detail that was mapped.
 
-The idea behind the Map Machine project is to **show all the richness of the OpenStreetMap data**: to have a possibility to display any map feature represented by OpenStreetMap data tags by means of colors, shapes, and icons. Map Machine is created both for map contributors: to display all changes one made on the map even if they are small, and for map users: to dig down into the map and find every detail that was mapped.
-
-Unlike standard OpenStreetMap layers, **Map Machine is a playground for experiments** where one can easily try to support any unsupported tag, proposed tagging scheme, tags with little or even single usage, deprecated ones that are still in use.
+Unlike standard OpenStreetMap renderers, **Map Machine is a playground for experiments** where one can easily try to support any unsupported tag, proposed tagging scheme, tags with little or even single usage, deprecated ones that are still in use.
 
 Map Machine is intended to be highly configurable, so it can generate precise but messy maps for OSM contributors as well as pretty and clean maps for OSM users. It can also use some slow algorithms for experimental features.
 
@@ -22,31 +17,31 @@ See
   * [map features](#map-features),
   * [using Röntgen as JOSM style](#use-röntgen-as-josm-map-paint-style).
 
-## Usage example
+## Get Started
 
 ```shell
 map-machine render -b 2.284,48.860,2.290,48.865
 ```
 
-will automatically download OSM data and render an SVG map of the specified area to `out/map.svg`. See [Map generation](#map-generation).
+will download OSM data and render an SVG map of the specified area to `out/map.svg`. See [Map generation](#map-generation).
 
 ```shell
 map-machine tile -b 2.361,48.871,2.368,48.875
 ```
 
-will automatically download OSM data and render PNG tiles that cover the specified area to the `out/tiles` directory. See [Tile generation](#tile-generation).
+will download OSM data and render PNG tiles that cover the specified area to the `out/tiles` directory. See [Tile generation](#tile-generation).
 
-## Röntgen icon set
+## Röntgen Icon Set
 
-The central feature of the project is the Röntgen icon set. It is a set of monochrome 14 × 14 px pixel-aligned icons specially created for the Map Machine project. Unlike the Map Machine source code, which is under the MIT license, all icons are under the [CC BY](https://creativecommons.org/licenses/by/4.0/) license. So, with the appropriate credit the icon set can be used outside the project. Some icons can be used as emoji symbols.
+The central feature of the project is the Röntgen icon set (see [site](https://enzet.ru/roentgen), [GitHub](https://github.com/enzet/Roentgen)). It is a set of monochrome 14 × 14 px pixel-aligned icons specially created for the Map Machine project. Unlike the Map Machine source code, which is under the MIT license, all icons are under the [CC BY](https://creativecommons.org/licenses/by/4.0/) license. So, with the appropriate credit the icon set can be used outside the project.
 
-## Map features
+## Map Features
 
-### Extra icons
+### Extra Icons
 
 Map Machine uses icons to visualize tags for nodes and areas. But unlike other renderers, Map Machine can use more than one icon to visualize an entity and can use colors to visualize [`colour`](https://wiki.openstreetmap.org/wiki/Key:colour) value or other entity properties (like [`material`](https://wiki.openstreetmap.org/wiki/Key:material) or [`genus`](https://wiki.openstreetmap.org/wiki/Key:genus)).
 
-### Isometric building shapes
+### Isometric Building Shapes (Experimental)
 
 With `--buildings isometric` or `--buildings isometric-no-parts` (not set by default), buildings are drawn using isometric shapes for walls and shade in proportion to [`building:levels`](https://wiki.openstreetmap.org/wiki/Key:building:levels), [`building:min_level`](https://wiki.openstreetmap.org/wiki/Key:building:min_level), [`height`](https://wiki.openstreetmap.org/wiki/Key:height), and [`min_height`](https://wiki.openstreetmap.org/wiki/Key:min_height) values.
 
@@ -58,7 +53,7 @@ map-machine render -c -26.19049,28.05605 -s 600,400 --buildings isometric
 
 ![3D buildings](doc/buildings.svg)
 
-### Road lanes
+### Road Lanes (Experimental)
 
 To determine the road width Map Machine uses the [`width`](https://wiki.openstreetmap.org/wiki/Key:width) tag value or estimates it based on the [`lanes`](https://wiki.openstreetmap.org/wiki/Key:lanes) value. If lane value is specified, it also draws lane separators. This map style is highly inspired by Christoph Hormann's post [Navigating the Maze](https://blog.imagico.de/navigating-the-maze-part-2/).
 
@@ -72,9 +67,18 @@ map-machine render -c 47.61224,-122.33866 -s 600,400
 
 ### Trees
 
-Visualization of tree leaf types (broadleaved or needle-leaved) and genus or taxon by means of icon shapes and leaf cycles (deciduous or evergreen) by means of color.
+Map Machine can visualize different aspects of trees:
+
+  * trunk diameter, circumference, and/or diameter_crown,
+  * leaf types: broadleaved or needle-leaved,
+  * leaf cycles: deciduous or evergreen,
+  * genus or taxon (e.g. birch (*Betula*), palm (*Arecaceae*), maple (*Acer*).
 
 #### Example
+
+```shell
+map-machine render -c 55.751,37.628 -s 600,400
+```
 
 ![Trees](doc/trees.svg)
 
@@ -94,7 +98,7 @@ map-machine render -c 52.50892,13.3244 -s 600,400 -z 18.5
 
 ### Power tower design
 
-Visualize [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used with [`power`](https://wiki.openstreetmap.org/wiki/Key:power) = [`tower`](https://wiki.openstreetmap.org/wiki/Tag:power=tower) and [`power`](https://wiki.openstreetmap.org/wiki/Key:power) = [`pole`](https://wiki.openstreetmap.org/wiki/Tag:power=pole) tags. `design` has more than 1 million usages in OpenStreetMap.
+Map Machine can visualize a lot of [`design`](https://wiki.openstreetmap.org/wiki/Key:design) values used with [`power`](https://wiki.openstreetmap.org/wiki/Key:power) = [`tower`](https://wiki.openstreetmap.org/wiki/Tag:power=tower) and [`power`](https://wiki.openstreetmap.org/wiki/Key:power) = [`pole`](https://wiki.openstreetmap.org/wiki/Tag:power=pole) tags.
 
 ![Power tower design](doc/icons_power.svg)
 
@@ -118,7 +122,7 @@ Japanese maps usually use [special symbols](https://en.wikipedia.org/wiki/List_o
 
 ### Indoor features
 
-Draw indoor features specifying level with `--level` option. Possible values are numbers (e.g. `1`, `0.5`), lists of number separated by `;` (e.g. `1;2;4;4.5`), `all`, `overground`, and `underground`. The default value is not `all`, but `overground`, so underground objects are not shown on the map if `--level` option is not specified.
+Indoor features can be visualized by specifying level with `--level` option. Possible values are numbers (e.g. `1`, `0.5`), lists of number separated by `;` (e.g. `1;2;4;4.5`), `all`, `overground`, and `underground`. The default value is not `all`, but `overground`, so underground objects are not shown on the map if `--level` option is not specified.
 
 #### Example
 
@@ -331,6 +335,7 @@ Map configuration options used by `render` and `tile` commands:
 |---|---|
 | <span style="white-space: nowrap;">`--scheme`</span> `<id> or <path>` | scheme identifier (look for `<id>.yml` file) or path to a YAML scheme file, default value: `default` |
 | <span style="white-space: nowrap;">`--buildings`</span> `<mode>` | building drawing mode: no, flat, isometric, isometric-no-parts, default value: `flat` |
+| <span style="white-space: nowrap;">`--roads`</span> `<mode>` | road drawing mode: no, simple, lanes, default value: `simple` |
 | <span style="white-space: nowrap;">`--mode`</span> `<string>` | map drawing mode: normal, author, time, white, black, default value: `normal` |
 | <span style="white-space: nowrap;">`--overlap`</span> `<integer>` | size of the margin in pixels to leave around icons and text, default value: 12 |
 | <span style="white-space: nowrap;">`--labels`</span> `<string>` | label drawing mode: no, main, all, address, default value: `main` |

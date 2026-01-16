@@ -5,7 +5,7 @@
 
 ## Install
 
-Map Machine requires [Python](https://www.python.org) 3.9, [pip](https://pip.pypa.io/en/stable/installation/), and two libraries:
+Map Machine requires [Python](https://www.python.org) 3.10, [pip](https://pip.pypa.io/en/stable/installation/), and two libraries:
 
   * [cairo 2D graphic library](https://www.cairographics.org/download/),
   * [GEOS library](https://libgeos.org).
