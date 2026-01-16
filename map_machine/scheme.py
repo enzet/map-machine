@@ -608,12 +608,7 @@ class Scheme:
         for key in "direction", "camera:direction":
             if key in tags:
                 for specification in main_icon.shape_specifications:
-                    if (
-                        DirectionSet(tags[key]).is_right() is not None
-                        and main_icon.is_right_directed is not None
-                        and DirectionSet(tags[key]).is_right()
-                        != main_icon.is_right_directed
-                    ):
+                    if not DirectionSet(tags[key]).is_right():
                         specification.flip_horizontally = True
 
         return returned, priority

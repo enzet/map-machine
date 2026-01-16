@@ -540,6 +540,7 @@ class Constructor:
 
         if "direction" in node.tags or "camera:direction" in node.tags:
             self.direction_sectors.append(DirectionSector(tags, flung))
+
         point = Point(
             icon_set,
             labels,
