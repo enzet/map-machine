@@ -54,7 +54,6 @@ TIME_COLOR_SCALE: list[Color] = [
     Color("#FFC300"),
     Color("#DAF7A6"),
 ]
-DEFAULT_SHAPE_ID: str = "default"
 DEFAULT_SMALL_SHAPE_ID: str = "default_small"
 
 
@@ -471,11 +470,15 @@ class Constructor:
 
             icon_set = IconSet(
                 IconSpecification(
-                    "", [ShapeSpecification(DEFAULT_SHAPE_ID, color=color)], ""
+                    "",
+                    [ShapeSpecification(DEFAULT_SMALL_SHAPE_ID, color=color)],
+                    "",
                 ),
                 [],
                 IconSpecification(
-                    "", [ShapeSpecification(DEFAULT_SHAPE_ID, color=color)], ""
+                    "",
+                    [ShapeSpecification(DEFAULT_SMALL_SHAPE_ID, color=color)],
+                    "",
                 ),
                 set(),
             )
