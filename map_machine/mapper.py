@@ -20,6 +20,7 @@ from map_machine.drawing import draw_text
 from map_machine.feature.building import BUILDING_SCALE, Building, draw_walls
 from map_machine.feature.road import Intersection, Road, RoadPart
 from map_machine.geometry.bounding_box import BoundingBox
+from map_machine.geometry.coastline import CoastlineProcessor, WaterPolygon
 from map_machine.geometry.flinger import Flinger, MercatorFlinger
 from map_machine.map_configuration import LabelMode, MapConfiguration
 from map_machine.osm.osm_getter import NetworkError, get_osm
@@ -426,6 +427,7 @@ def render_map(arguments: argparse.Namespace) -> None:
     else:
         fatal("Failed to compute bounding box.")
         sys.exit(1)
+        return  # To make static analyzer happy.
 
     size: np.ndarray = flinger.size
 
@@ -436,6 +438,16 @@ def render_map(arguments: argparse.Namespace) -> None:
         flinger=flinger,
         configuration=configuration,
     )
+
+    # Process coastlines to create water polygons.
+    coastline_processor: CoastlineProcessor = CoastlineProcessor(bounding_box)
+    water_polygons: list[WaterPolygon] = coastline_processor.process(osm_data)
+    if water_polygons:
+        logger.info(
+            "Created %d water polygons from coastlines.", len(water_polygons)
+        )
+        constructor.add_water_figures(water_polygons)
+
     constructor.construct()
 
     map_: Map = Map(flinger=flinger, svg=svg, configuration=configuration)

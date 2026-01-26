@@ -19,6 +19,7 @@ from map_machine.feature.direction import DirectionSector
 from map_machine.feature.road import Road, Roads
 from map_machine.feature.tree import Tree
 from map_machine.figure import StyledFigure
+from map_machine.geometry.coastline import WaterPolygon
 from map_machine.map_configuration import DrawingMode, MapConfiguration
 from map_machine.osm.osm_reader import (
     OSMData,
@@ -204,6 +205,9 @@ class Constructor:
         logger.info("Constructing ways...")
         for way_id in self.osm_data.ways:
             way: OSMWay = self.osm_data.ways[way_id]
+            # Coastlines are handled separately by `CoastlineProcessor`.
+            if way.tags.get("natural") == "coastline":
+                continue
             self.construct_line(way, [], [way.nodes])
 
     def construct_line(
@@ -552,6 +556,47 @@ class Constructor:
             add_tooltips=self.configuration.show_tooltips,
         )
         self.points.append(point)
+
+    def add_water_figures(self, water_polygons: list[WaterPolygon]) -> None:
+        """Add water polygon figures from coastline processing.
+
+        :param water_polygons: list of polygons, each polygon is a list of
+            (latitude, longitude) coordinate arrays
+        """
+        coastline_styles: list[LineStyle] = self.scheme.get_style(
+            {"natural": "coastline"}
+        )
+        if not coastline_styles:
+            logger.warning("No style found for coastline.")
+            return
+
+        style = coastline_styles[0]
+
+        for polygon in water_polygons:
+            if isinstance(polygon, WaterPolygon):
+                if polygon.is_hole:
+                    # Islands are handled as holes in water, skip for now.
+                    continue
+                points = polygon.points
+            else:
+                points = polygon
+
+            if len(points) < 3:  # noqa: PLR2004
+                continue
+
+            # Create synthetic `OSMNodes` for polygon points.
+            nodes: list[OSMNode] = [
+                OSMNode.from_coordinates(coord) for coord in points
+            ]
+
+            self.figures.append(
+                StyledFigure(
+                    {"natural": "water", "_source": "coastline"},
+                    [],  # No inner polygons for now.
+                    [nodes],
+                    style,
+                )
+            )
 
     def get_sorted_figures(self) -> list[StyledFigure]:
         """Get all figures sorted by priority."""

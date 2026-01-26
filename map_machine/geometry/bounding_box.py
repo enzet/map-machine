@@ -179,3 +179,20 @@ class BoundingBox:
         self.bottom = min(self.bottom, other.bottom)
         self.right = max(self.right, other.right)
         self.top = max(self.top, other.top)
+
+    def contains_point(self, coordinates: np.ndarray) -> bool:
+        """Check if a point (lat, lon) is inside the bounding box."""
+        lat, lon = coordinates[0], coordinates[1]
+        return self.bottom <= lat <= self.top and self.left <= lon <= self.right
+
+    def get_corners(self) -> list[np.ndarray]:
+        """Return 4 corners in clockwise order starting from top-left.
+
+        Returns coordinates as (lat, lon) arrays.
+        """
+        return [
+            np.array((self.top, self.left)),  # Top-left.
+            np.array((self.top, self.right)),  # Top-right.
+            np.array((self.bottom, self.right)),  # Bottom-right.
+            np.array((self.bottom, self.left)),  # Bottom-left.
+        ]

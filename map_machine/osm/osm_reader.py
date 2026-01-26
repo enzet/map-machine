@@ -178,6 +178,24 @@ class OSMNode(Tagged):
             coordinates=np.array((structure["lat"], structure["lon"])),
         )
 
+    @classmethod
+    def from_coordinates(
+        cls, coordinates: np.ndarray, tags: Tags | None = None
+    ) -> OSMNode:
+        """Create synthetic node from coordinates.
+
+        Used for coastline processing where intersection points need to be
+        represented as nodes.
+
+        :param coordinates: (latitude, longitude) coordinate array
+        :param tags: optional tags dictionary
+        """
+        return cls(
+            tags if tags is not None else {},
+            id_=-1,  # Synthetic ID
+            coordinates=coordinates,
+        )
+
     def get_bounding_box(self) -> BoundingBox:
         """Get bounding box for the node."""
         return BoundingBox(

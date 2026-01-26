@@ -2462,7 +2462,7 @@ ways:
     priority: 21.0
   - tags: {natural: coastline}
     style:
-      # fill: water_color
+      fill: water_color
       stroke: water_border_color
       stroke-width: 1.0
     priority: 21.0
