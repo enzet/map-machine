@@ -9,10 +9,19 @@ from map_machine.geometry.coastline import (
     CoastlineProcessor,
     IntersectionType,
     WaterPolygon,
+    WaterRelationProcessor,
     _glue_coastlines,
     _try_merge,
+    find_bounding_box_intersections,
+    get_bounding_box_perimeter_position,
 )
-from map_machine.osm.osm_reader import OSMData, OSMNode, OSMWay
+from map_machine.osm.osm_reader import (
+    OSMData,
+    OSMMember,
+    OSMNode,
+    OSMRelation,
+    OSMWay,
+)
 
 
 def create_node(lat: float, lon: float, node_id: int = -1) -> OSMNode:
@@ -96,13 +105,12 @@ class TestIntersectionDetection:
     def test_simple_crossing_top_edge(self) -> None:
         """Test coastline crossing top edge."""
         bounding_box = BoundingBox(0.0, 0.0, 1.0, 1.0)
-        processor = CoastlineProcessor(bounding_box)
 
         # Coastline from outside (above) to inside.
         coastline = [create_node(1.5, 0.5, 1), create_node(0.5, 0.5, 2)]
 
         intersections: list[BoundingBoxIntersection] = (
-            processor._find_intersections(coastline, 0)  # noqa: SLF001
+            find_bounding_box_intersections(bounding_box, coastline, 0)
         )
         assert len(intersections) == 1
         assert intersections[0].edge == BoundingBoxEdge.TOP
@@ -111,7 +119,6 @@ class TestIntersectionDetection:
     def test_simple_crossing_bottom_edge(self) -> None:
         """Test coastline crossing bottom edge."""
         bounding_box = BoundingBox(0.0, 0.0, 1.0, 1.0)
-        processor = CoastlineProcessor(bounding_box)
 
         # Coastline from inside to outside (below).
         coastline: list[OSMNode] = [
@@ -119,7 +126,7 @@ class TestIntersectionDetection:
             create_node(-0.5, 0.5, 2),
         ]
         intersections: list[BoundingBoxIntersection] = (
-            processor._find_intersections(coastline, 0)  # noqa: SLF001
+            find_bounding_box_intersections(bounding_box, coastline, 0)
         )
         assert len(intersections) == 1
         assert intersections[0].edge == BoundingBoxEdge.BOTTOM
@@ -128,7 +135,6 @@ class TestIntersectionDetection:
     def test_crossing_multiple_edges(self) -> None:
         """Test coastline crossing multiple edges."""
         bounding_box = BoundingBox(0.0, 0.0, 1.0, 1.0)
-        processor = CoastlineProcessor(bounding_box)
 
         # Coastline enters from left, exits from right.
         coastline = [
@@ -137,7 +143,7 @@ class TestIntersectionDetection:
             create_node(0.5, 1.5, 3),  # Outside right.
         ]
         intersections: list[BoundingBoxIntersection] = (
-            processor._find_intersections(coastline, 0)  # noqa: SLF001
+            find_bounding_box_intersections(bounding_box, coastline, 0)
         )
         assert len(intersections) == 2  # noqa: PLR2004
 
@@ -156,44 +162,42 @@ class TestPerimeterPosition:
     def test_top_edge_positions(self) -> None:
         """Test positions along top edge."""
         bounding_box = BoundingBox(0.0, 0.0, 1.0, 1.0)
-        processor = CoastlineProcessor(bounding_box)
 
         # Left of top edge.
-        pos1 = processor._get_perimeter_position(  # noqa: SLF001
-            np.array((1.0, 0.0)), BoundingBoxEdge.TOP
+        pos1 = get_bounding_box_perimeter_position(
+            bounding_box, np.array((1.0, 0.0)), BoundingBoxEdge.TOP
         )
         assert np.isclose(pos1, 0.0)
 
         # Middle of top edge.
-        pos2 = processor._get_perimeter_position(  # noqa: SLF001
-            np.array((1.0, 0.5)), BoundingBoxEdge.TOP
+        pos2 = get_bounding_box_perimeter_position(
+            bounding_box, np.array((1.0, 0.5)), BoundingBoxEdge.TOP
         )
         assert np.isclose(pos2, 0.5)
 
         # Right of top edge.
-        pos3 = processor._get_perimeter_position(  # noqa: SLF001
-            np.array((1.0, 1.0)), BoundingBoxEdge.TOP
+        pos3 = get_bounding_box_perimeter_position(
+            bounding_box, np.array((1.0, 1.0)), BoundingBoxEdge.TOP
         )
         assert np.isclose(pos3, 1.0)
 
     def test_clockwise_order(self) -> None:
         """Test that positions increase clockwise."""
         bounding_box = BoundingBox(0.0, 0.0, 1.0, 1.0)
-        processor = CoastlineProcessor(bounding_box)
 
         # Points going clockwise around bounding box.
         positions = [
-            processor._get_perimeter_position(  # noqa: SLF001
-                np.array((1.0, 0.5)), BoundingBoxEdge.TOP
+            get_bounding_box_perimeter_position(
+                bounding_box, np.array((1.0, 0.5)), BoundingBoxEdge.TOP
             ),  # Top edge.
-            processor._get_perimeter_position(  # noqa: SLF001
-                np.array((0.5, 1.0)), BoundingBoxEdge.RIGHT
+            get_bounding_box_perimeter_position(
+                bounding_box, np.array((0.5, 1.0)), BoundingBoxEdge.RIGHT
             ),  # Right edge.
-            processor._get_perimeter_position(  # noqa: SLF001
-                np.array((0.0, 0.5)), BoundingBoxEdge.BOTTOM
+            get_bounding_box_perimeter_position(
+                bounding_box, np.array((0.0, 0.5)), BoundingBoxEdge.BOTTOM
             ),  # Bottom edge.
-            processor._get_perimeter_position(  # noqa: SLF001
-                np.array((0.5, 0.0)), BoundingBoxEdge.LEFT
+            get_bounding_box_perimeter_position(
+                bounding_box, np.array((0.5, 0.0)), BoundingBoxEdge.LEFT
             ),  # Left edge.
         ]
 
@@ -297,3 +301,166 @@ class TestBoundingBoxIntersection:
         assert intersection.edge == BoundingBoxEdge.LEFT
         assert intersection.type_ == IntersectionType.ENTRY
         assert intersection.coastline_index == 0
+
+
+def create_water_relation(
+    outer_coords: list[list[tuple[float, float]]],
+    relation_id: int = 100,
+    tags: dict[str, str] | None = None,
+    *,
+    closed: bool = False,
+) -> tuple[OSMRelation, list[OSMWay]]:
+    """Create a test water multipolygon relation with its ways.
+
+    :param closed: If True, the last node will be the same object as the first
+        (simulating a closed way in real OSM data).
+    """
+    if tags is None:
+        tags = {"type": "multipolygon", "natural": "water", "water": "lake"}
+
+    ways: list[OSMWay] = []
+    members: list[OSMMember] = []
+
+    for way_idx, coords in enumerate(outer_coords):
+        way_id = relation_id * 10 + way_idx
+        nodes = [
+            create_node(lat, lon, way_id * 100 + i)
+            for i, (lat, lon) in enumerate(coords)
+        ]
+        # For closed ways, replace the last node with the first node.
+        if closed and len(nodes) > 1 and coords[0] == coords[-1]:
+            nodes[-1] = nodes[0]
+        way = OSMWay(tags={}, id_=way_id, nodes=nodes)
+        ways.append(way)
+        members.append(OSMMember(type_="way", ref=way_id, role="outer"))
+
+    relation = OSMRelation(tags=tags, id_=relation_id, members=members)
+    return relation, ways
+
+
+class TestWaterRelationProcessor:
+    """Test WaterRelationProcessor for incomplete water relations."""
+
+    def test_no_water_relations(self) -> None:
+        """Test with no water relations."""
+        bounding_box = BoundingBox(0.0, 0.0, 1.0, 1.0)
+        processor = WaterRelationProcessor(bounding_box)
+
+        osm_data = OSMData()
+        polygons, skipped = processor.process(osm_data)
+
+        assert polygons == []
+        assert skipped == set()
+
+    def test_complete_water_relation(self) -> None:
+        """Test complete water relation (all ways present, closed polygon)."""
+        bounding_box = BoundingBox(0.0, 0.0, 1.0, 1.0)
+        processor = WaterRelationProcessor(bounding_box)
+
+        # Create a closed lake entirely inside bounding box.
+        relation, ways = create_water_relation(
+            [
+                [
+                    (0.2, 0.2),
+                    (0.2, 0.8),
+                    (0.8, 0.8),
+                    (0.8, 0.2),
+                    (0.2, 0.2),  # Closed.
+                ]
+            ],
+            closed=True,
+        )
+
+        osm_data = OSMData()
+        osm_data.relations[relation.id_] = relation
+        for way in ways:
+            osm_data.ways[way.id_] = way
+
+        polygons, skipped = processor.process(osm_data)
+
+        # Complete relation should not be processed (let normal handling do it).
+        assert len(polygons) == 0
+        assert len(skipped) == 0
+
+    def test_incomplete_water_relation_missing_ways(self) -> None:
+        """Test water relation with some ways missing from data."""
+        bounding_box = BoundingBox(0.0, 0.0, 1.0, 1.0)
+        processor = WaterRelationProcessor(bounding_box)
+
+        # Create relation with 2 ways, but only add 1 to osm_data.
+        relation, ways = create_water_relation(
+            [
+                [(0.2, 0.2), (0.2, 0.8), (0.5, 0.8)],  # First segment.
+                [(0.5, 0.8), (0.8, 0.8), (0.8, 0.2), (0.2, 0.2)],  # Second.
+            ]
+        )
+
+        osm_data = OSMData()
+        osm_data.relations[relation.id_] = relation
+        # Only add the first way (simulating partial download).
+        osm_data.ways[ways[0].id_] = ways[0]
+
+        _polygons, skipped = processor.process(osm_data)
+
+        # Should be processed since ways are missing.
+        assert relation.id_ in skipped
+
+    def test_is_water_relation_natural_water(self) -> None:
+        """Test detection of natural=water relation."""
+        bounding_box = BoundingBox(0.0, 0.0, 1.0, 1.0)
+        processor = WaterRelationProcessor(bounding_box)
+
+        relation = OSMRelation(
+            tags={"type": "multipolygon", "natural": "water"},
+            id_=1,
+            members=[],
+        )
+        assert processor._is_water_relation(relation)  # noqa: SLF001
+
+    def test_is_water_relation_water_lake(self) -> None:
+        """Test detection of water=lake relation."""
+        bounding_box = BoundingBox(0.0, 0.0, 1.0, 1.0)
+        processor = WaterRelationProcessor(bounding_box)
+
+        relation = OSMRelation(
+            tags={"type": "multipolygon", "water": "lake"},
+            id_=1,
+            members=[],
+        )
+        assert processor._is_water_relation(relation)  # noqa: SLF001
+
+    def test_is_water_relation_reservoir(self) -> None:
+        """Test detection of landuse=reservoir relation."""
+        bounding_box = BoundingBox(0.0, 0.0, 1.0, 1.0)
+        processor = WaterRelationProcessor(bounding_box)
+
+        relation = OSMRelation(
+            tags={"type": "multipolygon", "landuse": "reservoir"},
+            id_=1,
+            members=[],
+        )
+        assert processor._is_water_relation(relation)  # noqa: SLF001
+
+    def test_is_not_water_relation(self) -> None:
+        """Test non-water relation is not detected as water."""
+        bounding_box = BoundingBox(0.0, 0.0, 1.0, 1.0)
+        processor = WaterRelationProcessor(bounding_box)
+
+        relation = OSMRelation(
+            tags={"type": "multipolygon", "landuse": "forest"},
+            id_=1,
+            members=[],
+        )
+        assert not processor._is_water_relation(relation)  # noqa: SLF001
+
+    def test_non_multipolygon_not_processed(self) -> None:
+        """Test that non-multipolygon relations are not processed."""
+        bounding_box = BoundingBox(0.0, 0.0, 1.0, 1.0)
+        processor = WaterRelationProcessor(bounding_box)
+
+        relation = OSMRelation(
+            tags={"type": "route", "natural": "water"},
+            id_=1,
+            members=[],
+        )
+        assert not processor._is_water_relation(relation)  # noqa: SLF001

@@ -20,7 +20,11 @@ from map_machine.drawing import draw_text
 from map_machine.feature.building import BUILDING_SCALE, Building, draw_walls
 from map_machine.feature.road import Intersection, Road, RoadPart
 from map_machine.geometry.bounding_box import BoundingBox
-from map_machine.geometry.coastline import CoastlineProcessor, WaterPolygon
+from map_machine.geometry.coastline import (
+    CoastlineProcessor,
+    WaterPolygon,
+    WaterRelationProcessor,
+)
 from map_machine.geometry.flinger import Flinger, MercatorFlinger
 from map_machine.map_configuration import LabelMode, MapConfiguration
 from map_machine.osm.osm_getter import NetworkError, get_osm
@@ -447,6 +451,19 @@ def render_map(arguments: argparse.Namespace) -> None:
             "Created %d water polygons from coastlines.", len(water_polygons)
         )
         constructor.add_water_figures(water_polygons)
+
+    # Process incomplete water relations.
+    water_relation_processor: WaterRelationProcessor = WaterRelationProcessor(
+        bounding_box
+    )
+    relation_polygons, skipped_ids = water_relation_processor.process(osm_data)
+    if relation_polygons:
+        logger.info(
+            "Created %d water polygons from incomplete relations.",
+            len(relation_polygons),
+        )
+        constructor.add_water_figures(relation_polygons)
+    constructor.set_skipped_relations(skipped_ids)
 
     constructor.construct()
 

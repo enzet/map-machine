@@ -188,6 +188,17 @@ class Constructor:
 
         self.heights: set[float] = {0.25 / BUILDING_SCALE, 0.5 / BUILDING_SCALE}
 
+        # Relations to skip (processed by `WaterRelationProcessor`).
+        self._skipped_relation_ids: set[int] = set()
+
+    def set_skipped_relations(self, relation_ids: set[int]) -> None:
+        """Set relations that should be skipped during construction.
+
+        These relations have been processed separately (e.g., by
+        `WaterRelationProcessor` for incomplete water boundaries).
+        """
+        self._skipped_relation_ids = relation_ids
+
     def add_building(self, building: Building) -> None:
         """Add building and update levels."""
         self.buildings.append(building)
@@ -400,6 +411,8 @@ class Constructor:
     def construct_relations(self) -> None:
         """Construct Map Machine ways from OSM relations."""
         for relation_id in self.osm_data.relations:
+            if relation_id in self._skipped_relation_ids:
+                continue
             relation: OSMRelation = self.osm_data.relations[relation_id]
             tags: dict[str, str] = relation.tags
             if not self.check_level(tags):

@@ -1,9 +1,17 @@
-"""Coastline water polygon construction for partial map data.
+"""Water polygon construction for partial map data.
 
-OSM coastlines are ways where land is on the left and water is on the right.
-When downloading partial map data, coastlines appear as incomplete segments.
-This module constructs closed water polygons by connecting coastline segments
-along bounding box edges.
+This module handles two cases of incomplete water boundaries:
+
+1. OSM coastlines (`natural=coastline`). Ways where land is on the left and
+   water is on the right. When downloading partial data, coastlines appear as
+   incomplete segments.
+
+2. Water multipolygon relations (`natural=water`, `water=lake`, etc.). When
+   downloading partial data, only some member ways of the relation may be
+   present, resulting in incomplete boundaries.
+
+Both cases are handled by finding intersections with the bounding box and
+connecting segments along the bounding box edges to form closed water polygons.
 """
 
 from __future__ import annotations
@@ -17,7 +25,7 @@ import numpy as np
 
 if TYPE_CHECKING:
     from map_machine.geometry.bounding_box import BoundingBox
-    from map_machine.osm.osm_reader import OSMData, OSMNode
+    from map_machine.osm.osm_reader import OSMData, OSMNode, OSMRelation
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -52,6 +60,7 @@ class BoundingBoxIntersection:
     """(latitude, longitude)"""
 
     edge: BoundingBoxEdge
+
     type_: IntersectionType
 
     coastline_index: int
@@ -73,6 +82,9 @@ class WaterPolygon:
 
     is_hole: bool = False
     """True if this is an island (land inside water)."""
+
+    relation_id: int | None = None
+    """Original relation id if this polygon came from a water relation."""
 
 
 def _glue_coastlines(coastlines: list[list[OSMNode]]) -> list[list[OSMNode]]:
@@ -129,6 +141,141 @@ def _try_merge(a: list[OSMNode], b: list[OSMNode]) -> list[OSMNode] | None:
     return None
 
 
+def segment_bounding_box_edge_intersection(
+    bounding_box: BoundingBox,
+    point_1: np.ndarray,
+    point_2: np.ndarray,
+    edge: BoundingBoxEdge,
+) -> np.ndarray | None:
+    """Check if segment intersects bounding box edge.
+
+    Uses parametric line intersection.
+
+    :param bounding_box: the bounding box
+    :param point_1: first point of segment (latitude, longitude)
+    :param point_2: second point of segment (latitude, longitude)
+    :param edge: which edge of the bounding box to check
+    :return: intersection point or None
+    """
+    # Get edge endpoints (latitude, longitude).
+    corners: list[np.ndarray] = bounding_box.get_corners()
+    if edge == BoundingBoxEdge.TOP:
+        # Top-left to top-right.
+        corner_1, corner_2 = (corners[0], corners[1])
+    elif edge == BoundingBoxEdge.RIGHT:
+        # Top-right to bottom-right.
+        corner_1, corner_2 = (corners[1], corners[2])
+    elif edge == BoundingBoxEdge.BOTTOM:
+        # Bottom-right to bottom-left.
+        corner_1, corner_2 = (corners[2], corners[3])
+    else:  # LEFT
+        # Bottom-left to top-left.
+        corner_1, corner_2 = (corners[3], corners[0])
+
+    # Parametric intersection:
+    #     point_1 + t * (point_2 - point_1) =
+    #     corner_1 + u * (corner_2 - corner_1).
+    d1 = point_2 - point_1
+    d2 = corner_2 - corner_1
+
+    cross = d1[0] * d2[1] - d1[1] * d2[0]
+    if abs(cross) < 1e-10:  # noqa: PLR2004
+        return None  # Parallel.
+
+    difference = corner_1 - point_1
+    t = (difference[0] * d2[1] - difference[1] * d2[0]) / cross
+    u = (difference[0] * d1[1] - difference[1] * d1[0]) / cross
+
+    # Check if intersection is within both segments. Use small epsilon for
+    # numerical stability.
+    eps = 1e-9
+    if -eps <= t <= 1 + eps and -eps <= u <= 1 + eps:
+        return point_1 + t * d1
+
+    return None
+
+
+def get_bounding_box_perimeter_position(
+    bounding_box: BoundingBox, point: np.ndarray, edge: BoundingBoxEdge
+) -> float:
+    """Get position along bounding box perimeter.
+
+    :param bounding_box: the bounding box
+    :param point: point on the edge (latitude, longitude)
+    :param edge: which edge the point is on
+    :return: position from 0 to 4, clockwise from top-left
+    """
+    lat, lon = point[0], point[1]
+
+    if edge == BoundingBoxEdge.TOP:
+        # Position along top edge (left to right).
+        t = (lon - bounding_box.left) / (bounding_box.right - bounding_box.left)
+        return 0.0 + t
+    if edge == BoundingBoxEdge.RIGHT:
+        # Position along right edge (top to bottom).
+        t = (bounding_box.top - lat) / (bounding_box.top - bounding_box.bottom)
+        return 1.0 + t
+    if edge == BoundingBoxEdge.BOTTOM:
+        # Position along bottom edge (right to left).
+        t = (bounding_box.right - lon) / (
+            bounding_box.right - bounding_box.left
+        )
+        return 2.0 + t
+    # Position along left edge (bottom to top).
+    t = (lat - bounding_box.bottom) / (bounding_box.top - bounding_box.bottom)
+    return 3.0 + t
+
+
+def find_bounding_box_intersections(
+    bounding_box: BoundingBox,
+    boundary: list[OSMNode],
+    boundary_index: int = 0,
+) -> list[BoundingBoxIntersection]:
+    """Find all points where a boundary crosses bounding box edges.
+
+    :param bounding_box: the bounding box
+    :param boundary: list of OSM nodes forming the boundary
+    :param boundary_index: index to store in the intersection (for tracking)
+    :return: list of intersection points with entry/exit classification
+    """
+    intersections: list[BoundingBoxIntersection] = []
+
+    for index in range(len(boundary) - 1):
+        point_1: np.ndarray = boundary[index].coordinates
+        point_2: np.ndarray = boundary[index + 1].coordinates
+
+        # Check intersection with each bounding box edge.
+        for edge in BoundingBoxEdge:
+            intersection = segment_bounding_box_edge_intersection(
+                bounding_box, point_1, point_2, edge
+            )
+            if intersection is not None:
+                # Determine if entering or exiting.
+                inside_point_1: bool = bounding_box.contains_point(point_1)
+                inside_point_2: bool = bounding_box.contains_point(point_2)
+
+                if inside_point_1 and not inside_point_2:
+                    int_type = IntersectionType.EXIT
+                elif not inside_point_1 and inside_point_2:
+                    int_type = IntersectionType.ENTRY
+                else:
+                    # Both inside or both outside. This can happen when
+                    # segment touches edge exactly.
+                    continue
+
+                intersections.append(
+                    BoundingBoxIntersection(
+                        coordinates=intersection,
+                        edge=edge,
+                        type_=int_type,
+                        coastline_index=boundary_index,
+                        segment_index=index,
+                    )
+                )
+
+    return intersections
+
+
 class CoastlineProcessor:
     """Processes coastline ways to create water polygons."""
 
@@ -153,7 +300,9 @@ class CoastlineProcessor:
         # Find all intersections with bounding box.
         self._intersections = []
         for coast_index, coastline in enumerate(self._coastlines):
-            intersections = self._find_intersections(coastline, coast_index)
+            intersections = find_bounding_box_intersections(
+                self.bounding_box, coastline, coast_index
+            )
             self._intersections.extend(intersections)
 
         # Sort intersections by position along bounding box perimeter.
@@ -175,141 +324,21 @@ class CoastlineProcessor:
 
         return _glue_coastlines(coastlines)
 
-    def _find_intersections(
-        self, coastline: list[OSMNode], coastline_index: int
-    ) -> list[BoundingBoxIntersection]:
-        """Find all points where coastline crosses bounding box edges."""
-        intersections: list[BoundingBoxIntersection] = []
-
-        for index in range(len(coastline) - 1):
-            point_1: np.ndarray = coastline[index].coordinates
-            point_2: np.ndarray = coastline[index + 1].coordinates
-
-            # Check intersection with each bounding box edge.
-            for edge in BoundingBoxEdge:
-                intersection = self._segment_edge_intersection(
-                    point_1, point_2, edge
-                )
-                if intersection is not None:
-                    # Determine if entering or exiting.
-                    inside_point_1: bool = self.bounding_box.contains_point(
-                        point_1
-                    )
-                    inside_point_2: bool = self.bounding_box.contains_point(
-                        point_2
-                    )
-
-                    if inside_point_1 and not inside_point_2:
-                        int_type = IntersectionType.EXIT
-                    elif not inside_point_1 and inside_point_2:
-                        int_type = IntersectionType.ENTRY
-                    else:
-                        # Both inside or both outside. This can happen when
-                        # segment touches edge exactly.
-                        continue
-
-                    intersections.append(
-                        BoundingBoxIntersection(
-                            coordinates=intersection,
-                            edge=edge,
-                            type_=int_type,
-                            coastline_index=coastline_index,
-                            segment_index=index,
-                        )
-                    )
-
-        return intersections
-
-    def _segment_edge_intersection(
-        self, point_1: np.ndarray, point_2: np.ndarray, edge: BoundingBoxEdge
-    ) -> np.ndarray | None:
-        """Check if segment intersects bounding box edge.
-
-        Uses parametric line intersection.
-
-        :return: intersection point
-        """
-        # Get edge endpoints (latitude, longitude).
-        corners: list[np.ndarray] = self.bounding_box.get_corners()
-        if edge == BoundingBoxEdge.TOP:
-            # Top-left to top-right.
-            corner_1, corner_2 = (corners[0], corners[1])
-        elif edge == BoundingBoxEdge.RIGHT:
-            # Top-right to bottom-right.
-            corner_1, corner_2 = (corners[1], corners[2])
-        elif edge == BoundingBoxEdge.BOTTOM:
-            # Bottom-right to bottom-left.
-            corner_1, corner_2 = (corners[2], corners[3])
-        else:  # LEFT
-            # Bottom-left to top-left.
-            corner_1, corner_2 = (corners[3], corners[0])
-
-        # Parametric intersection:
-        #     point_1 + t * (point_2 - point_1) =
-        #     corner_1 + u * (corner_2 - corner_1).
-        d1 = point_2 - point_1
-        d2 = corner_2 - corner_1
-
-        cross = d1[0] * d2[1] - d1[1] * d2[0]
-        if abs(cross) < 1e-10:  # noqa: PLR2004
-            return None  # Parallel.
-
-        difference = corner_1 - point_1
-        t = (difference[0] * d2[1] - difference[1] * d2[0]) / cross
-        u = (difference[0] * d1[1] - difference[1] * d1[0]) / cross
-
-        # Check if intersection is within both segments. Use small epsilon for
-        # numerical stability.
-        eps = 1e-9
-        if -eps <= t <= 1 + eps and -eps <= u <= 1 + eps:
-            return point_1 + t * d1
-
-        return None
-
     def _sort_intersections_clockwise(self) -> None:
         """Sort intersection points by position along bounding box perimeter."""
 
         # Calculate perimeter position for each intersection. Clockwise from
         # top-left.
         for intersection in self._intersections:
-            intersection.perimeter_position = self._get_perimeter_position(
-                intersection.coordinates, intersection.edge
+            intersection.perimeter_position = (
+                get_bounding_box_perimeter_position(
+                    self.bounding_box,
+                    intersection.coordinates,
+                    intersection.edge,
+                )
             )
 
         self._intersections.sort(key=lambda x: x.perimeter_position)
-
-    def _get_perimeter_position(
-        self, point: np.ndarray, edge: BoundingBoxEdge
-    ) -> float:
-        """Get position along bounding box perimeter.
-
-        0 to 4, clockwise from top-left.
-        """
-        lat, lon = point[0], point[1]
-
-        if edge == BoundingBoxEdge.TOP:
-            # Position along top edge (left to right).
-            t = (lon - self.bounding_box.left) / (
-                self.bounding_box.right - self.bounding_box.left
-            )
-            return 0.0 + t
-        if edge == BoundingBoxEdge.RIGHT:
-            # Position along right edge (top to bottom).
-            t = (self.bounding_box.top - lat) / (
-                self.bounding_box.top - self.bounding_box.bottom
-            )
-            return 1.0 + t
-        if edge == BoundingBoxEdge.BOTTOM:
-            # Position along bottom edge (right to left).
-            t = (self.bounding_box.right - lon) / (
-                self.bounding_box.right - self.bounding_box.left
-            )
-            return 2.0 + t
-        # Position along left edge (bottom to top).
-        t = (lat - self.bounding_box.bottom) / (
-            self.bounding_box.top - self.bounding_box.bottom
-        )
-        return 3.0 + t
 
     def _construct_water_polygons(self) -> list[WaterPolygon]:
         """Connect coastlines along bounding box edges to form polygons."""
@@ -477,7 +506,7 @@ class CoastlineProcessor:
         if to_position < from_position:
             to_position += 4.0
 
-        # Add corners between from_pos and to_pos.
+        # Add corners between `from_position` and `to_postion`.
         for corner_index in range(4):
             corner_position = float(corner_index + 1)  # 1, 2, 3, 4.
             if corner_position <= from_position:
@@ -522,3 +551,227 @@ class CoastlineProcessor:
         # bounding box itself might be entirely water or entirely land. For now,
         # return empty — more sophisticated detection could be added.
         return []
+
+
+class WaterRelationProcessor:
+    """Processes incomplete water multipolygon relations."""
+
+    def __init__(self, bounding_box: BoundingBox) -> None:
+        self.bounding_box: BoundingBox = bounding_box
+        self._boundaries: list[list[OSMNode]] = []
+        self._intersections: list[BoundingBoxIntersection] = []
+
+    def process(self, osm_data: OSMData) -> tuple[list[WaterPolygon], set[int]]:
+        """Process incomplete water relations.
+
+        :param osm_data: OSM data containing relations and ways
+        :return: tuple of (water polygons, set of processed relation ids)
+        """
+        water_polygons: list[WaterPolygon] = []
+        processed_relation_ids: set[int] = set()
+
+        for relation in osm_data.relations.values():
+            if not self._is_water_relation(relation):
+                continue
+
+            # Get outer ways that are present in the data.
+            outer_ways = []
+            missing_ways = False
+            for member in relation.members or []:
+                if member.type_ == "way" and member.role == "outer":
+                    if member.ref in osm_data.ways:
+                        outer_ways.append(osm_data.ways[member.ref])
+                    else:
+                        missing_ways = True
+
+            if not outer_ways:
+                continue
+
+            # Glue the outer ways together.
+            glued_outers: list[list[OSMNode]] = _glue_coastlines(
+                [way.nodes for way in outer_ways]
+            )
+
+            # Check if any outer boundary is incomplete (not closed).
+            has_incomplete = any(
+                boundary[0] != boundary[-1] for boundary in glued_outers
+            )
+
+            if not has_incomplete and not missing_ways:
+                # Complete relation, let normal processing handle it.
+                continue
+
+            # Process incomplete boundaries.
+            for boundary in glued_outers:
+                if boundary[0] == boundary[-1]:
+                    # This boundary is complete, add as-is.
+                    polygon = WaterPolygon(relation_id=relation.id_)
+                    for node in boundary:
+                        polygon.points.append(node.coordinates.copy())
+                    water_polygons.append(polygon)
+                else:
+                    # Incomplete boundary, complete with bounding box.
+                    completed = self._complete_boundary(boundary)
+                    if completed:
+                        completed.relation_id = relation.id_
+
+                        water_polygons.append(completed)
+
+            processed_relation_ids.add(relation.id_)
+
+        return water_polygons, processed_relation_ids
+
+    def _is_water_relation(self, relation: OSMRelation) -> bool:
+        """Check if relation is a water body multipolygon."""
+        tags = relation.tags
+        if tags.get("type") != "multipolygon":
+            return False
+
+        # Check for water-related tags.
+        if tags.get("natural") == "water":
+            return True
+        if tags.get("water") in (
+            "lagoon",
+            "lake",
+            "oxbow",
+            "rapids",
+            "river",
+            "stream",
+            "stream_pool",
+        ):
+            return True
+        return tags.get("landuse") == "reservoir"
+
+    def _complete_boundary(
+        self, boundary: list[OSMNode]
+    ) -> WaterPolygon | None:
+        """Complete an incomplete water boundary using bounding box edges.
+
+        For water relations, we connect the endpoints along the bounding box
+        edge, choosing the shorter path since water is inside the polygon.
+        """
+        if len(boundary) < 2:  # noqa: PLR2004
+            return None
+
+        # Find intersections with bounding box.
+        intersections = find_bounding_box_intersections(
+            self.bounding_box, boundary
+        )
+
+        if len(intersections) < 2:  # noqa: PLR2004
+            # Boundary doesn't properly cross boudning box, skip.
+            return None
+
+        # Sort intersections by their position in the boundary.
+        intersections.sort(key=lambda x: x.segment_index)
+
+        # Build the water polygon.
+        polygon: WaterPolygon = WaterPolygon()
+
+        # Start from the first point inside bounding box (after first entry).
+        first_entry: BoundingBoxIntersection | None = None
+        last_exit: BoundingBoxIntersection | None = None
+
+        for intersection in intersections:
+            if (
+                intersection.type_ == IntersectionType.ENTRY
+                and first_entry is None
+            ):
+                first_entry = intersection
+            if intersection.type_ == IntersectionType.EXIT:
+                last_exit = intersection
+
+        if first_entry is None or last_exit is None:
+            return None
+
+        # Add entry point.
+        polygon.points.append(first_entry.coordinates.copy())
+
+        # Add boundary points between entry and exit.
+        start_index = first_entry.segment_index + 1
+        end_index = last_exit.segment_index + 1
+        for index in range(start_index, end_index):
+            if index < len(boundary):
+                polygon.points.append(boundary[index].coordinates.copy())
+
+        # Add exit point.
+        polygon.points.append(last_exit.coordinates.copy())
+
+        # Add fake nodes to connect exit to entry along bounding box edge.
+        bounding_box_path = self._get_shorter_bounding_box_path(
+            first_entry.coordinates,
+            first_entry.edge,
+            last_exit.coordinates,
+            last_exit.edge,
+        )
+        polygon.points.extend(bounding_box_path)
+
+        # Close the polygon.
+        if polygon.points and not np.allclose(
+            polygon.points[0], polygon.points[-1]
+        ):
+            polygon.points.append(polygon.points[0].copy())
+
+        if len(polygon.points) < 4:  # noqa: PLR2004
+            return None
+
+        return polygon
+
+    def _get_shorter_bounding_box_path(
+        self,
+        from_point: np.ndarray,
+        from_edge: BoundingBoxEdge,
+        to_point: np.ndarray,
+        to_edge: BoundingBoxEdge,
+    ) -> list[np.ndarray]:
+        """Get the shorter path along boudning box edges between two points."""
+        from_position = get_bounding_box_perimeter_position(
+            self.bounding_box, from_point, from_edge
+        )
+        to_position = get_bounding_box_perimeter_position(
+            self.bounding_box, to_point, to_edge
+        )
+        corners = self.bounding_box.get_corners()
+
+        # Calculate clockwise and counter-clockwise distances.
+        if to_position >= from_position:
+            clockwise_dist = to_position - from_position
+            counter_dist = 4.0 - clockwise_dist
+        else:
+            counter_dist = from_position - to_position
+            clockwise_dist = 4.0 - counter_dist
+
+        points: list[np.ndarray] = []
+
+        if clockwise_dist <= counter_dist:
+            # Go clockwise.
+            current_position = from_position
+            target_position = (
+                to_position
+                if to_position > from_position
+                else to_position + 4.0
+            )
+
+            for corner_index in range(4):
+                corner_position = float(corner_index + 1)
+                if corner_position <= current_position:
+                    corner_position += 4.0
+                if current_position < corner_position < target_position:
+                    points.append(corners[(corner_index + 1) % 4].copy())
+        else:
+            # Go counter-clockwise.
+            current_position = from_position
+            target_position = (
+                to_position
+                if to_position < from_position
+                else to_position - 4.0
+            )
+
+            for corner_index in range(3, -1, -1):
+                corner_position = float(corner_index + 1)
+                if corner_position >= current_position:
+                    corner_position -= 4.0
+                if target_position < corner_position < current_position:
+                    points.append(corners[(corner_index + 1) % 4].copy())
+
+        return points
