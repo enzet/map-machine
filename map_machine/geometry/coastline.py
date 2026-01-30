@@ -128,6 +128,23 @@ def _glue_coastlines(coastlines: list[list[OSMNode]]) -> list[list[OSMNode]]:
     return result
 
 
+def _compute_signed_area(points: list[np.ndarray]) -> float:
+    """Compute signed area of a polygon using the shoelace formula.
+
+    Points are (latitude, longitude), treated as (y, x).
+
+    :return: positive for counter-clockwise winding, negative for clockwise
+    """
+    area: float = 0.0
+    size: int = len(points)
+    for i in range(size):
+        j = (i + 1) % size
+        # Shoelace: sum of (x_i * y_{i + 1} - x_{i + 1} * y_i),
+        # where x = longitude (index 1), y = latitude (index 0).
+        area += points[i][1] * points[j][0] - points[j][1] * points[i][0]
+    return area / 2.0
+
+
 def _try_merge(a: list[OSMNode], b: list[OSMNode]) -> list[OSMNode] | None:
     """Try to merge two coastline segments if they share an endpoint."""
     if a[-1] == b[0]:
@@ -499,25 +516,27 @@ class CoastlineProcessor:
         self, from_position: float, to_position: float
     ) -> list[np.ndarray]:
         """Get corner points when traversing bounding box clockwise."""
-        points: list[np.ndarray] = []
         corners = self.bounding_box.get_corners()
 
         # Handle wrap-around.
         if to_position < from_position:
             to_position += 4.0
 
-        # Add corners between `from_position` and `to_postion`.
+        # Collect corners between `from_position` and `to_position` with
+        # their adjusted positions, then sort to ensure correct order when
+        # wrapping around the perimeter.
+        corner_entries: list[tuple[float, np.ndarray]] = []
         for corner_index in range(4):
             corner_position = float(corner_index + 1)  # 1, 2, 3, 4.
             if corner_position <= from_position:
                 corner_position += 4.0
             if from_position < corner_position < to_position:
-                actual_index = corner_index % 4
-                # Corner index 0 is at position 1 (end of top edge). So corner
-                # at position 1 is corners[1] (top-right).
-                points.append(corners[(actual_index + 1) % 4].copy())
+                corner_entries.append(
+                    (corner_position, corners[(corner_index + 1) % 4].copy())
+                )
 
-        return points
+        corner_entries.sort(key=lambda entry: entry[0])
+        return [corner for _, corner in corner_entries]
 
     def _get_coastline_points(
         self, entry: BoundingBoxIntersection, exit_int: BoundingBoxIntersection
@@ -647,8 +666,13 @@ class WaterRelationProcessor:
     ) -> WaterPolygon | None:
         """Complete an incomplete water boundary using bounding box edges.
 
-        For water relations, we connect the endpoints along the bounding box
-        edge, choosing the shorter path since water is inside the polygon.
+        For water relations, water is inside the polygon. We determine the
+        correct bounding box path by checking which direction produces a
+        polygon with the correct winding (counter-clockwise = water inside).
+
+        The boundary may cross the bounding box multiple times, creating
+        multiple entry-exit pairs. Each pair defines an interior segment.
+        We connect these segments via bounding box edges.
         """
         if len(boundary) < 2:  # noqa: PLR2004
             return None
@@ -659,52 +683,114 @@ class WaterRelationProcessor:
         )
 
         if len(intersections) < 2:  # noqa: PLR2004
-            # Boundary doesn't properly cross boudning box, skip.
+            # Boundary doesn't properly cross bounding box, skip.
             return None
 
         # Sort intersections by their position in the boundary.
         intersections.sort(key=lambda x: x.segment_index)
 
-        # Build the water polygon.
-        polygon: WaterPolygon = WaterPolygon()
-
-        # Start from the first point inside bounding box (after first entry).
-        first_entry: BoundingBoxIntersection | None = None
-        last_exit: BoundingBoxIntersection | None = None
-
+        # Compute perimeter positions for bounding box path construction.
         for intersection in intersections:
-            if (
-                intersection.type_ == IntersectionType.ENTRY
-                and first_entry is None
-            ):
-                first_entry = intersection
-            if intersection.type_ == IntersectionType.EXIT:
-                last_exit = intersection
+            intersection.perimeter_position = (
+                get_bounding_box_perimeter_position(
+                    self.bounding_box,
+                    intersection.coordinates,
+                    intersection.edge,
+                )
+            )
 
-        if first_entry is None or last_exit is None:
+        # Build entry-exit pairs from sorted intersections.
+        pairs: list[
+            tuple[BoundingBoxIntersection, BoundingBoxIntersection]
+        ] = []
+        index = 0
+        while index < len(intersections):
+            if intersections[index].type_ == IntersectionType.ENTRY:
+                # Find next exit after this entry.
+                for j in range(index + 1, len(intersections)):
+                    if intersections[j].type_ == IntersectionType.EXIT:
+                        pairs.append((intersections[index], intersections[j]))
+                        index = j + 1
+                        break
+                else:
+                    index += 1
+            else:
+                index += 1
+
+        if not pairs:
             return None
 
-        # Add entry point.
-        polygon.points.append(first_entry.coordinates.copy())
+        # Collect the boundary-only points (without any bounding box path)
+        # to determine the local winding direction of the boundary segment.
+        boundary_only_points: list[np.ndarray] = []
 
-        # Add boundary points between entry and exit.
-        start_index = first_entry.segment_index + 1
-        end_index = last_exit.segment_index + 1
-        for index in range(start_index, end_index):
-            if index < len(boundary):
-                polygon.points.append(boundary[index].coordinates.copy())
+        # Build polygon points using both clockwise and counter-clockwise
+        # bounding box paths, then pick the correct one based on signed area.
+        cw_points: list[np.ndarray] = []
+        ccw_points: list[np.ndarray] = []
 
-        # Add exit point.
-        polygon.points.append(last_exit.coordinates.copy())
+        for pair_index, (entry, exit_) in enumerate(pairs):
+            # Add entry point.
+            cw_points.append(entry.coordinates.copy())
+            ccw_points.append(entry.coordinates.copy())
+            boundary_only_points.append(entry.coordinates.copy())
 
-        # Add fake nodes to connect exit to entry along bounding box edge.
-        bounding_box_path = self._get_shorter_bounding_box_path(
-            first_entry.coordinates,
-            first_entry.edge,
-            last_exit.coordinates,
-            last_exit.edge,
-        )
-        polygon.points.extend(bounding_box_path)
+            # Add interior boundary points between entry and exit.
+            for node_index in range(
+                entry.segment_index + 1, exit_.segment_index + 1
+            ):
+                if node_index < len(boundary):
+                    coord = boundary[node_index].coordinates.copy()
+                    cw_points.append(coord)
+                    ccw_points.append(coord.copy())
+                    boundary_only_points.append(coord.copy())
+
+            # Add exit point.
+            cw_points.append(exit_.coordinates.copy())
+            ccw_points.append(exit_.coordinates.copy())
+            boundary_only_points.append(exit_.coordinates.copy())
+
+            # Add bounding box path to next entry (wrapping to first pair).
+            next_entry = pairs[(pair_index + 1) % len(pairs)][0]
+
+            cw_path = self._get_clockwise_bounding_box_path(
+                exit_.coordinates,
+                exit_.edge,
+                next_entry.coordinates,
+                next_entry.edge,
+            )
+            ccw_path = self._get_ccw_bounding_box_path(
+                exit_.coordinates,
+                exit_.edge,
+                next_entry.coordinates,
+                next_entry.edge,
+            )
+
+            cw_points.extend(cw_path)
+            ccw_points.extend(ccw_path)
+
+        # Determine the correct bounding box path direction.
+        #
+        # The boundary segment is part of the outer ring of a water body.
+        # When we close just the boundary segment (without a bounding box
+        # path), its signed area tells us the local winding direction.
+        #
+        # The correct water polygon has the *opposite* winding from the
+        # boundary segment alone: the boundary traces one portion of the
+        # ring in one direction, and the bounding box path completes the
+        # polygon by going around the water area in the other direction.
+        boundary_area = _compute_signed_area(boundary_only_points)
+        cw_area = _compute_signed_area(cw_points)
+
+        if boundary_area * cw_area < 0:
+            # Opposite signs: CW polygon is the water polygon.
+            polygon_points = cw_points
+        else:
+            # Same signs: CCW polygon is the water polygon.
+            polygon_points = ccw_points
+
+        polygon = WaterPolygon()
+        polygon.points = polygon_points
 
         # Close the polygon.
         if polygon.points and not np.allclose(
@@ -717,14 +803,14 @@ class WaterRelationProcessor:
 
         return polygon
 
-    def _get_shorter_bounding_box_path(
+    def _get_clockwise_bounding_box_path(
         self,
         from_point: np.ndarray,
         from_edge: BoundingBoxEdge,
         to_point: np.ndarray,
         to_edge: BoundingBoxEdge,
     ) -> list[np.ndarray]:
-        """Get the shorter path along boudning box edges between two points."""
+        """Get bounding box corners going clockwise from exit to entry."""
         from_position = get_bounding_box_perimeter_position(
             self.bounding_box, from_point, from_edge
         )
@@ -733,45 +819,51 @@ class WaterRelationProcessor:
         )
         corners = self.bounding_box.get_corners()
 
-        # Calculate clockwise and counter-clockwise distances.
-        if to_position >= from_position:
-            clockwise_dist = to_position - from_position
-            counter_dist = 4.0 - clockwise_dist
-        else:
-            counter_dist = from_position - to_position
-            clockwise_dist = 4.0 - counter_dist
+        target_position = (
+            to_position if to_position > from_position else to_position + 4.0
+        )
 
-        points: list[np.ndarray] = []
+        corner_entries: list[tuple[float, np.ndarray]] = []
+        for corner_index in range(4):
+            corner_position = float(corner_index + 1)
+            if corner_position <= from_position:
+                corner_position += 4.0
+            if from_position < corner_position < target_position:
+                corner_entries.append(
+                    (corner_position, corners[(corner_index + 1) % 4].copy())
+                )
+        corner_entries.sort(key=lambda entry: entry[0])
+        return [corner for _, corner in corner_entries]
 
-        if clockwise_dist <= counter_dist:
-            # Go clockwise.
-            current_position = from_position
-            target_position = (
-                to_position
-                if to_position > from_position
-                else to_position + 4.0
-            )
+    def _get_ccw_bounding_box_path(
+        self,
+        from_point: np.ndarray,
+        from_edge: BoundingBoxEdge,
+        to_point: np.ndarray,
+        to_edge: BoundingBoxEdge,
+    ) -> list[np.ndarray]:
+        """Get bounding box corners going counter-clockwise from exit."""
+        from_position = get_bounding_box_perimeter_position(
+            self.bounding_box, from_point, from_edge
+        )
+        to_position = get_bounding_box_perimeter_position(
+            self.bounding_box, to_point, to_edge
+        )
+        corners = self.bounding_box.get_corners()
 
-            for corner_index in range(4):
-                corner_position = float(corner_index + 1)
-                if corner_position <= current_position:
-                    corner_position += 4.0
-                if current_position < corner_position < target_position:
-                    points.append(corners[(corner_index + 1) % 4].copy())
-        else:
-            # Go counter-clockwise.
-            current_position = from_position
-            target_position = (
-                to_position
-                if to_position < from_position
-                else to_position - 4.0
-            )
+        target_position = (
+            to_position if to_position < from_position else to_position - 4.0
+        )
 
-            for corner_index in range(3, -1, -1):
-                corner_position = float(corner_index + 1)
-                if corner_position >= current_position:
-                    corner_position -= 4.0
-                if target_position < corner_position < current_position:
-                    points.append(corners[(corner_index + 1) % 4].copy())
-
-        return points
+        corner_entries: list[tuple[float, np.ndarray]] = []
+        for corner_index in range(3, -1, -1):
+            corner_position = float(corner_index + 1)
+            if corner_position >= from_position:
+                corner_position -= 4.0
+            if target_position < corner_position < from_position:
+                corner_entries.append(
+                    (corner_position, corners[(corner_index + 1) % 4].copy())
+                )
+        # Sort descending for counter-clockwise traversal.
+        corner_entries.sort(key=lambda entry: entry[0], reverse=True)
+        return [corner for _, corner in corner_entries]

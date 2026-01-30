@@ -464,3 +464,57 @@ class TestWaterRelationProcessor:
             members=[],
         )
         assert not processor._is_water_relation(relation)  # noqa: SLF001
+
+    def test_multiple_bbox_crossings(self) -> None:
+        """Test boundary that crosses the bounding box multiple times.
+
+        Boundary enters left, exits right, loops outside, re-enters right,
+        exits left.
+        """
+        bounding_box: BoundingBox = BoundingBox(0.0, 0.0, 1.0, 1.0)
+        processor: WaterRelationProcessor = WaterRelationProcessor(bounding_box)
+
+        # Boundary: outside → in (left) → out (right) → outside loop →
+        #     in (right) → out (left) → outside.
+        relation, ways = create_water_relation(
+            [
+                [
+                    (0.3, -0.5),  # Outside left.
+                    (0.3, 0.5),  # Inside.
+                    (0.3, 1.5),  # Outside right.
+                    (0.7, 1.5),  # Outside right (loop).
+                    (0.7, 0.5),  # Inside.
+                    (0.7, -0.5),  # Outside left.
+                ]
+            ]
+        )
+
+        osm_data: OSMData = OSMData()
+        osm_data.relations[relation.id_] = relation
+        # Simulating partial download:
+        for way in ways:
+            osm_data.ways[way.id_] = way
+
+        # Add a second member that's missing to trigger incomplete processing.
+        relation.members.append(OSMMember(type_="way", ref=99999, role="outer"))
+
+        polygons, skipped = processor.process(osm_data)
+
+        assert relation.id_ in skipped
+        assert len(polygons) >= 1
+
+        # Verify no polygon point is outside the bounding box.
+        for polygon in polygons:
+            for point in polygon.points:
+                assert point[0] >= -0.01, (  # noqa: PLR2004
+                    f"Latitude {point[0]} below bounding box."
+                )
+                assert point[0] <= 1.01, (  # noqa: PLR2004
+                    f"Latitude {point[0]} above bounding box."
+                )
+                assert point[1] >= -0.01, (  # noqa: PLR2004
+                    f"Longitude {point[1]} left of bounding box."
+                )
+                assert point[1] <= 1.01, (  # noqa: PLR2004
+                    f"Longitude {point[1]} right of bounding box."
+                )
