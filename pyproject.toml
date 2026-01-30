@@ -8,6 +8,7 @@ description = "Map Machine: Python map renderer for OpenStreetMap with custom ic
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
+license-files = ["LICENSE"]
 authors = [{ name = "Sergey Vartanov", email = "me@enzet.ru" }]
 keywords = [
     "openstreetmap",
@@ -25,7 +26,6 @@ classifiers = [
     "Environment :: Console",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
