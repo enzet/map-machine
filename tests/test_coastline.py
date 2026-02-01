@@ -653,52 +653,6 @@ class TestEvidenceBasedDirection:
             _point_in_polygon(land_point, p.points) for p in water_polygons
         )
 
-    def test_place_island_determines_water_side(self) -> None:
-        """A place=island way determines which candidate is water."""
-        bounding_box = BoundingBox(0.0, 0.0, 1.0, 1.0)
-        processor = WaterRelationProcessor(bounding_box)
-
-        # Same boundary as above, but no inner members.
-        relation, ways = create_water_relation(
-            [
-                [
-                    (0.3, -0.5),
-                    (0.3, 0.5),
-                    (0.3, 1.5),
-                ]
-            ],
-        )
-        assert relation.members
-        relation.members.append(OSMMember(type_="way", ref=99999, role="outer"))
-
-        osm_data = OSMData()
-        osm_data.relations[relation.id_] = relation
-        for way in ways:
-            osm_data.ways[way.id_] = way
-
-        # Add a place=island way in the upper region.
-        island_nodes = [
-            create_node(0.8, 0.4, 9000),
-            create_node(0.8, 0.6, 9001),
-            create_node(0.9, 0.5, 9002),
-        ]
-        island_way = OSMWay(
-            tags={"place": "island"}, id_=9000, nodes=island_nodes
-        )
-        osm_data.ways[island_way.id_] = island_way
-
-        polygons, skipped = processor.process(osm_data)
-
-        assert relation.id_ in skipped
-        assert len(polygons) >= 1
-
-        # Water polygon should contain the island area.
-        island_center = np.array((0.8, 0.5))
-        water_polygons = [p for p in polygons if not p.is_hole]
-        assert any(
-            _point_in_polygon(island_center, p.points) for p in water_polygons
-        )
-
     def test_fallback_to_smaller_polygon(self) -> None:
         """Without evidence, the smaller polygon is chosen."""
         bounding_box = BoundingBox(0.0, 0.0, 1.0, 1.0)

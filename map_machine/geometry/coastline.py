@@ -643,13 +643,6 @@ class WaterRelationProcessor:
         water_polygons: list[WaterPolygon] = []
         processed_relation_ids: set[int] = set()
 
-        # Collect place=island evidence points once.
-        island_points: list[np.ndarray] = [
-            way.nodes[0].coordinates
-            for way in osm_data.ways.values()
-            if way.tags.get("place") == "island" and way.nodes
-        ]
-
         for relation in osm_data.relations.values():
             if not self._is_water_relation(relation):
                 continue
@@ -704,7 +697,7 @@ class WaterRelationProcessor:
                 else:
                     # Incomplete boundary, complete with bounding box.
                     completed = self._complete_boundary(
-                        boundary, inner_polygons, island_points
+                        boundary, inner_polygons
                     )
                     for polygon in completed:
                         polygon.relation_id = relation.id_
@@ -726,7 +719,6 @@ class WaterRelationProcessor:
         self,
         boundary: list[OSMNode],
         inner_polygons: list[list[np.ndarray]],
-        island_points: list[np.ndarray],
     ) -> list[WaterPolygon]:
         """Complete an incomplete water boundary using bounding box edges.
 
@@ -788,7 +780,7 @@ class WaterRelationProcessor:
         # Same-edge pairs (entry and exit on the same bbox edge) always
         # use the direct path along that edge (0 bbox corners).
         use_clockwise = self._determine_direction(
-            boundary, pairs, inner_polygons, island_points
+            boundary, pairs, inner_polygons
         )
 
         # Create a separate polygon for each pair.
@@ -847,14 +839,13 @@ class WaterRelationProcessor:
         boundary: list[OSMNode],
         pairs: list[tuple[BoundingBoxIntersection, BoundingBoxIntersection]],
         inner_polygons: list[list[np.ndarray]],
-        island_points: list[np.ndarray],
     ) -> bool:
         """Determine whether to close cross-edge pairs via CW bbox path.
 
-        Uses evidence from relation inner members and place=island ways.
-        If an evidence point falls inside one candidate polygon, that
-        candidate is the water side.  Falls back to the smaller polygon
-        when no evidence is available.
+        Uses evidence from relation inner members. If an evidence point
+        falls inside one candidate polygon, that candidate is the water
+        side.  Falls back to the smaller polygon when no evidence is
+        available.
 
         :return: True if clockwise closure is correct, False for CCW
         """
@@ -889,11 +880,10 @@ class WaterRelationProcessor:
             cw_candidate = base_points + cw_path
             ccw_candidate = base_points + ccw_path
 
-            # Collect evidence points.
+            # Collect evidence points from inner members.
             evidence_points: list[np.ndarray] = [
                 inner_poly[0] for inner_poly in inner_polygons if inner_poly
             ]
-            evidence_points.extend(island_points)
 
             # Test which candidate contains evidence.
             cw_score: int = 0
