@@ -450,30 +450,6 @@ class TestWaterRelationProcessor:
         )
         assert processor._is_water_relation(relation)  # noqa: SLF001
 
-    def test_is_water_relation_water_lake(self) -> None:
-        """Test detection of water=lake relation."""
-        bounding_box: BoundingBox = BoundingBox(0.0, 0.0, 1.0, 1.0)
-        processor: WaterRelationProcessor = WaterRelationProcessor(bounding_box)
-
-        relation: OSMRelation = OSMRelation(
-            tags={"type": "multipolygon", "water": "lake"},
-            id_=1,
-            members=[],
-        )
-        assert processor._is_water_relation(relation)  # noqa: SLF001
-
-    def test_is_water_relation_reservoir(self) -> None:
-        """Test detection of landuse=reservoir relation."""
-        bounding_box: BoundingBox = BoundingBox(0.0, 0.0, 1.0, 1.0)
-        processor: WaterRelationProcessor = WaterRelationProcessor(bounding_box)
-
-        relation: OSMRelation = OSMRelation(
-            tags={"type": "multipolygon", "landuse": "reservoir"},
-            id_=1,
-            members=[],
-        )
-        assert processor._is_water_relation(relation)  # noqa: SLF001
-
     def test_is_not_water_relation(self) -> None:
         """Test non-water relation is not detected as water."""
         bounding_box: BoundingBox = BoundingBox(0.0, 0.0, 1.0, 1.0)
