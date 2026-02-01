@@ -19,7 +19,7 @@ from map_machine.feature.direction import DirectionSector
 from map_machine.feature.road import Road, Roads
 from map_machine.feature.tree import Tree
 from map_machine.figure import StyledFigure
-from map_machine.geometry.coastline import WaterPolygon
+from map_machine.geometry.coastline import WaterPolygon, _point_in_polygon
 from map_machine.map_configuration import DrawingMode, MapConfiguration
 from map_machine.osm.osm_reader import (
     OSMData,
@@ -29,6 +29,7 @@ from map_machine.osm.osm_reader import (
     Tags,
     parse_levels,
 )
+from map_machine.osm.osm_util import glue, is_cycle
 from map_machine.pictogram.icon import IconSet
 from map_machine.pictogram.point import Point
 from map_machine.scheme import LineStyle, RoadMatcher, Scheme
@@ -95,63 +96,6 @@ def get_time_color(time: datetime | None, boundaries: MinMax) -> Color:
     )
 
 
-def glue(ways: list[OSMWay]) -> list[list[OSMNode]]:
-    """Try to glue ways that share nodes.
-
-    :param ways: ways to glue
-    """
-    result: list[list[OSMNode]] = []
-    to_process: set[tuple[OSMNode, ...]] = set()
-
-    for way in ways:
-        if way.is_cycle():
-            result.append(way.nodes)
-        else:
-            to_process.add(tuple(way.nodes))
-
-    while to_process:
-        nodes: list[OSMNode] = list(to_process.pop())
-        glued: list[OSMNode] | None = None
-        other_nodes: tuple[OSMNode, ...] | None = None
-
-        for other_nodes in to_process:
-            glued = try_to_glue(nodes, list(other_nodes))
-            if glued is not None:
-                break
-
-        if glued is not None:
-            if other_nodes is not None:
-                to_process.remove(other_nodes)
-            if is_cycle(glued):
-                result.append(glued)
-            else:
-                to_process.add(tuple(glued))
-        else:
-            result.append(nodes)
-
-    return result
-
-
-def is_cycle(nodes: list[OSMNode]) -> bool:
-    """Check whether the way is a cycle or an area boundary."""
-    return nodes[0] == nodes[-1]
-
-
-def try_to_glue(
-    nodes: list[OSMNode], other: list[OSMNode]
-) -> list[OSMNode] | None:
-    """Create new combined way if ways share endpoints."""
-    if nodes[0] == other[0]:
-        return list(reversed(other[1:])) + nodes
-    if nodes[0] == other[-1]:
-        return other[:-1] + nodes
-    if nodes[-1] == other[-1]:
-        return nodes + list(reversed(other[:-1]))
-    if nodes[-1] == other[0]:
-        return nodes + other[1:]
-    return None
-
-
 class Constructor:
     """Map Machine node and way constructor."""
 
@@ -216,8 +160,8 @@ class Constructor:
         logger.info("Constructing ways...")
         for way_id in self.osm_data.ways:
             way: OSMWay = self.osm_data.ways[way_id]
-            # Coastlines are handled separately by `CoastlineProcessor`.
             if way.tags.get("natural") == "coastline":
+                # Coastline is handled by `CoastlineProcessor`.
                 continue
             self.construct_line(way, [], [way.nodes])
 
@@ -583,30 +527,38 @@ class Constructor:
             logger.warning("No style found for coastline.")
             return
 
-        style = coastline_styles[0]
+        style: LineStyle = coastline_styles[0]
+
+        # Separate holes (islands) from water polygons.
+        water: list[list[np.ndarray]] = []
+        holes: list[list[np.ndarray]] = []
 
         for polygon in water_polygons:
-            if isinstance(polygon, WaterPolygon):
-                if polygon.is_hole:
-                    # Islands are handled as holes in water, skip for now.
-                    continue
-                points = polygon.points
-            else:
-                points = polygon
+            points = polygon.points
+            is_hole = polygon.is_hole
 
             if len(points) < 3:  # noqa: PLR2004
                 continue
 
-            # Create synthetic `OSMNodes` for polygon points.
-            nodes: list[OSMNode] = [
+            if is_hole:
+                holes.append(points)
+            else:
+                water.append(points)
+
+        for points in water:
+            inners: list[list[OSMNode]] = [
+                [OSMNode.from_coordinates(coord) for coord in hole_points]
+                for hole_points in holes
+                if _point_in_polygon(hole_points[0], points)
+            ]
+            outer_nodes: list[OSMNode] = [
                 OSMNode.from_coordinates(coord) for coord in points
             ]
-
             self.figures.append(
                 StyledFigure(
                     {"natural": "water", "_source": "coastline"},
-                    [],  # No inner polygons for now.
-                    [nodes],
+                    inners,
+                    [outer_nodes],
                     style,
                 )
             )

@@ -27,7 +27,12 @@ from map_machine.geometry.coastline import (
 )
 from map_machine.geometry.flinger import Flinger, MercatorFlinger
 from map_machine.map_configuration import LabelMode, MapConfiguration
-from map_machine.osm.osm_getter import NetworkError, get_osm
+from map_machine.osm.osm_getter import (
+    NetworkError,
+    find_incomplete_relations,
+    get_osm,
+    get_overpass_relations,
+)
 from map_machine.osm.osm_reader import OSMData, OSMNode
 from map_machine.pictogram.point import Occupied, Point
 from map_machine.scheme import Scheme
@@ -416,6 +421,29 @@ def render_map(arguments: argparse.Namespace) -> None:
             osm_data.parse_overpass(input_file_name)
         else:
             osm_data.parse_osm_file(input_file_name)
+
+    # Download complete data for incomplete relations via Overpass API.
+
+    if not getattr(arguments, "no_overpass", False):
+        incomplete_ids: list[int] = find_incomplete_relations(osm_data)
+        if incomplete_ids:
+            logger.info(
+                "Found %d incomplete relations, fetching via Overpass API...",
+                len(incomplete_ids),
+            )
+            overpass_data: bytes | None = get_overpass_relations(
+                incomplete_ids, cache_path
+            )
+            if overpass_data:
+                osm_data.merge_overpass_response(overpass_data.decode("utf-8"))
+                logger.info(
+                    "Merged Overpass data for %d relations.",
+                    len(incomplete_ids),
+                )
+            else:
+                logger.warning(
+                    "Failed to fetch Overpass data, using partial data."
+                )
 
     if not bounding_box:
         bounding_box = osm_data.view_box

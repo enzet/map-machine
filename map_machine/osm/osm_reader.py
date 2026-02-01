@@ -425,6 +425,38 @@ class OSMData:
             return
         self.relations[relation.id_] = relation
 
+    def merge_overpass_response(self, response_text: str) -> None:
+        """Merge Overpass API response into existing data.
+
+        :param response_text: JSON text from Overpass API response
+        """
+        structure = json.loads(response_text)
+        node_map: dict[int, OSMNode] = {}
+
+        for element in structure["elements"]:
+            if element["type"] == "node":
+                node: OSMNode = OSMNode.parse_from_structure(element)
+                node_map[node.id_] = node
+                if node.id_ not in self.nodes:
+                    self.add_node(node)
+
+        # Combine existing and new nodes for way node resolution. Existing
+        # nodes take priority.
+        combined_nodes: dict[int, OSMNode] = {**node_map, **self.nodes}
+
+        for element in structure["elements"]:
+            if element["type"] == "way" and element["id"] not in self.ways:
+                way = OSMWay.parse_from_structure(element, combined_nodes)
+                self.add_way(way)
+
+        for element in structure["elements"]:
+            if (
+                element["type"] == "relation"
+                and element["id"] not in self.relations
+            ):
+                relation = OSMRelation.parse_from_structure(element)
+                self.add_relation(relation)
+
     def parse_overpass(self, file_name: Path) -> None:
         """Parse JSON structure extracted from Overpass API.
 

@@ -21,7 +21,12 @@ from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.geometry.flinger import MercatorFlinger
 from map_machine.map_configuration import MapConfiguration
 from map_machine.mapper import Map
-from map_machine.osm.osm_getter import NetworkError, get_osm
+from map_machine.osm.osm_getter import (
+    NetworkError,
+    find_incomplete_relations,
+    get_osm,
+    get_overpass_relations,
+)
 from map_machine.osm.osm_reader import OSMData
 from map_machine.scheme import Scheme
 from map_machine.workspace import workspace
@@ -37,6 +42,32 @@ logger: logging.Logger = logging.getLogger(__name__)
 TILE_WIDTH, TILE_HEIGHT = 256, 256
 EXTEND_TO_BIGGER_TILE: bool = False
 MAX_ZOOM_LEVEL: int = 20
+
+
+def complete_relations(osm_data: OSMData, cache_path: Path) -> None:
+    """Download missing relation member data via Overpass API.
+
+    :param osm_data: parsed OSM data (modified in place)
+    :param cache_path: directory for caching Overpass responses
+    """
+    incomplete_ids: list[int] = find_incomplete_relations(osm_data)
+    if not incomplete_ids:
+        return
+
+    logger.info(
+        "Found %d incomplete relations, fetching via Overpass API...",
+        len(incomplete_ids),
+    )
+    overpass_data: bytes | None = get_overpass_relations(
+        incomplete_ids, cache_path
+    )
+    if overpass_data:
+        osm_data.merge_overpass_response(overpass_data.decode("utf-8"))
+        logger.info(
+            "Merged Overpass data for %d relations.", len(incomplete_ids)
+        )
+    else:
+        logger.warning("Failed to fetch Overpass data, using partial data.")
 
 
 @dataclass
@@ -145,18 +176,24 @@ class Tile:
         directory_name: Path,
         cache_path: Path,
         configuration: MapConfiguration,
+        *,
+        use_overpass: bool = True,
     ) -> None:
         """Draw tile to SVG and PNG files.
 
         :param directory_name: output directory for storing tiles
         :param cache_path: directory to store SVG and PNG tiles
         :param configuration: drawing configuration
+        :param use_overpass: fetch missing relation data via Overpass API
         """
         try:
             osm_data: OSMData = self.load_osm_data(cache_path)
         except NetworkError as error:
             msg = f"Map is not loaded. {error.message}"
             raise NetworkError(msg) from error
+
+        if use_overpass:
+            complete_relations(osm_data, cache_path)
 
         self.draw_with_osm_data(osm_data, directory_name, configuration)
 
@@ -474,9 +511,14 @@ def generate_tiles(options: argparse.Namespace) -> None:
     tiles: Tiles
     osm_data: OSMData
 
+    use_overpass: bool = not getattr(options, "no_overpass", False)
+
     if options.input_file_name:
         osm_data = OSMData()
         osm_data.parse_osm_file(Path(options.input_file_name))
+
+        if use_overpass:
+            complete_relations(osm_data, cache_path)
 
         if osm_data.view_box is None:
             logger.fatal(
@@ -507,6 +549,9 @@ def generate_tiles(options: argparse.Namespace) -> None:
             message = f"Map is not loaded. {error.message}"
             raise NetworkError(message) from error
 
+        if use_overpass:
+            complete_relations(osm_data, cache_path)
+
         for zoom_level in zoom_levels:
             tile = Tile.from_coordinates(np.array(coordinates), zoom_level)
             try:
@@ -523,7 +568,12 @@ def generate_tiles(options: argparse.Namespace) -> None:
         configuration = MapConfiguration.from_options(
             scheme, options, zoom_level
         )
-        tile.draw(directory, cache_path, configuration)
+        tile.draw(
+            directory,
+            cache_path,
+            configuration,
+            use_overpass=use_overpass,
+        )
 
     elif options.bounding_box:
         try:
@@ -539,6 +589,9 @@ def generate_tiles(options: argparse.Namespace) -> None:
         except NetworkError as error:
             message = f"Map is not loaded. {error.message}"
             raise NetworkError(message) from error
+
+        if use_overpass:
+            complete_relations(osm_data, cache_path)
 
         for zoom_level in zoom_levels:
             if EXTEND_TO_BIGGER_TILE:

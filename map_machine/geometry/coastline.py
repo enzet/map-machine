@@ -23,6 +23,8 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
+from map_machine.osm.osm_util import glue
+
 if TYPE_CHECKING:
     from map_machine.geometry.bounding_box import BoundingBox
     from map_machine.osm.osm_reader import OSMData, OSMNode, OSMRelation
@@ -145,6 +147,28 @@ def _compute_signed_area(points: list[np.ndarray]) -> float:
     return area / 2.0
 
 
+def _point_in_polygon(point: np.ndarray, polygon: list[np.ndarray]) -> bool:
+    """Check if a point is inside a polygon using ray casting.
+
+    :param point: (latitude, longitude) coordinates
+    :param polygon: list of (latitude, longitude) coordinate arrays
+    :return: True if point is inside polygon
+    """
+    x, y = point[0], point[1]
+    n: int = len(polygon)
+    inside: bool = False
+    j: int = n - 1
+    for i in range(n):
+        xi, yi = polygon[i][0], polygon[i][1]
+        xj, yj = polygon[j][0], polygon[j][1]
+        if ((yi > y) != (yj > y)) and (
+            x < (xj - xi) * (y - yi) / (yj - yi) + xi
+        ):
+            inside = not inside
+        j = i
+    return inside
+
+
 def _try_merge(a: list[OSMNode], b: list[OSMNode]) -> list[OSMNode] | None:
     """Try to merge two coastline segments if they share an endpoint."""
     if a[-1] == b[0]:
@@ -222,24 +246,30 @@ def get_bounding_box_perimeter_position(
     :param edge: which edge the point is on
     :return: position from 0 to 4, clockwise from top-left
     """
-    lat, lon = point[0], point[1]
+    latitude, longitude = point[0], point[1]
 
     if edge == BoundingBoxEdge.TOP:
         # Position along top edge (left to right).
-        t = (lon - bounding_box.left) / (bounding_box.right - bounding_box.left)
+        t = (longitude - bounding_box.left) / (
+            bounding_box.right - bounding_box.left
+        )
         return 0.0 + t
     if edge == BoundingBoxEdge.RIGHT:
         # Position along right edge (top to bottom).
-        t = (bounding_box.top - lat) / (bounding_box.top - bounding_box.bottom)
+        t = (bounding_box.top - latitude) / (
+            bounding_box.top - bounding_box.bottom
+        )
         return 1.0 + t
     if edge == BoundingBoxEdge.BOTTOM:
         # Position along bottom edge (right to left).
-        t = (bounding_box.right - lon) / (
+        t = (bounding_box.right - longitude) / (
             bounding_box.right - bounding_box.left
         )
         return 2.0 + t
     # Position along left edge (bottom to top).
-    t = (lat - bounding_box.bottom) / (bounding_box.top - bounding_box.bottom)
+    t = (latitude - bounding_box.bottom) / (
+        bounding_box.top - bounding_box.bottom
+    )
     return 3.0 + t
 
 
@@ -566,10 +596,34 @@ class CoastlineProcessor:
     def _handle_no_intersections(self) -> list[WaterPolygon]:
         """Handle case where no coastlines intersect the bounding box."""
 
-        # If there are closed coastlines entirely inside, they are islands. The
-        # bounding box itself might be entirely water or entirely land. For now,
-        # return empty — more sophisticated detection could be added.
-        return []
+        # Check for closed coastlines entirely inside the bounding box.
+        islands: list[list[OSMNode]] = [
+            coastline
+            for coastline in self._coastlines
+            if coastline[0] == coastline[-1]
+            and self.bounding_box.contains_point(coastline[0].coordinates)
+        ]
+        if not islands:
+            return []
+
+        # Islands exist inside the bounding box with no mainland coast
+        # crossing. The bounding box area is assumed to be water with
+        # island holes.
+        water_polygons: list[WaterPolygon] = []
+
+        # Create a water polygon covering the entire bounding box.
+        corners = [c.copy() for c in self.bounding_box.get_corners()]
+        bbox_polygon = WaterPolygon(points=[*corners, corners[0].copy()])
+        water_polygons.append(bbox_polygon)
+
+        # Add each island as a hole.
+        for island in islands:
+            hole = WaterPolygon(is_hole=True)
+            for node in island:
+                hole.points.append(node.coordinates.copy())
+            water_polygons.append(hole)
+
+        return water_polygons
 
 
 class WaterRelationProcessor:
@@ -589,6 +643,13 @@ class WaterRelationProcessor:
         water_polygons: list[WaterPolygon] = []
         processed_relation_ids: set[int] = set()
 
+        # Collect place=island evidence points once.
+        island_points: list[np.ndarray] = [
+            way.nodes[0].coordinates
+            for way in osm_data.ways.values()
+            if way.tags.get("place") == "island" and way.nodes
+        ]
+
         for relation in osm_data.relations.values():
             if not self._is_water_relation(relation):
                 continue
@@ -606,10 +667,22 @@ class WaterRelationProcessor:
             if not outer_ways:
                 continue
 
+            # Get inner ways (islands/holes) for evidence.
+            inner_polygons: list[list[np.ndarray]] = []
+            for member in relation.members or []:
+                if (
+                    member.type_ == "way"
+                    and member.role == "inner"
+                    and member.ref in osm_data.ways
+                ):
+                    inner_way = osm_data.ways[member.ref]
+                    if len(inner_way.nodes) >= 3:  # noqa: PLR2004
+                        inner_polygons.append(
+                            [n.coordinates for n in inner_way.nodes]
+                        )
+
             # Glue the outer ways together.
-            glued_outers: list[list[OSMNode]] = _glue_coastlines(
-                [way.nodes for way in outer_ways]
-            )
+            glued_outers: list[list[OSMNode]] = glue(outer_ways)
 
             # Check if any outer boundary is incomplete (not closed).
             has_incomplete = any(
@@ -630,11 +703,12 @@ class WaterRelationProcessor:
                     water_polygons.append(polygon)
                 else:
                     # Incomplete boundary, complete with bounding box.
-                    completed = self._complete_boundary(boundary)
-                    if completed:
-                        completed.relation_id = relation.id_
-
-                        water_polygons.append(completed)
+                    completed = self._complete_boundary(
+                        boundary, inner_polygons, island_points
+                    )
+                    for polygon in completed:
+                        polygon.relation_id = relation.id_
+                        water_polygons.append(polygon)
 
             processed_relation_ids.add(relation.id_)
 
@@ -643,39 +717,29 @@ class WaterRelationProcessor:
     def _is_water_relation(self, relation: OSMRelation) -> bool:
         """Check if relation is a water body multipolygon."""
         tags = relation.tags
-        if tags.get("type") != "multipolygon":
-            return False
-
-        # Check for water-related tags.
-        if tags.get("natural") == "water":
-            return True
-        if tags.get("water") in (
-            "lagoon",
-            "lake",
-            "oxbow",
-            "rapids",
-            "river",
-            "stream",
-            "stream_pool",
-        ):
-            return True
-        return tags.get("landuse") == "reservoir"
+        return (
+            tags.get("type") == "multipolygon"
+            and tags.get("natural") == "water"
+        )
 
     def _complete_boundary(
-        self, boundary: list[OSMNode]
-    ) -> WaterPolygon | None:
+        self,
+        boundary: list[OSMNode],
+        inner_polygons: list[list[np.ndarray]],
+        island_points: list[np.ndarray],
+    ) -> list[WaterPolygon]:
         """Complete an incomplete water boundary using bounding box edges.
 
-        For water relations, water is inside the polygon. We determine the
-        correct bounding box path by checking which direction produces a
-        polygon with the correct winding (counter-clockwise = water inside).
-
         The boundary may cross the bounding box multiple times, creating
-        multiple entry-exit pairs. Each pair defines an interior segment.
-        We connect these segments via bounding box edges.
+        multiple entry-exit pairs. Each pair produces a separate water
+        polygon closed along the bounding box edge.
+
+        Direction for cross-edge pairs is determined by evidence: inner
+        relation members and place=island ways indicate the water side.
+        When no evidence is available, the smaller polygon is chosen.
         """
         if len(boundary) < 2:  # noqa: PLR2004
-            return None
+            return []
 
         # Find intersections with bounding box.
         intersections = find_bounding_box_intersections(
@@ -683,8 +747,7 @@ class WaterRelationProcessor:
         )
 
         if len(intersections) < 2:  # noqa: PLR2004
-            # Boundary doesn't properly cross bounding box, skip.
-            return None
+            return []
 
         # Sort intersections by their position in the boundary.
         intersections.sort(key=lambda x: x.segment_index)
@@ -706,7 +769,6 @@ class WaterRelationProcessor:
         index = 0
         while index < len(intersections):
             if intersections[index].type_ == IntersectionType.ENTRY:
-                # Find next exit after this entry.
                 for j in range(index + 1, len(intersections)):
                     if intersections[j].type_ == IntersectionType.EXIT:
                         pairs.append((intersections[index], intersections[j]))
@@ -718,90 +780,142 @@ class WaterRelationProcessor:
                 index += 1
 
         if not pairs:
-            return None
+            return []
 
-        # Collect the boundary-only points (without any bounding box path)
-        # to determine the local winding direction of the boundary segment.
-        boundary_only_points: list[np.ndarray] = []
+        # Determine the correct bbox path direction (CW or CCW) for
+        # cross-edge pairs using evidence from inner members and islands.
+        #
+        # Same-edge pairs (entry and exit on the same bbox edge) always
+        # use the direct path along that edge (0 bbox corners).
+        use_clockwise = self._determine_direction(
+            boundary, pairs, inner_polygons, island_points
+        )
 
-        # Build polygon points using both clockwise and counter-clockwise
-        # bounding box paths, then pick the correct one based on signed area.
-        cw_points: list[np.ndarray] = []
-        ccw_points: list[np.ndarray] = []
+        # Create a separate polygon for each pair.
+        result: list[WaterPolygon] = []
 
-        for pair_index, (entry, exit_) in enumerate(pairs):
-            # Add entry point.
-            cw_points.append(entry.coordinates.copy())
-            ccw_points.append(entry.coordinates.copy())
-            boundary_only_points.append(entry.coordinates.copy())
-
-            # Add interior boundary points between entry and exit.
-            for node_index in range(
-                entry.segment_index + 1, exit_.segment_index + 1
-            ):
-                if node_index < len(boundary):
-                    coord = boundary[node_index].coordinates.copy()
-                    cw_points.append(coord)
-                    ccw_points.append(coord.copy())
-                    boundary_only_points.append(coord.copy())
-
-            # Add exit point.
-            cw_points.append(exit_.coordinates.copy())
-            ccw_points.append(exit_.coordinates.copy())
-            boundary_only_points.append(exit_.coordinates.copy())
-
-            # Add bounding box path to next entry (wrapping to first pair).
-            next_entry = pairs[(pair_index + 1) % len(pairs)][0]
+        for entry, exit_ in pairs:
+            boundary_points: list[np.ndarray] = [entry.coordinates.copy()]
+            boundary_points.extend(
+                boundary[node_index].coordinates.copy()
+                for node_index in range(
+                    entry.segment_index + 1, exit_.segment_index + 1
+                )
+                if node_index < len(boundary)
+            )
+            boundary_points.append(exit_.coordinates.copy())
 
             cw_path = self._get_clockwise_bounding_box_path(
                 exit_.coordinates,
                 exit_.edge,
-                next_entry.coordinates,
-                next_entry.edge,
+                entry.coordinates,
+                entry.edge,
             )
             ccw_path = self._get_ccw_bounding_box_path(
                 exit_.coordinates,
                 exit_.edge,
-                next_entry.coordinates,
-                next_entry.edge,
+                entry.coordinates,
+                entry.edge,
             )
 
-            cw_points.extend(cw_path)
-            ccw_points.extend(ccw_path)
+            if len(cw_path) == 0 or len(ccw_path) == 0:
+                # Same-edge pair: use the direct path (0 corners).
+                bbox_path = (
+                    cw_path if len(cw_path) <= len(ccw_path) else ccw_path
+                )
+            elif use_clockwise:
+                bbox_path = cw_path
+            else:
+                bbox_path = ccw_path
 
-        # Determine the correct bounding box path direction.
-        #
-        # The boundary segment is part of the outer ring of a water body.
-        # When we close just the boundary segment (without a bounding box
-        # path), its signed area tells us the local winding direction.
-        #
-        # The correct water polygon has the *opposite* winding from the
-        # boundary segment alone: the boundary traces one portion of the
-        # ring in one direction, and the bounding box path completes the
-        # polygon by going around the water area in the other direction.
-        boundary_area = _compute_signed_area(boundary_only_points)
-        cw_area = _compute_signed_area(cw_points)
+            polygon_points = boundary_points
+            polygon_points.extend(bbox_path)
 
-        if boundary_area * cw_area < 0:
-            # Opposite signs: CW polygon is the water polygon.
-            polygon_points = cw_points
-        else:
-            # Same signs: CCW polygon is the water polygon.
-            polygon_points = ccw_points
+            # Close the polygon.
+            if polygon_points and not np.allclose(
+                polygon_points[0], polygon_points[-1]
+            ):
+                polygon_points.append(polygon_points[0].copy())
 
-        polygon = WaterPolygon()
-        polygon.points = polygon_points
+            if len(polygon_points) >= 4:  # noqa: PLR2004
+                result.append(WaterPolygon(points=polygon_points))
 
-        # Close the polygon.
-        if polygon.points and not np.allclose(
-            polygon.points[0], polygon.points[-1]
-        ):
-            polygon.points.append(polygon.points[0].copy())
+        return result
 
-        if len(polygon.points) < 4:  # noqa: PLR2004
-            return None
+    def _determine_direction(
+        self,
+        boundary: list[OSMNode],
+        pairs: list[tuple[BoundingBoxIntersection, BoundingBoxIntersection]],
+        inner_polygons: list[list[np.ndarray]],
+        island_points: list[np.ndarray],
+    ) -> bool:
+        """Determine whether to close cross-edge pairs via CW bbox path.
 
-        return polygon
+        Uses evidence from relation inner members and place=island ways.
+        If an evidence point falls inside one candidate polygon, that
+        candidate is the water side.  Falls back to the smaller polygon
+        when no evidence is available.
+
+        :return: True if clockwise closure is correct, False for CCW
+        """
+        # Find the first cross-edge pair to use as a test.
+        for entry, exit_ in pairs:
+            cw_path = self._get_clockwise_bounding_box_path(
+                exit_.coordinates,
+                exit_.edge,
+                entry.coordinates,
+                entry.edge,
+            )
+            ccw_path = self._get_ccw_bounding_box_path(
+                exit_.coordinates,
+                exit_.edge,
+                entry.coordinates,
+                entry.edge,
+            )
+            if len(cw_path) == 0 or len(ccw_path) == 0:
+                continue  # Same-edge pair, skip.
+
+            # Build boundary segment for this pair.
+            base_points: list[np.ndarray] = [entry.coordinates.copy()]
+            base_points.extend(
+                boundary[node_index].coordinates.copy()
+                for node_index in range(
+                    entry.segment_index + 1, exit_.segment_index + 1
+                )
+                if node_index < len(boundary)
+            )
+            base_points.append(exit_.coordinates.copy())
+
+            cw_candidate = base_points + cw_path
+            ccw_candidate = base_points + ccw_path
+
+            # Collect evidence points.
+            evidence_points: list[np.ndarray] = [
+                inner_poly[0] for inner_poly in inner_polygons if inner_poly
+            ]
+            evidence_points.extend(island_points)
+
+            # Test which candidate contains evidence.
+            cw_score: int = 0
+            ccw_score: int = 0
+            for point in evidence_points:
+                if _point_in_polygon(point, cw_candidate):
+                    cw_score += 1
+                if _point_in_polygon(point, ccw_candidate):
+                    ccw_score += 1
+
+            if cw_score > ccw_score:
+                return True
+            if ccw_score > cw_score:
+                return False
+
+            # Fallback: pick the smaller polygon.
+            cw_area = abs(_compute_signed_area(cw_candidate))
+            ccw_area = abs(_compute_signed_area(ccw_candidate))
+            return cw_area <= ccw_area
+
+        # All pairs are same-edge; direction is irrelevant.
+        return True
 
     def _get_clockwise_bounding_box_path(
         self,

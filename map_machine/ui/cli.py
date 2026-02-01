@@ -258,6 +258,15 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
 def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
     """Add arguments for tile command."""
     parser.add_argument(
+        "--no-overpass",
+        help=(
+            "do not use Overpass API to download complete data for "
+            "incomplete relations"
+        ),
+        action="store_true",
+        default=False,
+    )
+    parser.add_argument(
         "-c",
         "--coordinates",
         metavar="<latitude>,<longitude>",
@@ -340,6 +349,15 @@ def add_draw_arguments(parser: argparse.ArgumentParser) -> None:
 
 def add_render_arguments(parser: argparse.ArgumentParser) -> None:
     """Add arguments for render command."""
+    parser.add_argument(
+        "--no-overpass",
+        help=(
+            "do not use Overpass API to download complete data for "
+            "incomplete relations"
+        ),
+        action="store_true",
+        default=False,
+    )
     parser.add_argument(
         "-i",
         "--input",
