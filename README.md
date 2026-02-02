@@ -210,6 +210,10 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and render an SV
 | <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<float>` | OSM zoom level, default value: 18.0 |
 | <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location within the tile |
 | <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--size`</span> `<width>,<height>` | resulting image size |
+| <span style="white-space: nowrap;">`--gpx`</span> `<path>` | path to a GPX file to draw as a track overlay |
+| <span style="white-space: nowrap;">`--track-color`</span> `<color>` | track stroke color (default: #FF0000), default value: `#FF0000` |
+| <span style="white-space: nowrap;">`--track-width`</span> `<float>` | track stroke width in pixels (default: 3.0), default value: 3.0 |
+| <span style="white-space: nowrap;">`--track-opacity`</span> `<float>` | track stroke opacity (default: 0.8), default value: 0.8 |
 
 plus [map configuration options](#map-options)
 
@@ -222,6 +226,27 @@ First, it fetches the raw OSM data for the specified or computed bounding box fr
 Second, the OSM API only returns data that falls within the requested bounding box. This means large multipolygon relations (e.g. lakes or reservoirs) may be incomplete: some outer ways that lie outside the bounding box are missing. Map Machine detects these incomplete relations and fetches their full geometry from the [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API). Overpass responses are also cached in the `cache` directory.
 
 You can skip the download entirely by passing your own OSM or Overpass JSON file with the `--input` option. The Overpass step can be disabled with the `--no-overpass` flag. When disabled, Map Machine will attempt to reconstruct water polygons from the partial data by completing boundaries along the bounding box edges.
+
+### GPX track overlay
+
+The `render` command can draw GPX tracks on top of the map. When a GPX file is provided with `--gpx`, Map Machine parses the track, computes a bounding box around it (with a small padding), downloads the corresponding OSM data, and renders the track as a colored line on top of the map.
+
+```shell
+map-machine render --gpx track.gpx
+```
+
+You can also combine `--gpx` with an explicit bounding box or other render options:
+
+```shell
+map-machine render --gpx track.gpx \
+    --track-color "#0000FF" --track-width 5 --track-opacity 0.6
+```
+
+Track style options:
+
+  * `--track-color`: stroke color (default: `#FF0000`),
+  * `--track-width`: stroke width in pixels (default: 3.0),
+  * `--track-opacity`: stroke opacity (default: 0.8).
 
 ## Tile generation
 

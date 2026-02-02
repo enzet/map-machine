@@ -40,6 +40,7 @@ dynamic = ["version"]
 dependencies = [
     "CairoSVG~=2.5.0",
     "colour~=0.1.5",
+    "gpxpy>=1.6.0",
     "numpy~=1.26.0",
     "Pillow~=12.1.0",
     "portolan~=1.0.1",

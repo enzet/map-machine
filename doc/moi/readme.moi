@@ -328,6 +328,29 @@ with the \c {--input} option. The Overpass step can be disabled with the
 water polygons from the partial data by completing boundaries along the bounding
 box edges.
 
+\3 {GPX track overlay} {gpx-track-overlay}
+
+The \c {render} command can draw GPX tracks on top of the map. When a GPX file
+is provided with \c {--gpx}, Map Machine parses the track, computes a bounding
+box around it (with a small padding), downloads the corresponding OSM data, and
+renders the track as a colored line on top of the map.
+
+\code {shell} {map-machine render --gpx track.gpx}
+
+You can also combine \c {--gpx} with an explicit bounding box or other render
+options:
+
+\code {shell} {
+map-machine render --gpx track.gpx \\
+    --track-color "#0000FF" --track-width 5 --track-opacity 0.6
+}
+
+Track style options:
+\list
+    {\c {--track-color}: stroke color (default: \c {#FF0000}),}
+    {\c {--track-width}: stroke width in pixels (default: 3.0),}
+    {\c {--track-opacity}: stroke opacity (default: 0.8).}
+
 \2 {Tile generation} {tile-generation}
 
 Command \c {tile} is used to generate PNG tiles for

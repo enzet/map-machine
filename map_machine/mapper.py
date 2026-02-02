@@ -26,6 +26,7 @@ from map_machine.geometry.coastline import (
     WaterRelationProcessor,
 )
 from map_machine.geometry.flinger import Flinger, MercatorFlinger
+from map_machine.geometry.vector import Polyline
 from map_machine.map_configuration import LabelMode, MapConfiguration
 from map_machine.osm.osm_getter import (
     NetworkError,
@@ -42,6 +43,9 @@ from map_machine.workspace import workspace
 if TYPE_CHECKING:
     import argparse
     from collections.abc import Iterable
+
+    import gpxpy.gpx
+    from gpxpy.gpx import GPX
 
     from map_machine.figure import StyledFigure
     from map_machine.geometry.vector import Segment
@@ -352,6 +356,18 @@ def render_map(arguments: argparse.Namespace) -> None:
     cache_path: Path = Path(arguments.cache)
     cache_path.mkdir(parents=True, exist_ok=True)
 
+    # Parse GPX file if provided.
+
+    gpx_data: GPX | None = None
+    if getattr(arguments, "gpx", None):
+        from map_machine.gpx import get_bounding_box, load_gpx  # noqa: PLC0415
+
+        gpx_path: Path = Path(arguments.gpx)
+        if not gpx_path.is_file():
+            fatal(f"No such file: `{gpx_path}`.")
+            sys.exit(1)
+        gpx_data = load_gpx(gpx_path)
+
     # Compute bounding box.
 
     bounding_box: BoundingBox | None = None
@@ -391,6 +407,9 @@ def render_map(arguments: argparse.Namespace) -> None:
                 coordinates, configuration.zoom_level, width, height
             )
 
+    elif gpx_data is not None:
+        bounding_box = get_bounding_box(gpx_data)
+
     # Determine files.
 
     input_file_names: list[Path]
@@ -407,7 +426,9 @@ def render_map(arguments: argparse.Namespace) -> None:
             logger.fatal(error.message)
             sys.exit(1)
     else:
-        fatal("Specify either --input, or --bounding-box, or --coordinates.")
+        fatal(
+            "Specify `--input`, `--bounding-box`, `--coordinates`, or `--gpx`."
+        )
 
     # Get OpenStreetMap data.
 
@@ -499,8 +520,67 @@ def render_map(arguments: argparse.Namespace) -> None:
     map_: Map = Map(flinger=flinger, svg=svg, configuration=configuration)
     map_.draw(constructor)
 
+    if gpx_data is not None:
+        draw_gpx_tracks(
+            svg,
+            gpx_data,
+            flinger,
+            color=getattr(arguments, "track_color", "#FF0000"),
+            width=getattr(arguments, "track_width", 3.0),
+            opacity=getattr(arguments, "track_opacity", 0.8),
+        )
+
     logger.info("Writing output SVG to `%s`...", arguments.output_file_name)
     with Path(arguments.output_file_name).open(
         "w", encoding="utf-8"
     ) as output_file:
         svg.write(output_file)
+
+
+def draw_gpx_tracks(
+    svg: svgwrite.Drawing,
+    gpx_data: gpxpy.gpx.GPX,
+    flinger: Flinger,
+    color: str,
+    width: float,
+    opacity: float,
+) -> None:
+    """Draw GPX tracks on top of the map.
+
+    :param svg: SVG drawing to add track paths to
+    :param gpx_data: parsed GPX data from gpxpy
+    :param flinger: coordinate transformer (lat/lon to pixels)
+    :param color: track stroke color
+    :param width: track stroke width in pixels
+    :param opacity: track stroke opacity
+    """
+    segment_count: int = 0
+
+    for track in gpx_data.tracks:
+        for segment in track.segments:
+            if len(segment.points) < 2:
+                continue
+
+            points: list[np.ndarray] = [
+                flinger.fling(np.array((point.latitude, point.longitude)))
+                for point in segment.points
+            ]
+            polyline: Polyline = Polyline(points)
+            path_commands: str | None = polyline.get_path()
+
+            if path_commands:
+                path: SVGPath = SVGPath(d=path_commands)
+                path.update(
+                    {
+                        "fill": "none",
+                        "stroke": color,
+                        "stroke-width": width,
+                        "stroke-opacity": opacity,
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                    }
+                )
+                svg.add(path)
+                segment_count += 1
+
+    logger.info("Drew %d track segment(s).", segment_count)

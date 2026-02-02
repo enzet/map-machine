@@ -422,6 +422,31 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         metavar="<width>,<height>",
         help="resulting image size",
     )
+    parser.add_argument(
+        "--gpx",
+        metavar="<path>",
+        help="path to a GPX file to draw as a track overlay",
+    )
+    parser.add_argument(
+        "--track-color",
+        metavar="<color>",
+        default="#FF0000",
+        help="track stroke color (default: #FF0000)",
+    )
+    parser.add_argument(
+        "--track-width",
+        metavar="<float>",
+        type=float,
+        default=3.0,
+        help="track stroke width in pixels (default: 3.0)",
+    )
+    parser.add_argument(
+        "--track-opacity",
+        metavar="<float>",
+        type=float,
+        default=0.8,
+        help="track stroke opacity (default: 0.8)",
+    )
 
 
 def add_mapcss_arguments(parser: argparse.ArgumentParser) -> None:

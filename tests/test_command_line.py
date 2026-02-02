@@ -113,8 +113,8 @@ def test_wrong_render_arguments() -> None:
     """Test `render` command with wrong arguments."""
     error_run(
         ["render", "-z", "17"],
-        b"CRITICAL Specify either --input, or --bounding-box, or "
-        b"--coordinates.\n",
+        b"CRITICAL Specify `--input`, `--bounding-box`, `--coordinates`, "
+        b"or `--gpx`.\n",
     )
 
 
