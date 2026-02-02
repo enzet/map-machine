@@ -2,6 +2,7 @@
 
 import argparse
 from abc import ABC
+from enum import Enum
 from pathlib import Path
 from typing import Any, ClassVar
 
@@ -20,7 +21,7 @@ Code = str | Tag | list
 PREFIX: str = "https://wiki.openstreetmap.org/wiki/"
 
 
-def parse_text(text: str, margins: str, tag_id: str) -> Code:
+def parse_formal_arguments(text: str, margins: str, tag_id: str) -> Code:
     """Parse formal arguments."""
     word: str = ""
     result: Code = []
@@ -74,14 +75,16 @@ class ArgumentParser(argparse.ArgumentParser):
             ]
             cell: Code = [x for y in array for x in y][:-1]
             if "metavar" in option:
-                cell += [
-                    " ",
-                    Tag("m", [parse_text(option["metavar"], "<>", "formal")]),
-                ]
+                formal_arguments: Code = parse_formal_arguments(
+                    option["metavar"], "<>", "formal"
+                )
+                cell += [" ", Tag("m", [formal_arguments])]
             row: Code = [cell]
 
             if "help" in option:
-                help_value: list = parse_text(option["help"], "`", "m")
+                help_value: Code = parse_formal_arguments(
+                    option["help"], "`", "m"
+                )
                 if (
                     "default" in option
                     and option["default"]
@@ -92,14 +95,17 @@ class ArgumentParser(argparse.ArgumentParser):
                         and option["action"] == argparse.BooleanOptionalAction
                     ):
                         if option["default"] is True:
-                            help_value += [", set by default"]
+                            help_value += [", enabled by default"]
                         elif option["default"] is False:
-                            help_value += [", not set by default"]
+                            help_value += [", disabled by default"]
                     else:
-                        default_value: Code = Tag("m", [str(option["default"])])
-                        if "type" in option and option["type"] in [int, float]:
-                            default_value = str(option["default"])
-                        help_value += [", default value: ", default_value]
+                        if isinstance(option["default"], Enum):
+                            default = Tag("m", [option["default"].value])
+                        elif option.get("type") in [int, float]:
+                            default = str(option["default"])
+                        else:
+                            default = Tag("m", [option["default"]])
+                        help_value += [", default value: ", default]
                 row.append(help_value)
             else:
                 row.append([])

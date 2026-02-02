@@ -202,6 +202,7 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and render an SV
 
 | Option | Description |
 |---|---|
+| <span style="white-space: nowrap;">`--no-overpass`</span> | do not use Overpass API to download complete data for incomplete relations |
 | <span style="white-space: nowrap;">`-i`</span>, <span style="white-space: nowrap;">`--input`</span> `<path>` | input XML file name or names (if not specified, files will be downloaded using the OpenStreetMap API) |
 | <span style="white-space: nowrap;">`-o`</span>, <span style="white-space: nowrap;">`--output`</span> `<path>` | output SVG file name, default value: `out/map.svg` |
 | <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--bounding-box`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | geographic bounding box |
@@ -209,6 +210,7 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and render an SV
 | <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<float>` | OSM zoom level, default value: 18.0 |
 | <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location within the tile |
 | <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--size`</span> `<width>,<height>` | resulting image size |
+
 plus [map configuration options](#map-options)
 
 ## Tile generation
@@ -217,6 +219,7 @@ Command `tile` is used to generate PNG tiles for [slippy maps](https://wiki.open
 
 | Option | Description |
 |---|---|
+| <span style="white-space: nowrap;">`--no-overpass`</span> | do not use Overpass API to download complete data for incomplete relations |
 | <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location within the tile |
 | <span style="white-space: nowrap;">`-t`</span>, <span style="white-space: nowrap;">`--tile`</span> `<zoom level>/<x>/<y>` | tile specification |
 | <span style="white-space: nowrap;">`--cache`</span> `<path>` | directory path for temporary OSM files, default value: `cache` |
@@ -344,11 +347,11 @@ Map configuration options used by `render` and `tile` commands:
 | <span style="white-space: nowrap;">`--tooltips`</span> | add tooltips with tags for icons in SVG files |
 | <span style="white-space: nowrap;">`--country`</span> | two-letter code (ISO 3166-1 alpha-2) of the country that should be used for location restrictions, default value: `world` |
 | <span style="white-space: nowrap;">`--ignore-level-matching`</span> | draw all map features, ignoring the current level |
-| <span style="white-space: nowrap;">`--roofs`</span> | draw building roofs, set by default |
+| <span style="white-space: nowrap;">`--roofs`</span> | draw building roofs, enabled by default |
 | <span style="white-space: nowrap;">`--building-colors`</span> | paint walls (if isometric mode is enabled) and roofs with specified colors |
 | <span style="white-space: nowrap;">`--show-overlapped`</span> | show hidden nodes with a dot |
 | <span style="white-space: nowrap;">`--hide-credit`</span> | hide credit |
-| <span style="white-space: nowrap;">`--background`</span> | enable or disable the background (e.g., to use it as a layer), set by default |
+| <span style="white-space: nowrap;">`--background`</span> | enable or disable the background (e.g., to use it as a layer), enabled by default |
 
 ## MapCSS 0.2 generation
 
@@ -358,9 +361,9 @@ To create a MapCSS style with Map Machine style also for ways and relations, run
 
 | Option | Description |
 |---|---|
-| <span style="white-space: nowrap;">`--icons`</span> | add icons for nodes and areas, set by default |
+| <span style="white-space: nowrap;">`--icons`</span> | add icons for nodes and areas, enabled by default |
 | <span style="white-space: nowrap;">`--ways`</span> | add style for ways and relations |
-| <span style="white-space: nowrap;">`--lifecycle`</span> | add icons for lifecycle tags; be careful: this increases the number of node and area selectors by 9 times, set by default |
+| <span style="white-space: nowrap;">`--lifecycle`</span> | add icons for lifecycle tags; be careful: this increases the number of node and area selectors by 9 times, enabled by default |
 
 ### Use Röntgen as JOSM map paint style
 
