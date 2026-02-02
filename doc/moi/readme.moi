@@ -1,15 +1,15 @@
 \s {Map Machine} is a Python OpenStreetMap renderer that \s {can easily create
-static SVG maps} out of OpenStreetMap data.  It also can generate PNG tiles for
+static SVG maps} out of OpenStreetMap data. It also can generate PNG tiles for
 \ref {https://wiki.openstreetmap.org/wiki/Slippy_Map} {slippy maps} and run a
-tile server for them.  It uses the Röntgen icon set
+tile server for them. It uses the Röntgen icon set
 (\ref {https://enzet.ru/roentgen} {site},
 \ref {https://github.com/enzet/Roentgen} {GitHub}) to display map features.
 
 The idea behind the combination of the Röntgen icon set and the Map Machine
 project is to have a possibility to \s {show all the richness of the
 OpenStreetMap data}: to display any map feature represented by OpenStreetMap
-data tags by means of colors, shapes, and icons.  For contributors it means
-possibility to display all changes even if they are small.  And map users can
+data tags by means of colors, shapes, and icons. For contributors it means
+possibility to display all changes even if they are small. And map users can
 dig down into the map and find every detail that was mapped.
 
 Unlike standard OpenStreetMap renderers, \s {Map Machine is a playground for
@@ -19,7 +19,7 @@ still in use.
 
 Map Machine is intended to be highly configurable, so it can generate precise
 but messy maps for OSM contributors as well as pretty and clean maps for OSM
-users.  It can also use some slow algorithms for experimental features.
+users. It can also use some slow algorithms for experimental features.
 
 See
 \list
@@ -31,8 +31,9 @@ See
 
 \code {shell} {map-machine render -b 2.284,48.860,2.290,48.865}
 
-will download OSM data and render an SVG map of the specified area to
-\c {out/map.svg}. See \ref {#map-generation} {Map generation}.
+will \ref {#downloading-data} {download OSM data} through OSM API and Overpass
+API and render an SVG map of the specified area to \c {out/map.svg}. See
+\ref {#map-generation} {Map generation}.
 
 \code {shell} {map-machine tile -b 2.361,48.871,2.368,48.875}
 
@@ -78,7 +79,7 @@ map-machine render -c -26.19049,28.05605 -s 600,400 --buildings isometric
 
 To determine the road width Map Machine uses the \osm {width} tag value or
 estimates it based on the \osm {lanes} value. If lane value is specified, it
-also draws lane separators.  This map style is highly inspired by Christoph
+also draws lane separators. This map style is highly inspired by Christoph
 Hormann's post
 \ref {https://blog.imagico.de/navigating-the-maze-part-2/} {Navigating the Maze}.
 
@@ -125,7 +126,7 @@ Map Machine can visualize different aspects of trees:
 \osm {direction} tag values for \osm {tourism=viewpoint} and
 \osm {camera:direction} for \osm {man_made=surveillance} are rendered with
 sectors displaying the direction and angle (15º if angle is not specified) or
-the whole circle for panorama view.  Radial gradient is used for surveillance
+the whole circle for panorama view. Radial gradient is used for surveillance
 and inverted radial gradient is used for viewpoints.
 
 \4 {Example}
@@ -149,7 +150,7 @@ Map Machine can visualize a lot of \osm {design} values used with
 
 Map icons have \osm {colour} tag value if it is present, otherwise, icons are
 displayed with dark grey color by default, purple color for shop nodes, red
-color for emergency features, and special colors for natural features.  Map
+color for emergency features, and special colors for natural features. Map
 Machine also takes into account \osm {building:colour}, \osm {roof:colour} and
 other \c {*:colour} tags, and uses the \osm {colour} tag value to paint subway
 lines.
@@ -165,7 +166,7 @@ lines.
 Japanese maps usually use \ref
 {https://en.wikipedia.org/wiki/List_of_Japanese_map_symbols} {special symbols}
 called \e {chizukigou} (地図記号) which are different from standard map symbols used
-in other countries.  They can be enabled with \c {--country jp} option.
+in other countries. They can be enabled with \c {--country jp} option.
 
 \image {doc/icons_japanese.svg} {Japanese map symbols}
 
@@ -305,6 +306,28 @@ SVG map of the specified area to \c {out/esplanade_du_trocadéro.svg}.
 
 plus \ref {#map-options} {map configuration options}
 
+\3 {Downloading data} {downloading-data}
+
+Map Machine downloads data in two stages.
+
+First, it fetches the raw OSM data for the specified or computed bounding box
+from the
+\ref {https://wiki.openstreetmap.org/wiki/API_v0.6} {OpenStreetMap API}. The
+response is cached as an \c {.osm} file in the \c {cache} directory.
+
+Second, the OSM API only returns data that falls within the requested bounding
+box. This means large multipolygon relations (e.g. lakes or reservoirs) may be
+incomplete: some outer ways that lie outside the bounding box are missing. Map
+Machine detects these incomplete relations and fetches their full geometry from
+the \ref {https://wiki.openstreetmap.org/wiki/Overpass_API} {Overpass API}.
+Overpass responses are also cached in the \c {cache} directory.
+
+You can skip the download entirely by passing your own OSM or Overpass JSON file
+with the \c {--input} option. The Overpass step can be disabled with the
+\c {--no-overpass} flag. When disabled, Map Machine will attempt to reconstruct
+water polygons from the partial data by completing boundaries along the bounding
+box edges.
+
 \2 {Tile generation} {tile-generation}
 
 Command \c {tile} is used to generate PNG tiles for
@@ -352,7 +375,7 @@ Specify the bounding box to get the minimal set of tiles that covers the area:
 
 The bounding box will be extended to the boundaries of the minimal tileset that
 covers the area, then it will be extended a bit more to avoid some artifacts on
-the edges rounded to 3 digits after the decimal point.  The map with the new
+the edges rounded to 3 digits after the decimal point. The map with the new
 bounding box coordinates will be written to the cache directory as SVG and PNG
 files. All tiles will be stored as SVG files
 \c {out/tiles/tile_<zoom level>_<x>_<y>.svg} and PNG files

@@ -23,7 +23,7 @@ See
 map-machine render -b 2.284,48.860,2.290,48.865
 ```
 
-will download OSM data and render an SVG map of the specified area to `out/map.svg`. See [Map generation](#map-generation).
+will [download OSM data](#downloading-data) through OSM API and Overpass API and render an SVG map of the specified area to `out/map.svg`. See [Map generation](#map-generation).
 
 ```shell
 map-machine tile -b 2.361,48.871,2.368,48.875
@@ -212,6 +212,16 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and render an SV
 | <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--size`</span> `<width>,<height>` | resulting image size |
 
 plus [map configuration options](#map-options)
+
+### Downloading data
+
+Map Machine downloads data in two stages.
+
+First, it fetches the raw OSM data for the specified or computed bounding box from the [OpenStreetMap API](https://wiki.openstreetmap.org/wiki/API_v0.6). The response is cached as an `.osm` file in the `cache` directory.
+
+Second, the OSM API only returns data that falls within the requested bounding box. This means large multipolygon relations (e.g. lakes or reservoirs) may be incomplete: some outer ways that lie outside the bounding box are missing. Map Machine detects these incomplete relations and fetches their full geometry from the [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API). Overpass responses are also cached in the `cache` directory.
+
+You can skip the download entirely by passing your own OSM or Overpass JSON file with the `--input` option. The Overpass step can be disabled with the `--no-overpass` flag. When disabled, Map Machine will attempt to reconstruct water polygons from the partial data by completing boundaries along the bounding box edges.
 
 ## Tile generation
 
