@@ -83,6 +83,8 @@ class MapConfiguration:
     credit: str | None = "© OpenStreetMap contributors"
     show_credit: bool = True
     draw_background: bool = True
+    crop_ways: bool = True
+    crop_margin: float = 25.0
 
     @classmethod
     def from_options(
@@ -107,6 +109,8 @@ class MapConfiguration:
             options.show_overlapped,
             show_credit=not options.hide_credit,
             draw_background=options.background,
+            crop_ways=options.crop,
+            crop_margin=options.crop_margin,
         )
 
     def is_wireframe(self) -> bool:

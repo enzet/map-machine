@@ -276,7 +276,7 @@ class Map:
                 nodes[node_2].add(part_2)
 
         for parts in nodes.values():
-            if len(parts) < 4:  # noqa: PLR2004
+            if len(parts) < 4:
                 continue
             intersection: Intersection = Intersection(list(parts))
             intersection.draw(self.svg, scale, is_debug=DEBUG)
@@ -376,7 +376,7 @@ def render_map(arguments: argparse.Namespace) -> None:
                     list(map(float, arguments.coordinates.split(delimiter)))
                 )
 
-        if coordinates is None or len(coordinates) != 2:  # noqa: PLR2004
+        if coordinates is None or len(coordinates) != 2:
             fatal("Wrong coordinates format.")
             sys.exit(1)
         else:
@@ -469,6 +469,7 @@ def render_map(arguments: argparse.Namespace) -> None:
         osm_data=osm_data,
         flinger=flinger,
         configuration=configuration,
+        bounding_box=bounding_box,
     )
 
     # Process coastlines to create water polygons.

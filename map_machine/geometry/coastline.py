@@ -102,7 +102,7 @@ def _glue_coastlines(coastlines: list[list[OSMNode]]) -> list[list[OSMNode]]:
     to_process: list[list[OSMNode]] = []
 
     for coastline in coastlines:
-        if len(coastline) < 2:  # noqa: PLR2004
+        if len(coastline) < 2:
             continue
         if coastline[0] == coastline[-1]:
             result.append(coastline)
@@ -220,7 +220,7 @@ def segment_bounding_box_edge_intersection(
     d2 = corner_2 - corner_1
 
     cross = d1[0] * d2[1] - d1[1] * d2[0]
-    if abs(cross) < 1e-10:  # noqa: PLR2004
+    if abs(cross) < 1e-10:
         return None  # Parallel.
 
     difference = corner_1 - point_1
@@ -363,10 +363,7 @@ class CoastlineProcessor:
         coastlines: list[list[OSMNode]] = [
             way.nodes
             for way in osm_data.ways.values()
-            if (
-                len(way.nodes) >= 2  # noqa: PLR2004
-                and way.tags.get("natural") == "coastline"
-            )
+            if (len(way.nodes) >= 2 and way.tags.get("natural") == "coastline")
         ]
 
         return _glue_coastlines(coastlines)
@@ -404,7 +401,7 @@ class CoastlineProcessor:
                 continue
 
             polygon = self._trace_water_polygon(start_index, used_exits)
-            if polygon and len(polygon.points) >= 3:  # noqa: PLR2004
+            if polygon and len(polygon.points) >= 3:
                 water_polygons.append(polygon)
 
         # Handle closed coastlines entirely inside bounding box (islands).
@@ -669,7 +666,7 @@ class WaterRelationProcessor:
                     and member.ref in osm_data.ways
                 ):
                     inner_way = osm_data.ways[member.ref]
-                    if len(inner_way.nodes) >= 3:  # noqa: PLR2004
+                    if len(inner_way.nodes) >= 3:
                         inner_polygons.append(
                             [n.coordinates for n in inner_way.nodes]
                         )
@@ -730,7 +727,7 @@ class WaterRelationProcessor:
         relation members and place=island ways indicate the water side.
         When no evidence is available, the smaller polygon is chosen.
         """
-        if len(boundary) < 2:  # noqa: PLR2004
+        if len(boundary) < 2:
             return []
 
         # Find intersections with bounding box.
@@ -738,7 +735,7 @@ class WaterRelationProcessor:
             self.bounding_box, boundary
         )
 
-        if len(intersections) < 2:  # noqa: PLR2004
+        if len(intersections) < 2:
             return []
 
         # Sort intersections by their position in the boundary.
@@ -829,7 +826,7 @@ class WaterRelationProcessor:
             ):
                 polygon_points.append(polygon_points[0].copy())
 
-            if len(polygon_points) >= 4:  # noqa: PLR2004
+            if len(polygon_points) >= 4:
                 result.append(WaterPolygon(points=polygon_points))
 
         return result

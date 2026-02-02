@@ -20,6 +20,7 @@ from map_machine.feature.road import Road, Roads
 from map_machine.feature.tree import Tree
 from map_machine.figure import StyledFigure
 from map_machine.geometry.coastline import WaterPolygon, _point_in_polygon
+from map_machine.geometry.crop import crop_multipolygon, crop_way
 from map_machine.map_configuration import DrawingMode, MapConfiguration
 from map_machine.osm.osm_reader import (
     OSMData,
@@ -40,6 +41,7 @@ from map_machine.util import MinMax
 if TYPE_CHECKING:
     from datetime import datetime
 
+    from map_machine.geometry.bounding_box import BoundingBox
     from map_machine.geometry.flinger import Flinger
 
 __author__ = "Sergey Vartanov"
@@ -104,11 +106,20 @@ class Constructor:
         osm_data: OSMData,
         flinger: Flinger,
         configuration: MapConfiguration,
+        bounding_box: BoundingBox | None = None,
     ) -> None:
         self.osm_data: OSMData = osm_data
         self.flinger: Flinger = flinger
         self.scheme: Scheme = configuration.scheme
         self.configuration: MapConfiguration = configuration
+        self.bounding_box: BoundingBox | None = bounding_box
+        self._crop_bounding_box: BoundingBox | None = (
+            bounding_box.expand_by_pixels(
+                configuration.crop_margin, flinger.size
+            )
+            if bounding_box
+            else None
+        )
         self.text_constructor: TextConstructor = TextConstructor(self.scheme)
 
         if self.configuration.level == "all":
@@ -143,6 +154,12 @@ class Constructor:
         """
         self._skipped_relation_ids = relation_ids
 
+    def _should_crop(self) -> bool:
+        """Check whether way cropping is enabled and a bounding box exists."""
+        return (
+            self._crop_bounding_box is not None and self.configuration.crop_ways
+        )
+
     def add_building(self, building: Building) -> None:
         """Add building and update levels."""
         self.buildings.append(building)
@@ -163,7 +180,21 @@ class Constructor:
             if way.tags.get("natural") == "coastline":
                 # Coastline is handled by `CoastlineProcessor`.
                 continue
-            self.construct_line(way, [], [way.nodes])
+
+            if not self._should_crop() or not self._crop_bounding_box:
+                self.construct_line(way, [], [way.nodes])
+                continue
+
+            is_area: bool = way.tags.get("area") == "yes" or (
+                is_cycle(way.nodes)
+                and way.tags.get("area") != "no"
+                and self.scheme.is_area(way.tags)
+            )
+            cropped_segments: list[list[OSMNode]] = crop_way(
+                way.nodes, self._crop_bounding_box, is_area=is_area
+            )
+            for segment in cropped_segments:
+                self.construct_line(way, [], [segment])
 
     def construct_line(
         self,
@@ -380,7 +411,14 @@ class Constructor:
             if outer_ways:
                 inners_path: list[list[OSMNode]] = glue(inner_ways)
                 outers_path: list[list[OSMNode]] = glue(outer_ways)
-                self.construct_line(relation, inners_path, outers_path)
+
+                if self._should_crop() and self._crop_bounding_box:
+                    outers_path, inners_path = crop_multipolygon(
+                        outers_path, inners_path, self._crop_bounding_box
+                    )
+
+                if outers_path:
+                    self.construct_line(relation, inners_path, outers_path)
 
     def construct_nodes(self) -> None:
         """Construct points and add them to the collection."""
@@ -393,7 +431,14 @@ class Constructor:
             key=lambda x: -self.osm_data.nodes[x].coordinates[0],
         )
         for node_id in sorted_node_ids:
-            self.construct_node(self.osm_data.nodes[node_id])
+            node: OSMNode = self.osm_data.nodes[node_id]
+            if (
+                self._should_crop()
+                and self._crop_bounding_box
+                and not self._crop_bounding_box.contains_point(node.coordinates)
+            ):
+                continue
+            self.construct_node(node)
 
     def construct_node(self, node: OSMNode) -> None:
         """Create new point if needed and add it to the point collection."""
@@ -537,7 +582,7 @@ class Constructor:
             points = polygon.points
             is_hole = polygon.is_hole
 
-            if len(points) < 3:  # noqa: PLR2004
+            if len(points) < 3:
                 continue
 
             if is_hole:

@@ -91,6 +91,7 @@ lint.ignore = [
     "PLR0912", # Too many branches are allowed.
     "PLR0913", # Too many arguments are allowed.
     "PLR0915", # Too many statements are allowed.
+    "PLR2004", # Magic value in comparison.
     "RUF001",  # Ambiguous symbols are allowed.
     "RUF002",  # Ambiguous symbols are allowed.
     "S101",    # Asserts are allowed in tests.

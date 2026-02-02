@@ -253,6 +253,18 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
         action=argparse.BooleanOptionalAction,
         default=True,
     )
+    parser.add_argument(
+        "--crop",
+        help="crop ways and areas that extend beyond the bounding box",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
+    parser.add_argument(
+        "--crop-margin",
+        help="pixel margin around the bounding box for cropping",
+        type=float,
+        default=25.0,
+    )
 
 
 def add_tile_arguments(parser: argparse.ArgumentParser) -> None:

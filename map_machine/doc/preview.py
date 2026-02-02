@@ -50,7 +50,9 @@ def draw(
     flinger: MercatorFlinger = MercatorFlinger(
         bounding_box, configuration.zoom_level, osm_data.equator_length
     )
-    constructor: Constructor = Constructor(osm_data, flinger, configuration)
+    constructor: Constructor = Constructor(
+        osm_data, flinger, configuration, bounding_box
+    )
     constructor.construct()
 
     svg: svgwrite.Drawing = svgwrite.Drawing(
@@ -76,7 +78,7 @@ def draw_around_point(
     if size is None:
         size = 600.0, 400.0
 
-    input_path: Path = doc_path / f"{name}.svg"
+    output_path: Path = doc_path / f"{name}.svg"
 
     bounding_box: BoundingBox = BoundingBox.from_coordinates(
         point, configuration.zoom_level, size[0], size[1]
@@ -86,7 +88,7 @@ def draw_around_point(
     get_osm(get_bounding_box, cache / f"{get_bounding_box.get_format()}.osm")
     draw(
         cache / f"{get_bounding_box.get_format()}.osm",
-        input_path,
+        output_path,
         bounding_box,
         configuration,
     )

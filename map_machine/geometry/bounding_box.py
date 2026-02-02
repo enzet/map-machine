@@ -185,6 +185,31 @@ class BoundingBox:
         lat, lon = coordinates[0], coordinates[1]
         return self.bottom <= lat <= self.top and self.left <= lon <= self.right
 
+    def expand_by_pixels(
+        self, margin_px: float, size: np.ndarray
+    ) -> BoundingBox:
+        """Create a new bounding box expanded by a pixel margin.
+
+        :param margin_px: margin in pixels to add on each side
+        :param size: rendered image size as (width, height) array
+        :return: expanded bounding box
+        """
+        longitude_range: float = self.right - self.left
+        latitude_range: float = self.top - self.bottom
+
+        margin_longitude: float = (
+            margin_px * longitude_range / size[0] if size[0] > 0 else 0.0
+        )
+        margin_latitude: float = (
+            margin_px * latitude_range / size[1] if size[1] > 0 else 0.0
+        )
+        return BoundingBox(
+            self.left - margin_longitude,
+            self.bottom - margin_latitude,
+            self.right + margin_longitude,
+            self.top + margin_latitude,
+        )
+
     def get_corners(self) -> list[np.ndarray]:
         """Return 4 corners in clockwise order starting from top-left.
 

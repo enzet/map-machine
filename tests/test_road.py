@@ -56,7 +56,7 @@ def test_road_creation() -> None:
     """Test basic road creation."""
     road: Road = create_test_road({"highway": "primary"})
     assert road.nodes is not None
-    assert len(road.nodes) == 2  # noqa: PLR2004
+    assert len(road.nodes) == 2
 
 
 def test_road_with_lanes() -> None:
@@ -92,8 +92,8 @@ def test_road_with_width_lanes() -> None:
         {"highway": "primary", "lanes": str(lanes), "width:lanes": "3.5|4.0"}
     )
     assert len(road.lanes) == lanes
-    assert road.lanes[0].width == 3.5  # noqa: PLR2004
-    assert road.lanes[1].width == 4.0  # noqa: PLR2004
+    assert road.lanes[0].width == 3.5
+    assert road.lanes[1].width == 4.0
 
 
 def test_road_with_lanes_forward() -> None:

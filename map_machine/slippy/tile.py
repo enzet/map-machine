@@ -209,8 +209,9 @@ class Tile:
             self.x + 1, self.y + 1, self.zoom_level
         ).get_coordinates()
 
+        bounding_box: BoundingBox = BoundingBox(left, bottom, right, top)
         flinger: MercatorFlinger = MercatorFlinger(
-            BoundingBox(left, bottom, right, top),
+            bounding_box,
             self.zoom_level,
             osm_data.equator_length,
         )
@@ -221,7 +222,9 @@ class Tile:
         svg: svgwrite.Drawing = svgwrite.Drawing(
             str(output_file_name), size=size
         )
-        constructor: Constructor = Constructor(osm_data, flinger, configuration)
+        constructor: Constructor = Constructor(
+            osm_data, flinger, configuration, bounding_box=bounding_box
+        )
         constructor.construct()
 
         painter: Map = Map(
@@ -401,13 +404,14 @@ class Tiles:
                 self.zoom_level,
             ).get_coordinates()
 
+            bounding_box: BoundingBox = BoundingBox(left, bottom, right, top)
             flinger: MercatorFlinger = MercatorFlinger(
-                BoundingBox(left, bottom, right, top),
+                bounding_box,
                 self.zoom_level,
                 osm_data.equator_length,
             )
             constructor: Constructor = Constructor(
-                osm_data, flinger, configuration
+                osm_data, flinger, configuration, bounding_box=bounding_box
             )
             constructor.construct()
 

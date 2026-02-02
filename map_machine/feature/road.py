@@ -601,7 +601,7 @@ class Road(Tagged):
 
     def draw_lanes(self, svg: Drawing, color: Color | None = None) -> None:
         """Draw lane separators."""
-        if len(self.lanes) < 2:  # noqa: PLR2004
+        if len(self.lanes) < 2:
             return
 
         if color is None:
@@ -930,7 +930,7 @@ class Roads:
             if len(connected) <= 1:
                 continue
 
-            if len(connected) == 2:  # noqa: PLR2004
+            if len(connected) == 2:
                 road_1, index_1 = connected[0]
                 road_2, index_2 = connected[1]
                 if (

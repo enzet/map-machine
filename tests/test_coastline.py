@@ -64,7 +64,7 @@ class TestBoundingBoxHelpers:
         """Test getting corners in clockwise order."""
         bounding_box: BoundingBox = BoundingBox(0.0, 0.0, 1.0, 1.0)
         corners = bounding_box.get_corners()
-        assert len(corners) == 4  # noqa: PLR2004
+        assert len(corners) == 4
         assert np.allclose(corners[0], np.array((1.0, 0.0)))
         assert np.allclose(corners[1], np.array((1.0, 1.0)))
         assert np.allclose(corners[2], np.array((0.0, 1.0)))
@@ -80,7 +80,7 @@ class TestCoastlineGluing:
         b = [create_node(1, 1, 2), create_node(2, 2, 3)]
         result = _try_merge(a, b)
         assert result is not None
-        assert len(result) == 3  # noqa: PLR2004
+        assert len(result) == 3
 
     def test_try_merge_no_match(self) -> None:
         """Test no merge when segments don't share endpoints."""
@@ -156,7 +156,7 @@ class TestIntersectionDetection:
         intersections: list[BoundingBoxIntersection] = (
             find_bounding_box_intersections(bounding_box, coastline, 0)
         )
-        assert len(intersections) == 2  # noqa: PLR2004
+        assert len(intersections) == 2
 
         # Should have ENTRY on left edge and EXIT on right edge.
         entry = [i for i in intersections if i.type_ == IntersectionType.ENTRY]
@@ -293,7 +293,7 @@ class TestWaterPolygonClass:
             np.array((0, 1)),
         ]
         polygon: WaterPolygon = WaterPolygon(points=points)
-        assert len(polygon.points) == 3  # noqa: PLR2004
+        assert len(polygon.points) == 3
 
     def test_island_hole(self) -> None:
         """Test island (hole in water)."""
@@ -516,16 +516,16 @@ class TestWaterRelationProcessor:
         # Verify no polygon point is outside the bounding box.
         for polygon in polygons:
             for point in polygon.points:
-                assert point[0] >= -0.01, (  # noqa: PLR2004
+                assert point[0] >= -0.01, (
                     f"Latitude {point[0]} below bounding box."
                 )
-                assert point[0] <= 1.01, (  # noqa: PLR2004
+                assert point[0] <= 1.01, (
                     f"Latitude {point[0]} above bounding box."
                 )
-                assert point[1] >= -0.01, (  # noqa: PLR2004
+                assert point[1] >= -0.01, (
                     f"Longitude {point[1]} left of bounding box."
                 )
-                assert point[1] <= 1.01, (  # noqa: PLR2004
+                assert point[1] <= 1.01, (
                     f"Longitude {point[1]} right of bounding box."
                 )
 
@@ -555,12 +555,12 @@ class TestIslandInsideBbox:
         result = processor.process(osm_data)
 
         # Should produce a bbox water polygon and an island hole.
-        assert len(result) == 2  # noqa: PLR2004
+        assert len(result) == 2
         non_holes = [p for p in result if not p.is_hole]
         holes = [p for p in result if p.is_hole]
         assert len(non_holes) == 1
         assert len(holes) == 1
-        assert len(holes[0].points) == 5  # noqa: PLR2004
+        assert len(holes[0].points) == 5
 
     def test_no_island_no_water(self) -> None:
         """No coastlines and no islands produces no water."""
