@@ -362,6 +362,8 @@ Map configuration options used by `render` and `tile` commands:
 | <span style="white-space: nowrap;">`--show-overlapped`</span> | show hidden nodes with a dot |
 | <span style="white-space: nowrap;">`--hide-credit`</span> | hide credit |
 | <span style="white-space: nowrap;">`--background`</span> | enable or disable the background (e.g., to use it as a layer), enabled by default |
+| <span style="white-space: nowrap;">`--crop`</span> | crop ways and areas that extend beyond the bounding box, enabled by default |
+| <span style="white-space: nowrap;">`--crop-margin`</span> | pixel margin around the bounding box for cropping, default value: 25.0 |
 
 ## MapCSS 0.2 generation
 
