@@ -21,7 +21,12 @@ from map_machine.feature.tree import Tree
 from map_machine.figure import StyledFigure
 from map_machine.geometry.coastline import WaterPolygon, _point_in_polygon
 from map_machine.geometry.crop import crop_multipolygon, crop_way
-from map_machine.map_configuration import DrawingMode, MapConfiguration
+from map_machine.map_configuration import (
+    BuildingMode,
+    DrawingMode,
+    MapConfiguration,
+    RoadMode,
+)
 from map_machine.osm.osm_reader import (
     OSMData,
     OSMNode,
@@ -35,7 +40,6 @@ from map_machine.pictogram.icon import IconSet
 from map_machine.pictogram.point import Point
 from map_machine.scheme import LineStyle, RoadMatcher, Scheme
 from map_machine.text import Label, TextConstructor
-from map_machine.ui.cli import BuildingMode, RoadMode
 from map_machine.util import MinMax
 
 if TYPE_CHECKING:

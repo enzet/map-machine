@@ -14,6 +14,12 @@ from colour import Color
 from roentgen.icon import IconSpecification, ShapeSpecification
 
 from map_machine.feature.direction import DirectionSet
+from map_machine.map_configuration import (
+    BuildingMode,
+    DrawingMode,
+    LabelMode,
+    RoadMode,
+)
 from map_machine.osm.osm_reader import Tagged, Tags
 from map_machine.pictogram.icon import (
     DEFAULT_SHAPE_ID,
@@ -333,6 +339,18 @@ class RoadMatcher(Matcher):
         return 1000.0 * layer + self.priority
 
 
+def _yaml_str(value: bool | str | float) -> str:  # noqa: FBT001
+    """Convert a YAML value to string.
+
+    YAML parses bare `no` as `False` and `yes` as `True`. This function converts
+    booleans back to their string representation so that they can be used with
+    `Enum(value)` constructors.
+    """
+    if isinstance(value, bool):
+        return "yes" if value else "no"
+    return str(value)
+
+
 class Scheme:
     """Map style.
 
@@ -350,13 +368,27 @@ class Scheme:
 
         options = content.get("options", {})
 
-        self.draw_nodes: bool = options.get("draw_nodes", False)
+        self.nodes: bool = options.get("nodes", False)
+        self.trees: bool = options.get("trees", False)
+        self.craters: bool = options.get("craters", False)
+        self.directions: bool = options.get("directions", False)
 
-        # Map features.
-        self.draw_buildings: bool = options.get("draw_buildings", False)
-        self.draw_trees: bool = options.get("draw_trees", False)
-        self.draw_craters: bool = options.get("draw_craters", False)
-        self.draw_directions: bool = options.get("draw_directions", False)
+        self.building_mode: BuildingMode = BuildingMode(
+            _yaml_str(options.get("buildings", "flat"))
+        )
+        self.road_mode: RoadMode = RoadMode(
+            _yaml_str(options.get("roads", "simple"))
+        )
+        self.drawing_mode: DrawingMode = DrawingMode(
+            _yaml_str(options.get("mode", "normal"))
+        )
+        self.label_mode: LabelMode = LabelMode(
+            _yaml_str(options.get("labels", "main"))
+        )
+
+        self.roofs: bool = options.get("roofs", True)
+        self.building_colors: bool = options.get("building_colors", False)
+        self.background: bool = options.get("background", True)
 
         self.colors: dict[str, str] = content.get("colors", {})
         self.material_colors: dict[str, str] = content.get(

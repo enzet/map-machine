@@ -148,28 +148,29 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--buildings",
         metavar="<mode>",
-        default=BuildingMode.FLAT,
+        default=None,
         choices=[mode.value for mode in BuildingMode],
         help=(
-            "building drawing mode: "
+            "building drawing mode (overrides scheme): "
             + ", ".join(mode.value for mode in BuildingMode)
         ),
     )
     parser.add_argument(
         "--roads",
         metavar="<mode>",
-        default=RoadMode.SIMPLE,
+        default=None,
         choices=[mode.value for mode in RoadMode],
         help=(
-            "road drawing mode: " + ", ".join(mode.value for mode in RoadMode)
+            "road drawing mode (overrides scheme): "
+            + ", ".join(mode.value for mode in RoadMode)
         ),
     )
     parser.add_argument(
         "--mode",
-        default=DrawingMode.NORMAL,
+        default=None,
         metavar="<string>",
         choices=[mode.value for mode in DrawingMode],
-        help="map drawing mode: "
+        help="map drawing mode (overrides scheme): "
         + ", ".join(mode.value for mode in DrawingMode),
     )
     parser.add_argument(
@@ -183,10 +184,10 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--labels",
         dest="label_mode",
-        default=LabelMode.MAIN,
+        default=None,
         metavar="<string>",
         choices=[mode.value for mode in LabelMode],
-        help="label drawing mode: "
+        help="label drawing mode (overrides scheme): "
         + ", ".join(mode.value for mode in LabelMode),
     )
     parser.add_argument(
@@ -222,18 +223,18 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument(
         "--roofs",
-        help="draw building roofs",
+        help="draw building roofs (overrides scheme)",
         action=argparse.BooleanOptionalAction,
-        default=True,
+        default=None,
     )
     parser.add_argument(
         "--building-colors",
         help=(
             "paint walls (if isometric mode is enabled) and roofs with "
-            "specified colors"
+            "specified colors (overrides scheme)"
         ),
         action=argparse.BooleanOptionalAction,
-        default=False,
+        default=None,
     )
     parser.add_argument(
         "--show-overlapped",
@@ -249,9 +250,12 @@ def add_map_arguments(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument(
         "--background",
-        help="enable or disable the background (e.g., to use it as a layer)",
+        help=(
+            "enable or disable the background, e.g., to use it as a layer "
+            "(overrides scheme)"
+        ),
         action=argparse.BooleanOptionalAction,
-        default=True,
+        default=None,
     )
     parser.add_argument(
         "--crop",

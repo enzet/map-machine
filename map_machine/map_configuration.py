@@ -90,13 +90,29 @@ class MapConfiguration:
     def from_options(
         cls, scheme: Scheme, options: argparse.Namespace, zoom_level: float
     ) -> MapConfiguration:
-        """Initialize from command-line options."""
+        """Initialize from command-line options.
+
+        Scheme YAML values are the defaults.  CLI options override them
+        when explicitly provided (i.e. not `None`).
+        """
+
+        def _resolve(
+            cli_value: Any,  # noqa: ANN401
+            scheme_value: Any,  # noqa: ANN401
+            enum_cls: type[Enum] | None = None,
+        ) -> Any:  # noqa: ANN401
+            if cli_value is None:
+                return scheme_value
+            if enum_cls is not None:
+                return enum_cls(cli_value)
+            return cli_value
+
         return cls(
             scheme,
-            DrawingMode(options.mode),
-            BuildingMode(options.buildings),
-            RoadMode(options.roads),
-            LabelMode(options.label_mode),
+            _resolve(options.mode, scheme.drawing_mode, DrawingMode),
+            _resolve(options.buildings, scheme.building_mode, BuildingMode),
+            _resolve(options.roads, scheme.road_mode, RoadMode),
+            _resolve(options.label_mode, scheme.label_mode, LabelMode),
             zoom_level,
             options.overlap,
             options.level,
@@ -104,11 +120,11 @@ class MapConfiguration:
             options.tooltips,
             options.country,
             options.ignore_level_matching,
-            options.roofs,
-            options.building_colors,
+            _resolve(options.roofs, scheme.roofs),
+            _resolve(options.building_colors, scheme.building_colors),
             options.show_overlapped,
             show_credit=not options.hide_credit,
-            draw_background=options.background,
+            draw_background=_resolve(options.background, scheme.background),
             crop_ways=options.crop,
             crop_margin=options.crop_margin,
         )

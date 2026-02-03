@@ -1,10 +1,18 @@
 options:
 
-  draw_nodes: yes
-  draw_trees: yes
-  draw_craters: yes
-  draw_buildings: yes
-  draw_directions: yes
+  nodes: yes
+  trees: yes
+  craters: yes
+  directions: yes
+
+  buildings: flat
+  roads: simple
+  mode: normal
+  labels: main
+
+  roofs: yes
+  building_colors: no
+  background: yes
 
 colors:
 

@@ -27,7 +27,12 @@ from map_machine.geometry.coastline import (
 )
 from map_machine.geometry.flinger import Flinger, MercatorFlinger
 from map_machine.geometry.vector import Polyline
-from map_machine.map_configuration import LabelMode, MapConfiguration
+from map_machine.map_configuration import (
+    BuildingMode,
+    LabelMode,
+    MapConfiguration,
+    RoadMode,
+)
 from map_machine.osm.osm_getter import (
     NetworkError,
     find_incomplete_relations,
@@ -38,7 +43,6 @@ from map_machine.osm.osm_getter import (
 from map_machine.osm.osm_reader import OSMData, OSMNode
 from map_machine.pictogram.point import Occupied, Point
 from map_machine.scheme import Scheme
-from map_machine.ui.cli import BuildingMode, RoadMode
 from map_machine.workspace import workspace
 
 if TYPE_CHECKING:
@@ -136,27 +140,27 @@ class Map:
                 path.update(figure.line_style.style)
                 self.svg.add(path)
 
-        if self.scheme.draw_trees:
+        if self.scheme.trees:
             for tree in constructor.trees:
                 tree.draw(self.svg, self.flinger, self.scheme)
 
-        if self.scheme.draw_craters:
+        if self.scheme.craters:
             for crater in constructor.craters:
                 crater.draw(self.svg, self.flinger)
 
-        if self.scheme.draw_buildings:
+        if self.configuration.building_mode != BuildingMode.NO:
             self.draw_buildings(
                 constructor,
                 use_building_colors=self.configuration.use_building_colors,
             )
 
-        if self.scheme.draw_directions:
+        if self.scheme.directions:
             for direction_sector in constructor.direction_sectors:
                 direction_sector.draw(self.svg, self.scheme)
 
         # All other points
 
-        if self.scheme.draw_nodes:
+        if self.scheme.nodes:
             occupied: Occupied | None
             if self.configuration.overlap == 0:
                 occupied = None
