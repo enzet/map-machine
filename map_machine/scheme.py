@@ -359,8 +359,8 @@ class Scheme:
 
     def __init__(self, content: dict[str, Any]) -> None:
         self.node_matchers: list[NodeMatcher] = []
-        if "node_icons" in content:
-            for group in content["node_icons"]:
+        if "nodes" in content:
+            for group in content["nodes"]:
                 for element in group["tags"]:
                     self.node_matchers.append(
                         NodeMatcher.from_structure(element, group)

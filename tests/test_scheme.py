@@ -10,7 +10,7 @@ def test_verification_right() -> None:
 
     tags: dict[str, Any] = {
         "colors": {"default": "#444444"},
-        "node_icons": [{"tags": [{"tags": {"a": "b"}}]}],
+        "nodes": [{"tags": [{"tags": {"a": "b"}}]}],
     }
     assert Scheme(tags).node_matchers[0].verify() is True
 
@@ -20,6 +20,6 @@ def test_verification_wrong() -> None:
 
     tags: dict[str, Any] = {
         "colors": {"default": "#444444"},
-        "node_icons": [{"tags": [{"tags": {"a": 0}}]}],
+        "nodes": [{"tags": [{"tags": {"a": 0}}]}],
     }
     assert Scheme(tags).node_matchers[0].verify() is False

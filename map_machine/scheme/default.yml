@@ -253,7 +253,7 @@ material_colors:
   concrete: "#AAAAAA"
   glass: "#CCEEFF"
 
-node_icons:
+nodes:
 
   - group: "No draw"
     tags:
