@@ -350,7 +350,9 @@ def render_map(arguments: argparse.Namespace) -> None:
         fatal(f"Scheme `{arguments.scheme}` not found.")
         sys.exit(1)
     else:
-        scheme: Scheme = Scheme.from_file(scheme_path)
+        scheme: Scheme = Scheme.from_file(
+            scheme_path, workspace.find_scheme_path
+        )
         if scheme is None:
             fatal(f"Failed to load scheme from `{arguments.scheme}`.")
             sys.exit(1)

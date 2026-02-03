@@ -71,6 +71,7 @@ include = ["map_machine*"]
 [tool.setuptools.package-data]
 map_machine = [
     "icons/config.json",
+    "scheme/nodes.yml",
     "scheme/default.yml",
 ]
 

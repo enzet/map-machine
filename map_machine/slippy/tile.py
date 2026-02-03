@@ -543,7 +543,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
         logger.fatal("Scheme `%s` not found.", options.scheme)
         return
 
-    scheme: Scheme = Scheme.from_file(scheme_path)
+    scheme: Scheme = Scheme.from_file(scheme_path, workspace.find_scheme_path)
     cache_path: Path = Path(options.cache)
     message: str
 

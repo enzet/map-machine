@@ -1,0 +1,1844 @@
+nodes:
+
+  - group: "No draw"
+    tags:
+    - tags: {type: multipolygon}
+      draw: false
+    - tags: {place: "*"}
+      draw: false
+    - tags: {building: "yes"}
+      draw: false
+
+  - group: "Huge transport hubs"
+    start_zoom_level: 10.0
+    tags:
+    - tags: {amenity: ferry_terminal}
+      shapes: [anchor]
+    - tags: {amenity: ferry_terminal, cargo: vehicle}
+      shapes: [car_on_ferry]
+    - tags: {amenity: ferry_terminal, cargo: passengers}
+      shapes: [human_on_ferry]
+    - tags: {aeroway: aerodrome}
+      shapes: [plane]
+    - tags: {aeroway: helipad}
+      shapes: [h]
+    - tags: {aeroway: spaceport}
+      shapes: [rocket_on_launch_pad]
+
+  - group: "Normal transport hubs"
+    start_zoom_level: 11.0
+    tags:
+    - tags: {aeroway: launchpad}
+      shapes: [rocket_flying]
+    - tags: {aeroway: landingpad}
+      shapes: [booster_landing]
+    - tags: {highway: bus_station}
+      shapes: [buses]
+    - tags: {highway: bus_stop}
+      shapes: [bus_stop]
+      add_shapes: [bus]
+    - tags: {railway: station}
+      shapes: [train]
+    - tags: {railway: station, station: subway, transport: subway}
+      shapes: [train]
+    - tags: {railway: subway_entrance}
+      shapes: [train]
+    - tags: {railway: subway_entrance, entrance: "yes"}
+      shapes: [train]
+    - tags: {public_transport: stop_position}
+      shapes: [bus_stop]
+    - tags: {railway: tram_station}
+      shapes: [tram]
+    - tags: {railway: tram_stop}
+      shapes: [tram]
+    - tags: {public_transport: platform}
+      shapes: [bus_stop_sign]
+      with_icon: [bus_stop_bench, bus_stop_shelter]
+      over_icon: [platform]
+    - tags: {highway: bus_stop, public_transport: platform}
+      shapes: [bus_stop_sign]
+      with_icon: [bus_stop_bench, bus_stop_shelter]
+      over_icon: [platform]
+    - tags: {highway: bus_stop, shelter: "yes"}
+      shapes: [bus_stop_sign]
+      under_icon: [bus_stop_sign]
+      with_icon: [bus_stop_bench, platform]
+      over_icon: [bus_stop_shelter]
+    - tags: {highway: bus_stop, bench: "yes"}
+      under_icon: [bus_stop_sign]
+      with_icon: [bus_stop_shelter, platform]
+      over_icon: [bus_stop_bench]
+    - tags: {highway: stop}
+      shapes: [stop]
+    - tags: {amenity: taxi}
+      shapes: [taxi]
+
+  - group: "Big territory"
+    start_zoom_level: 12.0
+    tags:
+    - tags: {leisure: fishing}
+      shapes: [fishing_angle]
+    - tags: {historic: archaeological_site}
+      shapes: [amphora]
+    - tags: {leisure: swimming_area}
+      shapes: [swimming_area]
+    - tags: {leisure: swimming_pool}
+      shapes: [swimming_area]
+    - tags: {sport: swimming}
+      shapes: [swimming_area]
+    - tags: {leisure: beach}
+      shapes: [beach]
+    - tags: {amenity: public_bath}
+      shapes: [swimming_area]
+    - tags: {leisure: golf_course}
+      shapes: [golf_club_and_ball]
+    - tags: {power: substation}
+      shapes: [electricity]
+    - tags: {plant: christmas_trees}
+      shapes: [{shape: christmas_tree, color: orchard_border_color}]
+    - tags: {crop: sunflower}
+      shapes: [{shape: sunflower, color: sunflower_dark_color, outline: no}]
+    - tags: {crop: barley}
+      shapes: [{shape: ear_botany, color: barley_dark_color, outline: no}]
+    - tags: {crop: rye}
+      shapes: [{shape: ear_botany, color: rye_dark_color, outline: no}]
+    - tags: {crop: wheat}
+      shapes: [{shape: ear_botany, color: wheat_dark_color, outline: no}]
+    - tags: {crop: rape}
+      shapes: [{shape: rape, color: wheat_dark_color, outline: no}]
+    - tags: {produce: apple}
+      shapes: [{shape: apple, color: orchard_border_color}]
+    - tags: {produce: christmas_trees}
+      shapes: [{shape: christmas_tree, color: orchard_border_color}]
+    - tags: {produce: pear}
+      shapes: [{shape: pear, color: orchard_border_color}]
+    - tags: {trees: apple_trees}
+      shapes: [{shape: apple, color: orchard_border_color}]
+    - tags: {trees: pear_trees}
+      shapes: [{shape: pear, color: orchard_border_color}]
+
+  - group: "Bigger objects"
+    start_zoom_level: 13.0
+    tags:
+    - tags: {waterway: waterfall}
+      shapes: [{shape: waterfall, color: water_border_color}]
+    - tags: {natural: cliff}
+      shapes: [cliff]
+    - tags: {natural: peak}
+      shapes: [triangle_small]
+    - tags: {natural: saddle}
+      shapes: [saddle]
+    - tags: {natural: crater}
+      exception: {diameter: "*"}
+      shapes: [crater]
+
+    - tags: {natural: volcano}
+      shapes: [stratovolcano, {shape: smoke_2, offset: [0, -3]}]
+
+    - tags: {natural: volcano, volcano:type: stratovolcano}
+      shapes: [stratovolcano, {shape: smoke_2, offset: [0, -3]}]
+    - tags: {natural: volcano, volcano:type: shield}
+      shapes: [shield_volcano, {shape: smoke_2, offset: [0, -1]}]
+    - tags: {natural: volcano, volcano:type: scoria}
+      shapes: [volcanic_cone, {shape: smoke_2, offset: [0, -2]}]
+
+    - tags: {natural: volcano, volcano:status: active}
+      shapes: [stratovolcano, {shape: lava, offset: [0, -3]}]
+    - tags: {natural: volcano, volcano:status: dormant}
+      shapes: [stratovolcano, {shape: smoke, offset: [1, -3]}]
+    - tags: {natural: volcano, volcano:status: extinct}
+      shapes: [stratovolcano]
+
+    - tags:
+        natural: volcano
+        volcano:type: stratovolcano
+        volcano:status: active
+      shapes: [stratovolcano, {shape: lava, offset: [0, -3]}]
+    - tags:
+        natural: volcano
+        volcano:type: shield
+        volcano:status: active
+      shapes: [shield_volcano, {shape: lava, offset: [0, -1]}]
+    - tags:
+        natural: volcano
+        volcano:type: scoria
+        volcano:status: active
+      shapes: [volcanic_cone, {shape: lava, offset: [0, -2]}]
+    - tags:
+        natural: volcano
+        volcano:type: stratovolcano
+        volcano:status: dormant
+      shapes: [stratovolcano, {shape: smoke, offset: [1, -3]}]
+    - tags:
+        natural: volcano
+        volcano:type: shield
+        volcano:status: dormant
+      shapes: [shield_volcano, {shape: smoke, offset: [1, -1]}]
+    - tags:
+        natural: volcano
+        volcano:type: scoria
+        volcano:status: dormant
+      shapes: [volcanic_cone, {shape: smoke, offset: [1, -2]}]
+    - tags:
+        natural: volcano
+        volcano:type: stratovolcano
+        volcano:status: extinct
+      shapes: [stratovolcano]
+    - tags:
+        natural: volcano
+        volcano:type: shield
+        volcano:status: extinct
+      shapes: [shield_volcano]
+    - tags:
+        natural: volcano
+        volcano:type: scoria
+        volcano:status: extinct
+      shapes: [volcanic_cone]
+
+    - tags: {historic: castle}
+      location_restrictions: {include: [jp]}
+      shapes: [japan_castle]
+    - tags: {historic: fort}
+      shapes: [fort]
+    - tags: {shop: mall}
+      shapes: [bag]
+    - tags: {shop: department_store}
+      shapes: [bag]
+    - tags: {shop: mall, building: "yes"}
+      shapes: [bag]
+    - tags: {leisure: water_park}
+      shapes: [slide_and_water]
+
+  - group: "Important big objects"
+    start_zoom_level: 14.0
+    tags:
+    - tags: {amenity: fire_station}
+      location_restrictions: {include: [jp]}
+      shapes: [{shape: japan_fire_station, color: emergency_color}]
+    - tags: {amenity: courthouse}
+      shapes: [gavel]
+    - tags: {amenity: police}
+      location_restrictions: {include: [jp]}
+      shapes: [japan_police_station]
+    - tags: {amenity: police, name:en: Koban}
+      location_restrictions: {include: [jp]}
+      shapes: [japan_koban]
+    - tags: {building: townhall}
+      shapes: [townhall]
+    - tags: {amenity: townhall}
+      shapes: [townhall]
+    - tags: {historic: city_gate}
+      shapes: [city_gate]
+    - tags: {amenity: pharmacy}
+      shapes: [medicine_bottle]
+    - tags: {amenity: embassy}
+      shapes: [waving_flag]
+    - tags: {office: diplomatic, diplomatic: embassy}
+      shapes: [waving_flag]
+    - tags: {man_made: monitoring_station, monitoring:weather: "yes"}
+      shapes: [japan_weather_station]
+      location_restrictions: {include: [jp]}
+    - tags: {amenity: veterinary}
+      shapes: [dog_and_cross]
+    - tags: {tourism: apartment}
+      shapes: [bed_with_floor_and_ceiling]
+    - tags: {tourism: hotel}
+      shapes: [bed]
+    - tags: {building: hotel}
+      shapes: [bed]
+    - tags: {tourism: hostel}
+      shapes: [two_beds]
+    - tags: {tourism: motel}
+      shapes: [{shape: car, offset: [0, 4]}, {shape: bed, offset: [0, -2]}]
+    - tags: {tourism: guest_house}
+      shapes: [bed_and_roof]
+    - tags: {amenity: hospital}
+      location_restrictions: {include: world, exclude: [jp]}
+      shapes: [greek_cross]
+    - tags: {amenity: hospital}
+      location_restrictions: {include: [jp]}
+      shapes: [japan_public_health_center]
+    - tags: {amenity: clinic}
+      shapes: [greek_cross_in_box]
+    - tags: {amenity: doctors}
+      shapes: [greek_cross_in_box]
+    - tags: {amenity: dentist}
+      shapes: [tooth]
+    - tags: {amenity: post_office}
+      location_restrictions: {include: world, exclude: [jp]}
+      shapes: [envelope]
+    - tags: {amenity: post_office}
+      location_restrictions: {include: [jp]}
+      shapes: [japan_post]
+    - tags: {shop: car_repair}
+      shapes: [{shape: car, offset: [0, 3]}, {shape: wrench, offset: [0, -4]}]
+    - tags: {amenity: car_rental}
+      shapes: [{shape: car, offset: [0, 3]}, {shape: key, offset: [1, -3]}]
+    - tags: {amenity: car_sharing}
+      shapes: [{shape: car, offset: [0, 3]}, {shape: sharing, offset: [0, -4]}]
+    - tags: {amenity: car_wash}
+      shapes:
+      - {shape: car, offset: [0, 3]}
+      - {shape: shower_head, offset: [0, -4]}
+      # Place of worship
+    - tags: {building: shrine, religion: shinto}
+      shapes: [japan_shinto_shrine]
+    - tags: {religion: christian}
+      shapes: [latin_cross]
+    - tags: {amenity: place_of_worship, religion: christian}
+      shapes: [latin_cross]
+    - tags:
+        amenity: place_of_worship
+        religion: christian
+        denomination: catholic
+      shapes: [latin_cross]
+    - tags:
+        amenity: place_of_worship
+        religion: christian
+        denomination: russian_orthodox
+      shapes: [russian_orthodox_cross]
+    - tags:
+        amenity: place_of_worship
+        religion: christian
+        denomination: orthodox
+      shapes: [orthodox]
+    - tags:
+        amenity: place_of_worship
+        religion: christian
+        denomination: baptist
+      shapes: [baptist]
+    - tags: {amenity: place_of_worship, religion: muslim}
+      shapes: [crescent]
+    - tags: {amenity: place_of_worship, religion: buddhist}
+      shapes: [dharmachakra]
+    - tags: {amenity: place_of_worship, religion: jewish}
+      shapes: [star_of_david]
+    - tags: {historic: tomb, tomb: mausoleum}
+      shapes: [mausoleum]
+    - tags: {historic: tomb, tomb: pyramid}
+      shapes: [pyramid]
+    - tags: {historic: "*"}
+      shapes: [japan_historic]
+      replace_shapes: no
+      location_restrictions: {include: [jp]}
+
+  - group: "Normal big objects"
+    start_zoom_level: 15.0
+    tags:
+    - tags: {shop: supermarket}
+      shapes: [supermarket_cart]
+    - tags: {shop: variety_store}
+      shapes: [bag_with_percent]
+    - tags: {shop: general}
+      shapes: [bag]
+    - tags: {amenity: arts_centre}
+      shapes: [picture]
+    - tags: {amenity: bank}
+      shapes: [money]
+    - tags: {amenity: cinema}
+      shapes: [film]
+    - tags: {amenity: casino}
+      shapes: [card_and_dice]
+    - tags: {amenity: community_centre}
+      shapes: [two_people_together]
+    - tags: {amenity: gym}
+      shapes: [dumbbell]
+    - tags: {amenity: social_facility}
+      shapes: [two_people_together]
+    - tags: {amenity: internet_cafe}
+      shapes: [at_in_square]
+    - tags: {amenity: library}
+      shapes: [book]
+    - tags: {amenity: marketplace}
+      shapes: [marketplace]
+    - tags: {amenity: prison}
+      shapes: [prison]
+    - tags: {amenity: stripclub}
+      shapes: [pole_dancer]
+    - tags: {club: computer}
+      shapes: [glider]
+    - tags: {leisure: hackerspace}
+      shapes: [glider]
+    - tags: {man_made: survey_point}
+      shapes: [survey_point]
+    - tags: {leisure: amusement_arcade}
+      shapes: [pac_man]
+    - tags: {leisure: fitness_centre}
+      shapes: [dumbbell]
+    - tags: {leisure: fitness_station}
+      shapes: [dumbbell]
+    - tags: {leisure: bird_hide}
+      shapes: [binoculars]
+    - tags: {leisure: bleachers}
+      shapes: [bleachers]
+    - tags: {leisure: bowling_alley}
+      shapes: [bowling_ball]
+    - tags: {leisure: dog_park}
+      shapes: [dog]
+    - tags: {leisure: escape_game}
+      shapes: [{shape: maze, offset: [-2, 0]}, {shape: arrow_right_short, offset: [5, -1]}]
+    - tags: {leisure: maze}
+      shapes: [maze]
+    - tags: {attraction: maze}
+      shapes: [maze]
+    - tags: {maze: labyrinth}
+      shapes: [maze]
+    - tags: {tourism: maze}
+      shapes: [maze]
+    - tags: {leisure: miniature_golf}
+      shapes: [golf_club_and_ball]
+    - tags: {leisure: sauna}
+      shapes: [sauna]
+    - tags: {leisure: outdoor_seating}
+      shapes: [table_and_two_chairs, umbrella]
+    - tags: {leisure: outdoor_seating, weather_protection: parasol}
+      shapes: [table_and_two_chairs, umbrella]
+    - tags: {leisure: outdoor_seating, weather_protection: roof}
+      shapes: [table_and_two_chairs___roof]
+    - tags: {leisure: outdoor_seating, weather_protection: awning}
+      shapes: [table_and_two_chairs, awning]
+    - tags: {leisure: outdoor_seating, weather_protection: pavilion}
+      shapes: [table_and_two_chairs___roof_and_walls]
+    - tags: {leisure: outdoor_seating, weather_protection: pergola}
+      shapes: [table_and_two_chairs___pergola]
+    - tags: {leisure: playground}
+      shapes: [toy_horse]
+    - tags: {amenity: theatre}
+      shapes: [curtains]
+    - tags: {amenity: bar}
+      shapes: [cocktail_glass]
+    - tags: {amenity: pub}
+      shapes: [beer_mug]
+    - tags: {amenity: fast_food}
+      shapes: [burger]
+    - tags: {amenity: fast_food, cuisine: steak_house}
+      shapes: [steak_and_fork]
+    - tags: {amenity: food_court}
+      shapes: [food_court]
+    - tags: {craft: shoemaker}
+      shapes: [{shape: shoe, color: sell_color}]
+    - tags: {shop: fishing}
+      shapes: [{shape: fishing_angle, color: sell_color}]
+    - tags: {shop: alcohol}
+      shapes: [{shape: bottle, color: sell_color}]
+    - tags: {shop: antiques}
+      shapes: [{shape: amphora, color: sell_color}]
+    - tags: {shop: art}
+      shapes: [{shape: picture, color: sell_color}]
+    - tags: {shop: bakery}
+      shapes: [cupcake]
+    - tags: {shop: bag}
+      shapes: [{shape: bag, color: sell_color}]
+    - tags: {shop: bed}
+      shapes: [{shape: bed, color: sell_color}]
+    - tags: {shop: beauty}
+      shapes: [vanity_mirror]
+    - tags: {shop: cosmetics}
+      shapes: [vanity_mirror]
+    - tags: {shop: bicycle}
+      shapes: [{shape: bicycle, color: sell_color}]
+    - tags: {shop: books}
+      shapes: [{shape: book, color: sell_color}]
+    - tags: {shop: butcher}
+      shapes: [knives]
+    - tags: {shop: car}
+      shapes: [{shape: car, color: sell_color}]
+    - tags: {shop: car_parts}
+      shapes: [shape: engine]
+    - tags: {shop: chocolate}
+      shapes: [cupcake]
+    - tags: {shop: coffee}
+      shapes: [{shape: coffee_cup, color: sell_color}]
+    - tags: {shop: confectionery}
+      shapes: [cupcake]
+    - tags: {shop: copyshop}
+      shapes: [sheets]
+    - tags: {shop: dairy}
+      shapes: [aseptic_carton]
+    - tags: {shop: doityourself}
+      shapes: [wretch_and_hammer]
+    - tags: {shop: dry_cleaning}
+      shapes: [washing_machine]
+    - tags: {shop: farm}
+      shapes: [{shape: apple, color: sell_color}]
+    - tags: {shop: fireplace}
+      shapes: [{shape: fireplace, color: sell_color}]
+    - tags: {shop: florist}
+      shapes: [{shape: flower_in_pot, color: sell_color}]
+    - tags: {shop: furniture}
+      shapes: [{shape: drawer, color: sell_color}]
+    - tags: {shop: greengrocer}
+      shapes: [{shape: apple, color: sell_color}]
+    - tags: {shop: hairdresser}
+      shapes: [comb_and_scissors]
+    - tags: {shop: hardware}
+      shapes: [wretch_and_hammer]
+    - tags: {shop: hifi}
+      shapes: [{shape: hi_fi, color: sell_color}]
+    - tags: {shop: houseware}
+      shapes: [{shape: pan, color: sell_color}]
+    - tags: {shop: jewelry}
+      shapes: [{shape: diamond, color: sell_color}]
+    - tags: {shop: jewellery}
+      shapes: [{shape: diamond, color: sell_color}]
+    - tags: {craft: jeweller}
+      shapes: [{shape: diamond, color: craft_color}]
+    - tags: {shop: laundry}
+      shapes: [washing_machine]
+    - tags: {shop: massage}
+      shapes: [massage]
+    - tags: {shop: medical_supply}
+      shapes: [{shape: medicine_bottle, color; sell_color}]
+    - tags: {shop: mobile_phone}
+      shapes: [{shape: phone, color: sell_color}]
+    - tags: {shop: newsagent}
+      shapes: [gazette]
+    - tags: {shop: optician}
+      shapes: [glasses]
+    - tags: {shop: pastry}
+      shapes: [cupcake]
+    - tags: {shop: pet}
+      shapes: [{shape: dog, color: sell_color}]
+    - tags: {shop: photo}
+      shapes: [{shape: photo_camera, color: sell_color}]
+    - tags: {shop: photography}
+      shapes: [{shape: photo_camera, color: sell_color}]
+    - tags: {shop: shoes}
+      shapes: [{shape: shoe, color: sell_color}]
+    - tags: {shop: sports}
+      shapes: [{shape: dumbbell, color: sell_color}]
+    - tags: {shop: travel_agency}
+      shapes: [globe]
+    - tags: {shop: milk}
+      shapes: [aseptic_carton]
+    - tags: {shop: wine}
+      shapes: [{shape: bottle_and_wine_glass, color: sell_color}]
+    - tags: {building: store}
+      shapes: [shop_convenience]
+    - tags: {shop: ticket}
+      shapes: [ticket]
+    - tags: {shop: tailor}
+      shapes: [t_shirt_and_scissors]
+    - tags: {shop: tyres}
+      shapes: [{shape: tyre, color: sell_color}]
+    - tags: {shop: toys}
+      shapes: [{shape: toy_horse, color: sell_color}]
+    - tags: {craft: tailor}
+      shapes: [t_shirt_and_scissors]
+    - tags: {shop: video}
+      shapes: [{shape: film, color: sell_color}]
+    - tags: {shop: video_games}
+      shapes: [{shape: pac_man, color: sell_color}]
+    - tags: {shop: watches}
+      shapes: [{shape: watches, color: sell_color}]
+    - tags: {craft: watchmaker}
+      shapes: [watches]
+    - tags: {shop: frame}
+      shapes: [{shape: frame, color: sell_color}]
+    - tags: {tourism: gallery}
+      shapes: [picture]
+    - tags: {amenity: cafe}
+      shapes: [coffee_cup]
+    - tags: {amenity: ice_cream}
+      shapes: [ice_cream]
+    - tags: {amenity: biergarten}
+      shapes: [beer_mug]
+    - tags: {amenity: nightclub}
+      shapes: [cocktail_glass_with_straw]
+    - tags: {amenity: restaurant}
+      shapes: [fork_and_knife]
+    - tags: {amenity: restaurant;bar}
+      shapes: [fork_and_knife]
+      add_shapes: [cocktail_glass]
+    - tags: {shop: ice_cream}
+      shapes: [ice_cream]
+    - tags: {shop: gift}
+      shapes: [gift]
+    - tags: {shop: clothes}
+      shapes: [{shape: t_shirt, color: sell_color}]
+    - tags: {amenity: shop, shop: clothes}
+      shapes: [t_shirt]
+    - tags: {shop: convenience}
+      shapes: [shop_convenience]
+    - tags: {amenity: shop, shop: convenience}
+      shapes: [shop_convenience]
+    - tags: {shop: electronics}
+      shapes: [{shape: tv, color: sell_color}]
+    - tags: {tourism: camp_site}
+      shapes: [camp]
+    - tags: {tourism: caravan_site}
+      shapes: [caravan]
+    - tags: {leisure: picnic_site}
+      shapes: [table]
+
+  - group: "Big objects not for all"
+    start_zoom_level: 15.0
+    tags:
+    - tags: {building: container}
+      shapes: [building_container]
+    - tags: {building: houseboat}
+      shapes: [houseboat]
+
+    - tags: {building: apartments}
+      shapes: [apartments_2_story]
+
+    - tags: {building: "*", building:levels: "1"}
+      shapes: [apartments_1_story]
+    - tags: {building: "*", building:levels: "1", roof:shape: gabled}
+      shapes: [apartments_1_story_gabled_roof]
+    - tags: {building: "*", building:levels: "1", roof:shape: hipped}
+      shapes: [apartments_1_story_gabled_roof]
+    - tags: {building: "*", building:levels: "1", roof:shape: pyramidal}
+      shapes: [apartments_1_story_gabled_roof]
+    - tags: {building: "*", building:levels: "1", roof:shape: skillion}
+      shapes: [apartments_1_story_skillion_roof]
+
+    - tags: {building: "*", building:levels: "2"}
+      shapes: [apartments_2_story]
+    - tags: {building: "*", building:levels: "2", roof:shape: gabled}
+      shapes: [apartments_2_story_gabled_roof]
+    - tags: {building: "*", building:levels: "2", roof:shape: hipped}
+      shapes: [apartments_2_story_gabled_roof]
+    - tags: {building: "*", building:levels: "2", roof:shape: pyramidal}
+      shapes: [apartments_2_story_gabled_roof]
+    - tags: {building: "*", building:levels: "2", roof:shape: skillion}
+      shapes: [apartments_2_story_skillion_roof]
+
+    - tags: {building: "*", building:levels: "3"}
+      shapes: [apartments_3_story]
+    - tags: {building: "*", building:levels: "3", roof:shape: gabled}
+      shapes: [apartments_3_story_gabled_roof]
+    - tags: {building: "*", building:levels: "3", roof:shape: hipped}
+      shapes: [apartments_3_story_gabled_roof]
+    - tags: {building: "*", building:levels: "3", roof:shape: pyramidal}
+      shapes: [apartments_3_story_gabled_roof]
+    - tags: {building: "*", building:levels: "3", roof:shape: skillion}
+      shapes: [apartments_3_story_skillion_roof]
+
+    - tags: {building: "*", building:levels: "4"}
+      shapes: [apartments_4_story]
+    - tags: {building: "*", building:levels: "4", roof:shape: gabled}
+      shapes: [apartments_4_story_gabled_roof]
+    - tags: {building: "*", building:levels: "4", roof:shape: hipped}
+      shapes: [apartments_4_story_gabled_roof]
+    - tags: {building: "*", building:levels: "4", roof:shape: pyramidal}
+      shapes: [apartments_4_story_gabled_roof]
+    - tags: {building: "*", building:levels: "4", roof:shape: skillion}
+      shapes: [apartments_4_story_skillion_roof]
+
+    - tags: {building: "*", building:levels: "5"}
+      shapes: [apartments_5_story]
+    - tags: {building: "*", building:levels: "5", roof:shape: gabled}
+      shapes: [apartments_5_story_gabled_roof]
+    - tags: {building: "*", building:levels: "5", roof:shape: hipped}
+      shapes: [apartments_5_story_gabled_roof]
+    - tags: {building: "*", building:levels: "5", roof:shape: pyramidal}
+      shapes: [apartments_5_story_gabled_roof]
+    - tags: {building: "*", building:levels: "5", roof:shape: skillion}
+      shapes: [apartments_5_story_skillion_roof]
+
+    - tags: {building: construction}
+      shapes: [building_construction]
+    - tags: {building: apartments, construction: "yes"}
+      shapes: [building_construction]
+    - tags: {building: "yes", construction: "yes"}
+      shapes: [building_construction]
+
+    - tags: {building: kindergarten}
+      shapes: [toy_horse]
+    - tags: {amenity: kindergarten}
+      shapes: [toy_horse]
+    - tags: {building: kindergarten, amenity: kindergarten}
+      shapes: [toy_horse]
+    - tags: {leisure: indoor_playground}
+      shapes: [toy_horse]
+    - tags: {building: office}
+      shapes: [briefcase]
+    - tags: {amenity: school}
+      location_restrictions: {include: [jp]}
+      shapes: [japan_elementary_school]
+    - tags: {office: "yes"}
+      shapes: [briefcase]
+    - tags: {office: company}
+      shapes: [briefcase]
+    - tags: {office: government}
+      shapes: [government]
+    - tags: {office: it}
+      shapes: [glider]
+    - tags: {office: telecommunication}
+      shapes: [telephone]
+
+  - group: "Not important big objects"
+    start_zoom_level: 15.0
+    tags:
+    - tags: {building: garage}
+      shapes: [garages]
+    - tags: {building: garages}
+      shapes: [garages]
+    - tags: {landuse: garages}
+      shapes: [garages]
+    - tags: {man_made: communications_tower}
+      location_restrictions: {include: [jp]}
+      shapes: [japan_tv_tower]
+    - tags: {man_made: communications_tower}
+      shapes: [tower_communication]
+    - tags: {man_made: telescope}
+      shapes: [telescope_radio]
+    - tags: {man_made: telescope, telescope:type: radio}
+      shapes: [telescope_radio]
+    - tags: {man_made: telescope, telescope:type: gamma}
+      shapes: [telescope_gamma]
+    - tags: {man_made: telescope, telescope:type: optical}
+      shapes: [observatory]
+    - tags: {man_made: tower}
+      shapes: [tower]
+    - tags: {man_made: tower, tower:construction: dish}
+      shapes: [telescope_radio]
+    - tags: {man_made: tower, tower:construction: dish, telescope:type: radio}
+      shapes: [telescope_radio]
+    - tags: {man_made: tower, tower:construction: dish, telescope:type: gamma}
+      shapes: [telescope_gamma]
+    - tags: {man_made: crane}
+      shapes: [crane]
+    - tags: {man_made: crane, crane:type: gantry_crane}
+      shapes: [crane_gantry]
+    - tags: {man_made: crane, crane:type: floor-mounted_crane}
+      shapes: [crane]
+    - tags: {man_made: crane, crane:type: portal_crane}
+      shapes: [crane_portal]
+    - tags: {man_made: crane, crane:type: travel_lift}
+      shapes: [crane_travel_lift]
+    - tags: {man_made: crane, crane:type: tower_crane}
+      shapes: [crane]
+
+  - group: "Emergency"
+    start_zoom_level: 15.0
+    tags:
+    - tags: {emergency: defibrillator}
+      shapes: [{shape: defibrillator, color: emergency_color}]
+    - tags: {emergency: fire_extinguisher}
+      shapes: [{shape: fire_extinguisher, color: emergency_color}]
+    - tags: {emergency: fire_hydrant}
+      shapes: [fire_hydrant]
+    - tags: {emergency: life_ring}
+      shapes: [{shape: life_ring, color: emergency_color}]
+    - tags: {emergency: phone}
+      shapes: [{shape: sos_phone, color: emergency_color}]
+
+  - group: "Transport-important middle objects"
+    start_zoom_level: 16.0
+    tags:
+    - tags: {ford: "yes"}
+      shapes: [ford]
+    - tags: {amenity: charging_station}
+      shapes: [charging_station]
+    - tags: {amenity: bicycle_repair_station}
+      shapes:
+      - {shape: bicycle, offset: [0, 2]}
+      - {shape: wrench, offset: [1, -5]}
+    - tags: {amenity: bicycle_rental}
+      shapes: [{shape: bicycle, offset: [0, 2]}, {shape: key, offset: [1, -4]}]
+    - tags: {amenity: fuel}
+      shapes: [fuel_station]
+    - tags: {amenity: parking}
+      shapes: [p]
+    - tags: {amenity: parking, parking: multi-storey}
+      shapes: [{shape: car, offset: [0, 4]}, {shape: car, offset: [0, -3]}]
+    - tags: {highway: turning_circle}
+      shapes: [circle_empty]
+    - tags: {highway: turning_loop}
+      shapes: [turning_loop]
+    - tags: {highway: crossing}
+      shapes: [crossing]
+    - tags: {crossing: zebra}
+      shapes: [crossing]
+    - tags: {highway: crossing, crossing: zebra}
+      shapes: [crossing]
+    - tags: {crossing: marked}
+      shapes: [crossing]
+    - tags: {highway: crossing, crossing: marked}
+      shapes: [crossing]
+    - tags: {highway: crossing, crossing_ref: zebra}
+      shapes: [crossing]
+    - tags: {highway: crossing, crossing: uncontrolled}
+      add_shapes: [no_traffic_signals]
+    - tags: {highway: crossing, crossing: traffic_signals}
+      add_shapes: [traffic_signals]
+    - tags: {highway: traffic_signals}
+      shapes: [traffic_signals]
+    - tags: {crossing_ref: toucan}
+      shapes: [toucan_crossing]
+
+    - tags: {traffic_calming: bump}
+      shapes: [bump]
+    - tags: {traffic_calming: mini_bumps}
+      shapes: [mini_bumps]
+    - tags: {traffic_calming: hump}
+      shapes: [hump]
+    - tags: {traffic_calming: table}
+      shapes: [traffic_table]
+    - tags: {traffic_calming: cushion}
+      shapes: [traffic_cushion]
+    - tags: {traffic_calming: rumble_strip}
+      shapes: [rumble_strip]
+    - tags: {traffic_calming: dip}
+      shapes: [dip]
+    - tags: {traffic_calming: double_dip}
+      shapes: [double_dip]
+
+  - group: "Important middle objects"
+    start_zoom_level: 16.0
+    tags:
+    - tags: {tourism: attraction, attraction: amusement_ride}
+      shapes: [amusement_ride]
+    - tags: {amenity: toilets}
+      shapes: [woman_and_man]
+    - tags: {amenity: shelter}
+      shapes: [shelter]
+    - tags: {man_made: obelisk}
+      shapes: [obelisk]
+    - tags: {historic: monument}
+      shapes: [monument]
+
+  - group: "Normal middle objects"
+    start_zoom_level: 17.0
+    tags:
+    - tags: {shop: kiosk}
+      shapes: [kiosk]
+    - tags: {building: "yes", shop: kiosk}
+      shapes: [kiosk]
+    - tags: {amenity: shop, shop: kiosk}
+      shapes: [kiosk]
+    - tags: {amenity: stage}
+      shapes: [curtains]
+    - tags: {amenity: hunting_stand}
+      shapes: [hunting_stand]
+    - tags: {natural: cave_entrance}
+      shapes: [cave]
+    - tags: {amenity: bureau_de_change}
+      shapes:
+      - {shape: exchange}
+      - {shape: dollar, offset: [-4, 3]}
+      - {shape: pound, offset: [5, -2]}
+    - tags: {sport: skateboard}
+      shapes: [skateboard]
+    - tags: {pipeline: substation}
+      shapes: [pipeline]
+
+  - group: "Towers, poles, masts"
+    start_zoom_level: 15.0
+    tags:
+    - tags: {building: ventilation_shaft}
+      shapes: [ventilation]
+    - tags: {power: generator}
+      shapes: [power_generator]
+    - tags: {amenity: public_bookcase}
+      shapes: [books]
+    - tags: {power: transformer}
+      shapes: [transformer]
+    - tags: {power: generator, generator:source: solar}
+      shapes: [solar_panel]
+    - tags: {power: heliostat}
+      shapes: [solar_panel]
+    - tags: {power: generator, generator:source: wind}
+      shapes: [wind_turbine]
+    - tags: {power: tower}
+      shapes: [power_tower_2_level]
+    - tags: {power: tower, design: one-level}
+      shapes: [power_tower_1_level]
+    - tags: {power: tower, design: two-level}
+      shapes: [power_tower_2_level]
+    - tags: {power: tower, design: three-level}
+      shapes: [power_tower_3_level]
+    - tags: {power: tower, design: four-level}
+      shapes: [power_tower_4_level]
+    - tags: {power: tower, design: donau}
+      shapes: [power_tower_donau]
+    - tags: {power: tower, design: donau_inverse}
+      shapes: [power_tower_donau_inverse]
+    - tags: {power: tower, design: barrel}
+      shapes: [power_tower_barrel]
+    - tags: {power: tower, design: asymmetric}
+      shapes: [power_tower_asymmetric]
+    - tags: {power: tower, design: triangle}
+      shapes: [power_tower_triangle]
+    - tags: {power: tower, design: flag}
+      shapes: [power_tower_flag]
+    - tags: {power: tower, design: delta}
+      shapes: [power_tower_delta]
+    - tags: {power: tower, design: delta_two-level}
+      shapes: [power_tower_delta_2_level]
+    - tags: {power: tower, design: delta_three-level}
+      shapes: [power_tower_delta_3_level]
+    - tags: {power: tower, design: y-frame}
+      shapes: [power_tower_y_frame]
+    - tags: {power: tower, design: x-frame}
+      shapes: [power_tower_x_frame]
+    - tags: {power: tower, design: h-frame}
+      shapes: [power_tower_h_frame]
+    - tags: {power: tower, design: h-frame_two-level}
+      shapes: [power_tower_h_frame_2_level]
+    - tags: {power: tower, design: guyed_h-frame}
+      shapes: [power_tower_guyed_h_frame]
+    - tags: {power: portal}
+      shapes: [power_tower_portal]
+    - tags: {power: tower, design: portal}
+      shapes: [power_tower_portal]
+    - tags: {power: tower, design: portal_two-level}
+      shapes: [power_tower_portal_2_level]
+    - tags: {power: portal, design: portal_two-level}
+      shapes: [power_tower_portal_2_level]
+    - tags: {power: tower, design: portal_three-level}
+      shapes: [power_tower_portal_3_level]
+    - tags: {power: portal, design: portal_three-level}
+      shapes: [power_tower_portal_3_level]
+
+    - tags: {power: pole}
+      shapes: [power_pole_2_level]
+    - tags: {power: pole, design: one-level}
+      shapes: [power_pole_1_level]
+    - tags: {power: pole, design: two-level}
+      shapes: [power_pole_2_level]
+    - tags: {power: pole, design: three-level}
+      shapes: [power_pole_3_level]
+    - tags: {power: pole, design: four-level}
+      shapes: [power_pole_4_level]
+    - tags: {power: pole, design: asymmetric}
+      shapes: [power_pole_asymmetric]
+    - tags: {power: pole, design: triangle}
+      shapes: [power_pole_triangle]
+    - tags: {power: pole, design: flag}
+      shapes: [power_pole_flag]
+    - tags: {power: pole, design: armless_asymmetric}
+      shapes: [power_pole_asymmetric_armless]
+    - tags: {power: pole, design: armless_triangle}
+      shapes: [power_pole_triangle_armless]
+    - tags: {power: pole, design: delta}
+      shapes: [power_pole_delta]
+    - tags: {power: pole, design: delta_two-level}
+      shapes: [power_pole_delta]  # power_pole_delta_2_level
+    - tags: {power: pole, design: delta_three-level}
+      shapes: [power_pole_delta]  # power_pole_delta_3_level
+
+    - tags: {man_made: chimney}
+      shapes: [chimney]
+    - tags: {man_made: tower, tower:type: cooling}
+      shapes: [tower_cooling]
+    - tags: {man_made: tower, tower:type: defensive}
+      shapes: [tower_defensive]
+    - tags: {man_made: tower, tower:type: pagoda}
+      shapes: [pagoda]
+    - tags: {man_made: tower, tower:type: observation}
+      shapes: [tower_observation]
+    - tags: {man_made: tower, tower:type: watchtower}
+      shapes: [tower_observation]
+    - tags: {man_made: tower, tower:type: minaret}
+      shapes: [minaret]
+    - tags: {man_made: mast}
+      shapes: [tube]
+    - tags: {man_made: stupa}
+      shapes: [stupa]
+
+    - tags: {man_made: mast, tower:construction: guyed_tube}
+      shapes: [tube_guyed]
+    - tags: {man_made: mast, tower:construction: freestanding}
+      shapes: [tube]
+    - tags: {man_made: mast, tower:construction: lattice}
+      shapes: [lattice]
+    - tags: {man_made: mast, tower:construction: guyed_lattice}
+      shapes: [lattice_guyed]
+    - tags: {man_made: mast, tower:type: lighting}
+      shapes:
+      - tube
+      - {shape: light_left, offset: [-3, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags: {man_made: mast, tower:type: communication}
+      shapes:
+      - tube
+      - {shape: wave_left, offset: [-3, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags: {man_made: mast, tower:type: siren}
+      shapes:
+        - tube
+        - {shape: siren_left, offset: [-3, -3]}
+        - {shape: siren_right, offset: [3, -3]}
+    - tags: {man_made: mast, tower:type: monitoring}
+      shapes:
+        - tube
+        - {shape: dish_antenna_left, offset: [-3, -3]}
+        - {shape: dish_antenna_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: lighting
+        tower:construction: guyed_tube
+      shapes:
+      - tube_guyed
+      - {shape: light_left, offset: [-3, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: communication
+        tower:construction: guyed_tube
+      shapes:
+      - tube_guyed
+      - {shape: wave_left, offset: [-3, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: siren
+        tower:construction: guyed_tube
+      shapes:
+        - tube_guyed
+        - {shape: siren_left, offset: [-3, -3]}
+        - {shape: siren_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: monitoring
+        tower:construction: guyed_tube
+      shapes:
+        - tube_guyed
+        - {shape: dish_antenna_left, offset: [-3, -3]}
+        - {shape: dish_antenna_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: lighting
+        tower:construction: freestanding
+      shapes:
+      - tube
+      - {shape: light_left, offset: [-3, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: communication
+        tower:construction: freestanding
+      shapes:
+      - tube
+      - {shape: wave_left, offset: [-3, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: siren
+        tower:construction: freestanding
+      shapes:
+        - tube
+        - {shape: siren_left, offset: [-3, -3]}
+        - {shape: siren_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: monitoring
+        tower:construction: freestanding
+      shapes:
+        - tube
+        - {shape: dish_antenna_left, offset: [-3, -3]}
+        - {shape: dish_antenna_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: lighting
+        tower:construction: guyed_lattice
+      shapes:
+      - lattice_guyed
+      - {shape: light_left, offset: [-4, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: communication
+        tower:construction: guyed_lattice
+      shapes:
+      - lattice_guyed
+      - {shape: wave_left, offset: [-4, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: siren
+        tower:construction: guyed_lattice
+      shapes:
+        - lattice_guyed
+        - {shape: siren_left, offset: [-4, -3]}
+        - {shape: siren_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: monitoring
+        tower:construction: guyed_lattice
+      shapes:
+        - lattice_guyed
+        - {shape: dish_antenna_left, offset: [-4, -3]}
+        - {shape: dish_antenna_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: lighting
+        tower:construction: lattice
+      shapes:
+      - lattice
+      - {shape: light_left, offset: [-4, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: communication
+        tower:construction: lattice
+      shapes:
+      - lattice
+      - {shape: wave_left, offset: [-4, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: siren
+        tower:construction: lattice
+      shapes:
+        - lattice
+        - {shape: siren_left, offset: [-4, -3]}
+        - {shape: siren_right, offset: [3, -3]}
+    - tags:
+        man_made: mast
+        tower:type: monitoring
+        tower:construction: lattice
+      shapes:
+        - lattice
+        - {shape: dish_antenna_left, offset: [-4, -3]}
+        - {shape: dish_antenna_right, offset: [3, -3]}
+
+    - tags: {man_made: tower, tower:construction: guyed_tube}
+      shapes: [tube_guyed]
+    - tags: {man_made: tower, tower:construction: freestanding}
+      shapes: [tube]
+    - tags: {man_made: tower, tower:construction: lattice}
+      shapes: [lattice]
+    - tags: {man_made: tower, tower:construction: lattice_guyed}
+      shapes: [lattice_guyed]
+    - tags: {man_made: tower, tower:type: lighting}
+      shapes:
+      - tube
+      - {shape: light_left, offset: [-3, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags: {man_made: tower, tower:type: communication}
+      shapes:
+      - tube
+      - {shape: wave_left, offset: [-3, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: lighting
+        tower:construction: guyed_tube
+      shapes:
+      - tube_guyed
+      - {shape: light_left, offset: [-3, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: communication
+        tower:construction: guyed_tube
+      shapes:
+      - tube_guyed
+      - {shape: wave_left, offset: [-3, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: lighting
+        tower:construction: freestanding
+      shapes:
+      - tube
+      - {shape: light_left, offset: [-3, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: communication
+        tower:construction: freestanding
+      shapes:
+      - tube
+      - {shape: wave_left, offset: [-3, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: lighting
+        tower:construction: guyed_lattice
+      shapes:
+      - lattice_guyed
+      - {shape: light_left, offset: [-4, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: communication
+        tower:construction: guyed_lattice
+      shapes:
+      - lattice_guyed
+      - {shape: wave_left, offset: [-4, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: lighting
+        tower:construction: lattice
+      shapes:
+      - lattice
+      - {shape: light_left, offset: [-4, -3]}
+      - {shape: light_right, offset: [3, -3]}
+    - tags:
+        man_made: tower
+        tower:type: communication
+        tower:construction: lattice
+      shapes:
+      - lattice
+      - {shape: wave_left, offset: [-4, -3]}
+      - {shape: wave_right, offset: [3, -3]}
+
+    - tags: {man_made: flagpole, country: US}
+      shapes: [flag_usa]
+    - tags: {man_made: flagpole, country: Tanzania}
+      shapes: [flag_bend_sinister]
+    - tags: {man_made: flagpole, country: PH}
+      shapes: [flag_triangle_flanche]
+    - tags: {man_made: flagpole, country: FR}
+      shapes: [flag_vertical_triband]
+
+      # Diving towers.
+
+    - tags: {man_made: tower, tower:type: diving}
+      shapes: [diving_1_platforms]
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "1"}
+      shapes: [diving_1_platforms]
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "2"}
+      shapes: [diving_2_platforms]
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "3"}
+      shapes: [diving_3_platforms]
+    - tags: {man_made: tower, tower:type: diving, tower:platforms: "4"}
+      shapes: [diving_4_platforms]
+
+    - tags: {communication:mobile_phone: "yes"}
+      add_shapes: [phone]
+
+  - group: "Moon small objects"
+    start_zoom_level: 0.0
+    tags:
+    - tags: {man_made: rover}
+      shapes: [lunokhod]
+    - tags: {man_made: probe}
+      shapes: [probe]
+    - tags: {man_made: orbiter}
+      shapes: [orbiter]
+    - tags: {man_made: descent_stage}
+      shapes: [descent_stage]
+    - tags: {man_made: third_stage}
+      shapes: [third_stage]
+    - tags: {man_made: lander}
+      shapes: [lander]
+
+    - tags: {man_made: rover, condition: landed}
+      shapes: [lunokhod]
+      set_opacity: 0.8
+    - tags: {man_made: probe, condition: landed}
+      shapes: [probe]
+      set_opacity: 0.8
+    - tags: {man_made: orbiter, condition: landed}
+      shapes: [orbiter]
+      set_opacity: 0.8
+    - tags: {man_made: descent_stage, condition: landed}
+      shapes: [descent_stage]
+      set_opacity: 0.8
+    - tags: {man_made: third_stage, condition: landed}
+      shapes: [third_stage]
+      set_opacity: 0.8
+    - tags: {man_made: lander, condition: landed}
+      shapes: [lander]
+      set_opacity: 0.8
+
+    - tags: {man_made: rover, condition: crashed}
+      shapes: [lunokhod]
+      set_opacity: 0.5
+    - tags: {man_made: probe, condition: crashed}
+      shapes: [probe]
+      set_opacity: 0.5
+    - tags: {man_made: orbiter, condition: crashed}
+      shapes: [orbiter]
+      set_opacity: 0.5
+    - tags: {man_made: descent_stage, condition: crashed}
+      shapes: [descent_stage]
+      set_opacity: 0.5
+    - tags: {man_made: third_stage, condition: crashed}
+      shapes: [third_stage]
+      set_opacity: 0.5
+    - tags: {man_made: lander, condition: crashed}
+      shapes: [lander]
+      set_opacity: 0.5
+
+  - group: "Golf objects"
+    start_zoom_level: 16.0
+    tags:
+      - tags: {golf: tee}
+        shapes: [golf_tee]
+      - tags: {golf: pin}
+        shapes: [golf_pin]
+
+  - group: "Important small objects"
+    start_zoom_level: 17.0
+    tags:
+    - tags: {natural: spring}
+      shapes: [{shape: spring, color: water_border_color}]
+    - tags: {highway: elevator}
+      shapes: [elevator]
+    - tags: {historic: cannon}
+      shapes: [cannon]
+    - tags: {historic: olympic_flame}
+      shapes: [torch]
+    - tags: {historic: memorial}
+      shapes: [memorial]
+    - tags: {historic: memorial, memorial: plaque}
+      shapes: [plaque]
+    - tags: {historic: memorial, memorial: statue}
+      shapes: [statue]
+    - tags: {barrier: artwork, artwork_type: statue}
+      shapes: [statue]
+    - tags: {historic: stone}
+      shapes: [stone_with_inscription]
+    - tags: {historic: wayside_cross}
+      shapes: [cross_and_horizontal_bar]
+    - tags: {historic: wayside_shrine}
+      shapes: [wayside_shrine]
+    - tags: {historic: memorial, memorial: stone}
+      shapes: [stone_with_inscription]
+    - tags: {historic: tomb}
+      shapes: [tomb]
+    - tags: {tomb: "*"}
+      exception: {tomb: mausoleum}  # TODO: add exception "tomb: pyramid"
+      shapes: [tomb]
+    - tags: {barrier: toll_booth}
+      shapes: [toll_booth]
+    - tags: {barrier: lift_gate}
+      shapes: [lift_gate]
+    - tags: {barrier: turnstile}
+      shapes: [turnstile]
+    - tags: {barrier: log}
+      shapes: [wood]
+    - tags: {barrier: chain}
+      shapes: [chain_barrier]
+    - tags: {railway: crossing}
+      shapes: [x]
+    - tags: {railway: railway_crossing}
+      shapes: [x]
+    - tags: {railway: level_crossing}
+      shapes: [x]
+    - tags: {railway: signal}
+      shapes: [signal]
+    - tags: {amenity: atm}
+      shapes: [atm]
+    - tags: {amenity: bicycle_parking}
+      shapes:
+      - {shape: bicycle, offset: [0, 2]}
+      - {shape: p_small, offset: [-6, -3]}
+    - tags: {amenity: bicycle_parking, bicycle_parking: stands}
+      shapes:
+      - {shape: p_small, offset: [-5, -3]}
+      - bicycle_parking_stand
+    - tags: {amenity: bicycle_parking, bicycle_parking: wall_loops}
+      shapes:
+      - {shape: p_small, offset: [-5, -3]}
+      - bicycle_parking_wall_loops
+    - tags: {amenity: bicycle_parking, bicycle_parking: rack}
+      shapes:
+      - {shape: p_small, offset: [-5, -3]}
+      - bicycle_parking_rack
+    - tags: {amenity: telephone}
+      shapes: [telephone]
+    - tags: {information: "*"}
+      shapes: [i]
+      replace_shapes: no
+    # tags: {tourism: "*"}
+    # shapes: [historic]
+    # replace_shapes: no
+    - tags: {tourism: information}
+      shapes: [i]
+    - tags: {information: guidepost}
+      shapes: [guidepost]
+    - tags: {tourism: viewpoint}
+      shapes: [binoculars]
+    - tags: {information: board}
+      shapes: [i_in_square]
+    - tags: {buoy: "*"}
+      shapes: [buoy]
+    - tags: {"seamark:type": "*"}
+      shapes: [buoy]
+    - tags: {"waterway:sign": "*"}
+      shapes: [buoy]
+    - tags: {amenity: drinking_water}
+      shapes: [drinking_water]
+    - tags: {tourism: artwork}
+      shapes: [picture]
+    - tags: {tourism: artwork, artwork_type: statue}
+      shapes: [statue]
+    - tags: {tourism: artwork, artwork_type: stone}
+      shapes: [stone_with_inscription]
+    - tags: {exhibit: artwork, artwork_type: statue}
+      shapes: [statue_exhibit]
+    - tags: {tourism: artwork, artwork_type: sculpture}
+      shapes: [statue]
+    - tags: {exhibit: artwork, artwork_type: sculpture}
+      shapes: [statue_exhibit]
+    - tags: {exhibit: artwork, artwork_type: painting}
+      shapes: [picture]
+    - tags: {exhibit: artwork, artwork_type: stained_glass}
+      shapes: [stained_glass]
+    - tags: {tourism: attraction}
+      shapes: [photo_camera]
+    - tags: {xmas:feature: tree}
+      shapes: {christmas_tree}
+
+  - group: "Normal small objects"
+    start_zoom_level: 18.0
+    tags:
+    - tags: {railway: switch}
+      shapes: [y]
+    - tags: {amenity: binoculars}
+      shapes: [binoculars_on_pole]
+    - tags: {amenity: parking_space}
+      shapes: [p_small]
+    - tags: {amenity: parking, parking: lane}
+      shapes: [p_small]
+    - tags: {amenity: parking, parking: street_side}
+      shapes: [p_small]
+    - tags: {amenity: post_box}
+      shapes: [envelope]
+    - tags: {amenity: recycling}
+      shapes: [recycling_container]
+    - tags: {amenity: recycling, recycling_type: container}
+      shapes: [recycling_container]
+    - tags: {amenity: shower}
+      shapes: [shower]
+    - tags: {amenity: vending_machine}
+      shapes: [vending_machine]
+    - tags: {vending: admission_tickets}
+      shapes: [vending_tickets]
+    - tags: {amenity: vending_machine, vending: admission_tickets}
+      shapes: [vending_tickets]
+    - tags: {vending: candles}
+      shapes: [vending_candles]
+    - tags: {amenity: vending_machine, vending: candles}
+      shapes: [vending_candles]
+    - tags: {vending: chemist}
+      shapes: [vending_chemist]
+    - tags: {amenity: vending_machine, vending: chemist}
+      shapes: [vending_chemist]
+    - tags: {vending: drinks}
+      shapes: [vending_bottle]
+    - tags: {amenity: vending_machine, vending: drinks}
+      shapes: [vending_bottle]
+    - tags: {vending: excrement_bags}
+      shapes: [vending_excrement_bag]
+    - tags: {amenity: vending_machine, vending: excrement_bags}
+      shapes: [vending_excrement_bag]
+    - tags: {vending: fishing_tackle}
+      shapes: [vending_angle]
+    - tags: {amenity: vending_machine, vending: fishing_tackle}
+      shapes: [vending_angle]
+    - tags: {vending: public_transport_tickets}
+      shapes: [vending_tickets]
+    - tags: {amenity: vending_machine, vending: public_transport_tickets}
+      shapes: [vending_tickets]
+    - tags: {vending: parking_tickets}
+      shapes: [vending_p]
+    - tags: {amenity: vending_machine, vending: parking_tickets}
+      shapes: [vending_p]
+    - tags: {vending: water}
+      shapes: [vending_drop]
+    - tags: {amenity: vending_machine, vending: water}
+      shapes: [vending_drop]
+    - tags: {fitness_station: horizontal_bar}
+      shapes: [horizontal_bar]
+    - tags: {fitness_station: rings}
+      shapes: [rings]
+    - tags: {fitness_station: wall_bars}
+      shapes: [wall_bars]
+    - tags: {fitness_station: sit-up}
+      shapes: [sit_up]
+    - tags: {fitness_station: horizontal_ladder}
+      shapes: [horizontal_ladder]
+    - tags: {fitness_station: push-up}
+      shapes: [low_horizontal_bars]
+    - tags: {playground: hopscotch}
+      shapes: [hopscotch]
+    - tags: {playground: slide}
+      shapes: [slide]
+    - tags: {attraction: water_slide}
+      shapes: [slide_and_water]
+    - tags: {playground: roundabout}
+      shapes: [roundabout]
+    - tags: {playground: sandpit}
+      shapes: [sandpit]
+    - tags: {playground: seesaw}
+      shapes: [seesaw]
+    - tags: {playground: horizontal_bar}
+      shapes: [horizontal_bar]
+    - tags: {leisure: picnic_table}
+      shapes: [table]
+    - tags: {highway: traffic_mirror}
+      shapes: [side_mirror]
+    - tags: {amenity: dressing_room}
+      shapes: [hanger]
+
+  - group: "Entrances"
+    start_zoom_level: 18.0
+    tags:
+    - tags: {amenity: parking_entrance}
+      shapes:
+      - {shape: p, offset: [-1, 0]}
+      - {shape: arrow_right, offset: [4, 5]}
+    - tags: {amenity: parking_entrance, parking: underground}
+      shapes: [{shape: p, offset: [-1, 0]}, {shape: arrow_down, offset: [4, 5]}]
+    - tags: {amenity: parking_entrance, parking: multi-storey}
+      shapes: [{shape: p, offset: [-1, 0]}, {shape: arrow_up, offset: [4, 5]}]
+    - tags: {entrance: gate}
+      shapes: [gate]
+    - tags: {barrier: gate}
+      shapes: [gate]
+    - tags: {entrance: garage}
+      shapes: [garage_door]
+    - tags: {entrance: main}
+      shapes: [main_entrance]
+    - tags: {barrier: entrance}
+      shapes: [entrance]
+    - tags: {barrier: door}
+      shapes: [entrance]
+    - tags: {entrance: "yes"}
+      shapes: [entrance]
+    - tags: {building: entrance}
+      shapes: [{shape: entrance, color: "#FF0000"}]
+    - tags: {entrance: shop}
+      shapes: [entrance]
+    - tags: {entrance: exit}
+      shapes: [exit]
+    - tags: {entrance: service}
+      shapes: [door_with_keyhole]
+    - tags: {entrance: staircase}
+      shapes: [staircase]
+    - tags: {door: "no"}
+      shapes: [no_door]
+
+  - group: "Not important small objects"
+    start_zoom_level: 18.0
+    tags:
+    - tags: {amenity: bench}
+      shapes: [bench]
+    - tags: {amenity: bench, backrest: "yes"}
+      shapes: [bench_backrest]
+    - tags: {amenity: bench, backrest: "no"}
+      shapes: [bench_no_backrest]
+    - tags: {amenity: bench, tourism: artwork, artwork_type: sculpture}
+      shapes: [bench_with_statue]
+    - tags: {amenity: bench, tourism: artwork, artwork_type: statue}
+      shapes: [bench_with_statue]
+    - tags: {historic: memorial, memorial: bench, amenity: bench}
+      shapes: [bench_with_inscription]
+    - tags: {historic: memorial, memorial: bench}
+      shapes: [bench_with_inscription]
+    - tags: {memorial: bench}
+      shapes: [bench_with_inscription]
+    - tags: {amenity: clock}
+      shapes: [clock]
+    - tags: {amenity: fountain}
+      shapes: [{shape: fountain, color: water_border_color}]
+    - tags: {fountain: bubbler}
+      shapes: [fountain_bubbler]
+    - tags: {fountain: roman_wolf}
+      shapes: [fountain_roman_wolf]
+    - tags: {fountain: toret}
+      shapes: [fountain_toret]
+    - tags: {amenity: waste_basket}
+      shapes: [waste_basket]
+    - tags: {amenity: waste_disposal}
+      shapes: [waste_disposal]
+    - tags: {highway: street_lamp}
+      shapes: [street_lamp]
+    - tags: {amenity: bbq}
+      shapes: [bbq]
+    - tags: {leisure: firepit}
+      shapes: [fire_pit]
+    - tags: {man_made: cross}
+      shapes: [latin_cross]
+    - tags: {man_made: flagpole}
+      shapes: [flagpole]
+    - tags: {man_made: manhole}
+      shapes: [circle_9]
+    - tags: {manhole: drain}
+      shapes: [manhole_drain]
+    - tags: {man_made: pole}
+      shapes: [pole]
+    - tags: {man_made: pole, highway: street_lamp}
+      shapes: [pole_lamp]
+    - tags: {man_made: street_cabinet}
+      shapes: [street_cabinet]
+    - tags: {man_made: surveillance}
+      shapes: [cctv]
+    - tags: {man_made: surveillance, camera:type: dome, camera:mount: ceiling}
+      shapes: [cctv_dome_ceiling]
+    - tags: {man_made: surveillance, camera:type: dome, camera:mount: wall}
+      shapes: [cctv_dome_wall]
+    - tags: {man_made: ventilation_shaft}
+      shapes: [ventilation]
+    - tags: {railway: ventilation_shaft}
+      shapes: [ventilation]
+    - tags: {advertising: billboard}
+      shapes: [billboard]
+    - tags: {advertising: column}
+      shapes: [advertising_column]
+    - tags: {natural: human}
+      shapes: [human]
+    - tags: {natural: rock}
+      shapes: [stone]
+    - tags: {natural: stone}
+      shapes: [stone]
+    - tags: {sloped_curb: "yes"}
+      shapes: [lowered_kerb]
+    - tags: {kerb: lowered}
+      shapes: [lowered_kerb]
+
+    - tags: {railway: buffer_stop}
+      shapes: [buffer_stop]
+    - tags: {traffic_sign: "*"}
+      shapes: [guidepost]
+    - tags: {traffic_sign: city_limit}
+      shapes: [city_limit_sign]
+    - tags: {traffic_sign: maxspeed, maxspeed: "^(\\d)(\\d)$"}
+      shapes: [
+        circle_11,
+        {shape: digit_#maxspeed0, offset: [-2, 0], color: "#FFFFFF"},
+        {shape: digit_#maxspeed1, offset: [2, 0], color: "#FFFFFF"},
+      ]
+    - tags: {traffic_sign: maxspeed, maxspeed: "^(\\d)(\\d) mph$"}
+      shapes: [
+        speed_limit_mph,
+        {shape: digit_#maxspeed0, offset: [-2, 2]},
+        {shape: digit_#maxspeed1, offset: [2, 2]},
+      ]
+    - tags: {highway: milestone}
+      shapes: [milestone]
+    - tags: {traffic_sign: stop}
+      shapes: [stop]
+    - tags: {highway: give_way}
+      shapes: [triangle_down_hollow]
+    - tags: {noexit: "yes"}
+      shapes: [t]
+    - tags: {barrier: block}
+      shapes: [block]
+    - tags: {barrier: rock}
+      shapes: [stone]
+    - tags: {barrier: bollard}
+      shapes: [bollard]
+    - tags: {barrier: kerb}
+      shapes: [kerb]
+    - tags: {tank_trap: czech_hedgehog}
+      shapes: [czech_hedgehog]
+    - tags: {tank_trap: dragons_teeth}
+      shapes: [dragons_teeth]
+    - tags: {tank_trap: toblerone}
+      shapes: [dragons_teeth]
+
+  - group: "Trees"
+    start_zoom_level: 18.0
+    tags:
+    - tags: {natural: tree}
+      shapes: [{shape: tree, color: tree_color, outline: no}]
+    - tags: {leaf_type: broadleaved}
+      shapes: [{shape: tree_with_leaf, color: tree_color}]
+    - tags: {leaf_type: needleleaved}
+      shapes: [{shape: needleleaved_tree, color: tree_color}]
+    - tags: {leaf_type: palm}
+      shapes: [{shape: palm, color: tree_color}]
+    - tags: {natural: tree, leaf_type: broadleaved}
+      shapes: [{shape: tree_with_leaf, color: tree_color}]
+    - tags: {natural: tree, leaf_type: needleleaved}
+      shapes: [{shape: needleleaved_tree, color: tree_color}]
+    - tags: {natural: tree, leaf_type: palm}
+      shapes: [{shape: palm, color: tree_color}]
+    - tags: {natural: tree, type: conifer}
+      shapes: [{shape: needleleaved_tree, color: tree_color}]
+    - tags: {leaf_cycle: deciduous}
+      set_main_color: decidious_color
+    - tags: {leaf_cycle: evergreen}
+      set_main_color: evergreen_color
+    - tags: {natural: tree, leaf_cycle: deciduous}
+      set_main_color: decidious_color
+    - tags: {natural: tree, leaf_cycle: evergreen}
+      set_main_color: evergreen_color
+    - tags: {natural: bush}
+      shapes: [{shape: bush, color: tree_color}]
+    - tags: {natural: shrub}
+      shapes: [{shape: bush, color: tree_color}]
+
+    - tags: {natural: tree, genus: Betula}
+      shapes: [{shape: betula, color: tree_color}]
+    - tags: {natural: tree, "genus:en": Birch}
+      shapes: [{shape: betula, color: tree_color}]
+    - tags: {natural: tree, "genus:ru": Берёза}
+      shapes: [{shape: betula, color: tree_color}]
+
+    - tags: {natural: tree, genus: Acer}
+      shapes: [{shape: tree, color: tree_color}]
+      add_shapes: [{shape: leaf_maple, color: tree_color}]
+    - tags: {natural: tree, "genus:en": Maple}
+      shapes: [{shape: tree, color: tree_color}]
+      add_shapes: [{shape: leaf_maple, color: tree_color}]
+
+    - tags: {natural: tree, genus: Malus}
+      shapes: [{shape: tree, color: tree_color}]
+      add_shapes: [{shape: apple, color: tree_color}]
+
+    - tags: {natural: tree, genus: Pyrus}
+      shapes: [{shape: tree, color: tree_color}]
+      add_shapes: [{shape: pear, color: tree_color}]
+
+  - group: "Indoor"
+    start_zoom_level: 18.0
+    tags:
+    - tags: {door: "yes"}
+      shapes: [entrance]
+    - tags: {indoor: pillar}
+      shapes: [pillar]
+
+  - group: "Mass objects"
+    start_zoom_level: 19.0
+    tags:
+      - tags: {tourism: camp_pitch}
+        shapes: [camp]
+
+  - group: "Add and over"
+    tags:
+    - tags: {support: pole}
+      over_icon: [support_pole]
+      under_icon: [clock, i_in_square]
+    - tags: {support: wall_mounted}
+      over_icon: [support_wall]
+      under_icon: [clock, i_in_square]
+    - tags: {support: column}
+      over_icon: [support_column]
+      under_icon: [clock, i_in_square]
+    - tags: {amenity: "*", karaoke: "yes"}
+      add_shapes: [microphone]
+    - tags: {building: "*", "roof:shape": onion}
+      add_shapes: [onion_roof_shape]
+    - tags: {natural: tree, denotation: urban}
+      over_icon: [urban_tree_pot]
+      under_icon: [tree, tree_with_leaf, needleleaved_tree, betula, palm]
+    - tags: {natural: tree, denotation: avenue}
+      over_icon: [bottom_right_horizontal_line]
+      under_icon: [tree, tree_with_leaf, needleleaved_tree, betula, palm]
+
+    - tags: {wheelchair: "yes"}
+      add_shapes: [wheelchair]
+    - tags: {wheelchair: "no"}
+      add_shapes: [no_wheelchair]
+    - tags: {foot: "yes"}
+      add_shapes: [foot]
+    - tags: {foot: "no"}
+      add_shapes: [no_foot]
+    - tags: {bicycle: "yes"}
+      add_shapes: [bicycle]
+    - tags: {bicycle: "no"}
+      shapes:
+      - {shape: bicycle, offset: [0, 2]}
+      - {shape: x_4, offset: [-5, -4]}
+    - tags: {internet_access: wlan, "internet_access:fee": "no"}
+      add_shapes:
+      - {shape: wlan, offset: [0, -3]}
+      - {shape: free, offset: [0, 5]}
+    - tags: {internet_access: wlan}
+      exception: {"internet_access:fee": "*"}
+      add_shapes: [wlan]
+    - tags: {material: wood}
+      add_shapes: [{shape: wood, color: trunk_color}]
+    - tags: {access: private}
+      add_shapes: [lock_with_keyhole]
+    - tags: {access: "no"}
+      add_shapes: [lock]
+    - tags: {direction: clockwise}
+      add_shapes: [clockwise]
+    - tags: {direction: anticlockwise}
+      add_shapes: [counterclockwise]
+    - tags: {atm: "yes"}
+      add_shapes: [atm]
+    - tags: {tactile_paving: "yes"}
+      add_shapes: [tactile_paving]
+    - tags: {tactile_paving: "no"}
+      add_shapes:
+      - {shape: tactile_paving, offset: [0, 2]}
+      - {shape: x_5, offset: [0, -3]}
+    - tags: {"payment:credit_cards": "yes"}
+      add_shapes: [credit_card]
+
+    - tags: {bus: "yes"}
+      add_shapes: [bus]
+    - tags: {motorcar: "yes"}
+      add_shapes: [car]
+    - tags: {car: "yes"}
+      add_shapes: [car]
+    - tags: {monorail: "yes"}
+      add_shapes: [monorail]
+    - tags: {trolleybus: "yes"}
+      add_shapes: [trolleybus]
+
+    - tags: {recycling:glass_bottles: "yes"}
+      add_shapes: [bottle]
+    - tags: {recycling:paper: "yes"}
+      add_shapes: [gazette]
+    - tags: {recycling:glass: "yes"}
+      add_shapes: [bottle_and_wine_glass]
+    - tags: {recycling:clothes: "yes"}
+      add_shapes: [t_shirt]
+    - tags: {recycling:shoes: "yes"}
+      add_shapes: [shoe]
+    - tags: {recycling:green_waste: "yes"}
+      add_shapes: [apple]
+    - tags: {recycling:paper_packaging: "yes"}
+      add_shapes: [gazette]
+    - tags: {recycling:newspaper: "yes"}
+      add_shapes: [gazette]
+    - tags: {recycling:magazines: "yes"}
+      add_shapes: [gazette]
+    - tags: {recycling:books: "yes"}
+      add_shapes: [book]
+    - tags: {recycling:wood: "yes"}
+      add_shapes: [{shape: wood, color: trunk_color}]
+    - tags: {recycling:glass_bottles:colour: "yes"}
+      add_shapes: [{shape: bottle, color: green}]
+    - tags: {recycling:cartons: "yes"}
+      add_shapes: [aseptic_carton]
+    - tags: {recycling:beverage_cartons: "yes"}
+      add_shapes: [aseptic_carton]
+    - tags: {recycling:organic: "yes"}
+      add_shapes: [apple]
+    - tags: {recycling:tetrapak: "yes"}
+      add_shapes: [aseptic_carton]
+    - tags: {recycling:tyres: "yes"}
+      add_shapes: [tyre]
+    - tags: {recycling:toys: "yes"}
+      add_shapes: [toy_horse]
+    - tags: {recycling:verre: "yes"}
+      add_shapes: [bottle_and_wine_glass]
+    - tags: {recycling:bags: "yes"}
+      add_shapes: [bag]
+
+    - tags: {crossing:island: "yes"}
+      add_shapes: [rectangle_vertical_rounded]
+    - tags: {crossing:island: "no"}
+      add_shapes: [rectangle_vertical_rounded_crossed]
+
+    - tags: {parking: "yes"}
+      add_shapes: [p]
+    - tags: {drinking_water: "yes"}
+      add_shapes: [drinking_water]
+    - tags: {toilets: "yes"}
+      add_shapes: [woman_and_man]
+    - tags: {washing_machine: "yes"}
+      add_shapes: [washing_machine]
+    - tags: {shower: "yes"}
+      add_shapes: [shower]
+    - tags: {dog: "yes"}
+      add_shapes: [dog]
+
+    # For tourism=camp_pitch
+
+    - tags: {caravans: "yes"}
+      add_shapes: [caravan]
+    - tags: {tents: "yes"}
+      add_shapes: [camp]
+    - tags: {fireplace: "yes"}
+      add_shapes: [fireplace]
+    - tags: {openfire: "yes"}
+      add_shapes: [fire_pit]
+    - tags: {bbq: "yes"}
+      add_shapes: [bbq]

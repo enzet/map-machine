@@ -10,4 +10,5 @@ __email__ = "me@enzet.ru"
 
 workspace: Workspace = Workspace(Path("temp"))
 
+
 SCHEME: Scheme = Scheme.from_file(workspace.DEFAULT_SCHEME_PATH)

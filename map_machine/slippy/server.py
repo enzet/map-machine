@@ -74,7 +74,8 @@ class TileServerHandler(SimpleHTTPRequestHandler):
                 scheme = Scheme.from_file(
                     workspace.DEFAULT_SCHEME_PATH
                     if self.options.scheme == "default"
-                    else Path(self.options.scheme)
+                    else Path(self.options.scheme),
+                    workspace.find_scheme_path,
                 )
                 tile.draw(
                     tile_path,

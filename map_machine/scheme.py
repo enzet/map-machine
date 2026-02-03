@@ -28,6 +28,7 @@ from map_machine.pictogram.icon import (
 )
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
     from pathlib import Path
 
 __author__ = "Sergey Vartanov"
@@ -339,6 +340,66 @@ class RoadMatcher(Matcher):
         return 1000.0 * layer + self.priority
 
 
+def _merge_contents(
+    base: dict[str, Any], overlay: dict[str, Any]
+) -> dict[str, Any]:
+    """Merge two scheme content dicts.
+
+    Lists are concatenated, dicts are merged (overlay wins on key
+    conflicts), and scalar values are overridden by the overlay.
+    """
+    merged: dict[str, Any] = {}
+    for key in set(base) | set(overlay):
+        if key not in overlay:
+            merged[key] = base[key]
+        elif key not in base:
+            merged[key] = overlay[key]
+        elif isinstance(base[key], list) and isinstance(overlay[key], list):
+            merged[key] = base[key] + overlay[key]
+        elif isinstance(base[key], dict) and isinstance(overlay[key], dict):
+            merged[key] = {**base[key], **overlay[key]}
+        else:
+            merged[key] = overlay[key]
+    return merged
+
+
+def _load_with_includes(
+    file_name: Path,
+    find_scheme_path: Callable[[str], Path | None] | None = None,
+) -> dict[str, Any]:
+    """Load a scheme YAML file, recursively resolving `include`.
+
+    :param file_name: path to the YAML scheme file.
+    :param find_scheme_path: callback that resolves a scheme identifier
+        (e.g. `"default"`) to a file path.
+    """
+    with file_name.open(encoding="utf-8") as input_file:
+        content: dict[str, Any] = yaml.safe_load(input_file.read())
+        if not content:
+            message: str = f"Scheme file {file_name} is empty."
+            raise ValueError(message)
+
+    includes: list[str] = content.pop("include", [])
+    if isinstance(includes, str):
+        includes = [includes]
+
+    base: dict[str, Any] = {}
+    for identifier in includes:
+        path: Path | None = None
+        if find_scheme_path is not None:
+            path = find_scheme_path(identifier)
+        if path is None:
+            path = file_name.parent / f"{identifier}.yml"
+        if not path.is_file():
+            message = f"Included scheme `{identifier}` not found."
+            raise FileNotFoundError(message)
+        base = _merge_contents(
+            base, _load_with_includes(path, find_scheme_path)
+        )
+
+    return _merge_contents(base, content)
+
+
 def _yaml_str(value: bool | str | float) -> str:  # noqa: FBT001
     """Convert a YAML value to string.
 
@@ -420,18 +481,21 @@ class Scheme:
         self.cache: dict[str, tuple[IconSet, int]] = {}
 
     @classmethod
-    def from_file(cls, file_name: Path) -> Scheme:
+    def from_file(
+        cls,
+        file_name: Path,
+        find_scheme_path: Callable[[str], Path | None] | None = None,
+    ) -> Scheme:
         """Get scheme from file.
 
-        :param file_name: name of the scheme file with tags, colors, and tag key
-            specification
+        :param file_name: name of the scheme file with tags, colors, and
+            tag key specification
+        :param find_scheme_path: optional callback that resolves a scheme
+            identifier to a file path (used to resolve `include`
+            entries)
         """
-        with file_name.open(encoding="utf-8") as input_file:
-            content: dict[str, Any] = yaml.safe_load(input_file.read())
-            if not content:
-                message: str = "Scheme file is empty."
-                raise ValueError(message)
-            return cls(content)
+        content = _load_with_includes(file_name, find_scheme_path)
+        return cls(content)
 
     def get_color(self, color_string: str) -> Color:
         """Get any color.
