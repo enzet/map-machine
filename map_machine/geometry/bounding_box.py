@@ -25,6 +25,16 @@ BOUNDING_BOX_PATTERN: re.Pattern = re.compile(
 )
 
 
+def floor(value: float) -> float:
+    """Round down to 3 digits after the point."""
+    return np.floor(value * 1000.0) / 1000.0
+
+
+def ceil(value: float) -> float:
+    """Round up to 3 digits after the point."""
+    return np.ceil(value * 1000.0) / 1000.0
+
+
 @dataclass
 class BoundingBox:
     """Rectangle that limits the space on the map."""
@@ -156,15 +166,25 @@ class BoundingBox:
         """Get text representation of the bounding box.
 
         Bounding box format is
-        <longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>.  Coordinates are
+        <longitude 1>,<latitude 1>,<longitude 2>,<latitude 2>. Coordinates are
         rounded to three decimal places.
         """
-        left: float = np.floor(self.left * 1000.0) / 1000.0
-        bottom: float = np.floor(self.bottom * 1000.0) / 1000.0
-        right: float = np.ceil(self.right * 1000.0) / 1000.0
-        top: float = np.ceil(self.top * 1000.0) / 1000.0
+        return (
+            f"{floor(self.left):.3f},{floor(self.bottom):.3f},"
+            f"{ceil(self.right):.3f},{ceil(self.top):.3f}"
+        )
 
-        return f"{left:.3f},{bottom:.3f},{right:.3f},{top:.3f}"
+    def get_overpass_format(self) -> str:
+        """Get bounding box in Overpass API format.
+
+        Overpass bounding box format is <south>,<west>,<north>,<east>, which
+        maps to <bottom>,<left>,<top>,<right>. Minimum coordinates are floored
+        and maximum coordinates are ceiled to three decimal places.
+        """
+        return (
+            f"{floor(self.bottom):.3f},{floor(self.left):.3f},"
+            f"{ceil(self.top):.3f},{ceil(self.right):.3f}"
+        )
 
     def update(self, coordinates: np.ndarray) -> None:
         """Make the bounding box cover coordinates."""

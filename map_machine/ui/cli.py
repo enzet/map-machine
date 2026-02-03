@@ -279,6 +279,14 @@ def add_tile_arguments(parser: argparse.ArgumentParser) -> None:
         default=False,
     )
     parser.add_argument(
+        "--overpass-query",
+        metavar="<path>",
+        help=(
+            "path to a custom Overpass query file; use {{bbox}} as a "
+            "placeholder for the bounding box"
+        ),
+    )
+    parser.add_argument(
         "-c",
         "--coordinates",
         metavar="<latitude>,<longitude>",
@@ -369,6 +377,14 @@ def add_render_arguments(parser: argparse.ArgumentParser) -> None:
         ),
         action="store_true",
         default=False,
+    )
+    parser.add_argument(
+        "--overpass-query",
+        metavar="<path>",
+        help=(
+            "path to a custom Overpass query file; use {{bbox}} as a "
+            "placeholder for the bounding box"
+        ),
     )
     parser.add_argument(
         "-i",

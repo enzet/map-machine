@@ -7,6 +7,7 @@ import hashlib
 import logging
 import time
 from dataclasses import dataclass
+from textwrap import dedent
 from typing import TYPE_CHECKING
 
 import urllib3
@@ -25,6 +26,23 @@ logger: logging.Logger = logging.getLogger(__name__)
 SLEEP_TIME_BETWEEN_REQUESTS: float = 2.0
 MAX_OSM_MESSAGE_LENGTH: int = 500
 OVERPASS_API_URL: str = "https://overpass-api.de/api/interpreter"
+
+DEFAULT_OVERPASS_FILTER: str = dedent(
+    """
+    (
+        way["building"];
+        way["highway"];
+        way["natural"="water"];
+        way["waterway"];
+        way["natural"="wood"];
+        way["landuse"="forest"];
+        relation["natural"="water"];
+        relation["landuse"="forest"];
+    );
+    (._;>;);
+    out body;
+    """
+)
 
 
 @dataclass
@@ -158,3 +176,57 @@ def get_overpass_relations(
 
     cache_file.write_bytes(content)
     return content
+
+
+def get_osm_overpass(
+    bounding_box: BoundingBox,
+    cache_file_path: Path,
+    query: str | None = None,
+    *,
+    to_update: bool = False,
+) -> str:
+    """Download OSM data from the Overpass API.
+
+    Uses a simplified filter query to fetch only major map features, which
+    avoids failures when the standard OSM API returns too much data.
+
+    :param bounding_box: borders of the map part to download
+    :param cache_file_path: cache file to store downloaded OSM data
+    :param query: custom Overpass query with ``{{bbox}}`` placeholder; if None,
+        the default filter is used
+    :param to_update: update cache files
+    """
+    if not to_update and cache_file_path.is_file():
+        with cache_file_path.open(encoding="utf-8") as output_file:
+            return output_file.read()
+
+    box: str = bounding_box.get_overpass_format()
+
+    if query is not None:
+        full_query = query.replace("{{bbox}}", box)
+    else:
+        full_query = f"[out:xml][bbox:{box}];\n{DEFAULT_OVERPASS_FILTER}"
+
+    logger.info("Querying Overpass API for bounding box %s...", box)
+
+    try:
+        content: bytes = get_data(OVERPASS_API_URL, {"data": full_query})
+    except NetworkError:
+        logger.warning("Failed to download data from Overpass API.")
+        raise
+
+    if not content or not content.strip().startswith(b"<"):
+        if len(content) < MAX_OSM_MESSAGE_LENGTH:
+            message = (
+                "Unexpected Overpass API response: `"
+                + content.decode("utf-8")
+                + "`."
+            )
+        else:
+            message = "Unexpected Overpass API response."
+        raise NetworkError(message)
+
+    with cache_file_path.open("bw+") as output_file:
+        output_file.write(content)
+
+    return content.decode("utf-8")

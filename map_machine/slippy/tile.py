@@ -25,6 +25,7 @@ from map_machine.osm.osm_getter import (
     NetworkError,
     find_incomplete_relations,
     get_osm,
+    get_osm_overpass,
     get_overpass_relations,
 )
 from map_machine.osm.osm_reader import OSMData
@@ -141,15 +142,33 @@ class Tile:
             float(point_1[0]),
         ).round()
 
-    def load_osm_data(self, cache_path: Path) -> OSMData:
+    def load_osm_data(
+        self, cache_path: Path, overpass_query: str | None = None
+    ) -> OSMData:
         """Construct map data from extended bounding box.
 
         :param cache_path: directory to store OSM data files
+        :param overpass_query: custom Overpass query with `{{bbox}}`
+            placeholder
         """
-        cache_file_path: Path = (
-            cache_path / f"{self.get_extended_bounding_box().get_format()}.osm"
+        bounding_box: BoundingBox = self.get_extended_bounding_box()
+        overpass_cache_path: Path = (
+            cache_path / f"{bounding_box.get_format()}_overpass.osm"
         )
-        get_osm(self.get_extended_bounding_box(), cache_file_path)
+
+        if overpass_cache_path.is_file():
+            cache_file_path = overpass_cache_path
+        else:
+            cache_file_path = cache_path / f"{bounding_box.get_format()}.osm"
+            try:
+                get_osm(bounding_box, cache_file_path)
+            except NetworkError as error:
+                logger.warning(
+                    "OSM API failed (%s), falling back to Overpass API...",
+                    error.message,
+                )
+                cache_file_path = overpass_cache_path
+                get_osm_overpass(bounding_box, cache_file_path, overpass_query)
 
         osm_data: OSMData = OSMData()
         osm_data.parse_osm_file(cache_file_path)
@@ -178,6 +197,7 @@ class Tile:
         configuration: MapConfiguration,
         *,
         use_overpass: bool = True,
+        overpass_query: str | None = None,
     ) -> None:
         """Draw tile to SVG and PNG files.
 
@@ -185,9 +205,11 @@ class Tile:
         :param cache_path: directory to store SVG and PNG tiles
         :param configuration: drawing configuration
         :param use_overpass: fetch missing relation data via Overpass API
+        :param overpass_query: custom Overpass query with `{{bbox}}`
+            placeholder
         """
         try:
-            osm_data: OSMData = self.load_osm_data(cache_path)
+            osm_data: OSMData = self.load_osm_data(cache_path, overpass_query)
         except NetworkError as error:
             msg = f"Map is not loaded. {error.message}"
             raise NetworkError(msg) from error
@@ -300,12 +322,35 @@ class Tiles:
 
         return cls(tiles, tile_1, tile_2, zoom_level, extended_bounding_box)
 
-    def load_osm_data(self, cache_path: Path) -> OSMData:
-        """Load OpenStreetMap data."""
-        cache_file_path: Path = (
-            cache_path / f"{self.bounding_box.get_format()}.osm"
+    def load_osm_data(
+        self, cache_path: Path, overpass_query: str | None = None
+    ) -> OSMData:
+        """Load OpenStreetMap data.
+
+        :param cache_path: directory for caching OSM data files
+        :param overpass_query: custom Overpass query with `{{bbox}}` placeholder
+        """
+        overpass_cache_path: Path = (
+            cache_path / f"{self.bounding_box.get_format()}_overpass.osm"
         )
-        get_osm(self.bounding_box, cache_file_path)
+
+        if overpass_cache_path.is_file():
+            cache_file_path = overpass_cache_path
+        else:
+            cache_file_path = (
+                cache_path / f"{self.bounding_box.get_format()}.osm"
+            )
+            try:
+                get_osm(self.bounding_box, cache_file_path)
+            except NetworkError as error:
+                logger.warning(
+                    "OSM API failed (%s), falling back to Overpass API...",
+                    error.message,
+                )
+                cache_file_path = overpass_cache_path
+                get_osm_overpass(
+                    self.bounding_box, cache_file_path, overpass_query
+                )
 
         osm_data: OSMData = OSMData()
         osm_data.parse_osm_file(cache_file_path)
@@ -517,6 +562,12 @@ def generate_tiles(options: argparse.Namespace) -> None:
 
     use_overpass: bool = not getattr(options, "no_overpass", False)
 
+    overpass_query: str | None = None
+    overpass_query_path: str | None = getattr(options, "overpass_query", None)
+    if overpass_query_path:
+        with Path(overpass_query_path).open(encoding="utf-8") as query_file:
+            overpass_query = query_file.read()
+
     if options.input_file_name:
         osm_data = OSMData()
         osm_data.parse_osm_file(Path(options.input_file_name))
@@ -548,7 +599,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
             np.array(coordinates), min_zoom_level
         )
         try:
-            osm_data = min_tile.load_osm_data(cache_path)
+            osm_data = min_tile.load_osm_data(cache_path, overpass_query)
         except NetworkError as error:
             message = f"Map is not loaded. {error.message}"
             raise NetworkError(message) from error
@@ -577,6 +628,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
             cache_path,
             configuration,
             use_overpass=use_overpass,
+            overpass_query=overpass_query,
         )
 
     elif options.bounding_box:
@@ -589,7 +641,7 @@ def generate_tiles(options: argparse.Namespace) -> None:
 
         min_tiles: Tiles = Tiles.from_bounding_box(bounding_box, min_zoom_level)
         try:
-            osm_data = min_tiles.load_osm_data(cache_path)
+            osm_data = min_tiles.load_osm_data(cache_path, overpass_query)
         except NetworkError as error:
             message = f"Map is not loaded. {error.message}"
             raise NetworkError(message) from error

@@ -32,6 +32,7 @@ from map_machine.osm.osm_getter import (
     NetworkError,
     find_incomplete_relations,
     get_osm,
+    get_osm_overpass,
     get_overpass_relations,
 )
 from map_machine.osm.osm_reader import OSMData, OSMNode
@@ -412,19 +413,41 @@ def render_map(arguments: argparse.Namespace) -> None:
 
     # Determine files.
 
+    overpass_query: str | None = None
+    overpass_query_path: str | None = getattr(arguments, "overpass_query", None)
+    if overpass_query_path:
+        with Path(overpass_query_path).open(encoding="utf-8") as query_file:
+            overpass_query = query_file.read()
+
     input_file_names: list[Path]
     if arguments.input_file_names:
         input_file_names = list(map(Path, arguments.input_file_names))
     elif bounding_box:
-        try:
+        overpass_cache_path: Path = (
+            cache_path / f"{bounding_box.get_format()}_overpass.osm"
+        )
+        if overpass_cache_path.is_file():
+            input_file_names = [overpass_cache_path]
+        else:
             cache_file_path: Path = (
                 cache_path / f"{bounding_box.get_format()}.osm"
             )
-            get_osm(bounding_box, cache_file_path)
-            input_file_names = [cache_file_path]
-        except NetworkError as error:
-            logger.fatal(error.message)
-            sys.exit(1)
+            try:
+                get_osm(bounding_box, cache_file_path)
+                input_file_names = [cache_file_path]
+            except NetworkError as error:
+                logger.warning(
+                    "OSM API failed (%s), falling back to Overpass API...",
+                    error.message,
+                )
+                try:
+                    get_osm_overpass(
+                        bounding_box, overpass_cache_path, overpass_query
+                    )
+                    input_file_names = [overpass_cache_path]
+                except NetworkError as overpass_error:
+                    logger.fatal(overpass_error.message)
+                    sys.exit(1)
     else:
         fatal(
             "Specify `--input`, `--bounding-box`, `--coordinates`, or `--gpx`."
