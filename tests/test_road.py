@@ -145,7 +145,7 @@ def test_road_bridge_color() -> None:
     border_color: Color = road.get_border_color()
     assert border_color is not None
     # Bridge should use scheme bridge_color.
-    assert border_color == SCHEME.get_color("bridge_color")
+    assert border_color == SCHEME.get_color("$bridge_color")
 
 
 def test_road_ford_color() -> None:
@@ -154,7 +154,7 @@ def test_road_ford_color() -> None:
     border_color: Color = road.get_border_color()
     assert border_color is not None
     # Ford should use scheme ford_color.
-    assert border_color == SCHEME.get_color("ford_color")
+    assert border_color == SCHEME.get_color("$ford_color")
 
 
 def test_road_embankment_color() -> None:
@@ -163,7 +163,7 @@ def test_road_embankment_color() -> None:
     border_color: Color = road.get_border_color()
     assert border_color is not None
     # Embankment should use scheme embankment_color.
-    assert border_color == SCHEME.get_color("embankment_color")
+    assert border_color == SCHEME.get_color("$embankment_color")
 
 
 def test_road_style_border() -> None:

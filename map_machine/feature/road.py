@@ -592,11 +592,11 @@ class Road(Tagged):
             message: str = "Road border color is not set."
             raise ValueError(message)
         if self.tags.get("bridge") == "yes":
-            color = self.scheme.get_color("bridge_color")
+            color = self.scheme.get_color("$bridge_color")
         if self.tags.get("ford") == "yes":
-            color = self.scheme.get_color("ford_color")
+            color = self.scheme.get_color("$ford_color")
         if self.tags.get("embankment") == "yes":
-            color = self.scheme.get_color("embankment_color")
+            color = self.scheme.get_color("$embankment_color")
         return color
 
     def draw_lanes(self, svg: Drawing, color: Color | None = None) -> None:

@@ -203,7 +203,7 @@ class DirectionSector(Tagged):
                     except (ValueError, TypeError):
                         pass
             direction_radius = 50.0
-            direction_color = scheme.get_color("direction_camera_color")
+            direction_color = scheme.get_color("$direction_camera_color")
         elif self.get_tag("traffic_sign") == "stop":
             direction = self.get_tag("direction")
             direction_radius = 25.0
@@ -211,7 +211,7 @@ class DirectionSector(Tagged):
         else:
             direction = self.get_tag("direction")
             direction_radius = 50.0
-            direction_color = scheme.get_color("direction_view_color")
+            direction_color = scheme.get_color("$direction_view_color")
             is_revert_gradient = True
 
         if not direction:

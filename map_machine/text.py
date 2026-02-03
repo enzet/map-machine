@@ -79,10 +79,10 @@ class TextConstructor:
 
     def __init__(self, scheme: Scheme) -> None:
         self.scheme: Scheme = scheme
-        self.default_color: Color = self.scheme.get_color("text_color")
-        self.main_color: Color = self.scheme.get_color("text_main_color")
+        self.default_color: Color = self.scheme.get_color("$text_color")
+        self.main_color: Color = self.scheme.get_color("$text_main_color")
         self.default_out_color: Color = self.scheme.get_color(
-            "text_outline_color"
+            "$text_outline_color"
         )
 
     def label(self, text: str, size: float = DEFAULT_FONT_SIZE) -> Label:

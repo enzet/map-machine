@@ -79,7 +79,9 @@ class Map:
         self.scheme: Scheme = configuration.scheme
         self.configuration: MapConfiguration = configuration
 
-        self.background_color: Color = self.scheme.get_color("background_color")
+        self.background_color: Color = self.scheme.get_color(
+            "$background_color"
+        )
         if color := self.configuration.background_color():
             self.background_color = color
 

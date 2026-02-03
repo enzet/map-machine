@@ -287,7 +287,7 @@ class WayMatcher(Matcher):
         if "style" in structure:
             style: dict[str, Any] = structure["style"]
             for key, value in style.items():
-                if str(value).endswith("_color"):
+                if str(value).startswith("$"):
                     way_matcher.style[key] = scheme.get_color(value).hex.upper()
                 else:
                     way_matcher.style[key] = value
@@ -323,7 +323,7 @@ class RoadMatcher(Matcher):
         road_matcher.border_color = Color(
             scheme.get_color(structure["border_color"])
         )
-        road_matcher.color = scheme.get_color("road_color")
+        road_matcher.color = scheme.get_color("$road_color")
         if "color" in structure:
             road_matcher.color = Color(scheme.get_color(structure["color"]))
         road_matcher.default_width = structure["default_width"]
@@ -451,10 +451,8 @@ class Scheme:
         self.building_colors: bool = options.get("building_colors", False)
         self.background: bool = options.get("background", True)
 
-        self.colors: dict[str, str] = content.get("colors", {})
-        self.material_colors: dict[str, str] = content.get(
-            "material_colors", {}
-        )
+        self.variables: dict[str, str] = content.get("variables", {})
+        self.variables.update(content.get("material_colors", {}))
 
         self.way_matchers: list[WayMatcher] = (
             [WayMatcher.from_structure(x, self) for x in content["ways"]]
@@ -488,7 +486,7 @@ class Scheme:
     ) -> Scheme:
         """Get scheme from file.
 
-        :param file_name: name of the scheme file with tags, colors, and
+        :param file_name: name of the scheme file with tags, variables, and
             tag key specification
         :param find_scheme_path: optional callback that resolves a scheme
             identifier to a file path (used to resolve `include`
@@ -500,48 +498,46 @@ class Scheme:
     def get_color(self, color_string: str) -> Color:
         """Get any color.
 
-        Return color if the color is in scheme, otherwise return default color.
+        If `color_string` starts with `$`, strip the prefix and look up the
+        name in :pyattr:`variables`.  Otherwise treat it as a literal color
+        (CSS name or hexidecimal value).
 
         :param color_string: input color string representation
         :return: color specification
         """
-        if color_string in self.colors:
-            specification: str | dict = self.colors[color_string]
-            if isinstance(specification, str):
-                return Color(self.colors[color_string])
+        if color_string.startswith("$"):
+            name: str = color_string[1:]
+            if name in self.variables:
+                specification: str | dict = self.variables[name]
+                if isinstance(specification, str):
+                    return Color(specification)
 
-            color: Color = self.get_color(specification["color"])
-            if "darken" in specification:
-                percent: float = float(specification["darken"])
-                color.set_luminance(color.get_luminance() * (1 - percent))
-            return color
-
-        if color_string.lower() in self.colors:
-            return Color(self.colors[color_string.lower()])
+                color: Color = self.get_color(specification["color"])
+                if "darken" in specification:
+                    percent: float = float(specification["darken"])
+                    color.set_luminance(color.get_luminance() * (1 - percent))
+                return color
 
         try:
             return Color(color_string)
         except (ValueError, AttributeError):
             logger.debug("Unknown color `%s`.", color_string)
-            if "default" in self.colors:
-                return Color(self.colors["default"])
+            if "default" in self.variables:
+                return Color(self.variables["default"])
             return DEFAULT_COLOR
 
     def get_default_color(self) -> Color:
         """Get default color for a main icon."""
-        return self.get_color("default")
+        return self.get_color("$default")
 
     def get_extra_color(self) -> Color:
         """Get default color for an extra icon."""
-        return self.get_color("extra")
+        return self.get_color("$extra")
 
     def get(self, variable_name: str) -> str | float:
-        """Get value of variable.
-
-        FIXME: colors should be variables.
-        """
-        if variable_name in self.colors:
-            return self.colors[variable_name]
+        """Get value of variable."""
+        if variable_name in self.variables:
+            return self.variables[variable_name]
         return 0.0
 
     def is_no_drawable(self, key: str, value: str) -> bool:
@@ -665,8 +661,8 @@ class Scheme:
 
         if "material" in tags:
             value: str = tags["material"]
-            if value in self.material_colors:
-                color = self.get_color(self.material_colors[value])
+            if value in self.variables:
+                color = self.get_color(f"${value}")
                 processed.add("material")
 
         for tag_key, tag_value in tags.items():
@@ -681,7 +677,7 @@ class Scheme:
 
         if not main_icon:
             dot_spec: ShapeSpecification = ShapeSpecification(
-                DEFAULT_SHAPE_ID, color=self.get_color("default")
+                DEFAULT_SHAPE_ID, color=self.get_color("$default")
             )
             main_icon = IconSpecification("", [dot_spec], "")
 
@@ -692,7 +688,7 @@ class Scheme:
         if show_overlapped:
             small_dot_spec: ShapeSpecification = ShapeSpecification(
                 DEFAULT_SMALL_SHAPE_ID,
-                color=color if color else self.get_color("default"),
+                color=color if color else self.get_color("$default"),
             )
             default_icon = IconSpecification("", [small_dot_spec], "")
 
@@ -763,7 +759,7 @@ class Scheme:
         The structure is just shape string identifier or dictionary with keys:
         shape (required), color (optional), and offset (optional).
         """
-        color = color if color is not None else Color(self.colors["default"])
+        color = color if color is not None else Color(self.variables["default"])
         offset: tuple[float, float] = (0.0, 0.0)
         flip_horizontally: bool = False
         flip_vertically: bool = False

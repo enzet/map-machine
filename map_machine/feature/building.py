@@ -46,13 +46,13 @@ class Building(Figure):
         self.default_fill: Color
         self.default_stroke: Color
         if self.is_construction:
-            self.default_fill = scheme.get_color("building_construction_color")
+            self.default_fill = scheme.get_color("$building_construction_color")
             self.default_stroke = scheme.get_color(
-                "building_construction_border_color"
+                "$building_construction_border_color"
             )
         else:
-            self.default_fill = scheme.get_color("building_color")
-            self.default_stroke = scheme.get_color("building_border_color")
+            self.default_fill = scheme.get_color("$building_color")
+            self.default_stroke = scheme.get_color("$building_border_color")
 
         self.fill: Color
         self.stroke: Color
@@ -61,8 +61,8 @@ class Building(Figure):
             self.stroke = Color(self.fill)
             self.stroke.set_luminance(self.fill.get_luminance() * 0.85)
         else:
-            self.fill = scheme.get_color("building_color")
-            self.stroke = scheme.get_color("building_border_color")
+            self.fill = scheme.get_color("$building_color")
+            self.stroke = scheme.get_color("$building_border_color")
 
         self.parts: list[Segment] = []
 
@@ -80,15 +80,15 @@ class Building(Figure):
         self.wall_default_color: Color
         if self.is_construction:
             self.wall_default_color = scheme.get_color(
-                "wall_construction_color"
+                "$wall_construction_color"
             )
         else:
-            self.wall_default_color = scheme.get_color("wall_color")
+            self.wall_default_color = scheme.get_color("$wall_color")
 
         self.wall_color: Color = self.wall_default_color
         material: str | None = tags.get("building:material")
-        if material and material in scheme.material_colors:
-            self.wall_color = Color(scheme.material_colors[material])
+        if material and material in scheme.variables:
+            self.wall_color = scheme.get_color(f"${material}")
         if color := tags.get("building:colour"):
             self.wall_color = scheme.get_color(color)
         if color := tags.get("colour"):

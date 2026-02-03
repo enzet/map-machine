@@ -95,33 +95,33 @@ nodes:
     - tags: {power: substation}
       shapes: [electricity]
     - tags: {plant: christmas_trees}
-      shapes: [{shape: christmas_tree, color: orchard_border_color}]
+      shapes: [{shape: christmas_tree, color: $orchard_border_color}]
     - tags: {crop: sunflower}
-      shapes: [{shape: sunflower, color: sunflower_dark_color, outline: no}]
+      shapes: [{shape: sunflower, color: $sunflower_dark_color, outline: no}]
     - tags: {crop: barley}
-      shapes: [{shape: ear_botany, color: barley_dark_color, outline: no}]
+      shapes: [{shape: ear_botany, color: $barley_dark_color, outline: no}]
     - tags: {crop: rye}
-      shapes: [{shape: ear_botany, color: rye_dark_color, outline: no}]
+      shapes: [{shape: ear_botany, color: $rye_dark_color, outline: no}]
     - tags: {crop: wheat}
-      shapes: [{shape: ear_botany, color: wheat_dark_color, outline: no}]
+      shapes: [{shape: ear_botany, color: $wheat_dark_color, outline: no}]
     - tags: {crop: rape}
-      shapes: [{shape: rape, color: wheat_dark_color, outline: no}]
+      shapes: [{shape: rape, color: $wheat_dark_color, outline: no}]
     - tags: {produce: apple}
-      shapes: [{shape: apple, color: orchard_border_color}]
+      shapes: [{shape: apple, color: $orchard_border_color}]
     - tags: {produce: christmas_trees}
-      shapes: [{shape: christmas_tree, color: orchard_border_color}]
+      shapes: [{shape: christmas_tree, color: $orchard_border_color}]
     - tags: {produce: pear}
-      shapes: [{shape: pear, color: orchard_border_color}]
+      shapes: [{shape: pear, color: $orchard_border_color}]
     - tags: {trees: apple_trees}
-      shapes: [{shape: apple, color: orchard_border_color}]
+      shapes: [{shape: apple, color: $orchard_border_color}]
     - tags: {trees: pear_trees}
-      shapes: [{shape: pear, color: orchard_border_color}]
+      shapes: [{shape: pear, color: $orchard_border_color}]
 
   - group: "Bigger objects"
     start_zoom_level: 13.0
     tags:
     - tags: {waterway: waterfall}
-      shapes: [{shape: waterfall, color: water_border_color}]
+      shapes: [{shape: waterfall, color: $water_border_color}]
     - tags: {natural: cliff}
       shapes: [cliff]
     - tags: {natural: peak}
@@ -214,7 +214,7 @@ nodes:
     tags:
     - tags: {amenity: fire_station}
       location_restrictions: {include: [jp]}
-      shapes: [{shape: japan_fire_station, color: emergency_color}]
+      shapes: [{shape: japan_fire_station, color: $emergency_color}]
     - tags: {amenity: courthouse}
       shapes: [gavel]
     - tags: {amenity: police}
@@ -416,39 +416,39 @@ nodes:
     - tags: {amenity: food_court}
       shapes: [food_court]
     - tags: {craft: shoemaker}
-      shapes: [{shape: shoe, color: sell_color}]
+      shapes: [{shape: shoe, color: $sell_color}]
     - tags: {shop: fishing}
-      shapes: [{shape: fishing_angle, color: sell_color}]
+      shapes: [{shape: fishing_angle, color: $sell_color}]
     - tags: {shop: alcohol}
-      shapes: [{shape: bottle, color: sell_color}]
+      shapes: [{shape: bottle, color: $sell_color}]
     - tags: {shop: antiques}
-      shapes: [{shape: amphora, color: sell_color}]
+      shapes: [{shape: amphora, color: $sell_color}]
     - tags: {shop: art}
-      shapes: [{shape: picture, color: sell_color}]
+      shapes: [{shape: picture, color: $sell_color}]
     - tags: {shop: bakery}
       shapes: [cupcake]
     - tags: {shop: bag}
-      shapes: [{shape: bag, color: sell_color}]
+      shapes: [{shape: bag, color: $sell_color}]
     - tags: {shop: bed}
-      shapes: [{shape: bed, color: sell_color}]
+      shapes: [{shape: bed, color: $sell_color}]
     - tags: {shop: beauty}
       shapes: [vanity_mirror]
     - tags: {shop: cosmetics}
       shapes: [vanity_mirror]
     - tags: {shop: bicycle}
-      shapes: [{shape: bicycle, color: sell_color}]
+      shapes: [{shape: bicycle, color: $sell_color}]
     - tags: {shop: books}
-      shapes: [{shape: book, color: sell_color}]
+      shapes: [{shape: book, color: $sell_color}]
     - tags: {shop: butcher}
       shapes: [knives]
     - tags: {shop: car}
-      shapes: [{shape: car, color: sell_color}]
+      shapes: [{shape: car, color: $sell_color}]
     - tags: {shop: car_parts}
       shapes: [shape: engine]
     - tags: {shop: chocolate}
       shapes: [cupcake]
     - tags: {shop: coffee}
-      shapes: [{shape: coffee_cup, color: sell_color}]
+      shapes: [{shape: coffee_cup, color: $sell_color}]
     - tags: {shop: confectionery}
       shapes: [cupcake]
     - tags: {shop: copyshop}
@@ -460,37 +460,37 @@ nodes:
     - tags: {shop: dry_cleaning}
       shapes: [washing_machine]
     - tags: {shop: farm}
-      shapes: [{shape: apple, color: sell_color}]
+      shapes: [{shape: apple, color: $sell_color}]
     - tags: {shop: fireplace}
-      shapes: [{shape: fireplace, color: sell_color}]
+      shapes: [{shape: fireplace, color: $sell_color}]
     - tags: {shop: florist}
-      shapes: [{shape: flower_in_pot, color: sell_color}]
+      shapes: [{shape: flower_in_pot, color: $sell_color}]
     - tags: {shop: furniture}
-      shapes: [{shape: drawer, color: sell_color}]
+      shapes: [{shape: drawer, color: $sell_color}]
     - tags: {shop: greengrocer}
-      shapes: [{shape: apple, color: sell_color}]
+      shapes: [{shape: apple, color: $sell_color}]
     - tags: {shop: hairdresser}
       shapes: [comb_and_scissors]
     - tags: {shop: hardware}
       shapes: [wretch_and_hammer]
     - tags: {shop: hifi}
-      shapes: [{shape: hi_fi, color: sell_color}]
+      shapes: [{shape: hi_fi, color: $sell_color}]
     - tags: {shop: houseware}
-      shapes: [{shape: pan, color: sell_color}]
+      shapes: [{shape: pan, color: $sell_color}]
     - tags: {shop: jewelry}
-      shapes: [{shape: diamond, color: sell_color}]
+      shapes: [{shape: diamond, color: $sell_color}]
     - tags: {shop: jewellery}
-      shapes: [{shape: diamond, color: sell_color}]
+      shapes: [{shape: diamond, color: $sell_color}]
     - tags: {craft: jeweller}
-      shapes: [{shape: diamond, color: craft_color}]
+      shapes: [{shape: diamond, color: $craft_color}]
     - tags: {shop: laundry}
       shapes: [washing_machine]
     - tags: {shop: massage}
       shapes: [massage]
     - tags: {shop: medical_supply}
-      shapes: [{shape: medicine_bottle, color; sell_color}]
+      shapes: [{shape: medicine_bottle, color; $sell_color}]
     - tags: {shop: mobile_phone}
-      shapes: [{shape: phone, color: sell_color}]
+      shapes: [{shape: phone, color: $sell_color}]
     - tags: {shop: newsagent}
       shapes: [gazette]
     - tags: {shop: optician}
@@ -498,21 +498,21 @@ nodes:
     - tags: {shop: pastry}
       shapes: [cupcake]
     - tags: {shop: pet}
-      shapes: [{shape: dog, color: sell_color}]
+      shapes: [{shape: dog, color: $sell_color}]
     - tags: {shop: photo}
-      shapes: [{shape: photo_camera, color: sell_color}]
+      shapes: [{shape: photo_camera, color: $sell_color}]
     - tags: {shop: photography}
-      shapes: [{shape: photo_camera, color: sell_color}]
+      shapes: [{shape: photo_camera, color: $sell_color}]
     - tags: {shop: shoes}
-      shapes: [{shape: shoe, color: sell_color}]
+      shapes: [{shape: shoe, color: $sell_color}]
     - tags: {shop: sports}
-      shapes: [{shape: dumbbell, color: sell_color}]
+      shapes: [{shape: dumbbell, color: $sell_color}]
     - tags: {shop: travel_agency}
       shapes: [globe]
     - tags: {shop: milk}
       shapes: [aseptic_carton]
     - tags: {shop: wine}
-      shapes: [{shape: bottle_and_wine_glass, color: sell_color}]
+      shapes: [{shape: bottle_and_wine_glass, color: $sell_color}]
     - tags: {building: store}
       shapes: [shop_convenience]
     - tags: {shop: ticket}
@@ -520,21 +520,21 @@ nodes:
     - tags: {shop: tailor}
       shapes: [t_shirt_and_scissors]
     - tags: {shop: tyres}
-      shapes: [{shape: tyre, color: sell_color}]
+      shapes: [{shape: tyre, color: $sell_color}]
     - tags: {shop: toys}
-      shapes: [{shape: toy_horse, color: sell_color}]
+      shapes: [{shape: toy_horse, color: $sell_color}]
     - tags: {craft: tailor}
       shapes: [t_shirt_and_scissors]
     - tags: {shop: video}
-      shapes: [{shape: film, color: sell_color}]
+      shapes: [{shape: film, color: $sell_color}]
     - tags: {shop: video_games}
-      shapes: [{shape: pac_man, color: sell_color}]
+      shapes: [{shape: pac_man, color: $sell_color}]
     - tags: {shop: watches}
-      shapes: [{shape: watches, color: sell_color}]
+      shapes: [{shape: watches, color: $sell_color}]
     - tags: {craft: watchmaker}
       shapes: [watches]
     - tags: {shop: frame}
-      shapes: [{shape: frame, color: sell_color}]
+      shapes: [{shape: frame, color: $sell_color}]
     - tags: {tourism: gallery}
       shapes: [picture]
     - tags: {amenity: cafe}
@@ -555,7 +555,7 @@ nodes:
     - tags: {shop: gift}
       shapes: [gift]
     - tags: {shop: clothes}
-      shapes: [{shape: t_shirt, color: sell_color}]
+      shapes: [{shape: t_shirt, color: $sell_color}]
     - tags: {amenity: shop, shop: clothes}
       shapes: [t_shirt]
     - tags: {shop: convenience}
@@ -563,7 +563,7 @@ nodes:
     - tags: {amenity: shop, shop: convenience}
       shapes: [shop_convenience]
     - tags: {shop: electronics}
-      shapes: [{shape: tv, color: sell_color}]
+      shapes: [{shape: tv, color: $sell_color}]
     - tags: {tourism: camp_site}
       shapes: [camp]
     - tags: {tourism: caravan_site}
@@ -715,15 +715,15 @@ nodes:
     start_zoom_level: 15.0
     tags:
     - tags: {emergency: defibrillator}
-      shapes: [{shape: defibrillator, color: emergency_color}]
+      shapes: [{shape: defibrillator, color: $emergency_color}]
     - tags: {emergency: fire_extinguisher}
-      shapes: [{shape: fire_extinguisher, color: emergency_color}]
+      shapes: [{shape: fire_extinguisher, color: $emergency_color}]
     - tags: {emergency: fire_hydrant}
       shapes: [fire_hydrant]
     - tags: {emergency: life_ring}
-      shapes: [{shape: life_ring, color: emergency_color}]
+      shapes: [{shape: life_ring, color: $emergency_color}]
     - tags: {emergency: phone}
-      shapes: [{shape: sos_phone, color: emergency_color}]
+      shapes: [{shape: sos_phone, color: $emergency_color}]
 
   - group: "Transport-important middle objects"
     start_zoom_level: 16.0
@@ -1270,7 +1270,7 @@ nodes:
     start_zoom_level: 17.0
     tags:
     - tags: {natural: spring}
-      shapes: [{shape: spring, color: water_border_color}]
+      shapes: [{shape: spring, color: $water_border_color}]
     - tags: {highway: elevator}
       shapes: [elevator]
     - tags: {historic: cannon}
@@ -1531,7 +1531,7 @@ nodes:
     - tags: {amenity: clock}
       shapes: [clock]
     - tags: {amenity: fountain}
-      shapes: [{shape: fountain, color: water_border_color}]
+      shapes: [{shape: fountain, color: $water_border_color}]
     - tags: {fountain: bubbler}
       shapes: [fountain_bubbler]
     - tags: {fountain: roman_wolf}
@@ -1632,55 +1632,55 @@ nodes:
     start_zoom_level: 18.0
     tags:
     - tags: {natural: tree}
-      shapes: [{shape: tree, color: tree_color, outline: no}]
+      shapes: [{shape: tree, color: $tree_color, outline: no}]
     - tags: {leaf_type: broadleaved}
-      shapes: [{shape: tree_with_leaf, color: tree_color}]
+      shapes: [{shape: tree_with_leaf, color: $tree_color}]
     - tags: {leaf_type: needleleaved}
-      shapes: [{shape: needleleaved_tree, color: tree_color}]
+      shapes: [{shape: needleleaved_tree, color: $tree_color}]
     - tags: {leaf_type: palm}
-      shapes: [{shape: palm, color: tree_color}]
+      shapes: [{shape: palm, color: $tree_color}]
     - tags: {natural: tree, leaf_type: broadleaved}
-      shapes: [{shape: tree_with_leaf, color: tree_color}]
+      shapes: [{shape: tree_with_leaf, color: $tree_color}]
     - tags: {natural: tree, leaf_type: needleleaved}
-      shapes: [{shape: needleleaved_tree, color: tree_color}]
+      shapes: [{shape: needleleaved_tree, color: $tree_color}]
     - tags: {natural: tree, leaf_type: palm}
-      shapes: [{shape: palm, color: tree_color}]
+      shapes: [{shape: palm, color: $tree_color}]
     - tags: {natural: tree, type: conifer}
-      shapes: [{shape: needleleaved_tree, color: tree_color}]
+      shapes: [{shape: needleleaved_tree, color: $tree_color}]
     - tags: {leaf_cycle: deciduous}
-      set_main_color: decidious_color
+      set_main_color: $decidious_color
     - tags: {leaf_cycle: evergreen}
-      set_main_color: evergreen_color
+      set_main_color: $evergreen_color
     - tags: {natural: tree, leaf_cycle: deciduous}
-      set_main_color: decidious_color
+      set_main_color: $decidious_color
     - tags: {natural: tree, leaf_cycle: evergreen}
-      set_main_color: evergreen_color
+      set_main_color: $evergreen_color
     - tags: {natural: bush}
-      shapes: [{shape: bush, color: tree_color}]
+      shapes: [{shape: bush, color: $tree_color}]
     - tags: {natural: shrub}
-      shapes: [{shape: bush, color: tree_color}]
+      shapes: [{shape: bush, color: $tree_color}]
 
     - tags: {natural: tree, genus: Betula}
-      shapes: [{shape: betula, color: tree_color}]
+      shapes: [{shape: betula, color: $tree_color}]
     - tags: {natural: tree, "genus:en": Birch}
-      shapes: [{shape: betula, color: tree_color}]
+      shapes: [{shape: betula, color: $tree_color}]
     - tags: {natural: tree, "genus:ru": Берёза}
-      shapes: [{shape: betula, color: tree_color}]
+      shapes: [{shape: betula, color: $tree_color}]
 
     - tags: {natural: tree, genus: Acer}
-      shapes: [{shape: tree, color: tree_color}]
-      add_shapes: [{shape: leaf_maple, color: tree_color}]
+      shapes: [{shape: tree, color: $tree_color}]
+      add_shapes: [{shape: leaf_maple, color: $tree_color}]
     - tags: {natural: tree, "genus:en": Maple}
-      shapes: [{shape: tree, color: tree_color}]
-      add_shapes: [{shape: leaf_maple, color: tree_color}]
+      shapes: [{shape: tree, color: $tree_color}]
+      add_shapes: [{shape: leaf_maple, color: $tree_color}]
 
     - tags: {natural: tree, genus: Malus}
-      shapes: [{shape: tree, color: tree_color}]
-      add_shapes: [{shape: apple, color: tree_color}]
+      shapes: [{shape: tree, color: $tree_color}]
+      add_shapes: [{shape: apple, color: $tree_color}]
 
     - tags: {natural: tree, genus: Pyrus}
-      shapes: [{shape: tree, color: tree_color}]
-      add_shapes: [{shape: pear, color: tree_color}]
+      shapes: [{shape: tree, color: $tree_color}]
+      add_shapes: [{shape: pear, color: $tree_color}]
 
   - group: "Indoor"
     start_zoom_level: 18.0
@@ -1740,7 +1740,7 @@ nodes:
       exception: {"internet_access:fee": "*"}
       add_shapes: [wlan]
     - tags: {material: wood}
-      add_shapes: [{shape: wood, color: trunk_color}]
+      add_shapes: [{shape: wood, color: $trunk_color}]
     - tags: {access: private}
       add_shapes: [lock_with_keyhole]
     - tags: {access: "no"}
@@ -1792,7 +1792,7 @@ nodes:
     - tags: {recycling:books: "yes"}
       add_shapes: [book]
     - tags: {recycling:wood: "yes"}
-      add_shapes: [{shape: wood, color: trunk_color}]
+      add_shapes: [{shape: wood, color: $trunk_color}]
     - tags: {recycling:glass_bottles:colour: "yes"}
       add_shapes: [{shape: bottle, color: green}]
     - tags: {recycling:cartons: "yes"}

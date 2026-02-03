@@ -18,7 +18,7 @@ options:
   building_colors: no
   background: yes
 
-colors:
+variables:
 
   # Entity
 
@@ -85,7 +85,7 @@ colors:
   hidden_color: "#000000"
   indoor_border_color: "#A0A890"
   indoor_color: "#E8E4E0"
-  indoor_column_color: {color: indoor_border_color, darken: 0.5}
+  indoor_column_color: {color: $indoor_border_color, darken: 0.5}
   meadow_border_color: "#BFD078"
   meadow_color: "#CFE088"
   orchard_color: "#B8DCA4"
@@ -121,9 +121,9 @@ colors:
   wood_color: "#B8CC84"
 
   runway_color: "#999399"
-  runway_border_color: {color: runway_color, darken: 0.25}
+  runway_border_color: {color: $runway_color, darken: 0.25}
   taxiway_color: "#AAA4AA"
-  taxiway_border_color: {color: taxiway_color, darken: 0.25}
+  taxiway_border_color: {color: $taxiway_color, darken: 0.25}
 
   sell_color: "#880088"
   craft_color: "#008800"
@@ -132,8 +132,11 @@ colors:
 
   rose: "#FF007F"  # Wikipedia
   slate_blue: "#6A5ACD"  # W3C slateblue
+  bronze: "#CD7F32"
+  concrete: "#AAAAAA"
+  glass: "#CCEEFF"
 
-colors_dark: # dark
+variables_dark: # dark
 
   # Entity
 
@@ -225,9 +228,9 @@ colors_dark: # dark
   wood_color: {color: "#B8CC84", darken: 0.75}
 
   runway_color: "#999399"
-  runway_border_color: {color: runway_color, darken: 0.25}
+  runway_border_color: {color: $runway_color, darken: 0.25}
   taxiway_color: "#AAA4AA"
-  taxiway_border_color: {color: taxiway_color, darken: 0.25}
+  taxiway_border_color: {color: $taxiway_color, darken: 0.25}
 
   sell_color: "#880088"
 
@@ -236,8 +239,8 @@ colors_dark: # dark
   rose: "#FF007F"  # Wikipedia
   slate_blue: "#6A5ACD"  # W3C slateblue
 
-carto_colors:
-  building_border_color: {color: building_color, darken: 0.15}
+carto_variables:
+  building_border_color: {color: $building_color, darken: 0.15}
   building_color: "#d9d0c9"
   cemetery_color: "#aacbaf"
   commercial_color: "#f2dad9"
@@ -251,88 +254,82 @@ carto_colors:
   residential_border_color: "#b9b9b9"
   wood_color: "#add19e"
 
-material_colors:
-
-  bronze: "#CD7F32"
-  concrete: "#AAAAAA"
-  glass: "#CCEEFF"
-
 roads:
   - tags: {highway: motorway}
     default_width: 7.0
-    border_color: motorway_border_color
-    color: motorway_color
+    border_color: $motorway_border_color
+    color: $motorway_color
     priority: 41.8
   - tags: {highway: trunk}
     default_width: 7.0
-    border_color: motorway_border_color
-    color: motorway_color
+    border_color: $motorway_border_color
+    color: $motorway_color
     priority: 41.0
   - tags: {highway: trunk_link}
     default_width: 7.0
-    border_color: motorway_border_color
-    color: motorway_color
+    border_color: $motorway_border_color
+    color: $motorway_color
     priority: 41.0
   - tags: {highway: primary}
     default_width: 7.0
-    border_color: primary_border_color
-    color: primary_color
+    border_color: $primary_border_color
+    color: $primary_color
     priority: 41.7
   - tags: {highway: motorway_link}
     default_width: 7.0
-    border_color: motorway_border_color
-    color: motorway_color
+    border_color: $motorway_border_color
+    color: $motorway_color
     priority: 41.8
   - tags: {highway: secondary}
     default_width: 7.0
-    border_color: secondary_border_color
+    border_color: $secondary_border_color
     priority: 41.6
-    color: secondary_color
+    color: $secondary_color
   - tags: {highway: secondary_link}
     default_width: 7.0
-    border_color: secondary_border_color
+    border_color: $secondary_border_color
     priority: 41.6
-    color: secondary_color
+    color: $secondary_color
   - tags: {highway: tertiary}
     default_width: 7.0
-    border_color: tertiary_border_color
+    border_color: $tertiary_border_color
     priority: 41.5
-    color: tertiary_color
+    color: $tertiary_color
   - tags: {highway: tertiary_link}
     default_width: 7.0
-    border_color: tertiary_border_color
+    border_color: $tertiary_border_color
     priority: 41.5
-    color: tertiary_color
+    color: $tertiary_color
   - tags: {highway: unclassified}
     default_width: 5.0
-    border_color: road_border_color
+    border_color: $road_border_color
     priority: 41.0
   - tags: {highway: residential}
     default_width: 5.0
-    border_color: road_border_color
+    border_color: $road_border_color
     priority: 41.0
   - tags: {highway: living_street}
     default_width: 4.0
-    border_color: road_border_color
+    border_color: $road_border_color
     priority: 41.0
   - tags: {highway: service}
     exception: {service: parking_aisle}
     default_width: 3.0
-    border_color: road_border_color
+    border_color: $road_border_color
     priority: 41.0
   - tags: {highway: service, service: parking_aisle}
     default_width: 2.0
-    border_color: road_border_color
+    border_color: $road_border_color
     priority: 41.0
   - tags: {leisure: track}
-    color: pitch_color
-    border_color: pitch_border_color
+    color: $pitch_color
+    border_color: $pitch_border_color
     default_width: 5.0
     priority: 21.0
 
   - tags: {highway: raceway}
-    color: pitch_color
-    border_color: pitch_border_color
+    color: $pitch_color
+    border_color: $pitch_border_color
     default_width: 7.0
     priority: 21.0
 
@@ -345,19 +342,19 @@ ways:
       stroke-linecap: round
       stroke-linejoin: round
       stroke-width: 5
-      stroke: background_color
+      stroke: $background_color
     priority: 22.0
   - tags: {indoor: area}
     style:
-      stroke: indoor_border_color
+      stroke: $indoor_border_color
       stroke-width: 1.0
-      fill: indoor_color
+      fill: $indoor_color
     priority: 10.0
   - tags: {indoor: corridor}
     style:
-      stroke: indoor_border_color
+      stroke: $indoor_border_color
       stroke-width: 1.0
-      fill: indoor_color
+      fill: $indoor_color
     priority: 11.0
   - tags: {highway: corridor}
     style:
@@ -366,26 +363,26 @@ ways:
     priority: 11.0
   - tags: {indoor: "yes", area: "yes"}
     style:
-      stroke: indoor_color
+      stroke: $indoor_color
       stroke-width: 1.0
-      fill: indoor_color
+      fill: $indoor_color
     priority: 12.0
   - tags: {indoor: room}
     style:
-      stroke: indoor_border_color
+      stroke: $indoor_border_color
       stroke-width: 1.0
     priority: 12.0
   - tags: {indoor: elevator, area: "yes"}
     style:
-      stroke: indoor_color
+      stroke: $indoor_color
       stroke-width: 1.0
-      fill: indoor_color
+      fill: $indoor_color
     priority: 12.0
   - tags: {indoor: column}
     style:
-      stroke: indoor_column_color
+      stroke: $indoor_column_color
       stroke-width: 1.0
-      fill: indoor_column_color
+      fill: $indoor_column_color
     priority: 13.0
 
   - tags: {power: line}
@@ -433,7 +430,7 @@ ways:
   - tags: {highway: track}
     style:
       stroke-width: 1.5
-      stroke: track_color
+      stroke: $track_color
       stroke-linecap: round
       stroke-linejoin: round
     priority: 41.0
@@ -441,7 +438,7 @@ ways:
     exception: {area: "yes", type: "multipolygon"}
     style:
       stroke-width: 3.0
-      stroke: foot_border_color
+      stroke: $foot_border_color
       stroke-linecap: round
       stroke-linejoin: round
     priority: 41.0
@@ -449,7 +446,7 @@ ways:
     exception: {area: "yes"}
     style:
       stroke-width: 3.0
-      stroke: foot_border_color
+      stroke: $foot_border_color
       stroke-linecap: round
       stroke-linejoin: round
     priority: 41.0
@@ -457,19 +454,19 @@ ways:
     exception: {area: "yes"}
     style:
       stroke-width: 3.0
-      stroke: foot_border_color
+      stroke: $foot_border_color
       stroke-linecap: round
       stroke-linejoin: round
     priority: 41.0
   - tags: {highway: steps}
     style:
       stroke-width: 6.0
-      stroke: foot_border_color
+      stroke: $foot_border_color
       stroke-linecap: butt
   - tags: {highway: path}
     style:
       stroke-width: 3.0
-      stroke: foot_border_color
+      stroke: $foot_border_color
     priority: 41.0
 
   - tags: {highway: footway}
@@ -479,7 +476,7 @@ ways:
       stroke-dasharray: 7.0,3.0
       stroke-linecap: round
       stroke-linejoin: round
-      stroke: foot_color
+      stroke: $foot_color
     priority: 42.0
   - tags: {highway: pedestrian}
     exception: {area: "yes"}
@@ -488,26 +485,26 @@ ways:
       stroke-dasharray: 7.0,3.0
       stroke-linecap: round
       stroke-linejoin: round
-      stroke: foot_color
+      stroke: $foot_color
     priority: 42.0
   - tags: {highway: footway, area: "yes"}
     style:
-      stroke: foot_area_border_color
-      fill: foot_area_color
+      stroke: $foot_area_border_color
+      fill: $foot_area_color
       stroke-linecap: round
       stroke-linejoin: round
     priority: 55.0
   - tags: {highway: footway, type: "multipolygon"}
     style:
-      stroke: foot_area_border_color
-      fill: foot_area_color
+      stroke: $foot_area_border_color
+      fill: $foot_area_color
       stroke-linecap: round
       stroke-linejoin: round
     priority: 55.0
   - tags: {highway: pedestrian, area: "yes"}
     style:
       stroke: none
-      fill: foot_area_color
+      fill: $foot_area_color
       stroke-linecap: round
       stroke-linejoin: round
     priority: -55.0  # FIXME
@@ -515,7 +512,7 @@ ways:
     exception: {area: "yes"}
     style:
       stroke-width: 1.0
-      stroke: cycle_color
+      stroke: $cycle_color
       stroke-dasharray: 8.0,2.0
       stroke-linecap: butt
     priority: 42.0
@@ -532,25 +529,25 @@ ways:
       stroke-width: 5.0
       stroke-dasharray: 1.5,2.0
       stroke-linecap: butt
-      stroke: foot_color
+      stroke: $foot_color
     priority: 42.0
   - tags: {highway: path}
     style:
       stroke-width: 1.5
       stroke-dasharray: 5.0,3.0
       stroke-linecap: butt
-      stroke: foot_color
+      stroke: $foot_color
     priority: 42.0
 
   - tags: {aeroway: runway}
     style:
       stroke-width: 50.0
-      stroke: runway_color
+      stroke: $runway_color
     priority: 22.0
   - tags: {aeroway: taxiway}
     style:
       stroke-width: 50.0
-      stroke: taxiway_color
+      stroke: $taxiway_color
     priority: 21.0
   - tags: {aeroway: runway}
     style:
@@ -575,28 +572,28 @@ ways:
 
   - tags: {natural: wood}
     style:
-      fill: wood_color
+      fill: $wood_color
     priority: 21.0
   - tags: {natural: wetland}
     style:
-      fill: wetland_color
+      fill: $wetland_color
     priority: 21.0
   - tags: {natural: grassland}
     style:
-      fill: grass_color
-      stroke: grass_border_color
+      fill: $grass_color
+      stroke: $grass_border_color
     priority: 20.0
   - tags: {natural: scrub}
     style:
-      fill: wood_color
+      fill: $wood_color
     priority: 21.0
   - tags: {natural: sand}
     style:
-      fill: sand_color
+      fill: $sand_color
     priority: 20.0
   - tags: {natural: beach}
     style:
-      fill: beach_color
+      fill: $beach_color
     priority: 20.0
   - tags: {natural: heath}
     style:
@@ -608,48 +605,48 @@ ways:
     priority: 20.0
   - tags: {natural: desert}
     style:
-      fill: desert_color
+      fill: $desert_color
     priority: 20.0
   - tags: {natural: forest}
     style:
-      fill: wood_color
+      fill: $wood_color
     priority: 21.0
   - tags: {natural: tree_row}
     priority: 21.0
     style:
-      stroke: wood_color
+      stroke: $wood_color
       stroke-width: 5.0
       stroke-linecap: round
       stroke-linejoin: round
   - tags: {natural: water}
     exception: {intermittent: "yes"}
     style:
-      fill: water_color
-      # stroke: water_border_color
+      fill: $water_color
+      # stroke: $water_border_color
       # stroke-width: 1.0
     priority: 21.0
   - tags: {natural: water, intermittent: "yes"}
     style:
-      fill: water_color
+      fill: $water_color
       opacity: 0.5
-      # stroke: water_border_color
+      # stroke: $water_border_color
       # stroke-width: 1.0
     priority: 21.0
   - tags: {natural: coastline}
     style:
-      fill: water_color
-      stroke: water_border_color
+      fill: $water_color
+      stroke: $water_border_color
       stroke-width: 1.0
     priority: 21.0
   - tags: {natural: ridge}
     style:
       stroke-width: 2.0
       opacity: 0.3
-      stroke: ridge_color
+      stroke: $ridge_color
     priority: 21.0
   - tags: {natural: bare_rock}
     style:
-      fill: rock_color
+      fill: $rock_color
   - tags: {natural: cliff}
     style:
       stroke-width: 1.0
@@ -662,62 +659,62 @@ ways:
       stroke-dasharray: "1,10"
   - tags: {natural: scree}
     style:
-      fill: scree_color
+      fill: $scree_color
 
   - tags: {landuse: allotments}
     style:
-      fill: allotments_color
+      fill: $allotments_color
     priority: 20.0
   - tags: {landuse: conservation}
     style:
-      fill: grass_color
+      fill: $grass_color
     priority: 20.0
   - tags: {landuse: construction}
     style:
-      fill: construction_color
+      fill: $construction_color
   - tags: {landuse: farmland}
-    style: {fill: farmland_color, stroke: farmland_border_color}
+    style: {fill: $farmland_color, stroke: $farmland_border_color}
     priority: 20.0
   - tags: {landuse: greenhouse_horticulture}
-    style: {fill: farmland_color, stroke: farmland_border_color}
+    style: {fill: $farmland_color, stroke: $farmland_border_color}
     priority: 20.0
   - tags: {landuse: farmyard}
-    style: {fill: farmland_color, stroke: farmland_border_color}  # FIXME
+    style: {fill: $farmland_color, stroke: $farmland_border_color}  # FIXME
     priority: 20.0
   - tags: {landuse: farmland, crop: wheat}
-    style: {fill: wheat_color, stroke: wheat_border_color}
+    style: {fill: $wheat_color, stroke: $wheat_border_color}
     priority: 20.0
   - tags: {landuse: farmland, crop: barley}
-    style: {fill: barley_color, stroke: barley_border_color}
+    style: {fill: $barley_color, stroke: $barley_border_color}
     priority: 20.0
   - tags: {landuse: farmland, crop: rye}
-    style: {fill: rye_color, stroke: rye_dark_color}
+    style: {fill: $rye_color, stroke: $rye_dark_color}
     priority: 20.0
   - tags: {landuse: forest}
     style:
-      fill: wood_color
+      fill: $wood_color
     priority: 20.0
   - tags: {landuse: garages}
     style:
-      fill: parking_color
+      fill: $parking_color
     priority: 21.0
   - tags: {landuse: village_green}
     style:
-      fill: village_green_color
+      fill: $village_green_color
     priority: 20.0
   - tags: {landuse: grass}
     style:
-      fill: grass_color
-      stroke: grass_border_color
+      fill: $grass_color
+      stroke: $grass_border_color
     priority: 20.0
   - tags: {landuse: orchard}
     style:
-      fill: orchard_color
+      fill: $orchard_color
     priority: 21.0
   - tags: {landuse: meadow}
     style:
-      fill: meadow_color
-      stroke: meadow_border_color
+      fill: $meadow_color
+      stroke: $meadow_border_color
     priority: 20.0
   - tags: {tourism: camp_pitch}
     style:
@@ -729,47 +726,47 @@ ways:
 
   - tags: {landuse: cemetery}
     style:
-      fill: hidden_color
+      fill: $hidden_color
       opacity: 0.05
     priority: 1.0
   - tags: {landuse: commercial}
     style:
-      fill: hidden_color
+      fill: $hidden_color
       opacity: 0.05
     priority: 1.0
   - tags: {landuse: industrial}
     style:
-      fill: hidden_color
+      fill: $hidden_color
       opacity: 0.05
     priority: 1.0
   - tags: {landuse: military}
     style:
-      fill: hidden_color
+      fill: $hidden_color
       opacity: 0.05
     priority: 1.0
   - tags: {landuse: railway}
     style:
-      fill: hidden_color
+      fill: $hidden_color
       opacity: 0.05
     priority: 1.0
   - tags: {landuse: residential}
     style:
-      fill: hidden_color
+      fill: $hidden_color
       opacity: 0.05
     priority: 1.0
   - tags: {power: substation}
     style:
-      fill: hidden_color
+      fill: $hidden_color
       opacity: 0.05
     priority: 1.0
 
   - tags: {amenity: ferry_terminal}
     style:
-      fill: ferry_terminal_color
+      fill: $ferry_terminal_color
     priority: 50.0
   - tags: {amenity: parking}
     style:
-      fill: parking_color
+      fill: $parking_color
       opacity: 0.5
   - tags: {amenity: parking_space}
     style:
@@ -786,29 +783,29 @@ ways:
 
   - tags: {waterway: river}
     style:
-      stroke: water_color
+      stroke: $water_color
       stroke-width: 2.5
     priority: 22.0
   - tags: {waterway: canal}
     style:
-      stroke: water_color
+      stroke: $water_color
       stroke-width: 2.0
     priority: 22.0
   - tags: {waterway: stream}
     style:
-      stroke: water_color
+      stroke: $water_color
       stroke-width: 1.5
     priority: 22.0
   - tags: {waterway: riverbank}
     style:
-      fill: water_color
-      stroke: water_border_color
+      fill: $water_color
+      stroke: $water_border_color
       stroke-width: 1.0
     priority: 22.0
   - tags: {waterway: ditch}
     style:
-      fill: water_color
-      stroke: water_color
+      fill: $water_color
+      stroke: $water_color
       stroke-width: 2.0
     priority: 22.0
 
@@ -903,9 +900,9 @@ ways:
 
   - tags: {railway: platform}
     style:
-      fill: platform_color
+      fill: $platform_color
       stroke-width: 1.0
-      stroke: platform_border_color
+      stroke: $platform_border_color
     priority: 41.0
 
   - tags: {route: ferry}
@@ -913,70 +910,70 @@ ways:
       stroke-width: 1.0
       stroke-dasharray: 3.0,3.0
       stroke-linecap: butt
-      stroke: route_color
+      stroke: $route_color
     priority: 42.0
 
   - tags: {leisure: swimming_area}
     style:
-      fill: swimming_area_color
+      fill: $swimming_area_color
     priority: 22.0  # Should be over water.
   - tags: {leisure: garden}
     style:
-      fill: grass_color
+      fill: $grass_color
     priority: 21.0
   - tags: {leisure: park}
     style:
-      fill: park_color
+      fill: $park_color
       opacity: 0.5
   - tags: {landuse: recreation_ground}
     style:
-      fill: grass_color
+      fill: $grass_color
       opacity: 0.5
   - tags: {leisure: recreation_ground}
     style:
-      fill: grass_color
+      fill: $grass_color
       opacity: 0.5
   - tags: {leisure: stadium}
     style:
-      fill: grass_color
+      fill: $grass_color
       opacity: 0.5
   - tags: {leisure: golf_course}
     style:
-      fill: grass_color
+      fill: $grass_color
       opacity: 0.5
   - tags: {leisure: pitch}
     style:
-      fill: pitch_color
-      stroke: pitch_border_color
+      fill: $pitch_color
+      stroke: $pitch_border_color
       stroke-width: 1.0
     priority: 21.0
   - tags: {leisure: bleachers}
     style:
-      fill: pitch_color
-      stroke: pitch_border_color
+      fill: $pitch_color
+      stroke: $pitch_border_color
       stroke-width: 1.0
     priority: 21.0
   - tags: {leisure: track, area: "yes"}
     style:
-      fill: pitch_color
-      stroke: pitch_border_color
+      fill: $pitch_color
+      stroke: $pitch_border_color
       stroke-width: 1.0
     priority: 21.0
   - tags: {leisure: fitness_station}
     style:
-      fill: pitch_color
-      stroke: pitch_border_color
+      fill: $pitch_color
+      stroke: $pitch_border_color
       stroke-width: 1.0
     priority: 21.0
   - tags: {leisure: playground}
     style:
-      fill: playground_color
-      stroke: playground_border_color
+      fill: $playground_color
+      stroke: $playground_border_color
     priority: 21.0
   - tags: {leisure: swimming_pool}
     style:
-      fill: water_color
-      stroke: water_border_color
+      fill: $water_color
+      stroke: $water_border_color
       stroke-width: 1.0
 
   - tags: {tourism: artwork}
@@ -987,7 +984,7 @@ ways:
   - tags: {barrier: hedge}
     style:
       fill: none
-      stroke: wood_color
+      stroke: $wood_color
       stroke-width: 4.0
     priority: 40.0
   - tags: {barrier: city_wall}

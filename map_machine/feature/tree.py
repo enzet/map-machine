@@ -37,12 +37,14 @@ class Tree(Tagged):
         else:
             radius = 2.0
 
-        color: Color = scheme.get_color("evergreen_color")
+        color: Color = scheme.get_color("$evergreen_color")
         svg.add(svg.circle(self.point, radius * scale, fill=color, opacity=0.3))
 
         if (circumference := self.get_float("circumference")) is not None:
             radius = circumference / 2.0 / np.pi
             circle = svg.circle(
-                self.point, radius * scale, fill=scheme.get_color("trunk_color")
+                self.point,
+                radius * scale,
+                fill=scheme.get_color("$trunk_color"),
             )
             svg.add(circle)
