@@ -500,7 +500,10 @@ class Scheme:
         content = _load_with_includes(file_name, find_scheme_path)
         return cls(content)
 
-    def get_color(self, color_string: str) -> Color:
+    def get_variable(self, variable_name: str) -> Any:
+        return self.variables[variable_name[1:]]
+
+    def get_color(self, color_specification: str | dict) -> Color:
         """Get any color.
 
         If `color_string` starts with `$`, strip the prefix and look up the
@@ -510,23 +513,26 @@ class Scheme:
         :param color_string: input color string representation
         :return: color specification
         """
-        if color_string.startswith("$"):
-            name: str = color_string[1:]
+        if isinstance(color_specification, dict):
+            color: Color = self.get_color(color_specification["color"])
+            if "darken" in color_specification:
+                percent: float = float(color_specification["darken"])
+                color.set_luminance(color.get_luminance() * (1 - percent))
+            if "lighten" in color_specification:
+                percent: float = float(color_specification["lighten"])
+                color.set_luminance(color.get_luminance() * (1 + percent))
+            return color
+
+        if color_specification.startswith("$"):
+            name: str = color_specification[1:]
             if name in self.variables:
                 specification: str | dict = self.variables[name]
-                if isinstance(specification, str):
-                    return Color(specification)
-
-                color: Color = self.get_color(specification["color"])
-                if "darken" in specification:
-                    percent: float = float(specification["darken"])
-                    color.set_luminance(color.get_luminance() * (1 - percent))
-                return color
+                return self.get_color(specification)
 
         try:
-            return Color(color_string)
+            return Color(color_specification)
         except (ValueError, AttributeError):
-            logger.debug("Unknown color `%s`.", color_string)
+            logger.debug("Unknown color `%s`.", color_specification)
             if "default" in self.variables:
                 return Color(self.variables["default"])
             return DEFAULT_COLOR
