@@ -115,12 +115,17 @@ class Tagged:
         """Check key and value types."""
         is_well_formed: bool = True
 
-        for value, key in self.tags.items():
+        for key, value in self.tags.items():
             if not isinstance(key, str):
-                logger.warning("Not string key %s.", key)
+                logger.warning("Non-string key `%s`.", key)
                 is_well_formed = False
-            if not isinstance(value, str):
-                logger.warning("Not string value %s.", value)
+            if isinstance(value, list):
+                for value_element in value:
+                    if not isinstance(value_element, str):
+                        logger.warning("Non-string value `%s`.", value)
+                        is_well_formed = False
+            elif not isinstance(value, str):
+                logger.warning("Non-string value `%s`.", value)
                 is_well_formed = False
 
         return is_well_formed
