@@ -770,8 +770,9 @@ class Scheme:
         flip_vertically: bool = False
         use_outline: bool = True
 
+        shape_id: str = DEFAULT_SHAPE_ID
         if "shape" in structure:
-            shape_id: str = structure["shape"]
+            shape_id = structure["shape"]
             if groups:
                 for key in groups:
                     shape_id = shape_id.replace(key, groups[key])
