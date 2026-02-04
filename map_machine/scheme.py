@@ -293,7 +293,12 @@ class WayMatcher(Matcher):
             style: dict[str, Any] = structure["style"]
             for key, value in style.items():
                 if str(value).startswith("$"):
-                    way_matcher.style[key] = scheme.get_color(value).hex.upper()
+                    if key in ("fill", "stroke"):
+                        way_matcher.style[key] = scheme.get_color(
+                            value
+                        ).hex.upper()
+                    else:
+                        way_matcher.style[key] = scheme.get_variable(value)
                 else:
                     way_matcher.style[key] = value
 
