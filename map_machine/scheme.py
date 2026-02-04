@@ -78,6 +78,11 @@ def is_matched_tag(
         return MatchingType.MATCHED_BY_WILDCARD, []
     if tags[matcher_tag_key] == matcher_tag_value:
         return MatchingType.MATCHED, []
+    if (
+        isinstance(matcher_tag_value, list)
+        and tags[matcher_tag_key] in matcher_tag_value
+    ):
+        return MatchingType.MATCHED, []
     if isinstance(matcher_tag_value, str) and matcher_tag_value.startswith("^"):
         matcher: re.Match | None = re.match(
             matcher_tag_value, tags[matcher_tag_key]
