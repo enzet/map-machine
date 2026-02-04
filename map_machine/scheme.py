@@ -268,7 +268,7 @@ class NodeMatcher(Matcher):
         """Get list of shape identifiers for shapes."""
         if not self.shapes:
             return None
-        return [x["shape"] for x in self.shapes]
+        return [x["shape"] for x in self.shapes if "shape" in x]
 
 
 @dataclass
