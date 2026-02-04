@@ -59,6 +59,7 @@ class TaginfoProjectFile:
                 ids: list[str] = [
                     (shape if isinstance(shape, str) else shape["shape"])
                     for shape in matcher.shapes
+                    if isinstance(shape, str) or "shape" in shape
                 ]
                 icon_id: str = "___".join(ids)
                 if value == "*":

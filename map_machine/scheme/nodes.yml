@@ -35,7 +35,7 @@ nodes:
     - tags: {highway: bus_station}
       shapes: [buses]
     - tags: {highway: bus_stop}
-      shapes: [bus_stop]
+      shapes: [{shape: bus_stop, color: $transportation_color}]
       add_shapes: [bus]
     - tags: {railway: station}
       shapes: [train]
@@ -48,19 +48,19 @@ nodes:
     - tags: {public_transport: stop_position}
       shapes: [bus_stop]
     - tags: {railway: tram_station}
-      shapes: [tram]
+      shapes: [{shape: tram, color: $transportation_color}]
     - tags: {railway: tram_stop}
-      shapes: [tram]
+      shapes: [{shape: tram, color: $transportation_color}]
     - tags: {public_transport: platform}
-      shapes: [bus_stop_sign]
+      shapes: [{shape: bus_stop_sign, color: $transportation_color}]
       with_icon: [bus_stop_bench, bus_stop_shelter]
       over_icon: [platform]
     - tags: {highway: bus_stop, public_transport: platform}
-      shapes: [bus_stop_sign]
+      shapes: [{shape: bus_stop_sign, color: $transportation_color}]
       with_icon: [bus_stop_bench, bus_stop_shelter]
       over_icon: [platform]
     - tags: {highway: bus_stop, shelter: "yes"}
-      shapes: [bus_stop_sign]
+      shapes: [{shape: bus_stop_sign, color: $transportation_color}]
       under_icon: [bus_stop_sign]
       with_icon: [bus_stop_bench, platform]
       over_icon: [bus_stop_shelter]
@@ -76,6 +76,10 @@ nodes:
   - group: "Big territory"
     start_zoom_level: 12.0
     tags:
+    - tags: {landuse: cemetery}
+      shapes: [tomb]
+    - tags: {amenity: grave_yard}
+      shapes: [tomb]
     - tags: {leisure: fishing}
       shapes: [fishing_angle]
     - tags: {historic: archaeological_site}
@@ -201,11 +205,11 @@ nodes:
     - tags: {historic: fort}
       shapes: [fort]
     - tags: {shop: mall}
-      shapes: [bag]
+      shapes: [{shape: bag, color: $sell_color}]
     - tags: {shop: department_store}
-      shapes: [bag]
+      shapes: [{shape: bag, color: $sell_color}]
     - tags: {shop: mall, building: "yes"}
-      shapes: [bag]
+      shapes: [{shape: bag, color: $sell_color}]
     - tags: {leisure: water_park}
       shapes: [slide_and_water]
 
@@ -243,15 +247,17 @@ nodes:
     - tags: {tourism: apartment}
       shapes: [bed_with_floor_and_ceiling]
     - tags: {tourism: hotel}
-      shapes: [bed]
+      shapes: [{shape: bed, color: $transportation_color}]
     - tags: {building: hotel}
-      shapes: [bed]
+      shapes: [{shape: bed, bed, color: $transportation_color}]
     - tags: {tourism: hostel}
-      shapes: [two_beds]
+      shapes: [{shape: two_beds, two_beds, color: $transportation_color}]
     - tags: {tourism: motel}
-      shapes: [{shape: car, offset: [0, 4]}, {shape: bed, offset: [0, -2]}]
+      shapes:
+      - {shape: car, offset: [0, 4], color: $transportation_color}
+      - {shape: bed, offset: [0, -2], color: $transportation_color}
     - tags: {tourism: guest_house}
-      shapes: [bed_and_roof]
+      shapes: [{shape: bed_and_roof, color: $transportation_color}]
     - tags: {amenity: hospital}
       location_restrictions: {include: world, exclude: [jp]}
       shapes: [greek_cross]
@@ -261,7 +267,7 @@ nodes:
     - tags: {amenity: clinic}
       shapes: [greek_cross_in_box]
     - tags: {amenity: doctors}
-      shapes: [greek_cross_in_box]
+      shapes: [{shape: greek_cross_in_box, color: $health_color}]
     - tags: {amenity: dentist}
       shapes: [tooth]
     - tags: {amenity: post_office}
@@ -271,7 +277,9 @@ nodes:
       location_restrictions: {include: [jp]}
       shapes: [japan_post]
     - tags: {shop: car_repair}
-      shapes: [{shape: car, offset: [0, 3]}, {shape: wrench, offset: [0, -4]}]
+      shapes:
+      - {shape: car, offset: [0, 3], color: $sell_color}
+      - {shape: wrench, offset: [0, -4], color: $sell_color}
     - tags: {amenity: car_rental}
       shapes: [{shape: car, offset: [0, 3]}, {shape: key, offset: [1, -3]}]
     - tags: {amenity: car_sharing}
@@ -326,11 +334,11 @@ nodes:
     start_zoom_level: 15.0
     tags:
     - tags: {shop: supermarket}
-      shapes: [supermarket_cart]
+      shapes: [{shape: supermarket_cart, color: $sell_color}]
     - tags: {shop: variety_store}
-      shapes: [bag_with_percent]
+      shapes: [{shape: bag_with_percent, color: $sell_color}]
     - tags: {shop: general}
-      shapes: [bag]
+      shapes: [{shape: bag, color: $sell_color}]
     - tags: {amenity: arts_centre}
       shapes: [picture]
     - tags: {amenity: bank}
@@ -364,9 +372,9 @@ nodes:
     - tags: {leisure: amusement_arcade}
       shapes: [pac_man]
     - tags: {leisure: fitness_centre}
-      shapes: [dumbbell]
+      shapes: [{shape: dumbbell, color: $leisure_green_color}]
     - tags: {leisure: fitness_station}
-      shapes: [dumbbell]
+      shapes: [{shape: dumbbell, color: $leisure_green_color}]
     - tags: {leisure: bird_hide}
       shapes: [binoculars]
     - tags: {leisure: bleachers}
@@ -402,15 +410,15 @@ nodes:
     - tags: {leisure: outdoor_seating, weather_protection: pergola}
       shapes: [table_and_two_chairs___pergola]
     - tags: {leisure: playground}
-      shapes: [toy_horse]
+      shapes: [{shape: toy_horse, color: $leisure_green_color}]
     - tags: {amenity: theatre}
       shapes: [curtains]
     - tags: {amenity: bar}
-      shapes: [cocktail_glass]
+      shapes: [{shape: cocktail_glass, color: $eat_color}]
     - tags: {amenity: pub}
-      shapes: [beer_mug]
+      shapes: [{shape: beer_mug, color: $eat_color}]
     - tags: {amenity: fast_food}
-      shapes: [burger]
+      shapes: [{shape: burger, color: $eat_color}]
     - tags: {amenity: fast_food, cuisine: steak_house}
       shapes: [steak_and_fork]
     - tags: {amenity: food_court}
@@ -426,39 +434,39 @@ nodes:
     - tags: {shop: art}
       shapes: [{shape: picture, color: $sell_color}]
     - tags: {shop: bakery}
-      shapes: [cupcake]
+      shapes: [{shape: cupcake, color: $sell_color}]
     - tags: {shop: bag}
       shapes: [{shape: bag, color: $sell_color}]
     - tags: {shop: bed}
       shapes: [{shape: bed, color: $sell_color}]
     - tags: {shop: beauty}
-      shapes: [vanity_mirror]
+      shapes: [{shape: vanity_mirror, color: $sell_color}]
     - tags: {shop: cosmetics}
-      shapes: [vanity_mirror]
+      shapes: [{shape: vanity_mirror, color: $sell_color}]
     - tags: {shop: bicycle}
       shapes: [{shape: bicycle, color: $sell_color}]
     - tags: {shop: books}
       shapes: [{shape: book, color: $sell_color}]
     - tags: {shop: butcher}
-      shapes: [knives]
+      shapes: [{shape: knives, color: $sell_color}]
     - tags: {shop: car}
       shapes: [{shape: car, color: $sell_color}]
     - tags: {shop: car_parts}
-      shapes: [shape: engine]
+      shapes: [{shape: engine, color: $sell_color}]
     - tags: {shop: chocolate}
-      shapes: [cupcake]
+      shapes: [{shape: cupcake, color: $sell_color}]
     - tags: {shop: coffee}
       shapes: [{shape: coffee_cup, color: $sell_color}]
     - tags: {shop: confectionery}
-      shapes: [cupcake]
+      shapes: [{shape: cupcake, color: $sell_color}]
     - tags: {shop: copyshop}
-      shapes: [sheets]
+      shapes: [{shape: sheets, color: $sell_color}]
     - tags: {shop: dairy}
-      shapes: [aseptic_carton]
+      shapes: [{shape: aseptic_carton, color: $sell_color}]
     - tags: {shop: doityourself}
-      shapes: [wretch_and_hammer]
+      shapes: [{shape: wretch_and_hammer, color: $sell_color}]
     - tags: {shop: dry_cleaning}
-      shapes: [washing_machine]
+      shapes: [{shape: washing_machine, color: $sell_color}]
     - tags: {shop: farm}
       shapes: [{shape: apple, color: $sell_color}]
     - tags: {shop: fireplace}
@@ -470,9 +478,9 @@ nodes:
     - tags: {shop: greengrocer}
       shapes: [{shape: apple, color: $sell_color}]
     - tags: {shop: hairdresser}
-      shapes: [comb_and_scissors]
+      shapes: [{shape: comb_and_scissors, color: $sell_color}]
     - tags: {shop: hardware}
-      shapes: [wretch_and_hammer]
+      shapes: [{shape: wretch_and_hammer, color: $sell_color}]
     - tags: {shop: hifi}
       shapes: [{shape: hi_fi, color: $sell_color}]
     - tags: {shop: houseware}
@@ -484,19 +492,21 @@ nodes:
     - tags: {craft: jeweller}
       shapes: [{shape: diamond, color: $craft_color}]
     - tags: {shop: laundry}
-      shapes: [washing_machine]
+      shapes: [{shape: washing_machine, color: $sell_color}]
     - tags: {shop: massage}
-      shapes: [massage]
+      shapes: [{shape: massage, color: $sell_color}]
     - tags: {shop: medical_supply}
-      shapes: [{shape: medicine_bottle, color; $sell_color}]
+      shapes: [{shape: medicine_bottle, color: $sell_color}]
     - tags: {shop: mobile_phone}
       shapes: [{shape: phone, color: $sell_color}]
     - tags: {shop: newsagent}
-      shapes: [gazette]
+      shapes: [{shape: gazette, color: $sell_color}]
     - tags: {shop: optician}
-      shapes: [glasses]
+      shapes: [{shape: glasses, color: $sell_color}]
+    - tags: {shop: outpost}
+      shapes: [{color: $sell_color}]
     - tags: {shop: pastry}
-      shapes: [cupcake]
+      shapes: [{shape: cupcake, color: $sell_color}]
     - tags: {shop: pet}
       shapes: [{shape: dog, color: $sell_color}]
     - tags: {shop: photo}
@@ -508,17 +518,17 @@ nodes:
     - tags: {shop: sports}
       shapes: [{shape: dumbbell, color: $sell_color}]
     - tags: {shop: travel_agency}
-      shapes: [globe]
+      shapes: [{shape: globe, color: $sell_color}]
     - tags: {shop: milk}
-      shapes: [aseptic_carton]
+      shapes: [{shape: aseptic_carton, color: $sell_color}]
     - tags: {shop: wine}
       shapes: [{shape: bottle_and_wine_glass, color: $sell_color}]
     - tags: {building: store}
       shapes: [shop_convenience]
     - tags: {shop: ticket}
-      shapes: [ticket]
+      shapes: [{shape: ticket, color: $sell_color}]
     - tags: {shop: tailor}
-      shapes: [t_shirt_and_scissors]
+      shapes: [{shape: t_shirt_and_scissors, color: $sell_color}]
     - tags: {shop: tyres}
       shapes: [{shape: tyre, color: $sell_color}]
     - tags: {shop: toys}
@@ -538,30 +548,38 @@ nodes:
     - tags: {tourism: gallery}
       shapes: [picture]
     - tags: {amenity: cafe}
-      shapes: [coffee_cup]
+      shapes: [{shape: coffee_cup, color: $eat_color}]
     - tags: {amenity: ice_cream}
-      shapes: [ice_cream]
+      shapes: [{shape: ice_cream, color: $eat_color}]
     - tags: {amenity: biergarten}
-      shapes: [beer_mug]
+      shapes: [{shape: beer_mug, color: $eat_color}]
     - tags: {amenity: nightclub}
       shapes: [cocktail_glass_with_straw]
     - tags: {amenity: restaurant}
-      shapes: [fork_and_knife]
+      shapes: [{shape: fork_and_knife, color: $eat_color}]
     - tags: {amenity: restaurant;bar}
-      shapes: [fork_and_knife]
+      shapes: [{shape: fork_and_knife, color: $eat_color}]
       add_shapes: [cocktail_glass]
     - tags: {shop: ice_cream}
-      shapes: [ice_cream]
+      shapes: [{shape: ice_cream, color: $sell_color}]
+    - tags: {shop: electrical}
+      shapes: [{color: $sell_color}]
+    - tags: {shop: musical_instrument}
+      shapes: [{shape: microphone, color: $sell_color}]
+    - tags: {shop: paint}
+      shapes: [{color: $sell_color}]
+    - tags: {shop: trade}
+      shapes: [{color: $sell_color}]
     - tags: {shop: gift}
-      shapes: [gift]
+      shapes: [{shape: gift, color: $sell_color}]
     - tags: {shop: clothes}
       shapes: [{shape: t_shirt, color: $sell_color}]
     - tags: {amenity: shop, shop: clothes}
-      shapes: [t_shirt]
+      shapes: [{shape: t_shirt, color: $sell_color}]
     - tags: {shop: convenience}
-      shapes: [shop_convenience]
+      shapes: [{shape: shop_convenience, color: $sell_color}]
     - tags: {amenity: shop, shop: convenience}
-      shapes: [shop_convenience]
+      shapes: [{shape: shop_convenience, color: $sell_color}]
     - tags: {shop: electronics}
       shapes: [{shape: tv, color: $sell_color}]
     - tags: {tourism: camp_site}
@@ -658,15 +676,19 @@ nodes:
       location_restrictions: {include: [jp]}
       shapes: [japan_elementary_school]
     - tags: {office: "yes"}
-      shapes: [briefcase]
+      shapes: [{shape: briefcase, color: $office_color}]
+    - tags: {office: advertising_agency}
+      shapes: [{shape: billboard, color: $office_color}]
     - tags: {office: company}
-      shapes: [briefcase]
+      shapes: [{shape: briefcase, color: $office_color}]
     - tags: {office: government}
-      shapes: [government]
+      shapes: [{shape: government, color: $office_color}]
     - tags: {office: it}
-      shapes: [glider]
+      shapes: [{shape: glider, color: $office_color}]
     - tags: {office: telecommunication}
-      shapes: [telephone]
+      shapes: [{shape: telephone, color: $office_color}]
+    - tags: {office: telecommunication}
+      shapes: [{shape: telephone, color: $office_color}]
 
   - group: "Not important big objects"
     start_zoom_level: 15.0
@@ -731,17 +753,19 @@ nodes:
     - tags: {ford: "yes"}
       shapes: [ford]
     - tags: {amenity: charging_station}
-      shapes: [charging_station]
+      shapes: [{shape: charging_station, color: $transportation_color}]
     - tags: {amenity: bicycle_repair_station}
       shapes:
-      - {shape: bicycle, offset: [0, 2]}
-      - {shape: wrench, offset: [1, -5]}
+      - {shape: bicycle, offset: [0, 2], color: $transportation_color}
+      - {shape: wrench, offset: [1, -5], color: $transportation_color}
     - tags: {amenity: bicycle_rental}
-      shapes: [{shape: bicycle, offset: [0, 2]}, {shape: key, offset: [1, -4]}]
+      shapes:
+      - {shape: bicycle, offset: [0, 2], color: $transportation_color}
+      - {shape: key, offset: [1, -4], color: $transportation_color}
     - tags: {amenity: fuel}
-      shapes: [fuel_station]
+      shapes: [{shape: fuel_station, color: $transportation_color}]
     - tags: {amenity: parking}
-      shapes: [p]
+      shapes: [{shape: p, color: $parking_node_color}]
     - tags: {amenity: parking, parking: multi-storey}
       shapes: [{shape: car, offset: [0, 4]}, {shape: car, offset: [0, -3]}]
     - tags: {highway: turning_circle}
@@ -792,7 +816,7 @@ nodes:
     - tags: {tourism: attraction, attraction: amusement_ride}
       shapes: [amusement_ride]
     - tags: {amenity: toilets}
-      shapes: [woman_and_man]
+      shapes: [{shape: woman_and_man, color: $amenity_brown_color}]
     - tags: {amenity: shelter}
       shapes: [shelter]
     - tags: {man_made: obelisk}
@@ -804,11 +828,11 @@ nodes:
     start_zoom_level: 17.0
     tags:
     - tags: {shop: kiosk}
-      shapes: [kiosk]
+      shapes: [{shape: kiosk, color: $sell_color}]
     - tags: {building: "yes", shop: kiosk}
-      shapes: [kiosk]
+      shapes: [{shape: kiosk, color: $sell_color}]
     - tags: {amenity: shop, shop: kiosk}
-      shapes: [kiosk]
+      shapes: [{shape: kiosk, color: $sell_color}]
     - tags: {amenity: stage}
       shapes: [curtains]
     - tags: {amenity: hunting_stand}
@@ -1320,20 +1344,20 @@ nodes:
       shapes: [atm]
     - tags: {amenity: bicycle_parking}
       shapes:
-      - {shape: bicycle, offset: [0, 2]}
-      - {shape: p_small, offset: [-6, -3]}
+      - {shape: bicycle, offset: [0, 2], color: $transportation_color}
+      - {shape: p_small, offset: [-6, -3], color: $transportation_color}
     - tags: {amenity: bicycle_parking, bicycle_parking: stands}
       shapes:
-      - {shape: p_small, offset: [-5, -3]}
-      - bicycle_parking_stand
+      - {shape: p_small, offset: [-5, -3], color: $transportation_color}
+      - {shape: bicycle_parking_stand, color: $transportation_color}
     - tags: {amenity: bicycle_parking, bicycle_parking: wall_loops}
       shapes:
-      - {shape: p_small, offset: [-5, -3]}
-      - bicycle_parking_wall_loops
+      - {shape: p_small, offset: [-5, -3], color: $transportation_color}
+      - {shape: bicycle_parking_wall_loops, color: $transportation_color}
     - tags: {amenity: bicycle_parking, bicycle_parking: rack}
       shapes:
       - {shape: p_small, offset: [-5, -3]}
-      - bicycle_parking_rack
+      - {shape: bicycle_parking_rack, color: $transportation_color}
     - tags: {amenity: telephone}
       shapes: [telephone]
     - tags: {information: "*"}
@@ -1357,7 +1381,7 @@ nodes:
     - tags: {"waterway:sign": "*"}
       shapes: [buoy]
     - tags: {amenity: drinking_water}
-      shapes: [drinking_water]
+      shapes: [{shape: drinking_water, color: $amenity_brown_color}]
     - tags: {tourism: artwork}
       shapes: [picture]
     - tags: {tourism: artwork, artwork_type: statue}
@@ -1393,7 +1417,7 @@ nodes:
     - tags: {amenity: parking, parking: street_side}
       shapes: [p_small]
     - tags: {amenity: post_box}
-      shapes: [envelope]
+      shapes: [{shape: envelope, color: $amenity_brown_color}]
     - tags: {amenity: recycling}
       shapes: [recycling_container]
     - tags: {amenity: recycling, recycling_type: container}

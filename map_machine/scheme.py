@@ -505,7 +505,8 @@ class Scheme:
         content = _load_with_includes(file_name, find_scheme_path)
         return cls(content)
 
-    def get_variable(self, variable_name: str) -> Any:
+    def get_variable(self, variable_name: str) -> Any:  # noqa: ANN401
+        """Get variable value."""
         return self.variables[variable_name[1:]]
 
     def get_color(self, color_specification: str | dict) -> Color:

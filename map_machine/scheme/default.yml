@@ -1,6 +1,9 @@
 include:
 
   - nodes
+  - roads
+  - ways
+  - keys
 
 options:
 
@@ -20,20 +23,23 @@ options:
 
 variables:
 
-  # Entity
-
+  # Default colors for icons.
   default: "#444444"
   extra: "#888888"
 
+  # Direction sector colors.
   direction_view_color: "#C8E8FF"
   direction_camera_color: "#0088FF"
 
+  # Main colors.
   background_color: "#EEEEEE"
   road_color: "#FFFFFF"
+  road_border_color: "#CCCCCC"
   text_color: "#444444"
   text_main_color: "#000000"
   text_outline_color: "#FFFFFF"
 
+  # Natural land.
   wheat_color: "#F0DCAA"
   wheat_border_color: "#F4D67F"
   wheat_dark_color: "#BF9340"
@@ -46,6 +52,27 @@ variables:
   barley_dark_color: "#908F62"
   sunflower_dark_color: "#DEAC4A"
 
+  # Buildings.
+  building_border_color: "#E0D0C0"
+  building_color: "#F8F0E8"
+  building_construction_border_color: "#C4C0BC"
+  building_construction_color: "#D4D0CC"
+  construction_color: "#CCCCCC"
+
+  # Roads.
+  # aeroway_color
+  bridge_color: "#666666"
+  # cycle_border_color
+  # cycle_noaccess_color
+  cycle_color: "#4444EE"
+  cycle_dasharray: 8.0,2.0
+  embankment_color: "#666666"
+  ford_color: "#88BBFF"
+  foot_border_color: "#FFFFFF"
+  foot_border_width: 3.0
+  # foot_color-noaccess
+  foot_color: "#B89A74"
+  foot_dasharray: 7.0,3.0
   motorway_border_color: "#CC8800"
   motorway_color: "#FFAA33"
   primary_border_color: "#AA8800"
@@ -55,59 +82,166 @@ variables:
   tertiary_border_color: "#CCAA22"
   tertiary_color: "#FFFF88"
 
-  bridge_color: "#666666"
-  ford_color: "#88BBFF"
-  embankment_color_color: "#666666"
-
-  allotments_color: "#D0E0D0"
-  beach_color: "#F0E0C0"
-  boundary_color: "#880088"
-  building_border_color: "#E0D0C0"
-  building_color: "#F8F0E8"
-  building_construction_border_color: "#C4C0BC"
-  building_construction_color: "#D4D0CC"
-  construction_color: "#CCCCCC"
-  cycle_color: "#4444EE"
-  desert_color: "#F0E0D0"
-  decidious_color: "#FCAF3E"
-  emergency_color: "#DD2222"
+  # Node colors.
+  amenity_brown_color: black
+  eat_color: black
   evergreen_color: "#688C44"
-  farmland_color: "#FFEEBB"
+  decidious_color: "#FCAF3E"
+  sell_color: "#880088"
+  # sell_text_color
+  craft_color: "#008800"
+
+  # Land cover.
+  cemetery_color: black
+  cemetery_opacity: 0.05
+  commercial_border_color: black
+  commercial_border_width: 0.0
+  commercial_color: black
+  commercial_opacity: 0.05
+  wood_color: "#B8CC84"
+  # golf_course_color
+  # mud
+  # place_of_worship_outline
+  # power-line
+  # power
+  # societal_amenities_color
+  # track
+  # wastewater_plant_border_color
+  # wastewater_plant_color
+  # water_works-line
+  # water_works
+  # apron_color
+  # bare_ground_color
+  beach_color: "#F0E0C0"
+  # campsite_color
   farmland_border_color: "#DDCC99"
+  farmland_color: "#FFEEBB"
   farmland_darker_color: "#998855"
+  industrial_border_color: black
+  industrial_border_width: 0.0
+  industrial_color: black
+  industrial_opacity: 0.05
+  military_color: black
+  military_opacity: 0.05
+  # aboriginal
+  # airtrnsport
+  allotments_color: "#D0E0D0"
+  # barrier_color
+  boundary_color: "#880088"
+  # bridleway_border_color
+  # bridleway_color-noaccess
+  # bridleway_color
+  desert_color: "#F0E0D0"
+  emergency_color: "#DD2222"
+  # farmyard_border_color
+  # farmyard_color
+  # garages_color
   ferry_terminal_color: "#AABBDD"
-  foot_area_color: "#DDDDDD"
   foot_area_border_color: "#BBBBBB"
-  foot_border_color: "#FFFFFF"
-  foot_color: "#B89A74"
-  grass_border_color: "#BFD098"
+  foot_area_color: "#DDDDDD"
   grass_color: "#CFE0A8"
+  grass_border_color: "#BFD098"
+  health_color: black
+  # heath_color
   hidden_color: "#000000"
+  # industrial_border_color
+  # industrial_color
   indoor_border_color: "#A0A890"
   indoor_color: "#E8E4E0"
   indoor_column_color: {color: $indoor_border_color, darken: 0.5}
+  kindergarten_color: black
+  kindergarten_opacity: 0.05
+  # landform_color
+  # leisure_color
+  # leisure_green_color
+  # living_street_border_color
+  # living_street_color
+  # man_made_color
+  # marina_text_color
   meadow_border_color: "#BFD078"
   meadow_color: "#CFE088"
-  orchard_color: "#B8DCA4"
+  # militaty_color
+  # office_color
   orchard_border_color: "#98BC84"
+  orchard_color: "#B8DCA4"
   outline_color: "#FFFFFF"
-  parking_color: "#DDCC99"
   park_color: "#CFE0A8"
-  pitch_color: "#AADDCC"
+  park_opacity: 0.5
+  parking_border_color: black
+  parking_color: "#DDCC99"
+  parking_node_color: black
+  parking_opacity: 0.5
+  parking_stroke_width: 0
+  # path_border_color
+  # pedestrian_border_color
+  # pedestrian_color
   pitch_border_color: "#88BBAA"
+  pitch_color: "#AADDCC"
+  # place_of_worship_color
   platform_border_color: "#AAAAAA"
   platform_color: "#CCCCCC"
   playground_border_color: "#FFAA88"
+  playground_border_width: 1.0
   playground_color: "#FFDDCC"
+  # protected_area_color
+  # quarry_color
+  # raceway_color
+  railway_border_color: black
+  railway_border_width: 0.0
+  railway_color: black
+  railway_opacity: 0.05
+  residential_area_border_color: black
+  residential_area_border_width: 0.1
+  residential_area_color: black
+  residential_area_opacity: 0.05
+  # residential_border_colo
+  # residential_color
+  # rest_area_color
+  retail_border_color: black
+  retail_border_width: 0.0
+  retail_color: black
+  retail_opacity: 0.05
   ridge_color: "#000000"
-  road_border_color: "#CCCCCC"
+  # road_border_color
   rock_color: "#DDDDDD"
   route_color: "#FFFFFF"
+  runway_border_color: {color: $runway_color, darken: 0.25}
+  runway_color: "#999399"
   sand_color: "#E8E0C0"
+  school_color: black
+  school_opacity: 0.05
   scree_color: "#CCCCCC"
+  # service_border_color
+  # service_color
+  # steps_border_color
+  # steps_noaccess_color
+  # steps_color
+  swimming_area_color: "#80D0F0"
+  # tourism_color
+  taxiway_border_color: {color: $taxiway_color, darken: 0.25}
+  taxiway_color: "#AAA4AA"
+  # track_border_color
+  # track_noaccess_color
   track_color: "#A88A64"
-  trunk_color: "#97612b"
+  track_grade_2_dasharray: no
+  track_grade_3_dasharray: no
+  track_grade_4_dasharray: no
+  track_grade_5_dasharray: no
+  track_grade_no_dasharray: no
+  # transportation_area_color
+  # transportation_color
+  # transportation_text_color
   tree_color: "#98AC64"
+  # trunk_border_color
+  trunk_color: "#97612b"
+
+
+
+
+
+
+
+
   village_green_color: "#DDEEBB"
   wall_bottom_1_color: "#AAAAAA"
   wall_bottom_2_color: "#C3C3C3"
@@ -115,1101 +249,25 @@ variables:
   wall_construction_color: "#84807C"
   water_border_color: "#6688BB"
   water_color: "#80C8F0"
-  swimming_area_color: "#80D0F0"
   wetland_color: "#BFE0D8"
   wood_border_color: "#A8BC74"
-  wood_color: "#B8CC84"
 
-  runway_color: "#999399"
-  runway_border_color: {color: $runway_color, darken: 0.25}
-  taxiway_color: "#AAA4AA"
-  taxiway_border_color: {color: $taxiway_color, darken: 0.25}
+  stadium_color: $grass_color
+  stadium_opacity: 0.5
+  stadium_border_color: black
+  stadium_border_width: 0.0
+  sports_centre_color: $grass_color
+  sports_centre_opacity: 0.5
+  sports_centre_border_color: black
+  sports_centre_border_width: 0.0
+  water_park_color: $grass_color
+  water_park_opacity: 0.5
+  water_park_border_color: black
+  water_park_border_width: 0.0
 
-  sell_color: "#880088"
-  craft_color: "#008800"
-
-  # Colors not in W3C
-
-  rose: "#FF007F"  # Wikipedia
-  slate_blue: "#6A5ACD"  # W3C slateblue
+  # Colors not in W3C.
+  rose: "#FF007F"  # Wikipedia.
+  slate_blue: "#6A5ACD"  # W3C slateblue.
   bronze: "#CD7F32"
   concrete: "#AAAAAA"
   glass: "#CCEEFF"
-
-variables_dark: # dark
-
-  # Entity
-
-  default: "#CCCCCC"
-
-  direction_view_color: {color: "#C8E8FF", darken: 0.75}
-  direction_camera_color: "#0088FF"
-
-  background_color: "#222222"
-  road_color: "#000000"
-  text_color: "#DDDDDD"
-  text_main_color: "#ffffff"
-  text_outline_color: "#000000"
-
-  wheat_color: "#F0DCAA"
-  wheat_border_color: "#F4D67F"
-  wheat_dark_color: "#BF9340"
-  rye_color: "#E0CA96"
-  rye_dark_color: "#AE955D"
-  oat_color: "#EDDDB7"
-  oat_dark_color: "#C4894A"
-  barley_color: "#F3EEC4"
-  barley_border_color: "#D2CE9D"
-  barley_dark_color: "#908F62"
-  sunflower_dark_color: "#DEAC4A"
-
-  motorway_border_color: "#CC8800"
-  motorway_color: "#FFAA33"
-  primary_border_color: {color: "#AA8800", darken: 0.3}
-  primary_color: {color: "#FFDD66", darken: 0.75}
-  secondary_border_color: {color: "#BB9911", darken: 0.3}
-  secondary_color: {color: "#FFEE77", darken: 0.75}
-  tertiary_border_color: {color: "#CCAA22", darken: 0.3}
-  tertiary_color: {color: "#FFFF88", darken: 0.75}
-
-  allotments_color: "#D0E0D0"
-  beach_color: "#F0E0C0"
-  boundary_color: "#880088"
-  building_border_color: "#888888"
-  building_color: "#444444"
-  construction_color: {color: "#CCCCCC", darken: 0.75}
-  cycle_color: "#4444EE"
-  desert_color: "#F0E0D0"
-  decidious_color: "#FCAF3E"
-  emergency_color: "#DD2222"
-  evergreen_color: "#688C44"
-  farmland_color: "#FFEEBB"
-  farmland_border_color: "#DDCC99"
-  farmland_darker_color: "#998855"
-  ferry_terminal_color: "#AABBDD"
-  foot_area_color: "#222222"
-  foot_area_border_color: "#444444"
-  foot_border_color: "#000000"
-  foot_color: {color: "#B89A74", darken: 0.5}
-  grass_border_color: {color: "#BFD098", darken: 0.75}
-  grass_color: {color: "#CFE0A8", darken: 0.75}
-  hidden_color: "#FFFFFF"
-  indoor_border_color: "#C0B8B0"
-  indoor_color: "#E8E4E0"
-  meadow_border_color: "#BFD078"
-  meadow_color: "#CFE088"
-  orchard_color: "#B8DCA4"
-  orchard_border_color: "#98BC84"
-  outline_color: "#FFFFFF"
-  parking_color: {color: "#DDCC99", darken: 0.75}
-  park_color: {color: "#CFE0A8", darken: 0.75}
-  pitch_color: {color: "#AADDCC", darken: 0.75}
-  pitch_border_color: {color: "#88BBAA", darken: 0.75}
-  platform_border_color: "#AAAAAA"
-  platform_color: "#CCCCCC"
-  playground_border_color: {color: "#FFAA88", darken: 0.75}
-  playground_color: {color: "#FFDDCC", darken: 0.75}
-  ridge_color: "#000000"
-  road_border_color: "#444444"
-  rock_color: "#DDDDDD"
-  route_color: "#FFFFFF"
-  sand_color: "#E8E0C0"
-  scree_color: "#CCCCCC"
-  track_color: "#A88A64"
-  trunk_color: "#97612b"
-  tree_color: "#98AC64"
-  water_border_color: "#6688BB"
-  water_color: "#AACCFF"
-  wall_bottom_1_color: "#444444"
-  wall_bottom_2_color: "#222222"
-  wall_color_start: 0.0
-  wetland_color: "#BFE0D8"
-  wood_border_color: {color: "#A8BC74", darken: 0.75}
-  wood_color: {color: "#B8CC84", darken: 0.75}
-
-  runway_color: "#999399"
-  runway_border_color: {color: $runway_color, darken: 0.25}
-  taxiway_color: "#AAA4AA"
-  taxiway_border_color: {color: $taxiway_color, darken: 0.25}
-
-  sell_color: "#880088"
-
-  # Colors not in W3C
-
-  rose: "#FF007F"  # Wikipedia
-  slate_blue: "#6A5ACD"  # W3C slateblue
-
-carto_variables:
-  building_border_color: {color: $building_color, darken: 0.15}
-  building_color: "#d9d0c9"
-  cemetery_color: "#aacbaf"
-  commercial_color: "#f2dad9"
-  commercial_border_color: "#d1b2b0"
-  grass_color: "#cdebb0"
-  industrial_color: "#ebdbe8"
-  industrial_border_color: "#d1b2b0"
-  military_color: "#f55"
-  park_color: "#c8facc"
-  residential_color: "#e0dfdf"
-  residential_border_color: "#b9b9b9"
-  wood_color: "#add19e"
-
-roads:
-  - tags: {highway: motorway}
-    default_width: 7.0
-    border_color: $motorway_border_color
-    color: $motorway_color
-    priority: 41.8
-  - tags: {highway: trunk}
-    default_width: 7.0
-    border_color: $motorway_border_color
-    color: $motorway_color
-    priority: 41.0
-  - tags: {highway: trunk_link}
-    default_width: 7.0
-    border_color: $motorway_border_color
-    color: $motorway_color
-    priority: 41.0
-  - tags: {highway: primary}
-    default_width: 7.0
-    border_color: $primary_border_color
-    color: $primary_color
-    priority: 41.7
-  - tags: {highway: motorway_link}
-    default_width: 7.0
-    border_color: $motorway_border_color
-    color: $motorway_color
-    priority: 41.8
-  - tags: {highway: secondary}
-    default_width: 7.0
-    border_color: $secondary_border_color
-    priority: 41.6
-    color: $secondary_color
-  - tags: {highway: secondary_link}
-    default_width: 7.0
-    border_color: $secondary_border_color
-    priority: 41.6
-    color: $secondary_color
-  - tags: {highway: tertiary}
-    default_width: 7.0
-    border_color: $tertiary_border_color
-    priority: 41.5
-    color: $tertiary_color
-  - tags: {highway: tertiary_link}
-    default_width: 7.0
-    border_color: $tertiary_border_color
-    priority: 41.5
-    color: $tertiary_color
-  - tags: {highway: unclassified}
-    default_width: 5.0
-    border_color: $road_border_color
-    priority: 41.0
-  - tags: {highway: residential}
-    default_width: 5.0
-    border_color: $road_border_color
-    priority: 41.0
-  - tags: {highway: living_street}
-    default_width: 4.0
-    border_color: $road_border_color
-    priority: 41.0
-  - tags: {highway: service}
-    exception: {service: parking_aisle}
-    default_width: 3.0
-    border_color: $road_border_color
-    priority: 41.0
-  - tags: {highway: service, service: parking_aisle}
-    default_width: 2.0
-    border_color: $road_border_color
-    priority: 41.0
-  - tags: {leisure: track}
-    color: $pitch_color
-    border_color: $pitch_border_color
-    default_width: 5.0
-    priority: 21.0
-
-  - tags: {highway: raceway}
-    color: $pitch_color
-    border_color: $pitch_border_color
-    default_width: 7.0
-    priority: 21.0
-
-ways:
-  - tags: {man_made: bridge}
-    style: {fill: "#AAAAAA"}
-    priority: 22.0
-  - tags: {man_made: pier}
-    style:
-      stroke-linecap: round
-      stroke-linejoin: round
-      stroke-width: 5
-      stroke: $background_color
-    priority: 22.0
-  - tags: {indoor: area}
-    style:
-      stroke: $indoor_border_color
-      stroke-width: 1.0
-      fill: $indoor_color
-    priority: 10.0
-  - tags: {indoor: corridor}
-    style:
-      stroke: $indoor_border_color
-      stroke-width: 1.0
-      fill: $indoor_color
-    priority: 11.0
-  - tags: {highway: corridor}
-    style:
-      stroke: "#00FF00"
-      stroke-width: 5.0
-    priority: 11.0
-  - tags: {indoor: "yes", area: "yes"}
-    style:
-      stroke: $indoor_color
-      stroke-width: 1.0
-      fill: $indoor_color
-    priority: 12.0
-  - tags: {indoor: room}
-    style:
-      stroke: $indoor_border_color
-      stroke-width: 1.0
-    priority: 12.0
-  - tags: {indoor: elevator, area: "yes"}
-    style:
-      stroke: $indoor_color
-      stroke-width: 1.0
-      fill: $indoor_color
-    priority: 12.0
-  - tags: {indoor: column}
-    style:
-      stroke: $indoor_column_color
-      stroke-width: 1.0
-      fill: $indoor_column_color
-    priority: 13.0
-
-  - tags: {power: line}
-    style:
-      stroke: "#000000"
-      stroke-width: 1.0
-      opacity: 0.2
-    priority: 80.0
-  - tags: {power: cable}
-    style:
-      stroke: "#000000"
-      stroke-width: 1.0
-      opacity: 0.1
-    priority: 80.0
-  - tags: {golf: hole}
-    style:
-      stroke: "#44AA33"
-      stroke-width: 1.0
-      opacity: 0.6
-    priority: 80.0
-  - tags: {man_made: pipeline}
-    style:
-      stroke: "#888888"
-      stroke-width: 1.0
-      stroke-dasharray: "12.0,1.5"
-    priority: 80.0
-  - tags: {man_made: pipeline}
-    style:
-      stroke: "#888888"
-      stroke-width: 3.0
-      stroke-dasharray: "1.0,10.0,1.0,1.5"
-    priority: 80.0
-
-  - tags: {attraction: water_slide}
-    style:
-      stroke: "#FFFFFF"
-      stroke-width: 2.0
-    priority: 81
-  - tags: {attraction: water_slide}
-    style:
-      stroke: "#888888"
-      stroke-width: 4.0
-    priority: 80.0
-
-  - tags: {highway: track}
-    style:
-      stroke-width: 1.5
-      stroke: $track_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41.0
-  - tags: {highway: footway}
-    exception: {area: "yes", type: "multipolygon"}
-    style:
-      stroke-width: 3.0
-      stroke: $foot_border_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41.0
-  - tags: {highway: pedestrian}
-    exception: {area: "yes"}
-    style:
-      stroke-width: 3.0
-      stroke: $foot_border_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41.0
-  - tags: {highway: cycleway}
-    exception: {area: "yes"}
-    style:
-      stroke-width: 3.0
-      stroke: $foot_border_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 41.0
-  - tags: {highway: steps}
-    style:
-      stroke-width: 6.0
-      stroke: $foot_border_color
-      stroke-linecap: butt
-  - tags: {highway: path}
-    style:
-      stroke-width: 3.0
-      stroke: $foot_border_color
-    priority: 41.0
-
-  - tags: {highway: footway}
-    exception: {area: "yes", type: "multipolygon"}
-    style:
-      stroke-width: 1.5
-      stroke-dasharray: 7.0,3.0
-      stroke-linecap: round
-      stroke-linejoin: round
-      stroke: $foot_color
-    priority: 42.0
-  - tags: {highway: pedestrian}
-    exception: {area: "yes"}
-    style:
-      stroke-width: 1.5
-      stroke-dasharray: 7.0,3.0
-      stroke-linecap: round
-      stroke-linejoin: round
-      stroke: $foot_color
-    priority: 42.0
-  - tags: {highway: footway, area: "yes"}
-    style:
-      stroke: $foot_area_border_color
-      fill: $foot_area_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 55.0
-  - tags: {highway: footway, type: "multipolygon"}
-    style:
-      stroke: $foot_area_border_color
-      fill: $foot_area_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: 55.0
-  - tags: {highway: pedestrian, area: "yes"}
-    style:
-      stroke: none
-      fill: $foot_area_color
-      stroke-linecap: round
-      stroke-linejoin: round
-    priority: -55.0  # FIXME
-  - tags: {highway: cycleway}
-    exception: {area: "yes"}
-    style:
-      stroke-width: 1.0
-      stroke: $cycle_color
-      stroke-dasharray: 8.0,2.0
-      stroke-linecap: butt
-    priority: 42.0
-  - tags: {highway: steps, conveying: "*"}
-    style:
-      stroke-width: 5.0
-      stroke-dasharray: 1.5,2.0
-      stroke-linecap: butt
-      stroke: "#888888"
-    priority: 42.0
-  - tags: {highway: steps}
-    exception: {conveying: "*"}
-    style:
-      stroke-width: 5.0
-      stroke-dasharray: 1.5,2.0
-      stroke-linecap: butt
-      stroke: $foot_color
-    priority: 42.0
-  - tags: {highway: path}
-    style:
-      stroke-width: 1.5
-      stroke-dasharray: 5.0,3.0
-      stroke-linecap: butt
-      stroke: $foot_color
-    priority: 42.0
-
-  - tags: {aeroway: runway}
-    style:
-      stroke-width: 50.0
-      stroke: $runway_color
-    priority: 22.0
-  - tags: {aeroway: taxiway}
-    style:
-      stroke-width: 50.0
-      stroke: $taxiway_color
-    priority: 21.0
-  - tags: {aeroway: runway}
-    style:
-      stroke-width: 2.0
-      stroke: "#DDDDDD"
-      stroke-dasharray: 40.0,20.0
-    priority: 23.0
-  - tags: {aeroway: taxiway}
-    style:
-      stroke-width: 1.0
-      stroke: "#CCCCCC"
-    priority: 23.0
-  - tags: {aeroway: parking_position}
-    style:
-      stroke-width: 1.0
-      stroke: "#DDCC00"
-    priority: 23.0
-  - tags: {area:aeroway: taxiway}
-    style:
-      fill: "#CCCCCC"
-    priority: 20.0
-
-  - tags: {natural: wood}
-    style:
-      fill: $wood_color
-    priority: 21.0
-  - tags: {natural: wetland}
-    style:
-      fill: $wetland_color
-    priority: 21.0
-  - tags: {natural: grassland}
-    style:
-      fill: $grass_color
-      stroke: $grass_border_color
-    priority: 20.0
-  - tags: {natural: scrub}
-    style:
-      fill: $wood_color
-    priority: 21.0
-  - tags: {natural: sand}
-    style:
-      fill: $sand_color
-    priority: 20.0
-  - tags: {natural: beach}
-    style:
-      fill: $beach_color
-    priority: 20.0
-  - tags: {natural: heath}
-    style:
-      fill: "#DDDDDD"
-    priority: 20.0
-  - tags: {natural: glacier}
-    style:
-      fill: "#FFFFFF"
-    priority: 20.0
-  - tags: {natural: desert}
-    style:
-      fill: $desert_color
-    priority: 20.0
-  - tags: {natural: forest}
-    style:
-      fill: $wood_color
-    priority: 21.0
-  - tags: {natural: tree_row}
-    priority: 21.0
-    style:
-      stroke: $wood_color
-      stroke-width: 5.0
-      stroke-linecap: round
-      stroke-linejoin: round
-  - tags: {natural: water}
-    exception: {intermittent: "yes"}
-    style:
-      fill: $water_color
-      # stroke: $water_border_color
-      # stroke-width: 1.0
-    priority: 21.0
-  - tags: {natural: water, intermittent: "yes"}
-    style:
-      fill: $water_color
-      opacity: 0.5
-      # stroke: $water_border_color
-      # stroke-width: 1.0
-    priority: 21.0
-  - tags: {natural: coastline}
-    style:
-      fill: $water_color
-      stroke: $water_border_color
-      stroke-width: 1.0
-    priority: 21.0
-  - tags: {natural: ridge}
-    style:
-      stroke-width: 2.0
-      opacity: 0.3
-      stroke: $ridge_color
-    priority: 21.0
-  - tags: {natural: bare_rock}
-    style:
-      fill: $rock_color
-  - tags: {natural: cliff}
-    style:
-      stroke-width: 1.0
-      stroke: "#BBBBBB"
-  - tags: {natural: cliff}
-    parallel_offset: -2.5
-    style:
-      stroke-width: 5.0
-      stroke: "#BBBBBB"
-      stroke-dasharray: "1,10"
-  - tags: {natural: scree}
-    style:
-      fill: $scree_color
-
-  - tags: {landuse: allotments}
-    style:
-      fill: $allotments_color
-    priority: 20.0
-  - tags: {landuse: conservation}
-    style:
-      fill: $grass_color
-    priority: 20.0
-  - tags: {landuse: construction}
-    style:
-      fill: $construction_color
-  - tags: {landuse: farmland}
-    style: {fill: $farmland_color, stroke: $farmland_border_color}
-    priority: 20.0
-  - tags: {landuse: greenhouse_horticulture}
-    style: {fill: $farmland_color, stroke: $farmland_border_color}
-    priority: 20.0
-  - tags: {landuse: farmyard}
-    style: {fill: $farmland_color, stroke: $farmland_border_color}  # FIXME
-    priority: 20.0
-  - tags: {landuse: farmland, crop: wheat}
-    style: {fill: $wheat_color, stroke: $wheat_border_color}
-    priority: 20.0
-  - tags: {landuse: farmland, crop: barley}
-    style: {fill: $barley_color, stroke: $barley_border_color}
-    priority: 20.0
-  - tags: {landuse: farmland, crop: rye}
-    style: {fill: $rye_color, stroke: $rye_dark_color}
-    priority: 20.0
-  - tags: {landuse: forest}
-    style:
-      fill: $wood_color
-    priority: 20.0
-  - tags: {landuse: garages}
-    style:
-      fill: $parking_color
-    priority: 21.0
-  - tags: {landuse: village_green}
-    style:
-      fill: $village_green_color
-    priority: 20.0
-  - tags: {landuse: grass}
-    style:
-      fill: $grass_color
-      stroke: $grass_border_color
-    priority: 20.0
-  - tags: {landuse: orchard}
-    style:
-      fill: $orchard_color
-    priority: 21.0
-  - tags: {landuse: meadow}
-    style:
-      fill: $meadow_color
-      stroke: $meadow_border_color
-    priority: 20.0
-  - tags: {tourism: camp_pitch}
-    style:
-      stroke: "#000000"
-      opacity: 0.1
-    priority: 100.0
-
-    # Hidden land use
-
-  - tags: {landuse: cemetery}
-    style:
-      fill: $hidden_color
-      opacity: 0.05
-    priority: 1.0
-  - tags: {landuse: commercial}
-    style:
-      fill: $hidden_color
-      opacity: 0.05
-    priority: 1.0
-  - tags: {landuse: industrial}
-    style:
-      fill: $hidden_color
-      opacity: 0.05
-    priority: 1.0
-  - tags: {landuse: military}
-    style:
-      fill: $hidden_color
-      opacity: 0.05
-    priority: 1.0
-  - tags: {landuse: railway}
-    style:
-      fill: $hidden_color
-      opacity: 0.05
-    priority: 1.0
-  - tags: {landuse: residential}
-    style:
-      fill: $hidden_color
-      opacity: 0.05
-    priority: 1.0
-  - tags: {power: substation}
-    style:
-      fill: $hidden_color
-      opacity: 0.05
-    priority: 1.0
-
-  - tags: {amenity: ferry_terminal}
-    style:
-      fill: $ferry_terminal_color
-    priority: 50.0
-  - tags: {amenity: parking}
-    style:
-      fill: $parking_color
-      opacity: 0.5
-  - tags: {amenity: parking_space}
-    style:
-      stroke: "#FFFFFF"
-
-  - tags: {aeroway: landingpad}
-    style:
-      fill: "#000000"
-      opacity: 0.1
-  - tags: {aeroway: helipad}
-    style:
-      fill: "#440044"
-      opacity: 0.1
-
-  - tags: {waterway: river}
-    style:
-      stroke: $water_color
-      stroke-width: 2.5
-    priority: 22.0
-  - tags: {waterway: canal}
-    style:
-      stroke: $water_color
-      stroke-width: 2.0
-    priority: 22.0
-  - tags: {waterway: stream}
-    style:
-      stroke: $water_color
-      stroke-width: 1.5
-    priority: 22.0
-  - tags: {waterway: riverbank}
-    style:
-      fill: $water_color
-      stroke: $water_border_color
-      stroke-width: 1.0
-    priority: 22.0
-  - tags: {waterway: ditch}
-    style:
-      fill: $water_color
-      stroke: $water_color
-      stroke-width: 2.0
-    priority: 22.0
-
-  - tags: {railway: subway}
-    style:
-      stroke-width: 3.5
-      opacity: 0.7
-      stroke: "#AAAAAA"
-    priority: 41.0
-  - tags: {railway: rail}
-    style:
-      stroke-width: 3.0
-      stroke: "#BBBBBB"
-    priority: 42.0
-  - tags: {railway: light_rail}
-    style:
-      stroke-width: 3.0
-      stroke: "#CCCCCC"
-    priority: 42.0
-  - tags: {railway: monorail}
-    style:
-      stroke-width: 3.0
-      stroke: "#CCCCCC"
-    priority: 42.0
-  - tags: {railway: funicular}
-    style:
-      stroke-width: 3.0
-      stroke: "#CCCCCC"
-    priority: 42.0
-  - tags: {railway: narrow_gauge}
-    style:
-      stroke-width: 3.0
-      stroke: "#DDDDDD"
-    priority: 42.0
-  - tags: {railway: tram}
-    style:
-      stroke-width: 3.0
-      stroke: "#BBBBBB"
-    priority: 42.0
-  - tags: {railway: construction}
-    style:
-      stroke-width: 2.0
-      stroke: "#000000"
-      stroke-dasharray: 6,3
-      opacity: 0.3
-    priority: 42.0
-  - tags: {railway: disused}
-    style:
-      stroke-width: 3.0
-      stroke: "#000000"
-      stroke-dasharray: 6,6
-      opacity: 0.3
-    priority: 42.0
-  - tags: {railway: abandoned}
-    style:
-      stroke-width: 3.0
-      stroke: "#000000"
-      stroke-dasharray: 6,9
-      opacity: 0.3
-    priority: 42.0
-
-  - tags: {railway: rail}
-    style:
-      stroke-width: 1.0
-      stroke: "#444444"
-    priority: 43.0
-  - tags: {railway: light_rail}
-    style:
-      stroke-width: 1.0
-      stroke: "#444444"
-    priority: 43.0
-  - tags: {railway: monorail}
-    style:
-      stroke-width: 1.0
-      stroke: "#444444"
-    priority: 43.0
-  - tags: {railway: funicular}
-    style:
-      stroke-width: 1.0
-      stroke: "#444444"
-    priority: 43.0
-  - tags: {railway: narrow_gauge}
-    style:
-      stroke-width: 1.0
-      stroke: "#444444"
-    priority: 43.0
-  - tags: {railway: tram}
-    style:
-      stroke-width: 1.0
-      stroke: "#444444"
-    priority: 43.0
-
-  - tags: {railway: platform}
-    style:
-      fill: $platform_color
-      stroke-width: 1.0
-      stroke: $platform_border_color
-    priority: 41.0
-
-  - tags: {route: ferry}
-    style:
-      stroke-width: 1.0
-      stroke-dasharray: 3.0,3.0
-      stroke-linecap: butt
-      stroke: $route_color
-    priority: 42.0
-
-  - tags: {leisure: swimming_area}
-    style:
-      fill: $swimming_area_color
-    priority: 22.0  # Should be over water.
-  - tags: {leisure: garden}
-    style:
-      fill: $grass_color
-    priority: 21.0
-  - tags: {leisure: park}
-    style:
-      fill: $park_color
-      opacity: 0.5
-  - tags: {landuse: recreation_ground}
-    style:
-      fill: $grass_color
-      opacity: 0.5
-  - tags: {leisure: recreation_ground}
-    style:
-      fill: $grass_color
-      opacity: 0.5
-  - tags: {leisure: stadium}
-    style:
-      fill: $grass_color
-      opacity: 0.5
-  - tags: {leisure: golf_course}
-    style:
-      fill: $grass_color
-      opacity: 0.5
-  - tags: {leisure: pitch}
-    style:
-      fill: $pitch_color
-      stroke: $pitch_border_color
-      stroke-width: 1.0
-    priority: 21.0
-  - tags: {leisure: bleachers}
-    style:
-      fill: $pitch_color
-      stroke: $pitch_border_color
-      stroke-width: 1.0
-    priority: 21.0
-  - tags: {leisure: track, area: "yes"}
-    style:
-      fill: $pitch_color
-      stroke: $pitch_border_color
-      stroke-width: 1.0
-    priority: 21.0
-  - tags: {leisure: fitness_station}
-    style:
-      fill: $pitch_color
-      stroke: $pitch_border_color
-      stroke-width: 1.0
-    priority: 21.0
-  - tags: {leisure: playground}
-    style:
-      fill: $playground_color
-      stroke: $playground_border_color
-    priority: 21.0
-  - tags: {leisure: swimming_pool}
-    style:
-      fill: $water_color
-      stroke: $water_border_color
-      stroke-width: 1.0
-
-  - tags: {tourism: artwork}
-    style:
-      stroke: "#888888"
-      stroke-width: 1.0
-    priority: 10.0
-  - tags: {barrier: hedge}
-    style:
-      fill: none
-      stroke: $wood_color
-      stroke-width: 4.0
-    priority: 40.0
-  - tags: {barrier: city_wall}
-    style:
-      fill: none
-      stroke: "#000000"
-      stroke-width: 2.0
-      opacity: 0.5
-    priority: 40.0
-  - tags: {barrier: wall}
-    style:
-      fill: none
-      stroke: "#000000"
-      stroke-width: 1.5
-      opacity: 0.4
-    priority: 40.0
-  - tags: {man_made: embankment}
-    style:
-      fill: none
-      stroke: "#000000"
-      stroke-width: 1.0
-      opacity: 0.3
-    priority: 40.0
-  - tags: {man_made: embankment}
-    parallel_offset: -1.5
-    style:
-      fill: none
-      stroke: "#000000"
-      stroke-width: 3.0
-      opacity: 0.3
-      stroke-dasharray: "1,7"
-    priority: 40.0
-  - tags: {barrier: fence}
-    style:
-      fill: none
-      stroke: "#000000"
-      stroke-width: 1.0
-      opacity: 0.25
-    priority: 40.0
-  - tags: {barrier: retaining_wall}
-    style:
-      fill: none
-      stroke: "#000000"
-      stroke-width: 1.0
-      opacity: 0.25
-    priority: 40.0
-  - tags: {barrier: handrail}
-    style:
-      fill: none
-      stroke: "#000000"
-      stroke-width: 1.0
-      opacity: 0.2
-    priority: 40.0
-  - tags: {barrier: kerb}
-    style:
-      fill: none
-      stroke: "#000000"
-      stroke-width: 1.0
-      opacity: 0.15
-    priority: 40.0
-
-  - tags: {border: "*"}
-    style:
-      stroke: "#FF0000"
-      stroke-width: 0.5
-      stroke-dasharray: 10.0,20.0
-  - tags: {"area:highway": "*"}
-
-  - tags: {boundary: "*"}
-    # style:
-    #   stroke: boundary_color
-    #   stroke-width: 0.3
-    #   stroke-dasharray: 10.0,5.0
-    priority: 60.0
-
-area_tags:
-  - tags: {aeroway: "*"}
-  - tags: {building: "*"}
-  - tags: {landuse: "*"}
-  - tags: {leisure: "*"}
-  - tags: {natural: "*"}
-    exception: {natural: "tree_row"}
-  - tags: {indoor: "corridor"}
-  - tags: {power: "compensator"}
-  - tags: {power: "substation"}
-
-keys_to_write:
-  - "STIF:zone"
-  - "alt_name"
-  - "artist_name"
-  - "booth"
-  - "branch"
-  - "brand"
-  - "capacity"
-  - "cladr:code"
-  - "collection_times"
-  - "created_by"
-  - "cuisine"
-  - "cyclestreets_id"
-  - "description"
-  - "designation"
-  - "destination"
-  - "ele"
-  - "email"
-  - "end_date"
-  - "facebook"
-  - "fax"
-  - "fhrs:confidence_management"
-  - "fhrs:hygiene"
-  - "fhrs:id"
-  - "fhrs:inspectiondate"
-  - "fhrs:local_authority_id"
-  - "fhrs:rating"
-  - "fhrs:rating_date"
-  - "flickr"
-  - "full_name"
-  - "genus"
-  - "height"
-  - "image"
-  - "information"
-  - "inscription"
-  - "int_name"
-  - "is_in"
-  - "last_collection"
-  - "local_ref"
-  - "manufacturer"
-  - "media:commons"
-  - "min_height"
-  - "name"
-  - "naptan:AltCommonName"
-  - "naptan:AltStreet"
-  - "naptan:AtcoCode"
-  - "naptan:Bearing"
-  - "naptan:BusStopType"
-  - "naptan:CommonName"
-  - "naptan:Crossing"
-  - "naptan:Indicator"
-  - "naptan:Landmark"
-  - "naptan:NaptanCode"
-  - "naptan:Notes"
-  - "naptan:PlusbusZoneRef"
-  - "naptan:ShotCommonName"
-  - "naptan:Street"
-  - "naptan:verified"
-  - "network"
-  - "official_name"
-  - "old_name"
-  - "opening_hours"
-  - "opening_hours:url"
-  - "operator"
-  - "phone"
-  - "phone_1"
-  - "platforms"
-  - "postal_code"
-  - "ref"
-  - "ref_no"
-  - "route_ref"
-  - "royal_cypher"
-  - "seats"
-  - "species"
-  - "start_date"
-  - "survey:date"
-  - "taxon"
-  - "telephone"
-  - "twitter"
-  - "uk_postcode_centroid"
-  - "uri"
-  - "url"
-  - "voltage"
-  - "website"
-  - "website_2"
-  - "wikidata"
-  - "wikipedia"
-
-prefix_to_write:
-  - "addr"
-  - "alt_name"
-  - "contact"
-  - "description"
-  - "genus"
-  - "inscription"
-  - "is_in"
-  - "manufacturer"
-  - "name"
-  - "old_name"
-  - "operator"
-  - "route_ref"
-  - "species"
-  - "taxon"
-  - "website"
-  - "wikipedia"
-
-keys_to_skip:
-  - "FIXME"
-  - "attribution"
-  - "building:levels"
-  - "building:part"
-  - "comment"
-  - "created_by"
-  - "curve_geometry"
-  - "diameter_crown"
-  - "fixme"
-  - "import_uuid"
-  - "indoor"
-  - "junction"
-  - "layer"
-  - "level"
-  - "level:ref"
-  - "location:transition"
-  - "mapillary"
-  - "naptan:verified:note"
-  - "note"
-  - "osak:identifier"
-  - "place"
-  - "ref:opendataparis:adresse"
-  - "ref:opendataparis:geo_point_2d"
-  - "source"
-  - "source_ref"
-
-prefix_to_skip:
-  - "demolished"
-  - "mapillary"
-  - "source"
-  - "razed"
-  - "removed"
-
-tags_to_skip:
-  highway: motorway_junction

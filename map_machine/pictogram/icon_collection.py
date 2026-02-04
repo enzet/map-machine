@@ -64,7 +64,10 @@ class IconCollection:
             """Construct icon and add it to the list."""
             specifications: list[ShapeSpecification] = []
             for shape_specification in current_set:
-                if "#" in shape_specification["shape"]:
+                if (
+                    "shapes" not in shape_specification
+                    or "#" in shape_specification["shape"]
+                ):
                     return
                 specifications.append(
                     scheme.get_shape_specification(shape_specification)
