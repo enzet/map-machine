@@ -19,6 +19,11 @@ roads:
     border_color: $primary_border_color
     color: $primary_color
     priority: 41.7
+  - tags: {highway: primary_link}
+    default_width: 7.0
+    border_color: $primary_border_color
+    color: $primary_color
+    priority: 41.7
   - tags: {highway: motorway_link}
     default_width: 7.0
     border_color: $motorway_border_color
