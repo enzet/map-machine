@@ -712,7 +712,7 @@ ways:
     style:
       fill: $park_color
       opacity: $park_opacity
-    priority: $priority_landuse_2
+    priority: $priority_landuse_1
   - tags: {landuse: recreation_ground}
     style:
       fill: $grass_color
