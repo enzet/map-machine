@@ -140,8 +140,8 @@ variables:
   ferry_terminal_color: "#AABBDD"
   foot_area_border_color: "#BBBBBB"
   foot_area_color: "#DDDDDD"
-  grass_color: "#BBEE99"
-  grass_border_color: {color: $grass_color, darken: 0.2}
+  grass_color: "#C0F0A0"
+  grass_border_color: $grass_color
   health_color: black
   # heath_color
   hidden_color: "#000000"
@@ -166,8 +166,7 @@ variables:
   orchard_border_color: "#98BC84"
   orchard_color: "#B8DCA4"
   outline_color: "#FFFFFF"
-  park_color: "#DDFFAA"
-  park_opacity: 0.5
+  park_color: "#D0F8B0"
   parking_border_color: black
   parking_color: "#DDCC99"
   parking_node_color: black
@@ -176,8 +175,8 @@ variables:
   # path_border_color
   pedestrian_border_color: "#BBBBBB"
   pedestrian_color: "#DDDDDD"
-  pitch_border_color: "#88BBAA"
-  pitch_color: "#AADDCC"
+  pitch_border_color: {color: $pitch_color, darken: 0.2}
+  pitch_color: "#AAEECC"
   # place_of_worship_color
   platform_border_color: "#AAAAAA"
   platform_color: "#CCCCCC"
@@ -250,15 +249,14 @@ variables:
   water_border_color: "#6688BB"
   water_color: "#80C8F0"
   wetland_color: "#BFE0D8"
-  wood_color: "#99CC77"
+  wood_color: "#99DD77"
   wood_border_color: "#A8BC74"
 
   stadium_color: $grass_color
   stadium_opacity: 0.5
   stadium_border_color: black
   stadium_border_width: 0.0
-  sports_centre_color: $grass_color
-  sports_centre_opacity: 0.5
+  sports_centre_color: {color: $pitch_color, lighten: 0.1}
   sports_centre_border_color: black
   sports_centre_border_width: 0.0
   water_park_color: $grass_color

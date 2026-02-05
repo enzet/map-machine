@@ -718,7 +718,6 @@ ways:
   - tags: {leisure: park}
     style:
       fill: $park_color
-      opacity: $park_opacity
     priority: $priority_landuse_1
   - tags: {landuse: recreation_ground}
     style:
@@ -738,7 +737,6 @@ ways:
   - tags: {leisure: sports_centre}
     style:
       fill: $sports_centre_color
-      opacity: $sports_centre_opacity
       stroke: $sports_centre_border_color
       stroke-width: $sports_centre_border_width
     priority: $priority_landuse_1

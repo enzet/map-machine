@@ -71,6 +71,7 @@ roads:
     border_color: $road_border_color
     priority: 41.0
   - tags: {leisure: track}
+    exception: {area: "yes"}
     color: $pitch_color
     border_color: $pitch_border_color
     default_width: 5.0

@@ -141,7 +141,7 @@ variables:
   # foot_area_border_color
   # foor_area_color
   grass_color: "#cdebb0"
-  # grass_border_color
+  grass_border_color: "#cdebb0"
   health_color: "#bf0000"
   heath_color: "#d6d99f"
   # hidden_color
@@ -167,7 +167,6 @@ variables:
   orchard_color: "#aedfa3"
   # outline_color
   park_color: "#c8facc"
-  park_opacity: 1.0
   parking_border_color: {color: "#eeeeee", saturate: 0.2, darken: 0.4}
   parking_color: "#eeeeee"
   parking_node_color: "#4090d4"
@@ -247,7 +246,6 @@ variables:
   stadium_border_color: {color: $leisure_color, darken: 0.35}
   stadium_border_width: 0.3
   sports_centre_color: $leisure_color
-  sports_centre_opacity: 1.0
   sports_centre_border_color: {color: $leisure_color, darken: 0.35}
   sports_centre_border_width: 0.3
   water_park_color: $leisure_color
