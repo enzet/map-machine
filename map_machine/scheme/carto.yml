@@ -60,7 +60,7 @@ variables:
   construction_color: "#c7c7b4"
 
   # Roads.
-  aeroway_color: "#bbc"
+  aeroway_color: "#bbbbcc"
   # bridge_color
   cycle_border_color: white
   cycle_noaccess_color: "#9999ff"
@@ -88,7 +88,7 @@ variables:
   evergreen_color: {color: "#add19e", darken: 0.1}
   decidious_color: {color: "#add19e", darken: 0.1}
   sell_color: "#ac39ac"
-  sell_text_color: "#939"
+  sell_text_color: "#993399"
   craft_color: $default
   memorials_color: "#734a08"
 
@@ -99,7 +99,6 @@ variables:
   commercial_border_width: 1.0
   commercial_color: "#f2dad9"
   commercial_opacity: 1.0
-  wood_color: "#add19e"
   golf_course_color: $campsite_color
   mud: {rgba: [203, 177, 154, 0.3]}
   # place_of_worship_outline: darken(@place_of_worship, 30%);
@@ -122,7 +121,7 @@ variables:
   industrial_border_width: 1.0
   industrial_color: "#ebdbe8"
   industrial_opacity: 1.0
-  military_color: "#f55"
+  military_color: "#ff5555"
   military_opacity: 1.0
   aboriginal: "#82643a"
   airtransport: "#8461C4"
@@ -143,7 +142,7 @@ variables:
   # foor_area_color
   grass_color: "#cdebb0"
   # grass_border_color
-  health_color: "#BF0000"
+  health_color: "#bf0000"
   heath_color: "#d6d99f"
   # hidden_color
   industrial_border_color: "#d1b2b0"
@@ -156,13 +155,13 @@ variables:
   landform_color: "#d08f55"
   leisure_color: {color: $park_color, lighten: 0.05}
   leisure_green_color: {color: "#c8facc", darken: 0.6}
-  living_street_border_color: "#bbb"
+  living_street_border_color: "#bbbbbb"
   living_street_color: "#ededed"
   man_made_color: "#666666"
   marina_text_color: "#576ddf"
   # meadow_border_color
   # meadow_color
-  military_color: "#f55"
+  military_color: "#ff5555"
   office_color: "#4863A0"
   # orchard_border_color
   orchard_color: "#aedfa3"
@@ -175,7 +174,7 @@ variables:
   parking_opacity: 1.0
   parking_stroke_width: 1.0
   path_border_color: white
-  pedestrian_border_color: "#999"
+  pedestrian_border_color: "#999999"
   pedestrian_color: "#dddde8"
   pitch_border_color: "#88e0be"
   pitch_color: "#88e0be"
@@ -196,7 +195,7 @@ variables:
   residential_area_border_width: 1.0
   residential_area_color: "#e0dfdf"
   residential_area_opacity: 1.0
-  residential_border_color: "#bbb"
+  residential_border_color: "#bbbbbb"
   residential_color: "#ffffff"
   rest_area_color: "#efc8c8"
   retail_border_color: "#d99c95"
@@ -204,7 +203,7 @@ variables:
   retail_color: "#ffd6d1"
   retail_opacity: 1.0
   # ridge_color
-  road_border_color: "#bbb"
+  road_border_color: "#bbbbbb"
   # rock_color
   # route_color
   # runway_border_color
@@ -213,7 +212,7 @@ variables:
   school_color: "#ffffe5"
   school_opacity: 1.0
   # scree_color
-  service_border_color: "#bbb"
+  service_border_color: "#bbbbbb"
   service_color: "#ffffff"
   steps_border_color: white
   steps_noaccess_color: "#bbbbbb"
@@ -255,6 +254,7 @@ variables:
   water_park_opacity: 1.0
   water_park_border_color: {color: $leisure_color, darken: 0.35}
   water_park_border_width: 0.3
+  wood_color: "#add19e"
 
   # Colors not in W3C.
   rose: "#FF007F"  # Wikipedia.

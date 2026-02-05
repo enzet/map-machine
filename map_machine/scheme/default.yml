@@ -87,7 +87,7 @@ variables:
   eat_color: $default
   evergreen_color: "#688C44"
   decidious_color: "#FCAF3E"
-  sell_color: "#880088"
+  sell_color: "#AA00AA"
   # sell_text_color
   craft_color: "#008800"
   memorials_color: $default
@@ -99,7 +99,6 @@ variables:
   commercial_border_width: 0.0
   commercial_color: black
   commercial_opacity: 0.05
-  wood_color: "#B8CC84"
   # golf_course_color
   # mud
   # place_of_worship_outline
@@ -141,8 +140,8 @@ variables:
   ferry_terminal_color: "#AABBDD"
   foot_area_border_color: "#BBBBBB"
   foot_area_color: "#DDDDDD"
-  grass_color: "#CFE0A8"
-  grass_border_color: "#BFD098"
+  grass_color: "#BBEE99"
+  grass_border_color: {color: $grass_color, darken: 0.2}
   health_color: black
   # heath_color
   hidden_color: "#000000"
@@ -167,7 +166,7 @@ variables:
   orchard_border_color: "#98BC84"
   orchard_color: "#B8DCA4"
   outline_color: "#FFFFFF"
-  park_color: "#CFE0A8"
+  park_color: "#DDFFAA"
   park_opacity: 0.5
   parking_border_color: black
   parking_color: "#DDCC99"
@@ -175,8 +174,8 @@ variables:
   parking_opacity: 0.5
   parking_stroke_width: 0
   # path_border_color
-  # pedestrian_border_color
-  # pedestrian_color
+  pedestrian_border_color: "#BBBBBB"
+  pedestrian_color: "#DDDDDD"
   pitch_border_color: "#88BBAA"
   pitch_color: "#AADDCC"
   # place_of_worship_color
@@ -251,6 +250,7 @@ variables:
   water_border_color: "#6688BB"
   water_color: "#80C8F0"
   wetland_color: "#BFE0D8"
+  wood_color: "#99CC77"
   wood_border_color: "#A8BC74"
 
   stadium_color: $grass_color
