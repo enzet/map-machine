@@ -158,7 +158,7 @@ variables:
   # living_street_border_color
   # living_street_color
   # man_made_color
-  # marina_text_color
+  marina_text_color: $water_border_color
   meadow_border_color: "#BFD078"
   meadow_color: "#CFE088"
   # militaty_color

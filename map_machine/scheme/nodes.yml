@@ -214,6 +214,8 @@ nodes:
       shapes: [{shape: bag, color: $sell_color}]
     - tags: {leisure: water_park}
       shapes: [slide_and_water]
+    - tags: {leisure: sports_centre}
+      shapes: [{shape: dumbbell, color: $leisure_green_color}]
 
   - group: "Important big objects"
     start_zoom_level: 14.0
@@ -358,7 +360,7 @@ nodes:
     - tags: {amenity: internet_cafe}
       shapes: [at_in_square]
     - tags: {amenity: library}
-      shapes: [book]
+      shapes: [{shape: book, color: $amenity_brown_color}]
     - tags: {amenity: marketplace}
       shapes: [marketplace]
     - tags: {amenity: prison}
@@ -414,7 +416,7 @@ nodes:
     - tags: {leisure: playground}
       shapes: [{shape: toy_horse, color: $leisure_green_color}]
     - tags: {amenity: theatre}
-      shapes: [curtains]
+      shapes: [{shape: curtains, color: $amenity_brown_color}]
     - tags: {amenity: bar}
       shapes: [{shape: cocktail_glass, color: $eat_color}]
     - tags: {amenity: pub}
@@ -1557,7 +1559,7 @@ nodes:
     - tags: {amenity: clock}
       shapes: [clock]
     - tags: {amenity: fountain}
-      shapes: [{shape: fountain, color: $water_border_color}]
+      shapes: [{shape: fountain, color: $marina_text_color}]
     - tags: {fountain: bubbler}
       shapes: [fountain_bubbler]
     - tags: {fountain: roman_wolf}
