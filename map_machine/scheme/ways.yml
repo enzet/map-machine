@@ -197,8 +197,8 @@ ways:
   - tags: {highway: pedestrian}
     exception: {area: "yes"}
     style:
-      stroke-width: 3.0
-      stroke: $foot_border_color
+      stroke-width: 13.0
+      stroke: $pedestrian_border_color
       stroke-linecap: round
       stroke-linejoin: round
     priority: $priority_road_3
@@ -233,11 +233,10 @@ ways:
   - tags: {highway: pedestrian}
     exception: {area: "yes"}
     style:
-      stroke-width: 1.5
-      stroke-dasharray: 7.0,3.0
+      stroke-width: 11
       stroke-linecap: round
       stroke-linejoin: round
-      stroke: $foot_color
+      stroke: $pedestrian_color
     priority: $priority_road_4
   - tags: {highway: footway, area: "yes"}
     style:
@@ -255,11 +254,19 @@ ways:
     priority: $priority_road_5
   - tags: {highway: pedestrian, area: "yes"}
     style:
-      stroke: none
-      fill: $foot_area_color
+      stroke: $pedestrian_border_color
+      fill: $pedestrian_color
+      stroke-width: 2
       stroke-linecap: round
       stroke-linejoin: round
-    priority: -55.0  # FIXME
+    priority: $priority_road_3
+  - tags: {highway: pedestrian, area: "yes"}
+    style:
+      stroke: none
+      fill: $pedestrian_color
+      stroke-linecap: round
+      stroke-linejoin: round
+    priority: $priority_road_4
   - tags: {highway: cycleway}
     exception: {area: "yes"}
     style:
