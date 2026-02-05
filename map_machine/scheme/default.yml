@@ -83,13 +83,14 @@ variables:
   tertiary_color: "#FFFF88"
 
   # Node colors.
-  amenity_brown_color: black
-  eat_color: black
+  amenity_brown_color: $default
+  eat_color: $default
   evergreen_color: "#688C44"
   decidious_color: "#FCAF3E"
   sell_color: "#880088"
   # sell_text_color
   craft_color: "#008800"
+  memorials_color: $default
 
   # Land cover.
   cemetery_color: black
@@ -235,7 +236,6 @@ variables:
   tree_color: "#98AC64"
   # trunk_border_color
   trunk_color: "#97612b"
-
 
 
 

@@ -89,7 +89,8 @@ variables:
   decidious_color: {color: "#add19e", darken: 0.1}
   sell_color: "#ac39ac"
   sell_text_color: "#939"
-  # craft_color
+  craft_color: $default
+  memorials_color: "#734a08"
 
   # Land cover.
   cemetery_color: "#aacbaf"
@@ -238,10 +239,9 @@ variables:
   water_color: "#aad3df"
   # accommodation-text: @transportation-text;
   # advertising-grey: @man-made-icon;
-  # culture: @amenity-brown;
+  # culture_color: "#734a08"
   # gastronomy-text: darken(@gastronomy-icon, 5%);
-  # memorials: @amenity-brown;
-  # public-service: @amenity-brown;
+  # public_service_color: "#734a08"
   # wetland_text_color: darken(#4aa5fa, 25%);
   stadium_color: $leisure_color
   stadium_opacity: 1.0

@@ -202,6 +202,8 @@ nodes:
     - tags: {historic: castle}
       location_restrictions: {include: [jp]}
       shapes: [japan_castle]
+    - tags: {historic: castle}
+      shapes: [{shape: fort, color: $memorials_color}]
     - tags: {historic: fort}
       shapes: [fort]
     - tags: {shop: mall}
