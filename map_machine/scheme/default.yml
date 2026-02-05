@@ -132,6 +132,7 @@ variables:
   # bridleway_color-noaccess
   # bridleway_color
   desert_color: "#F0E0D0"
+  dog_park_color: $playground_color
   emergency_color: "#DD2222"
   # farmyard_border_color
   # farmyard_color

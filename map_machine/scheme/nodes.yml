@@ -382,7 +382,7 @@ nodes:
     - tags: {leisure: bowling_alley}
       shapes: [bowling_ball]
     - tags: {leisure: dog_park}
-      shapes: [dog]
+      shapes: [{shape: dog, color: $leisure_green_color}]
     - tags: {leisure: escape_game}
       shapes: [{shape: maze, offset: [-2, 0]}, {shape: arrow_right_short, offset: [5, -1]}]
     - tags: {leisure: maze}

@@ -704,10 +704,15 @@ ways:
     style:
       fill: $grass_color
     priority: $priority_landuse_2
+  - tags: {leisure: dog_park}
+    style:
+      fill: $dog_park_color
+    priority: $priority_landuse_3
   - tags: {leisure: park}
     style:
       fill: $park_color
       opacity: $park_opacity
+    priority: $priority_landuse_2
   - tags: {landuse: recreation_ground}
     style:
       fill: $grass_color
