@@ -26,8 +26,8 @@ variables:
   priority_airport_2: 11  #
   priority_airport_1: 10  # area:aeroway=taxiway.
   priority_golf: 3  # Golf.
-  priority_landuse_3: 2  # Garages, ferry terminal.
-  priority_landuse_2: 1  # Sand, grass, crops, wood, ridge.
+  priority_landuse_3: 2  # Garages, ferry terminal, pitch.
+  priority_landuse_2: 1  # Sand, grass, crops, wood, ridge, stadium.
   priority_landuse_1: 0  # Commercial, residential, military.
 
 ways:
@@ -722,13 +722,14 @@ ways:
       opacity: $stadium_opacity
       stroke: $stadium_border_color
       stroke-width: $stadium_border_width
-    priority: 1.1  # > leisure=sports_centre
+    priority: $priority_landuse_2
   - tags: {leisure: sports_centre}
     style:
       fill: $sports_centre_color
       opacity: $sports_centre_opacity
       stroke: $sports_centre_border_color
       stroke-width: $sports_centre_border_width
+    priority: $priority_landuse_1
   - tags: {leisure: water_park}
     style:
       fill: $water_park_color
@@ -744,7 +745,7 @@ ways:
       fill: $pitch_color
       stroke: $pitch_border_color
       stroke-width: 1.0
-    priority: $priority_landuse_2
+    priority: $priority_landuse_3
   - tags: {leisure: bleachers}
     style:
       fill: $pitch_color
