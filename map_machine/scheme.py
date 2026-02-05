@@ -302,7 +302,8 @@ class WayMatcher(Matcher):
                 else:
                     way_matcher.style[key] = value
 
-        way_matcher.priority = structure.get("priority", 0.0)
+        priority = structure.get("priority", 0.0)
+        way_matcher.priority = scheme.get_value(priority)
         way_matcher.parallel_offset = structure.get("parallel_offset", 0.0)
 
         return way_matcher
@@ -504,6 +505,12 @@ class Scheme:
         """
         content = _load_with_includes(file_name, find_scheme_path)
         return cls(content)
+
+    def get_value(self, value: Any) -> Any:  # noqa: ANN401
+        """Resolve variables."""
+        if isinstance(value, str) and value[0] == "$":
+            return self.get_value(self.get_variable(value))
+        return value
 
     def get_variable(self, variable_name: str) -> Any:  # noqa: ANN401
         """Get variable value."""
