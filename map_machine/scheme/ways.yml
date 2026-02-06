@@ -1,18 +1,18 @@
 variables:
 
+  priority_boundary: 90  # Boundary.
   priority_rail_platform: 83  # Rail platform.
   priority_rail_4: 82  # Rails.
   priority_rail_2: 81  # Rail border.
   priority_rail_1: 80  # Disused, construciton rails.
   priority_objects: 70  # Artwork, camp.
-  priority_barrier: 60  # Wall, kerb.
-  priority_boundary: 50  # Boundary.
+  priority_power: 60  # Power lines, pipeline.
+  priority_barrier: 50  # Wall, kerb.
   priority_road_5: 43  # Foot area.
   priority_road_4: 42  # Foot, cycle, steps.
   priority_road_3: 41  # Foot border.
   priority_road_2: 40  # Track.
   priority_water_slide: 35  # Water slide.
-  priority_power: 34  # Power lines, pipeline.
   priority_over_water: 33  # Bridge, pier.
   priority_ferry_route: 32  # Ferry route.
   priority_water_2: 31  # Swimming area.
@@ -333,11 +333,11 @@ ways:
   - tags: {natural: wood}
     style:
       fill: $wood_color
-    priority: $priority_landuse_2
+    priority: $priority_landuse_3
   - tags: {natural: wetland}
     style:
       fill: $wetland_color
-    priority: $priority_landuse_2
+    priority: $priority_water_2
   - tags: {natural: grassland}
     style:
       fill: $grass_color
@@ -382,15 +382,11 @@ ways:
     exception: {intermittent: "yes"}
     style:
       fill: $water_color
-      # stroke: $water_border_color
-      # stroke-width: 1.0
     priority: $priority_water_1
   - tags: {natural: water, intermittent: "yes"}
     style:
       fill: $water_color
       opacity: 0.5
-      # stroke: $water_border_color
-      # stroke-width: 1.0
     priority: $priority_water_1
   - tags: {natural: coastline}
     style:

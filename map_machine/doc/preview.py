@@ -25,6 +25,8 @@ from map_machine.osm.osm_reader import OSMData
 from map_machine.scheme import Scheme
 from map_machine.workspace import workspace
 
+logger: logging.Logger = logging.getLogger(__name__)
+
 doc_path: Path = Path("doc")
 
 cache: Path = Path("cache")
@@ -101,6 +103,7 @@ def main(id_: str | None) -> None:
         be drawn.
     """
     if REMOVED and (id_ is None or id_ == "fitness"):
+        logger.info("fitness")
         draw_around_point(
             np.array((55.75277, 37.40856)),
             "fitness",
@@ -109,6 +112,7 @@ def main(id_: str | None) -> None:
         )
 
     if id_ is None or id_ == "power":
+        logger.info("power")
         draw_around_point(
             np.array((52.5622, 12.94)),
             "power",
@@ -116,6 +120,7 @@ def main(id_: str | None) -> None:
         )
 
     if REMOVED and (id_ is None or id_ == "playground"):
+        logger.info("playground")
         draw_around_point(
             np.array((52.47388, 13.43826)),
             "playground",
@@ -127,6 +132,7 @@ def main(id_: str | None) -> None:
     #   - Berlin: (52.47604/13.43701), (52.47388/13.43826)*,
 
     if id_ is None or id_ == "surveillance":
+        logger.info("surveillance")
         draw_around_point(
             np.array((52.50892, 13.3244)),
             "surveillance",
@@ -138,6 +144,7 @@ def main(id_: str | None) -> None:
         )
 
     if id_ is None or id_ == "viewpoints":
+        logger.info("viewpoints")
         draw_around_point(
             np.array((52.421, 13.101)),
             "viewpoints",
@@ -150,6 +157,7 @@ def main(id_: str | None) -> None:
         )
 
     if id_ is None or id_ == "buildings":
+        logger.info("buildings")
         draw_around_point(
             np.array((-26.19049, 28.05605)),
             "buildings",
@@ -157,6 +165,7 @@ def main(id_: str | None) -> None:
         )
 
     if id_ is None or id_ == "trees":
+        logger.info("trees")
         draw_around_point(
             np.array((55.751, 37.628)),
             "trees",
@@ -167,6 +176,7 @@ def main(id_: str | None) -> None:
         )
 
     if id_ is None or id_ == "time":
+        logger.info("time")
         draw_around_point(
             np.array((55.7655, 37.6055)),
             "time",
@@ -179,6 +189,7 @@ def main(id_: str | None) -> None:
         )
 
     if id_ is None or id_ == "author":
+        logger.info("author")
         draw_around_point(
             np.array((55.7655, 37.6055)),
             "author",
@@ -192,6 +203,7 @@ def main(id_: str | None) -> None:
         )
 
     if id_ is None or id_ == "colors":
+        logger.info("colors")
         draw_around_point(
             np.array((48.87422, 2.377)),
             "colors",
@@ -204,9 +216,11 @@ def main(id_: str | None) -> None:
         )
 
     if id_ is None or id_ == "lanes":
+        logger.info("lanes")
         draw_around_point(np.array((47.61224, -122.33866)), "lanes")
 
     if id_ is None or id_ == "indoor":
+        logger.info("indoor")
         draw_around_point(
             np.array((4.5978, -74.07507)),
             "indoor",

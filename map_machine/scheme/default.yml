@@ -128,7 +128,7 @@ variables:
   # airtrnsport
   allotments_color: "#D0E0D0"
   # barrier_color
-  boundary_color: "#880088"
+  boundary_color: "#FF0000"
   # bridleway_border_color
   # bridleway_color-noaccess
   # bridleway_color
@@ -155,7 +155,7 @@ variables:
   kindergarten_opacity: 0.05
   # landform_color
   # leisure_color
-  # leisure_green_color
+  leisure_green_color: $default
   # living_street_border_color
   # living_street_color
   # man_made_color
@@ -163,7 +163,7 @@ variables:
   meadow_border_color: "#BFD078"
   meadow_color: "#CFE088"
   # militaty_color
-  # office_color
+  office_color: $default
   orchard_border_color: "#98BC84"
   orchard_color: "#B8DCA4"
   outline_color: "#FFFFFF"
@@ -230,7 +230,7 @@ variables:
   track_grade_5_dasharray: no
   track_grade_no_dasharray: no
   # transportation_area_color
-  # transportation_color
+  transportation_color: $default
   # transportation_text_color
   tree_color: "#98AC64"
   # trunk_border_color
