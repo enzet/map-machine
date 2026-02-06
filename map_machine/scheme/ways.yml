@@ -25,8 +25,9 @@ variables:
   priority_airport_3: 11  #
   priority_airport_2: 11  #
   priority_airport_1: 10  # area:aeroway=taxiway.
-  priority_golf: 3  # Golf.
-  priority_landuse_3: 2  # Garages, ferry terminal, pitch.
+  priority_golf: 4  # Golf.
+  priority_landuse_4: 3  # Pitch, swimming pool.
+  priority_landuse_3: 2  # Garages, ferry terminal.
   priority_landuse_2: 1  # Sand, grass, crops, wood, ridge, stadium.
   priority_landuse_1: 0  # Commercial, residential, military.
 
@@ -558,7 +559,7 @@ ways:
     style:
       fill: $school_color
       opacity: $school_opacity
-    priority: 1.1  # > residential
+    priority: $priority_landuse_1
   - tags: {amenity: parking_space}
     style:
       stroke: "#FFFFFF"
@@ -733,13 +734,13 @@ ways:
       opacity: $stadium_opacity
       stroke: $stadium_border_color
       stroke-width: $stadium_border_width
-    priority: $priority_landuse_2
+    priority: $priority_landuse_3
   - tags: {leisure: sports_centre}
     style:
       fill: $sports_centre_color
       stroke: $sports_centre_border_color
       stroke-width: $sports_centre_border_width
-    priority: $priority_landuse_1
+    priority: $priority_landuse_2
   - tags: {leisure: water_park}
     style:
       fill: $water_park_color
@@ -755,36 +756,37 @@ ways:
       fill: $pitch_color
       stroke: $pitch_border_color
       stroke-width: 1.0
-    priority: $priority_landuse_3
+    priority: $priority_landuse_4
   - tags: {leisure: bleachers}
     style:
       fill: $pitch_color
       stroke: $pitch_border_color
       stroke-width: 1.0
-    priority: $priority_landuse_3
+    priority: $priority_landuse_4
   - tags: {leisure: track, area: "yes"}
     style:
       fill: $pitch_color
       stroke: $pitch_border_color
       stroke-width: 1.0
-    priority: $priority_landuse_3
+    priority: $priority_landuse_4
   - tags: {leisure: fitness_station}
     style:
       fill: $pitch_color
       stroke: $pitch_border_color
       stroke-width: 1.0
-    priority: $priority_landuse_3
+    priority: $priority_landuse_4
   - tags: {leisure: playground}
     style:
       fill: $playground_color
       stroke: $playground_border_color
       stroke-width: $playground_border_width
-    priority: $priority_landuse_3
+    priority: $priority_landuse_4
   - tags: {leisure: swimming_pool}
     style:
       fill: $water_color
       stroke: $water_border_color
       stroke-width: 1.0
+    priority: $priority_landuse_4
 
   - tags: {tourism: artwork}
     style:

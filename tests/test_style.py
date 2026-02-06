@@ -20,4 +20,4 @@ def test_style_area() -> None:
     """Test constructing style of landuse=grass."""
     style = SCHEME.get_style({"landuse": "grass"})
     assert len(style) == 1
-    assert style[0].style == {"fill": "#CFE0A8", "stroke": "#BFD098"}
+    assert style[0].style == {"fill": "#C0F0A0", "stroke": "#C0F0A0"}

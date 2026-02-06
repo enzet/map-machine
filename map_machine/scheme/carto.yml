@@ -253,6 +253,11 @@ variables:
   water_park_border_color: {color: $leisure_color, darken: 0.35}
   water_park_border_width: 0.3
   wood_color: "#add19e"
+  village_green_color: $grass_color
+  wall_bottom_1_color: "#AAAAAA"
+  wall_bottom_2_color: "#C3C3C3"
+  wall_color: "#d9d0c9"
+  wall_construction_color: "#84807C"
 
   # Colors not in W3C.
   rose: "#FF007F"  # Wikipedia.

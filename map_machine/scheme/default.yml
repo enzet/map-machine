@@ -18,7 +18,7 @@ options:
   labels: main
 
   roofs: yes
-  building_colors: no
+  building_colors: yes
   background: yes
 
 variables:
@@ -53,8 +53,9 @@ variables:
   sunflower_dark_color: "#DEAC4A"
 
   # Buildings.
-  building_border_color: "#E0D0C0"
+  building_border_color: {color: $building_color, darken: 0.13}
   building_color: "#F8F0E8"
+  building_color_flat: "#D4DADC"
   building_construction_border_color: "#C4C0BC"
   building_construction_color: "#D4D0CC"
   construction_color: "#CCCCCC"
@@ -167,8 +168,8 @@ variables:
   orchard_color: "#B8DCA4"
   outline_color: "#FFFFFF"
   park_color: "#D0F8B0"
-  parking_border_color: black
-  parking_color: "#DDCC99"
+  parking_border_color: none
+  parking_color: "#FAFAFA"
   parking_node_color: black
   parking_opacity: 0.5
   parking_stroke_width: 0
@@ -199,7 +200,7 @@ variables:
   # rest_area_color
   retail_border_color: black
   retail_border_width: 0.0
-  retail_color: black
+  retail_color: "#FF6600"
   retail_opacity: 0.05
   ridge_color: "#000000"
   # road_border_color

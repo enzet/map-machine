@@ -238,7 +238,7 @@ nodes:
     - tags: {historic: city_gate}
       shapes: [city_gate]
     - tags: {amenity: pharmacy}
-      shapes: [medicine_bottle]
+      shapes: [{shape: medicine_bottle, color: $health_color}]
     - tags: {amenity: embassy}
       shapes: [waving_flag]
     - tags: {office: diplomatic, diplomatic: embassy}
@@ -264,16 +264,16 @@ nodes:
       shapes: [{shape: bed_and_roof, color: $transportation_color}]
     - tags: {amenity: hospital}
       location_restrictions: {include: world, exclude: [jp]}
-      shapes: [greek_cross]
+      shapes: [{shape: greek_cross, color: $health_color}]
     - tags: {amenity: hospital}
       location_restrictions: {include: [jp]}
       shapes: [japan_public_health_center]
     - tags: {amenity: clinic}
-      shapes: [greek_cross_in_box]
+      shapes: [{shape: greek_cross_in_box, color: $health_color}]
     - tags: {amenity: doctors}
       shapes: [{shape: greek_cross_in_box, color: $health_color}]
     - tags: {amenity: dentist}
-      shapes: [tooth]
+      shapes: [{shape: tooth, color: $health_color}]
     - tags: {amenity: post_office}
       location_restrictions: {include: world, exclude: [jp]}
       shapes: [envelope]
@@ -290,8 +290,8 @@ nodes:
       shapes: [{shape: car, offset: [0, 3]}, {shape: sharing, offset: [0, -4]}]
     - tags: {amenity: car_wash}
       shapes:
-      - {shape: car, offset: [0, 3]}
-      - {shape: shower_head, offset: [0, -4]}
+      - {shape: car, offset: [0, 3], color: $amenity_brown_color}
+      - {shape: shower_head, offset: [0, -4], color: $amenity_brown_color}
       # Place of worship
     - tags: {building: shrine, religion: shinto}
       shapes: [japan_shinto_shrine]
@@ -346,7 +346,7 @@ nodes:
     - tags: {amenity: arts_centre}
       shapes: [picture]
     - tags: {amenity: bank}
-      shapes: [money]
+      shapes: [{shape: money, color: $amenity_brown_color}]
     - tags: {amenity: cinema}
       shapes: [film]
     - tags: {amenity: casino}
@@ -362,7 +362,7 @@ nodes:
     - tags: {amenity: library}
       shapes: [{shape: book, color: $amenity_brown_color}]
     - tags: {amenity: marketplace}
-      shapes: [marketplace]
+      shapes: [{shape: marketplace, color: $sell_color}]
     - tags: {amenity: prison}
       shapes: [prison]
     - tags: {amenity: stripclub}

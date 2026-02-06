@@ -151,10 +151,7 @@ class Map:
                 crater.draw(self.svg, self.flinger)
 
         if self.configuration.building_mode != BuildingMode.NO:
-            self.draw_buildings(
-                constructor,
-                use_building_colors=self.configuration.use_building_colors,
-            )
+            self.draw_buildings(constructor)
 
         if self.scheme.directions:
             for direction_sector in constructor.direction_sectors:
@@ -197,12 +194,11 @@ class Map:
         if self.configuration.show_credit:
             self.draw_credits(constructor.flinger.size)
 
-    def draw_buildings(
-        self, constructor: Constructor, *, use_building_colors: bool
-    ) -> None:
+    def draw_buildings(self, constructor: Constructor) -> None:
         """Draw buildings: shade, walls, and roof."""
         if self.configuration.building_mode == BuildingMode.NO:
             return
+        use_building_colors: bool = self.configuration.use_building_colors
         if self.configuration.building_mode == BuildingMode.FLAT:
             for building in constructor.buildings:
                 building.draw(
