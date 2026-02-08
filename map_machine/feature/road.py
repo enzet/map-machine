@@ -714,7 +714,7 @@ class Road(Tagged):
                 distance += sample_interval
 
         path_commands: str | None = line.get_path(
-            self.placement_offset - font_size * 0.3
+            self.placement_offset - font_size * 0.35
         )
         if path_commands is None:
             return False
@@ -725,30 +725,6 @@ class Road(Tagged):
         )
         svg.defs.add(ref_path)
 
-        # Text halo for readability.
-        for stroke_width, opacity in ((5.0, 0.5), (3.0, 0.7)):
-            text_element = svg.text(
-                "",
-                font_size=font_size,
-                font_family="Helvetica",
-                fill="none",
-                stroke="white",
-                stroke_width=stroke_width,
-                stroke_linejoin="round",
-                opacity=opacity,
-            )
-            text_path_element = TextPath(
-                ref_path,
-                text=name,
-                startOffset="50%",
-                method="align",
-                spacing="exact",
-            )
-            text_path_element["text-anchor"] = "middle"
-            text_element.add(text_path_element)
-            svg.add(text_element)
-
-        # Text fill.
         text_element = svg.text(
             "",
             font_size=font_size,
