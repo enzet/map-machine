@@ -713,7 +713,9 @@ class Road(Tagged):
                     occupied.register(np.array((cx, cy + dy)))
                 distance += sample_interval
 
-        path_commands: str | None = line.get_path(self.placement_offset)
+        path_commands: str | None = line.get_path(
+            self.placement_offset - font_size * 0.3
+        )
         if path_commands is None:
             return False
 
