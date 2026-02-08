@@ -20,6 +20,7 @@ LOG: bytes = (
     b"INFO Constructing ways...\n"
     b"INFO Constructing nodes...\n"
     b"INFO Drawing ways...\n"
+    b"INFO Drawing road labels...\n"
     b"INFO Drawing main icons...\n"
     b"INFO Drawing extra icons...\n"
     b"INFO Drawing texts...\n"

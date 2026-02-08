@@ -131,6 +131,22 @@ class Map:
         # Experimental debug drawing:
         # `self.draw_complex_roads(constructor.roads.roads)`.
 
+        occupied: Occupied | None = None
+        if self.configuration.overlap != 0:
+            occupied = Occupied(
+                int(self.flinger.size[0]),
+                int(self.flinger.size[1]),
+                self.configuration.overlap,
+            )
+
+        # Draw road labels after roads, before other features.
+        if (
+            self.configuration.road_mode != RoadMode.NO
+            and self.configuration.label_mode != LabelMode.NO
+        ):
+            logger.info("Drawing road labels...")
+            constructor.roads.draw_labels(self.svg, occupied)
+
         for figure in top_figures:
             path_commands = figure.get_path(self.flinger)
 
@@ -161,16 +177,6 @@ class Map:
         # All other points
 
         if self.scheme.nodes:
-            occupied: Occupied | None
-            if self.configuration.overlap == 0:
-                occupied = None
-            else:
-                occupied = Occupied(
-                    int(self.flinger.size[0]),
-                    int(self.flinger.size[1]),
-                    self.configuration.overlap,
-                )
-
             nodes: list[Point] = sorted(
                 constructor.points, key=lambda x: -x.priority
             )

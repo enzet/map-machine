@@ -322,6 +322,7 @@ class RoadMatcher(Matcher):
     color: Color | None = None
     default_width: float | None = None
     priority: float = 0.0
+    font_size: float = 10.0
 
     @classmethod
     def from_structure(
@@ -340,6 +341,7 @@ class RoadMatcher(Matcher):
             road_matcher.color = Color(scheme.get_color(structure["color"]))
         road_matcher.default_width = structure["default_width"]
         road_matcher.priority = structure.get("priority", 0.0)
+        road_matcher.font_size = structure.get("font_size", 10.0)
         return road_matcher
 
     def get_priority(self, tags: Tags) -> float:

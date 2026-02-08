@@ -70,6 +70,22 @@ class Occupied:
             self.matrix[point[0], point[1]] = True
             assert self.matrix[point[0], point[1]]
 
+    def dump_debug_image(self, path: str) -> None:
+        """Write occupied matrix as a PNG image for debugging.
+
+        White pixels are free, black pixels are occupied.
+        """
+        from PIL import Image  # noqa: PLC0415
+
+        # Matrix is (width, height) with [x, y] indexing; transpose to get
+        # (height, width) row-major image.
+        pixel_data: np.ndarray = np.where(self.matrix.T, 0, 255).astype(
+            np.uint8
+        )
+        image: Image.Image = Image.fromarray(pixel_data, mode="L")
+        image.save(path)
+        logger.info("Occupied debug image saved to `%s`.", path)
+
 
 def draw_icon_safe(
     icon_specification: IconSpecification,

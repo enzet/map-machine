@@ -4,81 +4,98 @@ roads:
     border_color: $motorway_border_color
     color: $motorway_color
     priority: 41.8
+    font_size: 12.0
   - tags: {highway: trunk}
     default_width: 7.0
     border_color: $motorway_border_color
     color: $motorway_color
     priority: 41.0
+    font_size: 12.0
   - tags: {highway: trunk_link}
     default_width: 7.0
     border_color: $motorway_border_color
     color: $motorway_color
     priority: 41.0
+    font_size: 12.0
   - tags: {highway: primary}
     default_width: 7.0
     border_color: $primary_border_color
     color: $primary_color
     priority: 41.7
+    font_size: 11.0
   - tags: {highway: primary_link}
     default_width: 7.0
     border_color: $primary_border_color
     color: $primary_color
     priority: 41.7
+    font_size: 11.0
   - tags: {highway: motorway_link}
     default_width: 7.0
     border_color: $motorway_border_color
     color: $motorway_color
     priority: 41.8
+    font_size: 12.0
   - tags: {highway: secondary}
     default_width: 7.0
     border_color: $secondary_border_color
     priority: 41.6
     color: $secondary_color
+    font_size: 10.0
   - tags: {highway: secondary_link}
     default_width: 7.0
     border_color: $secondary_border_color
     priority: 41.6
     color: $secondary_color
+    font_size: 10.0
   - tags: {highway: tertiary}
     default_width: 7.0
     border_color: $tertiary_border_color
     priority: 41.5
     color: $tertiary_color
+    font_size: 10.0
   - tags: {highway: tertiary_link}
     default_width: 7.0
     border_color: $tertiary_border_color
     priority: 41.5
     color: $tertiary_color
+    font_size: 10.0
   - tags: {highway: unclassified}
     default_width: 5.0
     border_color: $road_border_color
     priority: 41.0
+    font_size: 9.0
   - tags: {highway: residential}
     default_width: 5.0
     border_color: $road_border_color
     priority: 41.0
+    font_size: 9.0
   - tags: {highway: living_street}
     default_width: 4.0
     border_color: $road_border_color
     priority: 41.0
+    font_size: 9.0
   - tags: {highway: service}
     exception: {service: parking_aisle}
     default_width: 3.0
     border_color: $road_border_color
     priority: 41.0
+    font_size: 8.0
   - tags: {highway: service, service: parking_aisle}
     default_width: 2.0
     border_color: $road_border_color
     priority: 41.0
+    font_size: 8.0
   - tags: {leisure: track}
     exception: {area: "yes"}
     color: $pitch_color
     border_color: $pitch_border_color
     default_width: 5.0
     priority: 21.0
+    font_size: 9.0
 
   - tags: {highway: raceway}
     color: $pitch_color
     border_color: $pitch_border_color
     default_width: 7.0
     priority: 21.0
+    font_size: 9.0

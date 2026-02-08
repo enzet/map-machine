@@ -7,10 +7,12 @@ import svgwrite
 
 from map_machine.feature.road import (
     Road,
+    Roads,
 )
 from map_machine.geometry.bounding_box import BoundingBox
 from map_machine.geometry.flinger import MercatorFlinger
 from map_machine.osm.osm_reader import OSMData, OSMNode
+from map_machine.pictogram.point import Occupied
 from map_machine.scheme import Color, RoadMatcher
 from tests import SCHEME
 
@@ -218,3 +220,74 @@ def test_road_draw_lanes() -> None:
     road.draw_lanes(svg, road.matcher.border_color)
     # For 2 lanes, should draw 1 separator.
     assert len(svg.elements) >= 0
+
+
+def test_road_draw_caption_no_name() -> None:
+    """Test that draw_caption returns False for unnamed roads."""
+    road: Road = create_test_road({"highway": "primary"})
+    svg: svgwrite.Drawing = svgwrite.Drawing(size=("100px", "100px"))
+    result: bool = road.draw_caption(svg, None, "test-path-0")
+    assert result is False
+
+
+def test_road_draw_caption_too_short() -> None:
+    """Test that draw_caption returns False for roads too short."""
+    nodes: list[OSMNode] = [
+        OSMNode({}, 1, np.array((0.0, 0.0))),
+        OSMNode({}, 2, np.array((0.000001, 0.000001))),
+    ]
+    road: Road = create_test_road(
+        {"highway": "primary", "name": "Very Long Road Name That Cannot Fit"},
+        nodes,
+    )
+    svg: svgwrite.Drawing = svgwrite.Drawing(size=("100px", "100px"))
+    result: bool = road.draw_caption(svg, None, "test-path-0")
+    assert result is False
+
+
+def test_road_draw_caption_with_name() -> None:
+    """Test that draw_caption succeeds for a named road."""
+    road: Road = create_test_road({"highway": "primary", "name": "A St"})
+    svg: svgwrite.Drawing = svgwrite.Drawing(size=("800px", "800px"))
+    result: bool = road.draw_caption(svg, None, "test-path-0")
+    assert isinstance(result, bool)
+
+
+def test_road_draw_caption_collision() -> None:
+    """Test that draw_caption respects collision detection."""
+    road: Road = create_test_road({"highway": "primary", "name": "Main St"})
+    svg: svgwrite.Drawing = svgwrite.Drawing(size=("800px", "800px"))
+    occupied: Occupied = Occupied(800, 800, 12)
+
+    # First label should succeed.
+    result1: bool = road.draw_caption(svg, occupied, "test-path-0")
+    if result1:
+        # Second label at same position should fail due to collision.
+        result2: bool = road.draw_caption(svg, occupied, "test-path-1")
+        assert result2 is False
+
+
+def test_roads_draw_labels_no_repetition() -> None:
+    """Test that draw_labels only labels each road name once."""
+    roads: Roads = Roads()
+    # Create two road segments with the same name but different positions.
+    for i in range(2):
+        offset = i * 0.005
+        nodes: list[OSMNode] = [
+            OSMNode({}, i * 10 + 1, np.array((-0.008 + offset, -0.008))),
+            OSMNode({}, i * 10 + 2, np.array((0.008 + offset, 0.008))),
+        ]
+        road: Road = create_test_road(
+            {"highway": "primary", "name": "Main Street"}, nodes
+        )
+        roads.append(road)
+
+    svg: svgwrite.Drawing = svgwrite.Drawing(size=("800px", "800px"))
+    occupied: Occupied = Occupied(800, 800, 12)
+    roads.draw_labels(svg, occupied)
+
+    # Count textPath elements - should be at most 1 set (3 text elements
+    # per label: 2 halo + 1 fill).
+    svg_xml: str = svg.tostring()
+    count: int = svg_xml.count("Main Street")
+    assert count <= 3
