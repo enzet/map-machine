@@ -656,11 +656,11 @@ class Road(Tagged):
         :param path_id: unique identifier for the SVG path element
         :return: True if the label was drawn, False if skipped
         """
-        name: str | None = self.tags.get("name")
-        if not name:
+        if self.is_area:
             return False
 
-        if self.is_area:
+        name: str | None = self.tags.get("name")
+        if not name:
             return False
 
         font_size: float = self.matcher.font_size
@@ -683,21 +683,30 @@ class Road(Tagged):
         if not line.is_left_to_right():
             line = line.reversed()
 
-        # Collision detection using sampled points along the curve.
+        # Compute the offset path used for text rendering.
+        text_offset: float = self.placement_offset - font_size * 0.35
+        path_commands: str | None = line.get_path(text_offset)
+        if path_commands is None:
+            return False
+
+        # Collision detection along the actual offset path where text renders.
         if occupied is not None:
             half_band: float = font_size * 0.7
-            sample_interval: float = 4.0
+            sample_interval: float = 1.0
 
-            total_length: float = line.length()
+            # Build the offset geometry to sample from.
+            offset_line = LineString(line.points)
+            if not np.allclose(text_offset, 0.0):
+                offset_line = offset_line.parallel_offset(text_offset)
+
+            total_length: float = offset_line.length
             text_start: float = (total_length - text_width) / 2.0
             text_end: float = (total_length + text_width) / 2.0
-
-            shapely_line = LineString(line.points)
 
             # Check phase.
             distance = text_start
             while distance <= text_end:
-                center = shapely_line.interpolate(distance)
+                center = offset_line.interpolate(distance)
                 cx, cy = int(center.x), int(center.y)
                 for dy in range(int(-half_band), int(half_band) + 1):
                     if occupied.check(np.array((cx, cy + dy))):
@@ -707,17 +716,12 @@ class Road(Tagged):
             # Register phase.
             distance = text_start
             while distance <= text_end:
-                center = shapely_line.interpolate(distance)
+                center = offset_line.interpolate(distance)
                 cx, cy = int(center.x), int(center.y)
-                for dy in range(int(-half_band), int(half_band) + 1):
-                    occupied.register(np.array((cx, cy + dy)))
+                for d in range(int(-half_band), int(half_band) + 1):
+                    occupied.register(np.array((cx, cy + d)))
+                    occupied.register(np.array((cx + d, cy)))
                 distance += sample_interval
-
-        path_commands: str | None = line.get_path(
-            self.placement_offset - font_size * 0.35
-        )
-        if path_commands is None:
-            return False
 
         # Place the invisible reference path in <defs>.
         ref_path = svg.path(
