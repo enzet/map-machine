@@ -93,6 +93,20 @@ class Polyline:
             + (" Z" if np.allclose(points[0], points[-1]) else "")
         )
 
+    def length(self) -> float:
+        """Get the total length of the polyline in pixels."""
+        return LineString(self.points).length
+
+    def is_left_to_right(self) -> bool:
+        """Check whether the polyline runs generally left-to-right."""
+        if len(self.points) < 2:
+            return True
+        return self.points[-1][0] >= self.points[0][0]
+
+    def reversed(self) -> Polyline:
+        """Return a new Polyline with points in reversed order."""
+        return Polyline(list(reversed(self.points)))
+
     def shorten(self, index: int, length: float) -> None:
         """Shorten the part at the specified index."""
         index_2: int = 1 if index == 0 else -2

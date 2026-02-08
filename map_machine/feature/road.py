@@ -9,7 +9,9 @@ from typing import TYPE_CHECKING, Any
 
 import numpy as np
 from colour import Color
+from shapely.geometry import LineString
 from svgwrite.path import Path
+from svgwrite.text import TextPath
 
 from map_machine.geometry.vector import (
     Line,
@@ -28,6 +30,7 @@ if TYPE_CHECKING:
 
     from map_machine.drawing import PathCommands
     from map_machine.geometry.flinger import Flinger
+    from map_machine.pictogram.point import Occupied
     from map_machine.scheme import RoadMatcher, Scheme
 
 __author__ = "Sergey Vartanov"
@@ -640,31 +643,128 @@ class Road(Tagged):
             path.update(style)
             svg.add(path)
 
-    def draw_caption(self, svg: Drawing) -> None:
-        """Draw road name along its path."""
+    def draw_caption(
+        self,
+        svg: Drawing,
+        occupied: Occupied | None,
+        path_id: str,
+    ) -> bool:
+        """Draw road name along its path with collision detection.
+
+        :param svg: SVG drawing
+        :param occupied: occupied pixel matrix for collision detection
+        :param path_id: unique identifier for the SVG path element
+        :return: True if the label was drawn, False if skipped
+        """
         name: str | None = self.tags.get("name")
         if not name:
-            return
+            return False
 
-        if (
-            path_commands := self.line.get_path(self.placement_offset + 3.0)
-        ) is None:
-            return
+        if self.is_area:
+            return False
 
-        path: Path = svg.path(d=path_commands, fill="none")
-        svg.add(path)
+        font_size: float = self.matcher.font_size
+        char_width: float = font_size * 0.6
+        text_width: float = len(name) * char_width
 
-        text = svg.add(svg.text.Text(""))
-        text_path = svg.text.TextPath(
-            path=path,
+        road_length: float = self.line.length()
+        if road_length < text_width * 1.5:
+            return False
+
+        # Skip very curvy roads where text would be illegible.
+        straight_distance: float = float(
+            np.linalg.norm(self.line.points[-1] - self.line.points[0])
+        )
+        if straight_distance < road_length * 0.3:
+            return False
+
+        # Ensure text reads left-to-right.
+        line: Polyline = self.line
+        if not line.is_left_to_right():
+            line = line.reversed()
+
+        # Collision detection using sampled points along the curve.
+        if occupied is not None:
+            half_band: float = font_size * 0.7
+            sample_interval: float = 4.0
+
+            total_length: float = line.length()
+            text_start: float = (total_length - text_width) / 2.0
+            text_end: float = (total_length + text_width) / 2.0
+
+            shapely_line = LineString(line.points)
+
+            # Check phase.
+            distance = text_start
+            while distance <= text_end:
+                center = shapely_line.interpolate(distance)
+                cx, cy = int(center.x), int(center.y)
+                for dy in range(int(-half_band), int(half_band) + 1):
+                    if occupied.check(np.array((cx, cy + dy))):
+                        return False
+                distance += sample_interval
+
+            # Register phase.
+            distance = text_start
+            while distance <= text_end:
+                center = shapely_line.interpolate(distance)
+                cx, cy = int(center.x), int(center.y)
+                for dy in range(int(-half_band), int(half_band) + 1):
+                    occupied.register(np.array((cx, cy + dy)))
+                distance += sample_interval
+
+        path_commands: str | None = line.get_path(self.placement_offset)
+        if path_commands is None:
+            return False
+
+        # Place the invisible reference path in <defs>.
+        ref_path = svg.path(
+            d=path_commands, id=path_id, fill="none", stroke="none"
+        )
+        svg.defs.add(ref_path)
+
+        # Text halo for readability.
+        for stroke_width, opacity in ((5.0, 0.5), (3.0, 0.7)):
+            text_element = svg.text(
+                "",
+                font_size=font_size,
+                font_family="Helvetica",
+                fill="none",
+                stroke="white",
+                stroke_width=stroke_width,
+                stroke_linejoin="round",
+                opacity=opacity,
+            )
+            text_path_element = TextPath(
+                ref_path,
+                text=name,
+                startOffset="50%",
+                method="align",
+                spacing="exact",
+            )
+            text_path_element["text-anchor"] = "middle"
+            text_element.add(text_path_element)
+            svg.add(text_element)
+
+        # Text fill.
+        text_element = svg.text(
+            "",
+            font_size=font_size,
+            font_family="Helvetica",
+            fill="#333333",
+        )
+        text_path_element = TextPath(
+            ref_path,
             text=name,
-            startOffset=None,
+            startOffset="50%",
             method="align",
             spacing="exact",
-            font_family="Roboto",
-            font_size=10.0,
         )
-        text.add(text_path)
+        text_path_element["text-anchor"] = "middle"
+        text_element.add(text_path_element)
+        svg.add(text_element)
+
+        return True
 
 
 def get_curve_points(
@@ -916,9 +1016,7 @@ class Roads:
         ):
             road.draw(svg, is_border=False)
 
-    def draw_lanes(
-        self, svg: Drawing, flinger: Flinger, *, draw_captions: bool = False
-    ) -> None:
+    def draw_lanes(self, svg: Drawing, flinger: Flinger) -> None:
         """Draw whole road system with lanes and width."""
         if not self.roads:
             return
@@ -1027,6 +1125,29 @@ class Roads:
             for road in roads:
                 road.draw_lanes(svg, road.matcher.border_color)
 
-        if draw_captions:
-            for road in self.roads:
-                road.draw_caption(svg)
+    def draw_labels(self, svg: Drawing, occupied: Occupied | None) -> None:
+        """Draw road name labels with collision detection.
+
+        Labels higher-priority roads first. Only one label per unique road
+        name to avoid repetition.
+        """
+        sorted_roads: list[Road] = sorted(
+            self.roads,
+            key=lambda r: (-r.matcher.priority, -r.line.length()),
+        )
+
+        labeled_names: set[str] = set()
+        path_counter: int = 0
+
+        for road in sorted_roads:
+            name: str | None = road.tags.get("name")
+            if not name:
+                continue
+
+            if name in labeled_names:
+                continue
+
+            path_id: str = f"road-label-path-{path_counter}"
+            if road.draw_caption(svg, occupied, path_id):
+                labeled_names.add(name)
+                path_counter += 1
