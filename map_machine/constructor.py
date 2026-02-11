@@ -279,7 +279,8 @@ class Constructor:
 
         line_styles: list[LineStyle] = self.scheme.get_style(line.tags)
 
-        for line_style in line_styles:
+        if line_styles:
+            line_style = line_styles[-1]
             new_line_style: LineStyle = line_style
             if recolor is not None:
                 new_style: dict[str, float | int | str] = dict(line_style.style)
@@ -294,7 +295,7 @@ class Constructor:
                 StyledFigure(line.tags, inners, outers, new_line_style)
             )
 
-            if not (
+            if (
                 line.get_tag("area") == "yes"
                 or line.get_tag("type") == "multipolygon"
                 or (
@@ -303,30 +304,28 @@ class Constructor:
                     and self.scheme.is_area(line.tags)
                 )
             ):
-                continue
-
-            priority: int
-            icon_set: IconSet | None
-            icon_set, priority = self.configuration.get_icon(
-                line.tags, processed
-            )
-            if icon_set is not None:
-                labels: list[Label] = self.text_constructor.construct_text(
-                    line.tags,
-                    processed,
-                    self.configuration.label_mode,
+                priority: int
+                icon_set: IconSet | None
+                icon_set, priority = self.configuration.get_icon(
+                    line.tags, processed
                 )
-                point: Point = Point(
-                    icon_set,
-                    labels,
-                    line.tags,
-                    processed,
-                    center_point,
-                    is_for_node=False,
-                    priority=priority,
-                    add_tooltips=self.configuration.show_tooltips,
-                )
-                self.points.append(point)
+                if icon_set is not None:
+                    labels: list[Label] = self.text_constructor.construct_text(
+                        line.tags,
+                        processed,
+                        self.configuration.label_mode,
+                    )
+                    point: Point = Point(
+                        icon_set,
+                        labels,
+                        line.tags,
+                        processed,
+                        center_point,
+                        is_for_node=False,
+                        priority=priority,
+                        add_tooltips=self.configuration.show_tooltips,
+                    )
+                    self.points.append(point)
 
         # TODO(enzet): probably we may want to skip the next part if
         # `line_styles` are not empty.
