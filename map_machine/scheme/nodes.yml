@@ -224,7 +224,7 @@ nodes:
       location_restrictions: {include: [jp]}
       shapes: [{shape: japan_fire_station, color: $emergency_color}]
     - tags: {amenity: courthouse}
-      shapes: [gavel]
+      shapes: [{shape: gavel, color: $amenity_brown_color}]
     - tags: {amenity: police}
       location_restrictions: {include: [jp]}
       shapes: [japan_police_station]
