@@ -73,7 +73,8 @@ variables:
   embankment_color: "#666666"
   ford_color: "#88BBFF"
   foot_border_color: "#FFFFFF"
-  foot_border_width: 3.0
+  foot_border_width: 0.0
+  foot_border_opacity: 1.0
   # foot_color-noaccess
   foot_color: "#B89A74"
   foot_dasharray: 7.0,3.0

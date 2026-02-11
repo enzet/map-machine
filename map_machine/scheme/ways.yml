@@ -246,8 +246,9 @@ ways:
       stroke-linecap: butt
   - tags: {highway: path}
     style:
-      stroke-width: 3.0
+      stroke-width: $foot_border_width
       stroke: $foot_border_color
+      opacity: $foot_border_opacity
     priority: $priority_road_3
 
   - tags: {highway: footway}

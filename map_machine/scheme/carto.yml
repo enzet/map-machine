@@ -73,6 +73,7 @@ variables:
   # ford_color
   foot_border_color: white
   foot_border_width: 3.0
+  foot_border_opacity: 0.4
   foot_color-noaccess: "#bbbbbb"
   foot_color: salmon
   foot_dasharray: 3,3
