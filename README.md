@@ -202,8 +202,6 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and render an SV
 
 | Option | Description |
 |---|---|
-| <span style="white-space: nowrap;">`--no-overpass`</span> | do not use Overpass API to download complete data for incomplete relations |
-| <span style="white-space: nowrap;">`--overpass-query`</span> `<path>` | path to a custom Overpass query file; use {{bbox}} as a placeholder for the bounding box |
 | <span style="white-space: nowrap;">`-i`</span>, <span style="white-space: nowrap;">`--input`</span> `<path>` | input XML file name or names (if not specified, files will be downloaded using the OpenStreetMap API) |
 | <span style="white-space: nowrap;">`-o`</span>, <span style="white-space: nowrap;">`--output`</span> `<path>` | output SVG file name, default value: `out/map.svg` |
 | <span style="white-space: nowrap;">`-b`</span>, <span style="white-space: nowrap;">`--bounding-box`</span>, <span style="white-space: nowrap;">`--boundary-box`</span> `<lon1>,<lat1>,<lon2>,<lat2>` | geographic bounding box |
@@ -211,6 +209,8 @@ will download OSM data to `cache/2.284,48.860,2.290,48.865.osm` and render an SV
 | <span style="white-space: nowrap;">`-z`</span>, <span style="white-space: nowrap;">`--zoom`</span> `<float>` | OSM zoom level, default value: 18.0 |
 | <span style="white-space: nowrap;">`-c`</span>, <span style="white-space: nowrap;">`--coordinates`</span> `<latitude>,<longitude>` | coordinates of any location within the tile |
 | <span style="white-space: nowrap;">`-s`</span>, <span style="white-space: nowrap;">`--size`</span> `<width>,<height>` | resulting image size |
+| <span style="white-space: nowrap;">`--no-overpass`</span> | do not use Overpass API to download complete data for incomplete relations |
+| <span style="white-space: nowrap;">`--overpass-query`</span> `<path>` | path to a custom Overpass query file; use {{bbox}} as a placeholder for the bounding box |
 | <span style="white-space: nowrap;">`--gpx`</span> `<path>` | path to a GPX file to draw as a track overlay |
 | <span style="white-space: nowrap;">`--track-color`</span> `<color>` | track stroke color (default: #FF0000), default value: `#FF0000` |
 | <span style="white-space: nowrap;">`--track-width`</span> `<float>` | track stroke width in pixels (default: 3.0), default value: 3.0 |
