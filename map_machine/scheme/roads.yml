@@ -6,13 +6,13 @@ roads:
     priority: 41.8
   - tags: {highway: trunk}
     default_width: 7.0
-    border_color: $motorway_border_color
-    color: $motorway_color
+    border_color: $trunk_border_color
+    color: $trunk_color
     priority: 41.0
   - tags: {highway: trunk_link}
     default_width: 7.0
-    border_color: $motorway_border_color
-    color: $motorway_color
+    border_color: $trunk_border_color
+    color: $trunk_color
     priority: 41.0
   - tags: {highway: primary}
     default_width: 7.0

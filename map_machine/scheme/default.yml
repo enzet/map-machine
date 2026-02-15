@@ -80,6 +80,8 @@ variables:
   foot_dasharray: 7.0,3.0
   motorway_border_color: "#CC8800"
   motorway_color: "#FFAA33"
+  trunk_border_color: "#CC8800"
+  trunk_color: "#FFAA33"
   primary_border_color: "#AA8800"
   primary_color: "#FFDD66"
   secondary_border_color: "#BB9911"
