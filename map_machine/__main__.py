@@ -11,10 +11,7 @@ if __name__ == "__main__":
     PYTHON_MAJOR_VERSION: int = 3
     PYTHON_MINOR_VERSION: int = 9
 
-    if (
-        sys.version_info.major < PYTHON_MAJOR_VERSION
-        or sys.version_info.minor < PYTHON_MINOR_VERSION
-    ):
+    if sys.version_info < (PYTHON_MAJOR_VERSION, PYTHON_MINOR_VERSION):
         sys.exit(1)
 
     main()
