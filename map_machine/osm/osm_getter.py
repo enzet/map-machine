@@ -85,7 +85,7 @@ def get_osm(
         message = "Cannot download data."
         raise NetworkError(message)
 
-    with cache_file_path.open("bw+") as output_file:
+    with cache_file_path.open("wb") as output_file:
         output_file.write(content)
 
     return content.decode("utf-8")
@@ -226,7 +226,7 @@ def get_osm_overpass(
             message = "Unexpected Overpass API response."
         raise NetworkError(message)
 
-    with cache_file_path.open("bw+") as output_file:
+    with cache_file_path.open("wb") as output_file:
         output_file.write(content)
 
     return content.decode("utf-8")

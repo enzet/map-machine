@@ -30,6 +30,7 @@ def main() -> None:
 
     if not arguments.command:
         logging.fatal("No command provided. See --help.")
+        sys.exit(1)
 
     elif arguments.command == "render":
         from map_machine import mapper  # noqa: PLC0415
