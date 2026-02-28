@@ -44,9 +44,13 @@ def draw_area(tags: Tags, path: Path) -> None:
 
 def draw_element(options: argparse.Namespace) -> None:
     """Entry point for element drawing."""
-    tags_description: Tags = {
-        x.split("=")[0]: x.split("=")[1] for x in options.tags.split(",")
-    }
+    tags_description: Tags = {}
+    for x in options.tags.split(","):
+        parts: list[str] = x.split("=", 1)
+        if len(parts) != 2:
+            logger.fatal(f"Invalid tag `{x}`, expected `key=value` format.")
+            sys.exit(1)
+        tags_description[parts[0]] = parts[1]
     if options.type == "node":
         draw_node(tags_description, Path(options.output_file))
     elif options.type == "way":
