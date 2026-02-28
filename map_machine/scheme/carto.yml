@@ -145,6 +145,7 @@ variables:
   place_of_worship_border_color: {color: "#d0d0d0", darken: 0.3}
   place_of_worship_border_width: 0.3
   power_color: {color: $industrial_color, darken: 0.05}
+  power_opacity: $industrial_opacity
   power_border_color: {color: $industrial_border_color, darken: 0.05}
   societal_amenities_color: "#ffffe5"
   societal_amenities_border_color: {color: "#ffffe5", darken: 0.35}

@@ -251,6 +251,7 @@ variables:
   playground_color: "#FFDDCC"
   power_color: $industrial_color
   power_border_color: $industrial_border_color
+  power_opacity: $industrial_opacity
   prison_color: "#888888"
   prison_opacity: 0.1
   prison_border_color: "#888888"

@@ -608,18 +608,21 @@ ways:
   - tags: {power: substation}
     style:
       fill: $power_color
+      opacity: $power_opacity
       stroke: $power_border_color
       stroke-width: 0.5
     priority: $priority_landuse_1
   - tags: {power: plant}
     style:
       fill: $power_color
+      opacity: $power_opacity
       stroke: $power_border_color
       stroke-width: 0.5
     priority: $priority_landuse_1
   - tags: {power: generator}
     style:
       fill: $power_color
+      opacity: $power_opacity
       stroke: $power_border_color
       stroke-width: 0.5
     priority: $priority_landuse_1
