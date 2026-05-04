@@ -5,6 +5,8 @@ from map_machine.osm.osm_reader import OSMNode, OSMWay
 
 def is_cycle(nodes: list[OSMNode]) -> bool:
     """Check whether the way is a cycle or an area boundary."""
+    if not nodes:
+        return False
     return nodes[0] == nodes[-1]
 
 
