@@ -185,6 +185,9 @@ class Constructor:
                 # Coastline is handled by `CoastlineProcessor`.
                 continue
 
+            if not way.nodes:
+                continue
+
             if not self._should_crop() or not self._crop_bounding_box:
                 self.construct_line(way, [], [way.nodes])
                 continue
